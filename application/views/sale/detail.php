@@ -1,0 +1,383 @@
+<div class="col-md-12">
+	<div class="row page-titles mx-0">
+		<div class="col-sm-6 p-md-0">
+			<div class="welcome-text">
+				<h4><?= $this->lang->line('title_sale_detail') ?></h4>
+			</div>
+		</div>
+		<div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="<?= base_url() ?>sale"><?= $this->lang->line('sales') ?></a></li>
+				<li class="breadcrumb-item active"><a href="javascript:void(0)"><?= $this->lang->line('txt_detail') ?></a></li>
+			</ol>
+		</div>
+	</div>
+</div>
+<?php if ($sale->status_id != $canceled_id){ ?>
+<div class="col-md-12">
+	<div class="row d-flex justify-content-center">
+		<?php if ($voucher){ ?>
+		<div class="col-md-4">
+			<a href="<?= base_url() ?>sale/voucher/<?= $voucher->id ?>" target="_blank">
+				<button class="btn btn-primary w-100 mb-3">
+					<div><i class="fal fa-sticky-note fa-5x fa-fw"></i></div>
+					<div class="fs-16 mt-2 pt-2 border-top border-white"><?= $voucher->type ?></div>
+				</button>
+			</a>
+		</div>
+		<?php }else{ ?>
+		<div class="col-md-4">
+			<button class="btn btn-primary w-100 mb-3" data-toggle="modal" data-target=".md_voucher">
+				<div><i class="fal fa-sticky-note fa-5x fa-fw"></i></div>
+				<div class="fs-16 mt-2 pt-2 border-top border-white"><?= $this->lang->line('btn_voucher') ?></div>
+			</button>
+		</div>
+		<?php } ?>
+		<div class="col-md-4">
+			<a href="<?= base_url() ?>sale/payment_report/<?= $sale->id ?>" target="_blank">
+				<button class="btn btn-info w-100 mb-3">
+					<div><i class="fal fa-money-check-edit fa-5x fa-fw"></i></div>
+					<div class="fs-16 mt-2 pt-2 border-top border-white"><?= $this->lang->line('btn_payment_report') ?></div>
+				</button>
+			</a>
+		</div>
+		<div class="col-md-4">
+			<button class="btn btn-outline-danger w-100 mb-3" id="btn_cancel_sale" value="<?= $sale->id ?>">
+				<div><i class="fal fa-trash fa-5x fa-fw"></i></div>
+				<div class="fs-16 mt-2 pt-2 border-top border-danger"><?= $this->lang->line('btn_cancel_sale') ?></div>
+			</button>
+		</div>
+	</div>
+</div>
+<?php } ?>
+<div class="col-md-12">
+	<div class="card">
+		<div class="card-body">
+			<div class="custom-tab-1">
+				<ul class="nav nav-tabs mb-4" role="tablist">
+					<li class="nav-item">
+						<a class="nav-link active" data-toggle="tab" href="#tab_data">
+							<i class="far fa-comment-alt fa-fw mr-3"></i><?= $this->lang->line("tab_data") ?>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#tab_payments">
+							<i class="far fa-money-check fa-fw mr-3"></i><?= $this->lang->line("tab_payments") ?>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#tab_items">
+							<i class="far fa-box fa-fw mr-3"></i><?= $this->lang->line("tab_items") ?>
+						</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane fade show active" id="tab_data" role="tabpanel">
+						<div class="form-row">
+							<div class="form-group col-md-3">
+								<label><?= $this->lang->line('label_date') ?></label>
+								<input type="text" class="form-control" value="<?= $sale->registed_at ?>" readonly>
+							</div>
+							<div class="form-group col-md-3">
+								<label><?= $this->lang->line('label_document') ?></label>
+								<?php if ($client->doc_number) $doc_val = $client->doc_type." / ".$client->doc_number; else $doc_val = ""; ?>
+								<input type="text" class="form-control" value="<?= $doc_val ?>" readonly>
+							</div>
+							<div class="form-group col-md-6">
+								<label><?= $this->lang->line('label_client') ?></label>
+								<input type="text" class="form-control" value="<?= $client->name ?>" readonly>
+							</div>
+							<div class="form-group col-md-3">
+								<label><?= $this->lang->line('label_status') ?></label>
+								<input type="text" class="form-control text-<?= $sale->status_color ?>" value="<?= $sale->status ?>" readonly>
+							</div>
+							<div class="form-group col-md-3">
+								<label><?= $this->lang->line('label_total') ?></label>
+								<input type="text" class="form-control" value="<?= $sale->currency." ".number_format($sale->total, 2) ?>" readonly>
+							</div>
+							<div class="form-group col-md-3">
+								<label><?= $this->lang->line('label_balance') ?></label>
+								<input type="text" class="form-control" value="<?= $sale->currency." ".number_format($sale->balance, 2) ?>" readonly>
+							</div>
+							<div class="form-group col-md-3">
+								<label><?= $this->lang->line('label_last_update') ?></label>
+								<input type="text" class="form-control" value="<?= $sale->updated_at ?>" readonly>
+							</div>
+						</div>
+						<?php if ($sale->appointment_id or $sale->surgery_id){ ?>
+						<hr>
+						<div class="form-row">
+							<?php if ($sale->appointment_id){ ?>
+							<div class="form-group col-md-3">
+								<label><?= $this->lang->line('label_appointment') ?></label>
+								<a href="<?= base_url() ?>appointment/detail/<?= $sale->appointment_id ?>" target="_blank">
+									<button type="button" class="btn btn-primary btn-block">
+										<?= $this->lang->line('btn_view') ?>
+									</button>
+								</a>
+							</div>
+							<?php } if ($sale->surgery_id){ ?>
+							<div class="form-group col-md-3">
+								<label><?= $this->lang->line('label_appointment') ?></label>
+								<a href="<?= base_url() ?>surgery/detail/<?= $sale->surgery_id ?>" target="_blank">
+									<button type="button" class="btn btn-primary btn-block">
+										<?= $this->lang->line('btn_view') ?>
+									</button>
+								</a>
+							</div>
+							<?php } ?>
+						</div>
+						<?php } if ($voucher){ 
+							if ($voucher->sunat_sent){ $color = "success"; $text = $this->lang->line('txt_sent'); }
+							else{ $color = "danger"; $text = $this->lang->line('txt_error'); } ?>
+						<hr>
+						<div class="form-row">
+							<div class="form-group col-md-3">
+								<label><?= $this->lang->line('label_sunat') ?></label>
+								<input type="text" class="form-control text-<?= $color ?>" value="<?= $text ?>" readonly>
+							</div>
+							<div class="form-group col-md-9">
+								<label><?= $this->lang->line('label_msg') ?></label>
+								<input type="text" class="form-control" value="<?= $voucher->sunat_msg ?>" readonly>
+							</div>
+						</div>
+						<?php } ?>
+					</div>
+					<div class="tab-pane fade" id="tab_payments" role="tabpanel">
+						<div class="table-responsive">
+							<table class="table table-responsive-md">
+								<thead>
+									<tr>
+										<th style="width: 70px;"><strong>#</strong></th>
+										<th><strong><?= $this->lang->line('hd_date') ?></strong></th>
+										<th><strong><?= $this->lang->line('hd_form_of_payment') ?></strong></th>
+										<th><strong><?= $this->lang->line('hd_received') ?></strong></th>
+										<th><strong><?= $this->lang->line('hd_change') ?></strong></th>
+										<th><strong><?= $this->lang->line('hd_balance') ?></strong></th>
+										<?php if (!$voucher){ ?>
+										<th></th>
+										<?php } ?>
+									</tr>
+								</thead>
+								<tbody>
+									<?php foreach($payments as $i => $p){ ?>
+									<tr>
+										<td><?= $i + 1 ?></td>
+										<td><?= $p->registed_at ?></td>
+										<td><?= $p->payment_method ?></td>
+										<td><?= $sale->currency." ".number_format($p->received, 2) ?></td>
+										<td><?php if ($p->change) echo $sale->currency." ".number_format($p->change, 2);
+										else echo "-" ?></td>
+										<td><?= $sale->currency." ".number_format($p->balance, 2) ?></td>
+										<?php if (!$voucher){ ?>
+										<td class="text-right">
+											<?php if (!$i){ ?>
+											<button type="button" class="btn light btn-danger" id="btn_delete_payment" value="<?= $p->id ?>">
+												<i class="far fa-trash"></i>
+											</button>
+											<?php } ?>
+										</td>
+										<?php } ?>
+									</tr>
+									<?php } ?>
+								</tbody>
+							</table>
+						</div>
+						<?php if ($sale->balance && ($sale->status_id != $canceled_id)){ ?>
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#basicModal">
+							<?= $this->lang->line('btn_new_payment') ?>
+						</button>
+						<div class="modal fade" id="basicModal" style="display: none;" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header border-0">
+										<h5 class="modal-title"><?= $this->lang->line('title_new_payment') ?></h5>
+										<button type="button" class="close" data-dismiss="modal"><span>×</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<form id="form_payment" action="#">
+											<div class="form-row">
+												<input type="hidden" name="sale_id" value="<?= $sale->id ?>">
+												<input type="hidden" name="total" value="<?= $sale->balance ?>">
+												<input type="hidden" id="payment_received" name="received" value="<?= $sale->balance ?>">
+												<input type="hidden" id="payment_change" name="change" value="0">
+												<input type="hidden" id="payment_balance" name="balance" value="0">
+												<div class="form-group col-md-6">
+													<label><?= $this->lang->line('label_received') ?></label>
+													<div class="input-group input-normal-o">
+														<div class="input-group-prepend">
+															<span class="input-group-text"><?= $sale->currency ?></span>
+														</div>
+														<input type="text" class="form-control text-right" id="payment_received_v" value="<?= number_format($sale->balance, 2) ?>">
+													</div>
+													<div class="sys_msg" id="pay_received_msg"></div>
+												</div>
+												<div class="form-group col-md-6">
+													<label><?= $this->lang->line('label_amount_to_pay') ?></label>
+													<div class="input-group input-info-o">
+														<div class="input-group-prepend">
+															<span class="input-group-text bg-light"><?= $sale->currency ?></span>
+														</div>
+														<input type="text" class="form-control bg-light text-right" id="payment_total_v" value="<?= number_format($sale->balance, 2) ?>" readonly>
+													</div>
+													<div class="sys_msg" id="total_msg"></div>
+												</div>
+												<div class="form-group col-md-6">
+													<label><?= $this->lang->line('label_change') ?></label>
+													<div class="input-group input-normal-o">
+														<div class="input-group-prepend">
+															<span class="input-group-text"><?= $sale->currency ?></span>
+														</div>
+														<input type="text" class="form-control text-right" id="payment_change_v" value="0.00">
+													</div>
+													<div class="sys_msg" id="pay_change_msg"></div>
+												</div>
+												<div class="form-group col-md-6">
+													<label><?= $this->lang->line('label_balance') ?></label>
+													<div class="input-group input-warning-o">
+														<div class="input-group-prepend">
+															<span class="input-group-text bg-light"><?= $sale->currency ?></span>
+														</div>
+														<input type="text" class="form-control bg-light text-right" id="payment_balance_v" value="0.00" readonly>
+													</div>
+													<div class="sys_msg" id="pay_balance_msg"></div>
+												</div>
+												<div class="form-group col-md-6">
+													<label><?= $this->lang->line('label_payment_method') ?></label>
+													<select class="form-control" name="payment_method_id">
+														<?php foreach($payment_method as $item){ ?>
+														<option value="<?= $item->id ?>"><?= $item->description ?></option>
+														<?php } ?>
+													</select>
+													<div class="sys_msg" id="payment_method_msg"></div>
+												</div>
+											</div>
+										</form>
+									</div>
+									<div class="modal-footer border-0">
+										<button type="button" class="btn btn-secondary light" data-dismiss="modal">
+											<?= $this->lang->line('btn_cancel') ?>
+										</button>
+										<button type="button" class="btn btn-primary" id="btn_add_payment">
+											<?= $this->lang->line('btn_save') ?>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<?php } ?>
+					</div>
+					<div class="tab-pane fade" id="tab_items" role="tabpanel">
+						<div class="table-responsive">
+							<table class="table table-responsive-md mb-0">
+								<thead>
+									<tr>
+										<th><strong>#</strong></th>
+										<th><strong><?= $this->lang->line('hd_product') ?></strong></th>
+										<th><strong><?= $this->lang->line('hd_unit_price_short') ?></strong></th>
+										<th><strong><?= $this->lang->line('hd_discount_short') ?></strong></th>
+										<th><strong><?= $this->lang->line('hd_qty') ?></strong></th>
+										<th class="text-right"><strong><?= $this->lang->line('hd_subtotal') ?></strong></th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php $i = 0; foreach($products as $p){ $price = $p->price - $p->discount; $i++; ?>
+									<tr>
+										<td><?= $i ?></td>
+										<td><?= "[".$p->product->code."] ".$p->product->description ?></td>
+										<td><?= $sale->currency." ".number_format($p->price, 2) ?></td>
+										<td>
+											<?php if ($p->discount) echo $sale->currency." ".number_format($p->discount, 2);
+											else echo "-" ?>
+										</td>
+										<td><?= number_format($p->qty) ?></td>
+										<td class="text-right"><?= $sale->currency." ".number_format($price * $p->qty, 2) ?></td>
+									</tr>
+									<?php } ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<?php if (!$voucher){ ?>
+<div class="modal fade md_voucher" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header border-0 pb-0">
+				<h5 class="modal-title"><?= $this->lang->line('title_issuance_receipt') ?></h5>
+				<button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+			</div>
+			<div class="modal-body">
+				<?php if ($sale->balance){ ?>
+				<p class="text-danger mb-0"><?= $this->lang->line('txt_pending_payment').": ".$sale->currency." ".number_format($sale->balance, 2) ?></p>
+				<?php }else{ ?>
+				<form action="#" id="form_make_voucher">
+					<input type="hidden" name="sale_id" value="<?= $sale->id ?>">
+					<div class="form-row">
+						<div class="form-group col-md-12">
+							<label><?= $this->lang->line('label_voucher_type') ?></label>
+							<select class="form-control" id="voucher_type" name="voucher_type_id">
+								<?php foreach($voucher_types as $item){ ?>
+								<option value="<?= $item->id ?>"><?= $item->description ?></option>
+								<?php } ?>
+							</select>
+							<div class="sys_msg" id="vou_doc_type_msg"></div>
+						</div>
+					</div>
+					<div class="form-row" id="client_info">
+						<div class="form-group col-md-12">
+							<label><?= $this->lang->line('label_document') ?></label>
+							<input type="text" class="form-control bg-light" value="<?= $doc_val ?>" readonly>
+						</div>
+						<div class="form-group col-md-12">
+							<label><?= $this->lang->line('label_client') ?></label>
+							<input type="text" class="form-control bg-light" value="<?= $client->name ?>" readonly>
+						</div>
+					</div>
+					<div class="form-row d-none" id="company_info">
+						<input type="hidden" id="company_doc_type" name="company[doc_type_id]" value="<?= $company->doc_type_id ?>" readonly>
+						<div class="form-group col-md-12">
+							<label><?= $this->lang->line('label_ruc') ?></label>
+							<div class="input-group">
+								<input type="text" class="form-control" id="company_doc_number" name="company[doc_number]" value="<?= $company->ruc ?>">
+								<div class="input-group-append">
+									<button class="btn btn-primary border-0" type="button" id="btn_search_company">
+										<i class="fas fa-search"></i>
+									</button>
+								</div>
+							</div>
+							<div class="sys_msg" id="vou_com_ruc_msg"></div>
+						</div>
+						<div class="form-group col-md-12">
+							<label><?= $this->lang->line('label_company') ?></label>
+							<input type="text" class="form-control bg-light" id="company_name" name="company[name]" value="<?= $company->name ?>" readonly>
+							<div class="sys_msg" id="vou_com_name_msg"></div>
+						</div>
+					</div>
+				</form>
+				<?php } ?>
+			</div>
+			<div class="modal-footer border-0 pt-0">
+				<button type="button" class="btn tp-btn btn-secondary" data-dismiss="modal">
+					<?= $this->lang->line('btn_close') ?>
+				</button>
+				<?php if (!$sale->balance){ ?>
+				<button type="button" class="btn btn-primary" id="btn_make_voucher">
+					<?= $this->lang->line('btn_emit') ?>
+				</button>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+</div>
+<?php } ?>
+<input type="hidden" id="warning_apa" value="<?= $this->lang->line('warning_apa') ?>">
+<input type="hidden" id="warning_dpa" value="<?= $this->lang->line('warning_dpa') ?>">
+<input type="hidden" id="warning_csa" value="<?= $this->lang->line('warning_csa') ?>">
+<input type="hidden" id="warning_mvo" value="<?= $this->lang->line('warning_mvo') ?>">
+<input type="hidden" id="warning_mti" value="<?= $this->lang->line('warning_mti') ?>">

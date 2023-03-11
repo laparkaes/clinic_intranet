@@ -1,0 +1,276 @@
+<div class="col-md-12">
+	<div class="row page-titles mx-0">
+		<div class="col-sm-6 p-md-0">
+			<div class="welcome-text">
+				<h4><?= $this->lang->line('products') ?></h4>
+			</div>
+		</div>
+		<div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+			<div class="btn-group">
+				<button type="button" class="btn btn-primary control_bl" id="btn_list" value="bl_list">
+					<i class="fas fa-list"></i>
+				</button>
+				<button type="button" class="btn btn-outline-primary control_bl" value="bl_filter">
+					<i class="fas fa-filter"></i>
+				</button>
+				<button type="button" class="btn btn-outline-primary control_bl" value="bl_category">
+					<i class="fas fa-sitemap"></i>
+				</button>
+				<button type="button" class="btn btn-outline-primary control_bl" value="bl_add">
+					<i class="fas fa-plus"></i>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="col-md-12">
+	<div class="card">
+		<div class="card-body">
+			<div class="row bl_content" id="bl_list">
+				<div class="col-md-2">
+					<div class="mb-3" id="product_list_length_new"></div>
+				</div>
+				<div class="col-md-6"></div>
+				<div class="col-md-4">
+					<div class="mb-3" id="product_list_filter_new"></div>
+				</div>
+				<div class="col-md-12">
+					<div class="table-responsive">
+						<table id="product_list" class="table display">
+							<thead>
+								<tr>
+									<th class="pt-0 pl-0"><?= $this->lang->line('th_image') ?></th>
+									<th class="pt-0"><?= $this->lang->line('th_category') ?></th>
+									<th class="pt-0"><?= $this->lang->line('th_product') ?></th>
+									<th class="pt-0"><?= $this->lang->line('th_price') ?></th>
+									<th class="pt-0"><?= $this->lang->line('th_stock') ?></th>
+									<th class="pt-0 pr-0"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php $color_arr = array("success", "info", "warning", "danger");
+								$no_img_path = "uploaded/products/no_img.png";
+								foreach($products as $item){ ?>
+								<tr id="row_<?= $item->id ?>">
+									<td class="pl-0 pr_image">
+									<?php if ($item->image){
+										$prod_img_path = "uploaded/products/".$item->id."/".$item->image;
+										if (file_exists($prod_img_path)) $img_path = $prod_img_path;
+										else $img_path = $no_img_path;
+									}else $img_path = $no_img_path; ?>
+										<div class="div_thumb">
+											<img src="<?= base_url().$img_path ?>" class="img_thumb" />
+										</div>
+									</td>
+									<td class="pr_category"><?= $categories_arr[$item->category_id] ?></td>
+									<td class="pr_description">
+										<span class="badge light badge-<?= $color_arr[$item->type_id-1] ?> mr-1"><?= $prod_types_arr[$item->type_id]->description ?></span><span class="badge light badge-secondary"><?= $item->code ?></span><br/>
+										<?= $item->description ?>
+									</td>
+									<td class="text-nowrap pr_price"><?= $currencies_arr[$item->currency_id]->description." ".number_format($item->price, 2) ?></td>
+									<td class="text-nowrap pr_stock"><?php if ($item->stock) echo number_format($item->stock); else echo "-"; ?></td>
+									<td class="text-right pr-0">
+										<a href="<?= base_url() ?>product/detail/<?= $item->id ?>">
+											<button type="button" class="btn light btn-primary border-0">
+												<i class="fas fa-search"></i>
+											</button>
+										</a>
+									</td>
+								</tr>
+								<?php } ?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="row bl_content d-none" id="bl_filter">
+				<div class="col-md-12">
+					Filter Block
+				</div>
+			</div>
+			<div class="row bl_content d-none" id="bl_add">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="text-center" style="max-width: 100%;">
+								<img src="uploaded/products/no_img.png" id="img_preview" style="max-width: 100%;">
+							</div>
+						</div>
+						<div class="col-md-8">
+							<form action="#" class="form-row" id="form_add_product">
+								<div class="form-group col-md-6">
+									<label><?= $this->lang->line('p_type') ?></label>
+									<select class="form-control" name="type_id">
+										<?php foreach($prod_types as $item){ ?>
+										<option value="<?= $item->id ?>"><?= $item->description ?></option>
+										<?php } ?>
+									</select>
+									<div class="sys_msg" id="ap_type_msg"></div>
+								</div>
+								<div class="form-group col-md-6">
+									<label><?= $this->lang->line('p_code') ?></label>
+									<input type="text" class="form-control" name="code">
+									<div class="sys_msg" id="ap_code_msg"></div>
+								</div>
+								<div class="form-group col-md-6">
+									<label><?= $this->lang->line('p_image') ?> <small>(<?= $this->lang->line('p_optional') ?>)</small></label>
+									<input type="file" class="form-control" id="ap_image" name="image" accept="image/*">
+									<div class="sys_msg" id="ap_image_msg"></div>
+								</div>
+								<div class="form-group col-md-6">
+									<label><?= $this->lang->line('p_price') ?></label>
+									<div class="input-group">
+										<select class="form-control w-10" name="currency_id" style="max-width: 70px;">
+											<?php foreach($currencies as $item){ ?>
+											<option value="<?= $item->id ?>"><?= $item->description ?></option>
+											<?php } ?>
+										</select>
+										<input type="text" class="form-control" name="price">
+									</div>
+									<div class="sys_msg" id="ap_price_msg"></div>
+								</div>
+								<div class="form-group col-md-12">
+									<label><?= $this->lang->line('p_category') ?></label>
+									<select class="form-control sl_category" name="category_id">
+										<option value="">-</option>
+										<?php foreach($categories as $item){ ?>
+										<option value="<?= $item->id ?>"><?= $item->name ?></option>
+										<?php } ?>
+									</select>
+									<div class="sys_msg" id="ap_category_msg"></div>
+								</div>
+								<div class="form-group col-md-12">
+									<label><?= $this->lang->line('p_name') ?></label>
+									<input type="text" class="form-control" name="description">
+									<div class="sys_msg" id="ap_description_msg"></div>
+								</div>
+								<div class="form-group col-md-12 pt-3 mb-0">
+									<button type="submit" class="btn btn-primary">
+										<?= $this->lang->line('btn_register') ?>
+									</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row bl_content d-none" id="bl_category">
+				<div class="col-md-12">
+					<div class="default-tab">
+						<ul class="nav nav-tabs mb-4" role="tablist">
+							<li class="nav-item">
+								<a class="nav-link active" data-toggle="tab" href="#list_ct">
+									<?= $this->lang->line('c_nav_category_list') ?>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#move_product_ct">
+									<?= $this->lang->line('c_nav_move') ?>
+								</a>
+							</li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane fade show active" id="list_ct">
+								<table class="table table-small mb-0 w-100">
+									<thead>
+										<tr>
+											<th style="width:50px;"><strong>#</strong></th>
+											<th><strong><?= $this->lang->line('th_category') ?></strong></th>
+											<th><strong><?= $this->lang->line('th_products') ?></strong></th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr class="bg-light">
+											<form action="#" id="form_add_category">
+												<td colspan="3">
+													<input type="text" class="form-control" name="name" placeholder="<?= $this->lang->line('txt_category_name') ?>">
+												</td>
+												<td class="text-right">
+													<button class="btn btn-primary sharp" type="submit">
+														<i class="far fa-plus"></i>
+													</button>
+												</td>
+											</form>
+										</tr>
+										<?php $i = 1; foreach($categories as $c){ ?>
+										<tr>
+											<td><?= number_format($i) ?></td>
+											<td>
+												<div id="ct_name_<?= $c->id ?>" class="ct_name"><?= $c->name ?></div>
+												<form action="#" id="form_update_category_<?= $c->id ?>" class="form_update_category d-none">
+													<input type="hidden" name="id" value="<?= $c->id ?>">
+													<div class="input-group">
+														<input type="text" class="form-control" name="name" value="<?= $c->name ?>">
+														<div class="input-group-append">
+															<button class="btn btn-primary border-0" type="submit">
+																<i class="far fa-check"></i>
+															</button>
+															<button class="btn btn-danger border-0 btn_cancel_edit_ct" type="button">
+																<i class="far fa-times"></i>
+															</button>
+														</div>
+													</div>
+												</form>
+											</td>
+											<td><?= number_format($c->prod_qty) ?></td>
+											<td class="text-right">
+												<div class="dropdown">
+													<button type="button" class="btn btn-primary light sharp border-0" data-toggle="dropdown">
+														<i class="far fa-ellipsis-h"></i>
+													</button>
+													<div class="dropdown-menu">
+														<button class="dropdown-item text-info btn_edit_ct" value="<?= $c->id ?>">
+															<i class="far fa-edit fa-fw"></i> <?= $this->lang->line('op_edit') ?>
+														</button>
+														<button class="dropdown-item text-danger btn_delete_ct" value="<?= $c->id ?>">
+															<i class="far fa-trash fa-fw"></i> <?= $this->lang->line('op_delete') ?>
+														</button>
+													</div>
+												</div>
+											</td>
+										</tr>
+										<?php $i++;} ?>
+									</tbody>
+								</table>
+							</div>
+							<div class="tab-pane fade" id="move_product_ct">
+								<form action="#" id="form_move_product">
+									<div class="form-row">
+										<div class="form-group col-md-5">
+											<select class="form-control sl_category" name="mp_id_from">
+												<option value="">-</option>
+												<?php foreach($categories as $item){ ?>
+												<option value="<?= $item->id ?>"><?= $item->name ?></option>
+												<?php } ?>
+											</select>
+											<div class="sys_msg" id="mp_id_from_msg"></div>
+										</div>
+										<div class="form-group col-md-2">
+											<div class="btn w-100 mx-auto text-primary"><i class="fas fa-arrow-right"></i></div>
+										</div>
+										<div class="form-group col-md-5">
+											<select class="form-control sl_category" name="mp_id_to">
+												<option value="">-</option>
+												<?php foreach($categories as $item){ ?>
+												<option value="<?= $item->id ?>"><?= $item->name ?></option>
+												<?php } ?>
+											</select>
+											<div class="sys_msg" id="mp_id_to_msg"></div>
+										</div>
+									</div>
+									<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_confirm') ?></button>
+									<div class="sys_msg" id="mp_result_msg"></div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<input type="hidden" id="warning_ac" value="<?= $this->lang->line('warning_ac') ?>">
+<input type="hidden" id="warning_uc" value="<?= $this->lang->line('warning_uc') ?>">
+<input type="hidden" id="warning_dc" value="<?= $this->lang->line('warning_dc') ?>">
+<input type="hidden" id="warning_mc" value="<?= $this->lang->line('warning_mc') ?>">

@@ -1,0 +1,48 @@
+textarea{resize: none;} 
+.sys_msg{font-size: 80%;} 
+
+.dtp-picker-month{display: none;} .dtp table.dtp-picker-days tr > th{height: 1rem;} .auth-form .btn{height: initial;} .swal2-title{text-align: left;} .swal2-html-container{text-align: left;} .swal2-actions{-webkit-box-orient: horizontal !important; -webkit-box-direction: reverse !important; -ms-flex-direction: row-reverse !important; flex-direction: row-reverse !important; align-items: end; justify-content: end; margin: 1.25em 1.12rem 0;} .swal2-styled.swal2-confirm{padding: 0.938rem 1.5rem; border: 1px solid transparent; border-radius: 0.75rem; font-weight: 500; font-size: 1rem; background-color: #1a8d5f; color: #fff;} .swal2-styled.swal2-confirm:hover{background-color: #0e4c33; border-color: #0e4c33;} .swal2-styled.swal2-cancel{padding: 0.938rem 1.5rem; border: 1px solid transparent; border-radius: 0.75rem; font-weight: 500; font-size: 1rem; background-color: #fff; color: #ac4cbc;} .swal2-styled.swal2-cancel:hover{background-color: #AC4CBC; border-color: #AC4CBC; color: #fff;} .ui-front{z-index: 1100;} .btn-side-menu {height: 3.2rem; width: 3.2rem; line-height:3rem; text-align:center; font-size:25px; border-radius:5px; z-index: 1; background: #3A82EF; cursor: pointer; position: fixed; right: -5px; top: 90%;} .brand-logo{display: flex; width: 100%; height: 5.5rem; justify-content: flex-start; align-items: center; font-size: 1.125rem; color: #fff; text-decoration: none; padding-left: 50px; padding-right: 50px; font-weight: 700;} .brand-title{margin-left: 20px; max-width: 120px; margin-top: 5px;} .widget-stat .media{height: 100%;} .input-group-text{color: #6e6e6e;} .fc-event, .external-event{margin: 0;} .fc-timegrid-event .fc-event-main{padding: 0;} .bg-light{background-color: #f2f4fa !important;} 
+
+.div_thumb{width: 80px; height: 80px; overflow: hidden;}
+.img_thumb{height: 80px;}
+
+.table-sm th, .table-sm td{padding: 0.5rem;} 
+.table-xs th, .table-xs td{padding: 0.2rem;} 
+
+.brand-logo .logo-abbr{max-width: 50px;}
+.bg-normal{background-color: #fbfbfb;}
+.c_pointer{cursor: pointer;}
+.input-normal-o{
+	.form-control{
+		border-color:#d7dae3;
+		
+	}	
+	.input-group-text{
+		background-color:transparent;
+		border-color:#d7dae3;
+		color:#d7dae3;
+	}
+}
+
+.pointer{cursor: pointer;} .pointer:hover{opacity: 70%;}
+
+#tb_sales_select.table #pr_search{max-width: 250px;}
+#tb_sales_select.table #pr_qty{max-width: 80px;}
+
+.ap_content_list_short{max-height: 150px; overflow: auto;}
+.ap_content_list{max-height: 250px; overflow: auto;}
+.ap_content_list_high{max-height:450px; overflow: auto;}
+.diag_impression:hover .ic_delete_diag_impres{display: initial !important;}
+
+.no_border_tb td{border:none;}
+
+.input-normal-o .form-control{
+  border-color: #d7dae3;
+}
+
+.input-normal-o .input-group-text{
+  background-color: transparent;
+  border-color: #d7dae3;
+}
+
+summary:hover{color: #1a172f;}

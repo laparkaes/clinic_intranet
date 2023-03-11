@@ -1,0 +1,112 @@
+<?php
+
+class General_model extends CI_Model{
+
+    function id($tablename, $id){
+		$this->db->where("id", $id);
+		$query = $this->db->get($tablename);
+		$result = $query->result();
+		if ($result) return $result[0]; else return null;
+	}
+	
+    function ids($tablename, $ids, $order_by = "id", $order = "asc"){
+		if ($ids){
+			$this->db->where_in("id", $ids);
+			$query = $this->db->get($tablename);
+			$result = $query->result();
+			return $result;
+		}else return array();
+	}
+	
+    function filter($tablename, $filter, $order_by = "", $order = "", $limit = "", $offset = ""){
+		if ($filter) $this->db->where($filter);
+		if ($order_by) $this->db->order_by($order_by, $order);
+		$query = $this->db->get($tablename, $limit, $offset);
+		$result = $query->result();
+		return $result;
+	}
+	
+	function sum($tablename, $col, $filter = null){
+		$this->db->select_sum($col);
+		if ($filter) $this->db->where($filter);
+		$query = $this->db->get($tablename);
+		$result = $query->result();
+		return $result[0];
+	}
+	
+	function find($tablename, $field1 = null, $field2 = null, $filter = null){
+		if ($field1) foreach($filter as $f) $this->db->like($field1, $f);
+		if ($field2 and $filter) $this->db->or_where_in($field2, $filter);
+		//$this->db->order_by("code", "asc");
+		$query = $this->db->get($tablename);
+		$result = $query->result();
+		return $result;
+	}
+	
+	function find_count($tablename, $field1, $field2 = "", $filter = array()){
+		foreach($filter as $f) $this->db->like($field1, $f);
+		$this->db->or_where_in($field2, $filter);
+		$query = $this->db->get($tablename);
+		return $query->num_rows();
+	}
+	
+	function all($tablename, $order_by = "id", $order = "desc", $limit = "", $offset = ""){
+		$this->db->order_by($order_by, $order);
+		$query = $this->db->get($tablename, $limit, $offset);
+		$result = $query->result();
+		return $result;
+	}
+	
+	function only($tablename, $field, $where){
+		$this->db->select($field);
+		$this->db->where($where);
+		$this->db->group_by($field);
+		$query = $this->db->get($tablename);
+		$result = $query->result();
+		return $result;
+	}
+	
+	function counter($tablename, $filter, $group_by = null){
+		if ($filter) $this->db->where($filter);
+		if ($group_by) $this->db->group_by($group_by);
+		$query = $this->db->get($tablename);
+		return $query->num_rows();
+	}
+	
+	function insert($tablename, $data){
+		$this->db->insert($tablename, $data);
+		return $this->db->insert_id();
+	}
+	
+	function insert_multi($tablename, $data){
+		return $this->db->insert_batch($tablename, $data);
+	}
+	
+	function update($tablename, $id, $data){ 
+		$this->db->where('id', $id);
+		return $this->db->update($tablename, $data);
+	}
+	
+	function update_f($tablename, $filter, $data){ 
+		$this->db->where($filter);
+		return $this->db->update($tablename, $data);
+	}
+	
+	function delete($tablename, $filter){
+		$this->db->where($filter);
+		return $this->db->delete($tablename);
+	}
+	
+	function delete_multi($tablename, $field, $values){
+		$this->db->where_in($field, $values);
+		return $this->db->delete($tablename);
+	}
+	
+	function structure($tablename){
+		$res = new stdClass();
+		$aux = $this->db->list_fields($tablename);
+		foreach($aux as $field) $res->$field = null;
+		return $res;
+	}
+}
+?>
