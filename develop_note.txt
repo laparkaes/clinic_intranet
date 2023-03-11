@@ -1,0 +1,4 @@
+2023 0311 - appointment medical 부분 tipo de diagnostico 추가
+diagnostico presuntivo
+diagnostico confirmado
+diagnostico repetitivo
