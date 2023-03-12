@@ -158,4 +158,7 @@ $(document).ready(function() {
 	
 	if ($("#bl_schedule").length > 0) load_today_schedule();
 	$(".content-body").css("min-height", "0");
+	
+	$('.schedule_block').on('click',function(){ $('.schedule_box').addClass('active'); });
+	$('.schedule_box-close').on('click',function(){ $('.schedule_box').removeClass('active'); });
 });

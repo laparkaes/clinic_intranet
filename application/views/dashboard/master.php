@@ -46,7 +46,6 @@
 		</div>
 	</div>
 </div>
-dsfafasf
 <div class="col-12">
 	<h4 class="mb-3"><?= $this->lang->line('title_monthly_income') ?></h4>
 </div>
