@@ -79,12 +79,6 @@
         </div>
 		<div class="deznav">
             <div class="deznav-scroll">
-				<hr>
-				<div class="px-3" id="bl_schedule">
-					<h5><?= $this->lang->line('nav_today') ?></h5>
-					<div id="lt_schedule"></div>
-				</div>
-				<hr>
 				<ul class="metismenu pt-0" id="menu">
 					<li>
 						<a class="ai-icon" href="<?= base_url() ?>dashboard" aria-expanded="false">
@@ -100,7 +94,7 @@
 					</li>
 					<li>
 						<a class="ai-icon" href="<?= base_url() ?>patient" aria-expanded="false">
-							<i class="fas fa-users-medical fa-fw mr-2"></i>
+							<i class="fas fa-user-injured fa-fw mr-2"></i>
 							<span class="nav-text"><?= $this->lang->line('nav_patients') ?></span>
 						</a>
 					</li>
@@ -177,54 +171,35 @@
 						<div class="card-body contacts_body p-0 dz-scroll" id="DZ_W_Contacts_Body1">
 							<ul class="contacts" id="sch_list_appointment">
 								<li class="name-first-letter">Hoy</li>
+								<?php for($i=0; $i<40; $i++){ ?>
 								<li>
 									<div class="d-flex bd-highlight">
-										<div class="user_info">
-											<span>P - Fulanito Park</span>
-											<span>M - Nasthya Trujillo</span>
-											<p>Traumotologia</p>
+										<div class="user_info text-black fs-13">
+											<div><i class="fas fa-user-injured fa-fw mr-1"></i>Fulanito Park <?= $i ?></div>
+											<div><i class="fas fa-user-md fa-fw mr-1"></i>Nasthya Trujillo <?= $i ?></div>
+											<div class="text-muted">Traumotologia</div>
 										</div>
 										<div class="ml-auto">
-											<a href="#" class="btn btn-primary btn-xs sharp mr-1"><i class="fa fa-search"></i></a>
+											<a href="#" class="btn btn-info btn-xs sharp mr-1"><i class="fa fa-search"></i></a>
 										</div>
 									</div>
 								</li>
+								<?php } ?>
+								<li class="name-first-letter">Maniana</li>
+								<?php for($i=0; $i<40; $i++){ ?>
 								<li>
 									<div class="d-flex bd-highlight">
-										<div class="user_info">
-											<span>Youtube, a video-sharing website..</span>
-											<p>10 Aug 2020</p>
+										<div class="user_info text-black fs-13">
+											<div><i class="fas fa-user-injured fa-fw mr-1"></i>Fulanito Park <?= $i ?></div>
+											<div><i class="fas fa-user-md fa-fw mr-1"></i>Nasthya Trujillo <?= $i ?></div>
+											<div class="text-muted">Ginecologia</div>
 										</div>
 										<div class="ml-auto">
-											<a href="#" class="btn btn-primary btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-											<a href="#" class="btn btn-danger btn-xs sharp"><i class="fa fa-trash"></i></a>
+											<a href="#" class="btn btn-info btn-xs sharp mr-1"><i class="fa fa-search"></i></a>
 										</div>
 									</div>
 								</li>
-								<li>
-									<div class="d-flex bd-highlight">
-										<div class="user_info">
-											<span>john just buy your product..</span>
-											<p>10 Aug 2020</p>
-										</div>
-										<div class="ml-auto">
-											<a href="#" class="btn btn-primary btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-											<a href="#" class="btn btn-danger btn-xs sharp"><i class="fa fa-trash"></i></a>
-										</div>
-									</div>
-								</li>
-								<li>
-									<div class="d-flex bd-highlight">
-										<div class="user_info">
-											<span>Athan Jacoby</span>
-											<p>10 Aug 2020</p>
-										</div>
-										<div class="ml-auto">
-											<a href="#" class="btn btn-primary btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-											<a href="#" class="btn btn-danger btn-xs sharp"><i class="fa fa-trash"></i></a>
-										</div>
-									</div>
-								</li>
+								<?php } ?>
 							</ul>
 						</div>
 					</div>

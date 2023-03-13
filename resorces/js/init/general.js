@@ -41,11 +41,13 @@ function set_autocomplete(dom_id, data_dom_id){
 	}));
 }
 
-function load_today_schedule(){
+function load_schedule(){
 	$.ajax({
-		url: $("#base_url").val() + "appointment/load_today_schedule",
+		url: $("#base_url").val() + "Ajax_f/load_schedule",
 		type: "POST",
 		success:function(res){
+			alert(res);
+			/*
 			if (res.status == true){
 				$("#lt_schedule").html("");
 				if (res.datas.length > 0){
@@ -54,6 +56,7 @@ function load_today_schedule(){
 					});
 				}
 			}
+			*/
 		}
 	});
 }
@@ -156,9 +159,9 @@ $(document).ready(function() {
 		});
 	}
 	
-	if ($("#bl_schedule").length > 0) load_today_schedule();
 	$(".content-body").css("min-height", "0");
 	
+	load_schedule();
 	$('.schedule_block').on('click',function(){ $('.schedule_box').addClass('active'); });
 	$('.schedule_box-close').on('click',function(){ $('.schedule_box').removeClass('active'); });
 });

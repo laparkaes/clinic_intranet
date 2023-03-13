@@ -1038,38 +1038,6 @@ class Appointment extends CI_Controller {
 		echo json_encode(array("status" => $status, "msg" => $msg, "medicines" => $medicines));
 	}
 	
-	public function load_today_schedule(){
-		$list = array();
-		
-		$today = date("Y-m-d");
-		$filter = array(
-			"schedule_from >=" => $today." 00:00:00",
-			"schedule_from <=" => $today." 23:59:59"
-		);
-		if (!strcmp($this->session->userdata('role')->name, "doctor")) $filter["doctor_id"] = $this->session->userdata('aid');
-		
-		$appointments = $this->appointment->filter($filter, "", "", "schedule_from", $order = "asc");
-		foreach($appointments as $item){
-			$aux = array(
-				"id" => $item->id,
-				"patient" => $this->general->id("person", $item->patient_id)->name,
-				"schedule" => date("h:iA", strtotime($item->schedule_from))
-			);
-			
-			$is_valid = true;
-			switch($this->status->id($item->status_id)->code){
-				case "finished": $aux["text_color"] = "text-success"; break;
-				case "canceled": $is_valid = false; break;
-				default: $aux["text_color"] = "";
-			}
-			
-			if ($is_valid) array_push($list, $aux);
-		}
-		
-		header('Content-Type: application/json');
-		echo json_encode(array("status" => true, "datas" => $list));
-	}
-
 	public function report($id){
 		$appointment = $this->appointment->id($id);
 		if (!$appointment) redirect("/appointment");
