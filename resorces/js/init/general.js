@@ -46,17 +46,13 @@ function load_schedule(){
 		url: $("#base_url").val() + "Ajax_f/load_schedule",
 		type: "POST",
 		success:function(res){
+			var app_baseurl = $("#base_url") + "appointment/detail/";
 			console.log(res);
-			/*
-			res.appointments.forEach((e) => {
-				//$("#aa_schedule_list").append('<li class="list-group-item d-flex justify-content-between py-2">' + e + '</li>');
-				console.log(e);
-			});
-			*/
+			
 			$.each(res.appointments, function(key, day) {
-				console.log(day.title);
+				$("#sch_list_appointment").append('<li class="name-first-letter">' + day.title + '</li>');
 				$.each(day.data, function(key, item) {
-					console.log(item);
+					$("#sch_list_appointment").append('<li><div class="d-flex bd-highlight"><div class="user_info text-black fs-13"><div><i class="fas fa-user-injured fa-fw mr-1"></i>' + item.patient + '</div><div><i class="fas fa-user-md fa-fw mr-1"></i>' + item.doctor + '</div><div class="text-muted">' + item.schedule + ', ' + item.speciality + '</div></div><div class="ml-auto"><a href="' + app_baseurl + item.id + '" class="btn btn-' + item.color + ' btn-xs sharp mr-1"><i class="fa fa-search"></i></a></div></div></li>');
 				});
 			});
 			

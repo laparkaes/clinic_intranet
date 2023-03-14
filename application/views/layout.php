@@ -169,38 +169,7 @@
 				<div class="tab-pane fade active show" id="sch_appointment">
 					<div class="card mb-sm-3 mb-md-0 contacts_card">
 						<div class="card-body contacts_body p-0 dz-scroll" id="DZ_W_Contacts_Body1">
-							<ul class="contacts" id="sch_list_appointment">
-								<li class="name-first-letter">Hoy</li>
-								<?php for($i=0; $i<40; $i++){ ?>
-								<li>
-									<div class="d-flex bd-highlight">
-										<div class="user_info text-black fs-13">
-											<div><i class="fas fa-user-injured fa-fw mr-1"></i>Fulanito Park <?= $i ?></div>
-											<div><i class="fas fa-user-md fa-fw mr-1"></i>Nasthya Trujillo <?= $i ?></div>
-											<div class="text-muted">11:15 AM, Traumotologia</div>
-										</div>
-										<div class="ml-auto">
-											<a href="#" class="btn btn-info btn-xs sharp mr-1"><i class="fa fa-search"></i></a>
-										</div>
-									</div>
-								</li>
-								<?php } ?>
-								<li class="name-first-letter">Maniana</li>
-								<?php for($i=0; $i<40; $i++){ ?>
-								<li>
-									<div class="d-flex bd-highlight">
-										<div class="user_info text-black fs-13">
-											<div><i class="fas fa-user-injured fa-fw mr-1"></i>Fulanito Park <?= $i ?></div>
-											<div><i class="fas fa-user-md fa-fw mr-1"></i>Nasthya Trujillo <?= $i ?></div>
-											<div class="text-muted">Ginecologia</div>
-										</div>
-										<div class="ml-auto">
-											<a href="#" class="btn btn-info btn-xs sharp mr-1"><i class="fa fa-search"></i></a>
-										</div>
-									</div>
-								</li>
-								<?php } ?>
-							</ul>
+							<ul class="contacts" id="sch_list_appointment"></ul>
 						</div>
 					</div>
 				</div>
