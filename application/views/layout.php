@@ -168,6 +168,10 @@
 			<div class="tab-content">
 				<div class="tab-pane fade active show" id="sch_appointment">
 					<div class="card mb-sm-3 mb-md-0 contacts_card">
+						<div class="card-header chat-list-header text-center">
+							<h6 class="mb-0">Chat List</h6>
+							<p class="mb-0">Show All</p>
+						</div>
 						<div class="card-body contacts_body p-0 dz-scroll" id="DZ_W_Contacts_Body1">
 							<ul class="contacts" id="sch_list_appointment"></ul>
 						</div>
@@ -176,46 +180,7 @@
 				<div class="tab-pane fade" id="sch_surgery">
 					<div class="card mb-sm-3 mb-md-0 contacts_card">
 						<div class="card-body contacts_body p-0 dz-scroll" id="DZ_W_Contacts_Body1">
-							<ul class="contacts">
-								<li class="name-first-letter">SEVER STATUS</li>
-								<li>
-									<div class="d-flex bd-highlight">
-										<div class="user_info">
-											<span>David Nester Birthday</span>
-											<p class="text-primary">Today</p>
-										</div>
-									</div>
-								</li>
-								<li class="name-first-letter">SOCIAL</li>
-								<li>
-									<div class="d-flex bd-highlight">
-										<div class="img_cont success">RU</div>
-										<div class="user_info">
-											<span>Perfection Simplified</span>
-											<p>Jame Smith commented on your status</p>
-										</div>
-									</div>
-								</li>
-								<li class="name-first-letter">SEVER STATUS</li>
-								<li>
-									<div class="d-flex bd-highlight">
-										<div class="img_cont primary">AU</div>
-										<div class="user_info">
-											<span>AharlieKane</span>
-											<p>Sami is online</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<div class="d-flex bd-highlight">
-										<div class="img_cont info">MO</div>
-										<div class="user_info">
-											<span>Athan Jacoby</span>
-											<p>Nargis left 30 mins ago</p>
-										</div>
-									</div>
-								</li>
-							</ul>
+							<ul class="contacts" id="sch_list_surgery"></ul>
 						</div>
 					</div>
 				</div>

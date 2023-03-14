@@ -137,7 +137,20 @@ class Ajax_f extends CI_Controller {
 			array_push($appointments_arr[date("Y-m-d", strtotime($item->schedule_from))]["data"], $data);
 		}
 		
-		//$surgeries = $this->general->filter("surgery", $filter, "schedule_from", "asc");
+		/*
+		$surgeries = $this->general->filter("surgery", $filter, "schedule_from", "asc");
+		foreach($surgeries as $item){
+			$data = array(
+				"id" => $item->id,
+				"color" => $this->general->id("status", $item->status_id)->color,
+				"schedule" => date("h:i A", strtotime($item->schedule_from)),
+				"doctor" => $this->general->id("person", $item->doctor_id)->name,
+				"patient" => $this->general->id("person", $item->patient_id)->name,
+				"speciality" => $this->general->id("specialty", $item->speciality_id)->name
+			);
+			array_push($surgeries_arr[date("Y-m-d", strtotime($item->schedule_from))]["data"], $data);
+		}
+		*/
 		$surgeries = array();
 		
 		header('Content-Type: application/json');
