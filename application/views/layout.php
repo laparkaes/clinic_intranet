@@ -105,6 +105,12 @@
 						</a>
 					</li>
 					<li>
+						<a class="ai-icon" href="<?= base_url() ?>surgery" aria-expanded="false">
+							<i class="fas fa-file-medical-alt fa-fw mr-2"></i>
+							<span class="nav-text"><?= $this->lang->line('nav_surgeries') ?></span>
+						</a>
+					</li>
+					<li>
 						<a class="ai-icon" href="<?= base_url() ?>product" aria-expanded="false">
 							<i class="fas fa-box fa-fw mr-2"></i>
 							<span class="nav-text"><?= $this->lang->line('nav_products') ?></span>
@@ -159,18 +165,17 @@
 		<div class="custom-tab-1">
 			<ul class="nav nav-tabs d-flex justify-content-start">
 				<li class="nav-item">
-					<a class="nav-link active" data-toggle="tab" href="#sch_appointment">Consultas</a>
+					<a class="nav-link active" data-toggle="tab" href="#sch_appointment"><?= $this->lang->line('txt_appointments') ?></a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#sch_surgery">Cirugias</a>
+					<a class="nav-link" data-toggle="tab" href="#sch_surgery"><?= $this->lang->line('txt_surgeries') ?></a>
 				</li>
 			</ul>
 			<div class="tab-content">
 				<div class="tab-pane fade active show" id="sch_appointment">
 					<div class="card mb-sm-3 mb-md-0 contacts_card">
 						<div class="card-header chat-list-header text-center">
-							<h6 class="mb-0">Chat List</h6>
-							<p class="mb-0">Show All</p>
+							<h6 class="mb-0"><?= $this->lang->line('txt_appointments_list') ?></h6>
 						</div>
 						<div class="card-body contacts_body p-0 dz-scroll" id="DZ_W_Contacts_Body1">
 							<ul class="contacts" id="sch_list_appointment"></ul>
@@ -179,6 +184,9 @@
 				</div>
 				<div class="tab-pane fade" id="sch_surgery">
 					<div class="card mb-sm-3 mb-md-0 contacts_card">
+						<div class="card-header chat-list-header text-center">
+							<h6 class="mb-0"><?= $this->lang->line('txt_surgeries_list') ?></h6>
+						</div>
 						<div class="card-body contacts_body p-0 dz-scroll" id="DZ_W_Contacts_Body1">
 							<ul class="contacts" id="sch_list_surgery"></ul>
 						</div>

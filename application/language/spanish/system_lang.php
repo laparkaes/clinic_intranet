@@ -51,6 +51,7 @@ $lang['nav_dashboard'] = 'Tablero';
 $lang['nav_doctors'] = 'Médicos';
 $lang['nav_patients'] = 'Pacientes';
 $lang['nav_appointments'] = 'Consultas';
+$lang['nav_surgeries'] = 'Cirugías';
 $lang['nav_products'] = 'Productos';
 $lang['nav_sales'] = 'Ventas';
 $lang['nav_reports'] = 'Reportes';
@@ -69,7 +70,7 @@ $lang['frequency_W'] = 'S';
 $lang['frequency_M'] = 'M';
 $lang['frequency_Y'] = 'A';
 
-//buttons
+//button
 $lang['btn_close'] = 'Cerrar';
 $lang['btn_add'] = 'Agregar';
 $lang['btn_save'] = 'Guardar';
@@ -81,11 +82,16 @@ $lang['btn_register'] = 'Registrar';
 
 //text
 $lang['txt_detail'] = 'Detalle';
+$lang['txt_appointments'] = 'Consultas';
+$lang['txt_appointments_list'] = 'Lista de Consultas';
+$lang['txt_surgeries'] = 'Cirugías';
+$lang['txt_surgeries_list'] = 'Lista de Cirugías';
+$lang['txt_today'] = 'Hoy';
+$lang['txt_tomorrow'] = 'Mañana';
 
 //utility_lib
 $lang['error_search_dni'] = 'No hay resultado de búsqueda con DNI ingresado.';
 $lang['error_search_ruc'] = 'No hay resultado de búsqueda con RUC ingresado.';
-
 $lang['resolution_num'] = 'Resolución N°';
 $lang['hash_code'] = 'Código Hash';
 $lang['payment_method'] = 'Forma de Pago';

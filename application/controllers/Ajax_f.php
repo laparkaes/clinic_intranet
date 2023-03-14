@@ -104,15 +104,15 @@ class Ajax_f extends CI_Controller {
 		$tomorrow = date("Y-m-d", strtotime("+1 day"));
 		
 		$appointments_arr = array();
-		$appointments_arr[$today]["title"] = "Hoy, ".$today;
+		$appointments_arr[$today]["title"] = $this->lang->line('txt_today').", ".$today;
 		$appointments_arr[$today]["data"] = array();
-		$appointments_arr[$tomorrow]["title"] = "Maniana, ".$tomorrow;
+		$appointments_arr[$tomorrow]["title"] = $this->lang->line('txt_tomorrow').", ".$tomorrow;
 		$appointments_arr[$tomorrow]["data"] = array();
 		
 		$surgeries_arr = array();
-		$surgeries_arr[$today]["title"] = "Hoy, ".$today;
+		$surgeries_arr[$today]["title"] = $this->lang->line('txt_today').", ".$today;
 		$surgeries_arr[$today]["data"] = array();
-		$surgeries_arr[$tomorrow]["title"] = "Maniana, ".$tomorrow;
+		$surgeries_arr[$tomorrow]["title"] = $this->lang->line('txt_tomorrow').", ".$tomorrow;
 		$surgeries_arr[$tomorrow]["data"] = array();
 		
 		$res["appointments"] = $appointments_arr;

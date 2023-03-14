@@ -2,7 +2,7 @@
 	<div class="row page-titles mx-0">
 		<div class="col-sm-6 p-md-0">
 			<div class="welcome-text">
-				<h4><?= $this->lang->line('appointments') ?></h4>
+				<h4><?= $this->lang->line('surgeries') ?></h4>
 			</div>
 		</div>
 		<div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
@@ -25,18 +25,19 @@
 		<div class="card-body">
 			<div class="row bl_content" id="bl_list">
 				<div class="col-md-2">
-					<div class="mb-3" id="appointment_list_length_new"></div>
+					<div class="mb-3" id="surgery_list_length_new"></div>
 				</div>
 				<div class="col-md-6"></div>
 				<div class="col-md-4">
-					<div class="mb-3" id="appointment_list_filter_new"></div>
+					<div class="mb-3" id="surgery_list_filter_new"></div>
 				</div>
 				<div class="col-md-12">
 					<div class="table-responsive">
-						<table id="appointment_list" class="table display">
+						<table id="surgery_list" class="table display">
 							<thead>
 								<tr>
 									<th class="text-left pt-0 pl-0"><?= $this->lang->line('hd_schedule') ?></th>
+									<th class="pt-0"><?= $this->lang->line('hd_place') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_doctor') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_patient') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_status') ?></th>
@@ -44,7 +45,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<?php foreach($appointments as $item){ ?>
+								<?php foreach($surgeries as $item){ ?>
 								<tr>
 									<td class="text-left text-nowrap pl-0">
 										<?= date("Y-m-d<\b\\r>h:i A", strtotime($item->schedule_from)) ?>
@@ -57,7 +58,7 @@
 									<td><?= $people_arr[$item->patient_id] ?></td>
 									<td><span class="text-<?= $status_arr[$item->status_id]->color ?>"><?= $this->lang->line($status_arr[$item->status_id]->code) ?></span></td>
 									<td class="text-right pr-0">
-										<a href="<?= base_url() ?>appointment/detail/<?= $item->id ?>">
+										<a href="<?= base_url() ?>surgery/detail/<?= $item->id ?>">
 											<button type="button" class="btn btn-primary light sharp border-0">
 												<i class="fas fa-search"></i>
 											</button>
@@ -144,7 +145,7 @@
 								</div>
 							</div>
 							<div class="col-md-6 mb-3">
-								<h5><?= $this->lang->line('lb_patient') ?></h5>
+								<h5><?= $this->lang->line('title_patient') ?></h5>
 								<input type="hidden" id="aa_pt_id" name="app[patient_id]" value="">
 								<div class="form-row">
 									<div class="form-group col-md-12">
