@@ -177,7 +177,7 @@
 										<div class="user_info text-black fs-13">
 											<div><i class="fas fa-user-injured fa-fw mr-1"></i>Fulanito Park <?= $i ?></div>
 											<div><i class="fas fa-user-md fa-fw mr-1"></i>Nasthya Trujillo <?= $i ?></div>
-											<div class="text-muted">Traumotologia</div>
+											<div class="text-muted">11:15 AM, Traumotologia</div>
 										</div>
 										<div class="ml-auto">
 											<a href="#" class="btn btn-info btn-xs sharp mr-1"><i class="fa fa-search"></i></a>

@@ -46,7 +46,20 @@ function load_schedule(){
 		url: $("#base_url").val() + "Ajax_f/load_schedule",
 		type: "POST",
 		success:function(res){
-			alert(res);
+			console.log(res);
+			/*
+			res.appointments.forEach((e) => {
+				//$("#aa_schedule_list").append('<li class="list-group-item d-flex justify-content-between py-2">' + e + '</li>');
+				console.log(e);
+			});
+			*/
+			$.each(res.appointments, function(key, day) {
+				console.log(day.title);
+				$.each(day.data, function(key, item) {
+					console.log(item);
+				});
+			});
+			
 			/*
 			if (res.status == true){
 				$("#lt_schedule").html("");

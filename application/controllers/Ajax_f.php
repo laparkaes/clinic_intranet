@@ -81,6 +81,21 @@ class Ajax_f extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg, "company" => $company));
 	}
+	
+	public function set_appointment(){
+		$dates = array(date("Y-m-d"), date("Y-m-d", strtotime("+1 day")));
+		
+		$filter = array("schedule_from <=" => "2023-03-10 23:59:59");
+		$appointments = $this->general->filter("appointment", $filter, "schedule_from", "asc");
+		foreach($appointments as $item){
+			$nd = $dates[array_rand($dates)];
+			$sf = $nd." ".date("h:i:s", strtotime($item->schedule_from));
+			$st = $nd." ".date('h:i:s', strtotime('+14 minutes', strtotime($sf)));
+			$this->general->update("appointment", $item->id, array("schedule_from" => $sf, "schedule_to" => $st));
+		}
+		
+		echo "fin";
+	}
 
 	public function load_schedule(){
 		$res = array();
@@ -110,46 +125,22 @@ class Ajax_f extends CI_Controller {
 		if (!strcmp($this->session->userdata('role')->name, "doctor")) $filter["doctor_id"] = $this->session->userdata('aid');
 		
 		$appointments = $this->general->filter("appointment", $filter, "schedule_from", "asc");
+		foreach($appointments as $item){
+			$data = array(
+				"id" => $item->id,
+				"color" => $this->general->id("status", $item->status_id)->color,
+				"schedule" => date("h:i A", strtotime($item->schedule_from)),
+				"doctor" => $this->general->id("person", $item->doctor_id)->name,
+				"patient" => $this->general->id("person", $item->patient_id)->name,
+				"speciality" => $this->general->id("specialty", $item->speciality_id)->name
+			);
+			array_push($appointments_arr[date("Y-m-d", strtotime($item->schedule_from))]["data"], $data);
+		}
+		
 		//$surgeries = $this->general->filter("surgery", $filter, "schedule_from", "asc");
 		$surgeries = array();
 		
-		
-		print_r($res);
-		
-		
-		//print_r($appointments);
-		
-		/*
-		$list = array();
-		
-		$today = date("Y-m-d");
-		$filter = array(
-			"schedule_from >=" => $today." 00:00:00",
-			"schedule_from <=" => $today." 23:59:59"
-		);
-		if (!strcmp($this->session->userdata('role')->name, "doctor")) $filter["doctor_id"] = $this->session->userdata('aid');
-		
-		$appointments = $this->appointment->filter($filter, "", "", "schedule_from", $order = "asc");
-		foreach($appointments as $item){
-			$aux = array(
-				"id" => $item->id,
-				"patient" => $this->general->id("person", $item->patient_id)->name,
-				"schedule" => date("h:iA", strtotime($item->schedule_from))
-			);
-			
-			$is_valid = true;
-			switch($this->status->id($item->status_id)->code){
-				case "finished": $aux["text_color"] = "text-success"; break;
-				case "canceled": $is_valid = false; break;
-				default: $aux["text_color"] = "";
-			}
-			
-			if ($is_valid) array_push($list, $aux);
-		}
-		*/
-		//print_r($data);
-		
-		//header('Content-Type: application/json');
-		//echo json_encode(array("status" => true, "datas" => $list));
+		header('Content-Type: application/json');
+		echo json_encode(array("appointments" => $appointments_arr, "surgeries" => $surgeries_arr));
 	}
 }
