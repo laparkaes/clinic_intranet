@@ -1,14 +1,3 @@
-<?php 
-$bd = $appointment_datas["basic_data"]; 
-$an = $appointment_datas["anamnesis"];
-$ph = $appointment_datas["physical"];
-$di = $appointment_datas["diag_impression"];
-$re = $appointment_datas["result"];
-$ex = $appointment_datas["examination"]; $ex_profiles = $ex["profiles"]; $ex_examinations = $ex["examinations"];
-$im = $appointment_datas["images"]; $images_ap = $im["images"]; $checked_images = $im["checked_images"];
-$th = $appointment_datas["therapy"];
-$me = $appointment_datas["medicine"];
-?>
 <div class="col-md-12">
 	<div class="card">
 		<div class="card-body text-center">
@@ -16,7 +5,7 @@ $me = $appointment_datas["medicine"];
 				<div class="col-md-4">
 					<button type="button" class="btn btn-primary btn-lg btn-block my-1 d-flex justify-content-between align-items-center btn_process" value="process_information">
 						<i class="fas fa-info-circle fa-2x fa-fw mr-3"></i>
-						<span class="fs-20"><?= $this->lang->line('btn_information') ?></span>
+						<span class="fs-20"><?= $this->lang->line('btn_surgery') ?></span>
 					</button>
 				</div>
 				<div class="col-md-4">
@@ -42,7 +31,7 @@ $me = $appointment_datas["medicine"];
 		</div>
 		<div class="card-body">
 			<form action="#" class="row" id="form_basic_data">
-				<input type="hidden" name="appointment_id" value="<?= $appointment->id ?>">
+				<input type="hidden" name="surgery_id" value="<?= $surgery->id ?>">
 				<div class="col-md-6">
 					<h5><?= $this->lang->line('title_entry') ?></h5>
 					<div class="form-row">
@@ -91,7 +80,7 @@ $me = $appointment_datas["medicine"];
 					</div>
 				</div>
 				<div class="col-md-12 pt-3 mb-0">
-				<?php if ($appointment->is_editable){ ?>
+				<?php if ($surgery->is_editable){ ?>
 					<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_save') ?></button>
 					<div class="sys_msg" id="bd_result_msg"></div>
 				<?php } ?>
@@ -107,7 +96,7 @@ $me = $appointment_datas["medicine"];
 		</div>
 		<div class="card-body">
 			<form action="#" class="form-row" id="form_personal_information">
-				<input type="hidden" name="appointment_id" value="<?= $appointment->id ?>">
+				<input type="hidden" name="surgery_id" value="<?= $surgery->id ?>">
 				<div class="form-group col-md-6">
 					<label><?= $this->lang->line('lb_name') ?></label>
 					<input type="text" class="form-control bg-light" name="name" value="<?= $an->name ?>" readonly>
@@ -190,7 +179,7 @@ $me = $appointment_datas["medicine"];
 					<input type="text" class="form-control" name="religion" value="<?= $an->religion ?>">
 					<div class="sys_msg" id="pi_religion_msg"></div>
 				</div>
-				<?php if ($appointment->is_editable){ ?>
+				<?php if ($surgery->is_editable){ ?>
 				<div class="form-group col-md-12 pt-3 mb-0">
 					<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_save') ?></button>
 					<div class="sys_msg" id="pi_result_msg"></div>
@@ -207,7 +196,7 @@ $me = $appointment_datas["medicine"];
 		</div>
 		<div class="card-body">
 			<form action="#" class="form-row" id="form_triage">
-				<input type="hidden" name="appointment_id" value="<?= $appointment->id ?>">
+				<input type="hidden" name="surgery_id" value="<?= $surgery->id ?>">
 				<div class="form-group col-md-3">
 					<label><?= $this->lang->line('lb_pa') ?></label>
 					<input type="text" class="form-control" name="v_pa" value="<?= $ph->v_pa ?>">
@@ -248,7 +237,7 @@ $me = $appointment_datas["medicine"];
 					<input type="text" class="form-control bg-light" name="v_imc_class" value="<?= $ph->v_imc_class ?>" readonly>
 					<div class="sys_msg" id="tr_v_imc_class"></div>
 				</div>
-				<?php if ($appointment->is_editable){ ?>
+				<?php if ($surgery->is_editable){ ?>
 				<div class="form-group col-md-12 pt-3 mb-0">
 					<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_save') ?></button>
 					<div class="sys_msg" id="tr_result_msg"></div>
@@ -280,10 +269,10 @@ $me = $appointment_datas["medicine"];
 						<td><?= date("H:i", strtotime($item->schedule_from)) ?></td>
 						<td class="text-right"><?= $item->specialty ?></td>
 						<td class="text-right">
-							<?php if ($item->id == $appointment->id){ ?>
+							<?php if ($item->id == $surgery->id){ ?>
 							<span class="text-info"><?= $this->lang->line('txt_actual') ?></span>
 							<?php }else{ ?>
-							<a href="<?= base_url()."appointment/detail/".$item->id ?>" target="_blank">
+							<a href="<?= base_url()."surgery/detail/".$item->id ?>" target="_blank">
 								<i class="fas fa-search"></i>
 							</a>
 							<?php } ?>
@@ -334,7 +323,7 @@ $me = $appointment_datas["medicine"];
 		</div>
 		<div class="card-body">
 			<form action="#" class="row" id="form_anamnesis">
-				<input type="hidden" name="appointment_id" value="<?= $appointment->id ?>">
+				<input type="hidden" name="surgery_id" value="<?= $surgery->id ?>">
 				<div class="col-md-12">
 					<div class="default-tab">
 						<ul class="nav nav-tabs mb-4">
@@ -598,7 +587,7 @@ $me = $appointment_datas["medicine"];
 							</div>
 						</div>
 					</div>
-					<?php if ($appointment->is_editable){ ?>
+					<?php if ($surgery->is_editable){ ?>
 					<div class="pt-3">
 						<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_save') ?></button>
 						<div class="sys_msg" id="an_result_msg"></div>
@@ -616,7 +605,7 @@ $me = $appointment_datas["medicine"];
 		</div>
 		<div class="card-body">
 			<form action="#" id="form_physical_exam" class="row">
-				<input type="hidden" name="appointment_id" value="<?= $appointment->id ?>">
+				<input type="hidden" name="surgery_id" value="<?= $surgery->id ?>">
 				<div class="col-md-12">
 					<div class="default-tab">
 						<ul class="nav nav-tabs mb-4">
@@ -757,7 +746,7 @@ $me = $appointment_datas["medicine"];
 						</div>
 					</div>
 				</div>
-				<?php if ($appointment->is_editable){ ?>
+				<?php if ($surgery->is_editable){ ?>
 				<div class="col-md-12 pt-3">
 					<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_save') ?></button>
 					<div class="sys_msg" id="pe_result_msg"></div>
@@ -774,7 +763,7 @@ $me = $appointment_datas["medicine"];
 		</div>
 		<div class="card-body pt-0">
 			<div class="row">
-				<?php if ($appointment->is_editable){ $next_col = 6; ?>
+				<?php if ($surgery->is_editable){ $next_col = 6; ?>
 				<div class="col-md-6">
 					<form action="#" class="form-row" id="form_search_diag">
 						<div class="form-group col-md-12">
@@ -798,7 +787,7 @@ $me = $appointment_datas["medicine"];
 				</div>
 				<?php }else $next_col = 12; ?>
 				<div class="col-md-<?= $next_col ?>">
-					<?php if ($appointment->is_editable){ ?>
+					<?php if ($surgery->is_editable){ ?>
 					<h5><?= $this->lang->line('title_selected_diag') ?></h5>
 					<?php } ?>
 					<table class="table table-xs no_border_tb mb-0">
@@ -807,7 +796,7 @@ $me = $appointment_datas["medicine"];
 							<tr class="text-left">
 								<td class="align-top" style="width:120px;"><?= $d->code ?></td>
 								<td><?= $d->description ?></td>
-								<?php if ($appointment->is_editable){ ?>
+								<?php if ($surgery->is_editable){ ?>
 								<td class="text-right">
 									<button type="button" class="btn tp-btn-light btn-danger p-0 btn_delete_diag" value="<?= $d->id ?>"><i class="fas fa-minus"></i></button>
 								</td>
@@ -828,7 +817,7 @@ $me = $appointment_datas["medicine"];
 		</div>
 		<div class="card-body">
 			<form action="#" class="form-row" id="form_result">
-				<input type="hidden" name="appointment_id" value="<?= $appointment->id ?>">
+				<input type="hidden" name="surgery_id" value="<?= $surgery->id ?>">
 				<div class="form-group col-md-4">
 					<label><?= $this->lang->line('lb_diagnosis') ?></label>
 					<textarea class="form-control" rows="3" name="diagnosis"><?= $re->diagnosis ?></textarea>
@@ -841,7 +830,7 @@ $me = $appointment_datas["medicine"];
 					<label><?= $this->lang->line('lb_treatment') ?></label>
 					<textarea class="form-control" rows="3" name="treatment"><?= $re->treatment ?></textarea>
 				</div>
-				<?php if ($appointment->is_editable){ ?>
+				<?php if ($surgery->is_editable){ ?>
 				<div class="form-group col-md-12 pt-3 mb-0">
 					<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_save') ?></button>
 					<div class="sys_msg" id="rs_result_msg"></div>
@@ -873,7 +862,7 @@ $me = $appointment_datas["medicine"];
 				<div class="tab-content">
 					<div id="auxiliary_exams-1" class="tab-pane active">
 						<div class="row">
-							<?php if ($appointment->is_editable){ $next_col = 6; ?>
+							<?php if ($surgery->is_editable){ $next_col = 6; ?>
 							<div class="col-md-6">
 								<h5><?= $this->lang->line('title_search') ?></h5>
 								<div class="form-row">
@@ -928,7 +917,7 @@ $me = $appointment_datas["medicine"];
 							</div>
 							<?php }else $next_col = 12; ?>
 							<div class="col-md-<?= $next_col ?>">
-								<?php if ($appointment->is_editable){ ?>
+								<?php if ($surgery->is_editable){ ?>
 								<h5 class="mb-3"><?= $this->lang->line('title_selected_exams') ?></h5>
 								<?php } ?>
 								<table class="table table-xs no_border_tb mb-0">
@@ -940,7 +929,7 @@ $me = $appointment_datas["medicine"];
 												<div><?= $ep->name ?></div>
 												<div><small><?= $ep->exams ?></small></div>
 											</td>
-											<?php if ($appointment->is_editable){ ?>
+											<?php if ($surgery->is_editable){ ?>
 											<td class="align-top" class="text-right">
 												<button type="button" class="btn tp-btn-light btn-danger p-0 btn_delete_exam_profile" value="<?= $ep->id ?>">
 													<i class="fas fa-minus"></i>
@@ -952,7 +941,7 @@ $me = $appointment_datas["medicine"];
 										<tr class="text-left">
 											<td style="width:120px;"><?= $ee->type ?></td>
 											<td><?= $ee->name ?></td>
-											<?php if ($appointment->is_editable){ ?>
+											<?php if ($surgery->is_editable){ ?>
 											<td class="text-right">
 												<button type="button" class="btn tp-btn-light btn-danger p-0 btn_delete_exam" value="<?= $ee->id ?>">
 													<i class="fas fa-minus"></i>
@@ -968,7 +957,7 @@ $me = $appointment_datas["medicine"];
 					</div>
 					<div id="auxiliary_exams-2" class="tab-pane">
 						<div class="row">
-							<?php if ($appointment->is_editable){ $next_col = 6; ?>
+							<?php if ($surgery->is_editable){ $next_col = 6; ?>
 							<div class="col-md-6">
 								<h5><?= $this->lang->line('title_search') ?></h5>
 								<div class="form-row">
@@ -1006,7 +995,7 @@ $me = $appointment_datas["medicine"];
 							</div>
 							<?php }else $next_col = 12; ?>
 							<div class="col-md-<?= $next_col ?>">
-								<?php if ($appointment->is_editable){ ?>
+								<?php if ($surgery->is_editable){ ?>
 								<h5 class="mb-3"><?= $this->lang->line('title_selected_images') ?></h5>
 								<?php } ?>
 								<table class="table no_border_tb mb-0">
@@ -1016,7 +1005,7 @@ $me = $appointment_datas["medicine"];
 											<td style="width:120px;"><?= $image->category ?></td>
 											<td><?= $image->image ?>
 											</td>
-											<?php if ($appointment->is_editable){ ?>
+											<?php if ($surgery->is_editable){ ?>
 											<td class="text-right">
 												<button type="button" class="btn tp-btn-light btn-danger btn-xs btn_delete_image" value="<?= $image->image_id ?>">
 													<i class="fas fa-minus"></i>
@@ -1057,11 +1046,11 @@ $me = $appointment_datas["medicine"];
 				<div class="tab-content">
 					<div id="treatments-1" class="tab-pane active">
 						<div class="row">
-							<?php if ($appointment->is_editable){ $next_col = 6; ?>
+							<?php if ($surgery->is_editable){ $next_col = 6; ?>
 							<div class="col-md-6">
 								<h5><?= $this->lang->line('title_add_medicine') ?></h5>
 								<form action="#" id="form_add_medicine">
-									<input type="hidden" name="appointment_id" value="<?= $appointment->id ?>">
+									<input type="hidden" name="surgery_id" value="<?= $surgery->id ?>">
 									<div class="form-row">
 										<div class="form-group col-md-12">
 											<label><?= $this->lang->line('lb_medicine') ?></label>
@@ -1133,7 +1122,7 @@ $me = $appointment_datas["medicine"];
 							</div>
 							<?php }else $next_col = 12; ?>
 							<div class="col-md-<?= $next_col ?>">
-								<?php if ($appointment->is_editable){ ?>
+								<?php if ($surgery->is_editable){ ?>
 								<h5 class="mb-3"><?= $this->lang->line('title_selected_medicines') ?></h5>
 								<?php } ?>
 								<table class="table no_border_tb mb-0">
@@ -1144,7 +1133,7 @@ $me = $appointment_datas["medicine"];
 												<div><?= $m->medicine ?></div>
 												<small><?= $m->sub_txt ?></small>
 											</td>
-											<?php if ($appointment->is_editable){ ?>
+											<?php if ($surgery->is_editable){ ?>
 											<td class="text-right">
 												<button type="button" class="btn tp-btn-light btn-danger btn-xs btn_delete_medicine" value="<?= $m->id ?>">
 													<i class="fas fa-minus"></i>
@@ -1160,11 +1149,11 @@ $me = $appointment_datas["medicine"];
 					</div>
 					<div id="treatments-2" class="tab-pane">
 						<div class="row">
-							<?php if ($appointment->is_editable){ $next_col = 6; ?>
+							<?php if ($surgery->is_editable){ $next_col = 6; ?>
 							<div class="col-md-6">
 								<h5><?= $this->lang->line('title_add_therapy') ?></h5>
 								<form action="#" id="form_add_therapy">
-									<input type="hidden" name="appointment_id" value="<?= $appointment->id ?>">
+									<input type="hidden" name="surgery_id" value="<?= $surgery->id ?>">
 									<div class="form-row">
 										<div class="form-group col-md-12">
 											<label><?= $this->lang->line('lb_therapy') ?></label>
@@ -1205,7 +1194,7 @@ $me = $appointment_datas["medicine"];
 							</div>
 							<?php }else $next_col = 12; ?>
 							<div class="col-md-<?= $next_col ?>">
-								<?php if ($appointment->is_editable){ ?>
+								<?php if ($surgery->is_editable){ ?>
 								<h5 class="mb-3"><?= $this->lang->line('title_selected_therapies') ?></h5>
 								<?php } ?>
 								<table class="table no_border_tb mb-0">
@@ -1216,7 +1205,7 @@ $me = $appointment_datas["medicine"];
 												<div><?= $t->physical_therapy ?></div>
 												<small><?= $t->sub_txt ?></small>
 											</td>
-											<?php if ($appointment->is_editable){ ?>
+											<?php if ($surgery->is_editable){ ?>
 											<td class="text-right">
 												<button type="button" class="btn tp-btn-light btn-danger btn_delete_therapy" value="<?= $t->id ?>">
 													<i class="fas fa-minus"></i>
@@ -1245,14 +1234,14 @@ $me = $appointment_datas["medicine"];
 		</div>
 	</div>
 </div>
-<?php if ($appointment->is_editable){ ?>
+<?php if ($surgery->is_editable){ ?>
 <div class="col-xl-12 process process_attention d-none">
 	<div class="card">
 		<div class="card-body">
 			<div class="text-center">
-				<button type="button" class="btn btn-primary btn-lg" id="btn_finish" value="<?= $appointment->id ?>">
+				<button type="button" class="btn btn-primary btn-lg" id="btn_finish" value="<?= $surgery->id ?>">
 					<span class="d-none msg"><?= $this->lang->line('warning_afi') ?></span>
-					<?= $this->lang->line('btn_finish_appointment') ?>
+					<?= $this->lang->line('btn_finish_surgery') ?>
 				</button>
 			</div>
 		</div>

@@ -1,5 +1,21 @@
 <?php
 
+//message
+$lang['error_ena'] = 'Ingrese nombre.';//error_enter_name
+$lang['error_ete'] = 'Ingrese teléfono.';//error_enter_telephone
+$lang['error_dnu'] = 'Ingrese número de documento.';//error_doc_number
+$lang['error_sda'] = 'Elija una fecha.';//error_select_date
+$lang['error_sho'] = 'Elija hora.';//error_select_hour
+$lang['error_smi'] = 'Elija minuto.';//error_select_minute
+$lang['error_ssp'] = 'Elija una especialidad.';//error_select_speciality
+$lang['error_sdo'] = 'Elija un médico.';//error_select_doctor
+$lang['error_dna'] = 'Médico no disponible.';//error_doctor_no_available
+$lang['error_enp'] = 'Ingrese un lugar.';//error_enter_place
+$lang['error_sdu'] = 'Elija duración.';//error_enter_place
+$lang['success_ras'] = 'Cirugía ha sido registrada.';//success_register_surgery
+$lang['warning_sre'] = '¿Desea reprogramar cirugía?';//warning_surgery_reschedule
+
+$lang['surgery'] = 'Cirugía';
 $lang['surgeries'] = 'Cirugías';
 $lang['hd_schedule'] = 'Horario';
 $lang['hd_place'] = 'Lugar';
@@ -20,3 +36,17 @@ $lang['lb_tel'] = 'Teléfono';
 $lang['lb_remark'] = 'Observación';
 $lang['lb_optional'] = 'Opcional';
 $lang['txt_remark'] = 'Síntomas, Notas del paciente, etc.';
+$lang['lb_place'] = 'Lugar';
+$lang['lb_duration'] = 'Duración';
+$lang['op_minutes'] = 'minutos';
+$lang['op_hour'] = 'hora';
+$lang['op_hours'] = 'horas';
+$lang['lb_hour'] = 'Hora';
+$lang['lb_status'] = 'Estado';
+$lang['lb_patient'] = 'Paciente';
+$lang['lb_history_number'] = '# de Historia';
+$lang['lb_sex'] = 'Sexo';
+$lang['lb_age'] = 'Edad';
+$lang['lb_blood_type'] = 'Tipo de Sangre';
+$lang['title_reschedule_surgery'] = 'Reprogramación de Cirugía';
+$lang['btn_surgery'] = 'Cirugía';

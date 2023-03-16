@@ -73,6 +73,27 @@ class General_model extends CI_Model{
 		return $query->num_rows();
 	}
 	
+	function is_available($tablename, $data, $status_ids = null){
+		$this->db->where('doctor_id', $data["doctor_id"]);
+		$this->db->group_start();
+		$this->db->group_start();
+		$this->db->where('schedule_from <=', $data["schedule_from"]);
+		$this->db->where('schedule_to >=', $data["schedule_from"]);
+		$this->db->group_end();
+		$this->db->or_group_start();
+		$this->db->where('schedule_from <=', $data["schedule_to"]);
+		$this->db->where('schedule_to >=', $data["schedule_to"]);
+		$this->db->group_end();
+		$this->db->or_group_start();
+		$this->db->where('schedule_from >=', $data["schedule_from"]);
+		$this->db->where('schedule_to <=', $data["schedule_to"]);
+		$this->db->group_end();
+		$this->db->group_end();
+		if ($status_ids) $this->db->where_in('status_id', $status_ids);
+		$query = $this->db->get($tablename);
+		if ($query->num_rows()) return false; else return true;
+	}
+	
 	function insert($tablename, $data){
 		$this->db->insert($tablename, $data);
 		return $this->db->insert_id();

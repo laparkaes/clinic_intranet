@@ -456,7 +456,7 @@ function load_doctor_schedule(){
 	
 	if ((doctor_id != "") && (date != "")){
 		$.ajax({
-			url: $("#base_url").val() + "appointment/load_doctor_schedule",
+			url: $("#base_url").val() + "ajax_f/load_doctor_schedule",
 			type: "POST",
 			data: {doctor_id: doctor_id, date: date},
 			success:function(res){

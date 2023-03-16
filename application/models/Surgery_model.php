@@ -1,10 +1,10 @@
 <?php
 
-class Appointment_model extends CI_Model{
+class Surgery_model extends CI_Model{
 
 	function __construct(){
 		parent::__construct();
-		$this->tablename = 'appointment';
+		$this->tablename = 'surgery';
 	}
   
     function id($id){

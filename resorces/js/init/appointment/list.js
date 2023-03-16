@@ -24,7 +24,7 @@ function register_appointment(dom){
 
 function load_doctor_schedule(){
 	$.ajax({
-		url: $("#base_url").val() + "appointment/load_doctor_schedule",
+		url: $("#base_url").val() + "ajax_f/load_doctor_schedule",
 		type: "POST",
 		data: {doctor_id:$("#aa_doctor").val(), date:$("#aa_date").val()},
 		success:function(res){

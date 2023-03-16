@@ -329,8 +329,10 @@ class Appointment extends CI_Controller {
 			array_push($status_ids, $this->status->code("reserved")->id);
 			array_push($status_ids, $this->status->code("confirmed")->id);
 			
-			if ($this->appointment->check_available($app, $status_ids))
-				$msgs = $this->set_msg($msgs, "aa_schedule_msg", "error", "error_dna");
+			//check appointment and surgery available
+			$sur_available = $this->general->is_available("surgery", $app, $status_ids);
+			$app_available = $this->general->is_available("appointment", $app, $status_ids);
+			if (!($sur_available and $app_available)) $msgs = $this->set_msg($msgs, "aa_schedule_msg", "error", "error_dna");
 		}
 		
 		if ($msgs) $msg = $this->lang->line('error_occurred'); 
@@ -368,35 +370,6 @@ class Appointment extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => $status, "type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to));
-	}
-	
-	public function load_doctor_schedule(){
-		$status = false; $data = array();
-		$doctor_id = $this->input->post("doctor_id");
-		$date = $this->input->post("date");
-		
-		if (!$doctor_id) array_push($data, "Elija un medico.");
-		if (!$date) array_push($data, "Elija una fecha.");
-		
-		if (!$data){
-			$status_ids = array($this->status->code("reserved")->id, $this->status->code("confirmed")->id);
-			$appointments = $this->appointment->doctor($doctor_id, $date, $status_ids);
-			if ($appointments) foreach($appointments as $item)
-				array_push($data, "<span>".date("h:i A", strtotime($item->schedule_from))."</span><span>Consulta</span>");
-			
-			//pending!!!
-			$surgeries = array();
-			if ($surgeries) foreach($surgeries as $item)
-				array_push($data, "<span>".date("h:i A", strtotime($item->schedule_from))."</span><span>Cirugia</span>");
-			
-			if (!$data) array_push($data, "Disponibilidad Completa.");
-			
-			$status = true;
-			$type = "success";
-		}
-		
-		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "data" => $data));
 	}
 	
 	public function cancel_appointment(){
@@ -454,14 +427,17 @@ class Appointment extends CI_Controller {
 				array_push($status_ids, $this->status->code("reserved")->id);
 				array_push($status_ids, $this->status->code("confirmed")->id);
 				
-				if ($this->appointment->check_available($app, $status_ids)) $msg = $this->lang->line('error_dna');
-				else{
+				//must be updated
+				//check appointment and surgery available
+				$sur_available = $this->general->is_available("surgery", $app, $status_ids);
+				$app_available = $this->general->is_available("appointment", $app, $status_ids);
+				if ($sur_available and $app_available){
 					if ($this->appointment->update($app["id"], $app)){
 						$status = true;
 						$type = "success";
 						$msg = $this->lang->line('success_rsp');
 					}else $msg = $this->lang->line('error_internal');
-				}
+				}else $msg = $this->lang->line('error_dna');
 			}else $msg = $this->lang->line('error_internal_refresh');
 		}
 		

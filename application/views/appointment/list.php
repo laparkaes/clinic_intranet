@@ -162,17 +162,17 @@
 												</button>
                                             </div>
 										</div>
-										<div class="sys_msg" id="pt_doc_msg"></div>
+										<div class="sys_msg" id="aa_pt_doc_msg"></div>
 									</div>
 									<div class="form-group col-md-6">
 										<label><?= $this->lang->line('lb_name') ?></label>
 										<input type="text" class="form-control" id="aa_pt_name" name="pt[name]">
-										<div class="sys_msg" id="pt_name_msg"></div>
+										<div class="sys_msg" id="aa_pt_name_msg"></div>
 									</div>
 									<div class="form-group col-md-6">
 										<label><?= $this->lang->line('lb_tel') ?></label>
 										<input type="text" class="form-control" id="aa_pt_tel" name="pt[tel]">
-										<div class="sys_msg" id="pt_tel_msg"></div>
+										<div class="sys_msg" id="aa_pt_tel_msg"></div>
 									</div>
 									<div class="form-group col-md-12">
 										<label><?= $this->lang->line('lb_remark') ?> (<?= $this->lang->line('lb_optional') ?>)</label>

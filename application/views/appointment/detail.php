@@ -143,7 +143,7 @@
 					</div>
 					<div class="mt-3" id="doctor_agenda">
 						<h5><?= $this->lang->line('title_doctor_agenda') ?></h5>
-						<ul class="list-group" id="rp_schedule"></ul>
+						<ul class="list-group ap_content_list_short" id="rp_schedule"></ul>
 					</div>
 				</div>
 				<div class="modal-footer border-0 pt-0">

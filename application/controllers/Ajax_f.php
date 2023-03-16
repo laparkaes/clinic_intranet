@@ -8,8 +8,11 @@ class Ajax_f extends CI_Controller {
 		date_default_timezone_set('America/Lima');
 		$this->lang->load("system", "spanish");
 		//$this->load->model('sl_option_model','sl_option');
-		//$this->load->model('appointment_model','appointment');
+		//
 		//$this->load->model('status_model','status');
+		$this->load->model('appointment_model','appointment');
+		$this->load->model('surgery_model','surgery');
+		$this->load->model('status_model','status');
 		$this->load->model('general_model','general');
 	}
 	
@@ -85,7 +88,7 @@ class Ajax_f extends CI_Controller {
 	public function set_appointment(){
 		$dates = array(date("Y-m-d"), date("Y-m-d", strtotime("+1 day")));
 		
-		$filter = array("schedule_from <=" => "2023-03-10 23:59:59");
+		$filter = array("schedule_from <=" => date("Y-m-d", strtotime("-1 day"))." 23:59:59");
 		$appointments = $this->general->filter("appointment", $filter, "schedule_from", "asc");
 		foreach($appointments as $item){
 			$nd = $dates[array_rand($dates)];
@@ -96,7 +99,35 @@ class Ajax_f extends CI_Controller {
 		
 		echo "fin";
 	}
-
+	
+	public function load_doctor_schedule(){
+		$status = false; $data = array();
+		$doctor_id = $this->input->post("doctor_id");
+		$date = $this->input->post("date");
+		
+		if (!$doctor_id) array_push($data, "Elija un medico.");
+		if (!$date) array_push($data, "Elija una fecha.");
+		
+		if (!$data){
+			$status_ids = array($this->status->code("reserved")->id, $this->status->code("confirmed")->id);
+			$appointments = $this->appointment->doctor($doctor_id, $date, $status_ids);
+			if ($appointments) foreach($appointments as $item)
+				array_push($data, "<span>".date("h:i A", strtotime($item->schedule_from))."</span><span>Consulta</span>");
+			
+			$surgeries = $this->surgery->doctor($doctor_id, $date, $status_ids);
+			if ($surgeries) foreach($surgeries as $item)
+				array_push($data, "<span>".date("h:i A", strtotime($item->schedule_from))."</span><span>Cirugia</span>");
+			
+			if (!$data) array_push($data, "Disponibilidad Completa.");
+			
+			$status = true;
+			$type = "success";
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => $status, "data" => $data));
+	}
+	
 	public function load_schedule(){
 		$res = array();
 		
