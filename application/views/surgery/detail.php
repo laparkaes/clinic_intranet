@@ -63,7 +63,97 @@
 		</div>
 	</div>
 </div>
-<?php $this->load->view("surgery/detail_".$this->session->userdata("role")->name); ?>
+<?php if ($surgery->remark){ ?>
+<div class="col-xl-12">
+	<div class="card">
+		<div class="card-header pb-0 border-0">
+			<h4 class="mb-0"><?= $this->lang->line('title_remark') ?></h4>
+		</div>
+		<div class="card-body">
+			<textarea class="form-control" rows="3" readonly><?= $surgery->remark ?></textarea>
+		</div>
+	</div>
+</div>
+<?php } ?>
+<div class="col-md-6">
+	<div class="card">
+		<div class="card-header pb-0 border-0">
+			<h4 class="mb-0"><?= $this->lang->line('title_clinical_histories') ?></h4>
+		</div>
+		<div class="card-body ap_content_list">
+			<table class="table mb-0">
+				<thead>
+					<tr class="text-left">
+						<th style="max-width: 150px;"><?= $this->lang->line('th_date') ?></th>
+						<th style="max-width: 100px;"><?= $this->lang->line('th_time') ?></th>
+						<th class="text-right"><?= $this->lang->line('th_speciality') ?></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach($histories as $item){ ?>
+					<tr class="text-left">
+						<td><?= date("Y-m-d", strtotime($item->schedule_from)) ?></td>
+						<td><?= date("H:i", strtotime($item->schedule_from)) ?></td>
+						<td class="text-right"><?= $item->specialty ?></td>
+						<td class="text-right">
+							<a href="<?= base_url()."appointment/detail/".$item->id ?>" target="_blank">
+								<i class="fas fa-search"></i>
+							</a>
+						</td>
+					</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="col-md-6">
+	<div class="card">
+		<div class="card-header pb-0 border-0">
+			<h4 class="mb-0"><?= $this->lang->line('title_files') ?></h4>
+		</div>
+		<div class="card-body ap_content_list">
+			<table class="table mb-0">
+				<thead>
+					<tr class="text-left">
+						<th style="max-width: 150px;"><?= $this->lang->line('th_date') ?></th>
+						<th class="text-right"><?= $this->lang->line('th_title') ?></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php $file_path = base_url()."uploaded/patient_files/".$patient->doc_type_id."_".$patient->doc_number."/";
+					foreach($patient_files as $item){ ?>
+					<tr class="text-left">
+						<td><?= date("Y-m-d", strtotime($item->registed_at)) ?></td>
+						<td class="text-right"><?= $item->title ?></td>
+						<td class="text-right">
+							<a href="<?= $file_path.$item->filename ?>" target="_blank">
+								<i class="fas fa-search"></i>
+							</a>
+						</td>
+					</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<?php if ($surgery->is_editable){ ?>
+<div class="col-xl-12">
+	<div class="card">
+		<div class="card-body">
+			<div class="text-center">
+				<button type="button" class="btn btn-primary btn-lg" id="btn_finish" value="<?= $surgery->id ?>">
+					<span class="d-none msg"><?= $this->lang->line('warning_sfi') ?></span>
+					<?= $this->lang->line('btn_finish_surgery') ?>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<?php } ?>
 <div class="d-none">
 	<input type="hidden" id="surgery_id" value="<?= $surgery->id ?>">
 	<input type="hidden" id="warning_sre" value="<?= $this->lang->line('warning_sre') ?>">

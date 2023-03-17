@@ -10,19 +10,6 @@ class Surgery extends CI_Controller {
 		date_default_timezone_set('America/Lima');
 		$this->lang->load("surgery", "spanish");
 		$this->lang->load("system", "spanish");
-		/*
-		$this->load->model('role_model','role');
-		
-		$this->load->model('account_model','account');
-		$this->load->model('specialty_model','specialty');
-		
-		$this->load->model('patient_file_model','patient_file');
-		$this->load->model('sl_option_model','sl_option');
-		$this->load->model('examination_model','examination');
-		$this->load->model('image_model','image');
-		$this->load->model('product_model','product');
-		
-		*/
 		$this->load->model('appointment_model','appointment');
 		$this->load->model('status_model','status');
 		$this->load->model('general_model','general');
@@ -115,7 +102,6 @@ class Surgery extends CI_Controller {
 			case "finished":
 				array_push($actions, "report");
 				break;
-			case "canceled": $surgery->status->color = "danger"; $surgery->is_editable = false; break;
 		}
 		
 		$doctor = $this->general->id("person", $surgery->doctor_id);

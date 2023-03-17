@@ -2,5 +2,3 @@
 diagnostico presuntivo
 diagnostico confirmado
 diagnostico repetitivo
-
-ALTER TABLE `surgery` ADD `place` VARCHAR(200) NULL AFTER `schedule_to`; 
