@@ -250,3 +250,6 @@ $lang['title_sick_leave'] = 'Descanso Médico';
 $lang['lb_birth_place_day'] = 'Lugar y Fecha de Nacimiento';
 $lang['lb_class'] = 'Clasificación';
 $lang['title_attention'] = 'Atención';
+$lang['th_type'] = 'Tipo';
+$lang['appointment'] = 'Consulta';
+$lang['surgery'] = 'Cirugía';

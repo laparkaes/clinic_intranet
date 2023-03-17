@@ -81,23 +81,24 @@
 			<h4 class="mb-0"><?= $this->lang->line('title_clinical_histories') ?></h4>
 		</div>
 		<div class="card-body ap_content_list">
+			<?php if ($histories){ ?>
 			<table class="table mb-0">
 				<thead>
-					<tr class="text-left">
-						<th style="max-width: 150px;"><?= $this->lang->line('th_date') ?></th>
-						<th style="max-width: 100px;"><?= $this->lang->line('th_time') ?></th>
-						<th class="text-right"><?= $this->lang->line('th_speciality') ?></th>
-						<th></th>
+					<tr>
+						<th class="pt-0 pl-0"><?= $this->lang->line('th_schedule') ?></th>
+						<th class="pt-0"><?= $this->lang->line('th_type') ?></th>
+						<th class="pt-0"><?= $this->lang->line('th_speciality') ?></th>
+						<th class="pt-0 pr-0"></th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php foreach($histories as $item){ ?>
 					<tr class="text-left">
-						<td><?= date("Y-m-d", strtotime($item->schedule_from)) ?></td>
-						<td><?= date("H:i", strtotime($item->schedule_from)) ?></td>
-						<td class="text-right"><?= $item->specialty ?></td>
-						<td class="text-right">
-							<a href="<?= base_url()."appointment/detail/".$item->id ?>" target="_blank">
+						<td class="pl-0"><?= date("d.m.Y<\b\\r>H:i a", strtotime($item->schedule_from)) ?></td>
+						<td><?= $item->type ?></td>
+						<td><?= $item->specialty ?></td>
+						<td class="text-right pr-0">
+							<a href="<?= base_url().$item->link_to."/detail/".$item->id ?>" target="_blank">
 								<i class="fas fa-search"></i>
 							</a>
 						</td>
@@ -105,6 +106,9 @@
 					<?php } ?>
 				</tbody>
 			</table>
+			<?php }else{ ?>
+			<div class="text-muted text-center"><?= $this->lang->line('txt_no_records') ?></div>
+			<?php } ?>
 		</div>
 	</div>
 </div>
@@ -114,21 +118,22 @@
 			<h4 class="mb-0"><?= $this->lang->line('title_files') ?></h4>
 		</div>
 		<div class="card-body ap_content_list">
+			<?php if ($histories){ ?>
 			<table class="table mb-0">
 				<thead>
-					<tr class="text-left">
-						<th style="max-width: 150px;"><?= $this->lang->line('th_date') ?></th>
-						<th class="text-right"><?= $this->lang->line('th_title') ?></th>
-						<th></th>
+					<tr>
+						<th class="pt-0 pl-0"><?= $this->lang->line('th_date') ?></th>
+						<th class="pt-0"><?= $this->lang->line('th_title') ?></th>
+						<th class="pt-0 pr-0"></th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php $file_path = base_url()."uploaded/patient_files/".$patient->doc_type_id."_".$patient->doc_number."/";
 					foreach($patient_files as $item){ ?>
-					<tr class="text-left">
-						<td><?= date("Y-m-d", strtotime($item->registed_at)) ?></td>
-						<td class="text-right"><?= $item->title ?></td>
-						<td class="text-right">
+					<tr>
+						<td class="pl-0"><?= date("d.m.Y<\b\\r>H:i:s", strtotime($item->registed_at)) ?></td>
+						<td><?= $item->title ?></td>
+						<td class="pr-0">
 							<a href="<?= $file_path.$item->filename ?>" target="_blank">
 								<i class="fas fa-search"></i>
 							</a>
@@ -137,26 +142,39 @@
 					<?php } ?>
 				</tbody>
 			</table>
+			<?php }else{ ?>
+			<div class="text-muted text-center"><?= $this->lang->line('txt_no_records') ?></div>
+			<?php } ?>
 		</div>
 	</div>
 </div>
-<?php if ($surgery->is_editable){ ?>
-<div class="col-xl-12">
+<div class="col-md-12">
 	<div class="card">
+		<div class="card-header pb-0 border-0">
+			<h4 class="mb-0"><?= $this->lang->line('title_result') ?></h4>
+		</div>
 		<div class="card-body">
-			<div class="text-center">
-				<button type="button" class="btn btn-primary btn-lg" id="btn_finish" value="<?= $surgery->id ?>">
-					<span class="d-none msg"><?= $this->lang->line('warning_sfi') ?></span>
-					<?= $this->lang->line('btn_finish_surgery') ?>
-				</button>
-			</div>
+			<form action="#" id="form_result" class="form-row">
+				<div class="form-group col-md-12">
+					<?php if ($surgery->is_editable) $rd = ""; else $rd = "readonly"; ?>
+					<textarea class="form-control" rows="3" name="result" <?= $rd ?>><?= $surgery->result ?></textarea>
+				</div>
+				<?php if ($surgery->is_editable){ ?>
+				<input type="hidden" name="id" value="<?= $surgery->id ?>">
+				<div class="form-group col-md-12 mb-0 pt-3">
+					<button type="submit" class="btn btn-primary">
+						<?= $this->lang->line('btn_save_finish_surgery') ?>
+					</button>
+				</div>
+				<?php } ?>
+			</form>
 		</div>
 	</div>
 </div>
-<?php } ?>
 <div class="d-none">
 	<input type="hidden" id="surgery_id" value="<?= $surgery->id ?>">
 	<input type="hidden" id="warning_sre" value="<?= $this->lang->line('warning_sre') ?>">
+	<input type="hidden" id="warning_sfi" value="<?= $this->lang->line('warning_sfi') ?>">
 </div>
 <div class="modal fade" id="reschedule_surgery" tabindex="-1" role="dialog" aria-labelledby="reschedule_surgeryLabel" aria-hidden="true">
 	<div class="modal-dialog text-left" role="document">
@@ -167,7 +185,7 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<form action="#" id="reschedule_form">
+			<form action="#" id="form_reschedule">
 				<div class="modal-body">
 					<input type="hidden" name="id" value="<?= $surgery->id ?>" readonly>
 					<input type="hidden" id="rs_doctor" value="<?= $doctor->id ?>">

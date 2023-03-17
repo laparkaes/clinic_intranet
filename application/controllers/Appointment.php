@@ -229,12 +229,32 @@ class Appointment extends CI_Controller {
 			else $patient->blood_type = null;
 		}
 		
+		//start set history records > mix surgeries and appointments
+		$specialties = array();
+		$specialties_rec = $this->general->all("specialty");
+		foreach($specialties_rec as $item) $specialties[$item->id] = $item->name;
+		
 		$filter = array("patient_id" => $patient->id, "status_id" => $this->status->code("finished")->id);
-		$histories = $this->appointment->filter($filter);
-		foreach($histories as $item){
+		
+		$surgery_histories = $this->general->filter("surgery", $filter);
+		foreach($surgery_histories as $item){
 			$d = $this->general->filter("doctor", array("person_id" => $doctor->id))[0];
-			$item->specialty = $this->specialty->id($d->specialty_id)->name;
+			$item->specialty = $specialties[$d->specialty_id];
+			$item->link_to = "surgery";
+			$item->type = $this->lang->line($item->link_to);
 		}
+		
+		$appointment_histories = $this->general->filter("appointment", $filter);
+		foreach($appointment_histories as $item){
+			$d = $this->general->filter("doctor", array("person_id" => $doctor->id))[0];
+			$item->specialty = $specialties[$d->specialty_id];
+			$item->link_to = "appointment";
+			$item->type = $this->lang->line($item->link_to);
+		}
+		
+		$histories = array_merge($surgery_histories, $appointment_histories);
+		usort($histories, function($a, $b) { return ($a->schedule_from < $b->schedule_from); });
+		//end set history records
 		
 		//setting patho_pre_illnesses
 		$pre_illnesses = array();

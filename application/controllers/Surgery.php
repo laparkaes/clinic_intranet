@@ -32,7 +32,7 @@ class Surgery extends CI_Controller {
 		$filter = array();
 		$filter["schedule_from >="] = $f_from." 00:00:00";
 		if ($f_status) $filter["status_id"] = $this->status->code($f_status)->id;
-		$surgeries = $this->general->filter("surgery", $filter);
+		$surgeries = $this->general->filter("surgery", $filter, "schedule_from", "desc");
 		
 		$person_ids = array();
 		$patient_ids = $this->general->only("surgery", "patient_id", $filter);
@@ -128,12 +128,32 @@ class Surgery extends CI_Controller {
 			else $patient->blood_type = null;
 		}
 		
+		//start set history records > mix surgeries and appointments
+		$specialties = array();
+		$specialties_rec = $this->general->all("specialty");
+		foreach($specialties_rec as $item) $specialties[$item->id] = $item->name;
+		
 		$filter = array("patient_id" => $patient->id, "status_id" => $this->status->code("finished")->id);
-		$histories = $this->general->filter("surgery", $filter);
-		foreach($histories as $item){
+		
+		$surgery_histories = $this->general->filter("surgery", $filter);
+		foreach($surgery_histories as $item){
 			$d = $this->general->filter("doctor", array("person_id" => $doctor->id))[0];
-			$item->specialty = $this->specialty->id($d->specialty_id)->name;
+			$item->specialty = $specialties[$d->specialty_id];
+			$item->link_to = "surgery";
+			$item->type = $this->lang->line($item->link_to);
 		}
+		
+		$appointment_histories = $this->general->filter("appointment", $filter);
+		foreach($appointment_histories as $item){
+			$d = $this->general->filter("doctor", array("person_id" => $doctor->id))[0];
+			$item->specialty = $specialties[$d->specialty_id];
+			$item->link_to = "appointment";
+			$item->type = $this->lang->line($item->link_to);
+		}
+		
+		$histories = array_merge($surgery_histories, $appointment_histories);
+		usort($histories, function($a, $b) { return ($a->schedule_from < $b->schedule_from); });
+		//end set history records
 		
 		$data = array(
 			"actions" => $actions,
@@ -238,18 +258,19 @@ class Surgery extends CI_Controller {
 		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg));
 	}
 	
-	public function finish_appointment(){
+	public function finish_surgery(){
 		$status = false; $type = "error"; $msg = null;
 		//pending!! role validation
 		
-		$appointment = $this->appointment->id($this->input->post("id"));
-		if ($appointment){
-			if ($this->appointment->update($appointment->id, array("status_id" => $this->status->code("finished")->id))){
+		$data = $this->input->post();
+		if ($data["result"]){
+			$data["status_id"] = $this->status->code("finished")->id;
+			if ($this->general->update("surgery", $data["id"], $data)){
 				$status = true;
 				$type = "success";
-				$msg = $this->lang->line('success_fap');
+				$msg = $this->lang->line('success_fsu');
 			}else $msg = $this->lang->line('error_internal');
-		}else $msg = $this->lang->line('error_nap');
+		}else $msg = $this->lang->line('error_sre');
 		
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg));

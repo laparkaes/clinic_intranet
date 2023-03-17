@@ -264,34 +264,34 @@ $me = $appointment_datas["medicine"];
 			<h4 class="mb-0"><?= $this->lang->line('title_clinical_histories') ?></h4>
 		</div>
 		<div class="card-body ap_content_list">
+			<?php if ($histories){ ?>
 			<table class="table mb-0">
 				<thead>
-					<tr class="text-left">
-						<th style="max-width: 150px;"><?= $this->lang->line('th_date') ?></th>
-						<th style="max-width: 100px;"><?= $this->lang->line('th_time') ?></th>
-						<th class="text-right"><?= $this->lang->line('th_speciality') ?></th>
-						<th></th>
+					<tr>
+						<th class="pt-0 pl-0"><?= $this->lang->line('hd_schedule') ?></th>
+						<th class="pt-0"><?= $this->lang->line('th_type') ?></th>
+						<th class="pt-0"><?= $this->lang->line('th_speciality') ?></th>
+						<th class="pt-0 pr-0"></th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php foreach($histories as $item){ ?>
 					<tr class="text-left">
-						<td><?= date("Y-m-d", strtotime($item->schedule_from)) ?></td>
-						<td><?= date("H:i", strtotime($item->schedule_from)) ?></td>
-						<td class="text-right"><?= $item->specialty ?></td>
-						<td class="text-right">
-							<?php if ($item->id == $appointment->id){ ?>
-							<span class="text-info"><?= $this->lang->line('txt_actual') ?></span>
-							<?php }else{ ?>
-							<a href="<?= base_url()."appointment/detail/".$item->id ?>" target="_blank">
+						<td class="pl-0"><?= date("d.m.Y<\b\\r>H:i a", strtotime($item->schedule_from)) ?></td>
+						<td><?= $item->type ?></td>
+						<td><?= $item->specialty ?></td>
+						<td class="text-right pr-0">
+							<a href="<?= base_url().$item->link_to."/detail/".$item->id ?>" target="_blank">
 								<i class="fas fa-search"></i>
 							</a>
-							<?php } ?>
 						</td>
 					</tr>
 					<?php } ?>
 				</tbody>
 			</table>
+			<?php }else{ ?>
+			<div class="text-muted text-center"><?= $this->lang->line('txt_no_records') ?></div>
+			<?php } ?>
 		</div>
 	</div>
 </div>
@@ -301,21 +301,22 @@ $me = $appointment_datas["medicine"];
 			<h4 class="mb-0"><?= $this->lang->line('title_files') ?></h4>
 		</div>
 		<div class="card-body ap_content_list">
+			<?php if ($histories){ ?>
 			<table class="table mb-0">
 				<thead>
-					<tr class="text-left">
-						<th style="max-width: 150px;"><?= $this->lang->line('th_date') ?></th>
-						<th class="text-right"><?= $this->lang->line('th_title') ?></th>
-						<th></th>
+					<tr>
+						<th class="pt-0 pl-0"><?= $this->lang->line('th_date') ?></th>
+						<th class="pt-0"><?= $this->lang->line('th_title') ?></th>
+						<th class="pt-0 pr-0"></th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php $file_path = base_url()."uploaded/patient_files/".$patient->doc_type_id."_".$patient->doc_number."/";
 					foreach($patient_files as $item){ ?>
-					<tr class="text-left">
-						<td><?= date("Y-m-d", strtotime($item->registed_at)) ?></td>
-						<td class="text-right"><?= $item->title ?></td>
-						<td class="text-right">
+					<tr>
+						<td class="pl-0"><?= date("d.m.Y<\b\\r>H:i:s", strtotime($item->registed_at)) ?></td>
+						<td><?= $item->title ?></td>
+						<td class="pr-0">
 							<a href="<?= $file_path.$item->filename ?>" target="_blank">
 								<i class="fas fa-search"></i>
 							</a>
@@ -324,10 +325,13 @@ $me = $appointment_datas["medicine"];
 					<?php } ?>
 				</tbody>
 			</table>
+			<?php }else{ ?>
+			<div class="text-muted text-center"><?= $this->lang->line('txt_no_records') ?></div>
+			<?php } ?>
 		</div>
 	</div>
 </div>
-<div class="col-xl-12 process process_attention d-none">
+<div class="col-md-12 process process_attention d-none">
 	<div class="card">
 		<div class="card-header pb-0 border-0">
 			<h4 class="mb-0"><?= $this->lang->line('title_anamnesis') ?></h4>
@@ -609,7 +613,7 @@ $me = $appointment_datas["medicine"];
 		</div>
 	</div>
 </div>
-<div class="col-xl-12 process process_attention d-none">
+<div class="col-md-12 process process_attention d-none">
 	<div class="card">
 		<div class="card-header pb-0 border-0">
 			<h4 class="mb-0"><?= $this->lang->line('title_physical_exam') ?></h4>
@@ -767,7 +771,7 @@ $me = $appointment_datas["medicine"];
 		</div>
 	</div>
 </div>
-<div class="col-xl-12 process process_attention d-none">
+<div class="col-md-12 process process_attention d-none">
 	<div class="card">
 		<div class="card-header border-0">
 			<h4 class="mb-0"><?= $this->lang->line('title_diagnostic_impression') ?></h4>
@@ -821,7 +825,7 @@ $me = $appointment_datas["medicine"];
 		</div>
 	</div>
 </div>
-<div class="col-xl-12 process process_attention d-none">
+<div class="col-md-12 process process_attention d-none">
 	<div class="card">
 		<div class="card-header pb-0 border-0">
 			<h4 class="mb-0"><?= $this->lang->line('title_result') ?></h4>
@@ -851,7 +855,7 @@ $me = $appointment_datas["medicine"];
 		</div>
 	</div>
 </div>
-<div class="col-xl-12 process process_attention d-none">
+<div class="col-md-12 process process_attention d-none">
 	<div class="card">
 		<div class="card-header pb-0 border-0">
 			<h4 class="mb-0"><?= $this->lang->line('title_auxiliary_exam') ?></h4>
@@ -1035,7 +1039,7 @@ $me = $appointment_datas["medicine"];
 		</div>
 	</div>
 </div>
-<div class="col-xl-12 process process_attention d-none">
+<div class="col-md-12 process process_attention d-none">
 	<div class="card">
 		<div class="card-header pb-0 border-0">
 			<h4 class="mb-0"><?= $this->lang->line('title_treatment') ?></h4>
@@ -1235,7 +1239,7 @@ $me = $appointment_datas["medicine"];
 		</div>
 	</div>
 </div>
-<div class="col-xl-12 process process_attention d-none">
+<div class="col-md-12 process process_attention d-none">
 	<div class="card">
 		<div class="card-header pb-0 border-0">
 			<h4 class="mb-0"><?= $this->lang->line('title_sick_leave') ?></h4>
@@ -1246,7 +1250,7 @@ $me = $appointment_datas["medicine"];
 	</div>
 </div>
 <?php if ($appointment->is_editable){ ?>
-<div class="col-xl-12 process process_attention d-none">
+<div class="col-md-12 process process_attention d-none">
 	<div class="card">
 		<div class="card-body">
 			<div class="text-center">

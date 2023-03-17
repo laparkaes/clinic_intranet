@@ -38,6 +38,7 @@
 								<tr>
 									<th class="text-left pt-0 pl-0"><?= $this->lang->line('hd_schedule') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_place') ?></th>
+									<th class="pt-0"><?= $this->lang->line('hd_specialty') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_doctor') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_patient') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_status') ?></th>
@@ -48,14 +49,11 @@
 								<?php foreach($surgeries as $item){ ?>
 								<tr>
 									<td class="text-left text-nowrap pl-0">
-										<?= date("Y-m-d<\b\\r>h:i A", strtotime($item->schedule_from)) ?>
+										<?= date("d.m.Y<\b\\r>h:i A", strtotime($item->schedule_from)) ?>
 									</td>
 									<td><?= $item->place ?></td>
-									<td>
-										<?= $people_arr[$item->doctor_id] ?>
-										<br/>
-										<?= $specialties_arr[$doctors_arr[$item->doctor_id]->specialty_id] ?>
-									</td>
+									<td><?= $specialties_arr[$doctors_arr[$item->doctor_id]->specialty_id] ?></td>
+									<td><?= $people_arr[$item->doctor_id] ?></td>
 									<td><?= $people_arr[$item->patient_id] ?></td>
 									<td><span class="text-<?= $status_arr[$item->status_id]->color ?>"><?= $this->lang->line($status_arr[$item->status_id]->code) ?></span></td>
 									<td class="text-right pr-0">
