@@ -10,7 +10,7 @@ class Surgery extends CI_Controller {
 		date_default_timezone_set('America/Lima');
 		$this->lang->load("surgery", "spanish");
 		$this->lang->load("system", "spanish");
-		$this->load->model('appointment_model','appointment');
+		$this->load->model('surgery_model','surgery');
 		$this->load->model('status_model','status');
 		$this->load->model('general_model','general');
 	}
@@ -128,7 +128,7 @@ class Surgery extends CI_Controller {
 			else $patient->blood_type = null;
 		}
 		
-		//start set history records > mix surgeries and appointments
+		//start set history records > mix surgeries and surgerys
 		$specialties = array();
 		$specialties_rec = $this->general->all("specialty");
 		foreach($specialties_rec as $item) $specialties[$item->id] = $item->name;
@@ -143,15 +143,15 @@ class Surgery extends CI_Controller {
 			$item->type = $this->lang->line($item->link_to);
 		}
 		
-		$appointment_histories = $this->general->filter("appointment", $filter);
-		foreach($appointment_histories as $item){
+		$surgery_histories = $this->general->filter("surgery", $filter);
+		foreach($surgery_histories as $item){
 			$d = $this->general->filter("doctor", array("person_id" => $doctor->id))[0];
 			$item->specialty = $specialties[$d->specialty_id];
-			$item->link_to = "appointment";
+			$item->link_to = "surgery";
 			$item->type = $this->lang->line($item->link_to);
 		}
 		
-		$histories = array_merge($surgery_histories, $appointment_histories);
+		$histories = array_merge($surgery_histories, $surgery_histories);
 		usort($histories, function($a, $b) { return ($a->schedule_from < $b->schedule_from); });
 		//end set history records
 		
@@ -183,6 +183,7 @@ class Surgery extends CI_Controller {
 		if (!$pt["doc_number"]) $msgs = $this->set_msg($msgs, "sur_pt_doc_msg", "error", "error_dnu");
 		
 		//schedule validation
+		if (!$sch["duration"]) $msgs = $this->set_msg($msgs, "sur_duration_msg", "error", "error_sdu");
 		if (!$sch["date"]) $msgs = $this->set_msg($msgs, "sur_schedule_msg", "error", "error_sda");
 		elseif (!$sch["hour"]) $msgs = $this->set_msg($msgs, "sur_schedule_msg", "error", "error_sho");
 		elseif (!$sch["min"]) $msgs = $this->set_msg($msgs, "sur_schedule_msg", "error", "error_smi");
@@ -198,7 +199,7 @@ class Surgery extends CI_Controller {
 			array_push($status_ids, $this->status->code("reserved")->id);
 			array_push($status_ids, $this->status->code("confirmed")->id);
 			
-			//check appointment and surgery available
+			//check surgery and surgery available
 			$sur_available = $this->general->is_available("surgery", $sur, $status_ids);
 			$app_available = $this->general->is_available("appointment", $sur, $status_ids);
 			if (!($sur_available and $app_available)) $msgs = $this->set_msg($msgs, "sur_schedule_msg", "error", "error_dna");
@@ -241,12 +242,12 @@ class Surgery extends CI_Controller {
 		echo json_encode(array("status" => $status, "type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to));
 	}
 	
-	public function cancel_appointment(){
+	public function cancel_surgery(){
 		$status = false; $type = "error"; $msg = null;
-		$appointment = $this->appointment->id($this->input->post("id"));
-		if ($appointment){
-			if (!$appointment->payment_id){
-				if ($this->appointment->update($appointment->id, array("status_id" => $this->status->code("canceled")->id))){
+		$surgery = $this->surgery->id($this->input->post("id"));
+		if ($surgery){
+			if (!$surgery->payment_id){
+				if ($this->surgery->update($surgery->id, array("status_id" => $this->status->code("canceled")->id))){
 					$status = true;
 					$type = "success";
 					$msg = $this->lang->line('success_cap');
@@ -276,33 +277,38 @@ class Surgery extends CI_Controller {
 		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg));
 	}
 
-	public function reschedule_appointment(){
+	public function reschedule_surgery(){
 		$status = false; $type = "error"; $msg = null; $msgs = array();
 		$data = $this->input->post();
 		
-		if (!$data["hour"]) $msgs = $this->set_msg($msgs, "ra_time_msg", "error", "error_sho");
-		elseif (!$data["min"]) $msgs = $this->set_msg($msgs, "ra_time_msg", "error", "error_smi");
+		if (!$data["duration"]) $msgs = $this->set_msg($msgs, "rs_duration_msg", "error", "error_sdu");
+		if (!$data["hour"]) $msgs = $this->set_msg($msgs, "rs_time_msg", "error", "error_sho");
+		elseif (!$data["min"]) $msgs = $this->set_msg($msgs, "rs_time_msg", "error", "error_smi");
+		
+		if ($msgs) $msg = $this->lang->line('error_occurred');
 		else{
-			$appointment = $this->appointment->id($data["id"]);
-			if ($appointment){
+			$surgery = $this->surgery->id($data["id"]);
+			if ($surgery){
 				$schedule_from = $data["date"]." ".$data["hour"].":".$data["min"];
-				$app = array(
-					"id" => $appointment->id,
-					"doctor_id" => $appointment->doctor_id,
+				$sur = array(
+					"id" => $surgery->id,
+					"doctor_id" => $surgery->doctor_id,
 					"schedule_from" => $schedule_from,
-					"schedule_to" => date("Y-m-d H:i:s", strtotime("+14 minutes", strtotime($schedule_from)))
+					"schedule_to" => date("Y-m-d H:i:s", strtotime("+".$data["duration"]." minutes", strtotime($schedule_from)))
 				);
 				
 				$status_ids = array();
 				array_push($status_ids, $this->status->code("reserved")->id);
 				array_push($status_ids, $this->status->code("confirmed")->id);
 				
-				if ($this->appointment->check_available($app, $status_ids)) $msg = $this->lang->line('error_dna');
+				$sur_available = $this->general->is_available("surgery", $sur, $status_ids);
+				$app_available = $this->general->is_available("appointment", $sur, $status_ids);
+				if (!($sur_available and $app_available)) $msg = $this->lang->line('error_dna');
 				else{
-					if ($this->appointment->update($app["id"], $app)){
+					if ($this->surgery->update($sur["id"], $sur)){
 						$status = true;
 						$type = "success";
-						$msg = $this->lang->line('success_rsp');
+						$msg = $this->lang->line('success_rsu');
 					}else $msg = $this->lang->line('error_internal');
 				}
 			}else $msg = $this->lang->line('error_internal_refresh');
@@ -313,10 +319,10 @@ class Surgery extends CI_Controller {
 	}
 
 	public function report($id){
-		$appointment = $this->appointment->id($id);
-		if (!$appointment) redirect("/appointment");
+		$surgery = $this->surgery->id($id);
+		if (!$surgery) redirect("/surgery");
 		
-		$doctor = $this->general->id("person", $appointment->doctor_id);
+		$doctor = $this->general->id("person", $surgery->doctor_id);
 		if ($doctor){
 			$data = $this->general->filter("doctor", array("person_id" => $doctor->id));
 			if ($data){
@@ -329,24 +335,24 @@ class Surgery extends CI_Controller {
 			$doctor->data->specialty = "";
 		}
 		
-		$patient = $this->general->id("person", $appointment->patient_id);
+		$patient = $this->general->id("person", $surgery->patient_id);
 		if ($patient){
 			$patient->doc_type = $this->sl_option->id($patient->doc_type_id)->description;
 			if ($patient->birthday) $patient->age = $this->utility_lib->age_calculator($patient->birthday, true);
 			else $patient->birthday = $patient->age = null;	
 		}else $patient = $this->general->structure("person");
 		
-		$appointment_datas = $this->set_appointment_data($appointment);
+		$surgery_datas = $this->set_surgery_data($surgery);
 		
 		$data = array(
-			"appointment" => $appointment,
-			"appointment_datas" => $appointment_datas,
+			"surgery" => $surgery,
+			"surgery_datas" => $surgery_datas,
 			"doctor" => $doctor,
 			"patient" => $patient
 		);
 		
-		//$html = $this->load->view('appointment/report_1', $data, true);
-		$html = $this->load->view('appointment/report_2', $data, true);
+		//$html = $this->load->view('surgery/report_1', $data, true);
+		$html = $this->load->view('surgery/report_2', $data, true);
 		
 		//echo $html;
 		

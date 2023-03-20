@@ -15,6 +15,7 @@ $lang['error_sdu'] = 'Elija duración.';//error_enter_place
 $lang['error_sre'] = 'Ingrese resultado.';//error_enter_result
 $lang['success_ras'] = 'Cirugía ha sido registrada.';//success_register_surgery
 $lang['success_fsu'] = 'Cirugía ha sido finalizada.';//success_finish_surgery
+$lang['success_rsu'] = 'Consulta ha sido reprogramada.';//success_reschedule_surgery
 $lang['warning_sre'] = '¿Desea reprogramar cirugía?';//warning_surgery_reschedule
 $lang['warning_sfi'] = '¿Desea finalizar cirugía?';//warning_surgery_finish
 

@@ -62,7 +62,7 @@ function reschedule_surgery(dom){
 	$("#reschedule_form .sys_msg").html("");
 	Swal.fire({
 		title: $("#alert_warning_title").val(),
-		text: $("#warning_are").val(),
+		text: $("#warning_sre").val(),
 		icon: 'warning',
 		showCancelButton: true,
 		confirmButtonText: $("#alert_confirm_btn").val(),
@@ -92,8 +92,8 @@ function reschedule_surgery(dom){
 }
 
 function load_doctor_schedule(){
-	var doctor_id = $("#ra_doctor").val();
-	var date = $("#ra_date").val();
+	var doctor_id = $("#rs_doctor").val();
+	var date = $("#rs_date").val();
 	
 	if ((doctor_id != "") && (date != "")){
 		$.ajax({

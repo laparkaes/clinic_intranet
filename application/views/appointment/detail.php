@@ -96,7 +96,7 @@
 			</div>
 			<form action="#" id="reschedule_form">
 				<div class="modal-body">
-					<input type="hidden" name="id" value="<?= $appointment->id ?>" readonly>
+					<input type="hidden" name="id" value="<?= $surgery->id ?>" readonly>
 					<input type="hidden" id="ra_doctor" value="<?= $doctor->id ?>">
 					<div class="form-row">
 						<div class="form-group col-md-6">

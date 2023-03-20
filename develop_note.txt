@@ -2,5 +2,3 @@
 diagnostico presuntivo
 diagnostico confirmado
 diagnostico repetitivo
-
-ALTER TABLE `surgery` ADD `result` TEXT NULL AFTER `remark`; 

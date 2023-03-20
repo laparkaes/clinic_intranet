@@ -188,7 +188,7 @@
 			<form action="#" id="form_reschedule">
 				<div class="modal-body">
 					<input type="hidden" name="id" value="<?= $surgery->id ?>" readonly>
-					<input type="hidden" id="rs_doctor" value="<?= $doctor->id ?>">
+					<input type="hidden" name="doctor_id" id="rs_doctor" value="<?= $doctor->id ?>">
 					<div class="form-row">
 						<div class="form-group col-md-6">
 							<label><?= $this->lang->line('lb_doctor') ?></label>
@@ -198,12 +198,12 @@
 							<label><?= $this->lang->line('lb_patient') ?></label>
 							<input type="text" class="form-control" value="<?= $patient->name ?>" readonly>
 						</div>
-						<div class="form-group col-md-6">
+						<div class="form-group col-md-4">
 							<label><?= $this->lang->line('lb_date') ?></label>
 							<input type="text" class="form-control date_picker doc_schedule schedule" id="rs_date" name="date" value="<?= date('Y-m-d') ?>" readonly>
 							<div class="sys_msg" id="rs_date_msg"></div>
 						</div>
-						<div class="form-group col-md-6">
+						<div class="form-group col-md-5">
 							<label><?= $this->lang->line('lb_time') ?></label>
 							<div class="d-flex">
 								<select class="form-control text-center schedule px-0" id="rs_hour" name="hour">
@@ -230,6 +230,18 @@
 								</select>
 							</div>
 							<div class="sys_msg" id="rs_time_msg"></div>
+						</div>
+						<div class="form-group col-md-3">
+							<label><?= $this->lang->line('lb_duration') ?></label>
+							<select class="form-control" name="duration">
+								<option value="">--</option>
+								<option value="30">30 <?= $this->lang->line('op_minutes') ?></option>
+								<option value="60">1 <?= $this->lang->line('op_hour') ?></option>
+								<?php for($i = 2; $i <= 6; $i++){ ?>
+								<option value="<?= $i*60 ?>"><?= $i ?> <?= $this->lang->line('op_hours') ?></option>
+								<?php } ?>
+							</select>
+							<div class="sys_msg" id="rs_duration_msg"></div>
 						</div>
 					</div>
 					<div class="mt-3" id="doctor_agenda">

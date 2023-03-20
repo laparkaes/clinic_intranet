@@ -112,11 +112,11 @@ class Ajax_f extends CI_Controller {
 			$status_ids = array($this->status->code("reserved")->id, $this->status->code("confirmed")->id);
 			$appointments = $this->appointment->doctor($doctor_id, $date, $status_ids);
 			if ($appointments) foreach($appointments as $item)
-				array_push($data, "<span>".date("h:i A", strtotime($item->schedule_from))."</span><span>Consulta</span>");
+				array_push($data, "<div>Consulta</div><div>".date("h:i A", strtotime($item->schedule_from))." - ".date("h:i A", strtotime($item->schedule_to))."</div>");
 			
 			$surgeries = $this->surgery->doctor($doctor_id, $date, $status_ids);
 			if ($surgeries) foreach($surgeries as $item)
-				array_push($data, "<span>".date("h:i A", strtotime($item->schedule_from))."</span><span>Cirugia</span>");
+				array_push($data, "<div>Cirugia</div><div>".date("h:i A", strtotime($item->schedule_from))." - ".date("h:i A", strtotime($item->schedule_to))."</div>");
 			
 			if (!$data) array_push($data, "Disponibilidad Completa.");
 			
