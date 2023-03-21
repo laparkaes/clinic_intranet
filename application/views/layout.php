@@ -157,9 +157,6 @@
 	<label class="btn-side-menu nav-control">
 		<i class="far fa-bars text-white"></i>
 	</label>
-	
-	
-	
 	<div class="schedule_box chatbox">
 		<div class="schedule_box-close chatbox-close"></div>
 		<div class="custom-tab-1">
