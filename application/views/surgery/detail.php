@@ -179,24 +179,19 @@
 <div class="modal fade" id="reschedule_surgery" tabindex="-1" role="dialog" aria-labelledby="reschedule_surgeryLabel" aria-hidden="true">
 	<div class="modal-dialog text-left" role="document">
 		<div class="modal-content">
-			<div class="modal-header border-0 pb-0">
-				<h5 class="modal-title" id="reschedule_surgeryLabel"><?= $this->lang->line('title_reschedule_surgery') ?></h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
 			<form action="#" id="form_reschedule">
 				<div class="modal-body">
+					<h5 class="mb-3"><?= $this->lang->line('title_reschedule_surgery') ?></h5>
 					<input type="hidden" name="id" value="<?= $surgery->id ?>" readonly>
 					<input type="hidden" name="doctor_id" id="rs_doctor" value="<?= $doctor->id ?>">
 					<div class="form-row">
-						<div class="form-group col-md-6">
+						<div class="form-group col-md-12">
 							<label><?= $this->lang->line('lb_doctor') ?></label>
-							<input type="text" class="form-control" value="<?= $doctor->name ?>" readonly>
+							<input type="text" class="form-control bg-light" value="<?= $doctor->name ?>" readonly>
 						</div>
-						<div class="form-group col-md-6">
+						<div class="form-group col-md-12">
 							<label><?= $this->lang->line('lb_patient') ?></label>
-							<input type="text" class="form-control" value="<?= $patient->name ?>" readonly>
+							<input type="text" class="form-control bg-light" value="<?= $patient->name ?>" readonly>
 						</div>
 						<div class="form-group col-md-4">
 							<label><?= $this->lang->line('lb_date') ?></label>
@@ -245,7 +240,7 @@
 						</div>
 					</div>
 					<div class="mt-3" id="doctor_agenda">
-						<h5><?= $this->lang->line('title_doctor_agenda') ?></h5>
+						<h5 class="mb-3"><?= $this->lang->line('title_doctor_agenda') ?></h5>
 						<ul class="list-group" id="rp_schedule"></ul>
 					</div>
 				</div>
