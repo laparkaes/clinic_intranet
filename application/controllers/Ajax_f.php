@@ -303,14 +303,13 @@ class Ajax_f extends CI_Controller {
 		ini_set('display_errors','0'); 
 		
 		$start = 0;
-		$end = $start + 2;//4955;
+		$end = $start + 50500;
 		
 		echo "<table style='width: 100%;'>";
 		for($i = $start; $i < $end; $i++){
 			//sleep(3);
 			$companies = $this->pqt_detail($i);
 			foreach($companies as $item){
-				print_r($item);
 				if ($item->mainActivities){
 					$ma = array();
 					foreach($item->mainActivities as $m) array_push($ma, explode(" - ", $m->label)[1]);
@@ -323,7 +322,7 @@ class Ajax_f extends CI_Controller {
 				
 				$aux_executives = array();
 				if ($item->executives){
-					$item->executives_txt = $item->executives[0]->firstName." ".$item->executives[0]->lastName."</td><td>".$item->executives[0]->function;
+					$item->executives_txt = $item->executives[0]->name."</td><td>".$item->executives[0]->functionName;
 				}else $item->executives_txt = "</td><td>";
 				
 				echo "<tr><td>".$i."</td><td>".$item->companyId."</td><td>".$item->country."</td><td>".$item->city."</td><td>".$item->name."</td><td>".$item->websites."</td><td>".$item->executives_txt."</td><td>".$item->emails."</td><td>".$item->phones."</td><td>".$item->addressLine1."</td><td>".$item->creationYear."</td><td>".$item->mainActivities."</td></tr>";
