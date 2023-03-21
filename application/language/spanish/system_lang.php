@@ -24,6 +24,9 @@ $lang['error_occurred'] = 'Ocurrió un error. Revise los datos.';
 $lang['error_internal'] = 'Ocurrió un error interno. Intente de nuevo.';
 $lang['error_internal_refresh'] = 'Ocurrió un error desconocido. Actualice página y vuelva intentar.';
 $lang['error_no_result'] = 'No hay resultado de búsqueda. Ingrese los datos manualmente.';
+$lang['error_select_doctor'] = 'Elija un médico.';
+$lang['error_select_date'] = 'Elija una fecha.';
+$lang['msg_complete_availability'] = 'Disponibilidad completa.';
 
 //roles
 $lang['master'] = 'Maestro';
@@ -82,8 +85,10 @@ $lang['btn_register'] = 'Registrar';
 
 //text
 $lang['txt_detail'] = 'Detalle';
+$lang['txt_appointment'] = 'Consulta';
 $lang['txt_appointments'] = 'Consultas';
 $lang['txt_appointments_list'] = 'Lista de Consultas';
+$lang['txt_surgery'] = 'Cirugía';
 $lang['txt_surgeries'] = 'Cirugías';
 $lang['txt_surgeries_list'] = 'Lista de Cirugías';
 $lang['txt_today'] = 'Hoy';

@@ -70,3 +70,5 @@ $lang['th_type'] = 'Tipo';
 $lang['btn_report'] = 'Reporte';
 $lang['btn_reschedule'] = 'Reprogramar';
 $lang['hd_specialty'] = 'Especialidad';
+$lang['th_start'] = 'Inicio';
+$lang['th_end'] = 'Fin';

@@ -154,9 +154,17 @@
 									</div>
 									<div class="form-group col-md-12">
 										<label><?= $this->lang->line('title_doctor_agenda') ?></label>
-										<ul class="list-group ap_content_list_short" id="sur_schedule_list">
-											<li class="list-group-item py-2">&nbsp;</li>
-										</ul>
+										<table class="table table-sm w-100 mb-0">
+											<thead>
+												<tr>
+													<th class="w-50 pt-0"><strong><?= $this->lang->line('th_type') ?></strong></th>
+													<th class="text-center pt-0"><strong><?= $this->lang->line('th_start') ?></strong></th>
+													<th class="pt-0"></th>
+													<th class="text-center pt-0"><strong><?= $this->lang->line('th_end') ?></strong></th>
+												</tr>
+											</thead>
+											<tbody class="ap_content_list" id="sur_schedule_list"></tbody>
+										</table>
 									</div>
 								</div>
 							</div>
@@ -195,10 +203,12 @@
 										<label><?= $this->lang->line('lb_remark') ?> (<?= $this->lang->line('lb_optional') ?>)</label>
 										<textarea class="form-control" rows="4" name="sur[remark]" placeholder="<?= $this->lang->line('txt_remark') ?>"></textarea>
 									</div>
+									<div class="form-group col-md-12 text-right pt-3">
+										<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
+									</div>
 								</div>
 							</div>
 						</div>
-						<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
 					</form>
 				</div>
 			</div>

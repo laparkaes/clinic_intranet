@@ -241,7 +241,17 @@
 					</div>
 					<div class="mt-3" id="doctor_agenda">
 						<h5 class="mb-3"><?= $this->lang->line('title_doctor_agenda') ?></h5>
-						<ul class="list-group" id="rp_schedule"></ul>
+						<table class="table table-sm w-100 mb-0">
+							<thead>
+								<tr>
+									<th class="w-50 pt-0"><strong><?= $this->lang->line('th_type') ?></strong></th>
+									<th class="text-center pt-0"><strong><?= $this->lang->line('th_start') ?></strong></th>
+									<th class="pt-0"></th>
+									<th class="text-center pt-0"><strong><?= $this->lang->line('th_end') ?></strong></th>
+								</tr>
+							</thead>
+							<tbody id="rp_schedule"></tbody>
+						</table>
 					</div>
 				</div>
 				<div class="modal-footer border-0 pt-0">
