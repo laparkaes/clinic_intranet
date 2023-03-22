@@ -163,7 +163,7 @@
 													<th class="text-center pr-0"><strong><?= $this->lang->line('th_end') ?></strong></th>
 												</tr>
 											</thead>
-											<tbody class="ap_content_list" id="sur_schedule_list"></tbody>
+											<tbody id="sur_schedule_list"></tbody>
 										</table>
 									</div>
 								</div>

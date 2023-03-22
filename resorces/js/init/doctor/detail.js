@@ -149,17 +149,7 @@ function aa_search_patient(){
 }
 
 function aa_load_doctor_schedule(){
-	$.ajax({
-		url: $("#base_url").val() + "appointment/load_doctor_schedule",
-		type: "POST",
-		data: {doctor_id:$("#aa_doctor_id").val(), date:$("#aa_date").val()},
-		success:function(res){
-			$("#aa_schedule_list").html("");
-			res.data.forEach((e) => {
-				$("#aa_schedule_list").append('<li class="list-group-item d-flex justify-content-between py-2">' + e + '</li>');
-			});
-		}
-	});
+	load_doctor_schedule($("#aa_doctor_id").val(), $("#aa_date").val(), "aa_schedule_list");
 }
 
 function app_register(dom){
@@ -186,8 +176,61 @@ function app_register(dom){
 	});
 }
 
+function sur_load_doctor_schedule(){
+	load_doctor_schedule($("#sur_doctor").val(), $("#sur_date").val(), "sur_schedule_list");
+}
+
+function sur_register(dom){
+	$("#register_form .sys_msg").html("");
+	$.ajax({
+		url: $("#base_url").val() + "surgery/register",
+		type: "POST",
+		data: new FormData(dom),
+		contentType: false,
+		processData:false,
+		success:function(res){
+			set_msg(res.msgs);
+			if (res.msg != null){
+				Swal.fire({
+					title: $("#alert_" + res.type + "_title").val(),
+					icon: res.type,
+					html: res.msg,
+					confirmButtonText: $("#alert_confirm_btn").val()
+				}).then((result) => {
+					if (res.status == true) location.reload();
+				});
+			}
+		}
+	});
+}
+
+function sur_search_patient(){
+	$.ajax({
+		url: $("#base_url").val() + "ajax_f/search_person",
+		type: "POST",
+		data: {doc_type_id: $("#sur_pt_doc_type_id").val(), doc_number: $("#sur_pt_doc_number").val()},
+		success:function(res){
+			Swal.fire({
+				title: $("#alert_" + res.type + "_title").val(),
+				icon: res.type,
+				html: res.msg,
+				confirmButtonText: $("#alert_confirm_btn").val()
+			}).then((result) => {
+				if (res.status == true){
+					$("#sur_pt_id").val(res.person.id);
+					$("#sur_pt_name").val(res.person.name);
+					$("#sur_pt_name").addClass("bg-light");
+					$("#sur_pt_name").attr("readonly", true);
+					$("#sur_pt_tel").val(res.person.tel);
+				}else{$("#sur_pt_name").removeClass("bg-light").attr("readonly", false);}
+			});
+		}
+	});
+}
+
 $(document).ready(function() {
 	set_datatable("appointment_list", 10, false);
+	set_datatable("surgery_list", 10, false);
 	$(".control_bl_simple").on('click',(function(e) {control_bl_simple(this);}));
 	
 	//doctor update
@@ -201,11 +244,16 @@ $(document).ready(function() {
 	$("#btn_activate").on('click',(function(e) {activation_control(this, true);}));
 	
 	//appointment generate
-	aa_load_doctor_schedule(this);
+	aa_load_doctor_schedule();
 	$("#app_register_form").submit(function(e) {e.preventDefault(); app_register(this);});
-	$("#aa_date").change(function() {aa_load_doctor_schedule(this);});
+	$("#aa_date").change(function() {aa_load_doctor_schedule();});
 	$("#btn_aa_search_pt").on('click',(function(e) {aa_search_patient();}));
 	
+	//surgery generate
+	sur_load_doctor_schedule();
+	$("#sur_register_form").submit(function(e) {e.preventDefault(); sur_register(this);});
+	$("#sur_date").change(function() {sur_load_doctor_schedule();});
+	$("#btn_sur_search_pt").on('click',(function(e) {sur_search_patient();}));
 	
 	
 });

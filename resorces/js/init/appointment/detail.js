@@ -450,44 +450,21 @@ function set_bmi(dom){
 	$(bc_dom).val($("#bmi_class_" + bmi_class).val());
 }
 
-function load_doctor_schedule(){
-	var doctor_id = $("#ra_doctor").val();
-	var date = $("#ra_date").val();
-	
-	if ((doctor_id != "") && (date != "")){
-		$.ajax({
-			url: $("#base_url").val() + "ajax_f/load_doctor_schedule",
-			type: "POST",
-			data: {doctor_id: doctor_id, date: date},
-			success:function(res){
-				$("#rp_schedule").html("");
-				if (res.status == true){
-					res.data.forEach((e) => {
-						$("#rp_schedule").append('<li class="list-group-item d-flex justify-content-between py-2">' + e + '</li>');
-					});	
-				}else{
-					Swal.fire({
-						title: $("#alert_error_title").val(),
-						html: res.msg,
-						icon: 'error',
-						confirmButtonText: $("#alert_confirm_btn").val()
-					});
-				}
-			}
-		});
-	}
+function load_doctor_schedule_appointment(){
+	load_doctor_schedule($("#ra_doctor").val(), $("#ra_date").val(), "rp_schedule");
 }
 
 $(document).ready(function() {
 	//general
+	load_doctor_schedule_appointment();
 	$(".btn_process").on('click',(function(e) {control_process_forms(this);}));
 	$("#btn_cancel").on('click',(function(e) {cancel_appointment(this);}));
 	$("#btn_finish").on('click',(function(e) {finish_appointment(this);}));
-	$("#btn_reschedule").on('click',(function(e) {load_doctor_schedule();}));
+	$("#btn_reschedule").on('click',(function(e) {load_doctor_schedule_appointment();}));
 	
 	//reschedule
 	$("#reschedule_form").submit(function(e) {e.preventDefault(); reschedule_appointment(this);});
-	$(".doc_schedule").change(function() {load_doctor_schedule();});
+	$(".doc_schedule").change(function() {load_doctor_schedule_appointment();});
 	
 	//information
 	$("#form_basic_data").submit(function(e) {e.preventDefault(); save_form("basic_data", this);});

@@ -96,16 +96,16 @@
 			</div>
 			<form action="#" id="reschedule_form">
 				<div class="modal-body">
-					<input type="hidden" name="id" value="<?= $surgery->id ?>" readonly>
+					<input type="hidden" name="id" value="<?= $appointment->id ?>" readonly>
 					<input type="hidden" id="ra_doctor" value="<?= $doctor->id ?>">
 					<div class="form-row">
-						<div class="form-group col-md-6">
+						<div class="form-group col-md-12">
 							<label><?= $this->lang->line('lb_doctor') ?></label>
-							<input type="text" class="form-control" value="<?= $doctor->name ?>" readonly>
+							<input type="text" class="form-control bg-light" value="<?= $doctor->name ?>" readonly>
 						</div>
-						<div class="form-group col-md-6">
+						<div class="form-group col-md-12">
 							<label><?= $this->lang->line('lb_patient') ?></label>
-							<input type="text" class="form-control" value="<?= $patient->name ?>" readonly>
+							<input type="text" class="form-control bg-light" value="<?= $patient->name ?>" readonly>
 						</div>
 						<div class="form-group col-md-6">
 							<label><?= $this->lang->line('lb_date') ?></label>
@@ -140,10 +140,20 @@
 							</div>
 							<div class="sys_msg" id="ra_time_msg"></div>
 						</div>
-					</div>
-					<div class="mt-3" id="doctor_agenda">
-						<h5><?= $this->lang->line('title_doctor_agenda') ?></h5>
-						<ul class="list-group ap_content_list_short" id="rp_schedule"></ul>
+						<div class="form-group col-md-12">
+							<h5 class="mt-3"><?= $this->lang->line('title_doctor_agenda') ?></h5>
+							<table class="table table-sm w-100 mb-0">
+								<thead>
+									<tr>
+										<th class="w-50 pl-0"><strong><?= $this->lang->line('th_type') ?></strong></th>
+										<th class="text-center"><strong><?= $this->lang->line('th_start') ?></strong></th>
+										<th></th>
+										<th class="text-center pr-0"><strong><?= $this->lang->line('th_end') ?></strong></th>
+									</tr>
+								</thead>
+								<tbody id="rp_schedule"></tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 				<div class="modal-footer border-0 pt-0">

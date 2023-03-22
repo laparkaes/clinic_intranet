@@ -96,10 +96,10 @@ class Doctor extends CI_Controller {
 		
 		//load other data
 		$patient_ids = array();
-		$appointments = $this->appointment->filter(array("doctor_id" => $person->id));
+		$appointments = $this->general->filter("appointment", array("doctor_id" => $person->id), "schedule_from", "desc");
 		foreach($appointments as $item) array_push($patient_ids, $item->patient_id);
 		
-		$surgeries = array();
+		$surgeries = $this->general->filter("surgery", array("doctor_id" => $person->id), "schedule_from", "desc");
 		foreach($surgeries as $item) array_push($patient_ids, $item->patient_id);
 		$patient_ids = array_unique($patient_ids);
 		

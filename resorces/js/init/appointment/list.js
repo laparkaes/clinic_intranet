@@ -22,18 +22,8 @@ function register_appointment(dom){
 	});
 }
 
-function load_doctor_schedule(){
-	$.ajax({
-		url: $("#base_url").val() + "ajax_f/load_doctor_schedule",
-		type: "POST",
-		data: {doctor_id:$("#aa_doctor").val(), date:$("#aa_date").val()},
-		success:function(res){
-			$("#aa_schedule_list").html("");
-			res.data.forEach((e) => {
-				$("#aa_schedule_list").append('<li class="list-group-item d-flex justify-content-between py-2">' + e + '</li>');
-			});	
-		}
-	});
+function load_doctor_schedule_appointment(){
+	load_doctor_schedule($("#aa_doctor").val(), $("#aa_date").val(), "aa_schedule_list");
 }
 
 function set_doctor_sl(dom){
@@ -69,9 +59,10 @@ function enable_pt_name(){$("#aa_pt_name").removeClass("bg-light").attr("readonl
 
 $(document).ready(function() {
 	set_datatable("appointment_list", 25, false);
+	load_doctor_schedule_appointment();
 	$(".control_bl").on('click',(function(e) {control_bl(this);}));
 	$("#aa_speciality").change(function() {set_doctor_sl(this);});
-	$("#aa_speciality, #aa_doctor, #aa_date").change(function() {load_doctor_schedule(this);});
+	$("#aa_speciality, #aa_doctor, #aa_date").change(function() {load_doctor_schedule_appointment();});
 	$("#pt_doc_type_id").change(function() {enable_pt_name();});
 	$("#pt_doc_number").keyup(function() {enable_pt_name();});
 	$("#btn_search_pt").on('click',(function(e) {search_person_pt();}));

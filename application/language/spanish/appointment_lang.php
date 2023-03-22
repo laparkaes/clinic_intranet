@@ -253,3 +253,5 @@ $lang['title_attention'] = 'Atención';
 $lang['th_type'] = 'Tipo';
 $lang['appointment'] = 'Consulta';
 $lang['surgery'] = 'Cirugía';
+$lang['th_start'] = 'Inicio';
+$lang['th_end'] = 'Fin';

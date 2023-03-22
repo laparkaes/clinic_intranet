@@ -51,7 +51,7 @@
 				<div class="col-md-12">
 					<form action="#" id="app_register_form">
 						<div class="row">
-							<div class="col-md-6 mb-3">
+							<div class="col-md-6">
 								<h5><?= $this->lang->line('title_attention') ?></h5>
 								<div class="form-row">
 									<div class="form-group col-md-6">
@@ -100,14 +100,22 @@
 										<div class="sys_msg" id="aa_schedule_msg"></div>
 									</div>
 									<div class="form-group col-md-12">
-										<label><?= $this->lang->line('lb_doctor_agenda') ?></label>
-										<ul class="list-group ap_content_list_short" id="aa_schedule_list">
-											<li class="list-group-item py-2">&nbsp;</li>
-										</ul>
+										<h5 class="mt-3"><?= $this->lang->line('title_doctor_agenda') ?></h5>
+										<table class="table table-sm w-100 mb-0">
+											<thead>
+												<tr>
+													<th class="w-50 pl-0"><strong><?= $this->lang->line('th_type') ?></strong></th>
+													<th class="text-center"><strong><?= $this->lang->line('th_start') ?></strong></th>
+													<th></th>
+													<th class="text-center pr-0"><strong><?= $this->lang->line('th_end') ?></strong></th>
+												</tr>
+											</thead>
+											<tbody id="aa_schedule_list"></tbody>
+										</table>
 									</div>
 								</div>
 							</div>
-							<div class="col-md-6 mb-3">
+							<div class="col-md-6">
 								<h5><?= $this->lang->line('lb_patient') ?></h5>
 								<input type="hidden" id="aa_pt_id" name="app[patient_id]" value="">
 								<div class="form-row">
@@ -142,10 +150,12 @@
 										<label><?= $this->lang->line('lb_remark') ?> (<?= $this->lang->line('lb_optional') ?>)</label>
 										<textarea class="form-control" rows="4" name="app[remark]" placeholder="<?= $this->lang->line('txt_remark') ?>"></textarea>
 									</div>
+									<div class="form-group col-md-12 text-right pt-3 mb-0">
+										<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
+									</div>
 								</div>
 							</div>
 						</div>
-						<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
 					</form>
 				</div>
 			</div>
@@ -158,7 +168,135 @@
 			<h4><?= $this->lang->line('title_generate_surgery') ?></h4>
 		</div>
 		<div class="card-body">
-			generar cirugia
+			<div class="row">
+				<div class="col-md-12">
+					<form action="#" id="sur_register_form">
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<h5><?= $this->lang->line('title_attention') ?></h5>
+								<div class="form-row">
+									<div class="form-group col-md-6">
+										<label><?= $this->lang->line('lb_specialty') ?></label>
+										<input type="hidden" value="<?= $doctor->specialty_id ?>" name="sur[speciality_id]" readonly>
+										<input type="text" class="form-control bg-light" value="<?= $doctor->specialty ?>" readonly>
+										<div class="sys_msg" id="sur_speciality_msg"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label><?= $this->lang->line('lb_doctor') ?></label>
+										<input type="hidden" value="<?= $person->id ?>" id="sur_doctor" name="sur[doctor_id]" readonly>
+										<input type="text" class="form-control bg-light" value="<?= $person->name ?>" readonly>
+										<div class="sys_msg" id="sur_doctor_msg"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label><?= $this->lang->line('lb_date') ?></label>
+										<input type="text" class="form-control date_picker" id="sur_date" name="sch[date]" value="<?= date('Y-m-d') ?>" readonly>
+										<div class="sys_msg" id="sur_date_msg"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label><?= $this->lang->line('lb_time') ?></label>
+										<div class="d-flex justify-content-between">
+											<select class="form-control text-center px-0" id="sur_hour" name="sch[hour]">
+												<option value="" selected>--</option>
+												<?php for($i = 9; $i < 18; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
+												<option value="<?= $i ?>">
+													<?php 
+													switch(true){
+														case $i < 12: echo $i." AM"; break;
+														case $i == 12: echo $i." M"; break;
+														case $i > 12: echo ($i - 12)." PM"; break;
+													}
+													?>
+												</option>
+												<?php } ?>
+											</select>
+											<span class="input-group-text bg-white px-2" style="min-width: 0;">:</span>
+											<select class="form-control text-center px-0" id="sur_min" name="sch[min]">
+												<option value="" selected>--</option>
+												<option value="00">00</option>
+												<option value="15">15</option>
+												<option value="30">30</option>
+												<option value="45">45</option>
+											</select>
+										</div>
+										<div class="sys_msg" id="sur_schedule_msg"></div>
+									</div>
+									<div class="form-group col-md-8">
+										<label><?= $this->lang->line('lb_place') ?></label>
+										<input type="text" class="form-control" name="sur[place]">
+										<div class="sys_msg" id="sur_place_msg"></div>
+									</div>
+									<div class="form-group col-md-4">
+										<label><?= $this->lang->line('lb_duration') ?></label>
+										<select class="form-control" name="sch[duration]">
+											<option value="">--</option>
+											<option value="30">30 <?= $this->lang->line('op_minutes') ?></option>
+											<option value="60">1 <?= $this->lang->line('op_hour') ?></option>
+											<?php for($i = 2; $i <= 6; $i++){ ?>
+											<option value="<?= $i*60 ?>"><?= $i ?> <?= $this->lang->line('op_hours') ?></option>
+											<?php } ?>
+										</select>
+										<div class="sys_msg" id="sur_duration_msg"></div>
+									</div>
+									<div class="form-group col-md-12">
+										<h5 class="mt-3"><?= $this->lang->line('title_doctor_agenda') ?></h5>
+										<table class="table table-sm w-100 mb-0">
+											<thead>
+												<tr>
+													<th class="w-50 pl-0"><strong><?= $this->lang->line('th_type') ?></strong></th>
+													<th class="text-center"><strong><?= $this->lang->line('th_start') ?></strong></th>
+													<th class=""></th>
+													<th class="text-center pr-0"><strong><?= $this->lang->line('th_end') ?></strong></th>
+												</tr>
+											</thead>
+											<tbody id="sur_schedule_list"></tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6 mb-3">
+								<h5><?= $this->lang->line('lb_patient') ?></h5>
+								<input type="hidden" id="sur_pt_id" name="sur[patient_id]" value="">
+								<div class="form-row">
+									<div class="form-group col-md-12">
+										<label><?= $this->lang->line('lb_document') ?></label>
+										<div class="input-group">
+											<select class="form-control" id="sur_pt_doc_type_id" name="pt[doc_type_id]" style="border-right:0;">
+												<?php foreach($doc_types as $item){ if ($item->sunat_code){ ?>
+												<option value="<?= $item->id ?>"><?= $item->description ?></option>
+												<?php }} ?>
+											</select>
+											<input type="text" class="form-control" id="sur_pt_doc_number" name="pt[doc_number]" style="border-left:0;" placeholder="<?= $this->lang->line('txt_number') ?>">
+											<div class="input-group-append">
+                                                <button class="btn btn-primary border-0" type="button" id="btn_sur_search_pt">
+													<i class="fas fa-search"></i>
+												</button>
+                                            </div>
+										</div>
+										<div class="sys_msg" id="sur_pt_doc_msg"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label><?= $this->lang->line('lb_name') ?></label>
+										<input type="text" class="form-control" id="sur_pt_name" name="pt[name]">
+										<div class="sys_msg" id="sur_pt_name_msg"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label><?= $this->lang->line('lb_tel') ?></label>
+										<input type="text" class="form-control" id="sur_pt_tel" name="pt[tel]">
+										<div class="sys_msg" id="sur_pt_tel_msg"></div>
+									</div>
+									<div class="form-group col-md-12">
+										<label><?= $this->lang->line('lb_remark') ?> (<?= $this->lang->line('lb_optional') ?>)</label>
+										<textarea class="form-control" rows="4" name="sur[remark]" placeholder="<?= $this->lang->line('txt_remark') ?>"></textarea>
+									</div>
+									<div class="form-group col-md-12 text-right pt-3">
+										<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -281,7 +419,7 @@
 											<?php foreach($appointments as $item){ ?>
 											<tr>
 												<td class="pl-0">
-													<?= date('Y-m-d H:i', strtotime($item->schedule_from)) ?>
+													<?= date("d.m.Y<\b\\r>h:i A", strtotime($item->schedule_from))." - ".date("h:i A", strtotime($item->schedule_to)) ?>
 												</td>
 												<td><?= $specialties_arr[$item->speciality_id] ?></td>
 												<td><?= $patient_arr[$item->patient_id] ?></td>
@@ -323,23 +461,25 @@
 									<table id="surgery_list" class="display">
 										<thead>
 											<tr>
-												<th><?= $this->lang->line('hd_date') ?></th>
-												<th><?= $this->lang->line('hd_time') ?></th>
-												<th><?= $this->lang->line('hd_patient') ?></th>
-												<th><?= $this->lang->line('hd_status') ?></th>
-												<th></th>
+												<th class="pt-0 pl-0"><?= $this->lang->line('hd_schedule') ?></th>
+												<th class="pt-0"><?= $this->lang->line('hd_place') ?></th>
+												<th class="pt-0"><?= $this->lang->line('hd_specialty') ?></th>
+												<th class="pt-0"><?= $this->lang->line('hd_patient') ?></th>
+												<th class="pt-0"><?= $this->lang->line('hd_status') ?></th>
+												<th class="text-right pt-0 pr-0"></th>
 											</tr>
 										</thead>
 										<tbody>
 											<?php foreach($surgeries as $item){ ?>
 											<tr>
-												<td><?= date('Y-m-d', strtotime($item->schedule_from)) ?></td>
-												<td><?= date('H:i', strtotime($item->schedule_from)) ?></td>
+												<td class="pl-0"><?= date("d.m.Y<\b\\r>h:i A", strtotime($item->schedule_from))." - ".date("h:i A", strtotime($item->schedule_to)) ?></td>
+												<td><?= $item->place ?></td>
+												<td><?= $specialties_arr[$item->speciality_id] ?></td>
 												<td><?= $patient_arr[$item->patient_id] ?></td>
 												<td class="text-<?= $status_arr[$item->status_id]->color ?>">
 													<?= $this->lang->line($status_arr[$item->status_id]->code) ?>
 												</td>
-												<td class="text-right">
+												<td class="text-right pr-0">
 													<a href="<?= base_url() ?>surgery/detail/<?= $item->id ?>">
 														<button class="btn btn-primary light sharp border-0">
 															<i class="fas fa-search"></i>
@@ -354,7 +494,7 @@
 							</div>
 							<?php }else{ ?>
 							<div class="col-md-12">
-								<div class="text-danger"><?= $this->lang->line('msg_no_surger_data') ?></div>
+								<div class="text-danger"><?= $this->lang->line('msg_no_surgery_data') ?></div>
 							</div>
 							<?php } ?>
 						</div>
