@@ -253,7 +253,7 @@ class Ajax_f extends CI_Controller {
 		echo '<meta charset="UTF-8" />';
 	
 		//$this->load->view('pqt');
-		$url = "https://kr.kompass.com/easybusiness/company/detail?CSRFToken=6eef5c74-7530-4452-bc05-0e49d06bdc93";
+		$url = "https://kr.kompass.com/easybusiness/company/detail?CSRFToken=ee75a47b-660e-4c00-bc10-6973f40dda5f";
 
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_URL, $url);
@@ -261,24 +261,25 @@ class Ajax_f extends CI_Controller {
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
 		$headers = array(
-		   "Host: kr.kompass.com", 
-			"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0", 
-			"Accept: application/json, text/plain, */*", 
-			"Accept-Language: ko-KR,ko;q=0.8,en-US;q=0.5,en;q=0.3", 
-			"Accept-Encoding: *", 
-			"X-NewRelic-ID: XA8BUFVaGwYIVlZVDgM=", 
-			"Content-Type: application/json;charset=utf-8", 
-			//"Content-Length: 331", 
-			"Origin: https://kr.kompass.com", 
-			"Connection: keep-alive", 
-			"Referer: https://kr.kompass.com/easybusiness", 
-			'Cookie: timezoneoffset=300; timezonename=America/Lima; datadome=504K8i1~YNWdEsVsopON0oKhxDr6qWUGCbjdI4dB-eMCplXFT-t4EEGACY6gnSlxypb3_7_RAEtMFWcDiUT79A1B4Yx4nfvcxb6-dKaurRjRJr-JmOE9ma57JI4zkV6D; route=1679359672.502.36.713028|1ca372b33d2bad9524c20eaf607b64ca; kp_uuid=8e47df51-bcab-4259-b519-a95b24fd7eed; axeptio_cookies={%22$$token%22:%22a3on45kc8vq9cizl2fhbsf%22%2C%22$$date%22:%222023-03-21T00:47:53.316Z%22%2C%22$$completed%22:false}; axeptio_authorized_vendors=%2C%2C; axeptio_all_vendors=%2C%2C; _gcl_au=1.1.1727085236.1679359673; _ga=GA1.3.1913626510.1679359674; _gid=GA1.3.2035161986.1679359674; _ga=GA1.2.1913626510.1679359674; _gid=GA1.2.2035161986.1679359674; SnapABugHistory=1#; clientUuid=b9df729c-f1cd-43c5-b715-f531e344affc; JSESSIONID=FB30C875F5009F25F0C5D62F659B8F8A; _k_cty_lang=en_KR; ROUTEID=.; timezoneoffset=300; acceleratorSecureGUID=6a39af65cbf7ece2dd9c4a838be6fe054227b50e; state=1; SnapABugVisit=12#1679359698; SnapABugRef=https%3A%2F%2Fkr.kompass.com%2Feasybusiness%2F%23%2Fdetail%2F602%2F0%20; timezonename=America/Lima', 
-			"Sec-Fetch-Dest: empty", 
-			"Sec-Fetch-Mode: cors", 
-			"Sec-Fetch-Site: same-origin", 
-			"Pragma: no-cache", 
-			"Cache-Control: no-cache", 
-			"TE: trailers"
+		   "Host: kr.kompass.com",
+			"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0",
+			"Accept: application/json, text/plain, */*",
+			"Accept-Language: ko-KR,ko;q=0.8,en-US;q=0.5,en;q=0.3",
+			"Accept-Encoding: *",
+			"X-NewRelic-ID: XA8BUFVaGwYIVlZVDgM=",
+			"Content-Type: application/json;charset=utf-8",
+			//"Content-Length: 330",
+			"Origin: https://kr.kompass.com",
+			"Connection: keep-alive",
+			"Referer: https://kr.kompass.com/easybusiness",
+			"Cookie: timezoneoffset=300; timezonename=America/Lima; datadome=3CkPwbYfBHs5DeM~~2~yJ3p7__eCO7QEHIRjQzgwkLOC819uvg0NtwYa_MnG~vMxa_rl8Zmtza7Ld7rSA00WH_Th2R7eHM_sH~MxxKIZG~BsXVEPUhWP38eBYYWtdq9K; route=1679359672.502.36.713028|1ca372b33d2bad9524c20eaf607b64ca; kp_uuid=ccbd933e-37f2-40f4-a2f1-1b66dc226a1f; axeptio_cookies={%22$$token%22:%22a3on45kc8vq9cizl2fhbsf%22%2C%22$$date%22:%222023-03-21T00:47:53.316Z%22%2C%22$$completed%22:false}; axeptio_authorized_vendors=%2C%2C; axeptio_all_vendors=%2C%2C; _gcl_au=1.1.1727085236.1679359673; _ga=GA1.3.1913626510.1679359674; _gid=GA1.3.2035161986.1679359674; _ga=GA1.2.1913626510.1679359674; _gid=GA1.2.2035161986.1679359674; SnapABugHistory=1#; _k_cty_lang=en_KR; ROUTEID=.; timezoneoffset=300; JSESSIONID=BB3C3948B7C0D8117ABFD4B4217C1576; acceleratorSecureGUID=30d01766beee4f4c92a6dc3c403874491f7a5fea; state=1; timezonename=America/Lima; SnapABugVisit=18#1679359698; clientUuid=8bca8506-90c9-48e3-9ee9-268612cc5cb3; SnapABugRef=https%3A%2F%2Fkr.kompass.com%2Feasybusiness%23%2F%20https%3A%2F%2Fkr.kompass.com%2F",
+			"Sec-Fetch-Dest: empty",
+			"Sec-Fetch-Mode: cors",
+			"Sec-Fetch-Site: same-origin",
+			"Pragma: no-cache",
+			"Cache-Control: no-cache",
+			"TE: trailers",
+
 		);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 

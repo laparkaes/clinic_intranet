@@ -139,9 +139,9 @@ function load_doctor_schedule(doctor_id, date, dom_id){
 			$("#" + dom_id).html("");
 			if (res.msg == null){
 				res.data.forEach((e) => {
-					$("#" + dom_id).append('<tr><td>' + e.type + '</td><td class="text-center">' + e.from + '</td><td class="text-center">-</td><td class="text-center">' + e.to + '</td></tr>');
+					$("#" + dom_id).append('<tr><td class="pl-0">' + e.type + '</td><td class="text-center">' + e.from + '</td><td class="text-center">-</td><td class="text-center pr-0">' + e.to + '</td></tr>');
 				});
-			}else $("#" + dom_id).append('<tr><td colspan="4">' + res.msg + '</td></tr>');
+			}else $("#" + dom_id).append('<tr><td colspan="4" class="pl-0">' + res.msg + '</td></tr>');
 		}
 	});
 }

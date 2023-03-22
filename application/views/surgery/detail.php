@@ -238,20 +238,20 @@
 							</select>
 							<div class="sys_msg" id="rs_duration_msg"></div>
 						</div>
-					</div>
-					<div class="mt-3" id="doctor_agenda">
-						<h5 class="mb-3"><?= $this->lang->line('title_doctor_agenda') ?></h5>
-						<table class="table table-sm w-100 mb-0">
-							<thead>
-								<tr>
-									<th class="w-50 pt-0"><strong><?= $this->lang->line('th_type') ?></strong></th>
-									<th class="text-center pt-0"><strong><?= $this->lang->line('th_start') ?></strong></th>
-									<th class="pt-0"></th>
-									<th class="text-center pt-0"><strong><?= $this->lang->line('th_end') ?></strong></th>
-								</tr>
-							</thead>
-							<tbody id="rp_schedule"></tbody>
-						</table>
+						<div class="form-group col-md-12">
+							<h5 class="mt-3"><?= $this->lang->line('title_doctor_agenda') ?></h5>
+							<table class="table table-sm w-100 mb-0">
+								<thead>
+									<tr>
+										<th class="w-50 pl-0"><strong><?= $this->lang->line('th_type') ?></strong></th>
+										<th class="text-center"><strong><?= $this->lang->line('th_start') ?></strong></th>
+										<th></th>
+										<th class="text-center pr-0"><strong><?= $this->lang->line('th_end') ?></strong></th>
+									</tr>
+								</thead>
+								<tbody id="rp_schedule"></tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 				<div class="modal-footer border-0 pt-0">

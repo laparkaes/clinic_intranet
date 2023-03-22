@@ -194,7 +194,7 @@ class Surgery extends CI_Controller {
 		if (!$sur["speciality_id"]) $msgs = $this->set_msg($msgs, "sur_speciality_msg", "error", "error_ssp");
 		if (!$sur["doctor_id"]) $msgs = $this->set_msg($msgs, "sur_doctor_msg", "error", "error_sdo");
 		if ($sur["schedule_from"]){
-			$sur["schedule_to"] = date("Y-m-d H:i:s", strtotime("+".$sch["duration"]." minutes", strtotime($sur["schedule_from"])));
+			$sur["schedule_to"] = date("Y-m-d H:i:s", strtotime("+".($sch["duration"]-1)." minutes", strtotime($sur["schedule_from"])));
 			$status_ids = array();
 			array_push($status_ids, $this->status->code("reserved")->id);
 			array_push($status_ids, $this->status->code("confirmed")->id);
