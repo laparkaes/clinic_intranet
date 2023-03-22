@@ -253,7 +253,7 @@ class Ajax_f extends CI_Controller {
 		echo '<meta charset="UTF-8" />';
 	
 		//$this->load->view('pqt');
-		$url = "https://kr.kompass.com/easybusiness/company/detail?CSRFToken=ee75a47b-660e-4c00-bc10-6973f40dda5f";
+		$url = "https://kr.kompass.com/easybusiness/company/detail?CSRFToken=a8808e0e-2ea2-40b3-8fc7-874d3cd551bb";
 
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_URL, $url);
@@ -262,23 +262,23 @@ class Ajax_f extends CI_Controller {
 
 		$headers = array(
 		   "Host: kr.kompass.com",
-			"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0",
-			"Accept: application/json, text/plain, */*",
-			"Accept-Language: ko-KR,ko;q=0.8,en-US;q=0.5,en;q=0.3",
-			"Accept-Encoding: *",
-			"X-NewRelic-ID: XA8BUFVaGwYIVlZVDgM=",
-			"Content-Type: application/json;charset=utf-8",
-			//"Content-Length: 330",
-			"Origin: https://kr.kompass.com",
-			"Connection: keep-alive",
-			"Referer: https://kr.kompass.com/easybusiness",
-			"Cookie: timezoneoffset=300; timezonename=America/Lima; datadome=3CkPwbYfBHs5DeM~~2~yJ3p7__eCO7QEHIRjQzgwkLOC819uvg0NtwYa_MnG~vMxa_rl8Zmtza7Ld7rSA00WH_Th2R7eHM_sH~MxxKIZG~BsXVEPUhWP38eBYYWtdq9K; route=1679359672.502.36.713028|1ca372b33d2bad9524c20eaf607b64ca; kp_uuid=ccbd933e-37f2-40f4-a2f1-1b66dc226a1f; axeptio_cookies={%22$$token%22:%22a3on45kc8vq9cizl2fhbsf%22%2C%22$$date%22:%222023-03-21T00:47:53.316Z%22%2C%22$$completed%22:false}; axeptio_authorized_vendors=%2C%2C; axeptio_all_vendors=%2C%2C; _gcl_au=1.1.1727085236.1679359673; _ga=GA1.3.1913626510.1679359674; _gid=GA1.3.2035161986.1679359674; _ga=GA1.2.1913626510.1679359674; _gid=GA1.2.2035161986.1679359674; SnapABugHistory=1#; _k_cty_lang=en_KR; ROUTEID=.; timezoneoffset=300; JSESSIONID=BB3C3948B7C0D8117ABFD4B4217C1576; acceleratorSecureGUID=30d01766beee4f4c92a6dc3c403874491f7a5fea; state=1; timezonename=America/Lima; SnapABugVisit=18#1679359698; clientUuid=8bca8506-90c9-48e3-9ee9-268612cc5cb3; SnapABugRef=https%3A%2F%2Fkr.kompass.com%2Feasybusiness%23%2F%20https%3A%2F%2Fkr.kompass.com%2F",
-			"Sec-Fetch-Dest: empty",
-			"Sec-Fetch-Mode: cors",
-			"Sec-Fetch-Site: same-origin",
-			"Pragma: no-cache",
-			"Cache-Control: no-cache",
-			"TE: trailers",
+"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0",
+"Accept: application/json, text/plain, */*",
+"Accept-Language: ko-KR,ko;q=0.8,en-US;q=0.5,en;q=0.3",
+"Accept-Encoding: *",
+"X-NewRelic-ID: XA8BUFVaGwYIVlZVDgM=",
+"Content-Type: application/json;charset=utf-8",
+"Origin: https://kr.kompass.com",
+"Connection: keep-alive",
+"Referer: https://kr.kompass.com/easybusiness",
+"Cookie: timezoneoffset=300; timezonename=America/Lima; datadome=6XuCOIZV47WuqqwgkS_qOZnzDR3oJiT7SkjY5gUaN7avVPa8womRJkvGcLnulSZopWdbpO68PoXHZtMrYPtmol5ar9eVmaFezLhc_ipKSR9plYJ1Hth53X7lNAHYX3CL; route=1679359672.502.36.713028|1ca372b33d2bad9524c20eaf607b64ca; kp_uuid=59e619a7-5d1c-4292-b36b-b8cef444b0af; axeptio_cookies={%22$$token%22:%22a3on45kc8vq9cizl2fhbsf%22%2C%22$$date%22:%222023-03-21T00:47:53.316Z%22%2C%22$$completed%22:false}; axeptio_authorized_vendors=%2C%2C; axeptio_all_vendors=%2C%2C; _gcl_au=1.1.1727085236.1679359673; _ga=GA1.3.1913626510.1679359674; _gid=GA1.3.2035161986.1679359674; _ga=GA1.2.1913626510.1679359674; _gid=GA1.2.2035161986.1679359674; SnapABugHistory=1#; clientUuid=8bca8506-90c9-48e3-9ee9-268612cc5cb3; _k_cty_lang=en_KR; ROUTEID=.; timezoneoffset=300; JSESSIONID=6538F22D52E8907AF3E28E843EF0C3D2; acceleratorSecureGUID=713c9916163e9593ed723c00296a0cf465291bf9; state=1; timezonename=America/Lima; SnapABugVisit=20#1679359698; SnapABugRef=https%3A%2F%2Fkr.kompass.com%2Feasybusiness%23%2Fdetail%2F0%2F0%20; _gat_UA-45018983-1=1",
+"Sec-Fetch-Dest: empty",
+"Sec-Fetch-Mode: cors",
+"Sec-Fetch-Site: same-origin",
+"Pragma: no-cache",
+"Cache-Control: no-cache",
+"TE: trailers",
+
 
 		);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
@@ -305,7 +305,7 @@ class Ajax_f extends CI_Controller {
 		ini_set('display_errors','0'); 
 		
 		$start = 13907;
-		$end = $start + 2;//50500;
+		$end = $start + 36,593;
 		
 		echo "<table style='width: 100%;'>";
 		for($i = $start; $i < $end; $i++){
