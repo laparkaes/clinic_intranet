@@ -305,7 +305,7 @@ class Ajax_f extends CI_Controller {
 		ini_set('display_errors','0'); 
 		
 		$start = 13907;
-		$end = $start + 36,593;
+		$end = $start + 36593;
 		
 		echo "<table style='width: 100%;'>";
 		for($i = $start; $i < $end; $i++){
