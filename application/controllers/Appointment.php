@@ -32,13 +32,14 @@ class Appointment extends CI_Controller {
 		if (!$this->session->userdata('logged_in')) redirect(base_url());
 		//PENDING! rol validation
 		
-		$f_from = $this->input->get("f_from"); if (!$f_from) $f_from = date("Y-m-d", strtotime("-6 months"));
-		$f_to = $this->input->get("f_to");
+		$f_from = $this->input->get("f_from"); if (!$f_from) $f_from = date("Y-m-d", strtotime("-3 months"));
+		$f_to = $this->input->get("f_to"); if (!$f_to) $f_to = date("Y-m-d", strtotime("+3 months"));
 		$f_status = $this->input->get("f_status");
 		
 		//getting appointments from today
 		$filter = array();
 		$filter["schedule_from >="] = $f_from." 00:00:00";
+		$filter["schedule_to <="] = $f_to." 23:59:59";
 		if ($f_status) $filter["status_id"] = $this->status->code($f_status)->id;
 		$appointments = $this->appointment->filter($filter);
 		

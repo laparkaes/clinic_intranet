@@ -149,6 +149,30 @@
 											<tbody id="aa_schedule_list"></tbody>
 										</table>
 									</div>
+									<div class="form-group col-md-12">
+										<table class="table table-sm w-100 mb-0 text-center">
+											<thead>
+												<tr>
+													<th class="pl-0"><strong></strong></th>
+													<th style="width: 80px;"><strong>00</strong></th>
+													<th style="width: 80px;"><strong>15</strong></th>
+													<th style="width: 80px;"><strong>30</strong></th>
+													<th style="width: 80px;"><strong>45</strong></th>
+												</tr>
+											</thead>
+											<tbody>
+												<?php for($i = 9; $i <= 18; $i++){ if($i < 12) $a = "AM"; else $a = "PM"; ?>
+												<tr>
+													<td class="text-left pl-0"><?= $i." ".$a ?></td>
+													<td id="aa<?= $i ?>00"></td>
+													<td id="aa<?= $i ?>15"></td>
+													<td id="aa<?= $i ?>30"></td>
+													<td id="aa<?= $i ?>45"></td>
+												</tr>
+												<?php } ?>
+											</tbody>
+										</table>
+									</div>
 								</div>
 							</div>
 							<div class="col-md-6 mb-3">

@@ -410,7 +410,6 @@
 											<tr>
 												<th class="pt-0 pl-0"><?= $this->lang->line('hd_date') ?></th>
 												<th class="pt-0"><?= $this->lang->line('hd_time') ?></th>
-												<th class="pt-0"><?= $this->lang->line('hd_specialty') ?></th>
 												<th class="pt-0"><?= $this->lang->line('hd_patient') ?></th>
 												<th class="pt-0"><?= $this->lang->line('hd_status') ?></th>
 												<th class="text-right pt-0 pr-0"></th>
@@ -422,8 +421,10 @@
 												<td class="pl-0">
 													<?= date("d.m.Y", strtotime($item->schedule_from)) ?>
 												</td>
-												<td><?= date("h:i A", strtotime($item->schedule_from))."<br/>- ".date("h:i A", strtotime($item->schedule_to)) ?></td>
-												<td><?= $specialties_arr[$item->specialty_id] ?></td>
+												<td>
+													<div class="text-nowrap"><?= date("h:i A", strtotime($item->schedule_from)) ?></div>
+													<div class="text-nowrap">- <?= date("h:i A", strtotime($item->schedule_to)) ?></div>
+												</td>
 												<td><?= $patient_arr[$item->patient_id] ?></td>
 												<td class="text-<?= $status_arr[$item->status_id]->color ?>">
 													<?= $this->lang->line($status_arr[$item->status_id]->code) ?>
@@ -466,7 +467,6 @@
 												<th class="pt-0 pl-0"><?= $this->lang->line('hd_date') ?></th>
 												<th class="pt-0"><?= $this->lang->line('hd_time') ?></th>
 												<th class="pt-0"><?= $this->lang->line('hd_place') ?></th>
-												<th class="pt-0"><?= $this->lang->line('hd_specialty') ?></th>
 												<th class="pt-0"><?= $this->lang->line('hd_patient') ?></th>
 												<th class="pt-0"><?= $this->lang->line('hd_status') ?></th>
 												<th class="text-right pt-0 pr-0"></th>
@@ -476,10 +476,12 @@
 											<?php foreach($surgeries as $item){ ?>
 											<tr>
 												<td class="pl-0"><?= date("d.m.Y", strtotime($item->schedule_from)) ?></td>
-												<td><?= date("h:i A", strtotime($item->schedule_from))."<br/>- ".date("h:i A", strtotime($item->schedule_to)) ?></td>
-												<td style="max-width: 150px;"><?= $item->place ?></td>
-												<td><?= $specialties_arr[$item->specialty_id] ?></td>
-												<td style="max-width: 150px;"><?= $patient_arr[$item->patient_id] ?></td>
+												<td>
+													<div class="text-nowrap"><?= date("h:i A", strtotime($item->schedule_from)) ?></div>
+													<div class="text-nowrap">- <?= date("h:i A", strtotime($item->schedule_to)) ?></div>
+												</td>
+												<td><?= $item->place ?></td>
+												<td><?= $patient_arr[$item->patient_id] ?></td>
 												<td class="text-<?= $status_arr[$item->status_id]->color ?>">
 													<?= $this->lang->line($status_arr[$item->status_id]->code) ?>
 												</td>

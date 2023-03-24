@@ -119,3 +119,6 @@ $lang['title_generate_appointment'] = 'Generar Consulta';
 $lang['title_generate_surgery'] = 'Generar Cirugía';
 $lang['title_add_file'] = 'Agregar Archivo';
 $lang['title_records'] = 'Registros';
+$lang['th_type'] = 'Tipo';
+$lang['th_start'] = 'Inicio';
+$lang['th_end'] = 'Fin';

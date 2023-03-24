@@ -170,18 +170,8 @@ function form_create_account(dom){
 	});
 }
 
-function load_doctor_schedule(){
-	$.ajax({
-		url: $("#base_url").val() + "appointment/load_doctor_schedule",
-		type: "POST",
-		data: {doctor_id:$("#aa_doctor").val(), date:$("#aa_date").val()},
-		success:function(res){
-			$("#aa_schedule_list").html("");
-			res.data.forEach((e) => {
-				$("#aa_schedule_list").append('<li class="list-group-item d-flex justify-content-between py-2">' + e + '</li>');
-			});	
-		}
-	});
+function aa_load_doctor_schedule(){
+	load_doctor_schedule($("#aa_doctor").val(), $("#aa_date").val(), "aa_schedule_list");
 }
 
 function set_doctor_sl(dom){
@@ -221,9 +211,10 @@ $(document).ready(function() {
 	$(".control_bl_simple").on('click',(function(e) {control_bl_simple(this);}));
 	
 	//add appointment
+	aa_load_doctor_schedule();
 	$("#add_appointment_form").submit(function(e) {e.preventDefault(); register_appointment(this);});
 	$("#aa_speciality").change(function() {set_doctor_sl(this);});
-	$("#aa_speciality, #aa_doctor, #aa_date").change(function() {load_doctor_schedule(this);});
+	$("#aa_speciality, #aa_doctor, #aa_date").change(function() {aa_load_doctor_schedule();});
 	
 	//personal data update
 	$("#form_create_account").submit(function(e) {e.preventDefault(); form_create_account(this);});
