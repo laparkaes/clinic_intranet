@@ -306,7 +306,7 @@ class Ajax_f extends CI_Controller {
 		echo '<meta charset="UTF-8" />';
 	
 		//$this->load->view('pqt');
-		$url = "https://kr.kompass.com/easybusiness/company/detail?CSRFToken=a5b0931c-4ebf-4bba-bb62-7721ba7d3d8f";
+		$url = "https://kr.kompass.com/easybusiness/company/detail?CSRFToken=19f12145-fdbf-4639-856a-681e212997df";
 
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_URL, $url);
@@ -324,7 +324,7 @@ class Ajax_f extends CI_Controller {
 "Origin: https://kr.kompass.com",
 "Connection: keep-alive",
 "Referer: https://kr.kompass.com/easybusiness",
-'Cookie: route=1679532914.441.1413.552904|1ca372b33d2bad9524c20eaf607b64ca; timezoneoffset=300; timezonename=America/Lima; datadome=106td8E57NrirqJm5bihIN_pg~Iv1_WkBgM7gUkydcKev~lhlfGPHeZrbBVhPs_MglOkuDQr3MsEbUPYAF9k4YT-tJ6pTj4vpYCfclmH6NewGPunfw5SalS4W5LcjCyE; kp_uuid=028fb5ad-eedf-4e58-8309-8c010defca0b; axeptio_cookies={%22$$token%22:%22a3on45kc8vq9cizl2fhbsf%22%2C%22$$date%22:%222023-03-23T03:54:28.176Z%22%2C%22SnapEngage%22:true%2C%22Double_Click%22:true%2C%22$$completed%22:true}; axeptio_authorized_vendors=%2CSnapEngage%2CDouble_Click%2C; axeptio_all_vendors=%2CSnapEngage%2CDouble_Click%2C; _gcl_au=1.1.1727085236.1679359673; _ga=GA1.3.1913626510.1679359674; _gid=GA1.3.2035161986.1679359674; _ga=GA1.2.1913626510.1679359674; _gid=GA1.2.2035161986.1679359674; SnapABugHistory=1#; clientUuid=644ca91d-1c4b-49c5-9d06-524e4d55d8a9; route=1679532915.03.1413.185015|1ca372b33d2bad9524c20eaf607b64ca; _k_cty_lang=en_KR; ROUTEID=.; timezoneoffset=300; JSESSIONID=14983AFD29EC5B080A082DCBE1E71D5B; acceleratorSecureGUID=210081a0e078865f96e30e28ea0e5a8cf6a94d0b; state=1; timezonename=America/Lima; SnapABugVisit=26#1679359698; SnapABugRef=https%3A%2F%2Fkr.kompass.com%2Feasybusiness%2F%23%2Fdetail%2F0%2F0%20',
+'Cookie: route=1679532914.441.1413.552904|1ca372b33d2bad9524c20eaf607b64ca; timezoneoffset=300; timezonename=America/Lima; datadome=L6h385p_m6Hqd0~xq~yKALygNNWhb5xcwjD_6T-e4PYdN8ACxrJPKIr-ctu8GRXekfJTRVEIsgvYW3tLzwOhWNISgsMJa044FebkunnyNfdA0RYqXQEGKW1bTMdoROM; kp_uuid=3d424d24-8a80-4512-b682-82d6bcc0a973; axeptio_cookies={%22$$token%22:%22a3on45kc8vq9cizl2fhbsf%22%2C%22$$date%22:%222023-03-23T03:54:28.176Z%22%2C%22SnapEngage%22:true%2C%22Double_Click%22:true%2C%22$$completed%22:true}; axeptio_authorized_vendors=%2CSnapEngage%2CDouble_Click%2C; axeptio_all_vendors=%2CSnapEngage%2CDouble_Click%2C; _gcl_au=1.1.1727085236.1679359673; _ga=GA1.3.1913626510.1679359674; _gid=GA1.3.2035161986.1679359674; _ga=GA1.2.1913626510.1679359674; _gid=GA1.2.2035161986.1679359674; SnapABugHistory=1#; route=1679532915.03.1413.185015|1ca372b33d2bad9524c20eaf607b64ca; clientUuid=6e2f8351-218b-4a0f-982c-7e4feb34f65e; timezoneoffset=300; acceleratorSecureGUID=af64f6efc7fa93cc3fa358e404e4841884eec0de; state=1; timezonename=America/Lima; SnapABugVisit=29#1679359698; JSESSIONID=1022B9ED614292F77A9FBF1163FE7AE1; _k_cty_lang=en_KR; ROUTEID=.; SnapABugRef=https%3A%2F%2Fkr.kompass.com%2F%23%2Fdetail%2F0%2F0%20; _gat_UA-45018983-1=1',
 "Sec-Fetch-Dest: empty",
 "Sec-Fetch-Mode: cors",
 "Sec-Fetch-Site: same-origin",
@@ -336,7 +336,10 @@ class Ajax_f extends CI_Controller {
 		);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
-		$data = '{"start":'.$i.',"end":1,"companyNumber":null,"criterias":[{"@type":"criteria","index":1,"code":"localisation","enabled":true,"order":"012","countryCode":null,"count":28776,"label":"Colombia","ids":["CO"],"ranges":[],"active":true}],"sort":null}';
+		$data = '{"start":'.$i.',"end":1,"companyNumber":null,"criterias":[{"@type":"criteria","index":1,"code":"localisation","enabled":true,"order":"008","countryCode":null,"count":851355,"label":"Brazil","ids":["BR"],"ranges":[],"active":true}],"sort":null}';
+		
+		//'{"start":'.$i.',"end":1,"companyNumber":null,"criterias":[{"@type":"criteria","index":1,"code":"localisation","enabled":true,"order":"012","countryCode":null,"count":28776,"label":"Colombia","ids":["CO"],"ranges":[],"active":true}],"sort":null}';
+		
 		
 		//'{"start":'.$i.',"end":1,"companyNumber":null,"criterias":[{"@type":"criteria","index":1,"code":"localisation","enabled":true,"order":"049","countryCode":null,"count":50467,"label":"Peru","ids":["PE"],"ranges":[],"active":true}],"sort":{"column":"COMPANY_NAME","order":"ASC","columnName":null,"asc":false}}';
 		
@@ -360,7 +363,7 @@ class Ajax_f extends CI_Controller {
 		ini_set('display_errors','0'); 
 		
 		$start = 0;
-		$end = $start + 2;
+		$end = $start + 851500;
 		
 		echo "<table style='width: 100%;'>";
 		for($i = $start; $i < $end; $i++){
