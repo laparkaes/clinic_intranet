@@ -270,7 +270,7 @@ $me = $appointment_datas["medicine"];
 					<tr>
 						<th class="pt-0 pl-0"><?= $this->lang->line('hd_schedule') ?></th>
 						<th class="pt-0"><?= $this->lang->line('th_type') ?></th>
-						<th class="pt-0"><?= $this->lang->line('th_speciality') ?></th>
+						<th class="pt-0"><?= $this->lang->line('th_specialty') ?></th>
 						<th class="pt-0 pr-0"></th>
 					</tr>
 				</thead>

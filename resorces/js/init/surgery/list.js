@@ -61,8 +61,8 @@ $(document).ready(function() {
 	set_datatable("surgery_list", 25, false);
 	load_doctor_schedule_surgery();
 	$(".control_bl").on('click',(function(e) {control_bl(this);}));
-	$("#sur_speciality").change(function() {set_doctor_sl(this);});
-	$("#sur_speciality, #sur_doctor, #sur_date").change(function() {load_doctor_schedule_surgery();});
+	$("#sur_specialty").change(function() {set_doctor_sl(this);});
+	$("#sur_specialty, #sur_doctor, #sur_date").change(function() {load_doctor_schedule_surgery();});
 	$("#pt_doc_type_id").change(function() {enable_pt_name();});
 	$("#pt_doc_number").keyup(function() {enable_pt_name();});
 	$("#btn_search_pt").on('click',(function(e) {search_person_pt();}));

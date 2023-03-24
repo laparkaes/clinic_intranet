@@ -61,8 +61,8 @@ $(document).ready(function() {
 	set_datatable("appointment_list", 25, false);
 	load_doctor_schedule_appointment();
 	$(".control_bl").on('click',(function(e) {control_bl(this);}));
-	$("#aa_speciality").change(function() {set_doctor_sl(this);});
-	$("#aa_speciality, #aa_doctor, #aa_date").change(function() {load_doctor_schedule_appointment();});
+	$("#aa_specialty").change(function() {set_doctor_sl(this);});
+	$("#aa_specialty, #aa_doctor, #aa_date").change(function() {load_doctor_schedule_appointment();});
 	$("#pt_doc_type_id").change(function() {enable_pt_name();});
 	$("#pt_doc_number").keyup(function() {enable_pt_name();});
 	$("#btn_search_pt").on('click',(function(e) {search_person_pt();}));

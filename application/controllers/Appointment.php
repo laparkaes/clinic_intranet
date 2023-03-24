@@ -341,7 +341,7 @@ class Appointment extends CI_Controller {
 		else $app["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
 		
 		//appointment validation
-		if (!$app["speciality_id"]) $msgs = $this->set_msg($msgs, "aa_speciality_msg", "error", "error_ssp");
+		if (!$app["specialty_id"]) $msgs = $this->set_msg($msgs, "aa_specialty_msg", "error", "error_ssp");
 		if (!$app["doctor_id"]) $msgs = $this->set_msg($msgs, "aa_doctor_msg", "error", "error_sdo");
 		if ($app["schedule_from"]){
 			$app["schedule_to"] = date("Y-m-d H:i:s", strtotime("+14 minutes", strtotime($app["schedule_from"])));
