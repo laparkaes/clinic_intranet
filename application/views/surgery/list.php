@@ -83,14 +83,14 @@
 								<h5><?= $this->lang->line('title_attention') ?></h5>
 								<div class="form-row">
 									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_speciality') ?></label>
-										<select class="form-control" id="sur_speciality" name="sur[speciality_id]">
+										<label><?= $this->lang->line('lb_specialty') ?></label>
+										<select class="form-control" id="sur_specialty" name="sur[specialty_id]">
 											<option value="">--</option>
 											<?php foreach($specialties as $item){ ?>
 											<option value="<?= $item->id ?>"><?= $item->name ?></option>
 											<?php } ?>
 										</select>
-										<div class="sys_msg" id="sur_speciality_msg"></div>
+										<div class="sys_msg" id="sur_specialty_msg"></div>
 									</div>
 									<div class="form-group col-md-6">
 										<label><?= $this->lang->line('lb_doctor') ?></label>

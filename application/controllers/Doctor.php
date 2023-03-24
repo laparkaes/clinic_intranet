@@ -87,8 +87,14 @@ class Doctor extends CI_Controller {
 		
 		//set personal data
 		$person->doc_type = $this->general->id("doc_type", $person->doc_type_id)->short;
-		if ($person->birthday) $person->age = $this->utility_lib->age_calculator($person->birthday);
-		else $person->age = null;
+		if ($person->birthday){
+			$person->age = $this->utility_lib->age_calculator($person->birthday);
+			$person->birthday = date("d.m.Y", strtotime($person->birthday));
+		}
+		else{
+			$person->age = null;
+			$person->birthday = null;
+		}
 		if ($person->sex_id) $person->sex = $this->general->id("sl_option", $person->sex_id)->description;
 		else $person->sex = null;
 		if ($person->blood_type_id) $person->blood_type = $this->general->id("sl_option", $person->blood_type_id)->description;

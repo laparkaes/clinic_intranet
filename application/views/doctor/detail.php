@@ -56,9 +56,9 @@
 								<div class="form-row">
 									<div class="form-group col-md-6">
 										<label><?= $this->lang->line('lb_specialty') ?></label>
-										<input type="hidden" value="<?= $doctor->specialty_id ?>" name="app[speciality_id]" readonly>
+										<input type="hidden" value="<?= $doctor->specialty_id ?>" name="app[specialty_id]" readonly>
 										<input type="text" class="form-control bg-light" value="<?= $doctor->specialty ?>" readonly>
-										<div class="sys_msg" id="aa_speciality_msg"></div>
+										<div class="sys_msg" id="aa_specialty_msg"></div>
 									</div>
 									<div class="form-group col-md-6">
 										<label><?= $this->lang->line('lb_doctor') ?></label>
@@ -177,9 +177,9 @@
 								<div class="form-row">
 									<div class="form-group col-md-6">
 										<label><?= $this->lang->line('lb_specialty') ?></label>
-										<input type="hidden" value="<?= $doctor->specialty_id ?>" name="sur[speciality_id]" readonly>
+										<input type="hidden" value="<?= $doctor->specialty_id ?>" name="sur[specialty_id]" readonly>
 										<input type="text" class="form-control bg-light" value="<?= $doctor->specialty ?>" readonly>
-										<div class="sys_msg" id="sur_speciality_msg"></div>
+										<div class="sys_msg" id="sur_specialty_msg"></div>
 									</div>
 									<div class="form-group col-md-6">
 										<label><?= $this->lang->line('lb_doctor') ?></label>
@@ -408,7 +408,8 @@
 									<table id="appointment_list" class="display">
 										<thead>
 											<tr>
-												<th class="pt-0 pl-0"><?= $this->lang->line('hd_schedule') ?></th>
+												<th class="pt-0 pl-0"><?= $this->lang->line('hd_date') ?></th>
+												<th class="pt-0"><?= $this->lang->line('hd_time') ?></th>
 												<th class="pt-0"><?= $this->lang->line('hd_specialty') ?></th>
 												<th class="pt-0"><?= $this->lang->line('hd_patient') ?></th>
 												<th class="pt-0"><?= $this->lang->line('hd_status') ?></th>
@@ -419,9 +420,10 @@
 											<?php foreach($appointments as $item){ ?>
 											<tr>
 												<td class="pl-0">
-													<?= date("d.m.Y<\b\\r>h:i A", strtotime($item->schedule_from))." - ".date("h:i A", strtotime($item->schedule_to)) ?>
+													<?= date("d.m.Y", strtotime($item->schedule_from)) ?>
 												</td>
-												<td><?= $specialties_arr[$item->speciality_id] ?></td>
+												<td><?= date("h:i A", strtotime($item->schedule_from))."<br/>- ".date("h:i A", strtotime($item->schedule_to)) ?></td>
+												<td><?= $specialties_arr[$item->specialty_id] ?></td>
 												<td><?= $patient_arr[$item->patient_id] ?></td>
 												<td class="text-<?= $status_arr[$item->status_id]->color ?>">
 													<?= $this->lang->line($status_arr[$item->status_id]->code) ?>
@@ -461,7 +463,8 @@
 									<table id="surgery_list" class="display">
 										<thead>
 											<tr>
-												<th class="pt-0 pl-0"><?= $this->lang->line('hd_schedule') ?></th>
+												<th class="pt-0 pl-0"><?= $this->lang->line('hd_date') ?></th>
+												<th class="pt-0"><?= $this->lang->line('hd_time') ?></th>
 												<th class="pt-0"><?= $this->lang->line('hd_place') ?></th>
 												<th class="pt-0"><?= $this->lang->line('hd_specialty') ?></th>
 												<th class="pt-0"><?= $this->lang->line('hd_patient') ?></th>
@@ -472,10 +475,11 @@
 										<tbody>
 											<?php foreach($surgeries as $item){ ?>
 											<tr>
-												<td class="pl-0"><?= date("d.m.Y<\b\\r>h:i A", strtotime($item->schedule_from))." - ".date("h:i A", strtotime($item->schedule_to)) ?></td>
-												<td><?= $item->place ?></td>
-												<td><?= $specialties_arr[$item->speciality_id] ?></td>
-												<td><?= $patient_arr[$item->patient_id] ?></td>
+												<td class="pl-0"><?= date("d.m.Y", strtotime($item->schedule_from)) ?></td>
+												<td><?= date("h:i A", strtotime($item->schedule_from))."<br/>- ".date("h:i A", strtotime($item->schedule_to)) ?></td>
+												<td style="max-width: 150px;"><?= $item->place ?></td>
+												<td><?= $specialties_arr[$item->specialty_id] ?></td>
+												<td style="max-width: 150px;"><?= $patient_arr[$item->patient_id] ?></td>
 												<td class="text-<?= $status_arr[$item->status_id]->color ?>">
 													<?= $this->lang->line($status_arr[$item->status_id]->code) ?>
 												</td>

@@ -191,7 +191,7 @@ class Surgery extends CI_Controller {
 		
 		//surgery validation
 		if (!$sur["place"]) $msgs = $this->set_msg($msgs, "sur_place_msg", "error", "error_enp");
-		if (!$sur["speciality_id"]) $msgs = $this->set_msg($msgs, "sur_speciality_msg", "error", "error_ssp");
+		if (!$sur["specialty_id"]) $msgs = $this->set_msg($msgs, "sur_specialty_msg", "error", "error_ssp");
 		if (!$sur["doctor_id"]) $msgs = $this->set_msg($msgs, "sur_doctor_msg", "error", "error_sdo");
 		if ($sur["schedule_from"]){
 			$sur["schedule_to"] = date("Y-m-d H:i:s", strtotime("+".($sch["duration"]-1)." minutes", strtotime($sur["schedule_from"])));

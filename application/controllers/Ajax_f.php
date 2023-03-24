@@ -82,21 +82,6 @@ class Ajax_f extends CI_Controller {
 		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg, "company" => $company));
 	}
 	
-	public function set_appointment(){
-		$dates = array(date("Y-m-d"), date("Y-m-d", strtotime("+1 day")));
-		
-		$filter = array("schedule_from <=" => date("Y-m-d", strtotime("-1 day"))." 23:59:59");
-		$appointments = $this->general->filter("appointment", $filter, "schedule_from", "asc");
-		foreach($appointments as $item){
-			$nd = $dates[array_rand($dates)];
-			$sf = $nd." ".date("h:i:s", strtotime($item->schedule_from));
-			$st = $nd." ".date('h:i:s', strtotime('+14 minutes', strtotime($sf)));
-			$this->general->update("appointment", $item->id, array("schedule_from" => $sf, "schedule_to" => $st));
-		}
-		
-		echo "fin";
-	}
-	
 	public function load_doctor_schedule(){
 		$status = false; $data = array(); $msg = null;
 		$doctor_id = $this->input->post("doctor_id");
@@ -166,7 +151,7 @@ class Ajax_f extends CI_Controller {
 			array_push($appointments_arr[date("Y-m-d", strtotime($item->schedule_from))]["data"], $data);
 		}
 		
-		/*
+		
 		$surgeries = $this->general->filter("surgery", $filter, "schedule_from", "asc");
 		foreach($surgeries as $item){
 			$data = array(
@@ -179,11 +164,79 @@ class Ajax_f extends CI_Controller {
 			);
 			array_push($surgeries_arr[date("Y-m-d", strtotime($item->schedule_from))]["data"], $data);
 		}
-		*/
-		$surgeries = array();
 		
 		header('Content-Type: application/json');
 		echo json_encode(array("appointments" => $appointments_arr, "surgeries" => $surgeries_arr));
+	}
+	
+	//test data creation
+	public function make_app_sur($qty){
+		$doctors_arr = array();
+		$doctors = $this->general->all("doctor");
+		$people = $this->general->all("person");
+		
+		$times = array();
+		for($i = 9; $i < 19; $i++){
+			array_push($times, $i.":00");
+			array_push($times, $i.":15");
+			array_push($times, $i.":30");
+			array_push($times, $i.":45");
+		}
+		
+		$today = date("Y-m-d");
+		$schedules = array();
+		for($i = 1; $i < 300; $i++){
+			$day = date("Y-m-d", strtotime("+".$i." day", strtotime($today)));
+			foreach($times as $t) array_push($schedules, $day." ".$t);
+		}
+		
+		$doctor_ids = $patient_ids = array();
+		foreach($doctors as $item){
+			array_push($doctor_ids, $item->person_id);
+			$doctors_arr[$item->person_id] = $item;
+		}
+		foreach($people as $item) array_push($patient_ids, $item->id);
+		
+		$types = array();
+		array_push($types, array("type" => "surgery", "duration" => 89));
+		array_push($types, array("type" => "appointment", "duration" => 14));
+		
+		$places = array("Hospital Nacional Arzobispo Loayza", "Hospital Almenara", "Hospital Nacional Dos de Mayo", "Hospital Rebagliati", "Hospital de Emergencias Grau", "Hospital del Niño", "Hospital Nacional Guillermo Almenara Irigoyen", "Hospital Nacional Hipólito Unanue", "Hospital Nacional Cayetano Heredia", "Hospital Maria Auxiliadora");
+		
+		$status_id = $this->status->code("reserved")->id;
+		
+		$status_ids = array();
+		array_push($status_ids, $this->status->code("reserved")->id);
+		array_push($status_ids, $this->status->code("confirmed")->id);
+		
+		$count = 0;
+		for($i = 0; $i < $qty; $i++){
+			$data = array();
+			
+			$type = $types[array_rand($types)];
+			if (!strcmp("surgery", $type["type"])) $type["duration"] = rand(30, 120);
+			
+			$data["doctor_id"] = $doctor_ids[array_rand($doctor_ids)];
+			$data["schedule_from"] = $schedules[array_rand($schedules)];
+			$data["schedule_to"] = date("Y-m-d H:i:s", strtotime("+".$type["duration"]." minutes", strtotime($data["schedule_from"])));
+			
+			
+			$sur_available = $this->general->is_available("surgery", $data, $status_ids);
+			$app_available = $this->general->is_available("appointment", $data, $status_ids);
+			if ($sur_available and $app_available){
+				if (!strcmp("surgery", $type["type"])) $data["place"] = $places[array_rand($places)];
+				
+				$data["patient_id"] = $patient_ids[array_rand($patient_ids)];
+				$data["specialty_id"] = $doctors_arr[$data["doctor_id"]]->specialty_id;
+				$data["status_id"] = $status_id;
+				if ($data["doctor_id"] != $data["patient_id"]){
+					echo $i." >> ".implode(" - ", $data)."<br/>";
+					$this->general->insert($type["type"], $data);
+					$count++;
+				}
+			}
+		}
+		echo "<br/><br/>".number_format($count)." registros generados";
 	}
 	
 	public function pqt_post($page){
