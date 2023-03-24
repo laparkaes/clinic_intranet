@@ -23,7 +23,7 @@ function register_appointment(dom){
 }
 
 function load_doctor_schedule_appointment(){
-	load_doctor_schedule($("#aa_doctor").val(), $("#aa_date").val(), "aa_schedule_list");
+	load_doctor_schedule($("#aa_doctor").val(), $("#aa_date").val(), "aa_schedule");
 }
 
 function set_doctor_sl(dom){

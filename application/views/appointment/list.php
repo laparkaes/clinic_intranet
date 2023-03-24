@@ -80,7 +80,7 @@
 					<form action="#" id="register_form">
 						<div class="row">
 							<div class="col-md-6 mb-3">
-								<h5><?= $this->lang->line('title_attention') ?></h5>
+								<h5 class="mb-3"><?= $this->lang->line('title_attention') ?></h5>
 								<div class="form-row">
 									<div class="form-group col-md-6">
 										<label><?= $this->lang->line('lb_specialty') ?></label>
@@ -112,7 +112,7 @@
 										<div class="d-flex justify-content-between">
 											<select class="form-control text-center px-0" id="aa_hour" name="sch[hour]">
 												<option value="" selected>--</option>
-												<?php for($i = 9; $i < 18; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
+												<?php for($i = 9; $i <= 18; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
 												<option value="<?= $i ?>">
 													<?php 
 													switch(true){
@@ -135,48 +135,8 @@
 										</div>
 										<div class="sys_msg" id="aa_schedule_msg"></div>
 									</div>
-									<div class="form-group col-md-12">
-										<h5 class="mt-3"><?= $this->lang->line('title_doctor_agenda') ?></h5>
-										<table class="table table-sm w-100 mb-0">
-											<thead>
-												<tr>
-													<th class="w-50 pl-0"><strong><?= $this->lang->line('th_type') ?></strong></th>
-													<th class="text-center"><strong><?= $this->lang->line('th_start') ?></strong></th>
-													<th class=""></th>
-													<th class="text-center pr-0"><strong><?= $this->lang->line('th_end') ?></strong></th>
-												</tr>
-											</thead>
-											<tbody id="aa_schedule_list"></tbody>
-										</table>
-									</div>
-									<div class="form-group col-md-12">
-										<table class="table table-sm w-100 mb-0 text-center">
-											<thead>
-												<tr>
-													<th class="pl-0"><strong></strong></th>
-													<th style="width: 80px;"><strong>00</strong></th>
-													<th style="width: 80px;"><strong>15</strong></th>
-													<th style="width: 80px;"><strong>30</strong></th>
-													<th style="width: 80px;"><strong>45</strong></th>
-												</tr>
-											</thead>
-											<tbody>
-												<?php for($i = 9; $i <= 18; $i++){ if($i < 12) $a = "AM"; else $a = "PM"; ?>
-												<tr>
-													<td class="text-left pl-0"><?= $i." ".$a ?></td>
-													<td id="aa<?= $i ?>00"></td>
-													<td id="aa<?= $i ?>15"></td>
-													<td id="aa<?= $i ?>30"></td>
-													<td id="aa<?= $i ?>45"></td>
-												</tr>
-												<?php } ?>
-											</tbody>
-										</table>
-									</div>
 								</div>
-							</div>
-							<div class="col-md-6 mb-3">
-								<h5><?= $this->lang->line('lb_patient') ?></h5>
+								<h5 class="my-3"><?= $this->lang->line('lb_patient') ?></h5>
 								<input type="hidden" id="aa_pt_id" name="app[patient_id]" value="">
 								<div class="form-row">
 									<div class="form-group col-md-12">
@@ -210,10 +170,14 @@
 										<label><?= $this->lang->line('lb_remark') ?> (<?= $this->lang->line('lb_optional') ?>)</label>
 										<textarea class="form-control" rows="4" name="app[remark]" placeholder="<?= $this->lang->line('txt_remark') ?>"></textarea>
 									</div>
-									<div class="form-group col-md-12 text-right pt-3">
+									<div class="form-group col-md-12 pt-3">
 										<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
 									</div>
 								</div>
+							</div>
+							<div class="col-md-6 mb-3">
+								<h5 class="mb-3"><?= $this->lang->line('title_doctor_agenda') ?></h5>
+								<div id="aa_schedule"></div>
 							</div>
 						</div>
 					</form>

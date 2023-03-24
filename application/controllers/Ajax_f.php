@@ -83,6 +83,48 @@ class Ajax_f extends CI_Controller {
 	}
 	
 	public function load_doctor_schedule(){
+		$cells = array(); $msg = null;
+		$doctor_id = $this->input->post("doctor_id");
+		$date = $this->input->post("date");
+		
+		if (!$doctor_id) $msg = $this->lang->line('error_select_doctor');
+		if (!$date) $msg = $this->lang->line('error_select_date');
+		
+		if (!$msg){
+			$status_ids = array($this->status->code("reserved")->id, $this->status->code("confirmed")->id);
+			$appointments = $this->appointment->doctor($doctor_id, $date, $status_ids);
+			$surgeries = $this->surgery->doctor($doctor_id, $date, $status_ids);
+			
+			$min_range = array([0, 15], [15, 30], [30, 45], [45, 60]);
+			$aux = array();
+			
+			if ($appointments) foreach($appointments as $item) array_push($aux, array("sh" => date("H", strtotime($item->schedule_from)), "sm" => date("i", strtotime($item->schedule_from)), "eh" => date("H", strtotime($item->schedule_to)), "em" => date("i", strtotime($item->schedule_to))));
+			
+			if ($surgeries) foreach($surgeries as $item) array_push($aux, array("sh" => date("H", strtotime($item->schedule_from)), "sm" => date("i", strtotime($item->schedule_from)), "eh" => date("H", strtotime($item->schedule_to)), "em" => date("i", strtotime($item->schedule_to))));;
+			
+			foreach($aux as $item){
+				foreach($min_range as $key => $r){
+					if (($r[0]<= $item["sm"]) and ($item["sm"] < $r[1])) $item["sm"] = 15 * $key;
+					if (($r[0]<= $item["em"]) and ($item["em"] < $r[1])) $item["em"] = 15 * $key;
+				}
+				
+				$i = strtotime($date." ".$item["sh"].":".$item["sm"]);
+				$end = strtotime($date." ".$item["eh"].":".$item["em"]);
+				
+				array_push($cells, date("Hi", $i));
+				$i += 900;//15 minutes in seconds
+				
+				while($i < $end){
+					array_push($cells, date("Hi", $i));
+					$i += 900;//15 minutes in seconds
+				}
+			}
+		}
+		
+		echo $this->load->view('doctor/tb_schedule', array("msg" => $msg, "cells" => $cells), true);
+	}
+	
+	public function load_doctor_schedule1(){
 		$status = false; $data = array(); $msg = null;
 		$doctor_id = $this->input->post("doctor_id");
 		$date = $this->input->post("date");

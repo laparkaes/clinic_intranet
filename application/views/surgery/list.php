@@ -38,7 +38,6 @@
 								<tr>
 									<th class="text-left pt-0 pl-0"><?= $this->lang->line('hd_schedule') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_place') ?></th>
-									<th class="pt-0"><?= $this->lang->line('hd_specialty') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_doctor') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_patient') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_status') ?></th>
@@ -52,8 +51,10 @@
 										<?= date("d.m.Y<\b\\r>h:i A", strtotime($item->schedule_from)) ?>
 									</td>
 									<td><?= $item->place ?></td>
-									<td><?= $specialties_arr[$doctors_arr[$item->doctor_id]->specialty_id] ?></td>
-									<td><?= $people_arr[$item->doctor_id] ?></td>
+									<td>
+										<?= $people_arr[$item->doctor_id] ?><br/>
+										<?= $specialties_arr[$doctors_arr[$item->doctor_id]->specialty_id] ?>
+									</td>
 									<td><?= $people_arr[$item->patient_id] ?></td>
 									<td><span class="text-<?= $status_arr[$item->status_id]->color ?>"><?= $this->lang->line($status_arr[$item->status_id]->code) ?></span></td>
 									<td class="text-right pr-0">
@@ -77,10 +78,10 @@
 			</div>
 			<div class="row bl_content d-none" id="bl_add">
 				<div class="col-md-12">
-					<form action="#" id="register_form">
-						<div class="row">
-							<div class="col-md-6 mb-3">
-								<h5><?= $this->lang->line('title_attention') ?></h5>
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<form action="#" id="register_form">
+								<h5 class="mb-3"><?= $this->lang->line('title_attention') ?></h5>
 								<div class="form-row">
 									<div class="form-group col-md-6">
 										<label><?= $this->lang->line('lb_specialty') ?></label>
@@ -152,24 +153,8 @@
 										</select>
 										<div class="sys_msg" id="sur_duration_msg"></div>
 									</div>
-									<div class="form-group col-md-12">
-										<h5 class="mt-3"><?= $this->lang->line('title_doctor_agenda') ?></h5>
-										<table class="table table-sm w-100 mb-0">
-											<thead>
-												<tr>
-													<th class="w-50 pl-0"><strong><?= $this->lang->line('th_type') ?></strong></th>
-													<th class="text-center"><strong><?= $this->lang->line('th_start') ?></strong></th>
-													<th class=""></th>
-													<th class="text-center pr-0"><strong><?= $this->lang->line('th_end') ?></strong></th>
-												</tr>
-											</thead>
-											<tbody id="sur_schedule_list"></tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-6 mb-3">
-								<h5><?= $this->lang->line('title_patient') ?></h5>
+								</div>		
+								<h5 class="my-3"><?= $this->lang->line('title_patient') ?></h5>
 								<input type="hidden" id="sur_pt_id" name="sur[patient_id]" value="">
 								<div class="form-row">
 									<div class="form-group col-md-12">
@@ -203,13 +188,17 @@
 										<label><?= $this->lang->line('lb_remark') ?> (<?= $this->lang->line('lb_optional') ?>)</label>
 										<textarea class="form-control" rows="4" name="sur[remark]" placeholder="<?= $this->lang->line('txt_remark') ?>"></textarea>
 									</div>
-									<div class="form-group col-md-12 text-right pt-3">
+									<div class="form-group col-md-12 pt-3">
 										<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
 									</div>
 								</div>
-							</div>
+							</form>
 						</div>
-					</form>
+						<div class="col-md-6 mb-3">
+							<h5 class="mb-3"><?= $this->lang->line('title_doctor_agenda') ?></h5>
+							<div id="sur_schedule_list"></div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

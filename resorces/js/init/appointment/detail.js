@@ -454,13 +454,24 @@ function load_doctor_schedule_appointment(){
 	load_doctor_schedule($("#ra_doctor").val(), $("#ra_date").val(), "rp_schedule");
 }
 
+function control_reschedule_form(){
+	if ($("#app_reschedule").hasClass("d-none")) {
+		load_doctor_schedule_appointment();
+		$("#app_reschedule").removeClass("d-none");
+		$("#app_info").addClass("d-none");
+	}else{
+		$("#app_reschedule").addClass("d-none");
+		$("#app_info").removeClass("d-none");
+	}
+}
+
 $(document).ready(function() {
 	//general
 	load_doctor_schedule_appointment();
 	$(".btn_process").on('click',(function(e) {control_process_forms(this);}));
 	$("#btn_cancel").on('click',(function(e) {cancel_appointment(this);}));
 	$("#btn_finish").on('click',(function(e) {finish_appointment(this);}));
-	$("#btn_reschedule").on('click',(function(e) {load_doctor_schedule_appointment();}));
+	$("#btn_reschedule, #btn_reschedule_cancel").on('click',(function(e) {control_reschedule_form();}));
 	
 	//reschedule
 	$("#reschedule_form").submit(function(e) {e.preventDefault(); reschedule_appointment(this);});

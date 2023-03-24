@@ -22,7 +22,7 @@
 			</div>
 		</div>
 		<div class="card-body">
-			<div class="form-row">
+			<div class="form-row" id="sur_info">
 				<div class="form-group col-md-3">
 					<label><?= $this->lang->line('lb_doctor') ?></label>
 					<input type="text" class="form-control" value="<?= $doctor->name ?>" readonly>
@@ -58,6 +58,79 @@
 				<div class="form-group col-md-2">
 					<label><?= $this->lang->line('lb_blood_type') ?></label>
 					<input type="text" class="form-control" value="<?= $patient->blood_type ?>" readonly>
+				</div>
+			</div>
+			<div class="row d-none" id="sur_reschedule">
+				<div class="col-md-6">
+					<h5 class="mb-3"><?= $this->lang->line('title_reschedule_surgery') ?></h5>
+					<form action="#" id="form_reschedule">
+						<input type="hidden" name="id" value="<?= $surgery->id ?>" readonly>
+						<input type="hidden" name="doctor_id" id="rs_doctor" value="<?= $doctor->id ?>">
+						<div class="form-row">
+							<div class="form-group col-md-12">
+								<label><?= $this->lang->line('lb_doctor') ?></label>
+								<input type="text" class="form-control bg-light" value="<?= $doctor->name ?>" readonly>
+							</div>
+							<div class="form-group col-md-12">
+								<label><?= $this->lang->line('lb_patient') ?></label>
+								<input type="text" class="form-control bg-light" value="<?= $patient->name ?>" readonly>
+							</div>
+							<div class="form-group col-md-6">
+								<label><?= $this->lang->line('lb_date') ?></label>
+								<input type="text" class="form-control date_picker doc_schedule schedule" id="rs_date" name="date" value="<?= date('Y-m-d') ?>" readonly>
+								<div class="sys_msg" id="rs_date_msg"></div>
+							</div>
+							<div class="form-group col-md-6">
+								<label><?= $this->lang->line('lb_time') ?></label>
+								<div class="d-flex">
+									<select class="form-control text-center schedule px-0" id="rs_hour" name="hour">
+										<option value="" selected>--</option>
+										<?php for($i = 9; $i < 18; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
+										<option value="<?= $i ?>">
+											<?php 
+											switch(true){
+												case $i < 12: echo $i." AM"; break;
+												case $i == 12: echo $i." M"; break;
+												case $i > 12: echo ($i - 12)." PM"; break;
+											}
+											?>
+										</option>
+										<?php } ?>
+									</select>
+									<span class="input-group-text bg-white px-2" style="min-width: 0;">:</span>
+									<select class="form-control text-center schedule px-0" id="rs_min" name="min">
+										<option value="" selected>--</option>
+										<option value="00">00</option>
+										<option value="15">15</option>
+										<option value="30">30</option>
+										<option value="45">45</option>
+									</select>
+								</div>
+								<div class="sys_msg" id="rs_time_msg"></div>
+							</div>
+							<div class="form-group col-md-12">
+								<?php $duration = (strtotime($surgery->schedule_to) - strtotime($surgery->schedule_from))/60;
+								switch(true){
+									case $duration < 60: $duration_txt = $duration." ".$this->lang->line('op_minutes');
+									case $duration == 60: $duration_txt = "1 ".$this->lang->line('op_hour');
+									default: $duration_txt = ($duration/60)." ".$this->lang->line('op_hours');
+								}
+								?>
+								<label><?= $this->lang->line('lb_duration') ?></label>
+								<input type="hidden" name="duration" value="<?= $duration ?>" readonly>
+								<input type="text" class="form-control bg-light" value="<?= $duration_txt ?>" readonly>
+								<div class="sys_msg" id="rs_duration_msg"></div>
+							</div>
+							<div class="form-group col-md-12 pt-3">
+								<button type="sumit" class="btn btn-primary"><?= $this->lang->line('btn_reschedule') ?></button>
+								<button type="button" class="btn tp-btn btn-danger" id="btn_reschedule_cancel"><?= $this->lang->line('btn_cancel') ?></button>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="col-md-6">
+					<h5 class="mb-3"><?= $this->lang->line('title_doctor_agenda') ?></h5>
+					<div id="rp_schedule"></div>
 				</div>
 			</div>
 		</div>
@@ -175,91 +248,4 @@
 	<input type="hidden" id="surgery_id" value="<?= $surgery->id ?>">
 	<input type="hidden" id="warning_sre" value="<?= $this->lang->line('warning_sre') ?>">
 	<input type="hidden" id="warning_sfi" value="<?= $this->lang->line('warning_sfi') ?>">
-</div>
-<div class="modal fade" id="reschedule_surgery" tabindex="-1" role="dialog" aria-labelledby="reschedule_surgeryLabel" aria-hidden="true">
-	<div class="modal-dialog text-left" role="document">
-		<div class="modal-content">
-			<form action="#" id="form_reschedule">
-				<div class="modal-body">
-					<h5 class="mb-3"><?= $this->lang->line('title_reschedule_surgery') ?></h5>
-					<input type="hidden" name="id" value="<?= $surgery->id ?>" readonly>
-					<input type="hidden" name="doctor_id" id="rs_doctor" value="<?= $doctor->id ?>">
-					<div class="form-row">
-						<div class="form-group col-md-12">
-							<label><?= $this->lang->line('lb_doctor') ?></label>
-							<input type="text" class="form-control bg-light" value="<?= $doctor->name ?>" readonly>
-						</div>
-						<div class="form-group col-md-12">
-							<label><?= $this->lang->line('lb_patient') ?></label>
-							<input type="text" class="form-control bg-light" value="<?= $patient->name ?>" readonly>
-						</div>
-						<div class="form-group col-md-4">
-							<label><?= $this->lang->line('lb_date') ?></label>
-							<input type="text" class="form-control date_picker doc_schedule schedule" id="rs_date" name="date" value="<?= date('Y-m-d') ?>" readonly>
-							<div class="sys_msg" id="rs_date_msg"></div>
-						</div>
-						<div class="form-group col-md-5">
-							<label><?= $this->lang->line('lb_time') ?></label>
-							<div class="d-flex">
-								<select class="form-control text-center schedule px-0" id="rs_hour" name="hour">
-									<option value="" selected>--</option>
-									<?php for($i = 9; $i < 18; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
-									<option value="<?= $i ?>">
-										<?php 
-										switch(true){
-											case $i < 12: echo $i." AM"; break;
-											case $i == 12: echo $i." M"; break;
-											case $i > 12: echo ($i - 12)." PM"; break;
-										}
-										?>
-									</option>
-									<?php } ?>
-								</select>
-								<span class="input-group-text bg-white px-2" style="min-width: 0;">:</span>
-								<select class="form-control text-center schedule px-0" id="rs_min" name="min">
-									<option value="" selected>--</option>
-									<option value="00">00</option>
-									<option value="15">15</option>
-									<option value="30">30</option>
-									<option value="45">45</option>
-								</select>
-							</div>
-							<div class="sys_msg" id="rs_time_msg"></div>
-						</div>
-						<div class="form-group col-md-3">
-							<label><?= $this->lang->line('lb_duration') ?></label>
-							<select class="form-control" name="duration">
-								<option value="">--</option>
-								<option value="30">30 <?= $this->lang->line('op_minutes') ?></option>
-								<option value="60">1 <?= $this->lang->line('op_hour') ?></option>
-								<?php for($i = 2; $i <= 6; $i++){ ?>
-								<option value="<?= $i*60 ?>"><?= $i ?> <?= $this->lang->line('op_hours') ?></option>
-								<?php } ?>
-							</select>
-							<div class="sys_msg" id="rs_duration_msg"></div>
-						</div>
-						<div class="form-group col-md-12">
-							<h5 class="mt-3"><?= $this->lang->line('title_doctor_agenda') ?></h5>
-							<table class="table table-sm w-100 mb-0">
-								<thead>
-									<tr>
-										<th class="w-50 pl-0"><strong><?= $this->lang->line('th_type') ?></strong></th>
-										<th class="text-center"><strong><?= $this->lang->line('th_start') ?></strong></th>
-										<th></th>
-										<th class="text-center pr-0"><strong><?= $this->lang->line('th_end') ?></strong></th>
-									</tr>
-								</thead>
-								<tbody id="rp_schedule"></tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer border-0 pt-0">
-					<div class="sys_msg" id="rs_result_msg"></div>
-					<button type="button" class="btn tp-btn btn-secondary" data-dismiss="modal"><?= $this->lang->line('btn_close') ?></button>
-					<button type="sumit" class="btn btn-primary"><?= $this->lang->line('btn_reschedule') ?></button>
-				</div>
-			</form>
-		</div>
-	</div>
 </div>

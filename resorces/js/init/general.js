@@ -131,6 +131,18 @@ function control_bl_simple(dom){
 }
 
 function load_doctor_schedule(doctor_id, date, dom_id){
+	$("#" + dom_id).html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
+	$.ajax({
+		url: $("#base_url").val() + "ajax_f/load_doctor_schedule",
+		type: "POST",
+		data: {doctor_id: doctor_id, date: date},
+		success:function(res){
+			$("#" + dom_id).html(res);
+		}
+	});
+}
+
+function load_doctor_schedule1(doctor_id, date, dom_id){
 	$.ajax({
 		url: $("#base_url").val() + "ajax_f/load_doctor_schedule",
 		type: "POST",

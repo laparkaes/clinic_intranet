@@ -24,13 +24,14 @@ class Surgery extends CI_Controller {
 		if (!$this->session->userdata('logged_in')) redirect(base_url());
 		//PENDING! rol validation
 		
-		$f_from = $this->input->get("f_from"); if (!$f_from) $f_from = date("Y-m-d", strtotime("-6 months"));
-		$f_to = $this->input->get("f_to");
+		$f_from = $this->input->get("f_from"); if (!$f_from) $f_from = date("Y-m-d", strtotime("-3 months"));
+		$f_to = $this->input->get("f_to"); if (!$f_to) $f_to = date("Y-m-d", strtotime("+3 months"));
 		$f_status = $this->input->get("f_status");
 		
 		//getting surgeries from today
 		$filter = array();
 		$filter["schedule_from >="] = $f_from." 00:00:00";
+		$filter["schedule_to <="] = $f_to." 23:59:59";
 		if ($f_status) $filter["status_id"] = $this->status->code($f_status)->id;
 		$surgeries = $this->general->filter("surgery", $filter, "schedule_from", "desc");
 		
@@ -303,6 +304,9 @@ class Surgery extends CI_Controller {
 				
 				$sur_available = $this->general->is_available("surgery", $sur, $status_ids);
 				$app_available = $this->general->is_available("appointment", $sur, $status_ids);
+				
+				echo $sur_available." ".$app_available;
+				/*
 				if (!($sur_available and $app_available)) $msg = $this->lang->line('error_dna');
 				else{
 					if ($this->surgery->update($sur["id"], $sur)){
@@ -311,6 +315,7 @@ class Surgery extends CI_Controller {
 						$msg = $this->lang->line('success_rsu');
 					}else $msg = $this->lang->line('error_internal');
 				}
+				*/
 			}else $msg = $this->lang->line('error_internal_refresh');
 		}
 		

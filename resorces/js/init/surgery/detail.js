@@ -95,11 +95,22 @@ function load_doctor_schedule_surgery(){
 	load_doctor_schedule($("#rs_doctor").val(), $("#rs_date").val(), "rp_schedule");
 }
 
+function control_reschedule_form(){
+	if ($("#sur_reschedule").hasClass("d-none")) {
+		load_doctor_schedule_surgery();
+		$("#sur_reschedule").removeClass("d-none");
+		$("#sur_info").addClass("d-none");
+	}else{
+		$("#sur_reschedule").addClass("d-none");
+		$("#sur_info").removeClass("d-none");
+	}
+}
+
 $(document).ready(function() {
 	//general
 	$("#btn_cancel").on('click',(function(e) {cancel_surgery(this);}));
 	$("#btn_finish").on('click',(function(e) {finish_surgery(this);}));
-	$("#btn_reschedule").on('click',(function(e) {load_doctor_schedule_surgery();}));
+	$("#btn_reschedule, #btn_reschedule_cancel").on('click',(function(e) {control_reschedule_form();}));
 	
 	//reschedule
 	$("#form_reschedule").submit(function(e) {e.preventDefault(); reschedule_surgery(this);});

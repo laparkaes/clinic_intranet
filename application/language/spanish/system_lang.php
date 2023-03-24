@@ -26,7 +26,6 @@ $lang['error_internal_refresh'] = 'Ocurrió un error desconocido. Actualice pág
 $lang['error_no_result'] = 'No hay resultado de búsqueda. Ingrese los datos manualmente.';
 $lang['error_select_doctor'] = 'Elija un médico.';
 $lang['error_select_date'] = 'Elija una fecha.';
-$lang['msg_complete_availability'] = 'Disponibilidad completa.';
 
 //roles
 $lang['master'] = 'Maestro';
@@ -93,6 +92,7 @@ $lang['txt_surgeries'] = 'Cirugías';
 $lang['txt_surgeries_list'] = 'Lista de Cirugías';
 $lang['txt_today'] = 'Hoy';
 $lang['txt_tomorrow'] = 'Mañana';
+$lang['txt_busy_hours'] = 'Horario Ocupado.';
 
 //utility_lib
 $lang['error_search_dni'] = 'No hay resultado de búsqueda con DNI ingresado.';
