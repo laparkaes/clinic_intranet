@@ -295,7 +295,7 @@ class Surgery extends CI_Controller {
 					"id" => $surgery->id,
 					"doctor_id" => $surgery->doctor_id,
 					"schedule_from" => $schedule_from,
-					"schedule_to" => date("Y-m-d H:i:s", strtotime("+".$data["duration"]." minutes", strtotime($schedule_from)))
+					"schedule_to" => date("Y-m-d H:i:s", strtotime("+".($data["duration"]-1)." minutes", strtotime($schedule_from)))
 				);
 				
 				$status_ids = array();

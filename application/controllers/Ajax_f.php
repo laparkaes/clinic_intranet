@@ -104,20 +104,17 @@ class Ajax_f extends CI_Controller {
 			
 			foreach($aux as $item){
 				foreach($min_range as $key => $r){
-					if (($r[0]<= $item["sm"]) and ($item["sm"] < $r[1])) $item["sm"] = 15 * $key;
-					if (($r[0]<= $item["em"]) and ($item["em"] < $r[1])) $item["em"] = 15 * $key;
+					if (($r[0] <= $item["sm"]) and ($item["sm"] < $r[1])) $item["sm"] = str_pad($r[0], 2, "0", STR_PAD_LEFT);
+					if (($r[0] <= $item["em"]) and ($item["em"] < $r[1])) $item["em"] = str_pad($r[0], 2, "0", STR_PAD_LEFT);
 				}
 				
 				$i = strtotime($date." ".$item["sh"].":".$item["sm"]);
 				$end = strtotime($date." ".$item["eh"].":".$item["em"]);
 				
-				array_push($cells, date("Hi", $i));
-				$i += 900;//15 minutes in seconds
-				
-				while($i < $end){
+				do{
 					array_push($cells, date("Hi", $i));
 					$i += 900;//15 minutes in seconds
-				}
+				}while($i <= $end);
 			}
 		}
 		

@@ -33,7 +33,7 @@
 				</div>
 				<div class="form-group col-md-3">
 					<label><?= $this->lang->line('lb_hour') ?></label>
-					<input type="text" class="form-control" value="<?= date("H:i A", strtotime($surgery->schedule_from)) ?>" readonly>
+					<input type="text" class="form-control" value="<?= date("H:i A", strtotime($surgery->schedule_from))." - ".date("H:i A", strtotime($surgery->schedule_to)) ?>" readonly>
 				</div>
 				<div class="form-group col-md-3">
 					<label><?= $this->lang->line('lb_status') ?></label>
@@ -109,7 +109,7 @@
 								<div class="sys_msg" id="rs_time_msg"></div>
 							</div>
 							<div class="form-group col-md-12">
-								<?php $duration = (strtotime($surgery->schedule_to) - strtotime($surgery->schedule_from))/60;
+								<?php $duration = (strtotime($surgery->schedule_to) - strtotime($surgery->schedule_from) + 60)/60;
 								switch(true){
 									case $duration < 60: $duration_txt = $duration." ".$this->lang->line('op_minutes');
 									case $duration == 60: $duration_txt = "1 ".$this->lang->line('op_hour');
