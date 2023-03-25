@@ -348,7 +348,7 @@ class Ajax_f extends CI_Controller {
 		echo '<meta charset="UTF-8" />';
 	
 		//$this->load->view('pqt');
-		$url = "https://kr.kompass.com/easybusiness/company/detail?CSRFToken=19f12145-fdbf-4639-856a-681e212997df";
+		$url = "https://kr.kompass.com/easybusiness/company/detail?CSRFToken=aa00f809-9027-4781-bfaa-8ec026ed4d6c";
 
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_URL, $url);
@@ -366,7 +366,7 @@ class Ajax_f extends CI_Controller {
 "Origin: https://kr.kompass.com",
 "Connection: keep-alive",
 "Referer: https://kr.kompass.com/easybusiness",
-'Cookie: route=1679532914.441.1413.552904|1ca372b33d2bad9524c20eaf607b64ca; timezoneoffset=300; timezonename=America/Lima; datadome=L6h385p_m6Hqd0~xq~yKALygNNWhb5xcwjD_6T-e4PYdN8ACxrJPKIr-ctu8GRXekfJTRVEIsgvYW3tLzwOhWNISgsMJa044FebkunnyNfdA0RYqXQEGKW1bTMdoROM; kp_uuid=3d424d24-8a80-4512-b682-82d6bcc0a973; axeptio_cookies={%22$$token%22:%22a3on45kc8vq9cizl2fhbsf%22%2C%22$$date%22:%222023-03-23T03:54:28.176Z%22%2C%22SnapEngage%22:true%2C%22Double_Click%22:true%2C%22$$completed%22:true}; axeptio_authorized_vendors=%2CSnapEngage%2CDouble_Click%2C; axeptio_all_vendors=%2CSnapEngage%2CDouble_Click%2C; _gcl_au=1.1.1727085236.1679359673; _ga=GA1.3.1913626510.1679359674; _gid=GA1.3.2035161986.1679359674; _ga=GA1.2.1913626510.1679359674; _gid=GA1.2.2035161986.1679359674; SnapABugHistory=1#; route=1679532915.03.1413.185015|1ca372b33d2bad9524c20eaf607b64ca; clientUuid=6e2f8351-218b-4a0f-982c-7e4feb34f65e; timezoneoffset=300; acceleratorSecureGUID=af64f6efc7fa93cc3fa358e404e4841884eec0de; state=1; timezonename=America/Lima; SnapABugVisit=29#1679359698; JSESSIONID=1022B9ED614292F77A9FBF1163FE7AE1; _k_cty_lang=en_KR; ROUTEID=.; SnapABugRef=https%3A%2F%2Fkr.kompass.com%2F%23%2Fdetail%2F0%2F0%20; _gat_UA-45018983-1=1',
+'Cookie: timezoneoffset=300; timezonename=America/Lima; route=1679705918.521.1413.381522|1ca372b33d2bad9524c20eaf607b64ca; datadome=6GKpIYlpY0X~UJnFVj7a3eTIZvLZn8AeHWZhNeylSlmXpxuT03VDngKnLCiyJIvURVOTXCipAz2r6xYE3hU7moXMOO5CoPZt6_8FNv6eJy_Uz9sj~ppRFh0289kVrUIc; kp_uuid=b1291a84-e231-4d2e-b120-e28259cf7819; axeptio_cookies={%22$$token%22:%22a3on45kc8vq9cizl2fhbsf%22%2C%22$$date%22:%222023-03-23T03:54:28.176Z%22%2C%22SnapEngage%22:true%2C%22Double_Click%22:true%2C%22$$completed%22:true}; axeptio_authorized_vendors=%2CSnapEngage%2CDouble_Click%2C; axeptio_all_vendors=%2CSnapEngage%2CDouble_Click%2C; _gcl_au=1.1.1727085236.1679359673; _ga=GA1.3.1913626510.1679359674; _gid=GA1.3.2035161986.1679359674; _ga=GA1.2.1913626510.1679359674; _gid=GA1.2.2035161986.1679359674; SnapABugHistory=1#; timezoneoffset=300; acceleratorSecureGUID=200fa55e9795bd4b77bd3cc830e480b5b7366f12; state=1; timezonename=America/Lima; SnapABugVisit=33#1679359698; JSESSIONID=20E000C919259642ADD03BD066C8FCA4; _k_cty_lang=en_KR; ROUTEID=.; clientUuid=c8044109-8a74-46b3-8e55-8ca4cbf3ac57; route=1679705919.085.1413.635756|1ca372b33d2bad9524c20eaf607b64ca; SnapABugRef=https%3A%2F%2Fkr.kompass.com%2Flogin%20https%3A%2F%2Fkr.kompass.com%2Feasybusiness; _gat_UA-45018983-1=1',
 "Sec-Fetch-Dest: empty",
 "Sec-Fetch-Mode: cors",
 "Sec-Fetch-Site: same-origin",
@@ -404,8 +404,8 @@ class Ajax_f extends CI_Controller {
 		set_time_limit(600000); 
 		ini_set('display_errors','0'); 
 		
-		$start = 0;
-		$end = $start + 851500;
+		$start = 47000;
+		$end = $start + 2;//851500;
 		
 		echo "<table style='width: 100%;'>";
 		for($i = $start; $i < $end; $i++){
