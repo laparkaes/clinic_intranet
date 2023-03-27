@@ -2,3 +2,6 @@
 diagnostico presuntivo
 diagnostico confirmado
 diagnostico repetitivo
+
+2023 0327
+appintment, surgery 테이블에서 payment_id 삭제

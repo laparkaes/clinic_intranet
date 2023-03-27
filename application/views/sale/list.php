@@ -185,21 +185,15 @@
 											</div>
 											<div class="form-group col-md-6" id="sl_appointment">
 												<label><?= $this->lang->line('label_appointment') ?></label>
-												<select class="form-control" name="sale[appointment_id]">
-													<option value="">-</option>
-													<?php foreach($appointments as $item){ ?>
-													<option value="<?= $item->id ?>"><?= $item->patient_name." / ".$item->specialty." / ".$item->schedule_from ?></option>
-													<?php } ?>
+												<select class="form-control" name="sale[appointment_id]" id="app_select">
+													<option value="">--</option>
 												</select>
 												<div class="sys_msg" id="appointment_msg"></div>
 											</div>
 											<div class="form-group col-md-6" id="sl_surgery">
 												<label><?= $this->lang->line('label_surgery') ?></label>
-												<select class="form-control" name="sale[surgery_id]">
-													<option value="">-</option>
-													<?php foreach($surgeries as $item){ ?>
-													<option value="<?= $item->id ?>"><?= $item->patient_name." / ".$item->specialty." / ".$item->schedule_from ?></option>
-													<?php } ?>
+												<select class="form-control" name="sale[surgery_id]" id="sur_select">
+													<option value="">--</option>
 												</select>
 												<div class="sys_msg" id="surgery_msg"></div>
 											</div>

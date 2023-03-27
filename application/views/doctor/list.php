@@ -36,9 +36,9 @@
 						<table id="doctor_list" class="table display">
 							<thead>
 								<tr>
-									<th class="pt-0 pl-0"><?= $this->lang->line('hd_name') ?></th>
+									<th class="pt-0 pl-0"><?= $this->lang->line('hd_license') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_specialty') ?></th>
-									<th class="pt-0"><?= $this->lang->line('hd_license') ?></th>
+									<th class="pt-0"><?= $this->lang->line('hd_name') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_tel') ?></th>
 									<th class="pt-0"></th>
 									<th class="text-right pt-0 pr-0"></th>
@@ -47,9 +47,9 @@
 							<tbody>
 								<?php foreach($doctors as $item){ ?>
 								<tr>
-									<td class="pl-0"><?= $item->person->name ?></td>
+									<td class="pl-0"><?= $item->license ?></td>
 									<td><?= $specialties_arr[$item->specialty_id] ?></td>
-									<td><?= $item->license ?></td>
+									<td><?= $item->person->name ?></td>
 									<td><?= $item->person->tel ?></td>
 									<td class="text-center">
 										<i class="fas fa-circle text-<?= $status[$item->status_id]->color ?>" title="<?= $status[$item->status_id]->text ?>"></i>

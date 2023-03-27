@@ -13,6 +13,7 @@ class Sale extends CI_Controller {
 		$this->lang->load("sale", "spanish");
 		$this->load->model('product_model','product');
 		$this->load->model('appointment_model','appointment');
+		$this->load->model('surgery_model','surgery');
 		$this->load->model('status_model','status');
 		$this->load->model('account_model','account');
 		$this->load->model('specialty_model','specialty');
@@ -50,20 +51,6 @@ class Sale extends CI_Controller {
 		$specialties_arr = array();
 		if ($specialties) foreach($specialties as $item) $specialties_arr[$item->id] = $item->name;
 		
-		//getting reserved appointments => will be confirmed after payment
-		$filter = array("status_id" => $this->status->code("reserved")->id);
-		$appointments = $this->appointment->filter($filter);
-		foreach($appointments as $item){
-			$doctor_p = $this->general->id("person", $item->doctor_id);
-			$doctor_d = $this->general->filter("doctor", array("person_id" => $doctor_p->id));
-			if ($doctor_d) $item->specialty = $this->specialty->id($doctor_d[0]->specialty_id)->name;
-			else $item->specialty = "";
-			
-			$item->doctor_name = $doctor_p->name;
-			$item->patient_name = $this->general->id("person", $item->patient_id)->name;
-		}
-		usort($appointments, function($a, $b) { return strcmp($a->patient_name, $b->patient_name); });
-		
 		$clients = array();
 		$clients_rec = $this->general->all("person");
 		foreach($clients_rec as $c) $clients[$c->id] = $c->name;
@@ -82,7 +69,6 @@ class Sale extends CI_Controller {
 		$data = array(
 			"f_from" => $f_from,
 			"clients" => $clients,
-			"appointments" => $appointments,
 			"currencies" => $currencies,
 			"status" => $status,
 			"surgeries" => array(),
@@ -96,6 +82,33 @@ class Sale extends CI_Controller {
 		);
 		
 		$this->load->view('layout', $data);
+	}
+	
+	public function load_reservations(){
+		$appointments = $surgeries = array();
+		$filter = array("status_id" => $this->status->code("reserved")->id, "patient_id" => $this->input->post("person_id"));
+		
+		$appointments_db = $this->general->filter("appointment", $filter, "schedule_from", "desc");
+		$surgeries_db = $this->general->filter("surgery", $filter, "schedule_from", "desc");
+		
+		foreach($appointments_db as $item){
+			$p = $this->general->id("person", $item->doctor_id);
+			$d = $this->general->filter("doctor", array("person_id" => $p->id))[0];
+			$s = $this->specialty->id($d->specialty_id);
+			
+			array_push($appointments, array("id" => $item->id, "op" => date("d.m.Y", strtotime($item->schedule_from))." # ".date("h:i A", strtotime($item->schedule_from))." - ".date("h:i A", strtotime($item->schedule_to))." # ".$p->name." # ".$s->name));
+		}
+		
+		foreach($surgeries_db as $item){
+			$p = $this->general->id("person", $item->doctor_id);
+			$d = $this->general->filter("doctor", array("person_id" => $p->id))[0];
+			$s = $this->specialty->id($d->specialty_id);
+			
+			array_push($surgeries, array("id" => $item->id, "op" => date("d.m.Y", strtotime($item->schedule_from))." # ".date("h:i A", strtotime($item->schedule_from))." - ".date("h:i A", strtotime($item->schedule_to))." # ".$p->name." # ".$s->name." # ".$item->place));
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode(array("appointments" => $appointments, "surgeries" => $surgeries));
 	}
 	
 	public function add(){
@@ -117,11 +130,13 @@ class Sale extends CI_Controller {
 		if ($sale["total"] <= $payment["balance"]) $msg = $this->lang->line('error_npa');
 		
 		//product stock validation
-		$op_stock_arr = array();
+		$op_stock_arr = $cat_prod_arr = array();
 		if ($products){
 			$product_type_id_prod = $this->general->filter("product_type", array("description" => "Producto"))[0]->id;
 			foreach($products as $p){
 				$prod = $this->general->id("product", $p["product_id"]);
+				array_push($cat_prod_arr, $this->general->id("product_category", $prod->category_id)->name." ".$prod->description);
+				
 				if ($prod->type_id == $product_type_id_prod){
 					if ($p["option_id"]){
 						$prod_option = $this->general->id("product_option", $p["option_id"]);
@@ -138,13 +153,30 @@ class Sale extends CI_Controller {
 			}
 		}else $msg = $this->lang->line('error_spr');
 		
+		//appointment & surgery item validation
+		$need_app = $need_sur = false;
+		foreach($cat_prod_arr as $item){
+			if (strpos($item, "Consulta") !== false) $need_app = true;
+			if (strpos($item, "Cirugía") !== false) $need_sur = true;
+		}
+		
+		if ($need_app){
+			if (!$sale["appointment_id"]) $msg = $this->lang->line('error_sra');
+		}else{
+			if ($sale["appointment_id"]) $msg = $this->lang->line('error_sai');
+			else $sale["appointment_id"] = null;
+		}
+		
+		if ($need_sur){
+			if (!$sale["surgery_id"]) $msg = $this->lang->line('error_srs');
+		}else{
+			if ($sale["surgery_id"]) $msg = $this->lang->line('error_ssi');
+			else $sale["surgery_id"] = null;
+		} 
+		
 		if ($msgs) $msg = $this->lang->line('error_occurred');
 		elseif (!$msg){
 			$now = date('Y-m-d H:i:s', time());
-			
-			//to make value as null
-			if (!$sale["appointment_id"]) $sale["appointment_id"] = null;
-			if (!$sale["surgery_id"]) $sale["surgery_id"] = null;
 			
 			//client id asign
 			if ($doc_type->sunat_code){//any document selected (Sin Documento = 0)
@@ -194,7 +226,7 @@ class Sale extends CI_Controller {
 					if ($sale["appointment_id"] or $sale["surgery_id"]){
 						$status_data = array("status_id" => $this->status->code("confirmed")->id);
 						if ($sale["appointment_id"]) $this->appointment->update($sale["appointment_id"], $status_data);
-						//if ($sale["surgery_id"]) $this->surgery->update($sale["surgery_id"], $status_data);
+						if ($sale["surgery_id"]) $this->surgery->update($sale["surgery_id"], $status_data);
 					}
 					
 					$this->general->update("sale", $sale_id, array("sale_type_id" => $sale_type_id));
@@ -251,9 +283,7 @@ class Sale extends CI_Controller {
 			
 			array_push($products, array("value" => $item->id, "label" => implode(", ", $label), "currency" => $currency));
 		}
-		usort($products, function($a, $b) {
-			return strcmp($a["label"], $b["label"]);
-		});
+		usort($products, function($a, $b) {return strcmp($a["label"], $b["label"]);});
 		
 		header('Content-Type: application/json');
 		echo json_encode($products);
@@ -330,7 +360,10 @@ class Sale extends CI_Controller {
 		foreach($payments as $item) $item->payment_method = $this->sl_option->id($item->payment_method_id)->description;
 		
 		$products = $this->general->filter("sale_product", $filter);
-		foreach($products as $item) $item->product = $this->product->id($item->product_id);
+		foreach($products as $item){
+			$item->product = $this->product->id($item->product_id);
+			$item->product->category = $this->general->id("product_category", $item->product->category_id)->name;
+		}
 		
 		$voucher = $this->general->filter("voucher", $filter);
 		if ($voucher) $voucher = $voucher[0];
@@ -405,7 +438,7 @@ class Sale extends CI_Controller {
 			if ($sale->appointment_id or $sale->surgery_id){
 				$status_data = array("status_id" => $this->status->code("reserved")->id);
 				if ($sale->appointment_id) $this->appointment->update($sale->appointment_id, $status_data);
-				//pending!!! repeat for surgery
+				if ($sale->surgery_id) $this->surgery->update($sale->surgery_id, $status_data);
 			}
 			
 			$sale_data = array("status_id" => $this->status->code("canceled")->id);

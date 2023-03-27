@@ -281,9 +281,13 @@ $me = $appointment_datas["medicine"];
 						<td><?= $item->type ?></td>
 						<td><?= $item->specialty ?></td>
 						<td class="text-right pr-0">
+							<?php if ($appointment->id != $item->id){ ?>
 							<a href="<?= base_url().$item->link_to."/detail/".$item->id ?>" target="_blank">
 								<i class="fas fa-search"></i>
 							</a>
+							<?php }else{ ?>
+								<i class="fas fa-check text-success"></i>
+							<?php } ?>
 						</td>
 					</tr>
 					<?php } ?>
@@ -301,7 +305,7 @@ $me = $appointment_datas["medicine"];
 			<h4 class="mb-0"><?= $this->lang->line('title_files') ?></h4>
 		</div>
 		<div class="card-body ap_content_list">
-			<?php if ($histories){ ?>
+			<?php if ($patient_files){ ?>
 			<table class="table mb-0">
 				<thead>
 					<tr>
@@ -833,6 +837,14 @@ $me = $appointment_datas["medicine"];
 		<div class="card-body">
 			<form action="#" class="form-row" id="form_result">
 				<input type="hidden" name="appointment_id" value="<?= $appointment->id ?>">
+				<div class="form-group col-md-12">
+					<label><?= $this->lang->line('lb_diagnosis_type') ?></label>
+					<div class="form-control d-flex align-items-center">
+						<label class="radio-inline text-center mr-4 mb-0"><input type="radio" name="diagnosis_type" checked> Presuntivo</label>
+						<label class="radio-inline text-center mr-4 mb-0"><input type="radio" name="diagnosis_type"> Confirmado</label>
+						<label class="radio-inline text-center mr-4 mb-0"><input type="radio" name="diagnosis_type"> Repetitivo</label>
+					</div>
+				</div>
 				<div class="form-group col-md-4">
 					<label><?= $this->lang->line('lb_diagnosis') ?></label>
 					<textarea class="form-control" rows="3" name="diagnosis"><?= $re->diagnosis ?></textarea>

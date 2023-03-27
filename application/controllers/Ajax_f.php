@@ -121,35 +121,6 @@ class Ajax_f extends CI_Controller {
 		echo $this->load->view('doctor/tb_schedule', array("msg" => $msg, "cells" => $cells), true);
 	}
 	
-	public function load_doctor_schedule1(){
-		$status = false; $data = array(); $msg = null;
-		$doctor_id = $this->input->post("doctor_id");
-		$date = $this->input->post("date");
-		
-		if (!$doctor_id) $msg = $this->lang->line('error_select_doctor');
-		if (!$date) $msg = $this->lang->line('error_select_date');
-		
-		if (!$msg){
-			$status_ids = array($this->status->code("reserved")->id, $this->status->code("confirmed")->id);
-			$appointments = $this->appointment->doctor($doctor_id, $date, $status_ids);
-			if ($appointments) foreach($appointments as $item)
-				array_push($data, array("type" => $this->lang->line('txt_appointment'),"from" => date("h:i A", strtotime($item->schedule_from)), "to" =>date("h:i A", strtotime($item->schedule_to)) , "time" => strtotime($item->schedule_from)));
-			
-			$surgeries = $this->surgery->doctor($doctor_id, $date, $status_ids);
-			if ($surgeries) foreach($surgeries as $item)
-				array_push($data, array("type" => $this->lang->line('txt_surgery'),"from" => date("h:i A", strtotime($item->schedule_from)), "to" =>date("h:i A", strtotime($item->schedule_to)) , "time" => strtotime($item->schedule_from)));
-			
-			$status = true;
-			$type = "success";
-		}
-		
-		if ($data) usort($data, function($a, $b) { return ($a["time"] > $b["time"]); });
-		elseif (!$msg) $msg = $this->lang->line('msg_complete_availability');
-		
-		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "data" => $data, "msg" => $msg));
-	}
-	
 	public function load_schedule(){
 		$res = array();
 		

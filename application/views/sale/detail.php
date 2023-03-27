@@ -285,14 +285,14 @@
 									<?php $i = 0; foreach($products as $p){ $price = $p->price - $p->discount; $i++; ?>
 									<tr>
 										<td><?= $i ?></td>
-										<td><?= "[".$p->product->code."] ".$p->product->description ?></td>
-										<td><?= $sale->currency." ".number_format($p->price, 2) ?></td>
+										<td><?= "[".$p->product->code."] ".$p->product->category.", ".$p->product->description ?></td>
+										<td class="text-nowrap"><?= $sale->currency." ".number_format($p->price, 2) ?></td>
 										<td>
 											<?php if ($p->discount) echo $sale->currency." ".number_format($p->discount, 2);
 											else echo "-" ?>
 										</td>
 										<td><?= number_format($p->qty) ?></td>
-										<td class="text-right"><?= $sale->currency." ".number_format($price * $p->qty, 2) ?></td>
+										<td class="text-nowrap text-right"><?= $sale->currency." ".number_format($price * $p->qty, 2) ?></td>
 									</tr>
 									<?php } ?>
 								</tbody>

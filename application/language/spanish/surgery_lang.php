@@ -73,3 +73,6 @@ $lang['btn_reschedule'] = 'Reprogramar';
 $lang['hd_specialty'] = 'Especialidad';
 $lang['th_start'] = 'Inicio';
 $lang['th_end'] = 'Fin';
+$lang['hd_date'] = 'Fecha';
+$lang['hd_time'] = 'Hora';
+$lang['lb_detail'] = 'Detalle';

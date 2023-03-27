@@ -283,7 +283,9 @@ function search_person_ns(){
 					$("#client_name").val(res.person.name);
 					$("#client_name").addClass("bg-light");
 					$("#client_name").attr("readonly", true);
-				}else enable_dn_name();
+					control_client_name(false);
+					load_reservations(res.person.id);
+				}else control_client_name(true);
 			});
 		}
 	});
@@ -330,6 +332,27 @@ function control_doc_number(){
 		$("#client_doc_number, #client_name").removeClass("bg-light").prop("readonly", false);
 		$("#btn_search_client").prop("disabled", false);
 	}
+}
+
+function load_reservations(person_id){
+	$.ajax({
+		url: $("#base_url").val() + "sale/load_reservations",
+		type: "POST",
+		data: {person_id: person_id},
+		success:function(res){
+			$("#app_select, #sur_select").html('<option value="">--</option>');
+			
+			res.appointments.forEach(function(element) {
+				console.log(element);
+				$("#app_select").append('<option value="' + element.id + '">' + element.op + '</option>');
+			});	
+			
+			res.surgeries.forEach(function(element) {
+				console.log(element);
+				$("#sur_select").append('<option value="' + element.id + '">' + element.op + '</option>');
+			});	
+		}
+	});
 }
 
 $(document).ready(function() {

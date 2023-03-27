@@ -23,6 +23,12 @@
 		</div>
 		<div class="card-body">
 			<div class="form-row" id="app_info">
+				<?php if ($appointment->detail){ ?>
+				<div class="form-group col-md-12">
+					<label><?= $this->lang->line('lb_detail') ?></label>
+					<input type="text" class="form-control" value="<?= $appointment->detail ?>" readonly>
+				</div>
+				<?php } ?>
 				<div class="form-group col-md-3">
 					<label><?= $this->lang->line('lb_doctor') ?></label>
 					<input type="text" class="form-control" value="<?= $doctor->name ?>" readonly>

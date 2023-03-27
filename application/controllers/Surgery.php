@@ -123,6 +123,19 @@ class Surgery extends CI_Controller {
 				break;
 		}
 		
+		$surgery->detail = null;
+		$surgery_sale = $this->general->filter("sale", array("surgery_id" => $surgery->id));
+		if ($surgery_sale){
+			$sale_items = $this->general->filter("sale_product", array("sale_id" => $surgery_sale[0]->id));
+			foreach($sale_items as $item){
+				$product = $this->general->id("product", $item->product_id);
+				$category = $this->general->id("product_category", $product->category_id)->name;
+				
+				$str = $category.", ".$product->description;
+				if (strpos($str, "Cirugía") !== false) $surgery->detail = $str;
+			}
+		}
+		
 		$doctor = $this->general->id("person", $surgery->doctor_id);
 		if ($doctor){
 			$data = $this->general->filter("doctor", array("person_id" => $doctor->id));
@@ -265,13 +278,11 @@ class Surgery extends CI_Controller {
 		$status = false; $type = "error"; $msg = null;
 		$surgery = $this->surgery->id($this->input->post("id"));
 		if ($surgery){
-			if (!$surgery->payment_id){
-				if ($this->surgery->update($surgery->id, array("status_id" => $this->status->code("canceled")->id))){
-					$status = true;
-					$type = "success";
-					$msg = $this->lang->line('success_cap');
-				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_pap');
+			if ($this->surgery->update($surgery->id, array("status_id" => $this->status->code("canceled")->id))){
+				$status = true;
+				$type = "success";
+				$msg = $this->lang->line('success_cap');
+			}else $msg = $this->lang->line('error_internal');
 		}else $msg = $this->lang->line('error_nap');
 		
 		header('Content-Type: application/json');

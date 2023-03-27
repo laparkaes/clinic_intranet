@@ -36,22 +36,20 @@
 						<table id="patient_list" class="table display">
 							<thead>
 								<tr>
-									<th class="pt-0 pl-0"><?= $this->lang->line('hd_name') ?></th>
-									<th class="pt-0"><?= $this->lang->line('hd_document') ?></th>
+									<th class="pt-0 pl-0"><?= $this->lang->line('hd_document') ?></th>
+									<th class="pt-0"><?= $this->lang->line('hd_name') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_tel') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_age') ?></th>
-									<th class="pt-0"><?= $this->lang->line('hd_registed') ?></th>
 									<th class="text-right pt-0 pr-0"></th>
 								</tr>
 							</thead>
 							<tbody>
 								<?php foreach($patients as $item){ ?>
 								<tr>
-									<td class="pl-0"><?= $item->name ?></td>
-									<td><?= $doc_types_arr[$item->doc_type_id]." ".$item->doc_number ?></td>
+									<td class="pl-0 text-nowrap"><?= $doc_types_arr[$item->doc_type_id]." ".$item->doc_number ?></td>
+									<td><?= $item->name ?></td>
 									<td><?= $item->tel ?></td>
 									<td><?php if ($item->birthday) echo $this->utility_lib->age_calculator($item->birthday); ?></td>
-									<td><?= str_replace(" ", "<br/>", $item->registed_at) ?></td>
 									<td class="text-right pr-0">
 										<a href="<?= base_url() ?>patient/detail/<?= $item->id ?>">
 											<button type="button" class="btn btn-primary light sharp border-0">

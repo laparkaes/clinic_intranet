@@ -36,7 +36,8 @@
 						<table id="appointment_list" class="table display">
 							<thead>
 								<tr>
-									<th class="text-left pt-0 pl-0"><?= $this->lang->line('hd_schedule') ?></th>
+									<th class="text-left pt-0 pl-0"><?= $this->lang->line('hd_date') ?></th>
+									<th class="pt-0"><?= $this->lang->line('hd_time') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_doctor') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_patient') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_status') ?></th>
@@ -47,7 +48,12 @@
 								<?php foreach($appointments as $item){ ?>
 								<tr>
 									<td class="text-left text-nowrap pl-0">
-										<?= date("Y-m-d<\b\\r>h:i A", strtotime($item->schedule_from)) ?>
+										<?= date("d.m.Y", strtotime($item->schedule_from)) ?>
+									</td>
+									<td>
+										<span><?= date("h:i A", strtotime($item->schedule_from)) ?></span>
+										<br/>
+										<span class="text-nowrap">- <?= date("h:i A", strtotime($item->schedule_to)) ?></span>
 									</td>
 									<td>
 										<?= $people_arr[$item->doctor_id] ?>

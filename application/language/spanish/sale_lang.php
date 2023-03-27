@@ -20,6 +20,12 @@ $lang['error_bup'] = 'Existe cambio de balance del pago. Actualice la página e 
 $lang['error_epa'] = 'Existe pagos relacionados. Anule todos los pagos e intente nuevamente.';//error_exist_payment
 $lang['error_sba'] = 'Existe saldo pendiente de venta.';//error_sale_balance
 $lang['error_voe'] = 'Existe un comprobante emitido. Vuelva a cargar la página.';//error_voucher_exist
+$lang['error_sra'] = 'Debe elegir una consulta reservada del paciente.';//error_select_reserved_appointment
+$lang['error_srs'] = 'Debe elegir una cirugía reservada del paciente.';//error_select_reserved_surgery
+$lang['error_sai'] = 'Debe elegir un ítem de consulta para proceder con la venta.';//error_select_appointment_item
+$lang['error_ssi'] = 'Debe elegir un ítem de cirugía para proceder con la venta.';//error_select_appointment_item
+
+
 $lang['warning_asa'] = '¿Desea registrar la venta?';//warning_add_sale
 $lang['warning_apa'] = '¿Desea registrar pago?';//warning_add_payment
 $lang['warning_dpa'] = '¿Desea eliminar pago?';//warning_delete_payment

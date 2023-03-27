@@ -142,22 +142,6 @@ function load_doctor_schedule(doctor_id, date, dom_id){
 	});
 }
 
-function load_doctor_schedule1(doctor_id, date, dom_id){
-	$.ajax({
-		url: $("#base_url").val() + "ajax_f/load_doctor_schedule",
-		type: "POST",
-		data: {doctor_id: doctor_id, date: date},
-		success:function(res){
-			$("#" + dom_id).html("");
-			if (res.msg == null){
-				res.data.forEach((e) => {
-					$("#" + dom_id).append('<tr><td class="pl-0">' + e.type + '</td><td class="text-center">' + e.from + '</td><td class="text-center">-</td><td class="text-center pr-0">' + e.to + '</td></tr>');
-				});
-			}else $("#" + dom_id).append('<tr><td colspan="4" class="pl-0">' + res.msg + '</td></tr>');
-		}
-	});
-}
-
 $(document).ready(function() {
 	if ($(".date_picker").length > 0){
 		$(".date_picker").bootstrapMaterialDatePicker({

@@ -2,6 +2,7 @@
 	<div class="card">
 		<div class="card-header pb-0 border-0">
 			<h4 class="mb-0"><?= $doctor->data->specialty ?></h4>
+			
 			<div class="text-right">
 				<?php if (in_array("reschedule", $actions)){ ?>
 				<button type="button" class="btn tp-btn btn-info" id="btn_reschedule" value="<?= $surgery->id ?>" data-toggle="modal" data-target="#reschedule_surgery">
@@ -13,16 +14,24 @@
 					<?= $this->lang->line('btn_cancel') ?>
 				</button>
 				<?php } if (in_array("report", $actions)){ ?>
+				<!--
 				<a href="<?= base_url() ?>surgery/report/<?= $surgery->id ?>" target="_blank">
 					<button type="button" class="btn btn-primary">
 						<?= $this->lang->line('btn_report') ?>
 					</button>
 				</a>
+				-->
 				<?php } ?>
 			</div>
 		</div>
 		<div class="card-body">
 			<div class="form-row" id="sur_info">
+				<?php if ($surgery->detail){ ?>
+				<div class="form-group col-md-12">
+					<label><?= $this->lang->line('lb_detail') ?></label>
+					<input type="text" class="form-control" value="<?= $surgery->detail ?>" readonly>
+				</div>
+				<?php } ?>
 				<div class="form-group col-md-3">
 					<label><?= $this->lang->line('lb_doctor') ?></label>
 					<input type="text" class="form-control" value="<?= $doctor->name ?>" readonly>
@@ -164,9 +173,13 @@
 						<td><?= $item->type ?></td>
 						<td><?= $item->specialty ?></td>
 						<td class="text-right pr-0">
+							<?php if ($surgery->id != $item->id){ ?>
 							<a href="<?= base_url().$item->link_to."/detail/".$item->id ?>" target="_blank">
 								<i class="fas fa-search"></i>
 							</a>
+							<?php }else{ ?>
+								<i class="fas fa-check text-success"></i>
+							<?php } ?>
 						</td>
 					</tr>
 					<?php } ?>
@@ -184,7 +197,7 @@
 			<h4 class="mb-0"><?= $this->lang->line('title_files') ?></h4>
 		</div>
 		<div class="card-body ap_content_list">
-			<?php if ($histories){ ?>
+			<?php if ($patient_files){ ?>
 			<table class="table mb-0">
 				<thead>
 					<tr>

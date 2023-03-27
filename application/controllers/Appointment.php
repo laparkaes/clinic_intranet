@@ -206,6 +206,19 @@ class Appointment extends CI_Controller {
 			case "canceled": $appointment->status->color = "danger"; $appointment->is_editable = false; break;
 		}
 		
+		$appointment->detail = null;
+		$appointment_sale = $this->general->filter("sale", array("appointment_id" => $appointment->id));
+		if ($appointment_sale){
+			$sale_items = $this->general->filter("sale_product", array("sale_id" => $appointment_sale[0]->id));
+			foreach($sale_items as $item){
+				$product = $this->general->id("product", $item->product_id);
+				$category = $this->general->id("product_category", $product->category_id)->name;
+				
+				$str = $category.", ".$product->description;
+				if (strpos($str, "Consulta") !== false) $appointment->detail = $str;
+			}
+		}
+		
 		$doctor = $this->general->id("person", $appointment->doctor_id);
 		if ($doctor){
 			$data = $this->general->filter("doctor", array("person_id" => $doctor->id));
@@ -397,13 +410,11 @@ class Appointment extends CI_Controller {
 		$status = false; $type = "error"; $msg = null;
 		$appointment = $this->appointment->id($this->input->post("id"));
 		if ($appointment){
-			if (!$appointment->payment_id){
-				if ($this->appointment->update($appointment->id, array("status_id" => $this->status->code("canceled")->id))){
-					$status = true;
-					$type = "success";
-					$msg = $this->lang->line('success_cap');
-				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_pap');
+			if ($this->appointment->update($appointment->id, array("status_id" => $this->status->code("canceled")->id))){
+				$status = true;
+				$type = "success";
+				$msg = $this->lang->line('success_cap');
+			}else $msg = $this->lang->line('error_internal');
 		}else $msg = $this->lang->line('error_nap');
 		
 		header('Content-Type: application/json');
