@@ -109,16 +109,9 @@
 								<div class="sys_msg" id="rs_time_msg"></div>
 							</div>
 							<div class="form-group col-md-12">
-								<?php $duration = (strtotime($surgery->schedule_to) - strtotime($surgery->schedule_from) + 60)/60;
-								switch(true){
-									case $duration < 60: $duration_txt = $duration." ".$this->lang->line('op_minutes');
-									case $duration == 60: $duration_txt = "1 ".$this->lang->line('op_hour');
-									default: $duration_txt = ($duration/60)." ".$this->lang->line('op_hours');
-								}
-								?>
 								<label><?= $this->lang->line('lb_duration') ?></label>
-								<input type="hidden" name="duration" value="<?= $duration ?>" readonly>
-								<input type="text" class="form-control bg-light" value="<?= $duration_txt ?>" readonly>
+								<input type="hidden" name="duration" value="<?= $surgery->duration ?>" readonly>
+								<input type="text" class="form-control bg-light" value="<?= $surgery->duration_txt ?>" readonly>
 								<div class="sys_msg" id="rs_duration_msg"></div>
 							</div>
 							<div class="form-group col-md-12 pt-3">

@@ -123,3 +123,6 @@ $lang['th_start'] = 'Inicio';
 $lang['th_end'] = 'Fin';
 $lang['lb_place'] = 'Lugar';
 $lang['lb_duration'] = 'Duración';
+$lang['op_minutes'] = 'minutos';
+$lang['op_hour'] = 'hora';
+$lang['op_hours'] = 'horas';

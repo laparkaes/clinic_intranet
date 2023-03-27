@@ -89,6 +89,24 @@ class Surgery extends CI_Controller {
 		$surgery = $this->general->id("surgery", $id);
 		if (!$surgery) redirect("/surgery");
 		
+		//duration set
+		$duration = (strtotime($surgery->schedule_to) - strtotime($surgery->schedule_from) + 60)/60;
+								
+		$hh = (int) ($duration / 60);
+		$mm = $duration % 60;
+		
+		$duration_txt = "";
+		if ($hh > 0){
+			$duration_txt = $duration_txt.$hh." ".(($hh > 1) ? $this->lang->line('op_hours') : $this->lang->line('op_hour'));
+		}
+		if ($mm > 0){
+			if ($duration_txt) $duration_txt = $duration_txt." ";
+			$duration_txt = $duration_txt.$mm." ".(($mm > 1) ? $this->lang->line('op_minutes') : $this->lang->line('op_minute'));
+		}
+		
+		$surgery->duration = $duration;//duration diff give last minute as additional
+		$surgery->duration_txt = $duration_txt;
+		
 		$surgery->status = $this->general->id("status", $surgery->status_id);
 		$surgery->is_editable = false; $actions = array();
 		switch($surgery->status->code){
@@ -302,11 +320,9 @@ class Surgery extends CI_Controller {
 				array_push($status_ids, $this->status->code("reserved")->id);
 				array_push($status_ids, $this->status->code("confirmed")->id);
 				
-				$sur_available = $this->general->is_available("surgery", $sur, $status_ids);
+				$sur_available = $this->general->is_available("surgery", $sur, $status_ids, $sur["id"]);
 				$app_available = $this->general->is_available("appointment", $sur, $status_ids);
 				
-				echo $sur_available." ".$app_available;
-				/*
 				if (!($sur_available and $app_available)) $msg = $this->lang->line('error_dna');
 				else{
 					if ($this->surgery->update($sur["id"], $sur)){
@@ -315,7 +331,6 @@ class Surgery extends CI_Controller {
 						$msg = $this->lang->line('success_rsu');
 					}else $msg = $this->lang->line('error_internal');
 				}
-				*/
 			}else $msg = $this->lang->line('error_internal_refresh');
 		}
 		

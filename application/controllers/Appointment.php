@@ -451,7 +451,7 @@ class Appointment extends CI_Controller {
 				//must be updated
 				//check appointment and surgery available
 				$sur_available = $this->general->is_available("surgery", $app, $status_ids);
-				$app_available = $this->general->is_available("appointment", $app, $status_ids);
+				$app_available = $this->general->is_available("appointment", $app, $status_ids, $app["id"]);
 				if ($sur_available and $app_available){
 					if ($this->appointment->update($app["id"], $app)){
 						$status = true;

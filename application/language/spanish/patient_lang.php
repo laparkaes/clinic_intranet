@@ -122,3 +122,6 @@ $lang['title_records'] = 'Registros';
 $lang['th_type'] = 'Tipo';
 $lang['th_start'] = 'Inicio';
 $lang['th_end'] = 'Fin';
+$lang['op_minutes'] = 'minutos';
+$lang['op_hour'] = 'hora';
+$lang['op_hours'] = 'horas';

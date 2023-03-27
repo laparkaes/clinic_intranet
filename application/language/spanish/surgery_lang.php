@@ -42,6 +42,7 @@ $lang['lb_optional'] = 'Opcional';
 $lang['txt_remark'] = 'Síntomas, Notas del paciente, etc.';
 $lang['lb_place'] = 'Lugar';
 $lang['lb_duration'] = 'Duración';
+$lang['op_minute'] = 'minuto';
 $lang['op_minutes'] = 'minutos';
 $lang['op_hour'] = 'hora';
 $lang['op_hours'] = 'horas';

@@ -149,7 +149,7 @@ function aa_search_patient(){
 }
 
 function aa_load_doctor_schedule(){
-	load_doctor_schedule($("#aa_doctor_id").val(), $("#aa_date").val(), "aa_schedule_list");
+	load_doctor_schedule($("#aa_doctor_id").val(), $("#aa_date").val(), "aa_schedule");
 }
 
 function app_register(dom){

@@ -73,7 +73,8 @@ class General_model extends CI_Model{
 		return $query->num_rows();
 	}
 	
-	function is_available($tablename, $data, $status_ids = null){
+	function is_available($tablename, $data, $status_ids = null, $id = null){
+		if ($id) $this->db->where('id !=', $id);
 		$this->db->where('doctor_id', $data["doctor_id"]);
 		$this->db->group_start();
 		$this->db->group_start();
