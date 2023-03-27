@@ -213,8 +213,8 @@ $(document).ready(function() {
 	//add appointment
 	aa_load_doctor_schedule();
 	$("#add_appointment_form").submit(function(e) {e.preventDefault(); register_appointment(this);});
-	$("#aa_speciality").change(function() {set_doctor_sl(this);});
-	$("#aa_speciality, #aa_doctor, #aa_date").change(function() {aa_load_doctor_schedule();});
+	$("#aa_specialty").change(function() {set_doctor_sl(this);});
+	$("#aa_specialty, #aa_doctor, #aa_date").change(function() {aa_load_doctor_schedule();});
 	
 	//personal data update
 	$("#form_create_account").submit(function(e) {e.preventDefault(); form_create_account(this);});
