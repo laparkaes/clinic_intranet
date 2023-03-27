@@ -76,111 +76,107 @@
 				</div>
 			</div>
 			<div class="row bl_content d-none" id="bl_add">
-				<div class="col-md-12">
+				<div class="col-md-6 mb-3">
 					<form action="#" id="register_form">
-						<div class="row">
-							<div class="col-md-6 mb-3">
-								<h5 class="mb-3"><?= $this->lang->line('title_attention') ?></h5>
-								<div class="form-row">
-									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_specialty') ?></label>
-										<select class="form-control" id="aa_specialty" name="app[specialty_id]">
-											<option value="">--</option>
-											<?php foreach($specialties as $item){ ?>
-											<option value="<?= $item->id ?>"><?= $item->name ?></option>
-											<?php } ?>
-										</select>
-										<div class="sys_msg" id="aa_specialty_msg"></div>
-									</div>
-									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_doctor') ?></label>
-										<select class="form-control" id="aa_doctor" name="app[doctor_id]">
-											<option value="">--</option>
-											<?php foreach($doctors as $item){ ?>
-											<option class="spe spe_<?= $item->specialty_id ?> d-none" value="<?= $item->person_id ?>"><?= $item->name ?></option>
-											<?php } ?>
-										</select>
-										<div class="sys_msg" id="aa_doctor_msg"></div>
-									</div>
-									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_date') ?></label>
-										<input type="text" class="form-control date_picker" id="aa_date" name="sch[date]" value="<?= date('Y-m-d') ?>" readonly>
-										<div class="sys_msg" id="aa_date_msg"></div>
-									</div>
-									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_time') ?></label>
-										<div class="d-flex justify-content-between">
-											<select class="form-control text-center px-0" id="aa_hour" name="sch[hour]">
-												<option value="" selected>--</option>
-												<?php for($i = 9; $i <= 18; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
-												<option value="<?= $i ?>">
-													<?php 
-													switch(true){
-														case $i < 12: echo $i." AM"; break;
-														case $i == 12: echo $i." M"; break;
-														case $i > 12: echo ($i - 12)." PM"; break;
-													}
-													?>
-												</option>
-												<?php } ?>
-											</select>
-											<span class="input-group-text bg-white px-2" style="min-width: 0;">:</span>
-											<select class="form-control text-center px-0" id="aa_min" name="sch[min]">
-												<option value="" selected>--</option>
-												<option value="00">00</option>
-												<option value="15">15</option>
-												<option value="30">30</option>
-												<option value="45">45</option>
-											</select>
-										</div>
-										<div class="sys_msg" id="aa_schedule_msg"></div>
-									</div>
-								</div>
-								<h5 class="my-3"><?= $this->lang->line('lb_patient') ?></h5>
-								<input type="hidden" id="aa_pt_id" name="app[patient_id]" value="">
-								<div class="form-row">
-									<div class="form-group col-md-12">
-										<label><?= $this->lang->line('lb_document') ?></label>
-										<div class="input-group">
-											<select class="form-control" id="aa_pt_doc_type_id" name="pt[doc_type_id]" style="border-right:0;">
-												<?php foreach($doc_types as $item){ if ($item->sunat_code){ ?>
-												<option value="<?= $item->id ?>"><?= $item->description ?></option>
-												<?php }} ?>
-											</select>
-											<input type="text" class="form-control" id="aa_pt_doc_number" name="pt[doc_number]" style="border-left:0;" placeholder="<?= $this->lang->line('txt_number') ?>">
-											<div class="input-group-append">
-                                                <button class="btn btn-primary border-0" type="button" id="btn_search_pt">
-													<i class="fas fa-search"></i>
-												</button>
-                                            </div>
-										</div>
-										<div class="sys_msg" id="aa_pt_doc_msg"></div>
-									</div>
-									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_name') ?></label>
-										<input type="text" class="form-control" id="aa_pt_name" name="pt[name]">
-										<div class="sys_msg" id="aa_pt_name_msg"></div>
-									</div>
-									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_tel') ?></label>
-										<input type="text" class="form-control" id="aa_pt_tel" name="pt[tel]">
-										<div class="sys_msg" id="aa_pt_tel_msg"></div>
-									</div>
-									<div class="form-group col-md-12">
-										<label><?= $this->lang->line('lb_remark') ?> (<?= $this->lang->line('lb_optional') ?>)</label>
-										<textarea class="form-control" rows="4" name="app[remark]" placeholder="<?= $this->lang->line('txt_remark') ?>"></textarea>
-									</div>
-									<div class="form-group col-md-12 pt-3">
-										<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
-									</div>
-								</div>
+						<h5 class="mb-3"><?= $this->lang->line('title_attention') ?></h5>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label><?= $this->lang->line('lb_specialty') ?></label>
+								<select class="form-control" id="aa_specialty" name="app[specialty_id]">
+									<option value="">--</option>
+									<?php foreach($specialties as $item){ ?>
+									<option value="<?= $item->id ?>"><?= $item->name ?></option>
+									<?php } ?>
+								</select>
+								<div class="sys_msg" id="aa_specialty_msg"></div>
 							</div>
-							<div class="col-md-6 mb-3">
-								<h5 class="mb-3"><?= $this->lang->line('title_doctor_agenda') ?></h5>
-								<div id="aa_schedule"></div>
+							<div class="form-group col-md-6">
+								<label><?= $this->lang->line('lb_doctor') ?></label>
+								<select class="form-control" id="aa_doctor" name="app[doctor_id]">
+									<option value="">--</option>
+									<?php foreach($doctors as $item){ ?>
+									<option class="spe spe_<?= $item->specialty_id ?> d-none" value="<?= $item->person_id ?>"><?= $item->name ?></option>
+									<?php } ?>
+								</select>
+								<div class="sys_msg" id="aa_doctor_msg"></div>
+							</div>
+							<div class="form-group col-md-6">
+								<label><?= $this->lang->line('lb_date') ?></label>
+								<input type="text" class="form-control date_picker" id="aa_date" name="sch[date]" value="<?= date('Y-m-d') ?>" readonly>
+								<div class="sys_msg" id="aa_date_msg"></div>
+							</div>
+							<div class="form-group col-md-6">
+								<label><?= $this->lang->line('lb_time') ?></label>
+								<div class="d-flex justify-content-between">
+									<select class="form-control text-center px-0" id="aa_hour" name="sch[hour]">
+										<option value="" selected>--</option>
+										<?php for($i = 9; $i <= 18; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
+										<option value="<?= $i ?>">
+											<?php 
+											switch(true){
+												case $i < 12: echo $i." AM"; break;
+												case $i == 12: echo $i." M"; break;
+												case $i > 12: echo ($i - 12)." PM"; break;
+											}
+											?>
+										</option>
+										<?php } ?>
+									</select>
+									<span class="input-group-text bg-white px-2" style="min-width: 0;">:</span>
+									<select class="form-control text-center px-0" id="aa_min" name="sch[min]">
+										<option value="" selected>--</option>
+										<option value="00">00</option>
+										<option value="15">15</option>
+										<option value="30">30</option>
+										<option value="45">45</option>
+									</select>
+								</div>
+								<div class="sys_msg" id="aa_schedule_msg"></div>
+							</div>
+						</div>
+						<h5 class="my-3"><?= $this->lang->line('lb_patient') ?></h5>
+						<input type="hidden" id="aa_pt_id" name="app[patient_id]" value="">
+						<div class="form-row">
+							<div class="form-group col-md-12">
+								<label><?= $this->lang->line('lb_document') ?></label>
+								<div class="input-group">
+									<select class="form-control" id="aa_pt_doc_type_id" name="pt[doc_type_id]" style="border-right:0;">
+										<?php foreach($doc_types as $item){ if ($item->sunat_code){ ?>
+										<option value="<?= $item->id ?>"><?= $item->description ?></option>
+										<?php }} ?>
+									</select>
+									<input type="text" class="form-control" id="aa_pt_doc_number" name="pt[doc_number]" style="border-left:0;" placeholder="<?= $this->lang->line('txt_number') ?>">
+									<div class="input-group-append">
+										<button class="btn btn-primary border-0" type="button" id="btn_search_pt">
+											<i class="fas fa-search"></i>
+										</button>
+									</div>
+								</div>
+								<div class="sys_msg" id="aa_pt_doc_msg"></div>
+							</div>
+							<div class="form-group col-md-6">
+								<label><?= $this->lang->line('lb_name') ?></label>
+								<input type="text" class="form-control" id="aa_pt_name" name="pt[name]">
+								<div class="sys_msg" id="aa_pt_name_msg"></div>
+							</div>
+							<div class="form-group col-md-6">
+								<label><?= $this->lang->line('lb_tel') ?></label>
+								<input type="text" class="form-control" id="aa_pt_tel" name="pt[tel]">
+								<div class="sys_msg" id="aa_pt_tel_msg"></div>
+							</div>
+							<div class="form-group col-md-12">
+								<label><?= $this->lang->line('lb_remark') ?> (<?= $this->lang->line('lb_optional') ?>)</label>
+								<textarea class="form-control" rows="4" name="app[remark]" placeholder="<?= $this->lang->line('txt_remark') ?>"></textarea>
+							</div>
+							<div class="form-group col-md-12 pt-3">
+								<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
 							</div>
 						</div>
 					</form>
+				</div>
+				<div class="col-md-6 mb-3">
+					<h5 class="mb-3"><?= $this->lang->line('title_doctor_agenda') ?></h5>
+					<div id="aa_schedule"></div>
 				</div>
 			</div>
 		</div>

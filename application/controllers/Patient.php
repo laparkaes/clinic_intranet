@@ -62,12 +62,12 @@ class Patient extends CI_Controller {
 			$person->email = $account->email;
 		}else $person->email = "";
 		
-		$appointments = $this->appointment->filter(array("patient_id" => $person->id));
-		$surgeries = array();
-		
 		$specialty_arr = array();
 		$specialties = $this->general->all("specialty", "name", "asc");
 		foreach($specialties as $item) $specialty_arr[$item->id] = $item->name;
+		
+		$appointments = $this->general->filter("appointment", array("patient_id" => $person->id), "schedule_from", "desc");
+		$surgeries = $this->general->filter("surgery", array("patient_id" => $person->id), "schedule_from", "desc");
 		
 		$doctors_arr = array();
 		$doctors = $this->general->all("doctor");

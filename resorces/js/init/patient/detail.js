@@ -174,10 +174,20 @@ function aa_load_doctor_schedule(){
 	load_doctor_schedule($("#aa_doctor").val(), $("#aa_date").val(), "aa_schedule_list");
 }
 
-function set_doctor_sl(dom){
+function sur_load_doctor_schedule(){
+	load_doctor_schedule($("#sur_doctor").val(), $("#sur_date").val(), "sur_schedule_list");
+}
+
+function aa_set_doctor_sl(dom){
 	$("#aa_doctor").val("");
 	$("#aa_doctor .spe").addClass("d-none");
 	$("#aa_doctor .spe_" + $(dom).val()).removeClass("d-none");
+}
+
+function sur_set_doctor_sl(dom){
+	$("#sur_doctor").val("");
+	$("#sur_doctor .spe").addClass("d-none");
+	$("#sur_doctor .spe_" + $(dom).val()).removeClass("d-none");
 }
 
 function register_appointment(dom){
@@ -204,8 +214,33 @@ function register_appointment(dom){
 	});
 }
 
+function register_surgery(dom){
+	$("#register_form .sys_msg").html("");
+	$.ajax({
+		url: $("#base_url").val() + "surgery/register",
+		type: "POST",
+		data: new FormData(dom),
+		contentType: false,
+		processData:false,
+		success:function(res){
+			set_msg(res.msgs);
+			if (res.msg != null){
+				Swal.fire({
+					title: $("#alert_" + res.type + "_title").val(),
+					icon: res.type,
+					html: res.msg,
+					confirmButtonText: $("#alert_confirm_btn").val()
+				}).then((result) => {
+					if (res.status == true) location.href = res.move_to;
+				});
+			}
+		}
+	});
+}
+
 $(document).ready(function() {
 	set_datatable("appointment_list", 10, false);
+	set_datatable("surgery_list", 10, false);
 	set_datatable("file_list", 10, false);
 	set_datatable("sale_list", 10, false);
 	$(".control_bl_simple").on('click',(function(e) {control_bl_simple(this);}));
@@ -213,8 +248,14 @@ $(document).ready(function() {
 	//add appointment
 	aa_load_doctor_schedule();
 	$("#add_appointment_form").submit(function(e) {e.preventDefault(); register_appointment(this);});
-	$("#aa_specialty").change(function() {set_doctor_sl(this);});
+	$("#aa_specialty").change(function() {aa_set_doctor_sl(this);});
 	$("#aa_specialty, #aa_doctor, #aa_date").change(function() {aa_load_doctor_schedule();});
+	
+	//add surgery
+	sur_load_doctor_schedule();
+	$("#sur_register_form").submit(function(e) {e.preventDefault(); register_surgery(this);});
+	$("#sur_specialty").change(function() {sur_set_doctor_sl(this);});
+	$("#sur_specialty, #sur_doctor, #sur_date").change(function() {sur_load_doctor_schedule();});
 	
 	//personal data update
 	$("#form_create_account").submit(function(e) {e.preventDefault(); form_create_account(this);});

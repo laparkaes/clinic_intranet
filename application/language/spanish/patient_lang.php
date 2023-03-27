@@ -125,3 +125,7 @@ $lang['th_end'] = 'Fin';
 $lang['op_minutes'] = 'minutos';
 $lang['op_hour'] = 'hora';
 $lang['op_hours'] = 'horas';
+$lang['hd_time'] = 'Hora';
+$lang['hd_place'] = 'Lugar';
+$lang['lb_place'] = 'Lugar';
+$lang['lb_duration'] = 'Duración';

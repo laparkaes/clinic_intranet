@@ -144,7 +144,117 @@
 			<h4><?= $this->lang->line('title_generate_surgery') ?></h4>
 		</div>
 		<div class="card-body">
-			Generar Cirugia
+			<div class="row">
+				<div class="col-md-6 mb-3">
+					<form action="#" id="sur_register_form">
+						<h5 class="mb-3"><?= $this->lang->line('title_attention') ?></h5>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label><?= $this->lang->line('lb_specialty') ?></label>
+								<select class="form-control" id="sur_specialty" name="sur[specialty_id]">
+									<option value="">--</option>
+									<?php foreach($specialties as $item){ ?>
+									<option value="<?= $item->id ?>"><?= $item->name ?></option>
+									<?php } ?>
+								</select>
+								<div class="sys_msg" id="sur_specialty_msg"></div>
+							</div>
+							<div class="form-group col-md-6">
+								<label><?= $this->lang->line('lb_doctor') ?></label>
+								<select class="form-control" id="sur_doctor" name="sur[doctor_id]">
+									<option value="">--</option>
+									<?php foreach($doctors as $item){ ?>
+									<option class="spe spe_<?= $item->specialty_id ?> d-none" value="<?= $item->person_id ?>"><?= $item->name ?></option>
+									<?php } ?>
+								</select>
+								<div class="sys_msg" id="sur_doctor_msg"></div>
+							</div>
+							<div class="form-group col-md-6">
+								<label><?= $this->lang->line('lb_date') ?></label>
+								<input type="text" class="form-control date_picker" id="sur_date" name="sch[date]" value="<?= date('Y-m-d') ?>" readonly>
+								<div class="sys_msg" id="sur_date_msg"></div>
+							</div>
+							<div class="form-group col-md-6">
+								<label><?= $this->lang->line('lb_time') ?></label>
+								<div class="d-flex justify-content-between">
+									<select class="form-control text-center px-0" id="sur_hour" name="sch[hour]">
+										<option value="" selected>--</option>
+										<?php for($i = 9; $i < 18; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
+										<option value="<?= $i ?>">
+											<?php 
+											switch(true){
+												case $i < 12: echo $i." AM"; break;
+												case $i == 12: echo $i." M"; break;
+												case $i > 12: echo ($i - 12)." PM"; break;
+											}
+											?>
+										</option>
+										<?php } ?>
+									</select>
+									<span class="input-group-text bg-white px-2" style="min-width: 0;">:</span>
+									<select class="form-control text-center px-0" id="sur_min" name="sch[min]">
+										<option value="" selected>--</option>
+										<option value="00">00</option>
+										<option value="15">15</option>
+										<option value="30">30</option>
+										<option value="45">45</option>
+									</select>
+								</div>
+								<div class="sys_msg" id="sur_schedule_msg"></div>
+							</div>
+							<div class="form-group col-md-8">
+								<label><?= $this->lang->line('lb_place') ?></label>
+								<input type="text" class="form-control" name="sur[place]">
+								<div class="sys_msg" id="sur_place_msg"></div>
+							</div>
+							<div class="form-group col-md-4">
+								<label><?= $this->lang->line('lb_duration') ?></label>
+								<select class="form-control" name="sch[duration]">
+									<option value="">--</option>
+									<option value="30">30 <?= $this->lang->line('op_minutes') ?></option>
+									<option value="60">1 <?= $this->lang->line('op_hour') ?></option>
+									<?php for($i = 2; $i <= 6; $i++){ ?>
+									<option value="<?= $i*60 ?>"><?= $i ?> <?= $this->lang->line('op_hours') ?></option>
+									<?php } ?>
+								</select>
+								<div class="sys_msg" id="sur_duration_msg"></div>
+							</div>
+						</div>		
+						<h5 class="my-3"><?= $this->lang->line('title_patient') ?></h5>
+						<input type="hidden" id="sur_pt_id" name="sur[patient_id]" value="">
+						<div class="form-row">
+							<div class="form-group col-md-12">
+								<input type="hidden" name="pt[doc_type_id]" value="<?= $person->doc_type_id ?>">
+								<input type="hidden" name="pt[doc_number]" value="<?= $person->doc_number ?>">
+								<label><?= $this->lang->line('lb_document') ?></label>
+								<input type="text" class="form-control bg-light" value="<?= $person->doc_type." ".$person->doc_number ?>" readonly>
+								<div class="sys_msg" id="pt_doc_msg"></div>
+							</div>
+							<div class="form-group col-md-6">
+								<label><?= $this->lang->line('lb_name') ?></label>
+								<input type="text" class="form-control bg-light" name="pt[name]" value="<?= $person->name ?>" readonly>
+								<div class="sys_msg" id="pt_name_msg"></div>
+							</div>
+							<div class="form-group col-md-6">
+								<label><?= $this->lang->line('lb_tel') ?></label>
+								<input type="text" class="form-control" name="pt[tel]" value="<?= $person->tel ?>">
+								<div class="sys_msg" id="pt_tel_msg"></div>
+							</div>
+							<div class="form-group col-md-12">
+								<label><?= $this->lang->line('lb_remark') ?> (<?= $this->lang->line('lb_optional') ?>)</label>
+								<textarea class="form-control" rows="4" name="sur[remark]" placeholder="<?= $this->lang->line('txt_remark') ?>"></textarea>
+							</div>
+							<div class="form-group col-md-12 pt-3">
+								<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="col-md-6 mb-3">
+					<h5 class="mb-3"><?= $this->lang->line('lb_doctor_agenda') ?></h5>
+					<div id="sur_schedule_list"></div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -273,8 +383,8 @@
 									<table id="appointment_list" class="display">
 										<thead>
 											<tr>
-												<th class="text-left pt-0 pl-0"><?= $this->lang->line('hd_schedule') ?></th>
-												<th class="pt-0"><?= $this->lang->line('hd_specialty') ?></th>
+												<th class="pt-0 pl-0"><?= $this->lang->line('hd_date') ?></th>
+												<th class="pt-0"><?= $this->lang->line('hd_time') ?></th>
 												<th class="pt-0"><?= $this->lang->line('hd_doctor') ?></th>
 												<th class="pt-0"><?= $this->lang->line('hd_status') ?></th>
 												<th class="text-right pt-0 pr-0"></th>
@@ -283,11 +393,14 @@
 										<tbody>
 											<?php foreach($appointments as $item){ ?>
 											<tr>
-												<td class="text-left pl-0">
-													<?= date('Y-m-d H:i', strtotime($item->schedule_from)) ?>
+												<td class="pl-0">
+													<?= date("d.m.Y", strtotime($item->schedule_from)) ?>
 												</td>
-												<td><?= $specialty_arr[$item->specialty_id] ?></td>
-												<td><?= $doctors_arr[$item->doctor_id]->name ?></td>
+												<td>
+													<div class="text-nowrap"><?= date("h:i A", strtotime($item->schedule_from)) ?></div>
+													<div class="text-nowrap">- <?= date("h:i A", strtotime($item->schedule_to)) ?></div>
+												</td>
+												<td><?= $doctors_arr[$item->doctor_id]->name ?><br/><?= $specialty_arr[$item->specialty_id] ?></td>
 												<td class="text-<?= $status_arr[$item->status_id]->color ?>">
 													<?= $this->lang->line($status_arr[$item->status_id]->code) ?>
 												</td>
@@ -326,23 +439,30 @@
 									<table id="surgery_list" class="display">
 										<thead>
 											<tr>
-												<th><?= $this->lang->line('hd_date') ?></th>
-												<th><?= $this->lang->line('hd_time') ?></th>
-												<th><?= $this->lang->line('hd_patient') ?></th>
-												<th><?= $this->lang->line('hd_status') ?></th>
-												<th></th>
+												<th class="pt-0 pl-0"><?= $this->lang->line('hd_date') ?></th>
+												<th class="pt-0"><?= $this->lang->line('hd_time') ?></th>
+												<th class="pt-0"><?= $this->lang->line('hd_place') ?></th>
+												<th class="pt-0"><?= $this->lang->line('hd_doctor') ?></th>
+												<th class="pt-0"><?= $this->lang->line('hd_status') ?></th>
+												<th class="text-right pt-0 pr-0"></th>
 											</tr>
 										</thead>
 										<tbody>
 											<?php foreach($surgeries as $item){ ?>
 											<tr>
-												<td><?= date('Y-m-d', strtotime($item->schedule_from)) ?></td>
-												<td><?= date('H:i', strtotime($item->schedule_from)) ?></td>
-												<td><?= $patient_arr[$item->patient_id] ?></td>
+												<td class="pl-0">
+													<?= date("d.m.Y", strtotime($item->schedule_from)) ?>
+												</td>
+												<td>
+													<div class="text-nowrap"><?= date("h:i A", strtotime($item->schedule_from)) ?></div>
+													<div class="text-nowrap">- <?= date("h:i A", strtotime($item->schedule_to)) ?></div>
+												</td>
+												<td><?= $item->place ?></td>
+												<td><?= $doctors_arr[$item->doctor_id]->name ?><br/><?= $specialty_arr[$item->specialty_id] ?></td>
 												<td class="text-<?= $status_arr[$item->status_id]->color ?>">
 													<?= $this->lang->line($status_arr[$item->status_id]->code) ?>
 												</td>
-												<td class="text-right">
+												<td class="text-right pr-0">
 													<a href="<?= base_url() ?>surgery/detail/<?= $item->id ?>">
 														<button class="btn btn-primary light sharp border-0">
 															<i class="fas fa-search"></i>

@@ -162,15 +162,15 @@ class Surgery extends CI_Controller {
 			$item->type = $this->lang->line($item->link_to);
 		}
 		
-		$surgery_histories = $this->general->filter("surgery", $filter);
-		foreach($surgery_histories as $item){
+		$appointment_histories = $this->general->filter("appointment", $filter);
+		foreach($appointment_histories as $item){
 			$d = $this->general->filter("doctor", array("person_id" => $doctor->id))[0];
 			$item->specialty = $specialties[$d->specialty_id];
-			$item->link_to = "surgery";
+			$item->link_to = "appointment";
 			$item->type = $this->lang->line($item->link_to);
 		}
 		
-		$histories = array_merge($surgery_histories, $surgery_histories);
+		$histories = array_merge($surgery_histories, $appointment_histories);
 		usort($histories, function($a, $b) { return ($a->schedule_from < $b->schedule_from); });
 		//end set history records
 		
