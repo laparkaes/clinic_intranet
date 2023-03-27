@@ -76,7 +76,7 @@
 								<div class="d-flex justify-content-between">
 									<select class="form-control text-center px-0" id="aa_hour" name="sch[hour]">
 										<option value="" selected>--</option>
-										<?php for($i = 9; $i < 18; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
+										<?php for($i = 9; $i <= 18; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
 										<option value="<?= $i ?>">
 											<?php 
 											switch(true){
