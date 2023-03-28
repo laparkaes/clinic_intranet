@@ -77,7 +77,10 @@
 						<input type="hidden" name="doctor_id" id="rs_doctor" value="<?= $doctor->id ?>">
 						<div class="form-row">
 							<div class="form-group col-md-12">
-								<label><?= $this->lang->line('lb_doctor') ?></label>
+								<label>
+									<span class="mr-1"><?= $this->lang->line('lb_doctor') ?></span>
+									<span><i class="far fa-clock"></i></span>
+								</label>
 								<input type="text" class="form-control bg-light" value="<?= $doctor->name ?>" readonly>
 							</div>
 							<div class="form-group col-md-12">
@@ -86,41 +89,65 @@
 							</div>
 							<div class="form-group col-md-6">
 								<label><?= $this->lang->line('lb_date') ?></label>
-								<input type="text" class="form-control date_picker doc_schedule schedule" id="rs_date" name="date" value="<?= date('Y-m-d') ?>" readonly>
+								<input type="text" class="form-control date_picker doc_schedule schedule" id="rs_date" name="date" value="<?= date('Y-m-d', strtotime($surgery->schedule_from)) ?>" readonly>
 								<div class="sys_msg" id="rs_date_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
 								<label><?= $this->lang->line('lb_time') ?></label>
+								<?php $time = explode(":", date('H:i', strtotime($surgery->schedule_from)));
+								$hour = intval($time[0]); $min = intval($time[1]); ?>
 								<div class="d-flex">
 									<select class="form-control text-center schedule px-0" id="rs_hour" name="hour">
 										<option value="" selected>--</option>
-										<?php for($i = 9; $i < 18; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
-										<option value="<?= $i ?>">
-											<?php 
-											switch(true){
+										<?php for($i = 9; $i < 18; $i++){ 
+										if ($hour == $i) $selected = "selected"; else $selected = "";
+										if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
+										<option value="<?= $i ?>" <?= $selected ?>>
+											<?php switch(true){
 												case $i < 12: echo $i." AM"; break;
 												case $i == 12: echo $i." M"; break;
 												case $i > 12: echo ($i - 12)." PM"; break;
-											}
-											?>
+											} ?>
 										</option>
 										<?php } ?>
 									</select>
 									<span class="input-group-text bg-white px-2" style="min-width: 0;">:</span>
 									<select class="form-control text-center schedule px-0" id="rs_min" name="min">
 										<option value="" selected>--</option>
-										<option value="00">00</option>
-										<option value="15">15</option>
-										<option value="30">30</option>
-										<option value="45">45</option>
+										<?php if ($min == 0) $selected = "selected"; else $selected = ""; ?>
+										<option value="00" <?= $selected ?>>00</option>
+										<?php if ($min == 15) $selected = "selected"; else $selected = ""; ?>
+										<option value="15" <?= $selected ?>>15</option>
+										<?php if ($min == 30) $selected = "selected"; else $selected = ""; ?>
+										<option value="30" <?= $selected ?>>30</option>
+										<?php if ($min == 45) $selected = "selected"; else $selected = ""; ?>
+										<option value="45" <?= $selected ?>>45</option>
 									</select>
 								</div>
 								<div class="sys_msg" id="rs_time_msg"></div>
 							</div>
-							<div class="form-group col-md-12">
+							<div class="form-group col-md-8">
+								<label>
+									<span class="mr-1"><?= $this->lang->line('lb_room') ?></span>
+									<span><i class="far fa-clock"></i></span>
+								</label>
+								<select class="form-control" name="room_id">
+									<option value="">--</option>
+									<?php foreach($rooms as $r){ if ($r->id == $surgery->room_id) $selected = "selected"; else $selected = ""; ?>
+									<option value="<?= $r->id ?>" <?= $selected ?>><?= $r->name ?></option>
+									<?php } ?>
+								</select>
+								<div class="sys_msg" id="rs_room_msg"></div>
+							</div>
+							<div class="form-group col-md-4">
 								<label><?= $this->lang->line('lb_duration') ?></label>
-								<input type="hidden" name="duration" value="<?= $surgery->duration ?>" readonly>
-								<input type="text" class="form-control bg-light" value="<?= $surgery->duration_txt ?>" readonly>
+								<select class="form-control" name="duration">
+									<option value="">--</option>
+									<?php foreach($duration_ops as $op){ 
+									if ($op["value"] == $surgery->duration) $selected = "selected"; else $selected = ""; ?>
+									<option value="<?= $op["value"] ?>" <?= $selected ?>><?= $op["txt"] ?></option>
+									<?php } ?>
+								</select>
 								<div class="sys_msg" id="rs_duration_msg"></div>
 							</div>
 							<div class="form-group col-md-12 pt-3">

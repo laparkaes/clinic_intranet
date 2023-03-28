@@ -64,10 +64,16 @@ class Surgery extends CI_Controller {
 		$status = $this->general->all("status");
 		foreach($status as $item) $status_arr[$item->id] = $item;
 		
+		$rooms_arr = array();
+		$rooms = $this->general->all("surgery_room", "name", "asc");
+		foreach($rooms as $item) $rooms_arr[$item->id] = $item->name;
+		
 		$data = array(
 			"filter" => array("from" => $f_from, "to" => $f_to, "status" => $f_status),
 			"status_arr" => $status_arr,
 			"surgeries" => $surgeries,
+			"rooms" => $rooms,
+			"rooms_arr" => $rooms_arr,
 			"specialties" => $specialties,
 			"specialties_arr" => $specialties_arr,
 			"doctors" => $doctors,
@@ -89,23 +95,8 @@ class Surgery extends CI_Controller {
 		$surgery = $this->general->id("surgery", $id);
 		if (!$surgery) redirect("/surgery");
 		
-		//duration set
-		$duration = (strtotime($surgery->schedule_to) - strtotime($surgery->schedule_from) + 60)/60;
-								
-		$hh = (int) ($duration / 60);
-		$mm = $duration % 60;
-		
-		$duration_txt = "";
-		if ($hh > 0){
-			$duration_txt = $duration_txt.$hh." ".(($hh > 1) ? $this->lang->line('op_hours') : $this->lang->line('op_hour'));
-		}
-		if ($mm > 0){
-			if ($duration_txt) $duration_txt = $duration_txt." ";
-			$duration_txt = $duration_txt.$mm." ".(($mm > 1) ? $this->lang->line('op_minutes') : $this->lang->line('op_minute'));
-		}
-		
-		$surgery->duration = $duration;//duration diff give last minute as additional
-		$surgery->duration_txt = $duration_txt;
+		//duration diff give last minute as additional
+		$surgery->duration = (strtotime($surgery->schedule_to) - strtotime($surgery->schedule_from) + 60)/60;
 		
 		$surgery->status = $this->general->id("status", $surgery->status_id);
 		$surgery->is_editable = false; $actions = array();
@@ -123,7 +114,9 @@ class Surgery extends CI_Controller {
 				break;
 		}
 		
-		$surgery->detail = null;
+		$room = $this->general->id("surgery_room", $surgery->room_id);
+		if ($room) $surgery->detail = $room->name; else $surgery->detail = "";
+		
 		$surgery_sale = $this->general->filter("sale", array("surgery_id" => $surgery->id));
 		if ($surgery_sale){
 			$sale_items = $this->general->filter("sale_product", array("sale_id" => $surgery_sale[0]->id));
@@ -132,7 +125,7 @@ class Surgery extends CI_Controller {
 				$category = $this->general->id("product_category", $product->category_id)->name;
 				
 				$str = $category.", ".$product->description;
-				if (strpos($str, "Cirugía") !== false) $surgery->detail = $str;
+				if (strpos($str, "Cirugía") !== false) $surgery->detail = $surgery->detail." / ".$str;
 			}
 		}
 		
@@ -187,12 +180,19 @@ class Surgery extends CI_Controller {
 		usort($histories, function($a, $b) { return ($a->schedule_from < $b->schedule_from); });
 		//end set history records
 		
+		$duration_ops = array();
+		array_push($duration_ops, ["value" => 30, "txt" => "30 ".$this->lang->line('op_minutes')]);
+		array_push($duration_ops, ["value" => 60, "txt" => "1 ".$this->lang->line('op_hour')]);
+		for($i = 2; $i <= 12; $i++) array_push($duration_ops, ["value" => 60 * $i, "txt" => $i." ".$this->lang->line('op_hours')]);
+		
 		$data = array(
 			"actions" => $actions,
 			"surgery" => $surgery,
 			"doctor" => $doctor,
 			"patient" => $patient,
 			"histories" => $histories,
+			"rooms" => $this->general->all("surgery_room", "name", "asc"),
+			"duration_ops" => $duration_ops,
 			"patient_files" => $this->general->filter("patient_file", array("patient_id" => $surgery->patient_id)),
 			"title" => $this->lang->line('surgery'),
 			"main" => "surgery/detail",
@@ -222,19 +222,28 @@ class Surgery extends CI_Controller {
 		else $sur["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
 		
 		//surgery validation
-		if (!$sur["place"]) $msgs = $this->set_msg($msgs, "sur_place_msg", "error", "error_enp");
+		$status_ids = array();
+		array_push($status_ids, $this->status->code("reserved")->id);
+		array_push($status_ids, $this->status->code("confirmed")->id);
+		
+		if (!$sur["room_id"]) $msgs = $this->set_msg($msgs, "sur_room_msg", "error", "error_sro");
 		if (!$sur["specialty_id"]) $msgs = $this->set_msg($msgs, "sur_specialty_msg", "error", "error_ssp");
 		if (!$sur["doctor_id"]) $msgs = $this->set_msg($msgs, "sur_doctor_msg", "error", "error_sdo");
 		if ($sur["schedule_from"]){
-			$sur["schedule_to"] = date("Y-m-d H:i:s", strtotime("+".($sch["duration"]-1)." minutes", strtotime($sur["schedule_from"])));
-			$status_ids = array();
-			array_push($status_ids, $this->status->code("reserved")->id);
-			array_push($status_ids, $this->status->code("confirmed")->id);
-			
-			//check surgery and surgery available
-			$sur_available = $this->general->is_available("surgery", $sur, $status_ids);
-			$app_available = $this->general->is_available("appointment", $sur, $status_ids);
-			if (!($sur_available and $app_available)) $msgs = $this->set_msg($msgs, "sur_schedule_msg", "error", "error_dna");
+			if ($sch["duration"]){
+				$sur["schedule_to"] = date("Y-m-d H:i:s", strtotime("+".($sch["duration"]-1)." minutes", strtotime($sur["schedule_from"])));
+				
+				//check surgery and surgery available
+				$sur_available = $this->general->is_available("surgery", $sur, $status_ids);
+				$app_available = $this->general->is_available("appointment", $sur, $status_ids);
+				if (!($sur_available and $app_available)) $msgs = $this->set_msg($msgs, "sur_schedule_msg", "error", "error_dna");
+				
+				//room available
+				if ($sur["room_id"]){
+					$surgeries = $this->general->get_by_room("surgery", $sur, $status_ids, null, $sur["room_id"]);
+					if ($surgeries) $msgs = $this->set_msg($msgs, "sur_room_msg", "error", "error_rna");
+				}
+			}
 		}
 		
 		if ($msgs) $msg = $this->lang->line('error_occurred'); 
@@ -311,6 +320,7 @@ class Surgery extends CI_Controller {
 		$status = false; $type = "error"; $msg = null; $msgs = array();
 		$data = $this->input->post();
 		
+		if (!$data["room_id"]) $msgs = $this->set_msg($msgs, "rs_room_msg", "error", "error_sro");
 		if (!$data["duration"]) $msgs = $this->set_msg($msgs, "rs_duration_msg", "error", "error_sdu");
 		if (!$data["hour"]) $msgs = $this->set_msg($msgs, "rs_time_msg", "error", "error_sho");
 		elseif (!$data["min"]) $msgs = $this->set_msg($msgs, "rs_time_msg", "error", "error_smi");
@@ -322,6 +332,7 @@ class Surgery extends CI_Controller {
 				$schedule_from = $data["date"]." ".$data["hour"].":".$data["min"];
 				$sur = array(
 					"id" => $surgery->id,
+					"room_id" => $data["room_id"],
 					"doctor_id" => $surgery->doctor_id,
 					"schedule_from" => $schedule_from,
 					"schedule_to" => date("Y-m-d H:i:s", strtotime("+".($data["duration"]-1)." minutes", strtotime($schedule_from)))
@@ -334,14 +345,16 @@ class Surgery extends CI_Controller {
 				$sur_available = $this->general->is_available("surgery", $sur, $status_ids, $sur["id"]);
 				$app_available = $this->general->is_available("appointment", $sur, $status_ids);
 				
-				if (!($sur_available and $app_available)) $msg = $this->lang->line('error_dna');
-				else{
-					if ($this->surgery->update($sur["id"], $sur)){
-						$status = true;
-						$type = "success";
-						$msg = $this->lang->line('success_rsu');
-					}else $msg = $this->lang->line('error_internal');
-				}
+				if ($sur_available and $app_available){
+					//room available
+					if (!$this->general->get_by_room("surgery", $sur, $status_ids, null, $data["room_id"])){
+						if ($this->surgery->update($sur["id"], $sur)){
+							$status = true;
+							$type = "success";
+							$msg = $this->lang->line('success_rsu');
+						}else $msg = $this->lang->line('error_internal');						
+					}else $msg = $this->lang->line('error_rna');
+				}else $msg = $this->lang->line('error_dna');
 			}else $msg = $this->lang->line('error_internal_refresh');
 		}
 		

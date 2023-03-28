@@ -38,7 +38,7 @@
 								<tr>
 									<th class="text-left pt-0 pl-0"><?= $this->lang->line('hd_date') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_time') ?></th>
-									<th class="pt-0"><?= $this->lang->line('hd_place') ?></th>
+									<th class="pt-0"><?= $this->lang->line('hd_room') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_doctor') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_patient') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_status') ?></th>
@@ -56,7 +56,7 @@
 										<br/>
 										<span class="text-nowrap">- <?= date("h:i A", strtotime($item->schedule_to)) ?></span>
 									</td>
-									<td><?= $item->place ?></td>
+									<td class="text-nowrap"><?= $rooms_arr[$item->room_id] ?></td>
 									<td>
 										<?= $people_arr[$item->doctor_id] ?><br/>
 										<?= $specialties_arr[$doctors_arr[$item->doctor_id]->specialty_id] ?>
@@ -98,7 +98,10 @@
 								<div class="sys_msg" id="sur_specialty_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
-								<label><?= $this->lang->line('lb_doctor') ?></label>
+								<label>
+									<span class="mr-1"><?= $this->lang->line('lb_doctor') ?></span>
+									<span><i class="far fa-clock" data-toggle="modal" data-target=".md_weekly_doctor_agenda"></i></span>
+								</label>
 								<select class="form-control" id="sur_doctor" name="sur[doctor_id]">
 									<option value="">--</option>
 									<?php foreach($doctors as $item){ ?>
@@ -141,9 +144,17 @@
 								<div class="sys_msg" id="sur_schedule_msg"></div>
 							</div>
 							<div class="form-group col-md-8">
-								<label><?= $this->lang->line('lb_place') ?></label>
-								<input type="text" class="form-control" name="sur[place]">
-								<div class="sys_msg" id="sur_place_msg"></div>
+								<label>
+									<span class="mr-1"><?= $this->lang->line('lb_room') ?></span>
+									<span><i class="far fa-clock"></i></span>
+								</label>
+								<select class="form-control" name="sur[room_id]">
+									<option value="">--</option>
+									<?php foreach($rooms as $r){ ?>
+									<option value="<?= $r->id ?>"><?= $r->name ?></option>
+									<?php } ?>
+								</select>
+								<div class="sys_msg" id="sur_room_msg"></div>
 							</div>
 							<div class="form-group col-md-4">
 								<label><?= $this->lang->line('lb_duration') ?></label>
@@ -153,6 +164,8 @@
 									<option value="60">1 <?= $this->lang->line('op_hour') ?></option>
 									<?php for($i = 2; $i <= 6; $i++){ ?>
 									<option value="<?= $i*60 ?>"><?= $i ?> <?= $this->lang->line('op_hours') ?></option>
+									<?php } for($i = 4; $i <= 6; $i++){ ?>
+									<option value="<?= $i*2*60 ?>"><?= $i*2 ?> <?= $this->lang->line('op_hours') ?></option>
 									<?php } ?>
 								</select>
 								<div class="sys_msg" id="sur_duration_msg"></div>
@@ -201,6 +214,24 @@
 				<div class="col-md-6 mb-3">
 					<h5 class="mb-3"><?= $this->lang->line('title_doctor_agenda') ?></h5>
 					<div id="sur_schedule_list"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade md_weekly_doctor_agenda" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header pb-0 border-0">
+				<h5 class="modal-title">Agenda del Medico</h5>
+				<button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div>
+					aqui formulario de de fecha y boton
+				</div>
+				<div id="bl_weekly_doctor_agenda">
 				</div>
 			</div>
 		</div>
