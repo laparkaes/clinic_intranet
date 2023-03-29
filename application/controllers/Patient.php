@@ -87,11 +87,23 @@ class Patient extends CI_Controller {
 		
 		$sales = $this->general->filter("sale", array("client_id" => $person->id));
 		
+		$rooms_arr = array();
+		$rooms = $this->general->all("surgery_room", "name", "asc");
+		foreach($rooms as $item) $rooms_arr[$item->id] = $item->name;
+		
+		$duration_ops = array();
+		array_push($duration_ops, ["value" => 30, "txt" => "30 ".$this->lang->line('op_minutes')]);
+		array_push($duration_ops, ["value" => 60, "txt" => "1 ".$this->lang->line('op_hour')]);
+		for($i = 2; $i <= 12; $i++) array_push($duration_ops, ["value" => 60 * $i, "txt" => $i." ".$this->lang->line('op_hours')]);
+		
 		$data = array(
 			"person" => $person,
 			"account" => $account,
 			"appointments" => $appointments,
 			"surgeries" => $surgeries,
+			"rooms" => $rooms,
+			"rooms_arr" => $rooms_arr,
+			"duration_ops" => $duration_ops,
 			"specialties" => $specialties,
 			"doctors" => $doctors,
 			"sales" => $sales,

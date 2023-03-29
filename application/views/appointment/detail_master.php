@@ -840,9 +840,14 @@ $me = $appointment_datas["medicine"];
 				<div class="form-group col-md-12">
 					<label><?= $this->lang->line('lb_diagnosis_type') ?></label>
 					<div class="form-control d-flex align-items-center">
-						<label class="radio-inline text-center mr-4 mb-0"><input type="radio" name="diagnosis_type" checked> Presuntivo</label>
-						<label class="radio-inline text-center mr-4 mb-0"><input type="radio" name="diagnosis_type"> Confirmado</label>
-						<label class="radio-inline text-center mr-4 mb-0"><input type="radio" name="diagnosis_type"> Repetitivo</label>
+						<?php $diagnosis_type = $options["diagnosis_type"];
+						foreach($diagnosis_type as $i => $item){ 
+						
+						//has result dignosis type to make check
+						
+						if ($i) $checked = ""; else $checked = "checked" ?>
+						<label class="radio-inline text-center mr-4 mb-0"><input type="radio" name="diagnosis_type_id" value="<?= $item->id ?>" <?= $checked ?>> <?= $item->description ?></label>
+						<?php } ?>
 					</div>
 				</div>
 				<div class="form-group col-md-4">

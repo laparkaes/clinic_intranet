@@ -179,7 +179,7 @@
 								<div class="d-flex justify-content-between">
 									<select class="form-control text-center px-0" id="sur_hour" name="sch[hour]">
 										<option value="" selected>--</option>
-										<?php for($i = 9; $i < 18; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
+										<?php for($i = 9; $i <= 18; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
 										<option value="<?= $i ?>">
 											<?php 
 											switch(true){
@@ -203,18 +203,24 @@
 								<div class="sys_msg" id="sur_schedule_msg"></div>
 							</div>
 							<div class="form-group col-md-8">
-								<label><?= $this->lang->line('lb_place') ?></label>
-								<input type="text" class="form-control" name="sur[place]">
-								<div class="sys_msg" id="sur_place_msg"></div>
+								<label>
+									<span class="mr-1"><?= $this->lang->line('lb_room') ?></span>
+									<span><i class="far fa-clock"></i></span>
+								</label>
+								<select class="form-control" name="sur[room_id]">
+									<option value="">--</option>
+									<?php foreach($rooms as $r){ ?>
+									<option value="<?= $r->id ?>"><?= $r->name ?></option>
+									<?php } ?>
+								</select>
+								<div class="sys_msg" id="sur_room_msg"></div>
 							</div>
 							<div class="form-group col-md-4">
 								<label><?= $this->lang->line('lb_duration') ?></label>
 								<select class="form-control" name="sch[duration]">
 									<option value="">--</option>
-									<option value="30">30 <?= $this->lang->line('op_minutes') ?></option>
-									<option value="60">1 <?= $this->lang->line('op_hour') ?></option>
-									<?php for($i = 2; $i <= 6; $i++){ ?>
-									<option value="<?= $i*60 ?>"><?= $i ?> <?= $this->lang->line('op_hours') ?></option>
+									<?php foreach($duration_ops as $op){ ?>
+									<option value="<?= $op["value"] ?>"><?= $op["txt"] ?></option>
 									<?php } ?>
 								</select>
 								<div class="sys_msg" id="sur_duration_msg"></div>
@@ -434,7 +440,7 @@
 											<tr>
 												<th class="pt-0 pl-0"><?= $this->lang->line('hd_date') ?></th>
 												<th class="pt-0"><?= $this->lang->line('hd_time') ?></th>
-												<th class="pt-0"><?= $this->lang->line('hd_place') ?></th>
+												<th class="pt-0"><?= $this->lang->line('hd_room') ?></th>
 												<th class="pt-0"><?= $this->lang->line('hd_patient') ?></th>
 												<th class="pt-0"><?= $this->lang->line('hd_status') ?></th>
 												<th class="text-right pt-0 pr-0"></th>
@@ -448,7 +454,7 @@
 													<div class="text-nowrap"><?= date("h:i A", strtotime($item->schedule_from)) ?></div>
 													<div class="text-nowrap">- <?= date("h:i A", strtotime($item->schedule_to)) ?></div>
 												</td>
-												<td><?= $item->place ?></td>
+												<td><?= $rooms_arr[$item->room_id] ?></td>
 												<td><?= $patient_arr[$item->patient_id] ?></td>
 												<td class="text-<?= $status_arr[$item->status_id]->color ?>">
 													<?= $this->lang->line($status_arr[$item->status_id]->code) ?>

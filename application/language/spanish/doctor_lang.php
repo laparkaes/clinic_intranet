@@ -126,3 +126,5 @@ $lang['lb_duration'] = 'Duración';
 $lang['op_minutes'] = 'minutos';
 $lang['op_hour'] = 'hora';
 $lang['op_hours'] = 'horas';
+$lang['lb_room'] = 'Sala';
+$lang['hd_room'] = 'Sala';

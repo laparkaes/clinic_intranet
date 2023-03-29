@@ -68,12 +68,18 @@ class Surgery extends CI_Controller {
 		$rooms = $this->general->all("surgery_room", "name", "asc");
 		foreach($rooms as $item) $rooms_arr[$item->id] = $item->name;
 		
+		$duration_ops = array();
+		array_push($duration_ops, ["value" => 30, "txt" => "30 ".$this->lang->line('op_minutes')]);
+		array_push($duration_ops, ["value" => 60, "txt" => "1 ".$this->lang->line('op_hour')]);
+		for($i = 2; $i <= 12; $i++) array_push($duration_ops, ["value" => 60 * $i, "txt" => $i." ".$this->lang->line('op_hours')]);
+		
 		$data = array(
 			"filter" => array("from" => $f_from, "to" => $f_to, "status" => $f_status),
 			"status_arr" => $status_arr,
 			"surgeries" => $surgeries,
 			"rooms" => $rooms,
 			"rooms_arr" => $rooms_arr,
+			"duration_ops" => $duration_ops,
 			"specialties" => $specialties,
 			"specialties_arr" => $specialties_arr,
 			"doctors" => $doctors,
@@ -347,7 +353,7 @@ class Surgery extends CI_Controller {
 				
 				if ($sur_available and $app_available){
 					//room available
-					if (!$this->general->get_by_room("surgery", $sur, $status_ids, null, $data["room_id"])){
+					if (!$this->general->get_by_room("surgery", $sur, $status_ids, $data["id"], $data["room_id"])){
 						if ($this->surgery->update($sur["id"], $sur)){
 							$status = true;
 							$type = "success";

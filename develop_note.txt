@@ -3,23 +3,5 @@ diagnostico presuntivo
 diagnostico confirmado
 diagnostico repetitivo
 
+INSERT INTO `sl_option` (`id`, `code`, `description`) VALUES (NULL, 'diagnosis_type', 'Presuntivo'), (NULL, 'diagnosis_type', 'Confirmado'), (NULL, 'diagnosis_type', 'Repetitivo');
 
-ALTER TABLE `surgery` CHANGE `place` `room_id` INT NULL DEFAULT NULL; 
-
-UPDATE `surgery` SET `room_id` = '1'; 
-
-순서 바꾸기 > id 다음으로 이동
-
-CREATE TABLE `surgery_room` (
-  `id` int(11) NOT NULL,
-  `name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-ALTER TABLE `surgery_room`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `surgery_room`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-COMMIT;
-
-INSERT INTO `surgery_room` (`id`, `name`) VALUES (NULL, 'Sala 1'), (NULL, 'Sala 2'), (NULL, 'Sala 3'), (NULL, 'Sala 4');

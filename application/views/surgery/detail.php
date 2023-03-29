@@ -99,7 +99,7 @@
 								<div class="d-flex">
 									<select class="form-control text-center schedule px-0" id="rs_hour" name="hour">
 										<option value="" selected>--</option>
-										<?php for($i = 9; $i < 18; $i++){ 
+										<?php for($i = 9; $i <= 18; $i++){ 
 										if ($hour == $i) $selected = "selected"; else $selected = "";
 										if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
 										<option value="<?= $i ?>" <?= $selected ?>>

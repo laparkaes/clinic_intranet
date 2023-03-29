@@ -120,7 +120,7 @@
 								<div class="d-flex justify-content-between">
 									<select class="form-control text-center px-0" id="sur_hour" name="sch[hour]">
 										<option value="" selected>--</option>
-										<?php for($i = 9; $i < 18; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
+										<?php for($i = 9; $i <= 18; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
 										<option value="<?= $i ?>">
 											<?php 
 											switch(true){
@@ -160,12 +160,8 @@
 								<label><?= $this->lang->line('lb_duration') ?></label>
 								<select class="form-control" name="sch[duration]">
 									<option value="">--</option>
-									<option value="30">30 <?= $this->lang->line('op_minutes') ?></option>
-									<option value="60">1 <?= $this->lang->line('op_hour') ?></option>
-									<?php for($i = 2; $i <= 6; $i++){ ?>
-									<option value="<?= $i*60 ?>"><?= $i ?> <?= $this->lang->line('op_hours') ?></option>
-									<?php } for($i = 4; $i <= 6; $i++){ ?>
-									<option value="<?= $i*2*60 ?>"><?= $i*2 ?> <?= $this->lang->line('op_hours') ?></option>
+									<?php foreach($duration_ops as $op){ ?>
+									<option value="<?= $op["value"] ?>"><?= $op["txt"] ?></option>
 									<?php } ?>
 								</select>
 								<div class="sys_msg" id="sur_duration_msg"></div>

@@ -121,6 +121,15 @@ class Doctor extends CI_Controller {
 		$specialties = $this->specialty->all();
 		foreach($specialties as $item) $specialties_arr[$item->id] = $item->name;
 		
+		$rooms_arr = array();
+		$rooms = $this->general->all("surgery_room", "name", "asc");
+		foreach($rooms as $item) $rooms_arr[$item->id] = $item->name;
+		
+		$duration_ops = array();
+		array_push($duration_ops, ["value" => 30, "txt" => "30 ".$this->lang->line('op_minutes')]);
+		array_push($duration_ops, ["value" => 60, "txt" => "1 ".$this->lang->line('op_hour')]);
+		for($i = 2; $i <= 12; $i++) array_push($duration_ops, ["value" => 60 * $i, "txt" => $i." ".$this->lang->line('op_hours')]);
+		
 		$data = array(
 			"doctor" => $doctor,
 			"person" => $person,
@@ -128,6 +137,9 @@ class Doctor extends CI_Controller {
 			"patients" => $patients,
 			"appointments" => $appointments,
 			"surgeries" => $surgeries,
+			"rooms" => $rooms,
+			"rooms_arr" => $rooms_arr,
+			"duration_ops" => $duration_ops,
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"patient_arr" => $patient_arr,
 			"status_arr" => $status_arr,

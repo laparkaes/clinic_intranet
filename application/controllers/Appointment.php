@@ -305,7 +305,7 @@ class Appointment extends CI_Controller {
 		foreach($image_categories as $item) $item->images = $this->image->filter(array("category_id" => $item->id));
 		
 		//load select options
-		$codes = array("entry_mode", "civil_status", "medicine_dose", "medicine_via_application", "medicine_frequency", "medicine_duration");
+		$codes = array("entry_mode", "civil_status", "medicine_dose", "medicine_via_application", "medicine_frequency", "medicine_duration", "diagnosis_type");
 		$options_rec = $this->sl_option->codes($codes);
 		
 		$options = array();
