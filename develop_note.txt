@@ -3,5 +3,5 @@ diagnostico presuntivo
 diagnostico confirmado
 diagnostico repetitivo
 
-INSERT INTO `sl_option` (`id`, `code`, `description`) VALUES (NULL, 'diagnosis_type', 'Presuntivo'), (NULL, 'diagnosis_type', 'Confirmado'), (NULL, 'diagnosis_type', 'Repetitivo');
+
 

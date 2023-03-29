@@ -842,10 +842,10 @@ $me = $appointment_datas["medicine"];
 					<div class="form-control d-flex align-items-center">
 						<?php $diagnosis_type = $options["diagnosis_type"];
 						foreach($diagnosis_type as $i => $item){ 
-						
-						//has result dignosis type to make check
-						
-						if ($i) $checked = ""; else $checked = "checked" ?>
+							if ($re->diagnosis_type_id){
+								if ($item->id == $re->diagnosis_type_id) $checked = "checked"; else $checked = "";
+							}elseif ($i) $checked = ""; else $checked = "checked";
+						?>
 						<label class="radio-inline text-center mr-4 mb-0"><input type="radio" name="diagnosis_type_id" value="<?= $item->id ?>" <?= $checked ?>> <?= $item->description ?></label>
 						<?php } ?>
 					</div>

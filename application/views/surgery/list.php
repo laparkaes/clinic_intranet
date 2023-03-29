@@ -219,15 +219,20 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header pb-0 border-0">
-				<h5 class="modal-title">Agenda del Medico</h5>
+				<h5 class="modal-title">Agenda Senamal del Medico</h5>
 				<button type="button" class="close" data-dismiss="modal"><span>&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-				<div>
-					aqui formulario de de fecha y boton
+				<div class="row">
+					<div class="col-md-12">
+						aqui formulario de de fecha y boton
+					</div>
 				</div>
-				<div id="bl_weekly_doctor_agenda">
+				<div class="row">
+					<div class="col-md-12" id="bl_weekly_doctor_agenda">
+						aqui la tabla
+					</div>
 				</div>
 			</div>
 		</div>

@@ -128,15 +128,15 @@ class Ajax_f extends CI_Controller {
 		$tomorrow = date("Y-m-d", strtotime("+1 day"));
 		
 		$appointments_arr = array();
-		$appointments_arr[$today]["title"] = $this->lang->line('txt_today').", ".$today;
+		$appointments_arr[$today]["title"] = $this->lang->line('txt_today').", ".date("d.m.Y", strtotime($today));
 		$appointments_arr[$today]["data"] = array();
-		$appointments_arr[$tomorrow]["title"] = $this->lang->line('txt_tomorrow').", ".$tomorrow;
+		$appointments_arr[$tomorrow]["title"] = $this->lang->line('txt_tomorrow').", ".date("d.m.Y", strtotime($tomorrow));
 		$appointments_arr[$tomorrow]["data"] = array();
 		
 		$surgeries_arr = array();
-		$surgeries_arr[$today]["title"] = $this->lang->line('txt_today').", ".$today;
+		$surgeries_arr[$today]["title"] = $this->lang->line('txt_today').", ".date("d.m.Y", strtotime($today));
 		$surgeries_arr[$today]["data"] = array();
-		$surgeries_arr[$tomorrow]["title"] = $this->lang->line('txt_tomorrow').", ".$tomorrow;
+		$surgeries_arr[$tomorrow]["title"] = $this->lang->line('txt_tomorrow').", ".date("d.m.Y", strtotime($tomorrow));
 		$surgeries_arr[$tomorrow]["data"] = array();
 		
 		$res["appointments"] = $appointments_arr;
@@ -153,10 +153,10 @@ class Ajax_f extends CI_Controller {
 			$data = array(
 				"id" => $item->id,
 				"color" => $this->general->id("status", $item->status_id)->color,
-				"schedule" => date("h:i A", strtotime($item->schedule_from)),
+				"schedule" => date("h:i a", strtotime($item->schedule_from)),
 				"doctor" => $this->general->id("person", $item->doctor_id)->name,
 				"patient" => $this->general->id("person", $item->patient_id)->name,
-				"speciality" => $this->general->id("specialty", $item->speciality_id)->name
+				"specialty" => $this->general->id("specialty", $item->specialty_id)->name
 			);
 			array_push($appointments_arr[date("Y-m-d", strtotime($item->schedule_from))]["data"], $data);
 		}
@@ -167,10 +167,11 @@ class Ajax_f extends CI_Controller {
 			$data = array(
 				"id" => $item->id,
 				"color" => $this->general->id("status", $item->status_id)->color,
-				"schedule" => date("h:i A", strtotime($item->schedule_from)),
+				"schedule" => date("h:i a", strtotime($item->schedule_from)),
 				"doctor" => $this->general->id("person", $item->doctor_id)->name,
 				"patient" => $this->general->id("person", $item->patient_id)->name,
-				"speciality" => $this->general->id("specialty", $item->speciality_id)->name
+				"specialty" => $this->general->id("specialty", $item->specialty_id)->name,
+				"room" => $this->general->id("surgery_room", $item->room_id)->name
 			);
 			array_push($surgeries_arr[date("Y-m-d", strtotime($item->schedule_from))]["data"], $data);
 		}
