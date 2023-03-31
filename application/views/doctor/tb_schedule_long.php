@@ -11,16 +11,15 @@ $mins = array("00", "15", "30", "45"); ?>
 		</tr>
 	</thead>
 	<tbody>
-		<?php for($i = 9; $i <= 18; $i++){ if ($i < 12) $a = "am"; else $a = "pm"; if ($i > 12) $h = $i-12; else $h = $i; ?>
-		<?php foreach($mins as $m){ ?>
+		<?php
+		for($i = 9; $i <= 18; $i++){
+			if ($i < 12) $a = "am"; else $a = "pm";
+			if ($i > 12) $h = $i-12; else $h = $i;
+			foreach($mins as $m){ ?>
 		<tr>
 			<?php if (!strcmp("00", $m)){ ?><td class="text-left" rowspan="4"><?= $h." ".$a ?></td><?php } ?>
 			<?php foreach($days as $d){ ?><td></td><?php } ?>
 		</tr>
-		<?php } ?>
-		
-		<?php } ?>
-	
-	
+		<?php }} ?>
 	</tbody>
 </table>
