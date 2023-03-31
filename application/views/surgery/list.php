@@ -231,7 +231,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-12" id="bl_weekly_doctor_agenda">
-						aqui la tabla
+						<?php $this->load->view("doctor/tb_schedule_long"); ?>
 					</div>
 				</div>
 			</div>
