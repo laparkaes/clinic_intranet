@@ -26,6 +26,10 @@ function load_doctor_schedule_surgery(){
 	load_doctor_schedule($("#sur_doctor").val(), $("#sur_date").val(), "sur_schedule_list");
 }
 
+function load_doctor_schedule_weekly_surgery(){
+	load_doctor_schedule_weekly($("#sur_doctor").val(), null, "bl_weekly_schedule");
+}
+
 function set_doctor_sl(dom){
 	$("#sur_doctor").val("");
 	$("#sur_doctor .spe").addClass("d-none");
@@ -66,5 +70,6 @@ $(document).ready(function() {
 	$("#pt_doc_type_id").change(function() {enable_pt_name();});
 	$("#pt_doc_number").keyup(function() {enable_pt_name();});
 	$("#btn_search_pt").on('click',(function(e) {search_person_pt();}));
+	$("#ic_doctor_schedule_w").on('click',(function(e) {load_doctor_schedule_weekly_surgery();}));
 	$("#register_form").submit(function(e) {e.preventDefault(); register_surgery(this);});
 });

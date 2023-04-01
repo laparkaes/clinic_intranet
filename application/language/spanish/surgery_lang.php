@@ -79,3 +79,4 @@ $lang['hd_time'] = 'Hora';
 $lang['lb_detail'] = 'Detalle';
 $lang['lb_room'] = 'Sala';
 $lang['hd_room'] = 'Sala';
+$lang['title_weekly_doctor_agenda'] = 'Agenda Semanal del Médico';

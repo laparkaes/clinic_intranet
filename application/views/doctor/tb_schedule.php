@@ -12,7 +12,7 @@
 	</thead>
 	<tbody>
 		<?php for($i = 9; $i <= 18; $i++){ 
-		if ($i < 12) $a = "AM"; else $a = "PM";
+		if ($i < 12) $a = "am"; else $a = "pm";
 		if ($i > 12) $h = $i-12; else $h = $i; ?>
 		<tr>
 			<td class="text-left"><?= $h." ".$a ?></td>

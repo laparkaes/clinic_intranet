@@ -142,6 +142,19 @@ function load_doctor_schedule(doctor_id, date, dom_id){
 	});
 }
 
+function load_doctor_schedule_weekly(doctor_id, date, dom_id){
+	$("#" + dom_id).html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
+	$.ajax({
+		url: $("#base_url").val() + "ajax_f/load_doctor_schedule_weekly",
+		type: "POST",
+		data: {doctor_id: doctor_id, date: date},
+		success:function(res){
+			$("#" + dom_id).html(res);
+			$(".btn_doctor_schedule_w").on('click',(function(e) {load_doctor_schedule_weekly(doctor_id, $(this).val(), dom_id);}));
+		}
+	});
+}
+
 $(document).ready(function() {
 	if ($(".date_picker").length > 0){
 		$(".date_picker").bootstrapMaterialDatePicker({

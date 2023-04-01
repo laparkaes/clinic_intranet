@@ -93,6 +93,16 @@ $lang['txt_surgeries_list'] = 'Lista de Cirugías';
 $lang['txt_today'] = 'Hoy';
 $lang['txt_tomorrow'] = 'Mañana';
 $lang['txt_busy_hours'] = 'Horario Ocupado.';
+$lang['txt_today'] = 'Hoy';
+
+//days
+$lang['day_Mon'] = 'Lun';
+$lang['day_Tue'] = 'Mar';
+$lang['day_Wed'] = 'Mie';
+$lang['day_Thu'] = 'Jue';
+$lang['day_Fri'] = 'Vie';
+$lang['day_Sat'] = 'Sab';
+$lang['day_Sun'] = 'Dom';
 
 //utility_lib
 $lang['error_search_dni'] = 'No hay resultado de búsqueda con DNI ingresado.';

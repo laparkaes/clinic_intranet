@@ -82,6 +82,37 @@ class Ajax_f extends CI_Controller {
 		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg, "company" => $company));
 	}
 	
+	private function set_doctor_schedule_cell($doctor_id, $date){
+		$cells = array();
+		$status_ids = array($this->status->code("reserved")->id, $this->status->code("confirmed")->id);
+		$appointments = $this->appointment->doctor($doctor_id, $date, $status_ids);
+		$surgeries = $this->surgery->doctor($doctor_id, $date, $status_ids);
+		
+		$min_range = array([0, 15], [15, 30], [30, 45], [45, 60]);
+		$aux = array();
+		
+		if ($appointments) foreach($appointments as $item) array_push($aux, array("sh" => date("H", strtotime($item->schedule_from)), "sm" => date("i", strtotime($item->schedule_from)), "eh" => date("H", strtotime($item->schedule_to)), "em" => date("i", strtotime($item->schedule_to))));
+		
+		if ($surgeries) foreach($surgeries as $item) array_push($aux, array("sh" => date("H", strtotime($item->schedule_from)), "sm" => date("i", strtotime($item->schedule_from)), "eh" => date("H", strtotime($item->schedule_to)), "em" => date("i", strtotime($item->schedule_to))));;
+		
+		foreach($aux as $item){
+			foreach($min_range as $key => $r){
+				if (($r[0] <= $item["sm"]) and ($item["sm"] < $r[1])) $item["sm"] = str_pad($r[0], 2, "0", STR_PAD_LEFT);
+				if (($r[0] <= $item["em"]) and ($item["em"] < $r[1])) $item["em"] = str_pad($r[0], 2, "0", STR_PAD_LEFT);
+			}
+			
+			$i = strtotime($date." ".$item["sh"].":".$item["sm"]);
+			$end = strtotime($date." ".$item["eh"].":".$item["em"]);
+			
+			do{
+				array_push($cells, date("Hi", $i));
+				$i += 900;//15 minutes in seconds
+			}while($i <= $end);
+		}
+		
+		return $cells;
+	}
+	
 	public function load_doctor_schedule(){
 		$cells = array(); $msg = null;
 		$doctor_id = $this->input->post("doctor_id");
@@ -90,35 +121,38 @@ class Ajax_f extends CI_Controller {
 		if (!$doctor_id) $msg = $this->lang->line('error_select_doctor');
 		if (!$date) $msg = $this->lang->line('error_select_date');
 		
-		if (!$msg){
-			$status_ids = array($this->status->code("reserved")->id, $this->status->code("confirmed")->id);
-			$appointments = $this->appointment->doctor($doctor_id, $date, $status_ids);
-			$surgeries = $this->surgery->doctor($doctor_id, $date, $status_ids);
+		if (!$msg) $cells = $this->set_doctor_schedule_cell($doctor_id, $date);
+		
+		echo $this->load->view('doctor/tb_schedule', array("msg" => $msg, "cells" => $cells), true);
+	}
+	
+	public function load_doctor_schedule_weekly(){
+		$cells = array(); $msg = null;
+		$doctor_id = $this->input->post("doctor_id");
+		$date = $this->input->post("date"); if (!$date) $date = date("Y-m-d");
+		
+		$prev = date("Y-m-d", strtotime("-1 week", strtotime($date)));
+		$next = date("Y-m-d", strtotime("+1 week", strtotime($date)));
+		
+		if (!$doctor_id) $msg = $this->lang->line('error_select_doctor');
+		
+		$dates = array();
+		for($i = 0; $i < 7; $i++){
+			$date_aux = date("Y-m-d", strtotime("+".$i." days", strtotime($date)));
 			
-			$min_range = array([0, 15], [15, 30], [30, 45], [45, 60]);
-			$aux = array();
+			array_push($dates, array("hd" => $this->lang->line('day_'.date("D", strtotime($date_aux)))."<br/>".date("d.m", strtotime($date_aux)), "num" => date("Ymd", strtotime($date_aux))));
 			
-			if ($appointments) foreach($appointments as $item) array_push($aux, array("sh" => date("H", strtotime($item->schedule_from)), "sm" => date("i", strtotime($item->schedule_from)), "eh" => date("H", strtotime($item->schedule_to)), "em" => date("i", strtotime($item->schedule_to))));
-			
-			if ($surgeries) foreach($surgeries as $item) array_push($aux, array("sh" => date("H", strtotime($item->schedule_from)), "sm" => date("i", strtotime($item->schedule_from)), "eh" => date("H", strtotime($item->schedule_to)), "em" => date("i", strtotime($item->schedule_to))));;
-			
-			foreach($aux as $item){
-				foreach($min_range as $key => $r){
-					if (($r[0] <= $item["sm"]) and ($item["sm"] < $r[1])) $item["sm"] = str_pad($r[0], 2, "0", STR_PAD_LEFT);
-					if (($r[0] <= $item["em"]) and ($item["em"] < $r[1])) $item["em"] = str_pad($r[0], 2, "0", STR_PAD_LEFT);
+			if (!$msg){
+				$aux_cells = $this->set_doctor_schedule_cell($doctor_id, $date_aux);
+				if ($aux_cells){
+					$date_num = date("Ymd", strtotime($date_aux));
+					foreach($aux_cells as $c) array_push($cells, $date_num.$c);
 				}
-				
-				$i = strtotime($date." ".$item["sh"].":".$item["sm"]);
-				$end = strtotime($date." ".$item["eh"].":".$item["em"]);
-				
-				do{
-					array_push($cells, date("Hi", $i));
-					$i += 900;//15 minutes in seconds
-				}while($i <= $end);
 			}
 		}
 		
-		echo $this->load->view('doctor/tb_schedule', array("msg" => $msg, "cells" => $cells), true);
+		$data = array("msg" => $msg, "dates" => $dates, "cells" => $cells, "prev" => $prev, "next" => $next);
+		echo $this->load->view('doctor/tb_schedule_weekly', $data, true);
 	}
 	
 	public function load_schedule(){
