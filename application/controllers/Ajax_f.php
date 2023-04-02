@@ -283,6 +283,7 @@ class Ajax_f extends CI_Controller {
 		}
 		echo "<br/><br/>".number_format($count)." registros generados";
 	}
+<<<<<<< HEAD
 	
 	public function pqt_post($page){
 		echo '<meta charset="UTF-8" />';
@@ -428,4 +429,6 @@ class Ajax_f extends CI_Controller {
 		}
 		echo "</table>";
 	}
+=======
+>>>>>>> 9c2c5c2551754dce345fc911e2662d0781cbb37b
 }

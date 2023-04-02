@@ -26,6 +26,15 @@ class General_model extends CI_Model{
 		return $result;
 	}
 	
+	function filter_adv($tablename, $filter, $filter_in = null, $order_by = "", $order = "", $limit = "", $offset = ""){
+		if ($filter) $this->db->where($filter);
+		if ($filter_in) foreach($filter_in as $f) $this->db->where_in($f["field"], $f["values"]);
+		if ($order_by) $this->db->order_by($order_by, $order);
+		$query = $this->db->get($tablename, $limit, $offset);
+		$result = $query->result();
+		return $result;
+	}
+	
 	function sum($tablename, $col, $filter = null){
 		$this->db->select_sum($col);
 		if ($filter) $this->db->where($filter);
