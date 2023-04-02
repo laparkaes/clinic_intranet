@@ -80,3 +80,4 @@ $lang['lb_detail'] = 'Detalle';
 $lang['lb_room'] = 'Sala';
 $lang['hd_room'] = 'Sala';
 $lang['title_weekly_doctor_agenda'] = 'Agenda Semanal del Médico';
+$lang['title_weekly_room_availability'] = 'Disponibilidad Semanal de Sala de Cirugía';

@@ -420,4 +420,46 @@ class Surgery extends CI_Controller {
 		if ($dompdf) $dompdf->stream("Reporte", array("Attachment" => false)); else echo "Error";
 		//echo $html;
 	}
+	
+	function load_weekly_room_availability(){
+		$cells = array();
+		
+		$room_id = $this->input->post("room_id");
+		$date = $this->input->post("date"); if (!$date) $date = date("Y-m-d");
+		
+		$prev = date("Y-m-d", strtotime("-1 week", strtotime($date)));
+		$next = date("Y-m-d", strtotime("+1 week", strtotime($date)));
+		
+		$status_ids = array($this->status->code("reserved")->id, $this->status->code("confirmed")->id);
+		$filter = ["room_id" => $room_id, "schedule_from >=" => $date." 00:00:00", "schedule_to >=" => $next." 00:00:00"];
+		$filter_in = array();
+		array_push($filter_in, ["field" => "status_id", "values" => $status_ids]);
+		//$surgeries = $this->surgery->doctor($doctor_id, $date, $status_ids);
+		$surgeries = $this->general->filter_adv("surgery", $filter, $filter_in);
+		
+		$min_range = array([0, 15], [15, 30], [30, 45], [45, 60]);
+		$aux = array();
+		
+		if ($appointments) foreach($appointments as $item) array_push($aux, array("sh" => date("H", strtotime($item->schedule_from)), "sm" => date("i", strtotime($item->schedule_from)), "eh" => date("H", strtotime($item->schedule_to)), "em" => date("i", strtotime($item->schedule_to))));
+		
+		if ($surgeries) foreach($surgeries as $item) array_push($aux, array("sh" => date("H", strtotime($item->schedule_from)), "sm" => date("i", strtotime($item->schedule_from)), "eh" => date("H", strtotime($item->schedule_to)), "em" => date("i", strtotime($item->schedule_to))));;
+		
+		foreach($aux as $item){
+			foreach($min_range as $key => $r){
+				if (($r[0] <= $item["sm"]) and ($item["sm"] < $r[1])) $item["sm"] = str_pad($r[0], 2, "0", STR_PAD_LEFT);
+				if (($r[0] <= $item["em"]) and ($item["em"] < $r[1])) $item["em"] = str_pad($r[0], 2, "0", STR_PAD_LEFT);
+			}
+			
+			$i = strtotime($date." ".$item["sh"].":".$item["sm"]);
+			$end = strtotime($date." ".$item["eh"].":".$item["em"]);
+			
+			do{
+				array_push($cells, date("Hi", $i));
+				$i += 900;//15 minutes in seconds
+			}while($i <= $end);
+		}
+		
+		print_r($cells);
+		//return $cells;
+	}
 }
