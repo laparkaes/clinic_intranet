@@ -431,7 +431,7 @@ class Surgery extends CI_Controller {
 		$next = date("Y-m-d", strtotime("+1 week", strtotime($date)));
 		
 		$status_ids = array($this->status->code("reserved")->id, $this->status->code("confirmed")->id);
-		$filter = ["room_id" => $room_id, "schedule_from >=" => $date." 00:00:00", "schedule_to >=" => $next." 00:00:00"];
+		$filter = ["room_id" => $room_id, "schedule_from >=" => $date." 00:00:00", "schedule_to >=" => $date." 23:59:59"];
 		$filter_in = array();
 		array_push($filter_in, ["field" => "status_id", "values" => $status_ids]);
 		//$surgeries = $this->surgery->doctor($doctor_id, $date, $status_ids);
@@ -439,8 +439,6 @@ class Surgery extends CI_Controller {
 		
 		$min_range = array([0, 15], [15, 30], [30, 45], [45, 60]);
 		$aux = array();
-		
-		if ($appointments) foreach($appointments as $item) array_push($aux, array("sh" => date("H", strtotime($item->schedule_from)), "sm" => date("i", strtotime($item->schedule_from)), "eh" => date("H", strtotime($item->schedule_to)), "em" => date("i", strtotime($item->schedule_to))));
 		
 		if ($surgeries) foreach($surgeries as $item) array_push($aux, array("sh" => date("H", strtotime($item->schedule_from)), "sm" => date("i", strtotime($item->schedule_from)), "eh" => date("H", strtotime($item->schedule_to)), "em" => date("i", strtotime($item->schedule_to))));;
 		
