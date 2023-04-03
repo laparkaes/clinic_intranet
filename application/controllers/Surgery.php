@@ -422,42 +422,59 @@ class Surgery extends CI_Controller {
 	}
 	
 	function load_weekly_room_availability(){
-		$cells = array();
-		
-		$room_id = $this->input->post("room_id");
+		$msg = null; $cells = array();
 		$date = $this->input->post("date"); if (!$date) $date = date("Y-m-d");
+		$room_id = $this->input->post("room_id");
 		
 		$prev = date("Y-m-d", strtotime("-1 week", strtotime($date)));
 		$next = date("Y-m-d", strtotime("+1 week", strtotime($date)));
 		
-		$status_ids = array($this->status->code("reserved")->id, $this->status->code("confirmed")->id);
-		$filter = ["room_id" => $room_id, "schedule_from >=" => $date." 00:00:00", "schedule_to >=" => $date." 23:59:59"];
-		$filter_in = array();
-		array_push($filter_in, ["field" => "status_id", "values" => $status_ids]);
-		//$surgeries = $this->surgery->doctor($doctor_id, $date, $status_ids);
-		$surgeries = $this->general->filter_adv("surgery", $filter, $filter_in);
-		
-		$min_range = array([0, 15], [15, 30], [30, 45], [45, 60]);
-		$aux = array();
-		
-		if ($surgeries) foreach($surgeries as $item) array_push($aux, array("sh" => date("H", strtotime($item->schedule_from)), "sm" => date("i", strtotime($item->schedule_from)), "eh" => date("H", strtotime($item->schedule_to)), "em" => date("i", strtotime($item->schedule_to))));;
-		
-		foreach($aux as $item){
-			foreach($min_range as $key => $r){
-				if (($r[0] <= $item["sm"]) and ($item["sm"] < $r[1])) $item["sm"] = str_pad($r[0], 2, "0", STR_PAD_LEFT);
-				if (($r[0] <= $item["em"]) and ($item["em"] < $r[1])) $item["em"] = str_pad($r[0], 2, "0", STR_PAD_LEFT);
-			}
+		$dates = array();
+		for($i = 0; $i < 7; $i++){
+			$date_aux = date("Y-m-d", strtotime("+".$i." days", strtotime($date)));
 			
-			$i = strtotime($date." ".$item["sh"].":".$item["sm"]);
-			$end = strtotime($date." ".$item["eh"].":".$item["em"]);
-			
-			do{
-				array_push($cells, date("Hi", $i));
-				$i += 900;//15 minutes in seconds
-			}while($i <= $end);
+			array_push($dates, array("hd" => $this->lang->line('day_'.date("D", strtotime($date_aux)))."<br/>".date("d.m", strtotime($date_aux)), "num" => date("Ymd", strtotime($date_aux))));
 		}
 		
-		print_r($cells);
-		//return $cells;
+		if ($room_id){
+			$room = $this->general->id("surgery_room", $room_id);
+			$run = $date; $date_end = $next;
+			
+			$status_ids = array($this->status->code("reserved")->id, $this->status->code("confirmed")->id);
+			$filter_in = array();
+			array_push($filter_in, ["field" => "status_id", "values" => $status_ids]);
+			
+			while(strtotime($run) < strtotime($date_end)){
+				$filter = ["room_id" => $room->id, "schedule_from >=" => $run." 00:00:00", "schedule_to <=" => $run." 23:59:59"];
+				$surgeries = $this->general->filter_adv("surgery", $filter, $filter_in);
+				
+				$min_range = array([0, 15], [15, 30], [30, 45], [45, 60]);
+				$aux = array();
+				
+				if ($surgeries) foreach($surgeries as $item) array_push($aux, array("sh" => date("H", strtotime($item->schedule_from)), "sm" => date("i", strtotime($item->schedule_from)), "eh" => date("H", strtotime($item->schedule_to)), "em" => date("i", strtotime($item->schedule_to))));;
+				
+				foreach($aux as $item){
+					foreach($min_range as $key => $r){
+						if (($r[0] <= $item["sm"]) and ($item["sm"] < $r[1])) $item["sm"] = str_pad($r[0], 2, "0", STR_PAD_LEFT);
+						if (($r[0] <= $item["em"]) and ($item["em"] < $r[1])) $item["em"] = str_pad($r[0], 2, "0", STR_PAD_LEFT);
+					}
+					
+					$i = strtotime($run." ".$item["sh"].":".$item["sm"]);
+					$end = strtotime($run." ".$item["eh"].":".$item["em"]);
+					
+					do{
+						array_push($cells, date("YmdHi", $i));
+						$i += 900;//15 minutes in seconds
+					}while($i <= $end);
+				}
+				
+				$run = date("Y-m-d", strtotime("+1 day", strtotime($run)));
+			}
+			
+			$cells = array_unique($cells);
+		}else $msg = "Elija una sala de cirugia";
+		
+		$data = array("msg" => $msg, "dates" => $dates, "cells" => $cells, "prev" => $prev, "next" => $next);
+		echo $this->load->view('surgery/tb_weekly_availability', $data, true);
 	}
 }
