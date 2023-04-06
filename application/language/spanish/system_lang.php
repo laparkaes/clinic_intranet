@@ -92,7 +92,8 @@ $lang['txt_surgeries'] = 'Cirugías';
 $lang['txt_surgeries_list'] = 'Lista de Cirugías';
 $lang['txt_today'] = 'Hoy';
 $lang['txt_tomorrow'] = 'Mañana';
-$lang['txt_busy_hours'] = 'Horario Ocupado.';
+$lang['txt_busy_hours'] = 'Horario Ocupado';
+$lang['txt_busy'] = 'Ocupado';
 $lang['txt_today'] = 'Hoy';
 
 //days

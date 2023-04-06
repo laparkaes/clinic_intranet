@@ -57,7 +57,10 @@
 								<div class="sys_msg" id="aa_specialty_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
-								<label><?= $this->lang->line('lb_doctor') ?></label>
+								<label>
+									<span class="mr-1"><?= $this->lang->line('lb_doctor') ?></span>
+									<span><i class="far fa-clock" id="ic_doctor_schedule_w_aa" data-toggle="modal" data-target=".md_weekly_doctor_agenda"></i></span>
+								</label>
 								<select class="form-control" id="aa_doctor" name="app[doctor_id]">
 									<option value="">--</option>
 									<?php foreach($doctors as $item){ ?>
@@ -160,7 +163,10 @@
 								<div class="sys_msg" id="sur_specialty_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
-								<label><?= $this->lang->line('lb_doctor') ?></label>
+								<label>
+									<span class="mr-1"><?= $this->lang->line('lb_doctor') ?></span>
+									<span><i class="far fa-clock" id="ic_doctor_schedule_w_sur" data-toggle="modal" data-target=".md_weekly_doctor_agenda"></i></span>
+								</label>
 								<select class="form-control" id="sur_doctor" name="sur[doctor_id]">
 									<option value="">--</option>
 									<?php foreach($doctors as $item){ ?>
@@ -205,9 +211,9 @@
 							<div class="form-group col-md-8">
 								<label>
 									<span class="mr-1"><?= $this->lang->line('lb_room') ?></span>
-									<span><i class="far fa-clock"></i></span>
+									<span><i class="far fa-clock" id="ic_room_availability_w" data-toggle="modal" data-target=".md_weekly_room_availability"></i></span>
 								</label>
-								<select class="form-control" name="sur[room_id]">
+								<select class="form-control" id="sur_room_id" name="sur[room_id]">
 									<option value="">--</option>
 									<?php foreach($rooms as $r){ ?>
 									<option value="<?= $r->id ?>"><?= $r->name ?></option>
@@ -730,6 +736,30 @@
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade md_weekly_doctor_agenda" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header pb-0 border-0">
+				<h5 class="modal-title"><?= $this->lang->line('title_doctor_agenda') ?></h5>
+				<button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="bl_weekly_schedule"></div>
+		</div>
+	</div>
+</div>
+<div class="modal fade md_weekly_room_availability" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header pb-0 border-0">
+				<h5 class="modal-title"><?= $this->lang->line('title_room_availability') ?></h5>
+				<button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="bl_room_availability"></div>
 		</div>
 	</div>
 </div>

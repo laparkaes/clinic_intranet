@@ -244,6 +244,9 @@ $(document).ready(function() {
 	set_datatable("file_list", 10, false);
 	set_datatable("sale_list", 10, false);
 	$(".control_bl_simple").on('click',(function(e) {control_bl_simple(this);}));
+	$("#ic_doctor_schedule_w_aa").on('click',(function(e) {load_doctor_schedule_weekly($("#aa_doctor").val(), null, "bl_weekly_schedule");}));
+	$("#ic_doctor_schedule_w_sur").on('click',(function(e) {load_doctor_schedule_weekly($("#sur_doctor").val(), null, "bl_weekly_schedule");}));
+	$("#ic_room_availability_w").on('click',(function(e) {load_room_availability($("#sur_room_id").val(), null, "bl_room_availability");}));
 	
 	//add appointment
 	aa_load_doctor_schedule();

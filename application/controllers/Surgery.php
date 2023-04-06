@@ -421,7 +421,7 @@ class Surgery extends CI_Controller {
 		//echo $html;
 	}
 	
-	function load_weekly_room_availability(){
+	function load_room_availability(){
 		$msg = null; $cells = array();
 		$date = $this->input->post("date"); if (!$date) $date = date("Y-m-d");
 		$room_id = $this->input->post("room_id");

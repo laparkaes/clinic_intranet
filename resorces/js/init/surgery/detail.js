@@ -118,4 +118,8 @@ $(document).ready(function() {
 	
 	//finish surgery
 	$("#form_result").submit(function(e) {e.preventDefault(); finish_surgery(this);});
+	
+	//weekly
+	$("#ic_doctor_schedule_w").on('click',(function(e) {load_doctor_schedule_weekly($("#rs_doctor").val(), null, "bl_weekly_schedule");}));
+	$("#ic_room_availability_w").on('click',(function(e) {load_room_availability($("#rs_room_id").val(), null, "bl_room_availability");}));
 });

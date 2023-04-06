@@ -22,27 +22,6 @@ function register_surgery(dom){
 	});
 }
 
-function load_doctor_schedule_surgery(){
-	load_doctor_schedule($("#sur_doctor").val(), $("#sur_date").val(), "sur_schedule_list");
-}
-
-function load_doctor_schedule_weekly_surgery(){
-	load_doctor_schedule_weekly($("#sur_doctor").val(), null, "bl_weekly_schedule");
-}
-
-function load_weekly_room_availability(date){
-	$("#bl_surgery_room_availability").html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
-	$.ajax({
-		url: $("#base_url").val() + "surgery/load_weekly_room_availability",
-		type: "POST",
-		data: {room_id: $("#sur_room_id").val(), date: date},
-		success:function(res){
-			$("#bl_surgery_room_availability").html(res);
-			$(".btn_room_schedule_w").on('click',(function(e) {load_weekly_room_availability($(this).val());}));
-		}
-	});
-}
-
 function set_doctor_sl(dom){
 	$("#sur_doctor").val("");
 	$("#sur_doctor .spe").addClass("d-none");
@@ -76,14 +55,15 @@ function enable_pt_name(){$("#sur_pt_name").removeClass("bg-light").attr("readon
 
 $(document).ready(function() {
 	set_datatable("surgery_list", 25, false);
-	load_doctor_schedule_surgery();
+	load_doctor_schedule($("#sur_doctor").val(), $("#sur_date").val(), "sur_schedule_list");
+	
 	$(".control_bl").on('click',(function(e) {control_bl(this);}));
 	$("#sur_specialty").change(function() {set_doctor_sl(this);});
-	$("#sur_specialty, #sur_doctor, #sur_date").change(function() {load_doctor_schedule_surgery();});
+	$("#sur_specialty, #sur_doctor, #sur_date").change(function() {load_doctor_schedule($("#sur_doctor").val(), $("#sur_date").val(), "sur_schedule_list");});
 	$("#pt_doc_type_id").change(function() {enable_pt_name();});
 	$("#pt_doc_number").keyup(function() {enable_pt_name();});
 	$("#btn_search_pt").on('click',(function(e) {search_person_pt();}));
-	$("#ic_doctor_schedule_w").on('click',(function(e) {load_doctor_schedule_weekly_surgery();}));
-	$("#ic_room_availability_w").on('click',(function(e) {load_weekly_room_availability(null);}));
+	$("#ic_doctor_schedule_w").on('click',(function(e) {load_doctor_schedule_weekly($("#sur_doctor").val(), null, "bl_weekly_schedule");}));
+	$("#ic_room_availability_w").on('click',(function(e) {load_room_availability($("#sur_room_id").val(), null, "bl_room_availability");}));
 	$("#register_form").submit(function(e) {e.preventDefault(); register_surgery(this);});
 });

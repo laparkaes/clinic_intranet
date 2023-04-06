@@ -472,6 +472,7 @@ $(document).ready(function() {
 	$("#btn_cancel").on('click',(function(e) {cancel_appointment(this);}));
 	$("#btn_finish").on('click',(function(e) {finish_appointment(this);}));
 	$("#btn_reschedule, #btn_reschedule_cancel").on('click',(function(e) {control_reschedule_form();}));
+	$("#ic_doctor_schedule_w").on('click',(function(e) {load_doctor_schedule_weekly($("#ra_doctor").val(), null, "bl_weekly_schedule");}));
 	
 	//reschedule
 	$("#reschedule_form").submit(function(e) {e.preventDefault(); reschedule_appointment(this);});

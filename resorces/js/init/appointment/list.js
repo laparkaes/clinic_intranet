@@ -67,4 +67,5 @@ $(document).ready(function() {
 	$("#pt_doc_number").keyup(function() {enable_pt_name();});
 	$("#btn_search_pt").on('click',(function(e) {search_person_pt();}));
 	$("#register_form").submit(function(e) {e.preventDefault(); register_appointment(this);});
+	$("#ic_doctor_schedule_w").on('click',(function(e) {load_doctor_schedule_weekly($("#aa_doctor").val(), null, "bl_weekly_schedule");}));
 });

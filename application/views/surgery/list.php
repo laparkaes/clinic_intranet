@@ -219,7 +219,7 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header pb-0 border-0">
-				<h5 class="modal-title"><?= $this->lang->line('title_weekly_doctor_agenda') ?></h5>
+				<h5 class="modal-title"><?= $this->lang->line('title_doctor_agenda') ?></h5>
 				<button type="button" class="close" data-dismiss="modal"><span>&times;</span>
 				</button>
 			</div>
@@ -231,11 +231,11 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header pb-0 border-0">
-				<h5 class="modal-title"><?= $this->lang->line('title_weekly_room_availability') ?></h5>
+				<h5 class="modal-title"><?= $this->lang->line('title_room_availability') ?></h5>
 				<button type="button" class="close" data-dismiss="modal"><span>&times;</span>
 				</button>
 			</div>
-			<div class="modal-body" id="bl_surgery_room_availability"></div>
+			<div class="modal-body" id="bl_room_availability"></div>
 		</div>
 	</div>
 </div>

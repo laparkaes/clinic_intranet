@@ -17,11 +17,12 @@
 <div class="row">
 	<div class="col-md-12">
 		<div class="text-danger"><?= $msg ?></div>
-		<div class="text-right"><i class="fas fa-square text-success"></i> <?= $this->lang->line('txt_busy_hours') ?></div>
 		<table class="table table-sm w-100 mb-0 text-center">
 			<thead>
 				<tr class="sticky-top bg-white">
-					<th></th>
+					<th class="align-middle">
+						<i class="fas fa-square text-success"></i> <?= $this->lang->line('txt_busy') ?>
+					</th>
 					<?php foreach($dates as $i => $d){ ?>
 					<th style="width: 90px;"><strong><?= $d["hd"] ?></strong></th>
 					<?php } ?>

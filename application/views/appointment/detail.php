@@ -74,7 +74,10 @@
 						<input type="hidden" id="ra_doctor" value="<?= $doctor->id ?>" readonly>
 						<div class="form-row">
 							<div class="form-group col-md-12">
-								<label><?= $this->lang->line('lb_doctor') ?></label>
+								<label>
+									<span class="mr-1"><?= $this->lang->line('lb_doctor') ?></span>
+									<span><i class="far fa-clock" id="ic_doctor_schedule_w" data-toggle="modal" data-target=".md_weekly_doctor_agenda"></i></span>
+								</label>
 								<input type="text" class="form-control bg-light" value="<?= $doctor->name ?>" readonly>
 							</div>
 							<div class="form-group col-md-12">
@@ -141,6 +144,18 @@
 	</div>
 </div>
 <?php } $this->load->view("appointment/detail_".$this->session->userdata("role")->name); ?>
+<div class="modal fade md_weekly_doctor_agenda" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header pb-0 border-0">
+				<h5 class="modal-title"><?= $this->lang->line('title_doctor_agenda') ?></h5>
+				<button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="bl_weekly_schedule"></div>
+		</div>
+	</div>
+</div>
 <div class="d-none">
 	<input type="hidden" id="appointment_id" value="<?= $appointment->id ?>">
 	<input type="hidden" id="bmi_class_under_weight" value="<?= $this->lang->line('txt_bmi_class_under_weight') ?>">

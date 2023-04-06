@@ -232,6 +232,8 @@ $(document).ready(function() {
 	set_datatable("appointment_list", 10, false);
 	set_datatable("surgery_list", 10, false);
 	$(".control_bl_simple").on('click',(function(e) {control_bl_simple(this);}));
+	$("#btn_weekly_agenda").on('click',(function(e) {load_doctor_schedule_weekly($("#doctor_id").val(), null, "bl_weekly_agenda");}));
+	$("#ic_room_availability_w").on('click',(function(e) {load_room_availability($("#sur_room_id").val(), null, "bl_room_availability");}));
 	
 	//doctor update
 	$("#form_update_personal_data").submit(function(e) {e.preventDefault(); update_personal_data(this);});

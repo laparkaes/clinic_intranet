@@ -1,6 +1,6 @@
 <?php $mins = array("00", "15", "30", "45"); ?>
 <div class="text-right text-danger"><?= $msg ?></div>
-<div class="text-right"><i class="fas fa-square text-success"></i> <?= $this->lang->line('txt_busy_hours') ?></div>
+<div class="text-right"><i class="fas fa-square text-success"></i> <?= $this->lang->line('txt_busy') ?></div>
 <table class="table table-sm w-100 mb-0 text-center">
 	<thead>
 		<tr>
