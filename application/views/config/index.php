@@ -1,14 +1,69 @@
-<div class="col-12">
+<div class="col-md-12">
+	<div class="row page-titles mx-0">
+		<div class="col-sm-6 p-md-0">
+			<div class="welcome-text">
+				<h4>Configuracion</h4>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="col-md-12">
+	<div class="row d-flex justify-content-center">
+		<div class="col-md-3">
+			<button class="btn btn-primary w-100 mb-3 control_bl_simple" value="bl_user_admin">
+				<div><i class="fal fa-users-cog fa-5x fa-fw"></i></div>
+				<div class="fs-16 mt-2 pt-2 border-top border-white">Usuario</div>
+			</button>
+		</div>
+		<div class="col-md-3">
+			<button class="btn btn-primary w-100 mb-3 control_bl_simple" value="bl_rol_admin">
+				<div><i class="fal fa-lock-alt fa-5x fa-fw"></i></div>
+				<div class="fs-16 mt-2 pt-2 border-top border-white">Rol / Acceso</div>
+			</button>
+		</div>
+		<div class="col-md-3">
+			<button class="btn btn-secondary w-100 mb-3 control_bl_simple" value="bl_company_admin">
+				<div><i class="fal fa-building fa-5x fa-fw"></i></div>
+				<div class="fs-16 mt-2 pt-2 border-top border-white">Empresa</div>
+			</button>
+		</div>
+		<div class="col-md-3">
+			<button class="btn btn-info w-100 mb-3 control_bl_simple" value="bl_system_admin">
+				<div><i class="fal fa-tools fa-5x fa-fw"></i></div>
+				<div class="fs-16 mt-2 pt-2 border-top border-white">Sistema</div>
+			</button>
+		</div>
+	</div>
+</div>
+<div class="col-md-12" id="bl_user_admin">
 	<div class="card">
 		<div class="card-header border-0 pb-0">
-			<h4 class="card-title">Configuracion</h4>
+			<h4 class="card-title">Usuario</h4>
+		</div>
+		<div class="card-body">
+		</div>
+	</div>
+</div>
+<div class="col-md-12" id="bl_rol_admin">
+	<div class="card">
+		<div class="card-header border-0 pb-0">
+			<h4 class="card-title">Rol / Acceso</h4>
+		</div>
+		<div class="card-body">
+		</div>
+	</div>
+</div>
+<div class="col-md-12" id="bl_company_admin">
+	<div class="card">
+		<div class="card-header border-0 pb-0">
+			<h4 class="card-title">Empresa</h4>
 		</div>
 		<div class="card-body">
 			<div class="basic-form">
 				<form action="#" id="form_update_company">
 					<div class="row">
-						<div class="col-md-6 col-sm-12">
-							<h5>Datos de Empresa</h5>
+						<div class="col-md-6">
+							<h5>Datos Legales</h5>
 							<div class="form-row">
 								<div class="form-group col-md-4">
 									<label>RUC</label>
@@ -79,8 +134,8 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-md-6 col-sm-12">
-							<h5>Datos de Sunat</h5>
+						<div class="col-md-6">
+							<h5>Acceso de Sunat</h5>
 							<div class="form-row">
 								<div class="form-group col-md-12">
 									<label>Resolucion</label>
@@ -109,10 +164,21 @@
 								</div>
 							</div>
 						</div>
+						<div class="col-md-12 p-3">
+							<button type="submit" class="btn btn-primary">Guardar</button>
+						</div>
 					</div>
-					<button type="submit" class="btn btn-primary">Guardar</button>
 				</form>
 			</div>
+		</div>
+	</div>
+</div>
+<div class="col-md-12" id="bl_system_admin">
+	<div class="card">
+		<div class="card-header border-0 pb-0">
+			<h4 class="card-title">Sistema</h4>
+		</div>
+		<div class="card-body">
 		</div>
 	</div>
 </div>
