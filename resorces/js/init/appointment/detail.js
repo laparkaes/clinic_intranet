@@ -9,7 +9,7 @@ function cancel_appointment(dom){
 	}).then((result) => {
 		if (result.isConfirmed){
 			$.ajax({
-				url: $("#base_url").val() + "appointment/cancel_appointment",
+				url: $("#base_url").val() + "appointment/cancel",
 				type: "POST",
 				data: {id: $(dom).val()},
 				success:function(res){
@@ -38,7 +38,7 @@ function finish_appointment(dom){
 	}).then((result) => {
 		if (result.isConfirmed){
 			$.ajax({
-				url: $("#base_url").val() + "appointment/finish_appointment",
+				url: $("#base_url").val() + "appointment/finish",
 				type: "POST",
 				data: {id: $(dom).val()},
 				success:function(res){
@@ -68,7 +68,7 @@ function reschedule_appointment(dom){
 	}).then((result) => {
 		if (result.isConfirmed){
 			$.ajax({
-				url: $("#base_url").val() + "appointment/reschedule_appointment",
+				url: $("#base_url").val() + "appointment/reschedule",
 				type: "POST",
 				data: new FormData(dom),
 				contentType: false,

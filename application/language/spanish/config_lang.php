@@ -18,3 +18,11 @@ $lang['success_cup'] = 'Empresa ha sido actualizada.';//success_company_update
 
 //content
 $lang['new_sale'] = 'Nueva Venta';
+
+//role
+$lang['role_master'] = 'Maestro';
+$lang['role_admin'] = 'Admin';
+$lang['role_reception'] = 'Recepción';
+$lang['role_doctor'] = 'Médico';
+$lang['role_patient'] = 'Paciente';
+$lang['role_nurse'] = 'Enfermera';

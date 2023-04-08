@@ -289,7 +289,7 @@ class Surgery extends CI_Controller {
 		echo json_encode(array("status" => $status, "type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to));
 	}
 	
-	public function cancel_surgery(){
+	public function cancel(){
 		$status = false; $type = "error"; $msg = null;
 		$surgery = $this->surgery->id($this->input->post("id"));
 		if ($surgery){
@@ -304,7 +304,7 @@ class Surgery extends CI_Controller {
 		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg));
 	}
 	
-	public function finish_surgery(){
+	public function finish(){
 		$status = false; $type = "error"; $msg = null;
 		//pending!! role validation
 		
@@ -322,7 +322,7 @@ class Surgery extends CI_Controller {
 		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg));
 	}
 
-	public function reschedule_surgery(){
+	public function reschedule(){
 		$status = false; $type = "error"; $msg = null; $msgs = array();
 		$data = $this->input->post();
 		

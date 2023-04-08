@@ -8,6 +8,7 @@ class Config extends CI_Controller {
 		date_default_timezone_set('America/Lima');
 		$this->lang->load("system", "spanish");
 		$this->lang->load("config", "spanish");
+		$this->load->model('general_model','general');
 	}
 	
 	private function set_msg($msgs, $dom_id, $type, $msg_code){
@@ -19,7 +20,10 @@ class Config extends CI_Controller {
 		if (!$this->session->userdata('logged_in')) redirect(base_url());
 		//pending! rol validation
 		
+		$roles = $this->general->all("role", "id", "asc");
+		
 		$data = array(
+			"roles" => $roles,
 			"departments" => $this->general->all("address_department", "name", "asc"),
 			"provinces" => $this->general->all("address_province", "name", "asc"),
 			"districts" => $this->general->all("address_district", "name", "asc"),

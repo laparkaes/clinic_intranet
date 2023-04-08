@@ -214,8 +214,30 @@ class Ajax_f extends CI_Controller {
 		echo json_encode(array("appointments" => $appointments_arr, "surgeries" => $surgeries_arr));
 	}
 	
+	public function print_functions(){
+		echo "<table>";
+		foreach(glob(APPPATH . 'controllers/*') as $controller) {
+			if(pathinfo($controller, PATHINFO_EXTENSION) == "php"){
+				echo "<tr>";
+				include_once $controller;
+				
+				$controllername = basename($controller, ".php");
+				echo "<td style='vertical-align: top;'>".$controllername."</td><td>";
+				
+				$class_methods = get_class_methods($controllername);
+				if ($class_methods) foreach($class_methods as $method){
+					if($method != '__construct' && $method != 'get_instance' && $method != $controllername) {
+						echo $method."<br/>";
+					}
+				}
+				echo "</td></tr>";
+			}
+		}
+		echo "</table>";
+	}
+	
 	//test data creation
-	public function make_app_sur($qty){
+	private function make_app_sur($qty){
 		$doctors_arr = array();
 		$doctors = $this->general->all("doctor");
 		$people = $this->general->all("person");

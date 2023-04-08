@@ -9,7 +9,7 @@ function cancel_surgery(dom){
 	}).then((result) => {
 		if (result.isConfirmed){
 			$.ajax({
-				url: $("#base_url").val() + "surgery/cancel_surgery",
+				url: $("#base_url").val() + "surgery/cancel",
 				type: "POST",
 				data: {id: $(dom).val()},
 				success:function(res){
@@ -38,7 +38,7 @@ function finish_surgery(dom){
 	}).then((result) => {
 		if (result.isConfirmed){
 			$.ajax({
-				url: $("#base_url").val() + "surgery/finish_surgery",
+				url: $("#base_url").val() + "surgery/finish",
 				type: "POST",
 				data: new FormData(dom),
 				contentType: false,
@@ -70,7 +70,7 @@ function reschedule_surgery(dom){
 	}).then((result) => {
 		if (result.isConfirmed){
 			$.ajax({
-				url: $("#base_url").val() + "surgery/reschedule_surgery",
+				url: $("#base_url").val() + "surgery/reschedule",
 				type: "POST",
 				data: new FormData(dom),
 				contentType: false,

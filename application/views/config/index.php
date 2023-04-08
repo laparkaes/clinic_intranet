@@ -8,6 +8,28 @@
 	</div>
 </div>
 <div class="col-md-12">
+	<div class="table-responsive">
+		<table class="table table-responsive-md">
+			<thead>
+				<tr>
+					<th><strong>Acceso</strong></th>
+					<?php foreach($roles as $item){ ?>
+					<th><strong><?= $this->lang->line('role_'.$item->name) ?></strong></th>
+					<?php } ?>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Acceso a Dashboard</td>
+					<?php foreach($roles as $item){ ?>
+					<td><?= $item->id ?></td>
+					<?php } ?>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="col-md-12">
 	<div class="card">
 		<div class="card-body">
 			<div class="custom-tab-1">
@@ -25,6 +47,11 @@
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#bl_company_admin">
 							<i class="fal fa-building mr-3"></i>Empresa
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#bl_sistem_admin">
+							<i class="fal fa-tools mr-3"></i>Sistema
 						</a>
 					</li>
 					<li class="nav-item">
@@ -116,80 +143,6 @@
 						</div>
 					</div>
 					<div class="tab-pane fade" id="bl_role_admin">
-						<div class="table-responsive">
-							<table class="table table-responsive-md">
-								<thead>
-									<tr>
-										<th style="width:80px;"><strong>#</strong></th>
-										<th><strong>PATIENT</strong></th>
-										<th><strong>DR NAME</strong></th>
-										<th><strong>DATE</strong></th>
-										<th><strong>STATUS</strong></th>
-										<th><strong>PRICE</strong></th>
-										<th></th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td><strong>01</strong></td>
-										<td>Mr. Bobby</td>
-										<td>Dr. Jackson</td>
-										<td>01 August 2020</td>
-										<td><span class="badge light badge-success">Successful</span></td>
-										<td>$21.56</td>
-										<td>
-											<div class="dropdown">
-												<button type="button" class="btn btn-success light sharp" data-toggle="dropdown">
-													<svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
-												</button>
-												<div class="dropdown-menu">
-													<a class="dropdown-item" href="#">Edit</a>
-													<a class="dropdown-item" href="#">Delete</a>
-												</div>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td><strong>02</strong></td>
-										<td>Mr. Bobby</td>
-										<td>Dr. Jackson</td>
-										<td>01 August 2020</td>
-										<td><span class="badge light badge-danger">Canceled</span></td>
-										<td>$21.56</td>
-										<td>
-											<div class="dropdown">
-												<button type="button" class="btn btn-danger light sharp" data-toggle="dropdown">
-													<svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
-												</button>
-												<div class="dropdown-menu">
-													<a class="dropdown-item" href="#">Edit</a>
-													<a class="dropdown-item" href="#">Delete</a>
-												</div>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td><strong>03</strong></td>
-										<td>Mr. Bobby</td>
-										<td>Dr. Jackson</td>
-										<td>01 August 2020</td>
-										<td><span class="badge light badge-warning">Pending</span></td>
-										<td>$21.56</td>
-										<td>
-											<div class="dropdown">
-												<button type="button" class="btn btn-warning light sharp" data-toggle="dropdown">
-													<svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
-												</button>
-												<div class="dropdown-menu">
-													<a class="dropdown-item" href="#">Edit</a>
-													<a class="dropdown-item" href="#">Delete</a>
-												</div>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
 					</div>
 					<div class="tab-pane fade" id="bl_company_admin">
 						<div class="row">
@@ -300,6 +253,52 @@
 										<button type="submit" class="btn btn-primary">Guardar</button>
 									</div>
 								</form>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="bl_sistem_admin">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="basic-list-group">
+                                    <ul class="list-group">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Cras justo odio <span class="badge badge-primary badge-pill">14</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Dapibus ac facilisis in <span class="badge badge-primary badge-pill">2</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Cras justo odio <span class="badge badge-primary badge-pill">14</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Morbi leo risus <span class="badge badge-primary badge-pill">1</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Morbi leo risus <span class="badge badge-primary badge-pill">1</span>
+                                        </li>
+                                    </ul>
+                                </div>
+							</div>
+							<div class="col-md-6">
+								<div class="basic-list-group">
+                                    <ul class="list-group">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Cras justo odio <span class="badge badge-primary badge-pill">14</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Dapibus ac facilisis in <span class="badge badge-primary badge-pill">2</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Cras justo odio <span class="badge badge-primary badge-pill">14</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Morbi leo risus <span class="badge badge-primary badge-pill">1</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Morbi leo risus <span class="badge badge-primary badge-pill">1</span>
+                                        </li>
+                                    </ul>
+                                </div>
 							</div>
 						</div>
 					</div>
