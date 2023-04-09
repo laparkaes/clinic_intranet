@@ -20,10 +20,9 @@ class Config extends CI_Controller {
 		if (!$this->session->userdata('logged_in')) redirect(base_url());
 		//pending! rol validation
 		
-		$roles = $this->general->all("role", "id", "asc");
-		
 		$data = array(
-			"roles" => $roles,
+			"roles" => $this->general->all("role", "id", "asc"),
+			"access" => $this->general->all("access", "id", "asc"),
 			"departments" => $this->general->all("address_department", "name", "asc"),
 			"provinces" => $this->general->all("address_province", "name", "asc"),
 			"districts" => $this->general->all("address_district", "name", "asc"),

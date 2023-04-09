@@ -19,12 +19,14 @@
 				</tr>
 			</thead>
 			<tbody>
+				<?php foreach($access as $a){ ?>
 				<tr>
-					<td>Acceso a Dashboard</td>
-					<?php foreach($roles as $item){ ?>
-					<td><?= $item->id ?></td>
+					<td><?= $a->description ?></td>
+					<?php foreach($roles as $r){ ?>
+					<td><?= $a->id."_".$r->id ?></td>
 					<?php } ?>
 				</tr>
+				<?php } ?>
 			</tbody>
 		</table>
 	</div>

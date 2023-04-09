@@ -218,19 +218,15 @@ class Ajax_f extends CI_Controller {
 		echo "<table>";
 		foreach(glob(APPPATH . 'controllers/*') as $controller) {
 			if(pathinfo($controller, PATHINFO_EXTENSION) == "php"){
-				echo "<tr>";
 				include_once $controller;
 				
 				$controllername = basename($controller, ".php");
-				echo "<td style='vertical-align: top;'>".$controllername."</td><td>";
-				
 				$class_methods = get_class_methods($controllername);
 				if ($class_methods) foreach($class_methods as $method){
 					if($method != '__construct' && $method != 'get_instance' && $method != $controllername) {
-						echo $method."<br/>";
+						echo "<tr><td>".$controllername."</td><td>".$method."</td><td>".strtolower($controllername."_".$method)."</td></tr>";
 					}
 				}
-				echo "</td></tr>";
 			}
 		}
 		echo "</table>";
