@@ -24,14 +24,29 @@ class Config extends CI_Controller {
 		$access = array();
 		foreach($modules as $item) $access[$item] = $this->general->filter("access", ["module" => $item], "id", "asc");
 		
-		$role_access = array();
+		$role_access = [];
 		$role_access_rec = $this->general->all("role_access", null);
-		foreach($role_access_rec as $item) array_push($role_access, $item->role_id."_".$item->access_id);
+		foreach($role_access_rec as $item) $role_access[] = $item->role_id."_".$item->access_id;
+		
+		$roles_arr = [];
+		$roles = $this->general->all("role", "id", "asc");
+		foreach($roles as $item) $roles_arr[$item->id] = $item->name;
+		
+		$people_ids_arr = [];
+		$people_ids = $this->general->only("account", "person_id", null);
+		foreach($people_ids as $item) $people_ids_arr[] = $item->person_id;
+		
+		$people_arr = [];
+		$people = $this->general->filter_adv("person", null, [["field" => "id", "values" => $people_ids_arr]]);
+		foreach($people as $item) $people_arr[$item->id] = $item->name;
 		
 		$data = array(
 			"role_access" => $role_access,
-			"roles" => $this->general->all("role", "id", "asc"),
+			"roles_arr" => $roles_arr,
+			"roles" => $roles,
 			"access" => $access,
+			"people_arr" => $people_arr,
+			"accounts" => $this->general->all("account", "role_id", "asc"),
 			"departments" => $this->general->all("address_department", "name", "asc"),
 			"provinces" => $this->general->all("address_province", "name", "asc"),
 			"districts" => $this->general->all("address_district", "name", "asc"),
@@ -42,6 +57,24 @@ class Config extends CI_Controller {
 		);
 		
 		$this->load->view('layout', $data);
+	}
+	
+	public function control_account_role(){
+		$data = explode("_", $this->input->post("value"));
+		
+		$account_id = $data[0];
+		$role = $this->general->id("role", $data[1]);
+		$role_master = $this->general->filter("role", ["name" => "master"])[0];
+		
+		echo $account_id."\n\n";
+		print_r($role);
+		print_r($role_master);
+		
+		/*
+		filter master role accounts
+		if counter < 2 => no update
+		else update
+		*/
 	}
 	
 	public function control_role_access(){

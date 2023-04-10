@@ -8,6 +8,37 @@
 	</div>
 </div>
 <div class="col-md-12">
+	<div class="table-responsive">
+		<table class="table table-responsive-md">
+			<thead>
+				<tr>
+					<th><strong>#</strong></th>
+					<th><strong>Nombre</strong></th>
+					<th><strong>Email</strong></th>
+					<th>Rol</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach($accounts as $i => $item){ ?>
+				<tr>
+					<td><?= $i + 1 ?></td>
+					<td><?= $people_arr[$item->person_id] ?></td>
+					<td><?= $item->email ?></td>
+					<td>
+						<select class="form-control sl_account_role">
+							<?php foreach($roles as $r){ 
+							if ($r->id == $item->role_id) $selected = "selected"; else $selected = ""; ?>
+							<option value="<?= $item->id."_".$r->id ?>" <?= $selected ?>><?= $this->lang->line('role_'.$r->name) ?></option>
+							<?php } ?>
+						</select>
+					</td>
+				</tr>
+				<?php } ?>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="col-md-12">
 	<div class="card">
 		<div class="card-body">
 			<div class="custom-tab-1">
@@ -40,85 +71,6 @@
 				</ul>
 				<div class="tab-content mt-4" style="min-height: 500px;">
 					<div class="tab-pane fade show active" id="bl_user_admin" role="tabpanel">
-						<div class="table-responsive">
-							<table class="table table-responsive-md">
-								<thead>
-									<tr>
-										<th style="width:50px;">
-											<div class="custom-control custom-checkbox checkbox-success check-lg mr-3">
-												<input type="checkbox" class="custom-control-input" id="checkAll" required="">
-												<label class="custom-control-label" for="checkAll"></label>
-											</div>
-										</th>
-										<th><strong>ROLL NO.</strong></th>
-										<th><strong>NAME</strong></th>
-										<th><strong>Email</strong></th>
-										<th><strong>Date</strong></th>
-										<th><strong>Status</strong></th>
-										<th></th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td>
-											<div class="custom-control custom-checkbox checkbox-success check-lg mr-3">
-												<input type="checkbox" class="custom-control-input" id="customCheckBox2" required="">
-												<label class="custom-control-label" for="customCheckBox2"></label>
-											</div>
-										</td>
-										<td><strong>542</strong></td>
-										<td><div class="d-flex align-items-center"><img src="images/avatar/1.jpg" class="rounded-lg mr-2" alt="" width="24"> <span class="w-space-no">Dr. Jackson</span></div></td>
-										<td>example@example.com	</td>
-										<td>01 August 2020</td>
-										<td><div class="d-flex align-items-center"><i class="fa fa-circle text-success mr-1"></i> Successful</div></td>
-										<td>
-											<div class="d-flex">
-												<a href="#" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-												<a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="custom-control custom-checkbox checkbox-success check-lg mr-3">
-												<input type="checkbox" class="custom-control-input" id="customCheckBox3" required="">
-												<label class="custom-control-label" for="customCheckBox3"></label>
-											</div>
-										</td>
-										<td><strong>542</strong></td>
-										<td><div class="d-flex align-items-center"><img src="images/avatar/2.jpg" class="rounded-lg mr-2" alt="" width="24"> <span class="w-space-no">Dr. Jackson</span></div></td>
-										<td>example@example.com	</td>
-										<td>01 August 2020</td>
-										<td><div class="d-flex align-items-center"><i class="fa fa-circle text-danger mr-1"></i> Canceled</div></td>
-										<td>
-											<div class="d-flex">
-												<a href="#" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-												<a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="custom-control custom-checkbox checkbox-success check-lg mr-3">
-												<input type="checkbox" class="custom-control-input" id="customCheckBox4" required="">
-												<label class="custom-control-label" for="customCheckBox4"></label>
-											</div>
-										</td>
-										<td><strong>542</strong></td>
-										<td><div class="d-flex align-items-center"><img src="images/avatar/3.jpg" class="rounded-lg mr-2" alt="" width="24"> <span class="w-space-no">Dr. Jackson</span></div></td>
-										<td>example@example.com	</td>
-										<td>01 August 2020</td>
-										<td><div class="d-flex align-items-center"><i class="fa fa-circle text-warning mr-1"></i> Pending</div></td>
-										<td>
-											<div class="d-flex">
-												<a href="#" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-												<a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
 					</div>
 					<div class="tab-pane fade" id="bl_role_admin">
 						<div class="table-responsive">

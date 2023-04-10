@@ -22,7 +22,7 @@ class Auth extends CI_Controller {
 	public function index(){
 		if ($this->session->userdata('logged_in')) redirect("/dashboard");
 		
-		if ($this->general->filter("account_role", array("role_id" => $this->role->name("master")->id))) $has_master = true;
+		if ($this->general->filter("account", array("role_id" => $this->role->name("master")->id))) $has_master = true;
 		else $has_master = false;
 		
 		$data = array(
@@ -50,9 +50,9 @@ class Auth extends CI_Controller {
 			if ($account) if (!password_verify($password, $account->password))
 				$msgs = $this->set_msg($msgs, "lg_pass_msg", "error", "error_paw");
 		}else $msgs = $this->set_msg($msgs, "lg_pass_msg", "error", "error_pae");
-	
+
 		if (!$msgs){
-			$role = $this->role->id($this->general->filter("account_role", array("account_id" => $account->id))[0]->role_id);
+			$role = $this->general->id("role", $account->role_id);
 			//set session datas here
 			$session_data = array(
 				"aid" => $account->id,

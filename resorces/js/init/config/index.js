@@ -42,8 +42,22 @@ function control_role_access(dom){
 	});
 }
 
+function control_account_role(dom){
+	$.ajax({
+		url: $("#base_url").val() + "config/control_account_role",
+		type: "POST",
+		data: {value: $(dom).val()},
+		success:function(res){
+			alert(res);
+		}
+	});
+}
+
 $(document).ready(function() {
 	//general
+	
+	//account role
+	$(".sl_account_role").on('change',(function(e) {control_account_role(this);}));
 	
 	//role & access
 	$(".chk_access").on('click',(function(e) {control_role_access(this);}));
