@@ -131,10 +131,10 @@ function move_product(dom){
 	});
 }
 
-function add_product(dom){
-	$("#form_add_product .sys_msg").html("");
+function register_product(dom){
+	$("#form_register_product .sys_msg").html("");
 	$.ajax({
-		url: $("#base_url").val() + "product/add_product",
+		url: $("#base_url").val() + "product/register",
 		type: "POST",
 		data: new FormData(dom),
 		contentType: false,
@@ -167,6 +167,6 @@ $(document).ready(function() {
 	$(".btn_delete_ct").on('click',(function(e) {delete_category(this);}));
 	
 	//product
-	$("#form_add_product").submit(function(e) {e.preventDefault(); add_product(this);});
+	$("#form_register_product").submit(function(e) {e.preventDefault(); register_product(this);});
 	$("#ap_image").on('change',(function(e) {set_img_preview(this, "img_preview");}));
 });

@@ -20,9 +20,18 @@ class Config extends CI_Controller {
 		if (!$this->session->userdata('logged_in')) redirect(base_url());
 		//pending! rol validation
 		
+		$modules = array("dashboard", "doctor", "patient", "appointment", "surgery", "product", "sale", "report", "config");
+		$access = array();
+		foreach($modules as $item) $access[$item] = $this->general->filter("access", ["module" => $item], "id", "asc");
+		
+		$role_access = array();
+		$role_access_rec = $this->general->all("role_access", null);
+		foreach($role_access_rec as $item) array_push($role_access, $item->role_id."_".$item->access_id);
+		
 		$data = array(
+			"role_access" => $role_access,
 			"roles" => $this->general->all("role", "id", "asc"),
-			"access" => $this->general->all("access", "id", "asc"),
+			"access" => $access,
 			"departments" => $this->general->all("address_department", "name", "asc"),
 			"provinces" => $this->general->all("address_province", "name", "asc"),
 			"districts" => $this->general->all("address_district", "name", "asc"),
@@ -33,6 +42,17 @@ class Config extends CI_Controller {
 		);
 		
 		$this->load->view('layout', $data);
+	}
+	
+	public function control_role_access(){
+		$setting = $this->input->post("setting");
+		$setting = isset($setting) && $setting === 'true';
+		
+		$value = explode("_", $this->input->post("value"));
+		$data = array("role_id" => $value[0], "access_id" => $value[1]);
+		
+		if ($setting) $this->general->insert("role_access", $data);
+		else $this->general->delete("role_access", $data);
 	}
 	
 	public function update_company(){

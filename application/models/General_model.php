@@ -60,7 +60,7 @@ class General_model extends CI_Model{
 	}
 	
 	function all($tablename, $order_by = "id", $order = "desc", $limit = "", $offset = ""){
-		$this->db->order_by($order_by, $order);
+		if ($order_by) $this->db->order_by($order_by, $order);
 		$query = $this->db->get($tablename, $limit, $offset);
 		$result = $query->result();
 		return $result;

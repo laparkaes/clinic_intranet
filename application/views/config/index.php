@@ -8,30 +8,6 @@
 	</div>
 </div>
 <div class="col-md-12">
-	<div class="table-responsive">
-		<table class="table table-responsive-md">
-			<thead>
-				<tr>
-					<th><strong>Acceso</strong></th>
-					<?php foreach($roles as $item){ ?>
-					<th><strong><?= $this->lang->line('role_'.$item->name) ?></strong></th>
-					<?php } ?>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach($access as $a){ ?>
-				<tr>
-					<td><?= $a->description ?></td>
-					<?php foreach($roles as $r){ ?>
-					<td><?= $a->id."_".$r->id ?></td>
-					<?php } ?>
-				</tr>
-				<?php } ?>
-			</tbody>
-		</table>
-	</div>
-</div>
-<div class="col-md-12">
 	<div class="card">
 		<div class="card-body">
 			<div class="custom-tab-1">
@@ -145,6 +121,33 @@
 						</div>
 					</div>
 					<div class="tab-pane fade" id="bl_role_admin">
+						<div class="table-responsive">
+							<table class="table table-responsive-md text-center">
+								<tbody>
+									<?php $colspan = count($roles) + 1; foreach($access as $module => $a_list){ ?>
+									<tr class="bg-light">
+										<td class="text-left"><strong><?= $this->lang->line("module_".$module) ?></strong></td>
+										<?php foreach($roles as $item){ ?>
+										<td style="width: 105px;"><strong><?= $this->lang->line('role_'.$item->name) ?></strong></td>
+										<?php } ?>
+									</tr>
+									<?php foreach($a_list as $a){ ?>
+									<tr>
+										<td class="text-left pl-4"><?= $this->lang->line('access_'.$a->description) ?></td>
+										<?php foreach($roles as $r){ $value = $r->id."_".$a->id;
+										if (in_array($value, $role_access)) $checked = "checked"; else $checked = ""; ?>
+										<td>
+											<div class="custom-control custom-checkbox">
+												<input type="checkbox" class="custom-control-input chk_access" id="chk_<?= $value ?>" value="<?= $value ?>" <?= $checked ?>>
+												<label class="custom-control-label" for="chk_<?= $value ?>"></label>
+											</div>
+										</td>
+										<?php } ?>
+									</tr>
+									<?php }} ?>
+								</tbody>
+							</table>
+						</div>
 					</div>
 					<div class="tab-pane fade" id="bl_company_admin">
 						<div class="row">

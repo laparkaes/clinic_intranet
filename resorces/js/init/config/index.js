@@ -34,9 +34,19 @@ function control_district(){
 	$("#sl_district .p" + $(this).val()).removeClass("d-none");
 }
 
+function control_role_access(dom){
+	$.ajax({
+		url: $("#base_url").val() + "config/control_role_access",
+		type: "POST",
+		data: {setting: $(dom).is(':checked'), value: $(dom).val()}
+	});
+}
+
 $(document).ready(function() {
 	//general
 	
+	//role & access
+	$(".chk_access").on('click',(function(e) {control_role_access(this);}));
 	
 	//company
 	$("#form_update_company").submit(function(e) {e.preventDefault(); update_company(this);});

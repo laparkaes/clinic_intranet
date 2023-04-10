@@ -136,7 +136,7 @@ class Product extends CI_Controller {
 		echo json_encode(array("status" => $status, "msgs" => $msgs));
 	}
 	
-	public function add_product(){
+	public function register(){
 		$datas = $this->input->post();
 		$status = false; $type = "error"; $msgs = array(); $msg = $this->lang->line('error_occurred'); $move_to = null;
 		

@@ -97,7 +97,7 @@
 							</div>
 						</div>
 						<div class="col-md-8">
-							<form action="#" class="form-row" id="form_add_product">
+							<form action="#" class="form-row" id="form_register_product">
 								<div class="form-group col-md-6">
 									<label><?= $this->lang->line('p_type') ?></label>
 									<select class="form-control" name="type_id">
