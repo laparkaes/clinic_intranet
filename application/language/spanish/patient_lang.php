@@ -132,3 +132,4 @@ $lang['lb_place'] = 'Lugar';
 $lang['lb_duration'] = 'Duración';
 $lang['lb_room'] = 'Sala';
 $lang['hd_room'] = 'Sala';
+$lang['lb_number'] = 'Número';

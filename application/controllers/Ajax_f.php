@@ -21,7 +21,7 @@ class Ajax_f extends CI_Controller {
 			$person = $this->general->filter("person", $data);
 			if ($person){
 				$person = $person[0];
-				$person = array("id" => $person->id, "name" => $person->name, "tel" => $person->tel);
+				$person = array("id" => $person->id, "name" => $person->name, "tel" => $person->tel, "email" => $person->email);
 				$type = "success";
 				$status = true;
 			}else{
@@ -38,7 +38,7 @@ class Ajax_f extends CI_Controller {
 				}
 				
 				if ($name){
-					$person = array("id" => null, "name" => $name, "tel" => null);
+					$person = array("id" => null, "name" => $name, "tel" => null, "email" => null);
 					$type = "success";
 					$status = true;
 				}else $msg = $this->lang->line('error_insert_manually');

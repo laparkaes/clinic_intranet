@@ -8,6 +8,73 @@
 	</div>
 </div>
 <div class="col-md-12">
+	<form class="form-row mb-3" id="form_register_account" action="#">
+		<div class="col-md-6 col-sm-12">
+			<h5><?= $this->lang->line('title_personal_info') ?></h5>
+			<div class="form-row">
+				<div class="form-group col-md-12">
+					<label><?= $this->lang->line('lb_document') ?></label>
+					<div class="input-group">
+						<select class="form-control" id="ra_doc_type_id" name="p[doc_type_id]">
+							<?php foreach($doc_types as $d){ if ($d->sunat_code){ ?>
+							<option value="<?= $d->id ?>"><?= $d->description ?></option>
+							<?php }} ?>
+						</select>
+						<input type="text" class="form-control border-left-0" id="ra_doc_number" name="p[doc_number]" placeholder="<?= $this->lang->line('lb_number') ?>">
+						<div class="input-group-append">
+							<button class="btn btn-primary border-0" type="button" id="btn_search_person_ra">
+								<i class="fas fa-search"></i>
+							</button>
+						</div>
+					</div>
+					<div class="sys_msg" id="ra_doc_msg"></div>
+				</div>
+				<div class="form-group col-md-8">
+					<label><?= $this->lang->line('lb_name') ?></label>
+					<input type="text" class="form-control" id="ra_name" name="p[name]">
+					<div class="sys_msg" id="ra_name_msg"></div>
+				</div>
+				<div class="form-group col-md-4">
+					<label><?= $this->lang->line('lb_tel') ?></label>
+					<input type="text" class="form-control" id="ra_tel" name="p[tel]">
+					<div class="sys_msg" id="ra_tel_msg"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 col-sm-12">
+			<h5><?= $this->lang->line('title_account') ?></h5>
+			<div class="form-row">
+				<div class="form-group col-md-4">
+					<label><?= $this->lang->line('lb_role') ?></label>
+					<select class="form-control" name="a[role_id]">
+						<option value="" selected>--</option>
+						<?php foreach($roles as $item){ ?>
+						<option value="<?= $item->id ?>"><?= $this->lang->line('role_'.$item->name) ?></option>
+						<?php } ?>
+					</select>
+					<div class="sys_msg" id="ra_role_msg"></div>
+				</div>
+				<div class="form-group col-md-8">
+					<label><?= $this->lang->line('lb_email') ?></label>
+					<input type="email" class="form-control" id="ra_email" name="a[email]" placeholder="email@example.com">
+					<div class="sys_msg" id="ra_email_msg"></div>
+				</div>
+				<div class="form-group col-md-6">
+					<label><?= $this->lang->line('lb_password') ?></label>
+					<input type="password" class="form-control" name="a[password]">
+					<div class="sys_msg" id="ra_password_msg"></div>
+				</div>
+				<div class="form-group col-md-6">
+					<label><?= $this->lang->line('lb_confirm') ?></label>
+					<input type="password" class="form-control" name="a[confirm]">
+					<div class="sys_msg" id="ra_confirm_msg"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12 pt-3">
+			<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
+		</div>
+	</form>
 	<div class="table-responsive">
 		<table class="table table-responsive-md">
 			<thead>
@@ -303,4 +370,7 @@
 			</div>
 		</div>
 	</div>
+</div>
+<div class="d-none">
+	<input type="hidden" id="warning_rac" value="<?= $this->lang->line('warning_rac') ?>">
 </div>

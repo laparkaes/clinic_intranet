@@ -121,7 +121,7 @@ class Auth extends CI_Controller {
 				$account_id = $this->general->insert("account", $a);
 				if ($account_id){
 					$role_id = $this->role->name("master")->id;
-					if ($this->general->insert("account_role", array("role_id" => $role_id, "account_id" => $account_id))){
+					if ($this->general->update("account", $account_id, ["role_id" => $role_id])){
 						$status = true;
 						$type = "success";
 						$msg = $this->lang->line('success_mac');
