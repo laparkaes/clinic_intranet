@@ -73,6 +73,7 @@ $lang['lb_doctor_agenda'] = 'Agenda del Médico';
 $lang['lb_remark'] = 'Observación';
 $lang['lb_optional'] = 'Opcional';
 $lang['txt_remark'] = 'Síntomas, Notas del paciente, etc.';
+$lang['title_patient_register'] = 'Registro del Paciente';
 $lang['title_personal_info'] = 'Datos Personales';
 $lang['title_access_data'] = 'Datos del Accesso';
 $lang['title_password_change'] = 'Cambio de Contraseña';

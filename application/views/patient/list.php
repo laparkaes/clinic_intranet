@@ -39,7 +39,7 @@
 									<th class="pt-0 pl-0"><?= $this->lang->line('hd_document') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_name') ?></th>
 									<th class="pt-0"><?= $this->lang->line('hd_tel') ?></th>
-									<th class="pt-0"><?= $this->lang->line('hd_age') ?></th>
+									<th class="pt-0"><?= $this->lang->line('hd_email') ?></th>
 									<th class="text-right pt-0 pr-0"></th>
 								</tr>
 							</thead>
@@ -49,7 +49,7 @@
 									<td class="pl-0 text-nowrap"><?= $doc_types_arr[$item->doc_type_id]." ".$item->doc_number ?></td>
 									<td><?= $item->name ?></td>
 									<td><?= $item->tel ?></td>
-									<td><?php if ($item->birthday) echo $this->utility_lib->age_calculator($item->birthday); ?></td>
+									<td><?= $item->email ?></td>
 									<td class="text-right pr-0">
 										<a href="<?= base_url() ?>patient/detail/<?= $item->id ?>">
 											<button type="button" class="btn btn-primary light sharp border-0">
@@ -72,18 +72,18 @@
 			<div class="row bl_content d-none" id="bl_add">
 				<div class="col-md-12">
 					<form class="form-row" id="register_form" action="#">
-						<div class="col-md-6">
-							<h5><?= $this->lang->line('title_personal_info') ?></h5>
+						<div class="col-md-12">
+							<h4 class="mb-3"><?= $this->lang->line('title_patient_register') ?></h4>
 							<div class="form-row">
-								<div class="form-group col-md-12">
+								<div class="form-group col-md-6">
 									<label><?= $this->lang->line('lb_document') ?></label>
 									<div class="input-group">
-										<select class="form-control" id="pn_doc_type_id" name="personal[doc_type_id]">
+										<select class="form-control" id="pn_doc_type_id" name="doc_type_id">
 											<?php foreach($doc_types as $d){ if ($d->sunat_code){ ?>
 											<option value="<?= $d->id ?>"><?= $d->description ?></option>
 											<?php }} ?>
 										</select>
-										<input type="text" class="form-control border-left-0" id="pn_doc_number" name="personal[doc_number]" placeholder="<?= $this->lang->line('lb_number') ?>">
+										<input type="text" class="form-control border-left-0" id="pn_doc_number" name="doc_number" placeholder="<?= $this->lang->line('lb_number') ?>">
 										<div class="input-group-append">
 											<button class="btn btn-primary border-0" type="button" id="btn_search_person_pn">
 												<i class="fas fa-search"></i>
@@ -92,24 +92,29 @@
 									</div>
 									<div class="sys_msg" id="pn_doc_msg"></div>
 								</div>
-								<div class="form-group col-md-8">
+								<div class="form-group col-md-4">
 									<label><?= $this->lang->line('lb_name') ?></label>
-									<input type="text" class="form-control" id="pn_name" name="personal[name]">
+									<input type="text" class="form-control" id="pn_name" name="name">
 									<div class="sys_msg" id="pn_name_msg"></div>
 								</div>
-								<div class="form-group col-md-4">
+								<div class="form-group col-md-2">
 									<label><?= $this->lang->line('lb_tel') ?></label>
-									<input type="text" class="form-control" id="pn_tel" name="personal[tel]">
+									<input type="text" class="form-control" id="pn_tel" name="tel">
 									<div class="sys_msg" id="pn_tel_msg"></div>
 								</div>
-								<div class="form-group col-md-4">
+								<div class="form-group col-md-6">
+									<label><?= $this->lang->line('lb_email') ?></label>
+									<input type="email" class="form-control" name="email" placeholder="email@example.com">
+									<div class="sys_msg" id="pn_email_msg"></div>
+								</div>
+								<div class="form-group col-md-2">
 									<label><?= $this->lang->line('lb_birthday') ?></label>
-									<input type="text" class="form-control date_picker_all" name="personal[birthday]" readonly="">
+									<input type="text" class="form-control date_picker_all" name="birthday" readonly="">
 									<div class="sys_msg" id="pn_birthday_msg"></div>
 								</div>
-								<div class="form-group col-md-4">
+								<div class="form-group col-md-2">
 									<label><?= $this->lang->line('lb_sex') ?></label>
-									<select class="form-control" name="personal[sex_id]">
+									<select class="form-control" name="sex_id">
 										<option value="" selected="">--</option>
 										<?php foreach($sex_ops as $item){ ?>
 										<option value="<?= $item->id ?>"><?= $item->description ?></option>
@@ -117,9 +122,9 @@
 									</select>
 									<div class="sys_msg" id="pn_sex_msg"></div>
 								</div>
-								<div class="form-group col-md-4">
+								<div class="form-group col-md-2">
 									<label><?= $this->lang->line('lb_blood_type') ?></label>
-									<select class="form-control" name="personal[blood_type_id]">
+									<select class="form-control" name="blood_type_id">
 										<option value="" selected="">--</option>
 										<?php foreach($blood_type_ops as $item){ ?>
 										<option value="<?= $item->id ?>"><?= $item->description ?></option>
@@ -129,28 +134,8 @@
 								</div>
 								<div class="form-group col-md-12">
 									<label><?= $this->lang->line('lb_address') ?></label>
-									<input type="text" class="form-control" name="personal[address]">
+									<input type="text" class="form-control" name="address">
 									<div class="sys_msg" id="pn_address_msg"></div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<h5><?= $this->lang->line('title_access_data') ?> (<?= $this->lang->line('lb_optional') ?>)</h5>
-							<div class="form-row">
-								<div class="form-group col-md-12">
-									<label><?= $this->lang->line('lb_username') ?></label>
-									<input type="email" class="form-control" name="account[email]" placeholder="email@example.com">
-									<div class="sys_msg" id="pn_email_msg"></div>
-								</div>
-								<div class="form-group col-md-6">
-									<label><?= $this->lang->line('lb_password') ?></label>
-									<input type="password" class="form-control" name="account[password]">
-									<div class="sys_msg" id="pn_password_msg"></div>
-								</div>
-								<div class="form-group col-md-6">
-									<label><?= $this->lang->line('lb_confirm') ?></label>
-									<input type="password" class="form-control" name="account[confirm]">
-									<div class="sys_msg" id="pn_confirm_msg"></div>
 								</div>
 							</div>
 						</div>

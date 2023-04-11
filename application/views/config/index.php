@@ -13,24 +13,23 @@
 			<thead>
 				<tr>
 					<th><strong>#</strong></th>
-					<th><strong>Nombre</strong></th>
+					<th><strong>Rol</strong></th>
 					<th><strong>Email</strong></th>
-					<th>Rol</th>
+					<th><strong>Nombre</strong></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php foreach($accounts as $i => $item){ ?>
 				<tr>
 					<td><?= $i + 1 ?></td>
-					<td><?= $people_arr[$item->person_id] ?></td>
+					<td><?= $this->lang->line('role_'.$roles_arr[$item->role_id]) ?></td>
 					<td><?= $item->email ?></td>
-					<td>
-						<select class="form-control sl_account_role">
-							<?php foreach($roles as $r){ 
-							if ($r->id == $item->role_id) $selected = "selected"; else $selected = ""; ?>
-							<option value="<?= $item->id."_".$r->id ?>" <?= $selected ?>><?= $this->lang->line('role_'.$r->name) ?></option>
-							<?php } ?>
-						</select>
+					<td><?= $people_arr[$item->person_id] ?></td>
+					<td class="text-right">
+						<button type="button" class="btn btn-danger shadow btn-xs sharp remove_account" value="<?= $item->id ?>">
+							<i class="fas fa-trash"></i>
+						</button>
 					</td>
 				</tr>
 				<?php } ?>

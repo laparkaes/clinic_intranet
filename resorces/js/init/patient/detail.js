@@ -82,76 +82,10 @@ function update_patient(dom){
 	});
 }
 
-function update_personal_data(dom){
-	$("#form_update_personal_data .sys_msg").html("");
+function update(dom){
+	$("#form_update .sys_msg").html("");
 	$.ajax({
-		url: $("#base_url").val() + "patient/update_personal_data",
-		type: "POST",
-		data: new FormData(dom),
-		contentType: false,
-		processData:false,
-		success:function(res){
-			set_msg(res.msgs);
-			Swal.fire({
-				title: $("#alert_" + res.type + "_title").val(),
-				icon: res.type,
-				html: res.msg,
-				confirmButtonText: $("#alert_confirm_btn").val()
-			}).then((result) => {
-				if (res.status == true) location.reload();
-			});
-		}
-	});
-}
-
-function update_account_email(dom){
-	$("#form_update_account_email .sys_msg").html("");
-	$.ajax({
-		url: $("#base_url").val() + "patient/update_account_email",
-		type: "POST",
-		data: new FormData(dom),
-		contentType: false,
-		processData:false,
-		success:function(res){
-			set_msg(res.msgs);
-			Swal.fire({
-				title: $("#alert_" + res.type + "_title").val(),
-				icon: res.type,
-				html: res.msg,
-				confirmButtonText: $("#alert_confirm_btn").val()
-			}).then((result) => {
-				if (res.status == true) location.reload();
-			});
-		}
-	});
-}
-
-function update_account_password(dom){
-	$("#form_update_account_password .sys_msg").html("");
-	$.ajax({
-		url: $("#base_url").val() + "patient/update_account_password",
-		type: "POST",
-		data: new FormData(dom),
-		contentType: false,
-		processData:false,
-		success:function(res){
-			set_msg(res.msgs);
-			Swal.fire({
-				title: $("#alert_" + res.type + "_title").val(),
-				icon: res.type,
-				html: res.msg,
-				confirmButtonText: $("#alert_confirm_btn").val()
-			}).then((result) => {
-				if (res.status == true) location.reload();
-			});
-		}
-	});
-}
-
-function form_create_account(dom){
-	$("#form_update_account_password .sys_msg").html("");
-	$.ajax({
-		url: $("#base_url").val() + "patient/form_create_account",
+		url: $("#base_url").val() + "patient/update",
 		type: "POST",
 		data: new FormData(dom),
 		contentType: false,
@@ -260,16 +194,12 @@ $(document).ready(function() {
 	$("#sur_specialty").change(function() {sur_set_doctor_sl(this);});
 	$("#sur_specialty, #sur_doctor, #sur_date").change(function() {sur_load_doctor_schedule();});
 	
-	//personal data update
-	$("#form_create_account").submit(function(e) {e.preventDefault(); form_create_account(this);});
-	$("#form_update_personal_data").submit(function(e) {e.preventDefault(); update_personal_data(this);});
-	$("#form_update_account_email").submit(function(e) {e.preventDefault(); update_account_email(this);});
-	$("#form_update_account_password").submit(function(e) {e.preventDefault(); update_account_password(this);});
-		
-	$("#form_upload_patient_file").submit(function(e) {e.preventDefault(); upload_patient_file(this);});
-	$("#update_form").submit(function(e) {e.preventDefault(); update_patient(this);});
-	$(".btn_delete_file").on('click',(function(e) {delete_file(this);}));
+	//update patient
+	$("#form_update").submit(function(e) {e.preventDefault(); update(this);});
 	
+	//admin patient file
+	$("#form_upload_patient_file").submit(function(e) {e.preventDefault(); upload_patient_file(this);});
+	$(".btn_delete_file").on('click',(function(e) {delete_file(this);}));
 	$("#upload_file").change(function(e) {
 		$("#lb_selected_filename").html(e.target.files[0].name); 
 		$("#ip_selected_filename").val(e.target.files[0].name);

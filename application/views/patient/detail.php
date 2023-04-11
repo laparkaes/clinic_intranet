@@ -342,7 +342,7 @@
 				<div class="tab-content">
 					<div class="tab-pane fade active show" id="information" role="tabpanel">
 						<div class="form-row">
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-5">
 								<label><?= $this->lang->line('lb_name') ?></label>
 								<input type="text" class="form-control" value="<?= $person->name ?>" readonly>
 							</div>
@@ -350,7 +350,7 @@
 								<label><?= $this->lang->line('lb_document') ?></label>
 								<input type="text" class="form-control" value="<?= $person->doc_type." ".$person->doc_number ?>" readonly>
 							</div>
-							<div class="form-group col-md-3">
+							<div class="form-group col-md-4">
 								<label><?= $this->lang->line('lb_email') ?></label>
 								<input type="text" class="form-control" value="<?= $person->email ?>" readonly>
 							</div>
@@ -601,24 +601,33 @@
 					<div class="tab-pane fade" id="edit" role="tabpanel">
 						<div class="row">
 							<div class="col-md-12">
-								<form action="#" id="form_update_personal_data">
+								<form action="#" id="form_update">
 									<input type="hidden" name="id" value="<?= $person->id ?>">
-									<h5 class="mb-3"><?= $this->lang->line('title_personal_info') ?></h5>
 									<div class="form-row">
-										<div class="form-group col-md-4">
+										<div class="form-group col-md-5">
 											<label><?= $this->lang->line('lb_name') ?></label>
 											<input type="text" class="form-control bg-light" value="<?= $person->name ?>" readonly>
 											<div class="sys_msg" id="pu_name_msg"></div>
 										</div>
-										<div class="form-group col-md-4">
+										<div class="form-group col-md-3">
 											<label><?= $this->lang->line('lb_document') ?></label>
 											<input type="text" class="form-control bg-light" value="<?= $person->doc_type." ".$person->doc_number ?>" readonly>
 											<div class="sys_msg" id="pu_doc_msg"></div>
 										</div>
 										<div class="form-group col-md-4">
+											<label><?= $this->lang->line('lb_email') ?></label>
+											<input type="text" class="form-control" name="email" value="<?= $person->email ?>">
+											<div class="sys_msg" id="pu_email_msg"></div>
+										</div>
+										<div class="form-group col-md-3">
 											<label><?= $this->lang->line('lb_tel') ?></label>
 											<input type="text" class="form-control" name="tel" value="<?= $person->tel ?>">
 											<div class="sys_msg" id="pu_tel_msg"></div>
+										</div>
+										<div class="form-group col-md-9">
+											<label><?= $this->lang->line('lb_address') ?></label>
+											<input type="text" class="form-control" name="address" value="<?= $person->address ?>">
+											<div class="sys_msg" id="pu_address_msg"></div>
 										</div>
 										<div class="form-group col-md-4">
 											<label><?= $this->lang->line('lb_birthday') ?></label>
@@ -647,11 +656,6 @@
 											</select>
 											<div class="sys_msg" id="pu_blood_type_msg"></div>
 										</div>
-										<div class="form-group col-md-12">
-											<label><?= $this->lang->line('lb_address') ?></label>
-											<input type="text" class="form-control" name="address" value="<?= $person->address ?>">
-											<div class="sys_msg" id="pu_address_msg"></div>
-										</div>
 									</div>
 									<button type="submit" class="btn btn-primary mt-3">
 										<?= $this->lang->line('btn_update') ?>
@@ -659,80 +663,6 @@
 								</form>
 							</div>
 						</div>
-						<hr class="my-4">
-						<?php if ($account){ ?>
-						<div class="row">
-							<div class="col-md-12">
-								<form action="#" id="form_update_account_email">
-									<input type="hidden" name="id" value="<?= $account->id ?>">
-									<h5 class="mb-3"><?= $this->lang->line('title_account') ?></h5>
-									<div class="form-row">
-										<div class="form-group col-md-12">
-											<label><?= $this->lang->line('lb_email') ?></label>
-											<input type="text" class="form-control" name="email" value="<?= $account->email ?>">
-											<div class="sys_msg" id="ae_email_msg"></div>
-										</div>
-									</div>
-									<button type="submit" class="btn btn-primary mt-3">
-										<?= $this->lang->line('btn_update') ?>
-									</button>
-								</form>
-							</div>
-						</div>
-						<hr class="my-4">
-						<div class="row">
-							<div class="col-md-12">
-								<form action="#" id="form_update_account_password">
-									<input type="hidden" name="id" value="<?= $account->id ?>">
-									<h5 class="mb-3"><?= $this->lang->line('title_password_change') ?></h5>
-									<div class="form-row">
-										<div class=  "form-group col-md-6">
-											<label><?= $this->lang->line('lb_password') ?></label>
-											<input type="password" class="form-control" name="password">
-											<div class="sys_msg" id="up_password_msg"></div>
-										</div>
-										<div class="form-group col-md-6">
-											<label><?= $this->lang->line('lb_confirm') ?></label>
-											<input type="password" class="form-control" name="confirm">
-											<div class="sys_msg" id="up_confirm_msg"></div>
-										</div>
-									</div>
-									<button type="submit" class="btn btn-primary mt-3">
-										<?= $this->lang->line('btn_update') ?>
-									</button>
-								</form>
-							</div>
-						</div>
-						<?php }else{ ?>
-						<div class="row">
-							<div class="col-md-12">
-								<form action="#" id="form_create_account">
-									<input type="hidden" name="person_id" value="<?= $person->id ?>" readonly>
-									<h5 class="mb-3"><?= $this->lang->line('title_create_account') ?></h5>
-									<div class="form-row">
-										<div class="form-group col-md-12">
-											<label><?= $this->lang->line('lb_email') ?></label>
-											<input type="text" class="form-control" name="email">
-											<div class="sys_msg" id="ca_email_msg"></div>
-										</div>
-										<div class=  "form-group col-md-6">
-											<label><?= $this->lang->line('lb_password') ?></label>
-											<input type="password" class="form-control" name="password">
-											<div class="sys_msg" id="ca_password_msg"></div>
-										</div>
-										<div class="form-group col-md-6">
-											<label><?= $this->lang->line('lb_confirm') ?></label>
-											<input type="password" class="form-control" name="confirm">
-											<div class="sys_msg" id="ca_confirm_msg"></div>
-										</div>
-									</div>
-									<button type="submit" class="btn btn-primary mt-3">
-										<?= $this->lang->line('btn_update') ?>
-									</button>
-								</form>
-							</div>
-						</div>
-						<?php } ?>
 					</div>
 				</div>
 			</div>

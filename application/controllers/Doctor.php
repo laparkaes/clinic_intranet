@@ -63,14 +63,7 @@ class Doctor extends CI_Controller {
 		
 		$doctor = $this->general->id("doctor", $id);
 		$person = $this->general->id("person", $doctor->person_id);
-		$account = $this->account->filter(array("person_id" => $person->id))[0];
-		
-		$role = $this->role->name("doctor");
-		$f = array("role_id" => $role->id, "account_id" => $account->id);
-		if (!$this->general->filter("account_role", $f)){
-			if ($doctor) $this->general->insert("account_role", $f);
-			else redirect("/doctor");
-		}
+		$account = $this->general->filter("account", array("person_id" => $person->id), "registed_at", "desc")[0];
 		
 		//set doctor data
 		$doctor->specialty = $this->specialty->id($doctor->specialty_id)->name;
@@ -207,15 +200,12 @@ class Doctor extends CI_Controller {
 				
 				if ($doctor_id){
 					unset($a["confirm"]);
+					$a["role_id"] = $this->role->name("doctor")->id;
 					$a["person_id"] = $person_id;
 					$a["password"] = password_hash($a["password"], PASSWORD_BCRYPT);
 					$a["active"] = true;
 					$a["registed_at"] = date('Y-m-d H:i:s', time());
-					$account_id = $this->account->insert($a);
-					if ($account_id){
-						$role_id = $this->role->name("doctor")->id;
-						$this->general->insert("account_role", array("role_id" => $role_id, "account_id" => $account_id));
-						
+					if ($this->account->insert($a)){
 						$status = true;
 						$type = "success";
 						$move_to = base_url()."doctor/detail/".$doctor_id;
