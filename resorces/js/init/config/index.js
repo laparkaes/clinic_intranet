@@ -1,7 +1,7 @@
-function update_company(dom){
+function update_company_data(dom){
 	$("#form_update_company .sys_msg").html("");
 	$.ajax({
-		url: $("#base_url").val() + "config/update_company",
+		url: $("#base_url").val() + "config/update_company_data",
 		type: "POST",
 		data: new FormData(dom),
 		contentType: false,
@@ -119,6 +119,17 @@ function search_person_ra(){
 	});
 }
 
+function control_bl_account(dom){
+	$(dom).parent().children().removeClass("btn-primary");
+	$(dom).parent().children().addClass("btn-outline-primary");
+	
+	$(dom).removeClass("btn-outline-primary");
+	$(dom).addClass("btn-primary");
+	
+	$(".bl_account").addClass("d-none");
+	$("#" + $(dom).val()).removeClass("d-none");
+}
+
 $(document).ready(function() {
 	//general
 	
@@ -126,12 +137,13 @@ $(document).ready(function() {
 	$("#form_register_account").submit(function(e) {e.preventDefault(); register_account(this);});
 	$("#btn_search_person_ra").on('click',(function(e) {search_person_ra();}));
 	$(".remove_account").on('click',(function(e) {remove_account(this);}));
+	$(".control_bl_account").on('click',(function(e) {control_bl_account(this);}));
 	
 	//role & access
 	$(".chk_access").on('click',(function(e) {control_role_access(this);}));
 	
 	//company
-	$("#form_update_company").submit(function(e) {e.preventDefault(); update_company(this);});
+	$("#form_update_company_data").submit(function(e) {e.preventDefault(); update_company_data(this);});
 	$("#sl_department").change(function() {control_province();});
 	$("#sl_province").change(function() {control_district();});
 });

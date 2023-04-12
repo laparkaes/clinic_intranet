@@ -8,101 +8,6 @@
 	</div>
 </div>
 <div class="col-md-12">
-	<form class="form-row mb-3" id="form_register_account" action="#">
-		<div class="col-md-6 col-sm-12">
-			<h5><?= $this->lang->line('title_personal_info') ?></h5>
-			<div class="form-row">
-				<div class="form-group col-md-12">
-					<label><?= $this->lang->line('lb_document') ?></label>
-					<div class="input-group">
-						<select class="form-control" id="ra_doc_type_id" name="p[doc_type_id]">
-							<?php foreach($doc_types as $d){ if ($d->sunat_code){ ?>
-							<option value="<?= $d->id ?>"><?= $d->description ?></option>
-							<?php }} ?>
-						</select>
-						<input type="text" class="form-control border-left-0" id="ra_doc_number" name="p[doc_number]" placeholder="<?= $this->lang->line('lb_number') ?>">
-						<div class="input-group-append">
-							<button class="btn btn-primary border-0" type="button" id="btn_search_person_ra">
-								<i class="fas fa-search"></i>
-							</button>
-						</div>
-					</div>
-					<div class="sys_msg" id="ra_doc_msg"></div>
-				</div>
-				<div class="form-group col-md-8">
-					<label><?= $this->lang->line('lb_name') ?></label>
-					<input type="text" class="form-control" id="ra_name" name="p[name]">
-					<div class="sys_msg" id="ra_name_msg"></div>
-				</div>
-				<div class="form-group col-md-4">
-					<label><?= $this->lang->line('lb_tel') ?></label>
-					<input type="text" class="form-control" id="ra_tel" name="p[tel]">
-					<div class="sys_msg" id="ra_tel_msg"></div>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-6 col-sm-12">
-			<h5><?= $this->lang->line('title_account') ?></h5>
-			<div class="form-row">
-				<div class="form-group col-md-4">
-					<label><?= $this->lang->line('lb_role') ?></label>
-					<select class="form-control" name="a[role_id]">
-						<option value="" selected>--</option>
-						<?php foreach($roles as $item){ ?>
-						<option value="<?= $item->id ?>"><?= $this->lang->line('role_'.$item->name) ?></option>
-						<?php } ?>
-					</select>
-					<div class="sys_msg" id="ra_role_msg"></div>
-				</div>
-				<div class="form-group col-md-8">
-					<label><?= $this->lang->line('lb_email') ?></label>
-					<input type="email" class="form-control" id="ra_email" name="a[email]" placeholder="email@example.com">
-					<div class="sys_msg" id="ra_email_msg"></div>
-				</div>
-				<div class="form-group col-md-6">
-					<label><?= $this->lang->line('lb_password') ?></label>
-					<input type="password" class="form-control" name="a[password]">
-					<div class="sys_msg" id="ra_password_msg"></div>
-				</div>
-				<div class="form-group col-md-6">
-					<label><?= $this->lang->line('lb_confirm') ?></label>
-					<input type="password" class="form-control" name="a[confirm]">
-					<div class="sys_msg" id="ra_confirm_msg"></div>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-12 pt-3">
-			<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
-		</div>
-	</form>
-	<div class="table-responsive">
-		<table class="table table-responsive-md">
-			<thead>
-				<tr>
-					<th><strong>#</strong></th>
-					<th><strong>Rol</strong></th>
-					<th><strong>Email</strong></th>
-					<th><strong>Nombre</strong></th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach($accounts as $i => $item){ ?>
-				<tr>
-					<td><?= $i + 1 ?></td>
-					<td><?= $this->lang->line('role_'.$roles_arr[$item->role_id]) ?></td>
-					<td><?= $item->email ?></td>
-					<td><?= $people_arr[$item->person_id] ?></td>
-					<td class="text-right">
-						<button type="button" class="btn btn-danger shadow btn-xs sharp remove_account" value="<?= $item->id ?>">
-							<i class="fas fa-trash"></i>
-						</button>
-					</td>
-				</tr>
-				<?php } ?>
-			</tbody>
-		</table>
-	</div>
 </div>
 <div class="col-md-12">
 	<div class="card">
@@ -125,7 +30,7 @@
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#bl_sistem_admin">
+						<a class="nav-link" data-toggle="tab" href="#bl_system_admin">
 							<i class="fal fa-tools mr-3"></i>Sistema
 						</a>
 					</li>
@@ -137,41 +42,162 @@
 				</ul>
 				<div class="tab-content mt-4" style="min-height: 500px;">
 					<div class="tab-pane fade show active" id="bl_user_admin" role="tabpanel">
+						<div class="row">
+							<div class="col-md-6">
+								<h5 class="text-primary mb-3">Gestion de Usuarios</h5>
+							</div>
+							<div class="col-md-6 text-right">
+								<div class="btn-group">
+									<button type="button" class="btn control_bl_account btn-primary btn-xs" id="btn_list" value="bl_account_list">
+										<i class="fas fa-list"></i>
+									</button>
+									<button type="button" class="btn control_bl_account btn-outline-primary btn-xs" value="bl_account_add">
+										<i class="fas fa-plus"></i>
+									</button>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="bl_account mb-3 d-none" id="bl_account_add">
+									<form class="form-row" id="form_register_account" action="#">
+										<div class="col-md-6 col-sm-12">
+											<h5><?= $this->lang->line('title_personal_info') ?></h5>
+											<div class="form-row">
+												<div class="form-group col-md-12">
+													<label><?= $this->lang->line('lb_document') ?></label>
+													<div class="input-group">
+														<select class="form-control" id="ra_doc_type_id" name="p[doc_type_id]">
+															<?php foreach($doc_types as $d){ if ($d->sunat_code){ ?>
+															<option value="<?= $d->id ?>"><?= $d->description ?></option>
+															<?php }} ?>
+														</select>
+														<input type="text" class="form-control border-left-0" id="ra_doc_number" name="p[doc_number]" placeholder="<?= $this->lang->line('lb_number') ?>">
+														<div class="input-group-append">
+															<button class="btn btn-primary border-0" type="button" id="btn_search_person_ra">
+																<i class="fas fa-search"></i>
+															</button>
+														</div>
+													</div>
+													<div class="sys_msg" id="ra_doc_msg"></div>
+												</div>
+												<div class="form-group col-md-8">
+													<label><?= $this->lang->line('lb_name') ?></label>
+													<input type="text" class="form-control" id="ra_name" name="p[name]">
+													<div class="sys_msg" id="ra_name_msg"></div>
+												</div>
+												<div class="form-group col-md-4">
+													<label><?= $this->lang->line('lb_tel') ?></label>
+													<input type="text" class="form-control" id="ra_tel" name="p[tel]">
+													<div class="sys_msg" id="ra_tel_msg"></div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6 col-sm-12">
+											<h5><?= $this->lang->line('title_account') ?></h5>
+											<div class="form-row">
+												<div class="form-group col-md-4">
+													<label><?= $this->lang->line('lb_role') ?></label>
+													<select class="form-control" name="a[role_id]">
+														<option value="" selected>--</option>
+														<?php foreach($roles as $item){ ?>
+														<option value="<?= $item->id ?>"><?= $this->lang->line('role_'.$item->name) ?></option>
+														<?php } ?>
+													</select>
+													<div class="sys_msg" id="ra_role_msg"></div>
+												</div>
+												<div class="form-group col-md-8">
+													<label><?= $this->lang->line('lb_email') ?></label>
+													<input type="email" class="form-control" id="ra_email" name="a[email]" placeholder="email@example.com">
+													<div class="sys_msg" id="ra_email_msg"></div>
+												</div>
+												<div class="form-group col-md-6">
+													<label><?= $this->lang->line('lb_password') ?></label>
+													<input type="password" class="form-control" name="a[password]">
+													<div class="sys_msg" id="ra_password_msg"></div>
+												</div>
+												<div class="form-group col-md-6">
+													<label><?= $this->lang->line('lb_confirm') ?></label>
+													<input type="password" class="form-control" name="a[confirm]">
+													<div class="sys_msg" id="ra_confirm_msg"></div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-12 pt-3">
+											<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
+										</div>
+									</form>
+								</div>
+								<div class="table-responsive bl_account" id="bl_account_list">
+									<table class="table table-responsive-md">
+										<thead>
+											<tr>
+												<th><strong>#</strong></th>
+												<th><strong>Rol</strong></th>
+												<th><strong>Email</strong></th>
+												<th><strong>Nombre</strong></th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php foreach($accounts as $i => $item){ ?>
+											<tr>
+												<td><?= $i + 1 ?></td>
+												<td><?= $this->lang->line('role_'.$roles_arr[$item->role_id]) ?></td>
+												<td><?= $item->email ?></td>
+												<td><?= $people_arr[$item->person_id] ?></td>
+												<td class="text-right">
+													<button type="button" class="btn btn-danger shadow btn-xs sharp remove_account" value="<?= $item->id ?>">
+														<i class="fas fa-trash"></i>
+													</button>
+												</td>
+											</tr>
+											<?php } ?>
+										</tbody>
+									</table>
+								</div>		
+							</div>
+						</div>
 					</div>
 					<div class="tab-pane fade" id="bl_role_admin">
-						<div class="table-responsive">
-							<table class="table table-responsive-md text-center">
-								<tbody>
-									<?php $colspan = count($roles) + 1; foreach($access as $module => $a_list){ ?>
-									<tr class="bg-light">
-										<td class="text-left"><strong><?= $this->lang->line("module_".$module) ?></strong></td>
-										<?php foreach($roles as $item){ ?>
-										<td style="width: 105px;"><strong><?= $this->lang->line('role_'.$item->name) ?></strong></td>
-										<?php } ?>
-									</tr>
-									<?php foreach($a_list as $a){ ?>
-									<tr>
-										<td class="text-left pl-4"><?= $this->lang->line('access_'.$a->description) ?></td>
-										<?php foreach($roles as $r){ $value = $r->id."_".$a->id;
-										if (in_array($value, $role_access)) $checked = "checked"; else $checked = ""; ?>
-										<td>
-											<div class="custom-control custom-checkbox">
-												<input type="checkbox" class="custom-control-input chk_access" id="chk_<?= $value ?>" value="<?= $value ?>" <?= $checked ?>>
-												<label class="custom-control-label" for="chk_<?= $value ?>"></label>
-											</div>
-										</td>
-										<?php } ?>
-									</tr>
-									<?php }} ?>
-								</tbody>
-							</table>
+						<div class="row">
+							<div class="col-md-12">
+								<h5 class="text-primary mb-3">Gestion de Rol / Acceso</h5>
+							</div>
+							<div class="col-md-12">
+								<div class="table-responsive">
+									<table class="table table-responsive-md text-center">
+										<tbody>
+											<?php $colspan = count($roles) + 1; foreach($access as $module => $a_list){ ?>
+											<tr class="bg-light">
+												<td class="text-left"><strong><?= $this->lang->line("module_".$module) ?></strong></td>
+												<?php foreach($roles as $item){ ?>
+												<td style="width: 105px;"><strong><?= $this->lang->line('role_'.$item->name) ?></strong></td>
+												<?php } ?>
+											</tr>
+											<?php foreach($a_list as $a){ ?>
+											<tr>
+												<td class="text-left pl-4"><?= $this->lang->line('access_'.$a->description) ?></td>
+												<?php foreach($roles as $r){ $value = $r->id."_".$a->id;
+												if (in_array($value, $role_access)) $checked = "checked"; else $checked = ""; ?>
+												<td>
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input chk_access" id="chk_<?= $value ?>" value="<?= $value ?>" <?= $checked ?>>
+														<label class="custom-control-label" for="chk_<?= $value ?>"></label>
+													</div>
+												</td>
+												<?php } ?>
+											</tr>
+											<?php }} ?>
+										</tbody>
+									</table>
+								</div>			
+							</div>
 						</div>
 					</div>
 					<div class="tab-pane fade" id="bl_company_admin">
-						<div class="row">
+						<form action="#" id="form_update_company_data" class="row">
 							<div class="col-md-6">
-								<h4>Datos Legales</h4>
-								<form action="#" id="form_update_company_data" class="form-row">
+								<h5 class="text-primary mb-3">Datos Legales</h5>
+								<div class="form-row">
 									<div class="form-group col-md-4">
 										<label>RUC</label>
 										<input type="text" class="form-control" value="<?= $company->ruc ?>" name="ruc">
@@ -182,12 +208,12 @@
 										<input type="text" class="form-control" value="<?= $company->name ?>" name="name">
 										<div class="sys_msg" id="com_name_msg"></div>
 									</div>
-									<div class="form-group col-md-6">
+									<div class="form-group col-md-8">
 										<label>Email</label>
 										<input type="text" class="form-control" value="<?= $company->email ?>" name="email">
 										<div class="sys_msg" id="com_email_msg"></div>
 									</div>
-									<div class="form-group col-md-6">
+									<div class="form-group col-md-4">
 										<label>Telefono</label>
 										<input type="text" class="form-control" value="<?= $company->tel ?>" name="tel">
 										<div class="sys_msg" id="com_tel_msg"></div>
@@ -239,14 +265,11 @@
 										</select>
 										<div class="sys_msg" id="com_district_msg"></div>
 									</div>
-									<div class="form-group col-md-12 pt-3">
-										<button type="submit" class="btn btn-primary">Guardar</button>
-									</div>
-								</form>
+								</div>
 							</div>
 							<div class="col-md-6">
-								<h4>Acceso de Sunat</h4>
-								<form action="#" id="form_update_sunat_data" class="form-row">
+								<h5 class="text-primary mb-3">Acceso de Sunat</h5>
+								<div class="form-row">
 									<div class="form-group col-md-12">
 										<label>Resolucion</label>
 										<input type="text" class="form-control" value="<?= $company->sunat_resolution ?>" name="sunat_resolution">
@@ -272,14 +295,14 @@
 										<input type="text" class="form-control" value="<?= $company->sunat_password ?>" name="sunat_password">
 										<div class="sys_msg" id="s_pas_msg"></div>
 									</div>
-									<div class="form-group col-md-12 pt-3">
-										<button type="submit" class="btn btn-primary">Guardar</button>
-									</div>
-								</form>
+								</div>
 							</div>
-						</div>
+							<div class="col-md-12 pt-3">
+								<button type="submit" class="btn btn-primary">Guardar</button>
+							</div>
+						</form>
 					</div>
-					<div class="tab-pane fade" id="bl_sistem_admin">
+					<div class="tab-pane fade" id="bl_system_admin">
 						<div class="row">
 							<div class="col-md-6">
 								<div class="basic-list-group">

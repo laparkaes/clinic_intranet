@@ -141,7 +141,7 @@ class Config extends CI_Controller {
 		else $this->general->delete("role_access", $data);
 	}
 	
-	public function update_company(){
+	public function update_company_data(){
 		$datas = $this->input->post();
 		$status = false; $msgs = array(); $msg = null; $cert_link = null;
 		
