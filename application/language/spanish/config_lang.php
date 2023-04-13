@@ -85,3 +85,15 @@ $lang['lb_role'] = 'Rol';
 $lang['lb_email'] = 'Email';
 $lang['lb_password'] = 'Contraseña';
 $lang['lb_confirm'] = 'Confirmación';
+
+//system
+$lang['slop_blood_type'] = 'Tipo de Sangre';
+$lang['slop_civil_status'] = 'Estado Civil';
+$lang['slop_diagnosis_type'] = 'Tipo de Diagnosis';
+$lang['slop_entry_mode'] = 'Modo de Entrada';
+$lang['slop_medicine_dose'] = 'Dosis';
+$lang['slop_medicine_duration'] = 'Duración';
+$lang['slop_medicine_frequency'] = 'Frecuencia';
+$lang['slop_medicine_via_application'] = 'Vía Aplicación';
+$lang['slop_payment_method'] = 'Metodo de Pago';
+$lang['slop_sex'] = 'Sexo';

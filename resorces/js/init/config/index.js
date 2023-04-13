@@ -7,15 +7,15 @@ function update_company_data(dom){
 		contentType: false,
 		processData:false,
 		success:function(res){
-			if (res.status == true){
-				Swal.fire({
-					title: $("#alert_success_title").val(),
-					html: res.msg,
-					icon: 'success',
-					confirmButtonText: $("#alert_confirm_btn").val()
-				});
-				$("#ic_cert").attr("href", res.cert_link);
-			}else set_msg(res.msgs);
+			Swal.fire({
+				title: $("#alert_" + res.type + "_title").val(),
+				icon: res.type,
+				html: res.msg,
+				confirmButtonText: $("#alert_confirm_btn").val()
+			}).then((result) => {
+				if (res.status == true) location.reload();
+				else set_msg(res.msgs);
+			});
 		}
 	});
 }
@@ -134,6 +134,7 @@ $(document).ready(function() {
 	//general
 	
 	//account role
+	set_datatable("account_list", 25, false);
 	$("#form_register_account").submit(function(e) {e.preventDefault(); register_account(this);});
 	$("#btn_search_person_ra").on('click',(function(e) {search_person_ra();}));
 	$(".remove_account").on('click',(function(e) {remove_account(this);}));

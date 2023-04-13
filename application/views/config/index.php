@@ -8,6 +8,47 @@
 	</div>
 </div>
 <div class="col-md-12">
+
+
+	<div class="row">
+		<div class="col-md-6">
+			<div class="basic-list-group">
+				<div class="list-group">
+					<?php foreach($sl_options as $i => $item){ if (!$i) $active = "active"; else $active = ""; ?>
+					<button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center <?= $active ?>">
+						<?= $item->lang ?> <span class="badge badge-primary badge-pill"><?= count($item->values) ?></span>
+					</button>
+					<?php } ?>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="basic-list-group">
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						Cras justo odio 
+						<div>
+							<button class="badge badge-info badge-pill"><i class="fas fa-edit"></i></button>
+							<button class="badge badge-danger badge-pill"><i class="fas fa-trash"></i></button>
+						</div>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						Dapibus ac facilisis in <span class="badge badge-primary badge-pill"><?= count($item->values) ?></span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						Cras justo odio <span class="badge badge-primary badge-pill"><?= count($item->values) ?></span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						Morbi leo risus <span class="badge badge-primary badge-pill"><?= count($item->values) ?></span>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						Morbi leo risus <span class="badge badge-primary badge-pill"><?= count($item->values) ?></span>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+					
 </div>
 <div class="col-md-12">
 	<div class="card">
@@ -47,7 +88,7 @@
 								<h5 class="text-primary mb-3">Gestion de Usuarios</h5>
 							</div>
 							<div class="col-md-6 text-right">
-								<div class="btn-group">
+								<div class="btn-group mb-3">
 									<button type="button" class="btn control_bl_account btn-primary btn-xs" id="btn_list" value="bl_account_list">
 										<i class="fas fa-list"></i>
 									</button>
@@ -56,104 +97,117 @@
 									</button>
 								</div>
 							</div>
-							<div class="col-md-12">
-								<div class="bl_account mb-3 d-none" id="bl_account_add">
-									<form class="form-row" id="form_register_account" action="#">
-										<div class="col-md-6 col-sm-12">
-											<h5><?= $this->lang->line('title_personal_info') ?></h5>
-											<div class="form-row">
-												<div class="form-group col-md-12">
-													<label><?= $this->lang->line('lb_document') ?></label>
-													<div class="input-group">
-														<select class="form-control" id="ra_doc_type_id" name="p[doc_type_id]">
-															<?php foreach($doc_types as $d){ if ($d->sunat_code){ ?>
-															<option value="<?= $d->id ?>"><?= $d->description ?></option>
-															<?php }} ?>
-														</select>
-														<input type="text" class="form-control border-left-0" id="ra_doc_number" name="p[doc_number]" placeholder="<?= $this->lang->line('lb_number') ?>">
-														<div class="input-group-append">
-															<button class="btn btn-primary border-0" type="button" id="btn_search_person_ra">
-																<i class="fas fa-search"></i>
-															</button>
-														</div>
-													</div>
-													<div class="sys_msg" id="ra_doc_msg"></div>
-												</div>
-												<div class="form-group col-md-8">
-													<label><?= $this->lang->line('lb_name') ?></label>
-													<input type="text" class="form-control" id="ra_name" name="p[name]">
-													<div class="sys_msg" id="ra_name_msg"></div>
-												</div>
-												<div class="form-group col-md-4">
-													<label><?= $this->lang->line('lb_tel') ?></label>
-													<input type="text" class="form-control" id="ra_tel" name="p[tel]">
-													<div class="sys_msg" id="ra_tel_msg"></div>
-												</div>
-											</div>
-										</div>
-										<div class="col-md-6 col-sm-12">
-											<h5><?= $this->lang->line('title_account') ?></h5>
-											<div class="form-row">
-												<div class="form-group col-md-4">
-													<label><?= $this->lang->line('lb_role') ?></label>
-													<select class="form-control" name="a[role_id]">
-														<option value="" selected>--</option>
-														<?php foreach($roles as $item){ ?>
-														<option value="<?= $item->id ?>"><?= $this->lang->line('role_'.$item->name) ?></option>
-														<?php } ?>
+						</div>
+						<div class="row">
+							<div class="col-md-12 bl_account d-none" id="bl_account_add">
+								<form class="form-row" id="form_register_account" action="#">
+									<div class="col-md-6 col-sm-12">
+										<h5><?= $this->lang->line('title_personal_info') ?></h5>
+										<div class="form-row">
+											<div class="form-group col-md-12">
+												<label><?= $this->lang->line('lb_document') ?></label>
+												<div class="input-group">
+													<select class="form-control" id="ra_doc_type_id" name="p[doc_type_id]">
+														<?php foreach($doc_types as $d){ if ($d->sunat_code){ ?>
+														<option value="<?= $d->id ?>"><?= $d->description ?></option>
+														<?php }} ?>
 													</select>
-													<div class="sys_msg" id="ra_role_msg"></div>
+													<input type="text" class="form-control border-left-0" id="ra_doc_number" name="p[doc_number]" placeholder="<?= $this->lang->line('lb_number') ?>">
+													<div class="input-group-append">
+														<button class="btn btn-primary border-0" type="button" id="btn_search_person_ra">
+															<i class="fas fa-search"></i>
+														</button>
+													</div>
 												</div>
-												<div class="form-group col-md-8">
-													<label><?= $this->lang->line('lb_email') ?></label>
-													<input type="email" class="form-control" id="ra_email" name="a[email]" placeholder="email@example.com">
-													<div class="sys_msg" id="ra_email_msg"></div>
-												</div>
-												<div class="form-group col-md-6">
-													<label><?= $this->lang->line('lb_password') ?></label>
-													<input type="password" class="form-control" name="a[password]">
-													<div class="sys_msg" id="ra_password_msg"></div>
-												</div>
-												<div class="form-group col-md-6">
-													<label><?= $this->lang->line('lb_confirm') ?></label>
-													<input type="password" class="form-control" name="a[confirm]">
-													<div class="sys_msg" id="ra_confirm_msg"></div>
-												</div>
+												<div class="sys_msg" id="ra_doc_msg"></div>
+											</div>
+											<div class="form-group col-md-8">
+												<label><?= $this->lang->line('lb_name') ?></label>
+												<input type="text" class="form-control" id="ra_name" name="p[name]">
+												<div class="sys_msg" id="ra_name_msg"></div>
+											</div>
+											<div class="form-group col-md-4">
+												<label><?= $this->lang->line('lb_tel') ?></label>
+												<input type="text" class="form-control" id="ra_tel" name="p[tel]">
+												<div class="sys_msg" id="ra_tel_msg"></div>
 											</div>
 										</div>
-										<div class="col-md-12 pt-3">
-											<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
+									</div>
+									<div class="col-md-6 col-sm-12">
+										<h5><?= $this->lang->line('title_account') ?></h5>
+										<div class="form-row">
+											<div class="form-group col-md-4">
+												<label><?= $this->lang->line('lb_role') ?></label>
+												<select class="form-control" name="a[role_id]">
+													<option value="" selected>--</option>
+													<?php foreach($roles as $item){ ?>
+													<option value="<?= $item->id ?>"><?= $this->lang->line('role_'.$item->name) ?></option>
+													<?php } ?>
+												</select>
+												<div class="sys_msg" id="ra_role_msg"></div>
+											</div>
+											<div class="form-group col-md-8">
+												<label><?= $this->lang->line('lb_email') ?></label>
+												<input type="email" class="form-control" id="ra_email" name="a[email]" placeholder="email@example.com">
+												<div class="sys_msg" id="ra_email_msg"></div>
+											</div>
+											<div class="form-group col-md-6">
+												<label><?= $this->lang->line('lb_password') ?></label>
+												<input type="password" class="form-control" name="a[password]">
+												<div class="sys_msg" id="ra_password_msg"></div>
+											</div>
+											<div class="form-group col-md-6">
+												<label><?= $this->lang->line('lb_confirm') ?></label>
+												<input type="password" class="form-control" name="a[confirm]">
+												<div class="sys_msg" id="ra_confirm_msg"></div>
+											</div>
 										</div>
-									</form>
+									</div>
+									<div class="col-md-12 pt-3">
+										<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
+									</div>
+								</form>
+							</div>
+							<div class="col-md-12 bl_account" id="bl_account_list">
+								<div class="row">
+									<div class="col-md-2">
+										<div id="account_list_length_new"></div>
+									</div>
+									<div class="col-md-6"></div>
+									<div class="col-md-4">
+										<div id="account_list_filter_new"></div>
+									</div>
+									<div class="col-md-12">
+										<div class="table-responsive">
+											<table id="account_list" class="table table-responsive-md">
+												<thead>
+													<tr>
+														<th><strong>#</strong></th>
+														<th><strong>Rol</strong></th>
+														<th><strong>Email</strong></th>
+														<th><strong>Nombre</strong></th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody>
+													<?php foreach($accounts as $i => $item){ ?>
+													<tr>
+														<td><?= $i + 1 ?></td>
+														<td><?= $this->lang->line('role_'.$roles_arr[$item->role_id]) ?></td>
+														<td><?= $item->email ?></td>
+														<td><?= $people_arr[$item->person_id] ?></td>
+														<td class="text-right">
+															<button type="button" class="btn btn-danger shadow btn-xs sharp remove_account" value="<?= $item->id ?>">
+																<i class="fas fa-trash"></i>
+															</button>
+														</td>
+													</tr>
+													<?php } ?>
+												</tbody>
+											</table>
+										</div>	
+									</div>
 								</div>
-								<div class="table-responsive bl_account" id="bl_account_list">
-									<table class="table table-responsive-md">
-										<thead>
-											<tr>
-												<th><strong>#</strong></th>
-												<th><strong>Rol</strong></th>
-												<th><strong>Email</strong></th>
-												<th><strong>Nombre</strong></th>
-												<th></th>
-											</tr>
-										</thead>
-										<tbody>
-											<?php foreach($accounts as $i => $item){ ?>
-											<tr>
-												<td><?= $i + 1 ?></td>
-												<td><?= $this->lang->line('role_'.$roles_arr[$item->role_id]) ?></td>
-												<td><?= $item->email ?></td>
-												<td><?= $people_arr[$item->person_id] ?></td>
-												<td class="text-right">
-													<button type="button" class="btn btn-danger shadow btn-xs sharp remove_account" value="<?= $item->id ?>">
-														<i class="fas fa-trash"></i>
-													</button>
-												</td>
-											</tr>
-											<?php } ?>
-										</tbody>
-									</table>
-								</div>		
 							</div>
 						</div>
 					</div>
@@ -303,50 +357,6 @@
 						</form>
 					</div>
 					<div class="tab-pane fade" id="bl_system_admin">
-						<div class="row">
-							<div class="col-md-6">
-								<div class="basic-list-group">
-                                    <ul class="list-group">
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            Cras justo odio <span class="badge badge-primary badge-pill">14</span>
-                                        </li>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            Dapibus ac facilisis in <span class="badge badge-primary badge-pill">2</span>
-                                        </li>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            Cras justo odio <span class="badge badge-primary badge-pill">14</span>
-                                        </li>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            Morbi leo risus <span class="badge badge-primary badge-pill">1</span>
-                                        </li>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            Morbi leo risus <span class="badge badge-primary badge-pill">1</span>
-                                        </li>
-                                    </ul>
-                                </div>
-							</div>
-							<div class="col-md-6">
-								<div class="basic-list-group">
-                                    <ul class="list-group">
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            Cras justo odio <span class="badge badge-primary badge-pill">14</span>
-                                        </li>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            Dapibus ac facilisis in <span class="badge badge-primary badge-pill">2</span>
-                                        </li>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            Cras justo odio <span class="badge badge-primary badge-pill">14</span>
-                                        </li>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            Morbi leo risus <span class="badge badge-primary badge-pill">1</span>
-                                        </li>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            Morbi leo risus <span class="badge badge-primary badge-pill">1</span>
-                                        </li>
-                                    </ul>
-                                </div>
-							</div>
-						</div>
 					</div>
 					<div class="tab-pane fade" id="bl_history_admin">
 						<div class="table-responsive">

@@ -66,7 +66,7 @@ class General_model extends CI_Model{
 		return $result;
 	}
 	
-	function only($tablename, $field, $where){
+	function only($tablename, $field, $where = null){
 		$this->db->select($field);
 		if ($where) $this->db->where($where);
 		$this->db->group_by($field);

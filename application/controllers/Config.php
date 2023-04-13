@@ -41,6 +41,14 @@ class Config extends CI_Controller {
 		$people = $this->general->filter_adv("person", null, [["field" => "id", "values" => $people_ids_arr]]);
 		foreach($people as $item) $people_arr[$item->id] = $item->name;
 		
+		$sl_options = $this->general->only("sl_option", "code");
+		foreach($sl_options as $item){
+			$item->lang = $this->lang->line("slop_".$item->code);
+			$item->values = $this->general->filter("sl_option", ["code" => $item->code], "description", "asc");
+		}
+		usort($sl_options, function($a, $b) { return strcmp($a->lang, $b->lang); });
+		
+		
 		$data = array(
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"role_access" => $role_access,
@@ -48,6 +56,7 @@ class Config extends CI_Controller {
 			"roles" => $roles,
 			"access" => $access,
 			"people_arr" => $people_arr,
+			"sl_options" => $sl_options,
 			"accounts" => $this->general->all("account", "role_id", "asc"),
 			"departments" => $this->general->all("address_department", "name", "asc"),
 			"provinces" => $this->general->all("address_province", "name", "asc"),
@@ -143,7 +152,7 @@ class Config extends CI_Controller {
 	
 	public function update_company_data(){
 		$datas = $this->input->post();
-		$status = false; $msgs = array(); $msg = null; $cert_link = null;
+		$status = false; $type = "error"; $msgs = array(); $msg = null; $cert_link = null;
 		
 		//validations
 		if (!$datas["ruc"]) $msgs = $this->set_msg($msgs, "com_ruc_msg", "error", "error_cru");
@@ -160,7 +169,8 @@ class Config extends CI_Controller {
 		if (!$_FILES["sunat_cert_file"]["name"]) if (!$this->general->id("company", 1)->sunat_cert_filename) 
 			$msgs = $this->set_msg($msgs, "s_cer_msg", "error", "error_sce");
 	
-		if (!$msgs){
+		if ($msgs) $msg = $this->lang->line("error_occurred");
+		else{
 			$datas["ubigeo"] = $this->general->id("address_district", $datas["district_id"])->ubigeo;
 			$datas["updated_by"] = $this->session->userdata('aid');
 			$datas["updated_at"] = date("Y-m-d H:i:s", time());
@@ -185,13 +195,13 @@ class Config extends CI_Controller {
 			}
 			
 			if ($this->general->update("company", 1, $datas)){
-				$cert_link = base_url()."uploaded/sunat/".$this->general->id("company", 1)->sunat_cert_filename;
 				$status = true;
+				$type = "success";
 				$msg = $this->lang->line("success_cup");
-			}else $msgs = $this->set_msg($msgs, "com_result_msg", "error", "error_internal");
+			}else $msg = $this->lang->line("error_internal");
 		}
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "msgs" => $msgs, "msg" => $msg, "cert_link" => $cert_link));
+		echo json_encode(array("status" => $status, "type" => $type, "msgs" => $msgs, "msg" => $msg));
 	}
 }
