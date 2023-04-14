@@ -130,6 +130,24 @@ function control_bl_account(dom){
 	$("#" + $(dom).val()).removeClass("d-none");
 }
 
+function control_sl_group(dom){
+	$(".sl_group").removeClass("active");
+	$(dom).addClass("active");
+	
+	$(".sl_values").addClass("d-none");
+	$("#sl_" + $(dom).val()).removeClass("d-none");
+	
+	$("#sl_add_code").val($(dom).val());
+}
+
+function add_sl_value(dom){
+	console.log(new FormData(dom));
+}
+
+function remove_sl_value(dom){
+	alert($(dom).val() + $(dom).text());
+}
+
 $(document).ready(function() {
 	//general
 	
@@ -147,4 +165,9 @@ $(document).ready(function() {
 	$("#form_update_company_data").submit(function(e) {e.preventDefault(); update_company_data(this);});
 	$("#sl_department").change(function() {control_province();});
 	$("#sl_province").change(function() {control_district();});
+	
+	//system
+	$("#form_add_sl_value").submit(function(e) {e.preventDefault(); add_sl_value(this);});
+	$(".sl_group").on('click',(function(e) {control_sl_group(this);}));
+	$(".btn_sl_remove").on('click',(function(e) {remove_sl_value(this);}));
 });

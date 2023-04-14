@@ -15,7 +15,7 @@
 			<div class="basic-list-group">
 				<div class="list-group">
 					<?php foreach($sl_options as $i => $item){ if (!$i) $active = "active"; else $active = ""; ?>
-					<button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center <?= $active ?>">
+					<button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center <?= $active ?> py-1 sl_group" value="<?= $item->code ?>">
 						<?= $item->lang ?> <span class="badge badge-primary badge-pill"><?= count($item->values) ?></span>
 					</button>
 					<?php } ?>
@@ -23,29 +23,27 @@
 			</div>
 		</div>
 		<div class="col-md-6">
-			<div class="basic-list-group">
-				<ul class="list-group list-group-flush">
-					<li class="list-group-item d-flex justify-content-between align-items-center">
-						Cras justo odio 
-						<div>
-							<button class="badge badge-info badge-pill"><i class="fas fa-edit"></i></button>
-							<button class="badge badge-danger badge-pill"><i class="fas fa-trash"></i></button>
-						</div>
-					</li>
-					<li class="list-group-item d-flex justify-content-between align-items-center">
-						Dapibus ac facilisis in <span class="badge badge-primary badge-pill"><?= count($item->values) ?></span>
-					</li>
-					<li class="list-group-item d-flex justify-content-between align-items-center">
-						Cras justo odio <span class="badge badge-primary badge-pill"><?= count($item->values) ?></span>
-					</li>
-					<li class="list-group-item d-flex justify-content-between align-items-center">
-						Morbi leo risus <span class="badge badge-primary badge-pill"><?= count($item->values) ?></span>
-					</li>
-					<li class="list-group-item d-flex justify-content-between align-items-center">
-						Morbi leo risus <span class="badge badge-primary badge-pill"><?= count($item->values) ?></span>
-					</li>
-				</ul>
+			<div>
+				<h5>Agregar Nuevo Valor</h5>
+				<form action="#" class="form-row" id="form_add_sl_value">
+					<input type="hidden" id="sl_add_code" name="code" value="<?= $sl_options[0]->code ?>">
+					<div class="form-group col-md-8">
+						<label><?= $this->lang->line('lb_name') ?></label>
+						<input type="text" class="form-control" id="ra_name" name="description">
+						<div class="sys_msg" id="ra_name_msg"></div>
+					</div>
+					<div class="form-group col-md-4 d-flex align-items-end">
+						<button type="submit" class="btn btn-primary w-100">Guardar</button>
+					</div>
+				</form>
 			</div>
+			<?php $d = ""; foreach($sl_options as $i => $item){ ?>
+			<div class="sl_values <?= $d ?>" id="sl_<?= $item->code ?>">
+				<?php foreach($item->values as $val){ ?>
+				<button type="button" class="btn btn-outline-primary btn-xs mb-1 btn_sl_remove" value="<?= $val->id ?>"><?= $val->description; ?> <i class="fa fa-close ml-1"></i></button>
+				<?php } ?>
+			</div>
+			<?php $d = "d-none";} ?>
 		</div>
 	</div>
 					
