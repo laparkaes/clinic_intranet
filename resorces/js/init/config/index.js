@@ -141,11 +141,49 @@ function control_sl_group(dom){
 }
 
 function add_sl_value(dom){
-	console.log(new FormData(dom));
+	$.ajax({
+		url: $("#base_url").val() + "config/add_sl_value",
+		type: "POST",
+		data: new FormData(dom),
+		contentType: false,
+		processData:false,
+		success:function(res){
+			Swal.fire({
+				title: $("#alert_" + res.type + "_title").val(),
+				icon: res.type,
+				html: res.msg,
+				confirmButtonText: $("#alert_confirm_btn").val()
+			}).then((result) => {
+				if (res.status == true){
+					$("#asl_description").val("");
+					$("#sl_" + res.new_value.code).append('<button type="button" class="btn btn-outline-primary btn-xs mb-1 btn_sl_remove" value="' + res.new_value.id + '">' + res.new_value.description + ' <i class="fa fa-close ml-1"></i></button>&nbsp;');
+					$("#sl_" + res.new_value.code + " .btn_sl_remove").last().on('click',(function(e) {remove_sl_value(this);}));
+					$("#btn_sl_" + res.new_value.code).find(".badge").html($("#sl_" + res.new_value.code).find("button").length);
+				}
+			});
+		}
+	});
 }
 
 function remove_sl_value(dom){
-	alert($(dom).val() + $(dom).text());
+	$.ajax({
+		url: $("#base_url").val() + "config/remove_sl_value",
+		type: "POST",
+		data: {id: $(dom).val()},
+		success:function(res){
+			Swal.fire({
+				title: $("#alert_" + res.type + "_title").val(),
+				icon: res.type,
+				html: res.msg,
+				confirmButtonText: $("#alert_confirm_btn").val()
+			}).then((result) => {
+				if (res.status == true){
+					$(dom).remove();
+					$("#btn_sl_" + res.removed_value.code).find(".badge").html($("#sl_" + res.removed_value.code).find("button").length);
+				}
+			});
+		}
+	});
 }
 
 $(document).ready(function() {

@@ -10,42 +10,6 @@
 <div class="col-md-12">
 
 
-	<div class="row">
-		<div class="col-md-6">
-			<div class="basic-list-group">
-				<div class="list-group">
-					<?php foreach($sl_options as $i => $item){ if (!$i) $active = "active"; else $active = ""; ?>
-					<button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center <?= $active ?> py-1 sl_group" value="<?= $item->code ?>">
-						<?= $item->lang ?> <span class="badge badge-primary badge-pill"><?= count($item->values) ?></span>
-					</button>
-					<?php } ?>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div>
-				<h5>Agregar Nuevo Valor</h5>
-				<form action="#" class="form-row" id="form_add_sl_value">
-					<input type="hidden" id="sl_add_code" name="code" value="<?= $sl_options[0]->code ?>">
-					<div class="form-group col-md-8">
-						<label><?= $this->lang->line('lb_name') ?></label>
-						<input type="text" class="form-control" id="ra_name" name="description">
-						<div class="sys_msg" id="ra_name_msg"></div>
-					</div>
-					<div class="form-group col-md-4 d-flex align-items-end">
-						<button type="submit" class="btn btn-primary w-100">Guardar</button>
-					</div>
-				</form>
-			</div>
-			<?php $d = ""; foreach($sl_options as $i => $item){ ?>
-			<div class="sl_values <?= $d ?>" id="sl_<?= $item->code ?>">
-				<?php foreach($item->values as $val){ ?>
-				<button type="button" class="btn btn-outline-primary btn-xs mb-1 btn_sl_remove" value="<?= $val->id ?>"><?= $val->description; ?> <i class="fa fa-close ml-1"></i></button>
-				<?php } ?>
-			</div>
-			<?php $d = "d-none";} ?>
-		</div>
-	</div>
 					
 </div>
 <div class="col-md-12">
@@ -355,6 +319,41 @@
 						</form>
 					</div>
 					<div class="tab-pane fade" id="bl_system_admin">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="basic-list-group">
+									<div class="list-group">
+										<?php foreach($sl_options as $i => $item){ if (!$i) $active = "active"; else $active = ""; ?>
+										<button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center <?= $active ?> py-1 sl_group" id="btn_sl_<?= $item->code ?>" value="<?= $item->code ?>">
+											<span class="sl_group_name"><?= $item->lang ?></span><span class="badge badge-primary badge-pill"><?= count($item->values) ?></span>
+										</button>
+										<?php } ?>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div>
+									<h5>Agregar Nuevo Valor</h5>
+									<form action="#" class="form-row" id="form_add_sl_value">
+										<input type="hidden" id="sl_add_code" name="code" value="<?= $sl_options[0]->code ?>">
+										<div class="form-group col-md-8">
+											<label><?= $this->lang->line('lb_name') ?></label>
+											<input type="text" class="form-control" id="asl_description" name="description">
+										</div>
+										<div class="form-group col-md-4 d-flex align-items-end">
+											<button type="submit" class="btn btn-primary w-100">Guardar</button>
+										</div>
+									</form>
+								</div>
+								<?php $d = ""; foreach($sl_options as $i => $item){ ?>
+								<div class="sl_values <?= $d ?>" id="sl_<?= $item->code ?>">
+									<?php foreach($item->values as $val){ ?>
+									<button type="button" class="btn btn-outline-primary btn-xs mb-1 btn_sl_remove" value="<?= $val->id ?>"><?= $val->description; ?> <i class="fa fa-close ml-1"></i></button>
+									<?php } ?>
+								</div>
+								<?php $d = "d-none";} ?>
+							</div>
+						</div>
 					</div>
 					<div class="tab-pane fade" id="bl_history_admin">
 						<div class="table-responsive">

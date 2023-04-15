@@ -44,7 +44,7 @@ class Config extends CI_Controller {
 		$sl_options = $this->general->only("sl_option", "code");
 		foreach($sl_options as $item){
 			$item->lang = $this->lang->line("slop_".$item->code);
-			$item->values = $this->general->filter("sl_option", ["code" => $item->code], "description", "asc");
+			$item->values = $this->general->filter("sl_option", ["code" => $item->code], "id", "asc");
 		}
 		usort($sl_options, function($a, $b) { return strcmp($a->lang, $b->lang); });
 		
@@ -203,5 +203,39 @@ class Config extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => $status, "type" => $type, "msgs" => $msgs, "msg" => $msg));
+	}
+
+	public function add_sl_value(){
+		$data = $this->input->post();
+		$status = false; $type = "error"; $msg = null;
+		
+		if ($data["description"]){
+			$new_id = $this->general->insert("sl_option", $data);
+			if ($new_id){
+				$new_value = $this->general->id("sl_option", $new_id);
+				
+				$msg = "Nuevo valor ha sido registrado.";
+				$type = "success";
+				$status = true;
+			}else $msg = "error interno";
+		}else $msg = "Ingrese descripcion de nuevo valor.";
+		
+		header('Content-Type: application/json');
+		echo json_encode(["status" => $status, "type" => $type, "msg" => $msg, "new_value" => $new_value]);
+	}
+	
+	public function remove_sl_value(){
+		$id = $this->input->post("id");
+		$status = false; $type = "error"; $msg = null;
+		
+		$removed_value = $this->general->id("sl_option", $id);
+		if ($this->general->delete("sl_option", ["id" => $id])){
+			$msg = "Nuevo valor ha sido eliminado.";
+			$type = "success";
+			$status = true;
+		}else $msg = "error interno";
+		
+		header('Content-Type: application/json');
+		echo json_encode(["status" => $status, "type" => $type, "msg" => $msg, "removed_value" => $removed_value]);
 	}
 }
