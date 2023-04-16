@@ -2,3 +2,4 @@
 diagnostico presuntivo
 diagnostico confirmado
 diagnostico repetitivo
+
