@@ -236,4 +236,9 @@ class Utility_lib{
 			return array("invoice" => $invoice, "datas" => $datas);
 		}else return null;
 	}
+	
+	public function add_log($code, $detail){
+		$log_code = $this->CI->general->filter("log_code", ["code" => $code]);
+		if ($log_code) $this->CI->general->insert("log", ["account_id" => $this->CI->session->userdata('aid'), "log_code_id" => $log_code[0]->id, "detail" => $detail, "registed_at" => date('Y-m-d H:i:s', time())]);
+	}
 }

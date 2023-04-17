@@ -183,9 +183,11 @@ class Doctor extends CI_Controller {
 			if ($person){
 				$this->general->update("person", $person[0]->id, $p);
 				$person_id = $person[0]->id;
+				$person_name = $person[0]->name;
 			}else{
 				$p["registed_at"] = date('Y-m-d H:i:s', time());
 				$person_id = $this->general->insert("person", $p);
+				$person_name = $p["name"];
 			}
 			
 			if ($person_id){
@@ -206,6 +208,8 @@ class Doctor extends CI_Controller {
 					$a["active"] = true;
 					$a["registed_at"] = date('Y-m-d H:i:s', time());
 					if ($this->account->insert($a)){
+						$this->utility_lib->add_log("doctor_register", $person_name);
+						
 						$status = true;
 						$type = "success";
 						$move_to = base_url()."doctor/detail/".$doctor_id;
