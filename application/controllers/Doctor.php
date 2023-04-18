@@ -188,6 +188,7 @@ class Doctor extends CI_Controller {
 				$p["registed_at"] = date('Y-m-d H:i:s', time());
 				$person_id = $this->general->insert("person", $p);
 				$person_name = $p["name"];
+				$this->utility_lib->add_log("person_register", $p["name"]);
 			}
 			
 			if ($person_id){
@@ -235,6 +236,9 @@ class Doctor extends CI_Controller {
 			if (!$data["sex_id"]) $data["sex_id"] = null;
 			if (!$data["blood_type_id"]) $data["blood_type_id"] = null;
 			if ($this->general->update("person", $data["id"], $data)){
+				$person = $this->general->id("person", $data["id"]);
+				$this->utility_lib->add_log("person_update", $person->name);
+				
 				$status = true;
 				$type = "success"; 
 				$msg = $this->lang->line('success_upd');
@@ -255,6 +259,10 @@ class Doctor extends CI_Controller {
 		if ($msgs) $msg = $this->lang->line('error_occurred');
 		else{
 			if ($this->general->update("doctor", $data["id"], $data)){
+				$doctor = $this->general->id("doctor", $data["id"]);
+				$person = $this->general->id("person", $doctor->person_id);
+				$this->utility_lib->add_log("doctor_update", $person->name);
+				
 				$status = true;
 				$type = "success"; 
 				$msg = $this->lang->line('success_upr');
@@ -277,6 +285,9 @@ class Doctor extends CI_Controller {
 		if ($msgs) $msg = $this->lang->line('error_occurred');
 		else{
 			if ($this->general->update("account", $data["id"], $data)){
+				$account = $this->general->id("account", $data["id"]);
+				$this->utility_lib->add_log("account_update", $account->email);
+				
 				$status = true;
 				$type = "success"; 
 				$msg = $this->lang->line('success_uae');
@@ -302,6 +313,9 @@ class Doctor extends CI_Controller {
 			unset($data["confirm"]);
 			
 			if ($this->general->update("account", $data["id"], $data)){
+				$account = $this->general->id("account", $data["id"]);
+				$this->utility_lib->add_log("password_update", $account->email);
+				
 				$status = true;
 				$type = "success"; 
 				$msg = $this->lang->line('success_uep');
@@ -322,6 +336,10 @@ class Doctor extends CI_Controller {
 		
 		$data = array("id" => $id, "status_id" => $this->general->filter("status", array("code" => $code))[0]->id);
 		if ($this->general->update("doctor", $data["id"], $data)){
+			$doctor = $this->general->id("doctor", $id);
+			$person = $this->general->id("person", $doctor->person_id);
+			$this->utility_lib->add_log("doctor_".$code, $person->name);
+			
 			$status = true;
 			$type = "success";
 			if ($active) $msg = $this->lang->line('success_ado');
