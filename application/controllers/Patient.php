@@ -142,9 +142,11 @@ class Patient extends CI_Controller {
 				$person = $people[0];
 				$this->general->update("person", $person->id, $data);
 				$person_id = $person->id;
+				$this->utility_lib->add_log("person_update", $person->name);
 			}else{
 				$data["registed_at"] = date('Y-m-d H:i:s', time());
 				$person_id = $this->general->insert("person", $data);
+				$this->utility_lib->add_log("person_register", $data["name"]);
 			}
 			
 			if ($person_id){
@@ -177,6 +179,9 @@ class Patient extends CI_Controller {
 			if (!$data["sex_id"]) $data["sex_id"] = null;
 			if (!$data["blood_type_id"]) $data["blood_type_id"] = null;
 			if ($this->general->update("person", $data["id"], $data)){
+				$person = $this->general->id("person", $data["id"]);
+				$this->utility_lib->add_log("person_update", $person->name);
+				
 				$status = true;
 				$type = "success"; 
 				$msg = $this->lang->line('success_upd');
@@ -223,10 +228,11 @@ class Patient extends CI_Controller {
 					);
 					
 					if ($this->patient_file->insert($patient_file)){
+						$this->utility_lib->add_log("file_upload", $patient->name." - ".$title);
+						
 						$msg = $this->lang->line('success_ufi');
 						$status = true;
-					}
-					else $msgs = $this->set_msg($msgs, "pf_result_msg", "error", "error_internal");
+					}else $msgs = $this->set_msg($msgs, "pf_result_msg", "error", "error_internal");
 				}else array_push($msgs, array("dom_id" => "pf_result_msg", "type" => "error", "msg" => $this->upload->display_errors("<span>","</span>")));
 			}else $msgs = $this->set_msg($msgs, "pf_result_msg", "error", "error_internal_refresh");
 		}
@@ -239,8 +245,11 @@ class Patient extends CI_Controller {
 		//change "active" field of DB without removing uploaded file
 		//PENDING! role validation
 		
-		$id = $this->input->post("id");
-		if ($this->patient_file->update($id, array("active" => false))){
+		$patient_file = $this->general->id("patient_file", $this->input->post("id"));
+		if ($this->patient_file->update($patient_file->id, array("active" => false))){
+			$person = $this->general->id("person", $patient_file->patient_id);
+			$this->utility_lib->add_log("file_delete", $person->name." - ".$patient_file->title);
+			
 			$status = true;
 			$msg = $this->lang->line('success_dfi');
 		}else{

@@ -1,0 +1,59 @@
+## 코타나 삭제, 한국에서 지원하지 않음
+Get-AppxPackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage
+
+## 스카이프, 글로벌로 경쟁력을 잃어버린 커뮤니케이션 툴
+Get-AppxPackage -allusers Microsoft.SkypeApp  | Remove-AppxPackage
+
+## 그루브 뮤직 및 영상, 음악 듣기 및 영상 보기는 다른 대안들이 많기 때문에 삭제
+Get-AppxPackage -allusers Microsoft.ZuneVideo | Remove-AppxPackage ; Get-AppxPackage -allusers Microsoft.ZuneMusic | Remove-AppxPackage
+
+## Xbox 관련 앱은 여러 개가 설치되어 있습니다. 202H 버전에는 6개 앱이 있네요. 전 무두 삭제 시도
+## Microsoft.XboxGameCallableUI는 삭제가 안되더군요. 아래느 삭제 가능한 5개 앱 삭제 명령어
+Get-AppxPackage -allusers Microsoft.XboxSpeechToTextOverlay | Remove-AppxPackage ; Get-AppxPackage -allusers Microsoft.XboxGamingOverlay  | Remove-AppxPackage ; Get-AppxPackage -allusers Microsoft.XboxGameOverlay | Remove-AppxPackage ; Get-AppxPackage -allusers Microsoft.Xbox.TCUI | Remove-AppxPackage ;Get-AppxPackage -allusers Microsoft.XboxIdentityProvider | Remove-AppxPackage 
+
+## 3D 뷰어, 별로 사용할 것 같아 않아서 삭제
+## 구글에 돌아다니는 3D 빌더는 앱 리스트에 없음
+Get-AppxPackage -allusers Microsoft.Microsoft3DViewer  | Remove-AppxPackage
+
+## 사용자 휴대폰, 별로 사용하지 않을 것 같아서 삭제
+Get-AppxPackage -allusers Microsoft.YourPhone  | Remove-AppxPackage
+
+## 지도, 구글 지도나 네이버 지도 또는 다음 지도라는 훌륭한 대안이 있기 때문에 마이크로소프트 지도를 사용할 필요가 없음
+Get-AppxPackage -allusers Microsoft.WindowsMaps  | Remove-AppxPackage
+
+## 마소에서 제공하는 카드 게임, 게임을 하지 않으므로 삭제
+Get-AppxPackage -allusers Microsoft.MicrosoftSolitaireCollection  | Remove-AppxPackage
+
+## 원노트, 오피스를 설치하면 추가로 원노트가 설치되기 때문에 기본 원노트는 삭제
+Get-AppxPackage -allusers Microsoft.Office.OneNote  | Remove-AppxPackage
+
+## 오피스 설치 제안, Get Office, 마이크로소프트는 오피스 365 판매를 위해 get office 앱을 기본 설치해 종종 오피스 365 설치를 제안함
+## 오피스를 설치하면 그냥 Office로 바뀌는 듯
+Get-AppxPackage -allusers Microsoft.MicrosoftOfficeHub  | Remove-AppxPackage
+
+## Mixed Reality 포탈, 아직 사용할 수준이 안되어서..
+Get-AppxPackage -allusers Microsoft.MixedReality.Portal  | Remove-AppxPackage
+
+## Calendar and Mail (메일 및 일정), 오피스 365 아웃룩을 사용하면서 메일과 일정 관리 사용하기 때문
+Get-AppxPackage -allusers microsoft.windowscommunicationsapps  | Remove-AppxPackage
+
+## People (피플)
+Get-AppxPackage  -allusers *people* | Remove-AppxPackage
+
+## Photos (사진)
+Get-AppxPackage  -allusers *photos* | Remove-AppxPackage
+
+## Store (스토어)
+Get-AppxPackage  -allusers *windowsstore* | Remove-AppxPackage
+
+## Voice Recorder (녹음기)
+Get-AppxPackage  -allusers *soundrecorder* | Remove-AppxPackage
+
+## Weather (날씨)
+Get-AppxPackage  -allusers *bingweather* | Remove-AppxPackage
+
+## Camera (카메라)
+Get-AppxPackage  -allusers *windowscamera* | Remove-AppxPackage
+
+## Get Started (시작)
+Get-AppxPackage  -allusers *getstarted* | Remove-AppxPackage
