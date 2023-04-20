@@ -277,6 +277,8 @@ class Surgery extends CI_Controller {
 				$sur["registed_at"] = $now;
 				$surgery_id = $this->general->insert("surgery", $sur);
 				if ($surgery_id){
+					$this->utility_lib->add_log("surgery_register", $pt["name"]);
+					
 					$status = true;
 					$type = "success";
 					$move_to = base_url()."surgery/detail/".$surgery_id;
@@ -294,6 +296,9 @@ class Surgery extends CI_Controller {
 		$surgery = $this->surgery->id($this->input->post("id"));
 		if ($surgery){
 			if ($this->surgery->update($surgery->id, array("status_id" => $this->status->code("canceled")->id))){
+				$person = $this->general->id("person", $surgery->patient_id);
+				$this->utility_lib->add_log("surgery_cancel", $person->name);
+				
 				$status = true;
 				$type = "success";
 				$msg = $this->lang->line('success_cap');
@@ -309,9 +314,14 @@ class Surgery extends CI_Controller {
 		//pending!! role validation
 		
 		$data = $this->input->post();
+		$surgery = $this->general->id("surgery", $data["id"]);
+		
 		if ($data["result"]){
 			$data["status_id"] = $this->status->code("finished")->id;
 			if ($this->general->update("surgery", $data["id"], $data)){
+				$person = $this->general->id("person", $surgery->patient_id);
+				$this->utility_lib->add_log("surgery_finish", $person->name);
+				
 				$status = true;
 				$type = "success";
 				$msg = $this->lang->line('success_fsu');
@@ -355,6 +365,9 @@ class Surgery extends CI_Controller {
 					//room available
 					if (!$this->general->get_by_room("surgery", $sur, $status_ids, $data["id"], $data["room_id"])){
 						if ($this->surgery->update($sur["id"], $sur)){
+							$person = $this->general->id("person", $surgery->patient_id);
+							$this->utility_lib->add_log("surgery_reschedule", $person->name);
+						
 							$status = true;
 							$type = "success";
 							$msg = $this->lang->line('success_rsu');

@@ -430,7 +430,7 @@ class Appointment extends CI_Controller {
 		$status = false; $type = "error"; $msg = null;
 		//pending!! role validation
 		
-		$appointment = $this->appointment->id($this->input->post("id"));
+		$appointment = $this->general->id("appointment", $this->input->post("id"));
 		if ($appointment){
 			if ($this->appointment->update($appointment->id, array("status_id" => $this->status->code("finished")->id))){
 				$person = $this->general->id("person", $appointment->patient_id);

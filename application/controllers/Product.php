@@ -72,6 +72,8 @@ class Product extends CI_Controller {
 		if ($name){
 			if (!$this->product->category(null, $name)){
 				if ($this->product->category_insert(array("name" => $name))){
+					$this->utility_lib->add_log("category_register", $name);
+					
 					$status = true;
 					$type = "success";
 					$msg = $this->lang->line('success_ac');
@@ -91,6 +93,8 @@ class Product extends CI_Controller {
 		if ($name){
 			if (!$this->product->category(null, $name)){
 				if ($this->product->category_update($id, array("name" => $name))){
+					$this->utility_lib->add_log("category_update", $name);
+					
 					$status = true;
 					$type = "success";
 					$msg = $this->lang->line('success_uc');
@@ -103,11 +107,13 @@ class Product extends CI_Controller {
 	}
 	
 	public function delete_category(){
-		$id = $this->input->post("id");
+		$category = $this->general->id("product_category", $this->input->post("id"));
 		$status = false; $type = "error"; $msg = null;
 		
-		if (!$this->product->filter(array("category_id" => $id))){
-			if ($this->product->category_delete($id)){
+		if (!$this->product->filter(array("category_id" => $category->id))){
+			if ($this->product->category_delete($category->id)){
+				$this->utility_lib->add_log("category_delete", $category->name);
+				
 				$status = true;
 				$type = "success";
 				$msg = $this->lang->line('success_dc');
@@ -128,7 +134,13 @@ class Product extends CI_Controller {
 		elseif ($id_from == $id_to) $msgs = $this->set_msg($msgs, "mp_id_to_msg", "error", "error_cd");
 		
 		if (!$msgs){
-			if ($this->product->change_category($id_from, $id_to)) $status = true;
+			if ($this->product->change_category($id_from, $id_to)){
+				$c_f = $this->general->id("product_category", $id_from);
+				$c_t = $this->general->id("product_category", $id_to);
+				$this->utility_lib->add_log("category_move", $c_f->name." > ".$c_t->name);
+				
+				$status = true;
+			}
 			else $msgs = $this->set_msg($msgs, "mp_result_msg", "error", "error_internal");
 		}
 		
@@ -184,6 +196,8 @@ class Product extends CI_Controller {
 						$img_data = array("product_id" => $product_id, "filename" => $result["file_name"]);
 						if ($this->product->image_insert($img_data)){
 							if ($this->product->update($product_id, array("image" => $result["file_name"]))){
+								$this->utility_lib->add_log("product_register", $datas["description"]);
+								
 								$status = true;
 								$type = "success";
 								$msg = $this->lang->line('success_ap');
@@ -191,6 +205,8 @@ class Product extends CI_Controller {
 						}else $msgs = $this->set_msg($msgs, "ap_result_msg", "error", "error_internal");
 					}else array_push($msgs, array("dom_id" => "ap_image_msg", "type" => "error", "msg" => $this->upload->display_errors("<span>","</span>")));	
 				}else{
+					$this->utility_lib->add_log("product_register", $datas["description"]);
+					
 					$status = true;
 					$type = "success";
 					$msg = $this->lang->line('success_ap');
@@ -259,6 +275,9 @@ class Product extends CI_Controller {
 					//update product stock
 					$this->update_stock($data["product_id"]);
 					
+					$product = $this->general->id("product", $data["product_id"]);
+					$this->utility_lib->add_log("product_option_register", $product->description." > ".$data["description"]);
+					
 					$status = true;
 					$type = "success";
 					$msg = $this->lang->line('success_aop');
@@ -274,6 +293,9 @@ class Product extends CI_Controller {
 		$prod_op = $this->general->id("product_option", $this->input->post("id"));
 		if ($this->general->delete("product_option", array("id" => $prod_op->id))){
 			$this->update_stock($prod_op->product_id);
+			
+			$product = $this->general->id("product", $prod_op->product_id);
+			$this->utility_lib->add_log("product_option_delete", $product->description." > ".$prod_op->description);
 			
 			$msg = $this->lang->line('success_dop');
 			$status = true;
@@ -292,6 +314,10 @@ class Product extends CI_Controller {
 		$data = $this->input->post();
 		if ($this->general->update("product_option", $data["id"], $data)){
 			$this->update_stock($data["product_id"]);
+			
+			$product_op = $this->general->id("product_option", $data["id"]);
+			$product = $this->general->id("product", $product_op->product_id);
+			$this->utility_lib->add_log("product_option_update", $product->description." > ".$product_op->description);
 			
 			$msg = $this->lang->line('success_eop');
 			$status = true;
@@ -334,6 +360,8 @@ class Product extends CI_Controller {
 			$this->general->update("product", $data["id"], $data);
 			$this->update_stock($data["id"]);
 			
+			$this->utility_lib->add_log("product_update", $data["description"]);
+			
 			$status = true;
 			$type = "success";
 			$msg = $this->lang->line('success_up');
@@ -348,6 +376,9 @@ class Product extends CI_Controller {
 		$status = false; $type = "error"; $msg = null;
 		
 		if ($this->product->update($id, array("active" => false))){
+			$product = $this->general->id("product", $id);
+			$this->utility_lib->add_log("product_delete", $product->description);
+			
 			$status = true;
 			$type = "success";
 			$msg = $this->lang->line('success_dp');
@@ -388,6 +419,10 @@ class Product extends CI_Controller {
 					$datas["id"] = $id;
 					$datas["link"] = base_url()."uploaded/products/".$datas["product_id"]."/".$datas["filename"];
 					$msg = $this->lang->line('success_ai');
+					
+					$product = $this->general->id("product", $datas["product_id"]);
+					$this->utility_lib->add_log("product_image_register", $product->description." > ".$datas["filename"]);
+					
 					$status = true;
 					$type = "success";
 				}else $msg = $this->lang->line('error_internal');
@@ -408,6 +443,8 @@ class Product extends CI_Controller {
 			$img_path = "uploaded/products/".$image->product_id."/".$image->filename;
 			if (unlink($img_path)){
 				if ($this->product->image_delete($image->id)){
+					$this->utility_lib->add_log("product_image_delete", $product->description." > ".$image->filename);
+					
 					$status = true;
 					$type = "success";
 					$msg = $this->lang->line('success_di');
@@ -425,6 +462,9 @@ class Product extends CI_Controller {
 		
 		$data = array("image" => $image->filename, "updated_at" => date("Y-m-d H:i:s", time()));
 		if ($this->product->update($image->product_id, $data)){
+			$product = $this->general->id("product", $image->product_id);
+			$this->utility_lib->add_log("product_set_main_image", $product->description." > ".$image->filename);
+			
 			$status = true;
 			$type = "success";
 			$msg = $this->lang->line('success_pri');
@@ -446,11 +486,15 @@ class Product extends CI_Controller {
 			$product_id = $data["product_id"]; unset($data["product_id"]);
 			$company = $this->general->filter("provider", array("ruc" => $data["ruc"]));
 			if ($company){
+				$provider_id = $company[0]->id;
 				$this->general->update("provider", $company[0]->id, $data);
-			}else{
-				$provider_id = $this->general->insert("provider", $data);
-				$this->general->update("product", $product_id, array("provider_id" => $provider_id));
-			}
+			}else $provider_id = $this->general->insert("provider", $data);
+			
+			$this->general->update("product", $product_id, array("provider_id" => $provider_id));
+			
+			$provider = $this->general->id("provider", $provider_id);
+			$product = $this->general->id("product", $product_id);
+			$this->utility_lib->add_log("provider_save", $product->description." > ".$provider->company);
 			
 			$status = true;
 			$type = "success";
@@ -466,6 +510,9 @@ class Product extends CI_Controller {
 		$status = false; $type = "error"; $msg = null;
 		
 		if ($this->product->update($product_id, array("provider_id" => null))){
+			$product = $this->general->id("product", $product_id);
+			$this->utility_lib->add_log("provider_clean", $product->description);
+			
 			$status = true;
 			$type = "success";
 			$msg = $this->lang->line('success_cpv');
