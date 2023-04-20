@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-04-19 16:46
+-- 생성 시간: 23-04-20 19:25
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -46,7 +46,11 @@ INSERT INTO `log_code` (`id`, `code`) VALUES
 (7, 'person_register'),
 (8, 'person_update'),
 (9, 'file_upload'),
-(10, 'file_delete');
+(10, 'file_delete'),
+(11, 'appointment_register'),
+(12, 'appointment_cancel'),
+(13, 'appointment_reschedule'),
+(14, 'appointment_finish');
 
 --
 -- 덤프된 테이블의 인덱스
@@ -66,7 +70,7 @@ ALTER TABLE `log_code`
 -- 테이블의 AUTO_INCREMENT `log_code`
 --
 ALTER TABLE `log_code`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
