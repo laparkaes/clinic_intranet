@@ -394,11 +394,13 @@ class Appointment extends CI_Controller {
 				$app["registed_at"] = $now;
 				$appointment_id = $this->appointment->insert($app);
 				if ($appointment_id){
+					$this->utility_lib->add_log("appointment_register", $pt["name"]);
+					
 					$status = true;
 					$type = "success";
 					$move_to = base_url()."appointment/detail/".$appointment_id;
 					$msg = $this->lang->line('success_rap');
-				}else $msg = $this->lang->line('error_internal');	
+				}else $msg = $this->lang->line('error_internal');
 			}
 		}
 		
@@ -411,6 +413,9 @@ class Appointment extends CI_Controller {
 		$appointment = $this->appointment->id($this->input->post("id"));
 		if ($appointment){
 			if ($this->appointment->update($appointment->id, array("status_id" => $this->status->code("canceled")->id))){
+				$person = $this->general->id("person", $appointment->patient_id);
+				$this->utility_lib->add_log("appointment_cancel", $person->name);
+				
 				$status = true;
 				$type = "success";
 				$msg = $this->lang->line('success_cap');
@@ -428,6 +433,9 @@ class Appointment extends CI_Controller {
 		$appointment = $this->appointment->id($this->input->post("id"));
 		if ($appointment){
 			if ($this->appointment->update($appointment->id, array("status_id" => $this->status->code("finished")->id))){
+				$person = $this->general->id("person", $appointment->patient_id);
+				$this->utility_lib->add_log("appointment_finish", $person->name);
+				
 				$status = true;
 				$type = "success";
 				$msg = $this->lang->line('success_fap');
@@ -465,6 +473,9 @@ class Appointment extends CI_Controller {
 				$app_available = $this->general->is_available("appointment", $app, $status_ids, $app["id"]);
 				if ($sur_available and $app_available){
 					if ($this->appointment->update($app["id"], $app)){
+						$person = $this->general->id("person", $appointment->patient_id);
+						$this->utility_lib->add_log("appointment_reschedule", $person->name);
+						
 						$status = true;
 						$type = "success";
 						$msg = $this->lang->line('success_rsp');
