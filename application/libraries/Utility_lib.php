@@ -40,8 +40,8 @@ class Utility_lib{
 		2. set response parameter
 		*/
 		
-		return array("sunat_sent" => false, "sunat_msg" => "ocurrio error de comunicacion con sunat.");
-		//return array("sunat_sent" => true, "sunat_msg" => "Factura electronica anulada.");
+		//return array("sunat_sent" => false, "sunat_msg" => "ocurrio error de comunicacion con sunat.");
+		return array("sunat_sent" => true, "sunat_msg" => "Factura electronica anulada.");
 	}
 	
 	public function utildatos_dni($dni){

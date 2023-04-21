@@ -190,11 +190,11 @@ $(document).ready(function() {
 	//general
 	
 	//account role
-	set_datatable("account_list", 25, false);
 	$("#form_register_account").submit(function(e) {e.preventDefault(); register_account(this);});
 	$("#btn_search_person_ra").on('click',(function(e) {search_person_ra();}));
 	$(".remove_account").on('click',(function(e) {remove_account(this);}));
 	$(".control_bl_account").on('click',(function(e) {control_bl_account(this);}));
+	set_datatable("account_list", 25, false);
 	
 	//role & access
 	$(".chk_access").on('click',(function(e) {control_role_access(this);}));

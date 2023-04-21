@@ -232,10 +232,12 @@ class Sale extends CI_Controller {
 					$this->general->update("sale", $sale_id, array("sale_type_id" => $sale_type_id));
 
 					//success
+					$this->utility_lib->add_log("sale_register", $this->lang->line('sale')." #".$sale_id);
+					
 					$move_to = base_url()."sale/detail/".$sale_id;
 					$status = true;
 					$type = "success";
-					$msg = $this->lang->line('success_isa');	
+					$msg = $this->lang->line('success_isa');
 				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line('error_internal');
 			
@@ -403,6 +405,8 @@ class Sale extends CI_Controller {
 			$payment["registed_at"] = date('Y-m-d H:i:s', time());
 			if ($this->general->insert("payment", $payment)){//register payment
 				$this->update_balance($payment["sale_id"]);
+				$this->utility_lib->add_log("payment_register", $this->lang->line('sale')." #".$sale->id);
+				
 				$status = true;
 				$type = "success";
 				$msg = $this->lang->line("success_ipa");
@@ -420,6 +424,8 @@ class Sale extends CI_Controller {
 		//pending!! role validation
 		if ($this->general->delete("payment", array("id" => $payment->id))){
 			$this->update_balance($payment->sale_id);
+			$this->utility_lib->add_log("payment_delete", $this->lang->line('sale')." #".$payment->sale_id);
+			
 			$status = true;
 			$type = "success";
 			$msg = $this->lang->line("success_dpa");
@@ -443,6 +449,8 @@ class Sale extends CI_Controller {
 			
 			$sale_data = array("status_id" => $this->status->code("canceled")->id);
 			if ($this->general->update("sale", $sale->id, $sale_data)){
+				$this->utility_lib->add_log("sale_cancel", $this->lang->line('sale')." #".$sale->id);
+				
 				$status = true;
 				$type = "success";
 				$msg = $this->lang->line("success_csa");
@@ -454,10 +462,29 @@ class Sale extends CI_Controller {
 			$voucher = $this->general->filter("voucher", array("sale_id" => $sale->id));
 			if ($voucher){
 				$voucher = $voucher[0];
+				
+				//update voucher status in DB
+				$this->general->update("voucher", $voucher->id, ["status_id" => $this->status->code("canceled")->id]);
+				$this->utility_lib->add_log("voucher_cancel", $this->lang->line('sale')." #".$sale->id);
+				
+				//send cancel request to sunat
 				$sunat_result = $this->utility_lib->cancel_voucher_sunat($this->set_voucher_data($voucher->id));
 				$this->general->update("voucher", $voucher->id, $sunat_result);
-				if ($sunat_result["sunat_sent"]){ $color = "success"; $ic = "check"; } else{ $color = "danger"; $ic = "times"; }
+				if ($sunat_result["sunat_sent"]){$color = "success"; $ic = "check";}
+				else{$color = "danger"; $ic = "times";}
+				
 				$msg = $msg.'<br/><br/><span class="text-'.$color.'">Sunat <i class="fas fa-'.$ic.'"></i></span><br/>'.$sunat_result["sunat_msg"];
+			}
+			
+			//update products stocks
+			$products = $this->general->filter("sale_product", ["sale_id" => $sale->id]);
+			foreach($products as $item){
+				$p_op = $this->general->id("product_option", $item->option_id);
+				$new_stock = $p_op->stock + $item->qty;
+				$this->general->update("product_option", $p_op->id, ["stock" => $new_stock]);
+				
+				$sum = $this->general->sum("product_option", "stock", ["product_id" => $item->product_id]);
+				$this->general->update("product", $item->product_id, ["stock" => $sum->stock]);
 			}
 		}
 		
@@ -512,7 +539,10 @@ class Sale extends CI_Controller {
 		$voucher_data["registed_at"] = date('Y-m-d H:i:s', time());
 		$voucher_data["sale_id"] = $sale->id;
 		
-		return $this->general->insert("voucher", $voucher_data);//return voucher id
+		$voucher_id = $this->general->insert("voucher", $voucher_data);
+		if ($voucher_id) $this->utility_lib->add_log("voucher_register", $this->lang->line('sale')." #".$sale->id." (".$voucher_type->description.")");
+		
+		return $voucher_id;
 	}
 	
 	private function make_pdf($html, $filename){

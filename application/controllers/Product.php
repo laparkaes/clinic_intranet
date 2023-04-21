@@ -221,7 +221,8 @@ class Product extends CI_Controller {
 	public function detail($product_id){
 		if (!$this->session->userdata('logged_in')) redirect(base_url());
 		//pending! rol validation
-		//pending! load product information
+		
+		$this->update_stock($product_id);
 		
 		$product = $this->product->id($product_id);
 		if (!$product) redirect("/product");

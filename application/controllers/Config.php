@@ -48,6 +48,15 @@ class Config extends CI_Controller {
 		}
 		usort($sl_options, function($a, $b) { return strcmp($a->lang, $b->lang); });
 		
+		$account_arr = [];
+		$accounts = $this->general->all("account");
+		foreach($accounts as $item) $account_arr[$item->id] = $item->email;
+		
+		$log_code_arr = [];
+		$log_codes = $this->general->all("log_code");
+		foreach($log_codes as $item) $log_code_arr[$item->id] = $item->code;
+		
+		$logs = $this->general->filter("log", ["registed_at <=" => date("Y-m-d 00:00:00", strtotime("-6 months")), "registed_at <=" => date("Y-m-d 00:00:00", strtotime("+1 day"))], "registed_at", "desc");
 		
 		$data = array(
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
@@ -57,6 +66,9 @@ class Config extends CI_Controller {
 			"access" => $access,
 			"people_arr" => $people_arr,
 			"sl_options" => $sl_options,
+			"account_arr" => $account_arr,
+			"log_code_arr" => $log_code_arr,
+			"logs" => $logs,
 			"accounts" => $this->general->all("account", "role_id", "asc"),
 			"departments" => $this->general->all("address_department", "name", "asc"),
 			"provinces" => $this->general->all("address_province", "name", "asc"),
@@ -113,6 +125,8 @@ class Config extends CI_Controller {
 				$a["active"] = true;
 				$a["registed_at"] = date('Y-m-d H:i:s', time());
 				if ($this->account->insert($a)){
+					$this->utility_lib->add_log("account_register", $a["email"]);
+					
 					$status = true;
 					$type = "success";
 					$msg = $this->lang->line('success_rac');
@@ -125,7 +139,10 @@ class Config extends CI_Controller {
 	}
 	
 	public function remove_account(){
-		if ($this->general->delete("account", ["id" => $this->input->post("id")])){
+		$account = $this->general->id("account", $this->input->post("id"));
+		if ($this->general->delete("account", ["id" => $account->id])){
+			$this->utility_lib->add_log("account_delete", $account->email);
+			
 			$status = true;
 			$type = "success";
 			$msg = "Usuario ha sido eliminado.";
@@ -195,6 +212,8 @@ class Config extends CI_Controller {
 			}
 			
 			if ($this->general->update("company", 1, $datas)){
+				$this->utility_lib->add_log("company_update", null);
+				
 				$status = true;
 				$type = "success";
 				$msg = $this->lang->line("success_cup");
@@ -213,6 +232,7 @@ class Config extends CI_Controller {
 			$new_id = $this->general->insert("sl_option", $data);
 			if ($new_id){
 				$new_value = $this->general->id("sl_option", $new_id);
+				$this->utility_lib->add_log("sl_value_register", $new_value->description);
 				
 				$msg = "Nuevo valor ha sido registrado.";
 				$type = "success";
@@ -230,6 +250,8 @@ class Config extends CI_Controller {
 		
 		$removed_value = $this->general->id("sl_option", $id);
 		if ($this->general->delete("sl_option", ["id" => $id])){
+			$this->utility_lib->add_log("sl_value_delete", $removed_value->description);
+			
 			$msg = "Nuevo valor ha sido eliminado.";
 			$type = "success";
 			$status = true;

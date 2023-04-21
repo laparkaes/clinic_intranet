@@ -10,6 +10,32 @@
 <div class="col-md-12">
 
 
+	<p class="text-info">Se muestra hasta ultimos 6 meses. Consulte al administrador del sistema para visualizar mayor tiempo.</p>
+	<div class="table-responsive">
+		<table class="table table-responsive-md">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Usuario</th>
+					<th>Accion</th>
+					<th>Detalle</th>
+					<th>Hora</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach($logs as $i => $item){ ?>
+				<tr>
+					<td><?= $i + 1 ?></td>
+					<td><?= $account_arr[$item->account_id] ?></td>
+					<td><?= $log_code_arr[$item->log_code_id] ?></td>
+					<td><?= $item->detail ?></td>
+					<td><?= $item->registed_at ?></td>
+				</tr>
+				<?php } ?>
+			</tbody>
+		</table>
+	</div>
+
 					
 </div>
 <div class="col-md-12">
@@ -356,44 +382,9 @@
 						</div>
 					</div>
 					<div class="tab-pane fade" id="bl_history_admin">
-						<div class="table-responsive">
-							<table class="table table-responsive-md">
-								<thead>
-									<tr>
-										<th>#</th>
-										<th>Name</th>
-										<th>Status</th>
-										<th>Date</th>
-										<th>Price</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<th>1</th>
-										<td>Kolor Tea Shirt For Man</td>
-										<td><span class="badge badge-primary light">Sale</span>
-										</td>
-										<td>January 22</td>
-										<td class="color-primary">$21.56</td>
-									</tr>
-									<tr>
-										<th>2</th>
-										<td>Kolor Tea Shirt For Women</td>
-										<td><span class="badge badge-success">Tax</span>
-										</td>
-										<td>January 30</td>
-										<td class="color-success">$55.32</td>
-									</tr>
-									<tr>
-										<th>3</th>
-										<td>Blue Backpack For Baby</td>
-										<td><span class="badge badge-danger">Extended</span>
-										</td>
-										<td>January 25</td>
-										<td class="color-danger">$14.85</td>
-									</tr>
-								</tbody>
-							</table>
+						<div class="row">
+							<div class="col">
+							</div>
 						</div>
 					</div>
 				</div>

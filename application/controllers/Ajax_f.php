@@ -26,7 +26,7 @@ class Ajax_f extends CI_Controller {
 				$status = true;
 			}else{
 				$name = null;
-				switch($this->general->filter("doc_type", array("id" => $data["doc_type_id"]))[0]->description){
+				switch($this->general->id("doc_type", $data["doc_type_id"])->description){
 					case "DNI - Documento Nacional de Identidad":
 						$ud = $this->utility_lib->utildatos_dni($data["doc_number"]);
 						if ($ud->status) $name = $ud->data->nombres." ".$ud->data->apellidoPaterno." ".$ud->data->apellidoMaterno;
