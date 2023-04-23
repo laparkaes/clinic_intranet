@@ -26,12 +26,16 @@ $lang['error_epa'] = 'Ingrese contraseña.';//error_enter_password
 $lang['error_pac'] = 'Repita contraseña correctamente.';//error_password_confirm
 $lang['error_sro'] = 'Elija un rol.';//error_select_role
 $lang['error_pra'] = 'Persona ya cuenta con usuario con role elegido.';//error_person_has_role_account
+$lang['error_evd'] = 'Ingrese descripción de nuevo valor.';//error_enter_value_description
 $lang['success_rac'] = 'Usuario ha sido registrado.';//success_register_account
 $lang['success_cup'] = 'Empresa ha sido actualizada.';//success_company_update
+$lang['success_dac'] = 'Usuario ha sido eliminado.';//success_delete_account
+$lang['success_rsv'] = 'Nuevo valor ha sido registrado.';//success_register_sl_value
+$lang['success_dsv'] = 'Nuevo valor ha sido eliminado.';//success_delete_sl_value
 $lang['warning_rac'] = '¿Desea eliminar usuario elegido?';//warning_remove_account
 
 //content
-$lang['new_sale'] = 'Nueva Venta';
+$lang['btn_save'] = 'Guardar';
 
 //role
 $lang['role_master'] = 'Maestro';
@@ -53,6 +57,8 @@ $lang['module_report'] = 'Módulo Reporte';
 $lang['module_config'] = 'Módulo Configuración';
 
 //access
+$lang['title_role_access'] = 'Rol / Acceso';
+$lang['title_role_access_admin'] = 'Gestión de Rol / Acceso';
 $lang['access_index'] = 'Ver lista';
 $lang['access_detail'] = 'Ver detalle';
 $lang['access_register'] = 'Registrar/Generar';
@@ -73,6 +79,7 @@ $lang['access_admin_log'] = 'Gestión de historial';
 //account
 $lang['title_personal_info'] = 'Datos Personales';
 $lang['title_account'] = 'Usuario';
+$lang['title_account_admin'] = 'Gestión de Usuarios';
 $lang['lb_document'] = 'Documento';
 $lang['lb_number'] = 'Número';
 $lang['lb_name'] = 'Nombre';
@@ -87,6 +94,8 @@ $lang['lb_password'] = 'Contraseña';
 $lang['lb_confirm'] = 'Confirmación';
 
 //system
+$lang['title_system'] = 'Sistema';
+$lang['title_add_new_value'] = 'Agregar Nuevo Valor';
 $lang['slop_blood_type'] = 'Tipo de Sangre';
 $lang['slop_civil_status'] = 'Estado Civil';
 $lang['slop_diagnosis_type'] = 'Tipo de Diagnosis';
@@ -97,3 +106,25 @@ $lang['slop_medicine_frequency'] = 'Frecuencia';
 $lang['slop_medicine_via_application'] = 'Vía Aplicación';
 $lang['slop_payment_method'] = 'Metodo de Pago';
 $lang['slop_sex'] = 'Sexo';
+
+//company
+$lang['title_company'] = 'Empresa';
+$lang['title_legal_data'] = 'Datos Legales';
+$lang['title_sunat_access'] = 'Acceso de Sunat';
+$lang['lb_tax_id'] = 'RUC';
+$lang['lb_urbanization'] = 'Urbanización';
+$lang['lb_department'] = 'Departamento';
+$lang['lb_province'] = 'Provincia';
+$lang['lb_district'] = 'Distrito';
+$lang['lb_resolution'] = 'Resolución';
+$lang['lb_digital_certificate'] = 'Certificado Digital';
+$lang['lb_password_SOL'] = 'Clave SOL';
+$lang['lb_password'] = 'Contraseña';
+
+//log
+$lang['title_log'] = 'Historial';
+$lang['title_system_log'] = 'Historial de Sistema';
+$lang['msg_last_6_months'] = 'Se muestra hasta últimos 6 meses.';
+$lang['th_action'] = 'Acción';
+$lang['th_detail'] = 'Detalle';
+$lang['th_time'] = 'Hora';

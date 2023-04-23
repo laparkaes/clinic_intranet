@@ -19,7 +19,14 @@ class Config extends CI_Controller {
 	
 	public function log_list(){
 		$log_codes = $this->general->all("log_code", "code", "asc");
-		print_r($log_codes);
+		foreach($log_codes as $i => $item){
+			$this->general->update("log_code", $item->id, ["id" => (1000 + $i)]);
+		}
+		
+		$log_codes = $this->general->all("log_code", "code", "asc");
+		foreach($log_codes as $i => $item){
+			$this->general->update("log_code", $item->id, ["id" => ($i + 1)]);
+		}
 	}
 	
 	public function index(){
@@ -150,11 +157,11 @@ class Config extends CI_Controller {
 			
 			$status = true;
 			$type = "success";
-			$msg = "Usuario ha sido eliminado.";
+			$msg = $this->lang->line('success_dac');
 		}else{
 			$status = false;
 			$type = "error";
-			$msg = "Ha ocurrido error. Vuelva a intentar.";
+			$msg = $this->lang->line('error_internal');
 		}
 		
 		header('Content-Type: application/json');
@@ -239,11 +246,11 @@ class Config extends CI_Controller {
 				$new_value = $this->general->id("sl_option", $new_id);
 				$this->utility_lib->add_log("sl_value_register", $new_value->description);
 				
-				$msg = "Nuevo valor ha sido registrado.";
+				$msg = $this->lang->line("success_rsv");
 				$type = "success";
 				$status = true;
-			}else $msg = "error interno";
-		}else $msg = "Ingrese descripcion de nuevo valor.";
+			}else $msg = $this->lang->line("error_internal");
+		}else $msg = $this->lang->line("error_evd");
 		
 		header('Content-Type: application/json');
 		echo json_encode(["status" => $status, "type" => $type, "msg" => $msg, "new_value" => $new_value]);
@@ -257,10 +264,10 @@ class Config extends CI_Controller {
 		if ($this->general->delete("sl_option", ["id" => $id])){
 			$this->utility_lib->add_log("sl_value_delete", $removed_value->description);
 			
-			$msg = "Nuevo valor ha sido eliminado.";
+			$msg = $this->lang->line("success_dsv");
 			$type = "success";
 			$status = true;
-		}else $msg = "error interno";
+		}else $msg = $this->lang->line("error_internal");
 		
 		header('Content-Type: application/json');
 		echo json_encode(["status" => $status, "type" => $type, "msg" => $msg, "removed_value" => $removed_value]);

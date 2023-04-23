@@ -187,8 +187,6 @@ function remove_sl_value(dom){
 }
 
 $(document).ready(function() {
-	//general
-	
 	//account role
 	$("#form_register_account").submit(function(e) {e.preventDefault(); register_account(this);});
 	$("#btn_search_person_ra").on('click',(function(e) {search_person_ra();}));

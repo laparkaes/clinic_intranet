@@ -2,16 +2,10 @@
 	<div class="row page-titles mx-0">
 		<div class="col-sm-6 p-md-0">
 			<div class="welcome-text">
-				<h4>Configuracion</h4>
+				<h4><?= $this->lang->line("setting") ?></h4>
 			</div>
 		</div>
 	</div>
-</div>
-<div class="col-md-12">
-
-	
-	
-					
 </div>
 <div class="col-md-12">
 	<div class="card">
@@ -20,27 +14,27 @@
 				<ul class="nav nav-tabs">
 					<li class="nav-item">
 						<a class="nav-link active" data-toggle="tab" href="#bl_user_admin">
-							<i class="fal fa-users-cog mr-3"></i>Usuario
+							<i class="fal fa-users-cog mr-3"></i><?= $this->lang->line("title_account") ?>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#bl_role_admin">
-							<i class="fal fa-lock-alt mr-3"></i>Rol / Acceso
+							<i class="fal fa-lock-alt mr-3"></i><?= $this->lang->line("title_role_access") ?>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#bl_company_admin">
-							<i class="fal fa-building mr-3"></i>Empresa
+							<i class="fal fa-building mr-3"></i><?= $this->lang->line("title_company") ?>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#bl_system_admin">
-							<i class="fal fa-tools mr-3"></i>Sistema
+							<i class="fal fa-tools mr-3"></i><?= $this->lang->line("title_system") ?>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#bl_history_admin">
-							<i class="fal fa-history mr-3"></i>Historial
+							<i class="fal fa-history mr-3"></i><?= $this->lang->line("title_log") ?>
 						</a>
 					</li>
 				</ul>
@@ -48,7 +42,7 @@
 					<div class="tab-pane fade show active" id="bl_user_admin" role="tabpanel">
 						<div class="row">
 							<div class="col-md-6">
-								<h5 class="text-primary mb-3">Gestion de Usuarios</h5>
+								<h5 class="text-primary mb-3"><?= $this->lang->line("title_account_admin") ?></h5>
 							</div>
 							<div class="col-md-6 text-right">
 								<div class="btn-group mb-3">
@@ -146,9 +140,9 @@
 												<thead>
 													<tr>
 														<th><strong>#</strong></th>
-														<th><strong>Rol</strong></th>
-														<th><strong>Email</strong></th>
-														<th><strong>Nombre</strong></th>
+														<th><strong><?= $this->lang->line('lb_role') ?></strong></th>
+														<th><strong><?= $this->lang->line('lb_email') ?></strong></th>
+														<th><strong><?= $this->lang->line('lb_name') ?></strong></th>
 														<th></th>
 													</tr>
 												</thead>
@@ -177,7 +171,7 @@
 					<div class="tab-pane fade" id="bl_role_admin">
 						<div class="row">
 							<div class="col-md-12">
-								<h5 class="text-primary mb-3">Gestion de Rol / Acceso</h5>
+								<h5 class="text-primary mb-3"><?= $this->lang->line('title_role_access_admin') ?></h5>
 							</div>
 							<div class="col-md-12">
 								<div class="table-responsive">
@@ -213,39 +207,39 @@
 					<div class="tab-pane fade" id="bl_company_admin">
 						<form action="#" id="form_update_company_data" class="row">
 							<div class="col-md-6">
-								<h5 class="text-primary mb-3">Datos Legales</h5>
+								<h5 class="text-primary mb-3"><?= $this->lang->line('title_legal_data') ?></h5>
 								<div class="form-row">
 									<div class="form-group col-md-4">
-										<label>RUC</label>
+										<label><?= $this->lang->line('lb_tax_id') ?></label>
 										<input type="text" class="form-control" value="<?= $company->ruc ?>" name="ruc">
 										<div class="sys_msg" id="com_ruc_msg"></div>
 									</div>
 									<div class="form-group col-md-8">
-										<label>Nombre</label>
+										<label><?= $this->lang->line('lb_name') ?></label>
 										<input type="text" class="form-control" value="<?= $company->name ?>" name="name">
 										<div class="sys_msg" id="com_name_msg"></div>
 									</div>
 									<div class="form-group col-md-8">
-										<label>Email</label>
+										<label><?= $this->lang->line('lb_email') ?></label>
 										<input type="text" class="form-control" value="<?= $company->email ?>" name="email">
 										<div class="sys_msg" id="com_email_msg"></div>
 									</div>
 									<div class="form-group col-md-4">
-										<label>Telefono</label>
+										<label><?= $this->lang->line('lb_tel') ?></label>
 										<input type="text" class="form-control" value="<?= $company->tel ?>" name="tel">
 										<div class="sys_msg" id="com_tel_msg"></div>
 									</div>
 									<div class="form-group col-md-6">
-										<label>Direccion</label>
+										<label><?= $this->lang->line('lb_address') ?></label>
 										<input type="text" class="form-control" value="<?= $company->address ?>" name="address">
 										<div class="sys_msg" id="com_address_msg"></div>
 									</div>
 									<div class="form-group col-md-6">
-										<label>Urbanizacion</label>
+										<label><?= $this->lang->line('lb_urbanization') ?></label>
 										<input type="text" class="form-control" value="<?= $company->urbanization ?>" name="urbanization">
 									</div>
 									<div class="form-group col-md-4">
-										<label>Departamento</label>
+										<label><?= $this->lang->line('lb_department') ?></label>
 										<select class="form-control" id="sl_department" name="department_id">
 											<option value="">-</option>
 											<?php foreach($departments as $item){
@@ -257,7 +251,7 @@
 										<div class="sys_msg" id="com_department_msg"></div>
 									</div>
 									<div class="form-group col-md-4">
-										<label>Provincia</label>
+										<label><?= $this->lang->line('lb_province') ?></label>
 										<select class="form-control" id="sl_province" name="province_id">
 											<option value="">-</option>
 											<?php foreach($provinces as $item){
@@ -270,7 +264,7 @@
 										<div class="sys_msg" id="com_province_msg"></div>
 									</div>
 									<div class="form-group col-md-4">
-										<label>Distrito</label>
+										<label><?= $this->lang->line('lb_district') ?></label>
 										<select class="form-control" id="sl_district" name="district_id">
 											<option value="">-</option>
 											<?php foreach($districts as $item){
@@ -285,16 +279,16 @@
 								</div>
 							</div>
 							<div class="col-md-6">
-								<h5 class="text-primary mb-3">Acceso de Sunat</h5>
+								<h5 class="text-primary mb-3"><?= $this->lang->line('title_sunat_access') ?></h5>
 								<div class="form-row">
 									<div class="form-group col-md-12">
-										<label>Resolucion</label>
+										<label><?= $this->lang->line('lb_resolution') ?></label>
 										<input type="text" class="form-control" value="<?= $company->sunat_resolution ?>" name="sunat_resolution">
 										<div class="sys_msg" id="s_res_msg"></div>
 									</div>
 									<div class="form-group col-md-12">
 										<div class="d-flex justify-content-between">
-											<label>Certificado Digital</label>
+											<label><?= $this->lang->line('lb_digital_certificate') ?></label>
 											<?php if ($company->sunat_cert_filename){ ?>
 											<a href="<?= base_url()."uploaded/sunat/".$company->sunat_cert_filename ?>" class="text-info" id="ic_cert" target="_blank"><i class="fas fa-download"></i></a>
 											<?php } ?>
@@ -303,19 +297,19 @@
 										<div class="sys_msg" id="s_cer_msg"></div>
 									</div>
 									<div class="form-group col-md-12">
-										<label>Clave SOL</label>
+										<label><?= $this->lang->line('lb_password_SOL') ?></label>
 										<input type="text" class="form-control" value="<?= $company->sunat_clave_sol ?>" name="sunat_clave_sol">
 										<div class="sys_msg" id="s_cla_msg"></div>
 									</div>
 									<div class="form-group col-md-12">
-										<label>Contraseña</label>
+										<label><?= $this->lang->line('lb_password') ?></label>
 										<input type="text" class="form-control" value="<?= $company->sunat_password ?>" name="sunat_password">
 										<div class="sys_msg" id="s_pas_msg"></div>
 									</div>
 								</div>
 							</div>
 							<div class="col-md-12 pt-3">
-								<button type="submit" class="btn btn-primary">Guardar</button>
+								<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_save') ?></button>
 							</div>
 						</form>
 					</div>
@@ -324,7 +318,8 @@
 							<div class="col-md-6">
 								<div class="basic-list-group">
 									<div class="list-group">
-										<?php foreach($sl_options as $i => $item){ if (!$i) $active = "active"; else $active = ""; ?>
+										<?php foreach($sl_options as $i => $item){
+										if (!$i) $active = "active"; else $active = ""; ?>
 										<button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center <?= $active ?> py-1 sl_group" id="btn_sl_<?= $item->code ?>" value="<?= $item->code ?>">
 											<span class="sl_group_name"><?= $item->lang ?></span><span class="badge badge-primary badge-pill"><?= count($item->values) ?></span>
 										</button>
@@ -334,7 +329,7 @@
 							</div>
 							<div class="col-md-6">
 								<div>
-									<h5>Agregar Nuevo Valor</h5>
+									<h5><?= $this->lang->line('title_add_new_value') ?></h5>
 									<form action="#" class="form-row" id="form_add_sl_value">
 										<input type="hidden" id="sl_add_code" name="code" value="<?= $sl_options[0]->code ?>">
 										<div class="form-group col-md-8">
@@ -342,7 +337,9 @@
 											<input type="text" class="form-control" id="asl_description" name="description">
 										</div>
 										<div class="form-group col-md-4 d-flex align-items-end">
-											<button type="submit" class="btn btn-primary w-100">Guardar</button>
+											<button type="submit" class="btn btn-primary w-100">
+												<?= $this->lang->line('btn_save') ?>
+											</button>
 										</div>
 									</form>
 								</div>
@@ -359,10 +356,12 @@
 					<div class="tab-pane fade" id="bl_history_admin">
 						<div class="row">
 							<div class="col-md-6">
-								<h5 class="text-primary mb-3">Historial de Sistema</h5>
+								<h5 class="text-primary mb-3"><?= $this->lang->line('title_system_log') ?></h5>
 							</div>
-							<div class="col-md-12">
-								<p><small class="text-info">Se muestra hasta ultimos 6 meses. Consulte al administrador del sistema para visualizar mayor tiempo.</small></p>
+							<div class="col-md-6">
+								<p class="text-right">
+									<small class="text-info"><?= $this->lang->line('msg_last_6_months') ?></small>
+								</p>
 							</div>
 							<div class="col-md-2">
 								<div class="mb-3" id="log_list_length_new"></div>
@@ -377,10 +376,10 @@
 										<thead>
 											<tr>
 												<th>#</th>
-												<th>Usuario</th>
-												<th>Accion</th>
-												<th>Detalle</th>
-												<th>Hora</th>
+												<th><?= $this->lang->line('lb_email') ?></th>
+												<th><?= $this->lang->line('th_action') ?></th>
+												<th><?= $this->lang->line('th_detail') ?></th>
+												<th><?= $this->lang->line('th_time') ?></th>
 											</tr>
 										</thead>
 										<tbody>
