@@ -9,33 +9,8 @@
 </div>
 <div class="col-md-12">
 
-
-	<p class="text-info">Se muestra hasta ultimos 6 meses. Consulte al administrador del sistema para visualizar mayor tiempo.</p>
-	<div class="table-responsive">
-		<table class="table table-responsive-md">
-			<thead>
-				<tr>
-					<th>#</th>
-					<th>Usuario</th>
-					<th>Accion</th>
-					<th>Detalle</th>
-					<th>Hora</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach($logs as $i => $item){ ?>
-				<tr>
-					<td><?= $i + 1 ?></td>
-					<td><?= $account_arr[$item->account_id] ?></td>
-					<td><?= $log_code_arr[$item->log_code_id] ?></td>
-					<td><?= $item->detail ?></td>
-					<td><?= $item->registed_at ?></td>
-				</tr>
-				<?php } ?>
-			</tbody>
-		</table>
-	</div>
-
+	
+	
 					
 </div>
 <div class="col-md-12">
@@ -383,7 +358,44 @@
 					</div>
 					<div class="tab-pane fade" id="bl_history_admin">
 						<div class="row">
-							<div class="col">
+							<div class="col-md-6">
+								<h5 class="text-primary mb-3">Historial de Sistema</h5>
+							</div>
+							<div class="col-md-12">
+								<p><small class="text-info">Se muestra hasta ultimos 6 meses. Consulte al administrador del sistema para visualizar mayor tiempo.</small></p>
+							</div>
+							<div class="col-md-2">
+								<div class="mb-3" id="log_list_length_new"></div>
+							</div>
+							<div class="col-md-6"></div>
+							<div class="col-md-4">
+								<div class="mb-3" id="log_list_filter_new"></div>
+							</div>
+							<div class="col-md-12">
+								<div class="table-responsive">
+									<table id="log_list" class="table display">
+										<thead>
+											<tr>
+												<th>#</th>
+												<th>Usuario</th>
+												<th>Accion</th>
+												<th>Detalle</th>
+												<th>Hora</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php foreach($logs as $i => $item){ ?>
+											<tr>
+												<td><?= $i + 1 ?></td>
+												<td><?= $account_arr[$item->account_id] ?></td>
+												<td><?= $log_code_arr[$item->log_code_id] ?></td>
+												<td><?= $item->detail ?></td>
+												<td><?= $item->registed_at ?></td>
+											</tr>
+											<?php } ?>
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
 					</div>

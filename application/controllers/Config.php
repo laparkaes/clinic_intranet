@@ -17,6 +17,11 @@ class Config extends CI_Controller {
 		return $msgs;
 	}
 	
+	public function log_list(){
+		$log_codes = $this->general->all("log_code", "code", "asc");
+		print_r($log_codes);
+	}
+	
 	public function index(){
 		if (!$this->session->userdata('logged_in')) redirect(base_url());
 		//pending! rol validation

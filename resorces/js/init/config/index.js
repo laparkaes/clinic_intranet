@@ -208,4 +208,7 @@ $(document).ready(function() {
 	$("#form_add_sl_value").submit(function(e) {e.preventDefault(); add_sl_value(this);});
 	$(".sl_group").on('click',(function(e) {control_sl_group(this);}));
 	$(".btn_sl_remove").on('click',(function(e) {remove_sl_value(this);}));
+	
+	//log
+	set_datatable("log_list", 25, false);
 });
