@@ -113,12 +113,14 @@ function control_bl(dom){
 		$(dom).removeClass("btn-outline-primary");
 		$(dom).addClass("btn-primary");
 	}else{
-		$(".bl_content").addClass("d-none");
-		$("#bl_list").removeClass("d-none");
-		$(".control_bl").removeClass("btn-primary");
-		$(".control_bl").addClass("btn-outline-primary");
-		$("#btn_list").removeClass("btn-outline-primary");
-		$("#btn_list").addClass("btn-primary");
+		if ($("#bl_list").length > 0){
+			$(".bl_content").addClass("d-none");
+			$("#bl_list").removeClass("d-none");
+			$(".control_bl").removeClass("btn-primary");
+			$(".control_bl").addClass("btn-outline-primary");
+			$("#btn_list").removeClass("btn-outline-primary");
+			$("#btn_list").addClass("btn-primary");	
+		}
 	}
 }
 

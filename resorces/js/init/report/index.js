@@ -1,4 +1,4 @@
-$(document).ready(function() {
+function make_chart(){
 	var options = {
 		series: [{
 			data: [
@@ -104,4 +104,11 @@ $(document).ready(function() {
 		okText: 'Elegir',
 		cancelText: 'Cancelar'
     });
+}
+
+$(document).ready(function() {
+	$(".control_bl").on('click',(function(e) {control_bl(this);}));
+	
+	
+	make_chart();
 });
