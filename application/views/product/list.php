@@ -10,9 +10,6 @@
 				<button type="button" class="btn btn-primary control_bl" id="btn_list" value="bl_list">
 					<i class="fas fa-list"></i>
 				</button>
-				<button type="button" class="btn btn-outline-primary control_bl" value="bl_filter">
-					<i class="fas fa-filter"></i>
-				</button>
 				<button type="button" class="btn btn-outline-primary control_bl" value="bl_category">
 					<i class="fas fa-sitemap"></i>
 				</button>
@@ -80,77 +77,6 @@
 								<?php } ?>
 							</tbody>
 						</table>
-					</div>
-				</div>
-			</div>
-			<div class="row bl_content d-none" id="bl_filter">
-				<div class="col-md-12">
-					Filter Block
-				</div>
-			</div>
-			<div class="row bl_content d-none" id="bl_add">
-				<div class="col-md-12">
-					<div class="row">
-						<div class="col-md-4">
-							<div class="text-center" style="max-width: 100%;">
-								<img src="uploaded/products/no_img.png" id="img_preview" style="max-width: 100%;">
-							</div>
-						</div>
-						<div class="col-md-8">
-							<form action="#" class="form-row" id="form_register_product">
-								<div class="form-group col-md-6">
-									<label><?= $this->lang->line('p_type') ?></label>
-									<select class="form-control" name="type_id">
-										<?php foreach($prod_types as $item){ ?>
-										<option value="<?= $item->id ?>"><?= $item->description ?></option>
-										<?php } ?>
-									</select>
-									<div class="sys_msg" id="ap_type_msg"></div>
-								</div>
-								<div class="form-group col-md-6">
-									<label><?= $this->lang->line('p_code') ?></label>
-									<input type="text" class="form-control" name="code">
-									<div class="sys_msg" id="ap_code_msg"></div>
-								</div>
-								<div class="form-group col-md-6">
-									<label><?= $this->lang->line('p_image') ?> <small>(<?= $this->lang->line('p_optional') ?>)</small></label>
-									<input type="file" class="form-control" id="ap_image" name="image" accept="image/*">
-									<div class="sys_msg" id="ap_image_msg"></div>
-								</div>
-								<div class="form-group col-md-6">
-									<label><?= $this->lang->line('p_price') ?></label>
-									<div class="input-group">
-										<select class="form-control w-10" name="currency_id" style="max-width: 70px;">
-											<?php foreach($currencies as $item){ ?>
-											<option value="<?= $item->id ?>"><?= $item->description ?></option>
-											<?php } ?>
-										</select>
-										<input type="text" class="form-control" name="price">
-									</div>
-									<div class="sys_msg" id="ap_price_msg"></div>
-								</div>
-								<div class="form-group col-md-12">
-									<label><?= $this->lang->line('p_category') ?></label>
-									<select class="form-control sl_category" name="category_id">
-										<option value="">-</option>
-										<?php foreach($categories as $item){ ?>
-										<option value="<?= $item->id ?>"><?= $item->name ?></option>
-										<?php } ?>
-									</select>
-									<div class="sys_msg" id="ap_category_msg"></div>
-								</div>
-								<div class="form-group col-md-12">
-									<label><?= $this->lang->line('p_name') ?></label>
-									<input type="text" class="form-control" name="description">
-									<div class="sys_msg" id="ap_description_msg"></div>
-								</div>
-								<div class="form-group col-md-12 pt-3 mb-0">
-									<button type="submit" class="btn btn-primary">
-										<?= $this->lang->line('btn_register') ?>
-									</button>
-								</div>
-							</form>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -263,6 +189,72 @@
 									<div class="sys_msg" id="mp_result_msg"></div>
 								</form>
 							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row bl_content d-none" id="bl_add">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="text-center" style="max-width: 100%;">
+								<img src="uploaded/products/no_img.png" id="img_preview" style="max-width: 100%;">
+							</div>
+						</div>
+						<div class="col-md-8">
+							<form action="#" class="form-row" id="form_register_product">
+								<div class="form-group col-md-6">
+									<label><?= $this->lang->line('p_type') ?></label>
+									<select class="form-control" name="type_id">
+										<?php foreach($prod_types as $item){ ?>
+										<option value="<?= $item->id ?>"><?= $item->description ?></option>
+										<?php } ?>
+									</select>
+									<div class="sys_msg" id="ap_type_msg"></div>
+								</div>
+								<div class="form-group col-md-6">
+									<label><?= $this->lang->line('p_code') ?></label>
+									<input type="text" class="form-control" name="code">
+									<div class="sys_msg" id="ap_code_msg"></div>
+								</div>
+								<div class="form-group col-md-6">
+									<label><?= $this->lang->line('p_image') ?> <small>(<?= $this->lang->line('p_optional') ?>)</small></label>
+									<input type="file" class="form-control" id="ap_image" name="image" accept="image/*">
+									<div class="sys_msg" id="ap_image_msg"></div>
+								</div>
+								<div class="form-group col-md-6">
+									<label><?= $this->lang->line('p_price') ?></label>
+									<div class="input-group">
+										<select class="form-control w-10" name="currency_id" style="max-width: 70px;">
+											<?php foreach($currencies as $item){ ?>
+											<option value="<?= $item->id ?>"><?= $item->description ?></option>
+											<?php } ?>
+										</select>
+										<input type="text" class="form-control" name="price">
+									</div>
+									<div class="sys_msg" id="ap_price_msg"></div>
+								</div>
+								<div class="form-group col-md-12">
+									<label><?= $this->lang->line('p_category') ?></label>
+									<select class="form-control sl_category" name="category_id">
+										<option value="">-</option>
+										<?php foreach($categories as $item){ ?>
+										<option value="<?= $item->id ?>"><?= $item->name ?></option>
+										<?php } ?>
+									</select>
+									<div class="sys_msg" id="ap_category_msg"></div>
+								</div>
+								<div class="form-group col-md-12">
+									<label><?= $this->lang->line('p_name') ?></label>
+									<input type="text" class="form-control" name="description">
+									<div class="sys_msg" id="ap_description_msg"></div>
+								</div>
+								<div class="form-group col-md-12 pt-3 mb-0">
+									<button type="submit" class="btn btn-primary">
+										<?= $this->lang->line('btn_register') ?>
+									</button>
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>

@@ -315,6 +315,9 @@
 					</div>
 					<div class="tab-pane fade" id="bl_system_admin">
 						<div class="row">
+							<div class="col-md-12">
+								<h5 class="text-primary mb-3"><?= $this->lang->line("title_system_admin") ?></h5>
+							</div>
 							<div class="col-md-6">
 								<div class="basic-list-group">
 									<div class="list-group">

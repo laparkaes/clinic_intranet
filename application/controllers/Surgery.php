@@ -24,15 +24,7 @@ class Surgery extends CI_Controller {
 		if (!$this->session->userdata('logged_in')) redirect(base_url());
 		//PENDING! rol validation
 		
-		$f_from = $this->input->get("f_from"); if (!$f_from) $f_from = date("Y-m-d", strtotime("-3 months"));
-		$f_to = $this->input->get("f_to"); if (!$f_to) $f_to = date("Y-m-d", strtotime("+3 months"));
-		$f_status = $this->input->get("f_status");
-		
-		//getting surgeries from today
-		$filter = array();
-		$filter["schedule_from >="] = $f_from." 00:00:00";
-		$filter["schedule_to <="] = $f_to." 23:59:59";
-		if ($f_status) $filter["status_id"] = $this->status->code($f_status)->id;
+		$filter = ["schedule_from >=" => date("Y-m-d", strtotime("-1 month"))];
 		$surgeries = $this->general->filter("surgery", $filter, "schedule_from", "desc");
 		
 		$person_ids = array();
@@ -47,13 +39,17 @@ class Surgery extends CI_Controller {
 		$people = $this->general->ids("person", $person_ids);
 		foreach($people as $p) $people_arr[$p->id] = $p->name;
 		
+		$se_id = $this->general->filter("status", ["code" => "enabled"])[0]->id;//status_enabled_id
+		
 		$specialties_arr = array();
 		$specialties = $this->general->all("specialty", "name", "asc");
-		foreach($specialties as $s) $specialties_arr[$s->id] = $s->name;
+		foreach($specialties as $s){
+			$s->doctor_qty = $this->general->counter("doctor", ["status_id" => $se_id, "specialty_id" => $s->id]);
+			$specialties_arr[$s->id] = $s->name;
+		}
 		
-		$status_enabled = $this->general->filter("status", array("code" => "enabled"))[0];
 		$doctors_arr = array();
-		$doctors = $this->general->filter("doctor", array("status_id" => $status_enabled->id));
+		$doctors = $this->general->filter("doctor", array("status_id" => $se_id));
 		foreach($doctors as $d){
 			$d->name = $this->general->id("person", $d->person_id)->name;
 			$doctors_arr[$d->person_id] = $d;
@@ -74,7 +70,6 @@ class Surgery extends CI_Controller {
 		for($i = 2; $i <= 12; $i++) array_push($duration_ops, ["value" => 60 * $i, "txt" => $i." ".$this->lang->line('op_hours')]);
 		
 		$data = array(
-			"filter" => array("from" => $f_from, "to" => $f_to, "status" => $f_status),
 			"status_arr" => $status_arr,
 			"surgeries" => $surgeries,
 			"rooms" => $rooms,

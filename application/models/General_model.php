@@ -52,7 +52,7 @@ class General_model extends CI_Model{
 		return $result;
 	}
 	
-	function find_count($tablename, $field1, $field2 = "", $filter = array()){
+	function find_count($tablename, $field1 = [], $field2 = "", $filter = array()){
 		foreach($filter as $f) $this->db->like($field1, $f);
 		$this->db->or_where_in($field2, $filter);
 		$query = $this->db->get($tablename);

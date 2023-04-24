@@ -95,6 +95,7 @@ $lang['lb_confirm'] = 'Confirmación';
 
 //system
 $lang['title_system'] = 'Sistema';
+$lang['title_system_admin'] = 'Gestión de Sistema';
 $lang['title_add_new_value'] = 'Agregar Nuevo Valor';
 $lang['slop_blood_type'] = 'Tipo de Sangre';
 $lang['slop_civil_status'] = 'Estado Civil';

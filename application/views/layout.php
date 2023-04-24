@@ -62,10 +62,6 @@
 									</div>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a href="<?= base_url() ?>account" class="dropdown-item ai-icon">
-										<i class="fa fa-user fa-lg text-success" style="width:18px;"></i>
-                                        <span class="ml-2"><?= $this->lang->line('hd_profile') ?></span>
-                                    </a>
                                     <a href="<?= base_url() ?>auth/logout" class="dropdown-item ai-icon">
 										<i class="fa fa-sign-out fa-lg text-danger" style="width:18px;"></i>
                                         <span class="ml-2"><?= $this->lang->line('hd_logout') ?></span>

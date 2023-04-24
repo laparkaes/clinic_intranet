@@ -10,9 +10,6 @@
 				<button type="button" class="btn btn-primary control_bl" id="btn_list" value="bl_list">
 					<i class="fas fa-list"></i>
 				</button>
-				<button type="button" class="btn btn-outline-primary control_bl" value="bl_filter">
-					<i class="fas fa-filter"></i>
-				</button>
 				<button type="button" class="btn btn-outline-primary control_bl" value="bl_add">
 					<i class="fas fa-plus"></i>
 				</button>
@@ -77,11 +74,6 @@
 					</div>
 				</div>
 			</div>
-			<div class="row bl_content d-none" id="bl_filter">
-				<div class="col-md-12">
-					Filter Block
-				</div>
-			</div>
 			<div class="row bl_content d-none" id="bl_add">
 				<div class="col-md-6 mb-3">
 					<form action="#" id="register_form">
@@ -91,9 +83,9 @@
 								<label><?= $this->lang->line('lb_specialty') ?></label>
 								<select class="form-control" id="sur_specialty" name="sur[specialty_id]">
 									<option value="">--</option>
-									<?php foreach($specialties as $item){ ?>
+									<?php foreach($specialties as $item){ if ($item->doctor_qty){ ?>
 									<option value="<?= $item->id ?>"><?= $item->name ?></option>
-									<?php } ?>
+									<?php }} ?>
 								</select>
 								<div class="sys_msg" id="sur_specialty_msg"></div>
 							</div>
