@@ -17,18 +17,6 @@ class Config extends CI_Controller {
 		return $msgs;
 	}
 	
-	public function log_list(){
-		$log_codes = $this->general->all("log_code", "code", "asc");
-		foreach($log_codes as $i => $item){
-			$this->general->update("log_code", $item->id, ["id" => (1000 + $i)]);
-		}
-		
-		$log_codes = $this->general->all("log_code", "code", "asc");
-		foreach($log_codes as $i => $item){
-			$this->general->update("log_code", $item->id, ["id" => ($i + 1)]);
-		}
-	}
-	
 	public function index(){
 		if (!$this->session->userdata('logged_in')) redirect(base_url());
 		//pending! rol validation
@@ -66,7 +54,7 @@ class Config extends CI_Controller {
 		
 		$log_code_arr = [];
 		$log_codes = $this->general->all("log_code");
-		foreach($log_codes as $item) $log_code_arr[$item->id] = $item->code;
+		foreach($log_codes as $item) $log_code_arr[$item->id] = $this->lang->line('log_'.$item->code);
 		
 		$logs = $this->general->filter("log", ["registed_at <=" => date("Y-m-d 00:00:00", strtotime("-6 months")), "registed_at <=" => date("Y-m-d 00:00:00", strtotime("+1 day"))], "registed_at", "desc");
 		

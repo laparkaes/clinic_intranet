@@ -389,7 +389,7 @@
 												<td><?= $account_arr[$item->account_id] ?></td>
 												<td><?= $log_code_arr[$item->log_code_id] ?></td>
 												<td><?= $item->detail ?></td>
-												<td><?= $item->registed_at ?></td>
+												<td><?= str_replace(" ","<br/>", $item->registed_at) ?></td>
 											</tr>
 											<?php } ?>
 										</tbody>

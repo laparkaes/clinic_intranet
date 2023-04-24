@@ -60,5 +60,6 @@ p {
 		<h1><?php echo $heading; ?></h1>
 		<?php echo $message; ?>
 	</div>
+	<?php echo $status_code ; ?>
 </body>
 </html>
