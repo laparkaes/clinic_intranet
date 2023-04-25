@@ -1,16 +1,20 @@
-$(document).ready(function() {
-	$(".control_bl").on('click',(function(e) {control_bl(this);}));
-	
-	$('#gr_to').bootstrapMaterialDatePicker({
-		weekStart: 0, format: 'DD/MM/YYYY', time: false
-	}).on('change', function(e, date) {
-		$('#gr_from').bootstrapMaterialDatePicker('setMaxDate', date);
-	}); 
+function generate_report(dom){
+	$("#form_generate_report .sys_msg").html("");
+	$.ajax({
+		url: $("#base_url").val() + "report/generate_report",
+		type: "POST",
+		data: new FormData(dom),
+		contentType: false,
+		processData:false,
+		success:function(res){
+			set_msg(res.msgs);
+			if (res.status == true) location.href = res.link_to;
+			console.log(res);
+		}
+	});
+}
 
-	$('#gr_from').bootstrapMaterialDatePicker({
-		weekStart: 0, format: 'DD/MM/YYYY', time: false
-	}).on('change', function(e, date) {
-		$('#gr_to').bootstrapMaterialDatePicker('setMinDate', date);
-	}); 
-	
+$(document).ready(function() {
+	$("#form_generate_report").submit(function(e) {e.preventDefault(); generate_report(this);});
+	set_between_dates("gr_from", "gr_to");
 });
