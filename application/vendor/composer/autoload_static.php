@@ -7,13 +7,18 @@ namespace Composer\Autoload;
 class ComposerStaticInit186cdc2d7501e6d9807cc0a43bac5d1f
 {
     public static $files = array (
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        'Z' => 
+        array (
+            'ZipStream\\' => 10,
+        ),
         'T' => 
         array (
             'Twig\\' => 5,
@@ -29,11 +34,16 @@ class ComposerStaticInit186cdc2d7501e6d9807cc0a43bac5d1f
         ),
         'P' => 
         array (
+            'Psr\\SimpleCache\\' => 16,
             'Psr\\Http\\Message\\' => 17,
+            'Psr\\Http\\Client\\' => 16,
             'PhpZip\\' => 7,
+            'PhpOffice\\PhpSpreadsheet\\' => 25,
         ),
         'M' => 
         array (
+            'MyCLabs\\Enum\\' => 13,
+            'Matrix\\' => 7,
             'Masterminds\\' => 12,
         ),
         'L' => 
@@ -54,6 +64,10 @@ class ComposerStaticInit186cdc2d7501e6d9807cc0a43bac5d1f
             'Dompdf\\' => 7,
             'DASPRiD\\Enum\\' => 13,
         ),
+        'C' => 
+        array (
+            'Complex\\' => 8,
+        ),
         'B' => 
         array (
             'BaconQrCode\\' => 12,
@@ -61,6 +75,10 @@ class ComposerStaticInit186cdc2d7501e6d9807cc0a43bac5d1f
     );
 
     public static $prefixDirsPsr4 = array (
+        'ZipStream\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
+        ),
         'Twig\\' => 
         array (
             0 => __DIR__ . '/..' . '/twig/twig/src',
@@ -89,13 +107,34 @@ class ComposerStaticInit186cdc2d7501e6d9807cc0a43bac5d1f
         array (
             0 => __DIR__ . '/..' . '/sabberworm/php-css-parser/src',
         ),
+        'Psr\\SimpleCache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/simple-cache/src',
+        ),
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
+            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+        ),
+        'Psr\\Http\\Client\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-client/src',
         ),
         'PhpZip\\' => 
         array (
             0 => __DIR__ . '/..' . '/nelexa/zip/src',
+        ),
+        'PhpOffice\\PhpSpreadsheet\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
+        ),
+        'MyCLabs\\Enum\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/myclabs/php-enum/src',
+        ),
+        'Matrix\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
         ),
         'Masterminds\\' => 
         array (
@@ -111,11 +150,11 @@ class ComposerStaticInit186cdc2d7501e6d9807cc0a43bac5d1f
         ),
         'Greenter\\' => 
         array (
-            0 => __DIR__ . '/..' . '/greenter/core/src/Core',
-            1 => __DIR__ . '/..' . '/greenter/lite/src/Greenter',
-            2 => __DIR__ . '/..' . '/greenter/report/src',
-            3 => __DIR__ . '/..' . '/greenter/ws/src',
-            4 => __DIR__ . '/..' . '/greenter/xml/src',
+            0 => __DIR__ . '/..' . '/greenter/lite/src/Greenter',
+            1 => __DIR__ . '/..' . '/greenter/report/src',
+            2 => __DIR__ . '/..' . '/greenter/ws/src',
+            3 => __DIR__ . '/..' . '/greenter/xml/src',
+            4 => __DIR__ . '/..' . '/greenter/core/src/Core',
         ),
         'FontLib\\' => 
         array (
@@ -129,9 +168,23 @@ class ComposerStaticInit186cdc2d7501e6d9807cc0a43bac5d1f
         array (
             0 => __DIR__ . '/..' . '/dasprid/enum/src',
         ),
+        'Complex\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
+        ),
         'BaconQrCode\\' => 
         array (
             0 => __DIR__ . '/..' . '/bacon/bacon-qr-code/src',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'H' => 
+        array (
+            'HTMLPurifier' => 
+            array (
+                0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',
+            ),
         ),
     );
 
@@ -140,7 +193,7 @@ class ComposerStaticInit186cdc2d7501e6d9807cc0a43bac5d1f
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Dompdf\\Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
         'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
-        'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
+        'Stringable' => __DIR__ . '/..' . '/myclabs/php-enum/stubs/Stringable.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     );
@@ -150,6 +203,7 @@ class ComposerStaticInit186cdc2d7501e6d9807cc0a43bac5d1f
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit186cdc2d7501e6d9807cc0a43bac5d1f::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit186cdc2d7501e6d9807cc0a43bac5d1f::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit186cdc2d7501e6d9807cc0a43bac5d1f::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit186cdc2d7501e6d9807cc0a43bac5d1f::$classMap;
 
         }, null, ClassLoader::class);

@@ -3,6 +3,7 @@
         "dompdf/dompdf": "^2.0",
         "greenter/lite": "^4.3",
         "greenter/report": "^4.3",
-        "luecano/numero-a-letras": "^3.0"
+        "luecano/numero-a-letras": "^3.0",
+        "phpoffice/phpspreadsheet": "^1.28"
     }
 }
