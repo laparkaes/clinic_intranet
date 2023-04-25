@@ -196,6 +196,7 @@ $(document).ready(function() {
 	if ($(".time_picker").length > 0){
 		$('.time_picker').bootstrapMaterialDatePicker({
 			format: 'HH:mm',
+			shortTime: true,
 			time: true,
 			date: false,
 			lang: 'es',

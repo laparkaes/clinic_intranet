@@ -27,7 +27,7 @@ class Report extends CI_Controller {
 	}
 	
 	public function exceltest(){
-		$fileName = date("Ymdhis")."_".time().'.xlsx';  
+		$fileName = date("Ymdhis").'.xlsx';  
 		
 		$upload_dir = $this->upload_dir();
 		
