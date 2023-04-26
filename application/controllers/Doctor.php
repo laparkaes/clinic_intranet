@@ -181,11 +181,13 @@ class Doctor extends CI_Controller {
 			$filter = array("doc_type_id" => $p["doc_type_id"], "doc_number" => $p["doc_number"]);
 			$person = $this->general->filter("person", $filter);
 			if ($person){
+				$p["email"] = $a["email"];
 				$this->general->update("person", $person[0]->id, $p);
 				$person_id = $person[0]->id;
 				$person_name = $person[0]->name;
 				$this->utility_lib->add_log("person_update", $person[0]->name);
 			}else{
+				$p["email"] = $a["email"];
 				$p["registed_at"] = date('Y-m-d H:i:s', time());
 				$person_id = $this->general->insert("person", $p);
 				$person_name = $p["name"];

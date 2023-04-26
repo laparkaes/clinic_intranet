@@ -73,8 +73,7 @@ class Report extends CI_Controller {
 		
         $writer = new Xlsx($sheet);
 		$writer->save($upload_dir.$fileName);
-		//header("Content-Type: application/vnd.ms-excel");
-        //redirect("/".$upload_dir.$fileName);
+		
 		return base_url().$upload_dir.$fileName;
 	}
 	
@@ -97,12 +96,6 @@ class Report extends CI_Controller {
 	}
 	
 	private function set_sheet_doctor($data){
-		$filter = [
-			"registed_at >=" => $data["from"],
-			"registed_at <" => date("Y-m-d", strtotime("+1 day", strtotime($data["to"])))
-		];
-		
-		//doc_type_id
 		$sl_options_arr = [];
 		$sl_options = $this->general->filter_adv("sl_option", null, [["field" => "code", "values" => ["sex", "blood_type"]]]);
 		foreach($sl_options as $item) $sl_options_arr[$item->id] = $item->description;
@@ -121,58 +114,86 @@ class Report extends CI_Controller {
 		
 		$status_arr = [];
 		$status = $this->general->all("status");
-		foreach($status as $item){
-			$item->lang = $this->lang->line($item->code);
-			$status_arr[$item->id] = $item;
-		}
+		foreach($status as $item) $status_arr[$item->id] = $this->lang->line($item->code);
 		
 		$specialty_arr = [];
 		$specialty = $this->general->all("specialty");
 		foreach($specialty as $item) $specialty_arr[$item->id] = $item->name;
 		
-		$doctors = $this->general->filter("doctor", $filter, "registed_at", "desc");
+		$headers = [
+			$this->lang->line('hd_id'),
+			$this->lang->line('hd_registed_at'),
+			$this->lang->line('hd_status'),
+			$this->lang->line('hd_specialty'),
+			$this->lang->line('hd_license'),
+			$this->lang->line('hd_name'),
+			$this->lang->line('hd_doc_type'),
+			$this->lang->line('hd_doc_number'),
+			$this->lang->line('hd_tel'),
+			$this->lang->line('hd_email'),
+			$this->lang->line('hd_address'),
+			$this->lang->line('hd_birthday'),
+			$this->lang->line('hd_sex'),
+			$this->lang->line('hd_blood_type')
+		];
 		
-		$row = 5;
 		$spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-		$sheet = $this->set_report_info($sheet);//report general information setting
-       	$sheet->setCellValue('A'.$row, $this->lang->line('hd_registed_at'));
-        $sheet->setCellValue('B'.$row, $this->lang->line('hd_id'));
-        $sheet->setCellValue('C'.$row, $this->lang->line('hd_status'));
-        $sheet->setCellValue('D'.$row, $this->lang->line('hd_specialty'));
-		$sheet->setCellValue('E'.$row, $this->lang->line('hd_license'));
-        $sheet->setCellValue('F'.$row, $this->lang->line('hd_name'));
+		$sheet = $this->set_report_header($sheet, range('A', 'Z'), $headers);//report general information setting
+        
+		$row = 2;
+		$style_arr = ['alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT]];
 		
-		
+		$filter = [
+			"registed_at >=" => $data["from"],
+			"registed_at <" => date("Y-m-d", strtotime("+1 day", strtotime($data["to"])))
+		];
+		$doctors = $this->general->filter("doctor", $filter, "registed_at", "desc");
 		foreach ($doctors as $d){
-			$row++;
-			$sheet->setCellValue('A'.$row, $d->registed_at);
-			$sheet->setCellValue('B'.$row, $d->id);
-			$sheet->setCellValue('C'.$row, $status_arr[$d->status_id]->lang);
+			$person = $people_arr[$d->person_id];
+			if ($person->doc_type_id) $person->doc_type = $doc_type_arr[$person->doc_type_id]; else $person->doc_type = null;
+			if ($person->sex_id) $person->sex = $sl_options_arr[$person->sex_id]; else $person->sex = null;
+			if ($person->blood_type_id) $person->blood_type = $sl_options_arr[$person->blood_type_id]; else $person->blood_type = null;
+			
+			$sheet->setCellValue('A'.$row, $d->id);
+			$sheet->setCellValue('B'.$row, $d->registed_at);
+			$sheet->setCellValue('C'.$row, $status_arr[$d->status_id]);
 			$sheet->setCellValue('D'.$row, $specialty_arr[$d->specialty_id]);
 			$sheet->setCellValue('E'.$row, $d->license);
-			$sheet->setCellValue('F'.$row, $people_arr[$d->person_id]->name);
+			$sheet->setCellValue('F'.$row, $person->name);
+			$sheet->setCellValue('G'.$row, $person->doc_type);
+			$sheet->setCellValue('H'.$row, $person->doc_number);
+			$sheet->setCellValue('I'.$row, $person->tel);
+			$sheet->setCellValue('J'.$row, $person->email);
+			$sheet->setCellValue('K'.$row, $person->address);
+			$sheet->setCellValue('L'.$row, $person->birthday);
+			$sheet->setCellValue('M'.$row, $person->sex);
+			$sheet->setCellValue('N'.$row, $person->blood_type);
+			$sheet->getStyle($row)->applyFromArray($style_arr);
+			
+			$row++;
         }
-		
-		/*
-		Tipo de Documento
-		Numero de Documento
-		Telefono
-		Correo Electronico
-		Direccion
-		Fecha de Nacimiento
-		Sexo
-		Tipo de Sangre
-		
-		sl_options_arr
-		doc_type_arr
-		( [sex_id] => 72 [blood_type_id] => 78 [doc_type_id] => 2 [doc_number] => 000765808 [email] => [tel] => 998548751 [address] => Pj Dota 2 [birthday] => 1972-09-19)
-		*/
 		
 		return $spreadsheet;
 	}
 	
-	private function set_report_info($sheet){
+	private function set_report_header($sheet, $cols, $headers){
+		$sheet->setTitle($this->lang->line('report'));
+		
+		//setting table header style
+		foreach ($headers as $i => $header){
+			$sheet->setCellValue($cols[$i]."1", $header);
+			$sheet->getColumnDimension($cols[$i])->setWidth(25);
+		}
+		$sheet->getColumnDimension('A')->setWidth(10);
+		
+		$style_arr = [
+			'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFF']],
+			'alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER],
+			'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'color' => ['argb' => '1a8d5f']]
+		];
+		$sheet->getStyle(1)->applyFromArray($style_arr);
+		
 		return $sheet;
 	}
 	
