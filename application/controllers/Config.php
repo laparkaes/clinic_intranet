@@ -8,6 +8,7 @@ class Config extends CI_Controller {
 		date_default_timezone_set('America/Lima');
 		$this->lang->load("system", "spanish");
 		$this->lang->load("config", "spanish");
+		$this->lang->load("log", "spanish");
 		$this->load->model('account_model','account');
 		$this->load->model('general_model','general');
 	}
