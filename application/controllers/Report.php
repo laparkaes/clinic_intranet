@@ -46,37 +46,6 @@ class Report extends CI_Controller {
 		echo json_encode(array("status" => $status, "msgs" => $msgs, "link_to" => $link_to));
 	}
 	
-	public function make_excel($data){
-		$fileName = $this->lang->line('report')."_".$data["type_name"]."_".date("Ymdhis").'.xlsx';  
-		$upload_dir = $this->upload_dir();
-		
-		/*
-		1 = Médico
-		2 = Paciente
-		3 = Consulta
-		4 = Cirugía
-		5 = Producto
-		6 = Venta
-		7 = Historial del sistema
-		8 = Usuario del sistema
-		*/
-		switch($data["type_id"]){
-			case 1: $sheet = $this->set_sheet_doctor($data); break;
-			case 2: $sheet = $this->set_sheet_data($data); break;
-			case 3: $sheet = $this->set_sheet_data($data); break;
-			case 4: $sheet = $this->set_sheet_data($data); break;
-			case 5: $sheet = $this->set_sheet_data($data); break;
-			case 6: $sheet = $this->set_sheet_data($data); break;
-			case 7: $sheet = $this->set_sheet_data($data); break;
-			case 8: $sheet = $this->set_sheet_data($data); break;
-		}
-		
-        $writer = new Xlsx($sheet);
-		$writer->save($upload_dir.$fileName);
-		
-		return base_url().$upload_dir.$fileName;
-	}
-	
 	private function upload_dir(){
 		$path = "uploaded/reports";
 		$today = date("Ymd");
@@ -93,6 +62,57 @@ class Report extends CI_Controller {
 		$upload_dir = "uploaded/reports/".date("Ymd");
 		if(!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
 		return $upload_dir."/";
+	}
+	
+	private function set_report_header($sheet, $cols, $headers){
+		$sheet->setTitle($this->lang->line('report'));
+		
+		//setting table header style
+		foreach ($headers as $i => $header){
+			$sheet->setCellValue($cols[$i]."1", $header);
+			$sheet->getColumnDimension($cols[$i])->setWidth(25);
+		}
+		$sheet->getColumnDimension('A')->setWidth(10);
+		
+		$style_arr = [
+			'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFF']],
+			'alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER],
+			'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'color' => ['argb' => '1a8d5f']]
+		];
+		$sheet->getStyle(1)->applyFromArray($style_arr);
+		
+		return $sheet;
+	}
+	
+	public function make_excel($data){
+		$fileName = $this->lang->line('report')."_".$data["type_name"]."_".date("Ymdhis").'.xlsx';  
+		$upload_dir = $this->upload_dir();
+		
+		/*
+		1 = Médico
+		2 = Paciente
+		3 = Consulta
+		4 = Cirugía
+		5 = Producto
+		6 = Venta
+		7 = Historial del sistema
+		8 = Usuario del sistema
+		*/
+		switch($data["type_id"]){
+			case 1: $sheet = $this->set_sheet_doctor($data); break;
+			case 2: $sheet = $this->set_sheet_patient($data); break;
+			case 3: $sheet = $this->set_sheet_data($data); break;
+			case 4: $sheet = $this->set_sheet_data($data); break;
+			case 5: $sheet = $this->set_sheet_data($data); break;
+			case 6: $sheet = $this->set_sheet_data($data); break;
+			case 7: $sheet = $this->set_sheet_data($data); break;
+			case 8: $sheet = $this->set_sheet_data($data); break;
+		}
+		
+        $writer = new Xlsx($sheet);
+		$writer->save($upload_dir.$fileName);
+		
+		return base_url().$upload_dir.$fileName;
 	}
 	
 	private function set_sheet_doctor($data){
@@ -177,26 +197,102 @@ class Report extends CI_Controller {
 		return $spreadsheet;
 	}
 	
-	private function set_report_header($sheet, $cols, $headers){
-		$sheet->setTitle($this->lang->line('report'));
-		
-		//setting table header style
-		foreach ($headers as $i => $header){
-			$sheet->setCellValue($cols[$i]."1", $header);
-			$sheet->getColumnDimension($cols[$i])->setWidth(25);
-		}
-		$sheet->getColumnDimension('A')->setWidth(10);
-		
-		$style_arr = [
-			'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFF']],
-			'alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER],
-			'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'color' => ['argb' => '1a8d5f']]
+	private function set_sheet_patient($data){
+		$filter = [
+			"registed_at >=" => $data["from"],
+			"registed_at <" => date("Y-m-d", strtotime("+1 day", strtotime($data["to"])))
 		];
-		$sheet->getStyle(1)->applyFromArray($style_arr);
+		$people = $this->general->all("person");
+		print_r($people[0]);
 		
-		return $sheet;
+		/*
+		stdClass Object ( [id] => 238 [sex_id] => 72 [blood_type_id] => 78 [doc_type_id] => 5 [doc_number] => M68301832 [name] => Julian Valdez Mendoza [email] => hola@asdlfkj.paciente.com [tel] => 7894513574 [address] => Av. Fulaninito jiji 123, San Borja [birthday] => 1966-04-22 [registed_at] => 2023-04-19 00:45:03 ) 
+		*/
+		
+		
+		/*
+		$sl_options_arr = [];
+		$sl_options = $this->general->filter_adv("sl_option", null, [["field" => "code", "values" => ["sex", "blood_type"]]]);
+		foreach($sl_options as $item) $sl_options_arr[$item->id] = $item->description;
+		
+		$doc_type_arr = [];
+		$doc_type = $this->general->all("doc_type");
+		foreach($doc_type as $item) $doc_type_arr[$item->id] = $item->description;
+		
+		$person_ids = [];
+		$person_ids_only = $this->general->only("doctor", "person_id");
+		foreach($person_ids_only as $item) $person_ids[] = $item->person_id;
+		
+		$people_arr = [];
+		$people = $this->general->filter_adv("person", null, [["field" => "id", "values" => $person_ids]]);
+		foreach($people as $item) $people_arr[$item->id] = $item;
+		
+		$status_arr = [];
+		$status = $this->general->all("status");
+		foreach($status as $item) $status_arr[$item->id] = $this->lang->line($item->code);
+		
+		$specialty_arr = [];
+		$specialty = $this->general->all("specialty");
+		foreach($specialty as $item) $specialty_arr[$item->id] = $item->name;
+		
+		$headers = [
+			$this->lang->line('hd_id'),
+			$this->lang->line('hd_registed_at'),
+			$this->lang->line('hd_status'),
+			$this->lang->line('hd_specialty'),
+			$this->lang->line('hd_license'),
+			$this->lang->line('hd_name'),
+			$this->lang->line('hd_doc_type'),
+			$this->lang->line('hd_doc_number'),
+			$this->lang->line('hd_tel'),
+			$this->lang->line('hd_email'),
+			$this->lang->line('hd_address'),
+			$this->lang->line('hd_birthday'),
+			$this->lang->line('hd_sex'),
+			$this->lang->line('hd_blood_type')
+		];
+		
+		$spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+		$sheet = $this->set_report_header($sheet, range('A', 'Z'), $headers);//report general information setting
+        
+		$row = 2;
+		$style_arr = ['alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT]];
+		
+		$filter = [
+			"registed_at >=" => $data["from"],
+			"registed_at <" => date("Y-m-d", strtotime("+1 day", strtotime($data["to"])))
+		];
+		$doctors = $this->general->filter("doctor", $filter, "registed_at", "desc");
+		foreach ($doctors as $d){
+			$person = $people_arr[$d->person_id];
+			if ($person->doc_type_id) $person->doc_type = $doc_type_arr[$person->doc_type_id]; else $person->doc_type = null;
+			if ($person->sex_id) $person->sex = $sl_options_arr[$person->sex_id]; else $person->sex = null;
+			if ($person->blood_type_id) $person->blood_type = $sl_options_arr[$person->blood_type_id]; else $person->blood_type = null;
+			
+			$sheet->setCellValue('A'.$row, $d->id);
+			$sheet->setCellValue('B'.$row, $d->registed_at);
+			$sheet->setCellValue('C'.$row, $status_arr[$d->status_id]);
+			$sheet->setCellValue('D'.$row, $specialty_arr[$d->specialty_id]);
+			$sheet->setCellValue('E'.$row, $d->license);
+			$sheet->setCellValue('F'.$row, $person->name);
+			$sheet->setCellValue('G'.$row, $person->doc_type);
+			$sheet->setCellValue('H'.$row, $person->doc_number);
+			$sheet->setCellValue('I'.$row, $person->tel);
+			$sheet->setCellValue('J'.$row, $person->email);
+			$sheet->setCellValue('K'.$row, $person->address);
+			$sheet->setCellValue('L'.$row, $person->birthday);
+			$sheet->setCellValue('M'.$row, $person->sex);
+			$sheet->setCellValue('N'.$row, $person->blood_type);
+			$sheet->getStyle($row)->applyFromArray($style_arr);
+			
+			$row++;
+        }
+		
+		return $spreadsheet;
+		*/
 	}
-	
+
 	private function set_sheet_appointmet($data){
 		$filter = ["schedule_from >= " => $data["from"], "schedule_to <" => date("Y-m-d", strtotime("+1 day"))];
 		$apps = $this->general->filter("appointment", $filter, "schedule_from", "desc");

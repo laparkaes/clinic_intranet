@@ -127,6 +127,19 @@ class General_model extends CI_Model{
 		return $result;
 	}
 	
+	function basic_join($maintable, $joins = null, $filter = null){
+		$this->db->select("*");
+		if ($filter) $this->db->where($filter);
+		$this->db->from($maintable);
+		if ($joins) foreach($joins as $join){
+			$this->db->join($join["table"], $join["condition"]);
+			$this->db->select($join["select"]);
+		}
+		$query = $this->db->get();
+		$result = $query->result();
+		return $result;
+	}
+	
 	function insert($tablename, $data){
 		$this->db->insert($tablename, $data);
 		return $this->db->insert_id();
