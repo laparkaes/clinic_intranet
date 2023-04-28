@@ -1,1 +1,1 @@
-$this->utility_lib->add_log("doctor_register", $person_name);
+INSERT INTO `log_code` (`id`, `code`) VALUES (NULL, 'report_generate');

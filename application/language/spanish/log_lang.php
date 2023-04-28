@@ -43,3 +43,4 @@ $lang['log_surgery_register'] = 'Registrar cirugía';
 $lang['log_surgery_reschedule'] = 'Cambiar fecha de cirugía';
 $lang['log_voucher_cancel'] = 'Cancelar comprobante';
 $lang['log_voucher_register'] = 'Registrar comprobante';
+$lang['log_report_generate'] = 'Generar reporte';

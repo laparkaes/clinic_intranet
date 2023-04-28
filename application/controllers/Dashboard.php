@@ -16,6 +16,7 @@ class Dashboard extends CI_Controller {
 	
 	public function index(){
 		if (!$this->session->userdata('logged_in')) redirect("/");
+		if (!$this->utility_lib->check_access("dashboard", "index")) redirect("/errors/no_permission");
 		
 		$role_name = $this->session->userdata('role')->name;
 		

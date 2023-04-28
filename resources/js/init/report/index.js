@@ -7,9 +7,11 @@ function generate_report(dom){
 		contentType: false,
 		processData:false,
 		success:function(res){
-			set_msg(res.msgs);
 			if (res.status == true) location.href = res.link_to;
-			console.log(res);
+			else{
+				set_msg(res.msgs);
+				swal("error", res.msg);
+			}
 		}
 	});
 }

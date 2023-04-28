@@ -16,7 +16,7 @@ class Report extends CI_Controller {
 	
 	public function index(){
 		if (!$this->session->userdata('logged_in')) redirect(base_url());
-		//pending! rol validation
+		if (!$this->utility_lib->check_access("report", "index")) redirect("/errors/no_permission");
 		
 		$data = array(
 			"report_types" => $this->general->all("report_type", "id", "asc"),
@@ -29,21 +29,32 @@ class Report extends CI_Controller {
 	}
 	
 	public function generate_report(){
-		$status = false; $msgs = []; $link_to = null;
-		
+		$status = false; $msgs = []; $msg = null; $link_to = null;
 		$data = $this->input->post();
+		
+		//permission validateion
+		if (!$this->utility_lib->check_access("report", "index")) $msg = $this->lang->line('error_no_permission');
+		
+		//data validation
 		if (!$data["type_id"]) $msgs = $this->set_msg($msgs, "gr_type_msg", "error", "error_srt");
 		if (!$data["from"]) $msgs = $this->set_msg($msgs, "gr_from_msg", "error", "error_sdf");
-		if (!$data["to"]) $data["to"] = date("Y-m-d");
+		if ($msgs) $msg = $this->lang->line('error_occurred');
 		
-		$type = $this->general->id("report_type", $data["type_id"]);
-		$data["type_name"] = $type->name;
-		
-		$link_to = $this->make_excel($data);
-		if ($link_to) $status = true;
+		if (!$msg){
+			if (!$data["to"]) $data["to"] = date("Y-m-d");
+			
+			$type = $this->general->id("report_type", $data["type_id"]);
+			$data["type_name"] = $type->name;
+			
+			$link_to = $this->make_excel($data);
+			if ($link_to){
+				$this->utility_lib->add_log("report_generate", $type->name.", ".$data["from"]."~".$data["to"]);
+				$status = true;
+			}	
+		}
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "msgs" => $msgs, "link_to" => $link_to));
+		echo json_encode(array("status" => $status, "msgs" => $msgs, "msg" => $msg, "link_to" => $link_to));
 	}
 	
 	private function upload_dir(){
@@ -84,7 +95,7 @@ class Report extends CI_Controller {
 		return $sheet;
 	}
 	
-	public function make_excel($data){
+	private function make_excel($data){
 		$fileName = $this->lang->line('report')."_".$data["type_name"]."_".date("Ymdhis").'.xlsx';  
 		$upload_dir = $this->upload_dir();
 		
@@ -649,89 +660,6 @@ class Report extends CI_Controller {
 		}
 		
 		return $spreadsheet;
-		/*
-		
-		
-		$status_arr = [];
-		$status = $this->general->all("status");
-		foreach($status as $item) $status_arr[$item->id] = $this->lang->line($item->code);
-		
-		$currency_arr = [];
-		$currency = $this->general->all("currency");
-		foreach($currency as $item) $currency_arr[$item->id] = $item->description;
-		
-		$filter = [
-			"registed_at >=" => $data["from"],
-			"registed_at <" => date("Y-m-d", strtotime("+1 day", strtotime($data["to"])))
-		];
-		
-		//set people array
-		$person_ids = [];
-		$client_ids = $this->general->only("sale", "client_id", $filter);
-		foreach($client_ids as $item) $person_ids[] = $item->client_id;
-		
-		$people_arr = [];
-		$people = $this->general->filter_adv("person", null, [["field" => "id", "values" => $person_ids]]);
-		foreach($people as $item) $people_arr[$item->id] = $item->name;
-		
-		$headers = [
-			$this->lang->line('hd_id'),
-			$this->lang->line('hd_registed_at'),
-			$this->lang->line('hd_last_update'),
-			$this->lang->line('hd_status'),
-			$this->lang->line('hd_type'),
-			$this->lang->line('hd_currency'),
-			$this->lang->line('hd_discount'),
-			$this->lang->line('hd_total'),
-			$this->lang->line('hd_amount'),
-			$this->lang->line('hd_vat'),
-			$this->lang->line('hd_paid'),
-			$this->lang->line('hd_balance'),
-			$this->lang->line('hd_detail_payment'),
-			$this->lang->line('hd_appointment_id'),
-			$this->lang->line('hd_surgery_id'),
-			//voucher information continue
-		];
-		
-		$spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-		$sheet = $this->set_report_header($sheet, range('A', 'Z'), $headers);//report general information setting
-        
-		$row = 2;
-		$style_arr = ['alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT]];
-		
-		$sales = $this->general->filter("sale", $filter);
-		foreach($sales as $item){
-			$payments = $this->general->filter("payment", ["sale_id" => $item->id]);
-			$curr = $currency_arr[$item->currency_id];
-			if ($payments){
-				$p_arr = [];
-				foreach($payments as $p) $p_arr[] = $p->registed_at." [".$curr." ".number_format($p->received - $p->change, 2)."]";
-				$payment_detail = implode(", ", $p_arr);
-			}else $payment_detail = null;
-			
-			$sheet->setCellValue('A'.$row, $item->id);
-			$sheet->setCellValue('B'.$row, $item->registed_at);
-			$sheet->setCellValue('C'.$row, $item->updated_at);
-			$sheet->setCellValue('D'.$row, $status_arr[$item->status_id]);
-			$sheet->setCellValue('E'.$row, $type_arr[$item->sale_type_id]);
-			$sheet->setCellValue('F'.$row, $currency_arr[$item->currency_id]);
-			$sheet->setCellValue('G'.$row, number_format($item->discount, 2));
-			$sheet->setCellValue('H'.$row, number_format($item->total, 2));
-			$sheet->setCellValue('I'.$row, number_format($item->amount, 2));
-			$sheet->setCellValue('J'.$row, number_format($item->vat, 2));
-			$sheet->setCellValue('K'.$row, number_format($item->paid, 2));
-			$sheet->setCellValue('L'.$row, number_format($item->balance, 2));
-			$sheet->setCellValue('M'.$row, $payment_detail);
-			$sheet->setCellValue('N'.$row, $item->appointment_id);
-			$sheet->setCellValue('O'.$row, $item->surgery_id);
-			$sheet->getStyle($row)->applyFromArray($style_arr);
-			
-			$row++;
-		}
-		
-		
-		*/
 	}
 	
 	private function set_sheet_log($data){
@@ -826,5 +754,4 @@ class Report extends CI_Controller {
 		
 		return $spreadsheet;
 	}
-
 }
