@@ -5,18 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title><?= $title ?></title>
-    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url() ?>resorces/images/favicon.png">
-	<link href="<?= base_url() ?>resorces/vendor/fullcalendar/css/main.min.css" rel="stylesheet">
-	<link href="<?= base_url() ?>resorces/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="<?= base_url() ?>resorces/vendor/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet">
-	<link href="<?= base_url() ?>resorces/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
-	<link href="<?= base_url() ?>resorces/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.css" rel="stylesheet">
-	<link href="<?= base_url() ?>resorces/vendor_/jquery-ui-1.13.2/jquery-ui.min.css" rel="stylesheet">
-	<link href="<?= base_url() ?>resorces/vendor_/fontawesome5pro/css/all.min.css" rel="stylesheet">
-	<link href="<?= base_url() ?>resorces/vendor_/jquery-smartwizard-6.0.6/smart_wizard_all.customized.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url() ?>resources/images/favicon.png">
+	<link href="<?= base_url() ?>resources/vendor/fullcalendar/css/main.min.css" rel="stylesheet">
+	<link href="<?= base_url() ?>resources/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="<?= base_url() ?>resources/vendor/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet">
+	<link href="<?= base_url() ?>resources/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+	<link href="<?= base_url() ?>resources/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.css" rel="stylesheet">
+	<link href="<?= base_url() ?>resources/vendor_/jquery-ui-1.13.2/jquery-ui.min.css" rel="stylesheet">
+	<link href="<?= base_url() ?>resources/vendor_/fontawesome5pro/css/all.min.css" rel="stylesheet">
+	<link href="<?= base_url() ?>resources/vendor_/jquery-smartwizard-6.0.6/smart_wizard_all.customized.min.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="<?= base_url() ?>resorces/css/style.css">
-	<link rel="stylesheet" href="<?= base_url() ?>resorces/css/setting.css">
+    <link rel="stylesheet" href="<?= base_url() ?>resources/css/style.css">
+	<link rel="stylesheet" href="<?= base_url() ?>resources/css/setting.css">
 </head>
 <body>
     <div id="preloader">
@@ -29,8 +29,8 @@
     <div id="main-wrapper">
         <div class="nav-header">
             <a href="<?= base_url() ?>dashboard" class="brand-logo d-flex justify-content-center p-0">
-                <img class="logo-abbr" src="<?= base_url() ?>resorces/images/logo.png">
-				<img class="brand-title" src="<?= base_url() ?>resorces/images/logo_text.svg">
+                <img class="logo-abbr" src="<?= base_url() ?>resources/images/logo.png">
+				<img class="brand-title" src="<?= base_url() ?>resources/images/logo_text.svg">
             </a>
             <div class="nav-control">
                 <div class="hamburger">
@@ -55,7 +55,7 @@
 							</li>
                             <li class="nav-item dropdown header-profile">
                                 <a class="nav-link" href="#" role="button" data-toggle="dropdown">
-                                    <img src="<?= base_url() ?>resorces/images/user.png" width="20" alt=""/>
+                                    <img src="<?= base_url() ?>resources/images/user.png" width="20" alt=""/>
 									<div class="header-info">
 										<span><?= $this->session->userdata('name') ?></span>
 										<small><?= $this->lang->line($this->session->userdata('role')->name) ?></small>
@@ -200,19 +200,19 @@
 		<input type="hidden" id="bd_select" value="<?= $this->lang->line('bd_select') ?>">
 		<input type="hidden" id="bd_cancel" value="<?= $this->lang->line('bd_cancel') ?>">
 	</div>
-    <script src="<?= base_url() ?>resorces/vendor/global/global.min.js"></script>
-	<script src="<?= base_url() ?>resorces/vendor/apexchart/apexcharts.min.js"></script>
-	<script src="<?= base_url() ?>resorces/vendor/moment/moment.min.js"></script>
-	<script src="<?= base_url() ?>resorces/vendor/fullcalendar/js/main.min.js"></script>
-	<script src="<?= base_url() ?>resorces/vendor/datatables/js/jquery.dataTables.min.js"></script>
-    <script src="<?= base_url() ?>resorces/vendor/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
-	<script src="<?= base_url() ?>resorces/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-    <script src="<?= base_url() ?>resorces/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.js"></script>
-	<script src="<?= base_url() ?>resorces/vendor_/jquery-ui-1.13.2/jquery-ui.min.js"></script>
-	<script src="<?= base_url() ?>resorces/vendor_/jquery-smartwizard-6.0.6/jquery.smartWizard.min.js"></script>
-	<?php if ($init_js){ ?><script src="<?= base_url() ?>resorces/js/init/<?= $init_js ?>"></script><?php } ?>
-    <script src="<?= base_url() ?>resorces/js/custom.min.js"></script>
-	<script src="<?= base_url() ?>resorces/js/deznav-init.js"></script>
-	<script src="<?= base_url() ?>resorces/js/init/general.js"></script>
+    <script src="<?= base_url() ?>resources/vendor/global/global.min.js"></script>
+	<script src="<?= base_url() ?>resources/vendor/apexchart/apexcharts.min.js"></script>
+	<script src="<?= base_url() ?>resources/vendor/moment/moment.min.js"></script>
+	<script src="<?= base_url() ?>resources/vendor/fullcalendar/js/main.min.js"></script>
+	<script src="<?= base_url() ?>resources/vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="<?= base_url() ?>resources/vendor/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+	<script src="<?= base_url() ?>resources/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="<?= base_url() ?>resources/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.js"></script>
+	<script src="<?= base_url() ?>resources/vendor_/jquery-ui-1.13.2/jquery-ui.min.js"></script>
+	<script src="<?= base_url() ?>resources/vendor_/jquery-smartwizard-6.0.6/jquery.smartWizard.min.js"></script>
+	<?php if ($init_js){ ?><script src="<?= base_url() ?>resources/js/init/<?= $init_js ?>"></script><?php } ?>
+    <script src="<?= base_url() ?>resources/js/custom.min.js"></script>
+	<script src="<?= base_url() ?>resources/js/deznav-init.js"></script>
+	<script src="<?= base_url() ?>resources/js/init/general.js"></script>
 </body>
 </html>

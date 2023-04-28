@@ -63,3 +63,6 @@ $lang['hd_sunat_msg'] = 'Mensaje de Sunat';
 $lang['hd_account'] = 'Email';
 $lang['hd_activity'] = 'Actividad';
 $lang['hd_detail'] = 'Detalle';
+$lang['hd_last_access'] = 'Último acceso';
+$lang['hd_enable'] = 'Activado';
+$lang['hd_role'] = 'Rol';

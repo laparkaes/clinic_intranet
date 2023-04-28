@@ -31,6 +31,7 @@ $lang['error_select_date'] = 'Elija una fecha.';
 $lang['master'] = 'Maestro';
 $lang['admin'] = 'Admin';
 $lang['doctor'] = 'Médico';
+$lang['nurse'] = 'Enfermera';
 $lang['patient'] = 'Paciente';
 $lang['reception'] = 'Recepción';
 

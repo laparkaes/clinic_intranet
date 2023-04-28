@@ -52,6 +52,8 @@ class Auth extends CI_Controller {
 		}else $msgs = $this->set_msg($msgs, "lg_pass_msg", "error", "error_pae");
 
 		if (!$msgs){
+			$this->general->update("account", $account->id, ["logged_at" => date('Y-m-d H:i:s', time())]);
+			
 			$role = $this->general->id("role", $account->role_id);
 			//set session datas here
 			$session_data = array(

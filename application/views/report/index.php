@@ -39,7 +39,7 @@
 					</form>
 				</div>
 				<div class="col-md-6">
-					<img class="w-100" src="./resorces/images/report_example.png">
+					<img class="w-100" src="./resources/images/report_example.png">
 					<div class="text-center text-muted mt-3">Ejemplo de Reporte</div>
 				</div>
 			</div>

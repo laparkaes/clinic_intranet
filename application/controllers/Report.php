@@ -108,7 +108,7 @@ class Report extends CI_Controller {
 			case 6: $sheet = $this->set_sheet_sale($data); break;
 			case 7: $sheet = $this->set_sheet_voucher($data); break;
 			case 8: $sheet = $this->set_sheet_log($data); break;
-			case 8: $sheet = $this->set_sheet_data($data); break;
+			case 9: $sheet = $this->set_sheet_account($data); break;
 		}
 		
         $writer = new Xlsx($sheet);
@@ -777,37 +777,54 @@ class Report extends CI_Controller {
 		}
 		
 		return $spreadsheet;
-		
-		/*
-		$sl_options_arr = [];
-		$sl_options = $this->general->filter_adv("sl_option", null, [["field" => "code", "values" => ["sex", "blood_type"]]]);
-		foreach($sl_options as $item) $sl_options_arr[$item->id] = $item->description;
-		
-		$doc_type_arr = [];
-		$doc_type = $this->general->all("doc_type");
-		foreach($doc_type as $item) $doc_type_arr[$item->id] = $item->description;
+	}
+
+	private function set_sheet_account($data){
+		$role_arr = [];
+		$role = $this->general->all("role");
+		foreach($role as $item) $role_arr[$item->id] = $item->name;
 		
 		$headers = [
 			$this->lang->line('hd_id'),
 			$this->lang->line('hd_registed_at'),
+			$this->lang->line('hd_last_access'),
+			$this->lang->line('hd_enable'),
+			$this->lang->line('hd_role'),
 			$this->lang->line('hd_name'),
-			$this->lang->line('hd_doc_type'),
-			$this->lang->line('hd_doc_number'),
-			$this->lang->line('hd_tel'),
 			$this->lang->line('hd_email'),
-			$this->lang->line('hd_address'),
-			$this->lang->line('hd_birthday'),
-			$this->lang->line('hd_sex'),
-			$this->lang->line('hd_blood_type')
 		];
+		
+		$spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+		$sheet = $this->set_report_header($sheet, range('A', 'Z'), $headers);//report general information setting
+        
+		$row = 2;
+		$style_arr = ['alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT]];
 		
 		$filter = [
 			"registed_at >=" => $data["from"],
 			"registed_at <" => date("Y-m-d", strtotime("+1 day", strtotime($data["to"])))
 		];
-		$people = $this->general->filter("person", $filter);
 		
-		*/
+		$accounts = $this->general->filter("account", $filter, "registed_at", "desc");
+		foreach($accounts as $item){
+			$person = $this->general->id("person", $item->person_id);
+			if ($person) $person_name = $person->name; else $person_name = "";
+			if ($item->active) $enabled = "o"; else $enabled = "x";
+			
+			$sheet->setCellValue('A'.$row, $item->id);
+			$sheet->setCellValue('B'.$row, $item->registed_at);
+			$sheet->setCellValue('C'.$row, $item->logged_at);
+			$sheet->setCellValue('D'.$row, $enabled);
+			$sheet->setCellValue('E'.$row, $this->lang->line($role_arr[$item->role_id]));
+			$sheet->setCellValue('F'.$row, $person_name);
+			$sheet->setCellValue('G'.$row, $item->email);
+			$sheet->getStyle($row)->applyFromArray($style_arr);
+			
+			$row++;
+		}
+		
+		return $spreadsheet;
 	}
 
 }
