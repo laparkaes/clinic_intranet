@@ -5,18 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title><?= $title ?></title>
-    <link rel="icon" type="image/png" sizes="16x16" rel="stylesheet" type="text/css" ="<?= base_url() ?>resources/images/favicon.png">
-	<link rel="stylesheet" rel="stylesheet" type="text/css" ="<?= base_url() ?>resources/vendor/fullcalendar/css/main.min.css">
-	<link rel="stylesheet" rel="stylesheet" type="text/css" ="<?= base_url() ?>resources/vendor/datatables/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" rel="stylesheet" type="text/css" ="<?= base_url() ?>resources/vendor/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css">
-	<link rel="stylesheet" rel="stylesheet" type="text/css" ="<?= base_url() ?>resources/vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
-	<link rel="stylesheet" rel="stylesheet" type="text/css" ="<?= base_url() ?>resources/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.css">
-	<link rel="stylesheet" rel="stylesheet" type="text/css" ="<?= base_url() ?>resources/vendor_/jquery-ui-1.13.2/jquery-ui.min.css">
-	<link rel="stylesheet" rel="stylesheet" type="text/css" ="<?= base_url() ?>resources/vendor_/fontawesome5pro/css/all.min.css">
-	<link rel="stylesheet" rel="stylesheet" type="text/css" ="<?= base_url() ?>resources/vendor_/jquery-smartwizard-6.0.6/smart_wizard_all.customized.min.css">
-	<link rel="stylesheet" rel="stylesheet" type="text/css" ="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" rel="stylesheet" type="text/css" ="<?= base_url() ?>resources/css/style.css">
-	<link rel="stylesheet" rel="stylesheet" type="text/css" ="<?= base_url() ?>resources/css/setting.css">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url() ?>resources/images/favicon.png">
+	<link rel="stylesheet" href="<?= base_url() ?>resources/vendor/fullcalendar/css/main.min.css">
+	<link rel="stylesheet" href="<?= base_url() ?>resources/vendor/datatables/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>resources/vendor/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css">
+	<link rel="stylesheet" href="<?= base_url() ?>resources/vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
+	<link rel="stylesheet" href="<?= base_url() ?>resources/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.css">
+	<link rel="stylesheet" href="<?= base_url() ?>resources/vendor_/jquery-ui-1.13.2/jquery-ui.min.css">
+	<link rel="stylesheet" href="<?= base_url() ?>resources/vendor_/fontawesome5pro/css/all.min.css">
+	<link rel="stylesheet" href="<?= base_url() ?>resources/vendor_/jquery-smartwizard-6.0.6/smart_wizard_all.customized.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="<?= base_url() ?>resources/css/style.css">
+	<link rel="stylesheet" href="<?= base_url() ?>resources/css/setting.css">
 </head>
 <body>
     <div id="preloader">
@@ -28,7 +28,7 @@
     </div>
     <div id="main-wrapper">
         <div class="nav-header">
-            <a rel="stylesheet" type="text/css" ="<?= base_url() ?>dashboard" class="brand-logo d-flex justify-content-center p-0">
+            <a href="<?= base_url() ?>dashboard" class="brand-logo d-flex justify-content-center p-0">
                 <img class="logo-abbr" src="<?= base_url() ?>resources/images/logo.png">
 				<img class="brand-title" src="<?= base_url() ?>resources/images/logo_text.svg">
             </a>
@@ -49,12 +49,12 @@
                         </div>
                         <ul class="navbar-nav header-right">
 							<li class="nav-item dropdown notification_dropdown">
-                                <a class="nav-link text-primary border-primary schedule_block" rel="stylesheet" type="text/css" ="#">
+                                <a class="nav-link text-primary border-primary schedule_block" href="#">
                                     <i class="fas fa-laptop-medical"></i>
                                 </a>
 							</li>
                             <li class="nav-item dropdown header-profile">
-                                <a class="nav-link" rel="stylesheet" type="text/css" ="#" role="button" data-toggle="dropdown">
+                                <a class="nav-link" href="#" role="button" data-toggle="dropdown">
                                     <img src="<?= base_url() ?>resources/images/user.png" width="20" alt=""/>
 									<div class="header-info">
 										<span><?= $this->session->userdata('name') ?></span>
@@ -62,7 +62,7 @@
 									</div>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a rel="stylesheet" type="text/css" ="<?= base_url() ?>auth/logout" class="dropdown-item ai-icon">
+                                    <a href="<?= base_url() ?>auth/logout" class="dropdown-item ai-icon">
 										<i class="fa fa-sign-out fa-lg text-danger" style="width:18px;"></i>
                                         <span class="ml-2"><?= $this->lang->line('hd_logout') ?></span>
                                     </a>
@@ -77,55 +77,55 @@
             <div class="deznav-scroll">
 				<ul class="metismenu pt-0" id="menu">
 					<li>
-						<a class="ai-icon" rel="stylesheet" type="text/css" ="<?= base_url() ?>dashboard" aria-expanded="false">
+						<a class="ai-icon" href="<?= base_url() ?>dashboard" aria-expanded="false">
 							<i class="fas fa-home fa-fw mr-2"></i>
 							<span class="nav-text"><?= $this->lang->line('nav_dashboard') ?></span>
 						</a>
                     </li>
                     <li>
-						<a class="ai-icon" rel="stylesheet" type="text/css" ="<?= base_url() ?>doctor" aria-expanded="false">
+						<a class="ai-icon" href="<?= base_url() ?>doctor" aria-expanded="false">
 							<i class="fas fa-user-md fa-fw mr-2"></i>
 							<span class="nav-text"><?= $this->lang->line('nav_doctors') ?></span>
 						</a>
 					</li>
 					<li>
-						<a class="ai-icon" rel="stylesheet" type="text/css" ="<?= base_url() ?>patient" aria-expanded="false">
+						<a class="ai-icon" href="<?= base_url() ?>patient" aria-expanded="false">
 							<i class="fas fa-user-injured fa-fw mr-2"></i>
 							<span class="nav-text"><?= $this->lang->line('nav_patients') ?></span>
 						</a>
 					</li>
 					<li>
-						<a class="ai-icon" rel="stylesheet" type="text/css" ="<?= base_url() ?>appointment" aria-expanded="false">
+						<a class="ai-icon" href="<?= base_url() ?>appointment" aria-expanded="false">
 							<i class="fas fa-notes-medical fa-fw mr-2"></i>
 							<span class="nav-text"><?= $this->lang->line('nav_appointments') ?></span>
 						</a>
 					</li>
 					<li>
-						<a class="ai-icon" rel="stylesheet" type="text/css" ="<?= base_url() ?>surgery" aria-expanded="false">
+						<a class="ai-icon" href="<?= base_url() ?>surgery" aria-expanded="false">
 							<i class="fas fa-file-medical-alt fa-fw mr-2"></i>
 							<span class="nav-text"><?= $this->lang->line('nav_surgeries') ?></span>
 						</a>
 					</li>
 					<li>
-						<a class="ai-icon" rel="stylesheet" type="text/css" ="<?= base_url() ?>product" aria-expanded="false">
+						<a class="ai-icon" href="<?= base_url() ?>product" aria-expanded="false">
 							<i class="fas fa-box fa-fw mr-2"></i>
 							<span class="nav-text"><?= $this->lang->line('nav_products') ?></span>
 						</a>
 					</li>
 					<li>
-						<a class="ai-icon" rel="stylesheet" type="text/css" ="<?= base_url() ?>sale" aria-expanded="false">
+						<a class="ai-icon" href="<?= base_url() ?>sale" aria-expanded="false">
 							<i class="fas fa-shopping-basket fa-fw mr-2"></i>
 							<span class="nav-text"><?= $this->lang->line('nav_sales') ?></span>
 						</a>
 					</li>
 					<li>
-						<a class="ai-icon" rel="stylesheet" type="text/css" ="<?= base_url() ?>report" aria-expanded="false">
+						<a class="ai-icon" href="<?= base_url() ?>report" aria-expanded="false">
 							<i class="fas fa-book fa-fw mr-2"></i>
 							<span class="nav-text"><?= $this->lang->line('nav_reports') ?></span>
 						</a>
 					</li>
 					<li>
-						<a class="ai-icon" rel="stylesheet" type="text/css" ="<?= base_url() ?>config" aria-expanded="false">
+						<a class="ai-icon" href="<?= base_url() ?>config" aria-expanded="false">
 							<i class="fas fa-cogs fa-fw mr-2"></i>
 							<span class="nav-text"><?= $this->lang->line('nav_settings') ?></span>
 						</a>
@@ -158,10 +158,10 @@
 		<div class="custom-tab-1">
 			<ul class="nav nav-tabs d-flex justify-content-start">
 				<li class="nav-item">
-					<a class="nav-link active" data-toggle="tab" rel="stylesheet" type="text/css" ="#sch_appointment"><?= $this->lang->line('txt_appointments') ?></a>
+					<a class="nav-link active" data-toggle="tab" href="#sch_appointment"><?= $this->lang->line('txt_appointments') ?></a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" rel="stylesheet" type="text/css" ="#sch_surgery"><?= $this->lang->line('txt_surgeries') ?></a>
+					<a class="nav-link" data-toggle="tab" href="#sch_surgery"><?= $this->lang->line('txt_surgeries') ?></a>
 				</li>
 			</ul>
 			<div class="tab-content">
