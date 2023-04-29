@@ -5,10 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title><?= $title ?></title>
-    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url() ?>resorces/images/favicon.png">
-	<link href="<?= base_url() ?>resorces/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.css" rel="stylesheet">
-    <link href="<?= base_url() ?>resorces/css/style.css" rel="stylesheet">
-	<link href="<?= base_url() ?>resorces/css/setting.css" rel="stylesheet">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url() ?>resources/images/favicon.png">
+	<link href="<?= base_url() ?>resources/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="<?= base_url() ?>resources/css/style.css" rel="stylesheet">
+	<link href="<?= base_url() ?>resources/css/setting.css" rel="stylesheet">
 </head>
 <body class="vh-100">
     <div class="authincation h-100">
@@ -20,7 +20,7 @@
                             <div class="col-xl-12">
                                 <div class="auth-form">
 									<div class="text-center mb-3">
-										<a href="<?= base_url() ?>"><img src="<?= base_url() ?>resorces/images/favicon.png" alt=""></a>
+										<a href="<?= base_url() ?>"><img src="<?= base_url() ?>resources/images/favicon.png" alt=""></a>
 									</div>
                                     <?php if ($has_master){ ?>
 									<h4 class="text-center mb-3"><?= $this->lang->line('title_login') ?></h4>
@@ -141,11 +141,11 @@
 		<input type="hidden" id="alert_confirm_btn" value="<?= $this->lang->line('alert_confirm_btn') ?>">
 		<input type="hidden" id="alert_cancel_btn" value="<?= $this->lang->line('alert_cancel_btn') ?>">
 	</div>
-    <script src="<?= base_url() ?>resorces/vendor/global/global.min.js"></script>
-	<script src="<?= base_url() ?>resorces/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.js"></script>
-    <script src="<?= base_url() ?>resorces/js/custom.min.js"></script>
-	<script src="<?= base_url() ?>resorces/js/deznav-init.js"></script>
-	<script src="<?= base_url() ?>resorces/js/init/general.js"></script>
-	<script src="<?= base_url() ?>resorces/js/init/auth/index.js"></script>
+    <script src="<?= base_url() ?>resources/vendor/global/global.min.js"></script>
+	<script src="<?= base_url() ?>resources/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.js"></script>
+    <script src="<?= base_url() ?>resources/js/custom.min.js"></script>
+	<script src="<?= base_url() ?>resources/js/deznav-init.js"></script>
+	<script src="<?= base_url() ?>resources/js/init/general.js"></script>
+	<script src="<?= base_url() ?>resources/js/init/auth/index.js"></script>
 </body>
 </html>
