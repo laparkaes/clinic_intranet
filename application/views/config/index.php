@@ -154,6 +154,9 @@
 														<td><?= $item->email ?></td>
 														<td><?= $people_arr[$item->person_id] ?></td>
 														<td class="text-right">
+															<button type="button" class="btn btn-info shadow btn-xs sharp reset_password" value="<?= $item->id ?>">
+																<i class="fas fa-unlock-alt"></i>
+															</button>
 															<button type="button" class="btn btn-danger shadow btn-xs sharp remove_account" value="<?= $item->id ?>">
 																<i class="fas fa-trash"></i>
 															</button>
@@ -408,4 +411,5 @@
 </div>
 <div class="d-none">
 	<input type="hidden" id="warning_rac" value="<?= $this->lang->line('warning_rac') ?>">
+	<input type="hidden" id="warning_rpa" value="<?= $this->lang->line('warning_rpa') ?>">
 </div>

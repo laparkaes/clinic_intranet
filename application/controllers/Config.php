@@ -157,6 +157,26 @@ class Config extends CI_Controller {
 		echo json_encode(["status" => $status, "type" => $type, "msg" => $msg]);
 	}
 	
+	public function reset_password(){
+		$status = false; $type = "error"; $msg = null;
+		
+		$account = $this->general->id("account", $this->input->post("id"));
+		if ($account){
+			$person = $this->general->id("person", $account->person_id);
+			if ($person) $pw = $person->doc_number;
+			else $pw = "1234567890";
+			
+			if ($this->general->update("account", $account->id, ["password" => password_hash($pw, PASSWORD_BCRYPT)])){
+				$status = true;
+				$type = "success";
+				$msg = str_replace("&pw&", $pw, $this->lang->line('success_uap'));
+			}else $msg = $this->lang->line('error_internal');
+		}else $msg = $this->lang->line('error_internal_refresh');
+		
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg));
+	}
+	
 	public function control_role_access(){
 		$setting = $this->input->post("setting");
 		$setting = isset($setting) && $setting === 'true';

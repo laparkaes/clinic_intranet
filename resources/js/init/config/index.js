@@ -42,6 +42,28 @@ function control_role_access(dom){
 	});
 }
 
+function reset_password(dom){
+	Swal.fire({
+		title: $("#alert_warning_title").val(),
+		html: $("#warning_rpa").val(),
+		icon: 'warning',
+		showCancelButton: true,
+		confirmButtonText: $("#alert_confirm_btn").val(),
+		cancelButtonText: $("#alert_cancel_btn").val()
+	}).then((result) => {
+		if (result.isConfirmed){
+			$.ajax({
+				url: $("#base_url").val() + "config/reset_password",
+				type: "POST",
+				data: {id: $(dom).val()},
+				success:function(res){
+					swal(res.type, res.msg);
+				}
+			});
+		}
+	});
+}
+
 function remove_account(dom){
 	Swal.fire({
 		title: $("#alert_warning_title").val(),
@@ -190,6 +212,7 @@ $(document).ready(function() {
 	//account role
 	$("#form_register_account").submit(function(e) {e.preventDefault(); register_account(this);});
 	$("#btn_search_person_ra").on('click',(function(e) {search_person_ra();}));
+	$(".reset_password").on('click',(function(e) {reset_password(this);}));
 	$(".remove_account").on('click',(function(e) {remove_account(this);}));
 	$(".control_bl_account").on('click',(function(e) {control_bl_account(this);}));
 	set_datatable("account_list", 25, false);

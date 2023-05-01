@@ -32,7 +32,9 @@ $lang['success_cup'] = 'Empresa ha sido actualizada.';//success_company_update
 $lang['success_dac'] = 'Usuario ha sido eliminado.';//success_delete_account
 $lang['success_rsv'] = 'Nuevo valor ha sido registrado.';//success_register_sl_value
 $lang['success_dsv'] = 'Nuevo valor ha sido eliminado.';//success_delete_sl_value
+$lang['success_uap'] = 'Contraseña ha sido configurado a "&pw&".';//success_update_account_password
 $lang['warning_rac'] = '¿Desea eliminar usuario elegido?';//warning_remove_account
+$lang['warning_rpa'] = '¿Desea restablecer contraseña de usuario por su número de documento de identidad?';//warning_reset_password
 
 //content
 $lang['btn_save'] = 'Guardar';
