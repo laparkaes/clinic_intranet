@@ -28,6 +28,11 @@
 						</a>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#bl_profile_admin">
+							<i class="fal fa-diagnoses mr-3"></i><?= $this->lang->line("title_profile") ?>
+						</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#bl_system_admin">
 							<i class="fal fa-tools mr-3"></i><?= $this->lang->line("title_system") ?>
 						</a>
@@ -315,6 +320,16 @@
 								<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_save') ?></button>
 							</div>
 						</form>
+					</div>
+					<div class="tab-pane fade" id="bl_profile_admin">
+						<div class="row">
+							<div class="col-md-12">
+								<h5 class="text-primary mb-3"><?= $this->lang->line("title_profile_admin") ?></h5>
+							</div>
+							<div class="col-md-12">
+								
+							</div>
+						</div>
 					</div>
 					<div class="tab-pane fade" id="bl_system_admin">
 						<div class="row">

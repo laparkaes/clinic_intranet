@@ -110,6 +110,10 @@ $lang['slop_medicine_via_application'] = 'Vía Aplicación';
 $lang['slop_payment_method'] = 'Metodo de Pago';
 $lang['slop_sex'] = 'Sexo';
 
+//profile
+$lang['title_profile'] = 'Perfil';
+$lang['title_profile_admin'] = 'Gestión de Perfil de Exámenes';
+
 //company
 $lang['title_company'] = 'Empresa';
 $lang['title_legal_data'] = 'Datos Legales';
