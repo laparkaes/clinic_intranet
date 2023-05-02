@@ -323,11 +323,107 @@
 					</div>
 					<div class="tab-pane fade" id="bl_profile_admin">
 						<div class="row">
-							<div class="col-md-12">
+							<div class="col-md-6">
 								<h5 class="text-primary mb-3"><?= $this->lang->line("title_profile_admin") ?></h5>
 							</div>
-							<div class="col-md-12">
-								
+							<div class="col-md-6 text-right">
+								<div class="btn-group mb-3">
+									<button type="button" class="btn control_bl_profile btn-primary btn-xs" id="btn_list" value="bl_profile_list">
+										<i class="fas fa-list"></i>
+									</button>
+									<button type="button" class="btn control_bl_profile btn-outline-primary btn-xs" value="bl_profile_add">
+										<i class="fas fa-plus"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 bl_profile d-none" id="bl_profile_add">
+								<form class="form-row" id="form_register_profile" action="#">
+									<div class="form-group col-md-12">
+										<label><?= $this->lang->line('lb_profile_name') ?></label>
+										<input type="text" class="form-control" name="name">
+										<div class="sys_msg" id="rp_name_msg"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label><?= $this->lang->line('lb_exam_category') ?></label>
+										<select class="form-control" id="rp_category">
+											<option value=""><?= $this->lang->line('txt_view_all') ?></option>
+											<?php foreach($exam_category as $ec){ ?>
+											<option value="<?= $ec->id ?>"><?= $ec->name ?></option>
+											<?php } ?>
+										</select>
+										<div class="sys_msg" id="rp_exams_msg"></div>
+									</div>
+									<div class="form-group col-md-4">
+										<label><?= $this->lang->line('lb_filter') ?></label>
+										<input type="text" class="form-control" id="rp_filter">
+									</div>
+									<div class="form-group col-md-12 text-danger d-none" id="rp_no_result_msg">
+										<?= $this->lang->line('msg_no_result') ?>
+									</div>
+									<div class="form-group col-md-12 mb-0">
+										<div class="row">
+											<?php foreach($exams as $ex){ ?>
+											<div class="col-md-4 ex_profile ex_profile_<?= $ex->category_id ?>">
+												<div class="custom-control custom-checkbox mb-3">
+													<input type="checkbox" class="custom-control-input" id="exam_<?= $ex->id ?>" value="<?= $ex->id ?>" name="exams[]">
+													<label class="custom-control-label" for="exam_<?= $ex->id ?>"><?= $ex->name ?></label>
+												</div>
+											</div>
+											<?php } ?>
+										</div>
+									</div>
+									<div class="form-group col-md-12 pt-3">
+										<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
+									</div>
+								</form>
+							</div>
+							<div class="col-md-12 bl_profile" id="bl_profile_list">
+								<div class="row">
+									<div class="col-md-2">
+										<div id="profile_list_length_new"></div>
+									</div>
+									<div class="col-md-6"></div>
+									<div class="col-md-4">
+										<div id="profile_list_filter_new"></div>
+									</div>
+									<div class="col-md-12">
+										<div class="table-responsive">
+											<table id="profile_list" class="table table-responsive-md">
+												<thead>
+													<tr>
+														<th><strong>#</strong></th>
+														<th><strong><?= $this->lang->line('lb_profile') ?></strong></th>
+														<th><strong><?= $this->lang->line('lb_examination_list') ?></strong></th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody>
+													<?php foreach($exam_profiles as $i => $item){ ?>
+													<tr>
+														<td><?= $i + 1 ?></td>
+														<td><?= $item->name ?></td>
+														<td>
+															<?php
+															$aux = [];
+															$exam_ids = explode(",", $item->examination_ids);
+															foreach($exam_ids as $exam_id) $aux[] = $exams_arr[$exam_id];
+															echo implode(", ", $aux);
+															?>
+														</td>
+														<td class="text-right">
+															<button type="button" class="btn btn-danger shadow btn-xs sharp remove_profile" value="<?= $item->id ?>">
+																<i class="fas fa-trash"></i>
+															</button>
+														</td>
+													</tr>
+													<?php } ?>
+												</tbody>
+											</table>
+										</div>	
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>

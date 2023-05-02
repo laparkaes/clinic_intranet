@@ -42,6 +42,10 @@ class Config extends CI_Controller {
 		$people = $this->general->filter_adv("person", null, [["field" => "id", "values" => $people_ids_arr]]);
 		foreach($people as $item) $people_arr[$item->id] = $item->name;
 		
+		$exams_arr = [];
+		$exams = $this->general->all("examination", "name", "asc");
+		foreach($exams as $item) $exams_arr[$item->id] = $item->name;
+		
 		$sl_options = $this->general->only("sl_option", "code");
 		foreach($sl_options as $item){
 			$item->lang = $this->lang->line("slop_".$item->code);
@@ -70,6 +74,10 @@ class Config extends CI_Controller {
 			"account_arr" => $account_arr,
 			"log_code_arr" => $log_code_arr,
 			"logs" => $logs,
+			"exam_profiles" => $this->general->all("examination_profile", "name", "asc"),
+			"exam_category" => $this->general->all("examination_category", "name", "asc"),
+			"exams_arr" => $exams_arr,
+			"exams" => $exams,
 			"accounts" => $this->general->all("account", "role_id", "asc"),
 			"departments" => $this->general->all("address_department", "name", "asc"),
 			"provinces" => $this->general->all("address_province", "name", "asc"),
@@ -280,5 +288,29 @@ class Config extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode(["status" => $status, "type" => $type, "msg" => $msg, "removed_value" => $removed_value]);
+	}
+	
+	public function register_profile(){
+		$status = false; $type = "error"; $msgs = []; $msg = null;
+		
+		$name = $this->input->post("name");
+		$exams = $this->input->post("exams");
+		
+		if (!$name) $msgs = $this->set_msg($msgs, "rp_name_msg", "error", "error_epn");
+		elseif ($this->general->filter("examination_profile", ["name" => $name])) $msgs = $this->set_msg($msgs, "rp_name_msg", "error", "error_dpn");
+		if (!$exams) $msgs = $this->set_msg($msgs, "rp_exams_msg", "error", "error_spe");
+		
+		if ($msgs) $msg = $this->lang->line("error_occurred");
+		else{
+			sort($exams);
+			if ($this->general->insert("examination_profile", ["name" => $name, "examination_ids" => implode(",", $exams)])){
+				$status = true;
+				$type = "success";
+				$msg = $this->lang->line("success_rep");
+			}
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => $status, "type" => $type, "msgs" => $msgs, "msg" => $msg));
 	}
 }

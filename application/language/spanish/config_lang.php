@@ -26,6 +26,9 @@ $lang['error_epa'] = 'Ingrese contraseña.';//error_enter_password
 $lang['error_pac'] = 'Repita contraseña correctamente.';//error_password_confirm
 $lang['error_sro'] = 'Elija un rol.';//error_select_role
 $lang['error_pra'] = 'Persona ya cuenta con usuario con role elegido.';//error_person_has_role_account
+$lang['error_epn'] = 'Ingrese nombre de perfil.';//error_enter_profile_name
+$lang['error_dpn'] = 'Nombre de perfil existe.';//error_duplate_profile_name
+$lang['error_spe'] = 'Seleccione al menos un examen para perfil.';//error_select_profile_exams
 $lang['error_evd'] = 'Ingrese descripción de nuevo valor.';//error_enter_value_description
 $lang['success_rac'] = 'Usuario ha sido registrado.';//success_register_account
 $lang['success_cup'] = 'Empresa ha sido actualizada.';//success_company_update
@@ -33,6 +36,7 @@ $lang['success_dac'] = 'Usuario ha sido eliminado.';//success_delete_account
 $lang['success_rsv'] = 'Nuevo valor ha sido registrado.';//success_register_sl_value
 $lang['success_dsv'] = 'Nuevo valor ha sido eliminado.';//success_delete_sl_value
 $lang['success_uap'] = 'Contraseña ha sido configurado a "&pw&".';//success_update_account_password
+$lang['success_rep'] = 'Perfil de examen ha sido registrado.';//success_register_exam_perfil
 $lang['warning_rac'] = '¿Desea eliminar usuario elegido?';//warning_remove_account
 $lang['warning_rpa'] = '¿Desea restablecer contraseña de usuario por su número de documento de identidad?';//warning_reset_password
 
@@ -113,6 +117,13 @@ $lang['slop_sex'] = 'Sexo';
 //profile
 $lang['title_profile'] = 'Perfil';
 $lang['title_profile_admin'] = 'Gestión de Perfil de Exámenes';
+$lang['lb_profile'] = 'Perfil';
+$lang['lb_profile_name'] = 'Nombre de perfil';
+$lang['lb_examination_list'] = 'Lista de exámenes';
+$lang['lb_exam_category'] = 'Categoría de examen';
+$lang['lb_filter'] = 'Filter';
+$lang['txt_view_all'] = 'Ver todos';
+$lang['msg_no_result'] = 'No hay resultado con datos ingresados.';
 
 //company
 $lang['title_company'] = 'Empresa';
