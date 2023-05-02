@@ -4,7 +4,7 @@ $an = $appointment_datas["anamnesis"];
 $ph = $appointment_datas["physical"];
 $di = $appointment_datas["diag_impression"];
 $re = $appointment_datas["result"];
-$ex = $appointment_datas["examination"]; $ex_profiles = $ex["profiles"]; $ex_examinations = $ex["examinations"];
+$ex = $appointment_datas["examination"]; $ex_profiles = $ex["profiles"]; $ex_examinations = $ex["exams"];
 $im = $appointment_datas["images"]; $images_ap = $im["images"]; $checked_images = $im["checked_images"];
 $th = $appointment_datas["therapy"];
 $me = $appointment_datas["medicine"];
@@ -893,14 +893,33 @@ $me = $appointment_datas["medicine"];
 				</ul>
 				<div class="tab-content">
 					<div id="auxiliary_exams-1" class="tab-pane active">
+						<?php if ($appointment->is_editable){ ?>
 						<div class="row">
-							<?php if ($appointment->is_editable){ $next_col = 6; ?>
 							<div class="col-md-6">
-								<h5><?= $this->lang->line('title_search') ?></h5>
+								<div class="form-row">
+									<div class="form-group col-md-12">
+										<label><?= $this->lang->line('lb_profile') ?></label>
+										<div class="input-group">
+											<select class="form-control" id="sl_profile_exam">
+												<option value="">--</option>
+												<?php foreach($exam_profiles as $item){ ?>
+												<option value="<?= $item->id ?>"><?= $item->name ?></option>
+												<?php } ?>
+											</select>
+											<div class="input-group-append">
+												<button class="btn btn-primary" type="button" id="btn_add_exam_profile">
+													<?= $this->lang->line('btn_add') ?>
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
 								<div class="form-row">
 									<div class="form-group col-md-4">
 										<label><?= $this->lang->line('lb_category') ?></label>
-										<select class="form-control" id="ex_category">
+										<select class="form-control" id="sl_exam_category">
 											<option value=""><?= $this->lang->line('txt_all') ?></option>
 											<?php foreach($exam_categories as $item){ ?>
 											<option value="<?= $item->id ?>"><?= $item->name ?></option>
@@ -908,75 +927,59 @@ $me = $appointment_datas["medicine"];
 										</select>
 									</div>
 									<div class="form-group col-md-8">
-										<label><?= $this->lang->line('lb_filter') ?></label>
-										<input type="text" class="form-control" id="ex_search">
-									</div>
-								</div>
-								<div class="form-row ap_content_list_high" id="list_exams">
-									<div class="form-group col-md-12 mt-3">
-										<h5><?= $this->lang->line('title_profiles') ?></h5>
-									</div>
-									<?php foreach($exam_profiles as $item){
-									$class = "exam_category_".implode(" exam_category_", $item->categories);
-									if (in_array($item->id, $ex["checked_profs"])) $checked = "checked"; else $checked = ""; ?>
-									<div class="form-group col-md-12 examination_profiles <?= $class ?>">
-										<div class="search_filter d-none"><?= $item->name." ".$item->exams ?></div>
-										<div class="custom-control custom-checkbox checkbox-primary mr-3 mb-1">
-											<input type="checkbox" class="custom-control-input chk_exam_profile" id="exam_profile_<?= $item->id ?>" value="<?= $item->id ?>" <?= $checked ?>>
-											<label class="custom-control-label" for="exam_profile_<?= $item->id ?>">
-												<?= $item->name ?> (<?= count($item->examination_ids) ?> <?= $this->lang->line('txt_exams_l') ?>)<br/>
-												<small><?= $item->exams ?></small>
-											</label>
+										<label><?= $this->lang->line('lb_exam') ?></label>
+										<div class="input-group">
+											<select class="form-control" id="sl_exam">
+												<option value="">--</option>
+												<?php foreach($examinations as $item){ ?>
+												<option value="<?= $item->id ?>" class="exam_cat exam_cat_<?= $item->category_id ?>"><?= $item->name ?></option>
+												<?php } ?>
+											</select>
+											<div class="input-group-append">
+												<button class="btn btn-primary" type="button" id="btn_add_exam">
+													<?= $this->lang->line('btn_add') ?>
+												</button>
+											</div>
 										</div>
 									</div>
-									<?php } ?>
-									<div class="form-group col-md-12 text-center d-none" id="exam_profile_no_result"><?= $this->lang->line('msg_no_result') ?></div>
-									<div class="form-group col-md-12 mt-3">
-										<h5><?= $this->lang->line('title_individual_exams') ?></h5>
-									</div>
-									<?php foreach($examinations as $item){
-									if (in_array($item->id, $ex["checked_exams"])) $checked = "checked"; else $checked = ""; ?>
-									<div class="form-group col-md-12 examinations exam_category_<?= $item->category_id ?>">
-										<div class="search_filter d-none"><?= $item->name ?></div>
-										<div class="custom-control custom-checkbox checkbox-primary mr-3 mb-1">
-											<input type="checkbox" class="custom-control-input chk_exam" id="exam_<?= $item->id ?>" value="<?= $item->id ?>" <?= $checked ?>>
-											<label class="custom-control-label" for="exam_<?= $item->id ?>"><?= $item->name ?></label>
-										</div>
-									</div>
-									<?php } ?>
-									<div class="form-group col-md-12 text-center d-none" id="exam_no_result"><?= $this->lang->line('msg_no_result') ?></div>
 								</div>
 							</div>
-							<?php }else $next_col = 12; ?>
-							<div class="col-md-<?= $next_col ?>">
-								<?php if ($appointment->is_editable){ ?>
-								<h5 class="mb-3"><?= $this->lang->line('title_selected_exams') ?></h5>
-								<?php } ?>
-								<table class="table table-xs no_border_tb mb-0">
-									<tbody id="selected_exams">
+						</div>
+						<?php } ?>
+						<div class="row">
+							<div class="table-responsive">
+								<table class="table table-responsive-md">
+									<thead>
+										<tr>
+											<th><strong><?= $this->lang->line('th_type') ?></strong></th>
+											<th><strong><?= $this->lang->line('th_profile') ?></strong></th>
+											<th><strong><?= $this->lang->line('th_exams') ?></strong></th>
+											<?php if ($appointment->is_editable){ ?><th></th><?php } ?>
+										</tr>
+									</thead>
+									<tbody id="tbody_exams_profiles">
 										<?php foreach($ex_profiles as $ep){ ?>
-										<tr class="text-left">
-											<td class="align-top" style="width:120px;"><?= $ep->type ?></td>
-											<td>
-												<div><?= $ep->name ?></div>
-												<div><small><?= $ep->exams ?></small></div>
-											</td>
+										<tr>
+											<td><?= $ep->type ?></td>
+											<td><?= $ep->name ?></td>
+											<td><?= $ep->exams ?></td>
 											<?php if ($appointment->is_editable){ ?>
-											<td class="align-top" class="text-right">
-												<button type="button" class="btn tp-btn-light btn-danger p-0 btn_delete_exam_profile" value="<?= $ep->id ?>">
-													<i class="fas fa-minus"></i>
+											<td>
+												<button type="button" class="btn btn-danger shadow btn-xs sharp remove_profile" value="<?= $ep->id ?>">
+													<i class="fas fa-trash"></i>
 												</button>
 											</td>
 											<?php } ?>
 										</tr>
 										<?php } foreach($ex_examinations as $ee){ ?>
-										<tr class="text-left">
-											<td style="width:120px;"><?= $ee->type ?></td>
+										<tr>
+											<td><?= $ee->type ?></td>
+											<td>-</td>
 											<td><?= $ee->name ?></td>
 											<?php if ($appointment->is_editable){ ?>
-											<td class="text-right">
-												<button type="button" class="btn tp-btn-light btn-danger p-0 btn_delete_exam" value="<?= $ee->id ?>">
-													<i class="fas fa-minus"></i>
+											<td>
+												<button type="button" class="btn btn-danger shadow btn-xs sharp remove_exam" value="<?= $ee->id ?>">
+													<i class="fas fa-trash"></i>
 												</button>
 											</td>
 											<?php } ?>

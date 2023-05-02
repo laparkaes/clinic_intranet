@@ -169,109 +169,6 @@ function search_diag(dom){
 	});
 }
 
-function filter_exam_checkbox(){
-	var category_id = $("#ex_category").val();
-	var search = $("#ex_search").val().toLowerCase();
-	var result_qty;
-	var f_category;
-	var f_search;
-	
-	//profiles handle
-	result_qty = 0;
-	$("#list_exams .examination_profiles").addClass("d-none");
-	$("#list_exams .examination_profiles").each(function(index, elem){
-		if (category_id == "") f_category = true; else f_category = $(elem).hasClass("exam_category_" + category_id);
-		f_search = $(elem).find(".search_filter").html().toLowerCase().includes(search);
-		if (f_category && f_search){
-			$(elem).removeClass("d-none");
-			result_qty++;
-		}
-	});
-	if (result_qty == 0) $("#exam_profile_no_result").removeClass("d-none");
-	else $("#exam_profile_no_result").addClass("d-none");
-	
-	//examinations handle
-	result_qty = 0;
-	$("#list_exams .examinations").addClass("d-none");
-	$("#list_exams .examinations").each(function(index, elem){
-		if (category_id == "") f_category = true; else f_category = $(elem).hasClass("exam_category_" + category_id);
-		f_search = $(elem).find(".search_filter").html().toLowerCase().includes(search);
-		if (f_category && f_search){
-			$(elem).removeClass("d-none");
-			result_qty++;
-		}
-	});
-	if (result_qty == 0) $("#exam_no_result").removeClass("d-none");
-	else $("#exam_no_result").addClass("d-none");
-}
-
-function set_exam_checkbox(exams, profiles, checked_profs, checked_exams){
-	$("#selected_exams").html("");
-	
-	//profiles handle
-	profiles.forEach(function(element, index){
-		$("#selected_exams").append('<tr class="text-left"><td class="align-top" style="width:120px;">' + element.type + '</td><td><div>' + element.name + '</div><div><small>' + element.exams + '</small></div></td><td class="align-top" class="text-right"><button type="button" class="btn tp-btn-light btn-danger p-0 btn_delete_exam_profile" value="' + element.id + '"><i class="fas fa-minus"></i></button></td></tr>');
-	});
-	$(".btn_delete_exam_profile").on('click',(function(e) {delete_exam_profile(this);}));
-	
-	//examinations handle
-	exams.forEach(function(element, index){
-		$("#selected_exams").append('<tr class="text-left"><td class="align-top" style="width:120px;">' + element.type + '</td><td>' + element.name + '</td><td class="align-top" class="text-right"><button type="button" class="btn tp-btn-light btn-danger p-0 btn_delete_exam" value="' + element.id + '"><i class="fas fa-minus"></i></button></td></tr>');
-	});
-	$(".btn_delete_exam").on('click',(function(e) {delete_exam(this);}));
-	
-	//checkbox setting
-	$(".chk_exam_profile").prop("checked", false);
-	checked_profs.forEach(function(element){
-		$("#exam_profile_" + element).prop("checked", true);
-	});
-	
-	$(".chk_exam").prop("checked", false);
-	checked_exams.forEach(function(element){
-		$("#exam_" + element).prop("checked", true);
-	});
-}
-
-function process_exam_profile(data){
-	$.ajax({
-		url: $("#base_url").val() + "appointment/control_examination_profile",
-		type: "POST",
-		data: data,
-		success:function(res){
-			set_exam_checkbox(res.examinations, res.profiles, res.checked_profs, res.checked_exams);
-			if (res.status == false) swal("error", res.msg);
-		}
-	});
-}
-
-function delete_exam_profile(dom){
-	process_exam_profile({checked: "", id: $(dom).val(), appointment_id: $("#appointment_id").val()});
-}
-
-function control_exam_profile(dom){
-	process_exam_profile({checked: $(dom).prop("checked"), id: $(dom).val(), appointment_id: $("#appointment_id").val()});
-}
-
-function process_exam(data){
-	$.ajax({
-		url: $("#base_url").val() + "appointment/control_examination",
-		type: "POST",
-		data: data,
-		success:function(res){
-			set_exam_checkbox(res.examinations, res.profiles, res.checked_profs, res.checked_exams);
-			if (res.status == false) swal("error", res.msg);
-		}
-	});
-}
-
-function delete_exam(dom){
-	process_exam({checked: "", id: $(dom).val(), appointment_id: $("#appointment_id").val()});
-}
-
-function control_exam(dom){
-	process_exam({checked: $(dom).prop("checked"), id: $(dom).val(), appointment_id: $("#appointment_id").val()});
-}
-
 function filter_img_checkbox(){
 	var category_id = $("#img_category").val();
 	var search = $("#img_search").val().toLowerCase();
@@ -465,6 +362,50 @@ function control_reschedule_form(){
 	}
 }
 
+function filter_exam(cat_id){
+	if (cat_id == "") $(".exam_cat").removeClass("d-none");
+	else{
+		$(".exam_cat").addClass("d-none");
+		$(".exam_cat_" + cat_id).removeClass("d-none");
+	}
+}
+
+function set_profiles_exams(profiles, exams){
+	$("#tbody_exams_profiles").html("");
+	
+	$.each(profiles, function(index, value) {
+		$("#tbody_exams_profiles").append('<tr><td>' + value.type + '</td><td>' + value.name + '</td><td>' + value.exams + '</td><td><button type="button" class="btn btn-danger shadow btn-xs sharp remove_profile" value="' + value.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+	});
+	
+	$.each(exams, function(index, value) {
+		$("#tbody_exams_profiles").append('<tr><td>' + value.type + '</td><td>-</td><td>' + value.name + '</td><td><button type="button" class="btn btn-danger shadow btn-xs sharp remove_exam" value="' + value.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+	});
+}
+
+function add_exam_profile(profile_id){
+	$.ajax({
+		url: $("#base_url").val() + "appointment/add_exam_profile",
+		type: "POST",
+		data: {appointment_id: $("#appointment_id").val(), profile_id: profile_id},
+		success:function(res){
+			set_profiles_exams(res.profiles, res.exams);
+			if (res.status == false) swal("error", res.msg); 
+		}
+	});
+}
+
+function add_exam(exam_id){
+	$.ajax({
+		url: $("#base_url").val() + "appointment/add_exam",
+		type: "POST",
+		data: {appointment_id: $("#appointment_id").val(), examination_id: exam_id},
+		success:function(res){
+			set_profiles_exams(res.profiles, res.exams);
+			if (res.status == false) swal("error", res.msg); 
+		}
+	});
+}
+
 $(document).ready(function() {
 	//general
 	load_doctor_schedule_appointment();
@@ -501,12 +442,9 @@ $(document).ready(function() {
 	$("#form_result").submit(function(e) {e.preventDefault(); save_form("result", this);});
 	
 	//appointment - prescription - examination
-	$("#ex_category").change(function() {filter_exam_checkbox();});
-	$("#ex_search").keyup(function() {filter_exam_checkbox();});
-	$(".chk_exam_profile").change(function() {control_exam_profile(this);});
-	$(".chk_exam").change(function() {control_exam(this);});
-	$(".btn_delete_exam_profile").on('click',(function(e) {delete_exam_profile(this);}));
-	$(".btn_delete_exam").on('click',(function(e) {delete_exam(this);}));
+	$("#sl_exam_category").change(function() {filter_exam($(this).val());});
+	$("#btn_add_exam_profile").on('click',(function(e) {add_exam_profile($("#sl_profile_exam").val());}));
+	$("#btn_add_exam").on('click',(function(e) {add_exam($("#sl_exam").val());}));
 	
 	//appointment - prescription - image
 	$("#img_category").change(function() {filter_img_checkbox();});

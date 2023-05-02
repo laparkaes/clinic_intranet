@@ -235,31 +235,8 @@ function filter_exams(){
 		else $(value).addClass("d-none");
 	});
 	
-	if ($(".ex_profile:not(.d-none)").length > 1) $("#rp_no_result_msg").addClass("d-none");
+	if ($(".ex_profile:not(.d-none)").length > 0) $("#rp_no_result_msg").addClass("d-none");
 	else $("#rp_no_result_msg").removeClass("d-none");
-}
-
-function control_exams(profile_id){
-	if (profile_id == "") $(".ex_profile").removeClass("d-none");
-	else{
-		$(".ex_profile").addClass("d-none");
-		$(".ex_profile_" + profile_id).removeClass("d-none");	
-	}
-}
-
-function filter_exams1(filter){
-	var is_show;
-	var exams = $('.ex_profile:not(.d-none)');
-	$.each(exams, function(index, value) {
-		if (filter == "") is_show = true;
-		else{
-			if ($(value).find("label").text().indexOf(filter) >= 0) is_show = true;
-			else is_show = false;	
-		}
-		
-		if (is_show == true) $(value).removeClass("d-none");
-		else $(value).addClass("d-none");
-	});
 }
 
 function register_profile(dom){
@@ -284,6 +261,35 @@ function register_profile(dom){
 	});
 }
 
+function remove_profile(dom){
+	Swal.fire({
+		title: $("#alert_warning_title").val(),
+		html: $("#warning_rpr").val(),
+		icon: 'warning',
+		showCancelButton: true,
+		confirmButtonText: $("#alert_confirm_btn").val(),
+		cancelButtonText: $("#alert_cancel_btn").val()
+	}).then((result) => {
+		if (result.isConfirmed){
+			$.ajax({
+				url: $("#base_url").val() + "config/remove_profile",
+				type: "POST",
+				data: {id: $(dom).val()},
+				success:function(res){
+					Swal.fire({
+						title: $("#alert_" + res.type + "_title").val(),
+						icon: res.type,
+						html: res.msg,
+						confirmButtonText: $("#alert_confirm_btn").val()
+					}).then((result) => {
+						if (res.status == true) location.reload();
+					});
+				}
+			});
+		}
+	});
+}
+
 $(document).ready(function() {
 	//account role
 	$("#form_register_account").submit(function(e) {e.preventDefault(); register_account(this);});
@@ -303,6 +309,7 @@ $(document).ready(function() {
 	
 	//profile
 	$("#form_register_profile").submit(function(e) {e.preventDefault(); register_profile(this);});
+	$(".remove_profile").on('click',(function(e) {remove_profile(this);}));
 	$("#rp_category").change(function() {filter_exams();});
 	$("#rp_filter").keyup(function() {filter_exams();});
 	$(".control_bl_profile").on('click',(function(e) {control_bl_group(this, "profile");}));

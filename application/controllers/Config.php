@@ -304,6 +304,8 @@ class Config extends CI_Controller {
 		else{
 			sort($exams);
 			if ($this->general->insert("examination_profile", ["name" => $name, "examination_ids" => implode(",", $exams)])){
+				$this->utility_lib->add_log("profile_register", $name);
+				
 				$status = true;
 				$type = "success";
 				$msg = $this->lang->line("success_rep");
@@ -312,5 +314,25 @@ class Config extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => $status, "type" => $type, "msgs" => $msgs, "msg" => $msg));
+	}
+	
+	public function remove_profile(){
+		$status = false; $type = "error"; $msg = null;
+		
+		$profile = $this->general->id("examination_profile", $this->input->post("id"));
+		if ($this->general->delete("examination_profile", ["id" => $profile->id])){
+			$this->utility_lib->add_log("profile_delete", $profile->name);
+			
+			$status = true;
+			$type = "success";
+			$msg = $this->lang->line('success_dep');
+		}else{
+			$status = false;
+			$type = "error";
+			$msg = $this->lang->line('error_internal');
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg));
 	}
 }

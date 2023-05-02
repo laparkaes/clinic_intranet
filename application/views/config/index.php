@@ -523,4 +523,5 @@
 <div class="d-none">
 	<input type="hidden" id="warning_rac" value="<?= $this->lang->line('warning_rac') ?>">
 	<input type="hidden" id="warning_rpa" value="<?= $this->lang->line('warning_rpa') ?>">
+	<input type="hidden" id="warning_rpr" value="<?= $this->lang->line('warning_rpr') ?>">
 </div>

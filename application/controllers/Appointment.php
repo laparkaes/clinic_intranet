@@ -169,7 +169,7 @@ class Appointment extends CI_Controller {
 			"physical" => $physical,
 			"diag_impression" => $diag_impression,
 			"result" => $result,
-			"examination" => $this->validate_exam_profile($appointment->id),
+			"examination" => $this->set_profiles_exams($appointment->id),
 			"images" => array("images" => $images_ap, "checked_images" => $checked_images),
 			"therapy" => $this->set_therapy_list($appointment->id),
 			"medicine" => $this->set_medicine_list($appointment->id)
@@ -741,138 +741,88 @@ class Appointment extends CI_Controller {
 		echo json_encode(array("status" => $status, "images" => $images_ap, "msg" => $msg, "checked_images" => $checked_images));
 	}
 	
-	private function validate_exam_profile($appointment_id){
-		$profiles = $examinations = array();
+	private function set_profiles_exams($app_id){
+		$pr_ids = $ex_ids = [];
+		$app_exams = $this->general->filter("appointment_examination", ["appointment_id" => $app_id]);
+		foreach($app_exams as $item){
+			if ($item->profile_id) $pr_ids[] = $item->profile_id;
+			if ($item->examination_id) $ex_ids[] = $item->examination_id;
+		}
 		
-		//preparing exam_ids
-		$exam_ids = array();
-		$exams = $this->general->filter("appointment_examination", array("appointment_id" => $appointment_id), "examination_id", "asc");
-		foreach($exams as $item) array_push($exam_ids, $item->examination_id);
-		$checked_exams = $exam_ids;
-		//profile list
-		/*
-		having exam_ids
-		get all profiles
-		order by exam_ids array length
-		compare from largest to smallist profile
-		  => remove from exams_ids if get a profile
-		  => insert to profile_list after get a profile
-		*/
-		$profiles = array();
-		$prof = $this->examination->profile_all();
-		foreach($prof as $item) $item->examination_ids = explode(",", $item->examination_ids);
-		usort($prof, function($a, $b) {
-			if (count($a->examination_ids) < count($b->examination_ids)) return true;
-			else return strcmp($a->name, $b->name);
-		});
-		
-		$checked_profs = array();
-		foreach($prof as $item){
-			$intersect = array_intersect($exam_ids, $item->examination_ids);
-			if (count($intersect) == count($item->examination_ids)){
-				//setting profile data
-				$exams_arr = array();
-				$exams = $this->examination->ids($item->examination_ids);
-				foreach($exams as $e) array_push($exams_arr, $e->name);
-				$item->exams = implode(", ", $exams_arr);
+		if ($pr_ids){
+			$profiles = $this->general->filter_adv("examination_profile", null, [["field" => "id", "values" => $pr_ids]], "name", "asc");
+			foreach($profiles as $item){
+				$aux_ex_arr = [];
+				$aux_ex_ids = explode(",", $item->examination_ids);
+				$aux_exams = $this->general->filter_adv("examination", null, [["field" => "id", "values" => $aux_ex_ids]]);
+				foreach($aux_exams as $e) $aux_ex_arr[] = $e->name;
+				
 				$item->type = $this->lang->line('txt_profile');
-				array_push($profiles, clone $item);
-				array_push($checked_profs, $item->id);
-				
-				//remove from exam_ids
-				$exam_ids = array_diff($exam_ids, $item->examination_ids);
-			}
-		}
+				$item->exams = implode(", ", $aux_ex_arr);
+			}	
+		}else $profiles = [];
 		
-		//individual examination list after profile validation
-		if ($exam_ids){
-			$examinations = $this->examination->ids($exam_ids);
-			foreach($examinations as $item) $item->type = $this->lang->line('txt_exam');
-		}
+		if ($ex_ids){
+			$exams = $this->general->filter_adv("examination", null, [["field" => "id", "values" => $ex_ids]], "name", "asc");
+			foreach($exams as $item) $item->type = $this->lang->line('txt_exam');	
+		}else $exams = [];
 		
-		return array("profiles" => $profiles, "examinations" => $examinations, "checked_profs" => $checked_profs, "checked_exams" => $checked_exams);
+		return ["profiles" => $profiles, "exams" => $exams];
 	}
 	
-	public function control_examination(){
-		//post data setting
-		if (!strcmp($this->input->post("checked"), "true")) $checked = true; else $checked = false;
-		$data = array(
-			"examination_id" => $this->input->post("id"),
-			"appointment_id" => $this->input->post("appointment_id")
-		);
+	public function add_exam_profile(){
+		$status = false; $msg = null; $profiles = []; $exams = [];
 		
-		$status = true; $msg = null;
+		$data = $this->input->post();
+		if ($data["profile_id"]){
+			if (!$this->general->filter("appointment_examination", $data)){
+				if ($this->general->insert("appointment_examination", $data)) $status = true;
+				else $msg = $this->lang->line('error_internal');
+			}else $msg = $this->lang->line('error_dpr');
+		}else $msg = $this->lang->line('error_spr');
 		
-		//appointment status validation
-		$appointment = $this->appointment->id($data["appointment_id"]);
-		if (in_array($this->status->id($appointment->status_id)->code, array("reserved", "finished", "canceled"))){
-			$msg = $this->lang->line('error_nea');
-			$status = false;
-		}else{
-			$tb_name = "appointment_examination";
-			if ($checked){
-				if (!$this->general->filter($tb_name, $data))
-					if (!$this->general->insert($tb_name, $data)){
-						$msg = $this->lang->line('error_internal');
-						$status = false;
+		$result = $this->set_profiles_exams($data["appointment_id"]);
+		$profiles = $result["profiles"];
+		$exams = $result["exams"];
+		
+		header('Content-Type: application/json');
+		echo json_encode(["status" => $status, "msg" => $msg, "profiles" => $profiles, "exams" => $exams]);
+	}
+	
+	public function add_exam(){
+		$status = false; $msg = null; $profiles = []; $exams = [];
+		$data = $this->input->post();
+		
+		$tb_name = "appointment_examination";
+		if ($data["examination_id"]){
+			if (!$this->general->filter($tb_name, $data)){
+				$profile_ids_arr = [];
+				$profile_ids = $this->general->filter($tb_name, ["appointment_id" => $data["appointment_id"], "profile_id !=" => null]);
+				
+				$is_include = false;
+				foreach($profile_ids as $item){
+					$profile = $this->general->id("examination_profile", $item->profile_id);
+					$exam_ids_aux = explode(",", $profile->examination_ids);
+					
+					if (in_array($data["examination_id"], $exam_ids_aux)){
+						$is_include = true;
+						break;
 					}
-			}else{
-				if (!$this->general->delete($tb_name, $data)){
-					$msg = $this->lang->line('error_internal');
-					$status = false;
 				}
-			}
-		}
+				
+				if (!$is_include){
+					if ($this->general->insert($tb_name, $data)) $status = true;
+					else $msg = $this->lang->line('error_internal');	
+				}else $msg = str_replace("&profile&", $profile->name, $this->lang->line('error_pie'));
+			}else $msg = $this->lang->line('error_dex');
+		}else $msg = $this->lang->line('error_sex');
 		
-		$result = $this->validate_exam_profile($data["appointment_id"]);
-		$result["status"] = $status;
-		$result["msg"] = $msg;
+		$result = $this->set_profiles_exams($data["appointment_id"]);
+		$profiles = $result["profiles"];
+		$exams = $result["exams"];
 		
 		header('Content-Type: application/json');
-		echo json_encode($result);
-	}
-	
-	public function control_examination_profile(){
-		//post data setting
-		if (!strcmp($this->input->post("checked"), "true")) $checked = true; else $checked = false;
-		$appointment_id = $this->input->post("appointment_id");
-		
-		$status = true; $msg = null;
-		
-		//appointment status validation
-		$appointment = $this->appointment->id($appointment_id);
-		if (in_array($this->status->id($appointment->status_id)->code, array("reserved", "finished", "canceled"))){
-			$msg = $this->lang->line('error_nea');
-			$status = false;
-		}else{
-			$profile = $this->examination->profile($this->input->post("id"));
-			$prof_exam_ids = explode(",", $profile->examination_ids);
-			$tb_name = "appointment_examination";
-			if ($checked){
-				$appo_exam_ids = array();
-				$appo_exams = $this->general->filter($tb_name, array("appointment_id" => $appointment_id), "examination_id", "asc");
-				foreach($appo_exams as $item) array_push($appo_exam_ids, $item->examination_id);
-				
-				$datas = array();
-				$arr_diff = array_diff($prof_exam_ids, $appo_exam_ids);
-				foreach($arr_diff as $id) array_push($datas, array("appointment_id" => $appointment_id, "examination_id" => $id));
-				
-				if ($datas) if (!$this->general->insert_multi($tb_name, $datas)){
-					$status = false;
-					$msg = $this->lang->line('error_internal');
-				}
-			}elseif (!$this->general->delete_multi($tb_name, "examination_id", $prof_exam_ids)){
-				$status = false;
-				$msg = $this->lang->line('error_internal');
-			}
-		}
-		
-		$result = $this->validate_exam_profile($appointment_id);
-		$result["status"] = $status;
-		$result["msg"] = $msg;
-		
-		header('Content-Type: application/json');
-		echo json_encode($result);
+		echo json_encode(["status" => $status, "msg" => $msg, "profiles" => $profiles, "exams" => $exams]);
 	}
 	
 	private function set_therapy_list($appointment_id){

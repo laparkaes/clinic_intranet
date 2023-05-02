@@ -1,0 +1,2 @@
+ALTER TABLE `appointment_examination` ADD `profile_id` INT NULL AFTER `appointment_id`; 
+ALTER TABLE `appointment_examination` CHANGE `examination_id` `examination_id` INT(11) NULL; 
