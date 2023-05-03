@@ -169,62 +169,6 @@ function search_diag(dom){
 	});
 }
 
-function filter_img_checkbox(){
-	var category_id = $("#img_category").val();
-	var search = $("#img_search").val().toLowerCase();
-	var result_qty;
-	var f_category;
-	var f_search;
-	
-	//examinations handle
-	result_qty = 0;
-	$("#list_images .images").addClass("d-none");
-	$("#list_images .images").each(function(index, elem){
-		if (category_id == "") f_category = true; else f_category = $(elem).hasClass("image_category_" + category_id);
-		f_search = $(elem).find(".search_filter").html().toLowerCase().includes(search);
-		if (f_category && f_search){
-			$(elem).removeClass("d-none");
-			result_qty++;
-		}
-	});
-	if (result_qty == 0) $("#img_no_result").removeClass("d-none");
-	else $("#img_no_result").addClass("d-none");
-}
-
-function set_img_checkbox(images, checked_images){
-	$("#selected_images").html("");
-	
-	images.forEach(function(element, index){
-		$("#selected_images").append('<tr class="text-left"><td style="width:120px;">' + element.category + '</td><td>' + element.image + '</td><td class="text-right"><button type="button" class="btn tp-btn-light btn-danger btn-xs btn_delete_image" value="' + element.image_id + '"><i class="fas fa-minus"></i></button></td></tr>');
-	});
-	$(".btn_delete_image").on('click',(function(e) {delete_image(this);}));
-	
-	$(".chk_img").prop("checked", false);
-	checked_images.forEach(function(element){
-		$("#img_" + element).prop("checked", true);
-	});
-}
-
-function process_image(data){
-	$.ajax({
-		url: $("#base_url").val() + "appointment/control_image",
-		type: "POST",
-		data: data,
-		success:function(res){
-			set_img_checkbox(res.images, res.checked_images);
-			if (res.status == false) swal("error", res.msg);
-		}
-	});
-}
-
-function delete_image(dom){
-	process_image({checked: "", image_id: $(dom).val(), appointment_id: $("#appointment_id").val()});
-}
-
-function control_image(dom){
-	process_image({checked: $(dom).prop("checked"), image_id: $(dom).val(), appointment_id: $("#appointment_id").val()});
-}
-
 function set_therapy(therapies){
 	$("#selected_therapies").html("");
 	therapies.forEach(function(element, index){
@@ -374,12 +318,15 @@ function set_profiles_exams(profiles, exams){
 	$("#tbody_exams_profiles").html("");
 	
 	$.each(profiles, function(index, value) {
-		$("#tbody_exams_profiles").append('<tr><td>' + value.type + '</td><td>' + value.name + '</td><td>' + value.exams + '</td><td><button type="button" class="btn btn-danger shadow btn-xs sharp remove_profile" value="' + value.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+		$("#tbody_exams_profiles").append('<tr><td>' + value.type + '</td><td>' + value.name + '</td><td>' + value.exams + '</td><td><button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_exam_profile" value="' + value.id + '"><i class="fas fa-trash"></i></button></td></tr>');
 	});
 	
 	$.each(exams, function(index, value) {
-		$("#tbody_exams_profiles").append('<tr><td>' + value.type + '</td><td>-</td><td>' + value.name + '</td><td><button type="button" class="btn btn-danger shadow btn-xs sharp remove_exam" value="' + value.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+		$("#tbody_exams_profiles").append('<tr><td>' + value.type + '</td><td>-</td><td>' + value.name + '</td><td><button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_exam" value="' + value.id + '"><i class="fas fa-trash"></i></button></td></tr>');
 	});
+	
+	$(".btn_remove_exam_profile").on('click',(function(e) {remove_exam_profile($(this).val());}));
+	$(".btn_remove_exam").on('click',(function(e) {remove_exam($(this).val());}));
 }
 
 function add_exam_profile(profile_id){
@@ -405,6 +352,71 @@ function add_exam(exam_id){
 		}
 	});
 }
+
+function remove_exam_profile(profile_id){
+	$.ajax({
+		url: $("#base_url").val() + "appointment/remove_exam_profile",
+		type: "POST",
+		data: {appointment_id: $("#appointment_id").val(), profile_id: profile_id},
+		success:function(res){
+			set_profiles_exams(res.profiles, res.exams);
+			if (res.status == false) swal("error", res.msg); 
+		}
+	});
+}
+
+function remove_exam(exam_id){
+	$.ajax({
+		url: $("#base_url").val() + "appointment/remove_exam",
+		type: "POST",
+		data: {appointment_id: $("#appointment_id").val(), examination_id: exam_id},
+		success:function(res){
+			set_profiles_exams(res.profiles, res.exams);
+			if (res.status == false) swal("error", res.msg); 
+		}
+	});
+}
+
+function filter_img_sl(img_cat_id){
+	$("#sl_aux_img").val("");
+	$(".img_cat").addClass("d-none");
+	if (img_cat_id != "") $(".img_cat_" + img_cat_id).removeClass("d-none");
+}
+
+function set_image(imgs){
+	$("#tbody_images").html("");
+	
+	$.each(imgs, function(index, value) {
+		$("#tbody_images").append('<tr><td>' + value.category + '</td><td>' + value.name + '</td><td><button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_image" value="' + value.image_id + '"><i class="fas fa-trash"></i></button></td></tr>');
+	});
+	
+	$(".btn_remove_image").on('click',(function(e) {remove_image($(this).val());}));
+}
+
+function add_img(img_id){
+	$.ajax({
+		url: $("#base_url").val() + "appointment/add_image",
+		type: "POST",
+		data: {appointment_id: $("#appointment_id").val(), image_id: img_id},
+		success:function(res){
+			set_image(res.images);
+			if (res.status == false) swal("error", res.msg); 
+		}
+	});
+}
+
+function remove_image(image_id){
+	$.ajax({
+		url: $("#base_url").val() + "appointment/remove_image",
+		type: "POST",
+		data: {appointment_id: $("#appointment_id").val(), image_id: image_id},
+		success:function(res){
+			set_image(res.images);
+			if (res.status == false) swal("error", res.msg); 
+		}
+	});
+}
+
 
 $(document).ready(function() {
 	//general
@@ -445,12 +457,13 @@ $(document).ready(function() {
 	$("#sl_exam_category").change(function() {filter_exam($(this).val());});
 	$("#btn_add_exam_profile").on('click',(function(e) {add_exam_profile($("#sl_profile_exam").val());}));
 	$("#btn_add_exam").on('click',(function(e) {add_exam($("#sl_exam").val());}));
+	$(".btn_remove_exam_profile").on('click',(function(e) {remove_exam_profile($(this).val());}));
+	$(".btn_remove_exam").on('click',(function(e) {remove_exam($(this).val());}));
 	
 	//appointment - prescription - image
-	$("#img_category").change(function() {filter_img_checkbox();});
-	$("#img_search").keyup(function() {filter_img_checkbox();});
-	$(".chk_img").change(function() {control_image(this);});
-	$(".btn_delete_image").on('click',(function(e) {delete_image(this);}));
+	$("#sl_aux_img_category").change(function() {filter_img_sl($(this).val());});
+	$("#btn_add_img").on('click',(function(e) {add_img($("#sl_aux_img").val());}));
+	$(".btn_remove_image").on('click',(function(e) {remove_image($(this).val());}));
 	
 	//appointment - prescription - therapy
 	$("#form_add_therapy").submit(function(e) {e.preventDefault(); add_therapy(this);});

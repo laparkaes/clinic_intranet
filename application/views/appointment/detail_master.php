@@ -5,7 +5,7 @@ $ph = $appointment_datas["physical"];
 $di = $appointment_datas["diag_impression"];
 $re = $appointment_datas["result"];
 $ex = $appointment_datas["examination"]; $ex_profiles = $ex["profiles"]; $ex_examinations = $ex["exams"];
-$im = $appointment_datas["images"]; $images_ap = $im["images"]; $checked_images = $im["checked_images"];
+$im = $appointment_datas["images"];
 $th = $appointment_datas["therapy"];
 $me = $appointment_datas["medicine"];
 ?>
@@ -881,18 +881,18 @@ $me = $appointment_datas["medicine"];
 			<div class="default-tab">
 				<ul class="nav nav-tabs mb-4">
 					<li class="nav-item">
-						<a href="#auxiliary_exams-1" class="nav-link active" data-toggle="tab">
+						<a href="#auxiliary_exams_lab" class="nav-link active" data-toggle="tab">
 							<?= $this->lang->line('title_laboratory') ?>
 						</a>
 					</li>
 					<li class="nav-item">
-						<a href="#auxiliary_exams-2" class="nav-link" data-toggle="tab">
+						<a href="#auxiliary_exams_img" class="nav-link" data-toggle="tab">
 							<?= $this->lang->line('title_image') ?>
 						</a>
 					</li>
 				</ul>
 				<div class="tab-content">
-					<div id="auxiliary_exams-1" class="tab-pane active">
+					<div id="auxiliary_exams_lab" class="tab-pane active">
 						<?php if ($appointment->is_editable){ ?>
 						<div class="row">
 							<div class="col-md-6">
@@ -965,7 +965,7 @@ $me = $appointment_datas["medicine"];
 											<td><?= $ep->exams ?></td>
 											<?php if ($appointment->is_editable){ ?>
 											<td>
-												<button type="button" class="btn btn-danger shadow btn-xs sharp remove_profile" value="<?= $ep->id ?>">
+												<button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_exam_profile" value="<?= $ep->id ?>">
 													<i class="fas fa-trash"></i>
 												</button>
 											</td>
@@ -978,7 +978,7 @@ $me = $appointment_datas["medicine"];
 											<td><?= $ee->name ?></td>
 											<?php if ($appointment->is_editable){ ?>
 											<td>
-												<button type="button" class="btn btn-danger shadow btn-xs sharp remove_exam" value="<?= $ee->id ?>">
+												<button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_exam" value="<?= $ee->id ?>">
 													<i class="fas fa-trash"></i>
 												</button>
 											</td>
@@ -990,60 +990,57 @@ $me = $appointment_datas["medicine"];
 							</div>
 						</div>
 					</div>
-					<div id="auxiliary_exams-2" class="tab-pane">
+					<div id="auxiliary_exams_img" class="tab-pane">
+						<?php if ($appointment->is_editable){ ?>
 						<div class="row">
-							<?php if ($appointment->is_editable){ $next_col = 6; ?>
-							<div class="col-md-6">
-								<h5><?= $this->lang->line('title_search') ?></h5>
+							<div class="col-md-12">
 								<div class="form-row">
-									<div class="form-group col-md-4">
+									<div class="form-group col-md-2">
 										<label><?= $this->lang->line('lb_category') ?></label>
-										<select class="form-control" id="img_category">
-											<option value=""><?= $this->lang->line('txt_all') ?></option>
-											<?php foreach($image_categories as $item){ ?>
+										<select class="form-control" id="sl_aux_img_category">
+											<option value="">--</option>
+											<?php foreach($aux_image_categories as $item){ ?>
 											<option value="<?= $item->id ?>"><?= $item->name ?></option>
 											<?php } ?>
 										</select>
 									</div>
-									<div class="form-group col-md-8">
-										<label><?= $this->lang->line('lb_filter') ?></label>
-										<input type="text" class="form-control" id="img_search">
+									<div class="form-group col-md-6">
+										<label><?= $this->lang->line('lb_image') ?></label>
+										<select class="form-control" id="sl_aux_img">
+											<option value="">--</option>
+											<?php foreach($aux_images as $item){ ?>
+											<option class="img_cat img_cat_<?= $item->category_id ?> d-none" value="<?= $item->id ?>"><?= $item->name ?></option>
+											<?php } ?>
+										</select>
 									</div>
-								</div>
-								<div class="text-center d-none" id="img_no_result"><?= $this->lang->line('msg_no_result') ?></div>
-								<div class="form-row ap_content_list_high" id="list_images">
-									<?php foreach($image_categories as $item){ ?>
-									<div class="form-group col-md-12 mt-3">
-										<h5><?= $item->name ?></h5>
+									<div class="form-group d-flex align-items-end">
+										<button type="button" class="btn btn-primary" id="btn_add_img">
+											<?= $this->lang->line('btn_add') ?>
+										</button>
 									</div>
-									<?php $images = $item->images; foreach($images as $img){
-									if (in_array($img->id, $checked_images)) $checked = "checked"; else $checked = ""; ?>
-									<div class="form-group col-md-6 images image_category_<?= $item->id ?>">
-										<div class="search_filter d-none"><?= $img->name ?></div>
-										<div class="custom-control custom-checkbox checkbox-primary mr-3 mb-1">
-											<input type="checkbox" class="custom-control-input chk_img" id="img_<?= $img->id ?>" value="<?= $img->id ?>" <?= $checked ?>>
-											<label class="custom-control-label" for="img_<?= $img->id ?>"><?= $img->name ?></label>
-										</div>
-									</div>
-									<?php }} ?>
 								</div>
 							</div>
-							<?php }else $next_col = 12; ?>
-							<div class="col-md-<?= $next_col ?>">
-								<?php if ($appointment->is_editable){ ?>
-								<h5 class="mb-3"><?= $this->lang->line('title_selected_images') ?></h5>
-								<?php } ?>
-								<table class="table no_border_tb mb-0">
-									<tbody id="selected_images">
-										<?php foreach($images_ap as $image){ ?>
-										<tr class="text-left">
-											<td style="width:120px;"><?= $image->category ?></td>
-											<td><?= $image->image ?>
-											</td>
+						</div>
+						<?php } ?>
+						<div class="row">
+							<div class="table-responsive">
+								<table class="table table-responsive-md">
+									<thead>
+										<tr>
+											<th><strong><?= $this->lang->line('th_category') ?></strong></th>
+											<th><strong><?= $this->lang->line('th_image') ?></strong></th>
+											<?php if ($appointment->is_editable){ ?><th></th><?php } ?>
+										</tr>
+									</thead>
+									<tbody id="tbody_images">
+										<?php foreach($im as $item){ ?>
+										<tr>
+											<td><?= $item->category ?></td>
+											<td><?= $item->name ?></td>
 											<?php if ($appointment->is_editable){ ?>
-											<td class="text-right">
-												<button type="button" class="btn tp-btn-light btn-danger btn-xs btn_delete_image" value="<?= $image->image_id ?>">
-													<i class="fas fa-minus"></i>
+											<td>
+												<button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_image" value="<?= $item->image_id ?>">
+													<i class="fas fa-trash"></i>
 												</button>
 											</td>
 											<?php } ?>

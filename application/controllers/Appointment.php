@@ -150,19 +150,6 @@ class Appointment extends CI_Controller {
 		if ($result) $result = $result[0];
 		else $result = $this->general->structure("appointment_result");
 		
-		$checked_images = array();
-		$images_ap = $this->general->filter("appointment_image", array("appointment_id" => $appointment->id));
-		foreach($images_ap as $item){
-			$img = $this->image->id($item->image_id);
-			$item->category = $this->image->category($img->category_id)->name;
-			$item->image = $img->name;
-			array_push($checked_images, $item->image_id);
-		}
-		usort($images_ap, function($a, $b) {
-			if (!strcmp($a->category, $b->category)) return strcmp($a->image, $b->image);
-			else return strcmp($a->category, $b->category);
-		});
-		
 		$appointment_datas = array(
 			"basic_data" => $basic_data,
 			"anamnesis" => $anamnesis,
@@ -170,7 +157,7 @@ class Appointment extends CI_Controller {
 			"diag_impression" => $diag_impression,
 			"result" => $result,
 			"examination" => $this->set_profiles_exams($appointment->id),
-			"images" => array("images" => $images_ap, "checked_images" => $checked_images),
+			"images" => $this->set_images($appointment->id),
 			"therapy" => $this->set_therapy_list($appointment->id),
 			"medicine" => $this->set_medicine_list($appointment->id)
 		);
@@ -296,10 +283,6 @@ class Appointment extends CI_Controller {
 			$exam_profiles[$i]->categories = array_unique($cate_aux);
 		}
 		
-		//image records
-		$image_categories = $this->image->category_all();
-		foreach($image_categories as $item) $item->images = $this->image->filter(array("category_id" => $item->id));
-		
 		//load select options
 		$codes = array("entry_mode", "civil_status", "medicine_dose", "medicine_via_application", "medicine_frequency", "medicine_duration", "diagnosis_type");
 		$options_rec = $this->sl_option->codes($codes);
@@ -321,7 +304,8 @@ class Appointment extends CI_Controller {
 			"exam_profiles" => $exam_profiles,
 			"exam_categories" => $this->examination->category_all(),
 			"examinations" => $examinations,
-			"image_categories" => $image_categories,
+			"aux_image_categories" => $this->general->all("image_category", "name", "asc"),
+			"aux_images" => $this->general->all("image", "name", "asc"),
 			"sex_ops" => $this->general->filter("sl_option", array("code" => "sex")),
 			"physical_therapies" => $this->general->all("physical_therapy", "name", "asc"),
 			"medicines" => $this->general->all("medicine", "name", "asc"),
@@ -697,48 +681,46 @@ class Appointment extends CI_Controller {
 		echo json_encode(array("status" => $status, "msgs" => $msgs, "msg" => $msg));
 	}
 	
-	public function control_image(){
-		if (!strcmp($this->input->post("checked"), "true")) $checked = true; else $checked = false;
-		$data = array(
-			"image_id" => $this->input->post("image_id"),
-			"appointment_id" => $this->input->post("appointment_id")
-		);
-		
-		$status = true; $msg = null; $tb_name = "appointment_image";
-		
-		//appointment status validation
-		$appointment = $this->appointment->id($data["appointment_id"]);
-		if (in_array($this->status->id($appointment->status_id)->code, array("reserved", "finished", "canceled"))){
-			$msg = $this->lang->line('error_nea');
-			$status = false;
-		}else{
-			if ($checked){
-				if (!$this->general->filter($tb_name, $data))
-					if (!$this->general->insert($tb_name, $data)){
-						$status = false;
-						$msg = $this->lang->line('error_internal');
-					}
-			}elseif (!$this->general->delete($tb_name, $data)){
-				$status = false;
-				$msg = $this->lang->line('error_internal');
-			}
+	public function set_images($app_id){
+		$images = $this->general->filter("appointment_image", ["appointment_id" => $app_id]);
+		foreach($images as $item){
+			$img = $this->general->id("image", $item->image_id);
+			$img_category = $this->general->id("image_category", $img->category_id);
+			$item->category = $img_category->name;
+			$item->category_id = $img->category_id;
+			$item->name = $img->name;
 		}
 		
-		$checked_images = array();
-		$images_ap = $this->general->filter($tb_name, array("appointment_id" => $data["appointment_id"]));
-		foreach($images_ap as $item){
-			$img = $this->image->id($item->image_id);
-			$item->category = $this->image->category($img->category_id)->name;
-			$item->image = $img->name;
-			array_push($checked_images, $item->image_id);
-		}
-		usort($images_ap, function($a, $b) {
-			if (!strcmp($a->category, $b->category)) return strcmp($a->image, $b->image);
-			else return strcmp($a->category, $b->category);
+		usort($images, function($a, $b) {
+			if ($a->category_id == $b->category_id) return strcmp($a->category, $b->category);
+			else return strcmp($a->name, $b->name);
 		});
 		
+		return $images;
+	}
+	
+	public function add_image(){
+		$status = false; $msg = null;
+		
+		$data = $this->input->post();
+		if (!$this->general->filter("appointment_image", $data)){
+			if ($this->general->insert("appointment_image", $data)) $status = true;
+			else $msg = $this->lang->line('error_internal');
+		}else $msg = $this->lang->line('error_dim');
+		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "images" => $images_ap, "msg" => $msg, "checked_images" => $checked_images));
+		echo json_encode(["status" => $status, "msg" => $msg, "images" => $this->set_images($data["appointment_id"])]);
+	}
+	
+	public function remove_image(){
+		$status = false; $msg = null;
+		$data = $this->input->post();
+		
+		if ($this->general->delete("appointment_image", $data)) $status = true;
+		else $msg = $this->lang->line('error_internal');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["status" => $status, "msg" => $msg, "images" => $this->set_images($data["appointment_id"])]);
 	}
 	
 	private function set_profiles_exams($app_id){
@@ -771,7 +753,7 @@ class Appointment extends CI_Controller {
 	}
 	
 	public function add_exam_profile(){
-		$status = false; $msg = null; $profiles = []; $exams = [];
+		$status = false; $msg = null;
 		
 		$data = $this->input->post();
 		if ($data["profile_id"]){
@@ -780,6 +762,21 @@ class Appointment extends CI_Controller {
 				else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line('error_dpr');
 		}else $msg = $this->lang->line('error_spr');
+		
+		$result = $this->set_profiles_exams($data["appointment_id"]);
+		$profiles = $result["profiles"];
+		$exams = $result["exams"];
+		
+		header('Content-Type: application/json');
+		echo json_encode(["status" => $status, "msg" => $msg, "profiles" => $profiles, "exams" => $exams]);
+	}
+	
+	public function remove_exam_profile(){
+		$status = false; $msg = null;
+		$data = $this->input->post();
+		
+		if ($this->general->delete("appointment_examination", $data)) $status = true;
+		else $msg = $this->lang->line('error_internal');
 		
 		$result = $this->set_profiles_exams($data["appointment_id"]);
 		$profiles = $result["profiles"];
@@ -816,6 +813,21 @@ class Appointment extends CI_Controller {
 				}else $msg = str_replace("&profile&", $profile->name, $this->lang->line('error_pie'));
 			}else $msg = $this->lang->line('error_dex');
 		}else $msg = $this->lang->line('error_sex');
+		
+		$result = $this->set_profiles_exams($data["appointment_id"]);
+		$profiles = $result["profiles"];
+		$exams = $result["exams"];
+		
+		header('Content-Type: application/json');
+		echo json_encode(["status" => $status, "msg" => $msg, "profiles" => $profiles, "exams" => $exams]);
+	}
+	
+	public function remove_exam(){
+		$status = false; $msg = null;
+		$data = $this->input->post();
+		
+		if ($this->general->delete("appointment_examination", $data)) $status = true;
+		else $msg = $this->lang->line('error_internal');
 		
 		$result = $this->set_profiles_exams($data["appointment_id"]);
 		$profiles = $result["profiles"];
