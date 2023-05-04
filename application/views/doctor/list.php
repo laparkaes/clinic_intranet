@@ -100,7 +100,7 @@
 								</div>
 								<div class="form-group col-md-4">
 									<label><?= $this->lang->line('lb_birthday') ?></label>
-									<input type="text" class="form-control date_picker_all" name="personal[birthday]" readonly="">
+									<input type="text" class="form-control bw date_picker_all" name="personal[birthday]" readonly="">
 									<div class="sys_msg" id="dn_birthday_msg"></div>
 								</div>
 								<div class="form-group col-md-4">

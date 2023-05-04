@@ -202,16 +202,12 @@ class Utility_lib{
 		curl_close($curl);
 		
 		$res = new stdClass;
-		$res->status = false;
-		$res->msg = $this->CI->lang->line("error_search_dni");
-		$res->data = null;
-		
 		if (property_exists($response, 'success')){
-			if ($response->success){
-				$res->status = true;
-				$res->msg = null;
-				$res->data = $response->result;
-			}
+			$res->status = $response->success;
+			$res->data = $response->result;
+		}else{
+			$res->status = false;
+			$res->data = null;
 		}
 		
 		return $res;
@@ -237,16 +233,12 @@ class Utility_lib{
 		curl_close($curl);
 		
 		$res = new stdClass;
-		$res->status = false;
-		$res->msg = $this->CI->lang->line("error_search_ruc");
-		$res->data = null;
-		
 		if (property_exists($response, 'success')){
-			if ($response->success){
-				$res->status = true;
-				$res->msg = null;
-				$res->data = $response->result;
-			}
+			$res->status = $response->success;
+			$res->data = $response->result;
+		}else{
+			$res->status = false;
+			$res->data = null;
 		}
 		
 		return $res;

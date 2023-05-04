@@ -17,6 +17,7 @@ $lang['alert_cancel_btn'] = 'Cancelar';
 
 //messages
 $lang['success_data_loaded'] = 'Carga exitosa.';
+$lang['error_doc_type'] = 'Elija tipo de documento.';
 $lang['error_doc_number'] = 'Ingrese número de documento.';
 $lang['error_ruc'] = 'Ingrese RUC.';
 $lang['error_insert_manually'] = 'No hay información. Ingrese manualmente.';
@@ -108,8 +109,6 @@ $lang['day_Sat'] = 'Sab';
 $lang['day_Sun'] = 'Dom';
 
 //utility_lib
-$lang['error_search_dni'] = 'No hay resultado de búsqueda con DNI ingresado.';
-$lang['error_search_ruc'] = 'No hay resultado de búsqueda con RUC ingresado.';
 $lang['resolution_num'] = 'Resolución N°';
 $lang['hash_code'] = 'Código Hash';
 $lang['payment_method'] = 'Forma de Pago';

@@ -1,0 +1,104 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+/* My validations */
+class My_val{
+	
+	public function __construct(){
+		$this->CI = &get_instance();
+		$this->CI->lang->load("validation", "spanish");
+		$this->CI->load->model('general_model','general');
+	}
+	
+	public function set_msg($msgs, $dom_id, $type, $msg_code){
+		//if ($msg_code) array_push($msgs, array("dom_id" => $dom_id, "type" => $type, "msg" => $this->lang->line($msg_code)));
+		if ($msg_code) $msgs[] = ["dom_id" => $dom_id, "type" => $type, "msg" => $this->CI->lang->line($msg_code)];
+		return $msgs;
+	}
+	
+	public function person($msgs, $prefix, $data){
+		if (!$data["name"]) $msgs = $this->set_msg($msgs, $prefix."name_msg", "error", "e_enter_name");
+		if (!$data["tel"]) $msgs = $this->set_msg($msgs, $prefix."tel_msg", "error", "e_enter_tel");
+		if (!$data["doc_type_id"]) $msgs = $this->set_msg($msgs, $prefix."doc_msg", "error", "e_select_doc_type");
+		if (!$data["doc_number"]) $msgs = $this->set_msg($msgs, $prefix."doc_msg", "error", "e_enter_doc_number");
+		/* optionals: $p["birthday"], $p["sex"], $p["blood_type"], $p["address"] */
+		
+		return $msgs;
+	}
+	
+	public function doctor($msgs, $prefix, $data){
+		if ($data["specialty_id"] and $data["license"]){
+			if ($this->CI->general->filter("doctor", $data)) 
+				$msgs = $this->set_msg($msgs, $prefix."license_msg", "error", "e_doctor_exists");
+		}else{
+			if (!$data["specialty_id"]) $msgs = $this->set_msg($msgs, $prefix."specialty_msg", "error", "e_select_specialty");
+			if (!$data["license"]) $msgs = $this->set_msg($msgs, $prefix."license_msg", "error", "e_enter_license");
+		}
+		
+		return $msgs;
+	}
+	
+	public function account($msgs, $prefix, $data){
+		$msgs = $this->email($msgs, $prefix, $data);
+		
+		if ($data["password"]){
+			if (strlen($data["password"]) >= 6){
+				if (strcmp($data["password"], $data["confirm"])) 
+					$msgs = $this->set_msg($msgs, $prefix."confirm_msg", "error", "e_password_confirm");
+			}else $msgs = $this->set_msg($msgs, $prefix."password_msg", "error", "e_password_length");
+		}else $msgs = $this->set_msg($msgs, $prefix."password_msg", "error", "e_enter_password");
+		
+		return $msgs;
+	}
+	
+	public function email($msgs, $prefix, $data){
+		if ($data["email"]){
+			if (filter_var($data["email"], FILTER_VALIDATE_EMAIL)){
+				if ($this->CI->general->filter("account", ["email" => $data["email"]])) 
+					$msgs = $this->set_msg($msgs, $prefix."email_msg", "error", "e_account_exists");
+			}else $msgs = $this->set_msg($msgs, $prefix."email_msg", "error", "e_enter_email_format");
+		}else $msgs = $this->set_msg($msgs, $prefix."email_msg", "error", "e_enter_account");
+		
+		return $msgs;
+	}
+	
+	public function schedule($msgs, $prefix, $data){
+		if (!$data["date"]) $msgs = $this->set_msg($msgs, $prefix."schedule_msg", "error", "e_select_date");
+		elseif (!$data["hour"]) $msgs = $this->set_msg($msgs, $prefix."schedule_msg", "error", "e_select_hour");
+		elseif (!$data["min"]) $msgs = $this->set_msg($msgs, $prefix."schedule_msg", "error", "e_select_minute");
+		
+		return $msgs;
+	}
+	
+	public function appointment($msgs, $prefix, $app, $sch, $pt){
+		$msgs = $this->schedule($msgs, "aa_", $sch);//schedule
+		if (!$msgs){//appointment
+			if (!$app["specialty_id"]) $msgs = $this->set_msg($msgs, $prefix."specialty_msg", "error", "e_select_specialty");
+			if (!$app["doctor_id"]) $msgs = $this->set_msg($msgs, $prefix."doctor_msg", "error", "e_select_doctor");
+			
+			$app["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
+			$app["schedule_to"] = date("Y-m-d H:i:s", strtotime("+14 minutes", strtotime($app["schedule_from"])));
+			$status_ids = [
+				$this->CI->general->filter("status", ["code" => "reserved"])[0]->id,
+				$this->CI->general->filter("status", ["code" => "confirmed"])[0]->id
+			];
+			
+			//check appointment and surgery available
+			$sur_available = $this->CI->general->is_available("surgery", $app, $status_ids);
+			$app_available = $this->CI->general->is_available("appointment", $app, $status_ids);
+			if (!($sur_available and $app_available)) 
+				$msgs = $this->set_msg($msgs, $prefix."schedule_msg", "error", "e_doctor_no_available");
+			
+			//check doctor = patient?
+			if ($pt["doc_type_id"] and $pt["doc_number"]){
+				$f = ["doc_type_id" => $pt["doc_type_id"], "doc_number" => $pt["doc_number"]];
+				$person = $this->CI->general->filter("person", $f);
+				if ($person) 
+					if ($app["doctor_id"] == $person[0]->id) 
+						$msgs = $this->set_msg($msgs, $prefix."doctor_msg", "error", "e_person_doctor_patient");
+			}
+		}
+		
+		return $msgs;
+	}
+}

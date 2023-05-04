@@ -14,8 +14,45 @@ class Ajax_f extends CI_Controller {
 	}
 	
 	public function search_person(){
-		$status = false; $type = "error"; $msg = null; $person = null;
+		$type = "error"; $msg = null; $person = null;
 		$data = $this->input->post();
+		
+		if (!$data["doc_type_id"]) $msg = $this->lang->line('error_doc_type');
+		if (!$data["doc_number"]) $msg = $this->lang->line('error_doc_number');
+		
+		if (!$msg){
+			$person_rec = $this->general->filter("person", $data);
+			if ($person_rec){
+				$p = $person_rec[0];
+				$person = ["id" => $p->id, "name" => $p->name, "tel" => $p->tel, "email" => $p->email];
+				$type = "success";
+				$msg = $this->lang->line('success_data_loaded');
+			}else{
+				$name = null;
+				switch($this->general->id("doc_type", $data["doc_type_id"])->short){
+					case "DNI":
+						$ud = $this->utility_lib->utildatos_dni($data["doc_number"]);
+						if ($ud->status) $name = $ud->data->nombres." ".$ud->data->apellidoPaterno." ".$ud->data->apellidoMaterno;
+						break;
+					case "RUC":
+						$ud = $this->utility_lib->utildatos_ruc($data["doc_number"]);
+						if ($ud->status) $name = $ud->data->razon_social;
+						break;
+				}
+				
+				if ($name){
+					$person = ["id" => null, "name" => $name, "tel" => null, "email" => null];
+					$type = "success";
+					$msg = $this->lang->line('success_data_loaded');
+				}else $msg = $this->lang->line('error_insert_manually');
+			}
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg, "person" => $person]);
+		/*
+		$status = false; $type = "error"; $msg = null; $person = null;
+		
 		
 		if ($data["doc_number"]){
 			$person = $this->general->filter("person", $data);
@@ -49,6 +86,8 @@ class Ajax_f extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg, "person" => $person));
+		
+		*/
 	}
 	
 	public function search_company(){

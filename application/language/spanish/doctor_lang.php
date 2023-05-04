@@ -3,19 +3,6 @@ $lang['doctor'] = 'Médico';
 $lang['doctors'] = 'Médicos';
 
 //messages
-$lang['error_ena'] = 'Ingrese nombre.';//error_enter_name
-$lang['error_ebi'] = 'Ingrese fecha de nacimiento.';//error_enter_name
-$lang['error_ete'] = 'Ingrese teléfono/celular.';//error_enter_tel
-$lang['error_sdt'] = 'Elija tipo de documento.';//error_select_doc_type
-$lang['error_edn'] = 'Ingrese número de documento.';//error_enter_doc_number
-$lang['error_ssp'] = 'Elija una especialidad.';//error_select_specialty
-$lang['error_eli'] = 'Ingrese número de licencia.';//error_enter_license
-$lang['error_eus'] = 'Ingrese usuario.';//error_enter_username
-$lang['error_usf'] = 'Ingrese un correo electrónico.';//error_username_format
-$lang['error_usr'] = 'Usuario registrado.';//error_username_exists
-$lang['error_epa'] = 'Ingrese contraseña.';//error_enter_password
-$lang['error_pal'] = 'Ingrese mínimo 6 letras.';//error_password_length
-$lang['error_pac'] = 'Repita contraseña correctamente.';//error_password_confirm
 $lang['error_rpd'] = 'Ocurrió error al registrar datos personales. Intente nuevamente.';//error_register_personal_data
 $lang['error_rdd'] = 'Ocurrió error al registrar datos del médico. Intente nuevamente.';//error_register_doctor_data
 $lang['error_rac'] = 'Ocurrió error al registrar usuario. Intente nuevamente.';//error_register_account

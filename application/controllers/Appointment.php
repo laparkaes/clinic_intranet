@@ -318,74 +318,45 @@ class Appointment extends CI_Controller {
 	}
 	
 	public function register(){
-		$status = false; $type = "error"; $msgs = array(); $msg = null; $move_to = null;
-		$app = $this->input->post("app"); $app["schedule_from"] = null;
+		$type = "error"; $msgs = []; $msg = null; $move_to = null;
+		$app = $this->input->post("app");
 		$sch = $this->input->post("sch");
 		$pt = $this->input->post("pt");
 		
-		//patient validation
-		if (!$pt["name"]) $msgs = $this->set_msg($msgs, "aa_pt_name_msg", "error", "error_ena");
-		if (!$pt["tel"]) $msgs = $this->set_msg($msgs, "aa_pt_tel_msg", "error", "error_ete");
-		if (!$pt["doc_number"]) $msgs = $this->set_msg($msgs, "aa_pt_doc_msg", "error", "error_dnu");
+		$this->load->library('my_val');
+		$msgs = $this->my_val->person($msgs, "aa_pt_", $pt);
+		$msgs = $this->my_val->appointment($msgs, "aa_", $app, $sch, $pt);
 		
-		//schedule validation
-		if (!$sch["date"]) $msgs = $this->set_msg($msgs, "aa_schedule_msg", "error", "error_sda");
-		elseif (!$sch["hour"]) $msgs = $this->set_msg($msgs, "aa_schedule_msg", "error", "error_sho");
-		elseif (!$sch["min"]) $msgs = $this->set_msg($msgs, "aa_schedule_msg", "error", "error_smi");
-		else $app["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
-		
-		//appointment validation
-		if (!$app["specialty_id"]) $msgs = $this->set_msg($msgs, "aa_specialty_msg", "error", "error_ssp");
-		if (!$app["doctor_id"]) $msgs = $this->set_msg($msgs, "aa_doctor_msg", "error", "error_sdo");
-		if ($app["schedule_from"]){
-			$app["schedule_to"] = date("Y-m-d H:i:s", strtotime("+14 minutes", strtotime($app["schedule_from"])));
-			$status_ids = array();
-			array_push($status_ids, $this->status->code("reserved")->id);
-			array_push($status_ids, $this->status->code("confirmed")->id);
-			
-			//check appointment and surgery available
-			$sur_available = $this->general->is_available("surgery", $app, $status_ids);
-			$app_available = $this->general->is_available("appointment", $app, $status_ids);
-			if (!($sur_available and $app_available)) $msgs = $this->set_msg($msgs, "aa_schedule_msg", "error", "error_dna");
-		}
-		
-		if ($msgs) $msg = $this->lang->line('error_occurred'); 
-		else{
-			//patient = doctor?
-			$f = array("doc_type_id" => $pt["doc_type_id"], "doc_number" => $pt["doc_number"]);
-			$person = $this->general->filter("person", $f);
+		if (!$msgs){
+			$now = date('Y-m-d H:i:s', time());
+			$person = $this->general->filter("person", ["doc_type_id" => $pt["doc_type_id"], "doc_number" => $pt["doc_number"]]);
 			if ($person){
 				$person = $person[0];
-				if ($app["doctor_id"] == $person->id) $msg = $this->lang->line('error_pdp');
-				else $app["patient_id"] = $person->id;
-			}else $app["patient_id"] = $this->general->insert("person", $pt);
-			
-			if (!$msg){
-				$now = date('Y-m-d H:i:s', time());
-				
-				//check if patient exists
-				if ($app["patient_id"]) $this->general->update("person", $app["patient_id"], $pt);
-				else{
-					$pt["registed_at"] = $now;
-					$app["patient_id"] = $this->general->insert("person", $pt);
-				}
-				
-				$app["status_id"] = $this->status->code("reserved")->id;
-				$app["registed_at"] = $now;
-				$appointment_id = $this->appointment->insert($app);
-				if ($appointment_id){
-					$this->utility_lib->add_log("appointment_register", $pt["name"]);
-					
-					$status = true;
-					$type = "success";
-					$move_to = base_url()."appointment/detail/".$appointment_id;
-					$msg = $this->lang->line('success_rap');
-				}else $msg = $this->lang->line('error_internal');
+				$app["patient_id"] = $person->id;
+				$this->general->update("person", $person->id, $pt);
+				$this->utility_lib->add_log("person_update", $person->name);
+			}else{
+				$app["patient_id"] = $this->general->insert("person", $pt);
+				$person = $this->general->id("person", $app["patient_id"]);
+				$this->utility_lib->add_log("person_register", $person->name);
 			}
-		}
+			
+			$app["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
+			$app["schedule_to"] = date("Y-m-d H:i:s", strtotime("+14 minutes", strtotime($app["schedule_from"])));
+			$app["status_id"] = $this->status->code("reserved")->id;
+			$app["registed_at"] = $now;
+			$appointment_id = $this->appointment->insert($app);
+			if ($appointment_id){
+				$this->utility_lib->add_log("appointment_register", $pt["name"]);
+				
+				$type = "success";
+				$move_to = base_url()."appointment/detail/".$appointment_id;
+				$msg = $this->lang->line('success_rap');
+			}else $msg = $this->lang->line('error_internal');
+		}else $msg = $this->lang->line('error_occurred'); 
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to));
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to]);
 	}
 	
 	public function cancel(){

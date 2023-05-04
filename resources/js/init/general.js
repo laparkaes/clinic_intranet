@@ -7,6 +7,83 @@ function swal(type, msg){
 	});
 }
 
+function swal_redirection(type, msg, move_to){
+	Swal.fire({
+		title: $("#alert_" + type + "_title").val(),
+		icon: type,
+		html: msg,
+		confirmButtonText: $("#alert_confirm_btn").val()
+	}).then((result) => {
+		if (result.isConfirmed) if (type == "success") location.href = move_to;
+	});
+}
+
+function ajax_form(dom, url){
+	var deferred = $.Deferred();
+	$.ajax({
+		url: $("#base_url").val() + url,
+		type: "POST",
+		data: new FormData(dom),
+		contentType: false,
+		processData:false,
+		success:function(res){
+			deferred.resolve(res);
+		}
+	});
+	
+	return deferred.promise();
+}
+
+function ajax_form_warning(dom, url, warning_msg){
+	var deferred = $.Deferred();
+	Swal.fire({
+		title: $("#alert_warning_title").val(),
+		icon: 'warning',
+		html: warning_msg,
+		showCancelButton: true,
+		confirmButtonText: $("#alert_confirm_btn").val(),
+		cancelButtonText: $("#alert_cancel_btn").val()
+	}).then((result) => {
+		if (result.isConfirmed) ajax_form(dom, url).done(function(res) {
+			deferred.resolve(res);
+		});
+	});
+	
+	return deferred.promise();
+}
+
+function ajax_simple(data, url){
+	var deferred = $.Deferred();
+	$.ajax({
+		url: $("#base_url").val() + url,
+		type: "POST",
+		data: data,
+		success:function(res){
+			deferred.resolve(res);
+		}
+	});
+	
+	return deferred.promise();
+}
+
+function ajax_simple_warning(data, url, warning_msg){
+	var deferred = $.Deferred();
+	Swal.fire({
+		title: $("#alert_warning_title").val(),
+		icon: 'warning',
+		html: warning_msg,
+		showCancelButton: true,
+		confirmButtonText: $("#alert_confirm_btn").val(),
+		cancelButtonText: $("#alert_cancel_btn").val()
+	}).then((result) => {
+		if (result.isConfirmed) ajax_simple(data, url).done(function(res) {
+			deferred.resolve(res);
+		});
+	});
+	
+	return deferred.promise();
+}
+
 function set_msg(messages){
 	$(".sys_msg").removeClass("text-success");
 	$(".sys_msg").removeClass("text-danger");

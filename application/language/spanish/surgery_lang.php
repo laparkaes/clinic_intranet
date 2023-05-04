@@ -1,9 +1,6 @@
 <?php
 
 //message
-$lang['error_ena'] = 'Ingrese nombre.';//error_enter_name
-$lang['error_ete'] = 'Ingrese teléfono.';//error_enter_telephone
-$lang['error_dnu'] = 'Ingrese número de documento.';//error_doc_number
 $lang['error_sda'] = 'Elija una fecha.';//error_select_date
 $lang['error_sho'] = 'Elija hora.';//error_select_hour
 $lang['error_smi'] = 'Elija minuto.';//error_select_minute

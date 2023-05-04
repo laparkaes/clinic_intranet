@@ -210,10 +210,9 @@ class Surgery extends CI_Controller {
 		$sch = $this->input->post("sch");
 		$pt = $this->input->post("pt");
 		
-		//patient validation
-		if (!$pt["name"]) $msgs = $this->set_msg($msgs, "sur_pt_name_msg", "error", "error_ena");
-		if (!$pt["tel"]) $msgs = $this->set_msg($msgs, "sur_pt_tel_msg", "error", "error_ete");
-		if (!$pt["doc_number"]) $msgs = $this->set_msg($msgs, "sur_pt_doc_msg", "error", "error_dnu");
+		$this->load->library('my_val');
+		$msgs = $this->my_val->person($msgs, "sur_pt_", $pt);
+		
 		
 		//schedule validation
 		if (!$sch["duration"]) $msgs = $this->set_msg($msgs, "sur_duration_msg", "error", "error_sdu");

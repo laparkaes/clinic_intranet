@@ -66,7 +66,7 @@
 							</div>
 							<div class="form-group col-md-6">
 								<label><?= $this->lang->line('lb_date') ?></label>
-								<input type="text" class="form-control date_picker" id="aa_date" name="sch[date]" value="<?= date('Y-m-d') ?>" readonly>
+								<input type="text" class="form-control bw date_picker" id="aa_date" name="sch[date]" value="<?= date('Y-m-d') ?>" readonly>
 								<div class="sys_msg" id="aa_date_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
@@ -165,7 +165,7 @@
 							</div>
 							<div class="form-group col-md-6">
 								<label><?= $this->lang->line('lb_doctor') ?></label>
-								<input type="hidden" value="<?= $person->id ?>" id="sur_doctor" name="sur[doctor_id]" readonly>
+								<input type="hidden" value="<?= $person->id ?>" id="sur_doctor_id" name="sur[doctor_id]" readonly>
 								<input type="text" class="form-control bg-light" value="<?= $person->name ?>" readonly>
 								<div class="sys_msg" id="sur_doctor_msg"></div>
 							</div>
@@ -321,51 +321,51 @@
 						<div class="form-row">
 							<div class="form-group col-md-6">
 								<label><?= $this->lang->line('lb_name') ?></label>
-								<input type="text" class="form-control" value="<?= $person->name ?>" readonly>
+								<input type="text" class="form-control bw" value="<?= $person->name ?>" readonly>
 							</div>
 							<div class="form-group col-md-3">
 								<label><?= $this->lang->line('lb_specialty') ?></label>
-								<input type="text" class="form-control" value="<?= $doctor->specialty ?>" readonly>
+								<input type="text" class="form-control bw" value="<?= $doctor->specialty ?>" readonly>
 							</div>
 							<div class="form-group col-md-3">
 								<label><?= $this->lang->line('lb_license') ?></label>
-								<input type="text" class="form-control" value="<?= $doctor->license ?>" readonly>
+								<input type="text" class="form-control bw" value="<?= $doctor->license ?>" readonly>
 							</div>
 							<div class="form-group col-md-3">
 								<label><?= $this->lang->line('lb_status') ?></label>
-								<input type="text" class="form-control text-<?= $doctor->status->color ?>" value="<?= $this->lang->line($doctor->status->code) ?>" readonly>
+								<input type="text" class="form-control bw text-<?= $doctor->status->color ?>" value="<?= $this->lang->line($doctor->status->code) ?>" readonly>
 							</div>
 							<div class="form-group col-md-3">
 								<label><?= $this->lang->line('lb_tel') ?></label>
-								<input type="text" class="form-control" value="<?= $person->tel ?>" readonly>
+								<input type="text" class="form-control bw" value="<?= $person->tel ?>" readonly>
 							</div>
 							<div class="form-group col-md-3">
 								<label><?= $this->lang->line('lb_email') ?></label>
-								<input type="text" class="form-control" value="<?= $account->email ?>" readonly>
+								<input type="text" class="form-control bw" value="<?= $account->email ?>" readonly>
 							</div>
 							<div class="form-group col-md-3">
 								<label><?= $this->lang->line('lb_document') ?></label>
-								<input type="text" class="form-control" value="<?= $person->doc_type." ".$person->doc_number ?>" readonly>
+								<input type="text" class="form-control bw" value="<?= $person->doc_type." ".$person->doc_number ?>" readonly>
 							</div>
 							<div class="form-group col-md-3">
 								<label><?= $this->lang->line('lb_birthday') ?></label>
-								<input type="text" class="form-control" value="<?= $person->birthday ?>" readonly>
+								<input type="text" class="form-control bw" value="<?= $person->birthday ?>" readonly>
 							</div>
 							<div class="form-group col-md-3">
 								<label><?= $this->lang->line('lb_age') ?></label>
-								<input type="text" class="form-control" value="<?= $person->age ?>" readonly>
+								<input type="text" class="form-control bw" value="<?= $person->age ?>" readonly>
 							</div>
 							<div class="form-group col-md-3">
 								<label><?= $this->lang->line('lb_sex') ?></label>
-								<input type="text" class="form-control" value="<?= $person->sex ?>" readonly>
+								<input type="text" class="form-control bw" value="<?= $person->sex ?>" readonly>
 							</div>
 							<div class="form-group col-md-3">
 								<label><?= $this->lang->line('lb_blood_type') ?></label>
-								<input type="text" class="form-control" value="<?= $person->blood_type ?>" readonly>
+								<input type="text" class="form-control bw" value="<?= $person->blood_type ?>" readonly>
 							</div>
 							<div class="form-group col-md-12">
 								<label><?= $this->lang->line('lb_address') ?></label>
-								<input type="text" class="form-control" value="<?= $person->address ?>" readonly>
+								<input type="text" class="form-control bw" value="<?= $person->address ?>" readonly>
 							</div>
 						</div>
 					</div>
@@ -395,11 +395,10 @@
 											<?php foreach($appointments as $item){ ?>
 											<tr>
 												<td class="pl-0">
-													<?= date("d.m.Y", strtotime($item->schedule_from)) ?>
+													<?= date("Y-m-d", strtotime($item->schedule_from)) ?>
 												</td>
 												<td>
-													<div class="text-nowrap"><?= date("h:i A", strtotime($item->schedule_from)) ?></div>
-													<div class="text-nowrap">- <?= date("h:i A", strtotime($item->schedule_to)) ?></div>
+													<div class="text-nowrap"><?= date("h:i A", strtotime($item->schedule_from))." - ".date("h:i A", strtotime($item->schedule_to)) ?></div>
 												</td>
 												<td><?= $patient_arr[$item->patient_id] ?></td>
 												<td class="text-<?= $status_arr[$item->status_id]->color ?>">
@@ -451,10 +450,9 @@
 										<tbody>
 											<?php foreach($surgeries as $item){ ?>
 											<tr>
-												<td class="pl-0"><?= date("d.m.Y", strtotime($item->schedule_from)) ?></td>
+												<td class="pl-0"><?= date("Y-m-d", strtotime($item->schedule_from)) ?></td>
 												<td>
-													<div class="text-nowrap"><?= date("h:i A", strtotime($item->schedule_from)) ?></div>
-													<div class="text-nowrap">- <?= date("h:i A", strtotime($item->schedule_to)) ?></div>
+													<div class="text-nowrap"><?= date("h:i A", strtotime($item->schedule_from))." - ".date("h:i A", strtotime($item->schedule_to)) ?></div>
 												</td>
 												<td><?= $rooms_arr[$item->room_id] ?></td>
 												<td><?= $patient_arr[$item->patient_id] ?></td>
@@ -490,17 +488,17 @@
 									<div class="form-row">
 										<div class="form-group col-md-4">
 											<label><?= $this->lang->line('lb_name') ?></label>
-											<input type="text" class="form-control bg-light" value="<?= $person->name ?>" readonly>
+											<input type="text" class="form-control" value="<?= $person->name ?>" readonly>
 											<div class="sys_msg" id="pd_name_msg"></div>
 										</div>
 										<div class="form-group col-md-4">
 											<label><?= $this->lang->line('lb_document') ?></label>
-											<input type="text" class="form-control bg-light" value="<?= $person->doc_type." ".$person->doc_number ?>" readonly>
+											<input type="text" class="form-control" value="<?= $person->doc_type." ".$person->doc_number ?>" readonly>
 											<div class="sys_msg" id="pd_doc_msg"></div>
 										</div>
 										<div class="form-group col-md-4">
 											<label><?= $this->lang->line('lb_birthday') ?></label>
-											<input type="text" class="form-control date_picker_all" name="birthday" value="<?= $person->birthday ?>" readonly>
+											<input type="text" class="form-control bw date_picker_all" name="birthday" value="<?= $person->birthday ?>" readonly>
 											<div class="sys_msg" id="pd_birthday_msg"></div>
 										</div>
 										<div class="form-group col-md-4">
@@ -582,30 +580,6 @@
 											<label><?= $this->lang->line('lb_email') ?></label>
 											<input type="text" class="form-control" name="email" value="<?= $account->email ?>">
 											<div class="sys_msg" id="ae_email_msg"></div>
-										</div>
-									</div>
-									<button type="submit" class="btn btn-primary mt-3">
-										<?= $this->lang->line('btn_update') ?>
-									</button>
-								</form>
-							</div>
-						</div>
-						<hr class="my-4">
-						<div class="row">
-							<div class="col-md-12">
-								<form action="#" id="form_update_account_password">
-									<input type="hidden" name="id" value="<?= $account->id ?>">
-									<h5 class="mb-3"><?= $this->lang->line('title_password_change') ?></h5>
-									<div class="form-row">
-										<div class=  "form-group col-md-6">
-											<label><?= $this->lang->line('lb_password') ?></label>
-											<input type="password" class="form-control" name="password">
-											<div class="sys_msg" id="up_password_msg"></div>
-										</div>
-										<div class="form-group col-md-6">
-											<label><?= $this->lang->line('lb_confirm') ?></label>
-											<input type="password" class="form-control" name="confirm">
-											<div class="sys_msg" id="up_confirm_msg"></div>
 										</div>
 									</div>
 									<button type="submit" class="btn btn-primary mt-3">
