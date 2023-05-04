@@ -23,7 +23,7 @@ class Doctor extends CI_Controller {
 	
 	public function index(){
 		if (!$this->session->userdata('logged_in')) redirect("/");
-		//PENDING!!! rol validation
+		if (!$this->utility_lib->check_access("doctor", "index")) redirect("/errors/no_permission");
 		
 		$specialties_arr = array();
 		$specialties = $this->specialty->all();
@@ -60,6 +60,7 @@ class Doctor extends CI_Controller {
 	
 	public function detail($id){
 		if (!$this->session->userdata('logged_in')) redirect(base_url());
+		if (!$this->utility_lib->check_access("doctor", "detail")) redirect("/errors/no_permission");
 		
 		$doctor = $this->general->id("doctor", $id);
 		$person = $this->general->id("person", $doctor->person_id);
@@ -148,80 +149,82 @@ class Doctor extends CI_Controller {
 	}
 	
 	public function register(){
-		$p = $this->input->post("personal");
-		$d = $this->input->post("doctor");
-		$a = $this->input->post("account");
 		$status = false; $type = "error"; $msgs = array(); $msg = null; $move_to = null;
-		
-		//personal data validation
-		if (!$p["name"]) $msgs = $this->set_msg($msgs, "dn_name_msg", "error", "error_ena");
-		if (!$p["tel"]) $msgs = $this->set_msg($msgs, "dn_tel_msg", "error", "error_ete");
-		if (!$p["doc_type_id"]) $msgs = $this->set_msg($msgs, "dn_doc_msg", "error", "error_sdt");
-		if (!$p["doc_number"]) $msgs = $this->set_msg($msgs, "dn_doc_msg", "error", "error_edn");
-		/* optionals: $p["birthday"], $p["sex"], $p["blood_type"], $p["address"] */
-		
-		//doctor data validation
-		if (!$d["specialty_id"]) $msgs = $this->set_msg($msgs, "dn_specialty_msg", "error", "error_ssp");
-		if (!$d["license"]) $msgs = $this->set_msg($msgs, "dn_license_msg", "error", "error_eli");
-		
-		//account data validation
-		if ($a["email"]){
-			if (filter_var($a["email"], FILTER_VALIDATE_EMAIL)){
-				if ($this->account->email($a["email"])) $msgs = $this->set_msg($msgs, "dn_email_msg", "error", "error_usr");
-			}else $msgs = $this->set_msg($msgs, "dn_email_msg", "error", "error_usf");
-		}else $msgs = $this->set_msg($msgs, "dn_email_msg", "error", "error_eus");
-		if ($a["password"]){
-			if (strlen($a["password"]) < 6) $msgs = $this->set_msg($msgs, "dn_password_msg", "error", "error_pal");
-		}else $msgs = $this->set_msg($msgs, "dn_password_msg", "error", "error_epa");
-		if (strcmp($a["password"], $a["confirm"])) $msgs = $this->set_msg($msgs, "dn_confirm_msg", "error", "error_pac");
-		
-		//register to DB
-		if ($msgs) $msg = $this->lang->line('error_occurred');
-		else{
-			$filter = array("doc_type_id" => $p["doc_type_id"], "doc_number" => $p["doc_number"]);
-			$person = $this->general->filter("person", $filter);
-			if ($person){
-				$p["email"] = $a["email"];
-				$this->general->update("person", $person[0]->id, $p);
-				$person_id = $person[0]->id;
-				$person_name = $person[0]->name;
-				$this->utility_lib->add_log("person_update", $person[0]->name);
-			}else{
-				$p["email"] = $a["email"];
-				$p["registed_at"] = date('Y-m-d H:i:s', time());
-				$person_id = $this->general->insert("person", $p);
-				$person_name = $p["name"];
-				$this->utility_lib->add_log("person_register", $p["name"]);
-			}
+		if ($this->utility_lib->check_access("doctor", "register")){
+			$p = $this->input->post("personal");
+			$d = $this->input->post("doctor");
+			$a = $this->input->post("account");
 			
-			if ($person_id){
-				$d["person_id"] = $person_id;
-				$doctors = $this->general->filter("doctor", $d, "id", "asc", 0, 1);
-				if ($doctors) $doctor_id = $doctors[0]->id;
-				else{
-					$d["status_id"] = $this->general->filter("status", array("code" => "enabled"))[0]->id;
-					$d["registed_at"] = date('Y-m-d H:i:s', time());
-					$doctor_id = $this->general->insert("doctor", $d);
+			//personal data validation
+			if (!$p["name"]) $msgs = $this->set_msg($msgs, "dn_name_msg", "error", "error_ena");
+			if (!$p["tel"]) $msgs = $this->set_msg($msgs, "dn_tel_msg", "error", "error_ete");
+			if (!$p["doc_type_id"]) $msgs = $this->set_msg($msgs, "dn_doc_msg", "error", "error_sdt");
+			if (!$p["doc_number"]) $msgs = $this->set_msg($msgs, "dn_doc_msg", "error", "error_edn");
+			/* optionals: $p["birthday"], $p["sex"], $p["blood_type"], $p["address"] */
+			
+			//doctor data validation
+			if (!$d["specialty_id"]) $msgs = $this->set_msg($msgs, "dn_specialty_msg", "error", "error_ssp");
+			if (!$d["license"]) $msgs = $this->set_msg($msgs, "dn_license_msg", "error", "error_eli");
+			
+			//account data validation
+			if ($a["email"]){
+				if (filter_var($a["email"], FILTER_VALIDATE_EMAIL)){
+					if ($this->account->email($a["email"])) $msgs = $this->set_msg($msgs, "dn_email_msg", "error", "error_usr");
+				}else $msgs = $this->set_msg($msgs, "dn_email_msg", "error", "error_usf");
+			}else $msgs = $this->set_msg($msgs, "dn_email_msg", "error", "error_eus");
+			if ($a["password"]){
+				if (strlen($a["password"]) < 6) $msgs = $this->set_msg($msgs, "dn_password_msg", "error", "error_pal");
+			}else $msgs = $this->set_msg($msgs, "dn_password_msg", "error", "error_epa");
+			if (strcmp($a["password"], $a["confirm"])) $msgs = $this->set_msg($msgs, "dn_confirm_msg", "error", "error_pac");
+			
+			//register to DB
+			if ($msgs) $msg = $this->lang->line('error_occurred');
+			else{
+				$filter = array("doc_type_id" => $p["doc_type_id"], "doc_number" => $p["doc_number"]);
+				$person = $this->general->filter("person", $filter);
+				if ($person){
+					$p["email"] = $a["email"];
+					$this->general->update("person", $person[0]->id, $p);
+					$person_id = $person[0]->id;
+					$person_name = $person[0]->name;
+					$this->utility_lib->add_log("person_update", $person[0]->name);
+				}else{
+					$p["email"] = $a["email"];
+					$p["registed_at"] = date('Y-m-d H:i:s', time());
+					$person_id = $this->general->insert("person", $p);
+					$person_name = $p["name"];
+					$this->utility_lib->add_log("person_register", $p["name"]);
 				}
 				
-				if ($doctor_id){
-					unset($a["confirm"]);
-					$a["role_id"] = $this->role->name("doctor")->id;
-					$a["person_id"] = $person_id;
-					$a["password"] = password_hash($a["password"], PASSWORD_BCRYPT);
-					$a["active"] = true;
-					$a["registed_at"] = date('Y-m-d H:i:s', time());
-					if ($this->account->insert($a)){
-						$this->utility_lib->add_log("doctor_register", $person_name);
-						
-						$status = true;
-						$type = "success";
-						$move_to = base_url()."doctor/detail/".$doctor_id;
-						$msg = $this->lang->line('success_rdo');
-					}else $msgs = $this->set_msg($msgs, "dn_result_msg", "error", "error_rac");
-				}else $msgs = $this->set_msg($msgs, "dn_result_msg", "error", "error_rdd");
-			}else $msgs = $this->set_msg($msgs, "dn_result_msg", "error", "error_rpd");
-		}
+				if ($person_id){
+					$d["person_id"] = $person_id;
+					$doctors = $this->general->filter("doctor", $d, "id", "asc", 0, 1);
+					if ($doctors) $doctor_id = $doctors[0]->id;
+					else{
+						$d["status_id"] = $this->general->filter("status", array("code" => "enabled"))[0]->id;
+						$d["registed_at"] = date('Y-m-d H:i:s', time());
+						$doctor_id = $this->general->insert("doctor", $d);
+					}
+					
+					if ($doctor_id){
+						unset($a["confirm"]);
+						$a["role_id"] = $this->role->name("doctor")->id;
+						$a["person_id"] = $person_id;
+						$a["password"] = password_hash($a["password"], PASSWORD_BCRYPT);
+						$a["active"] = true;
+						$a["registed_at"] = date('Y-m-d H:i:s', time());
+						if ($this->account->insert($a)){
+							$this->utility_lib->add_log("doctor_register", $person_name);
+							
+							$status = true;
+							$type = "success";
+							$move_to = base_url()."doctor/detail/".$doctor_id;
+							$msg = $this->lang->line('success_rdo');
+						}else $msgs = $this->set_msg($msgs, "dn_result_msg", "error", "error_rac");
+					}else $msgs = $this->set_msg($msgs, "dn_result_msg", "error", "error_rdd");
+				}else $msgs = $this->set_msg($msgs, "dn_result_msg", "error", "error_rpd");
+			}
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => $status, "type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to));
@@ -229,10 +232,10 @@ class Doctor extends CI_Controller {
 	
 	public function update_personal_data(){
 		$status = false; $type = "error"; $msgs = array(); $msg = null;
-		$data = $this->input->post();
-		
-		if ($msgs) $msg = $this->lang->line('error_occurred');
-		else{
+		if ($this->utility_lib->check_access("doctor", "update")){
+			$data = $this->input->post();
+			
+			//all datas are optional => no validation
 			if (!$data["tel"]) $data["tel"] = null;
 			if (!$data["address"]) $data["address"] = null;
 			if (!$data["birthday"]) $data["birthday"] = null;
@@ -246,7 +249,7 @@ class Doctor extends CI_Controller {
 				$type = "success"; 
 				$msg = $this->lang->line('success_upd');
 			}else $msg = $this->lang->line('error_internal');
-		}
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg, "msgs" => $msgs));
@@ -254,23 +257,25 @@ class Doctor extends CI_Controller {
 	
 	public function update_profession(){
 		$status = false; $type = "error"; $msgs = array(); $msg = null;
-		$data = $this->input->post();
-		
-		if (!$data["specialty_id"]) $msgs = $this->set_msg($msgs, "pr_specialty_msg", "error", "error_ssp");
-		if (!$data["license"]) $msgs = $this->set_msg($msgs, "pr_license_msg", "error", "error_eli");
-		
-		if ($msgs) $msg = $this->lang->line('error_occurred');
-		else{
-			if ($this->general->update("doctor", $data["id"], $data)){
-				$doctor = $this->general->id("doctor", $data["id"]);
-				$person = $this->general->id("person", $doctor->person_id);
-				$this->utility_lib->add_log("doctor_update", $person->name);
-				
-				$status = true;
-				$type = "success"; 
-				$msg = $this->lang->line('success_upr');
-			}else $msg = $this->lang->line('error_internal');
-		}
+		if ($this->utility_lib->check_access("doctor", "update")){
+			$data = $this->input->post();
+			
+			if (!$data["specialty_id"]) $msgs = $this->set_msg($msgs, "pr_specialty_msg", "error", "error_ssp");
+			if (!$data["license"]) $msgs = $this->set_msg($msgs, "pr_license_msg", "error", "error_eli");
+			
+			if ($msgs) $msg = $this->lang->line('error_occurred');
+			else{
+				if ($this->general->update("doctor", $data["id"], $data)){
+					$doctor = $this->general->id("doctor", $data["id"]);
+					$person = $this->general->id("person", $doctor->person_id);
+					$this->utility_lib->add_log("doctor_update", $person->name);
+					
+					$status = true;
+					$type = "success"; 
+					$msg = $this->lang->line('success_upr');
+				}else $msg = $this->lang->line('error_internal');
+			}
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg, "msgs" => $msgs));
@@ -278,24 +283,26 @@ class Doctor extends CI_Controller {
 	
 	public function update_account_email(){
 		$status = false; $type = "error"; $msgs = array(); $msg = null;
-		$data = $this->input->post();
-		
-		if ($data["email"]){
-			if (!filter_var($data["email"], FILTER_VALIDATE_EMAIL))
-				$msgs = $this->set_msg($msgs, "ae_email_msg", "error", "error_usf");
-		}else $msgs = $this->set_msg($msgs, "ae_email_msg", "error", "error_eus");
-		
-		if ($msgs) $msg = $this->lang->line('error_occurred');
-		else{
-			if ($this->general->update("account", $data["id"], $data)){
-				$account = $this->general->id("account", $data["id"]);
-				$this->utility_lib->add_log("account_update", $account->email);
-				
-				$status = true;
-				$type = "success"; 
-				$msg = $this->lang->line('success_uae');
-			}else $msg = $this->lang->line('error_internal');
-		}
+		if ($this->utility_lib->check_access("doctor", "update")){
+			$data = $this->input->post();
+			
+			if ($data["email"]){
+				if (!filter_var($data["email"], FILTER_VALIDATE_EMAIL))
+					$msgs = $this->set_msg($msgs, "ae_email_msg", "error", "error_usf");
+			}else $msgs = $this->set_msg($msgs, "ae_email_msg", "error", "error_eus");
+			
+			if ($msgs) $msg = $this->lang->line('error_occurred');
+			else{
+				if ($this->general->update("account", $data["id"], $data)){
+					$account = $this->general->id("account", $data["id"]);
+					$this->utility_lib->add_log("account_update", $account->email);
+					
+					$status = true;
+					$type = "success"; 
+					$msg = $this->lang->line('success_uae');
+				}else $msg = $this->lang->line('error_internal');
+			}
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg, "msgs" => $msgs));
@@ -303,51 +310,53 @@ class Doctor extends CI_Controller {
 	
 	public function update_account_password(){
 		$status = false; $type = "error"; $msgs = array(); $msg = null;
-		$data = $this->input->post();
-		
-		if ($data["password"]){
-			if (strlen($data["password"]) < 6) $msgs = $this->set_msg($msgs, "du_password_msg", "error", "error_pal");
-		}else $msgs = $this->set_msg($msgs, "du_password_msg", "error", "error_epa");
-		if (strcmp($data["password"], $data["confirm"])) $msgs = $this->set_msg($msgs, "du_confirm_msg", "error", "error_pac");
-		
-		if ($msgs) $msg = $this->lang->line('error_occurred');
-		else{
-			if ($data["password"]) $data["password"] = password_hash($data["password"], PASSWORD_BCRYPT);
-			unset($data["confirm"]);
+		if ($this->utility_lib->check_access("doctor", "update")){
+			$data = $this->input->post();
 			
-			if ($this->general->update("account", $data["id"], $data)){
-				$account = $this->general->id("account", $data["id"]);
-				$this->utility_lib->add_log("password_update", $account->email);
+			if ($data["password"]){
+				if (strlen($data["password"]) < 6) $msgs = $this->set_msg($msgs, "du_password_msg", "error", "error_pal");
+			}else $msgs = $this->set_msg($msgs, "du_password_msg", "error", "error_epa");
+			if (strcmp($data["password"], $data["confirm"])) $msgs = $this->set_msg($msgs, "du_confirm_msg", "error", "error_pac");
+			
+			if ($msgs) $msg = $this->lang->line('error_occurred');
+			else{
+				if ($data["password"]) $data["password"] = password_hash($data["password"], PASSWORD_BCRYPT);
+				unset($data["confirm"]);
 				
-				$status = true;
-				$type = "success"; 
-				$msg = $this->lang->line('success_uep');
-			}else $msg = $this->lang->line('error_internal');
-		}
+				if ($this->general->update("account", $data["id"], $data)){
+					$account = $this->general->id("account", $data["id"]);
+					$this->utility_lib->add_log("password_update", $account->email);
+					
+					$status = true;
+					$type = "success"; 
+					$msg = $this->lang->line('success_uep');
+				}else $msg = $this->lang->line('error_internal');
+			}
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg, "msgs" => $msgs));
 	}
 	
 	public function activation_control(){
-		$id = $this->input->post("id");
-		$active = $this->input->post("active");
-		$status = false; $type = "error"; $msg = $this->lang->line('error_internal');
-		
-		$active = filter_var($active, FILTER_VALIDATE_BOOLEAN);
-		if ($active) $code = "enabled"; else $code = "disabled";
-		
-		$data = array("id" => $id, "status_id" => $this->general->filter("status", array("code" => $code))[0]->id);
-		if ($this->general->update("doctor", $data["id"], $data)){
-			$doctor = $this->general->id("doctor", $id);
-			$person = $this->general->id("person", $doctor->person_id);
-			$this->utility_lib->add_log("doctor_".$code, $person->name);
+		$status = false; $type = "error"; $msg = null;
+		if ($this->utility_lib->check_access("doctor", "update")){
+			$id = $this->input->post("id");
+			$active = filter_var($this->input->post("active"), FILTER_VALIDATE_BOOLEAN);
+			if ($active) $code = "enabled"; else $code = "disabled";
 			
-			$status = true;
-			$type = "success";
-			if ($active) $msg = $this->lang->line('success_ado');
-			else $msg = $this->lang->line('success_ddo');
-		}
+			$data = array("id" => $id, "status_id" => $this->general->filter("status", array("code" => $code))[0]->id);
+			if ($this->general->update("doctor", $data["id"], $data)){
+				$doctor = $this->general->id("doctor", $id);
+				$person = $this->general->id("person", $doctor->person_id);
+				$this->utility_lib->add_log("doctor_".$code, $person->name);
+				
+				$status = true;
+				$type = "success";
+				if ($active) $msg = $this->lang->line('success_ado');
+				else $msg = $this->lang->line('success_ddo');
+			}else $msg = $this->lang->line('error_internal');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg));

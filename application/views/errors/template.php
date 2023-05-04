@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title><?= $this->lang->line($code.'_title') ?></title>
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url() ?>resorces/images/favicon.png">
-    <link href="<?= base_url() ?>resorces/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?= base_url() ?>resorces/css/style.css">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url() ?>resources/images/favicon.png">
+    <link href="<?= base_url() ?>resources/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= base_url() ?>resources/css/style.css">
 </head>
 <body class="vh-100">
     <div class="authincation h-100">
@@ -27,9 +27,9 @@
             </div>
         </div>
     </div>
-<script src="<?= base_url() ?>resorces/vendor/global/global.min.js"></script>
-<script src="<?= base_url() ?>resorces/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-<script src="<?= base_url() ?>resorces/js/custom.min.js"></script>
-<script src="<?= base_url() ?>resorces/js/deznav-init.js"></script>
+<script src="<?= base_url() ?>resources/vendor/global/global.min.js"></script>
+<script src="<?= base_url() ?>resources/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+<script src="<?= base_url() ?>resources/js/custom.min.js"></script>
+<script src="<?= base_url() ?>resources/js/deznav-init.js"></script>
 </body>
 </html>

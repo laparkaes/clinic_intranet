@@ -977,7 +977,7 @@ $me = $appointment_datas["medicine"];
 											<td>-</td>
 											<td><?= $ee->name ?></td>
 											<?php if ($appointment->is_editable){ ?>
-											<td>
+											<td class="text-right">
 												<button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_exam" value="<?= $ee->id ?>">
 													<i class="fas fa-trash"></i>
 												</button>
@@ -1038,7 +1038,7 @@ $me = $appointment_datas["medicine"];
 											<td><?= $item->category ?></td>
 											<td><?= $item->name ?></td>
 											<?php if ($appointment->is_editable){ ?>
-											<td>
+											<td class="text-right">
 												<button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_image" value="<?= $item->image_id ?>">
 													<i class="fas fa-trash"></i>
 												</button>

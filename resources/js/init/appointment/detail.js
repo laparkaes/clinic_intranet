@@ -318,11 +318,11 @@ function set_profiles_exams(profiles, exams){
 	$("#tbody_exams_profiles").html("");
 	
 	$.each(profiles, function(index, value) {
-		$("#tbody_exams_profiles").append('<tr><td>' + value.type + '</td><td>' + value.name + '</td><td>' + value.exams + '</td><td><button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_exam_profile" value="' + value.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+		$("#tbody_exams_profiles").append('<tr><td>' + value.type + '</td><td>' + value.name + '</td><td>' + value.exams + '</td><td class="text-right"><button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_exam_profile" value="' + value.id + '"><i class="fas fa-trash"></i></button></td></tr>');
 	});
 	
 	$.each(exams, function(index, value) {
-		$("#tbody_exams_profiles").append('<tr><td>' + value.type + '</td><td>-</td><td>' + value.name + '</td><td><button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_exam" value="' + value.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+		$("#tbody_exams_profiles").append('<tr><td>' + value.type + '</td><td>-</td><td>' + value.name + '</td><td class="text-right"><button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_exam" value="' + value.id + '"><i class="fas fa-trash"></i></button></td></tr>');
 	});
 	
 	$(".btn_remove_exam_profile").on('click',(function(e) {remove_exam_profile($(this).val());}));
@@ -387,7 +387,7 @@ function set_image(imgs){
 	$("#tbody_images").html("");
 	
 	$.each(imgs, function(index, value) {
-		$("#tbody_images").append('<tr><td>' + value.category + '</td><td>' + value.name + '</td><td><button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_image" value="' + value.image_id + '"><i class="fas fa-trash"></i></button></td></tr>');
+		$("#tbody_images").append('<tr><td>' + value.category + '</td><td>' + value.name + '</td><td class="text-right"><button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_image" value="' + value.image_id + '"><i class="fas fa-trash"></i></button></td></tr>');
 	});
 	
 	$(".btn_remove_image").on('click',(function(e) {remove_image($(this).val());}));
