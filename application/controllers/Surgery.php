@@ -204,85 +204,47 @@ class Surgery extends CI_Controller {
 	}
 	
 	public function register(){
-		$status = false; $type = "error"; $msgs = array(); $msg = null; $move_to = null;
+		$type = "error"; $msgs = array(); $msg = null; $move_to = null;
 		
 		$sur = $this->input->post("sur"); $sur["schedule_from"] = null;
 		$sch = $this->input->post("sch");
 		$pt = $this->input->post("pt");
 		
 		$this->load->library('my_val');
-		$msgs = $this->my_val->person($msgs, "sur_pt_", $pt);
+		$msgs = $this->my_val->surgery($msgs, "sur_", $sur, $sch, $pt);
 		
-		
-		//schedule validation
-		if (!$sch["duration"]) $msgs = $this->set_msg($msgs, "sur_duration_msg", "error", "error_sdu");
-		if (!$sch["date"]) $msgs = $this->set_msg($msgs, "sur_schedule_msg", "error", "error_sda");
-		elseif (!$sch["hour"]) $msgs = $this->set_msg($msgs, "sur_schedule_msg", "error", "error_sho");
-		elseif (!$sch["min"]) $msgs = $this->set_msg($msgs, "sur_schedule_msg", "error", "error_smi");
-		else $sur["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
-		
-		//surgery validation
-		$status_ids = array();
-		array_push($status_ids, $this->status->code("reserved")->id);
-		array_push($status_ids, $this->status->code("confirmed")->id);
-		
-		if (!$sur["room_id"]) $msgs = $this->set_msg($msgs, "sur_room_msg", "error", "error_sro");
-		if (!$sur["specialty_id"]) $msgs = $this->set_msg($msgs, "sur_specialty_msg", "error", "error_ssp");
-		if (!$sur["doctor_id"]) $msgs = $this->set_msg($msgs, "sur_doctor_msg", "error", "error_sdo");
-		if ($sur["schedule_from"]){
-			if ($sch["duration"]){
-				$sur["schedule_to"] = date("Y-m-d H:i:s", strtotime("+".($sch["duration"]-1)." minutes", strtotime($sur["schedule_from"])));
-				
-				//check surgery and surgery available
-				$sur_available = $this->general->is_available("surgery", $sur, $status_ids);
-				$app_available = $this->general->is_available("appointment", $sur, $status_ids);
-				if (!($sur_available and $app_available)) $msgs = $this->set_msg($msgs, "sur_schedule_msg", "error", "error_dna");
-				
-				//room available
-				if ($sur["room_id"]){
-					$surgeries = $this->general->get_by_room("surgery", $sur, $status_ids, null, $sur["room_id"]);
-					if ($surgeries) $msgs = $this->set_msg($msgs, "sur_room_msg", "error", "error_rna");
-				}
-			}
-		}
-		
-		if ($msgs) $msg = $this->lang->line('error_occurred'); 
-		else{
-			//patient = doctor?
-			$f = array("doc_type_id" => $pt["doc_type_id"], "doc_number" => $pt["doc_number"]);
-			$person = $this->general->filter("person", $f);
+		if (!$msgs){
+			$now = date('Y-m-d H:i:s', time());
+			$person = $this->general->filter("person", ["doc_type_id" => $pt["doc_type_id"], "doc_number" => $pt["doc_number"]]);
 			if ($person){
 				$person = $person[0];
-				if ($sur["doctor_id"] == $person->id) $msg = $this->lang->line('error_pdp');
-				else $sur["patient_id"] = $person->id;
-			}else $sur["patient_id"] = $this->general->insert("person", $pt);
-			
-			if (!$msg){
-				$now = date('Y-m-d H:i:s', time());
-				
-				//check if patient exists
-				if ($sur["patient_id"]) $this->general->update("person", $sur["patient_id"], $pt);
-				else{
-					$pt["registed_at"] = $now;
-					$sur["patient_id"] = $this->general->insert("person", $pt);
-				}
-				
-				$sur["status_id"] = $this->status->code("reserved")->id;
-				$sur["registed_at"] = $now;
-				$surgery_id = $this->general->insert("surgery", $sur);
-				if ($surgery_id){
-					$this->utility_lib->add_log("surgery_register", $pt["name"]);
-					
-					$status = true;
-					$type = "success";
-					$move_to = base_url()."surgery/detail/".$surgery_id;
-					$msg = $this->lang->line('success_ras');
-				}else $msg = $this->lang->line('error_internal');	
+				$pt["updated_at"] = $now;
+				$this->general->update("person", $person->id, $pt);
+				$sur["patient_id"] = $person->id;
+				$this->utility_lib->add_log("person_update", $person->name);
+			}else{
+				$pt["registed_at"] = $now;
+				$sur["patient_id"] = $this->general->insert("person", $pt);
+				$person = $this->general->id("person", $sur["patient_id"]);
+				$this->utility_lib->add_log("person_register", $person->name);
 			}
-		}
+			
+			$sur["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
+			$sur["schedule_to"] = date("Y-m-d H:i:s", strtotime("+".($sch["duration"]-1)." minutes", strtotime($sur["schedule_from"])));
+			$sur["status_id"] = $this->status->code("reserved")->id;
+			$sur["registed_at"] = $now;
+			$surgery_id = $this->general->insert("surgery", $sur);
+			if ($surgery_id){
+				$this->utility_lib->add_log("surgery_register", $pt["name"]);
+				
+				$type = "success";
+				$move_to = base_url()."surgery/detail/".$surgery_id;
+				$msg = $this->lang->line('success_ras');
+			}else $msg = $this->lang->line('error_internal');	
+		}else $msg = $this->lang->line('error_occurred'); 
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to));
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to]);
 	}
 	
 	public function cancel(){

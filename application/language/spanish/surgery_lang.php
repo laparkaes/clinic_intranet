@@ -1,16 +1,9 @@
 <?php
 
 //message
-$lang['error_sda'] = 'Elija una fecha.';//error_select_date
 $lang['error_sho'] = 'Elija hora.';//error_select_hour
 $lang['error_smi'] = 'Elija minuto.';//error_select_minute
-$lang['error_ssp'] = 'Elija una especialidad.';//error_select_specialty
-$lang['error_sdo'] = 'Elija un médico.';//error_select_doctor
-$lang['error_dna'] = 'Médico no disponible.';//error_doctor_no_available
-$lang['error_sro'] = 'Elija una sala.';//error_select_room
-$lang['error_sdu'] = 'Elija duración.';//error_enter_place
 $lang['error_sre'] = 'Ingrese resultado.';//error_enter_result
-$lang['error_rna'] = 'Sala no disponible.';//error_room_not_available
 $lang['success_ras'] = 'Cirugía ha sido registrada.';//success_register_surgery
 $lang['success_fsu'] = 'Cirugía ha sido finalizada.';//success_finish_surgery
 $lang['success_rsu'] = 'Consulta ha sido reprogramada.';//success_reschedule_surgery

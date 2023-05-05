@@ -324,7 +324,6 @@ class Appointment extends CI_Controller {
 		$pt = $this->input->post("pt");
 		
 		$this->load->library('my_val');
-		$msgs = $this->my_val->person($msgs, "aa_pt_", $pt);
 		$msgs = $this->my_val->appointment($msgs, "aa_", $app, $sch, $pt);
 		
 		if (!$msgs){

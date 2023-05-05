@@ -27,3 +27,8 @@ $lang['e_select_minute'] = 'Elija minuto.';
 $lang['e_person_doctor_patient'] = 'Una persona no puede ser médico y patiente a la vez.';
 $lang['e_select_doctor'] = 'Elija un médico.';
 $lang['e_doctor_no_available'] = 'Médico no disponible.';
+
+/* surgery */
+$lang['e_select_room'] = 'Elija una sala.';
+$lang['e_select_duration'] = 'Elija duración.';
+$lang['e_room_no_available'] = 'Sala no disponible.';
