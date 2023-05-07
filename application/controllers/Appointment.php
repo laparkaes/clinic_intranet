@@ -24,46 +24,39 @@ class Appointment extends CI_Controller {
 		$this->nav_menu = "appointment";
 	}
 	
-	private function set_msg($msgs, $dom_id, $type, $msg_code){
-		if ($msg_code) array_push($msgs, array("dom_id" => $dom_id, "type" => $type, "msg" => $this->lang->line($msg_code)));
-		return $msgs;
-	}
-	
 	public function index(){
 		if (!$this->session->userdata('logged_in')) redirect(base_url());
-		//PENDING! rol validation
+		if (!$this->utility_lib->check_access("appointment", "index")) redirect("/errors/no_permission");
 		
-		//getting appointments from today
-		$filter = ["schedule_from >=" => date("Y-m-d", strtotime("-1 month"))];
-		$appointments = $this->general->filter("appointment", $filter, null, null, "schedule_from", "desc");
+		$f_url = [
+			"page" => $this->input->get("page"),
+			"date" => $this->input->get("date"),
+		];
 		
-		$person_ids = array();
-		$patient_ids = $this->general->only("appointment", "patient_id", $filter);
-		$doctor_ids = $this->general->only("appointment", "doctor_id", $filter);
-		foreach($patient_ids as $item) array_push($person_ids, $item->patient_id);
-		foreach($doctor_ids as $item) array_push($person_ids, $item->doctor_id);
+		$f_w = [];
+		if (!$f_url["page"]) $f_url["page"] = 1;
+		if ($f_url["date"]){
+			$f_w["schedule_from >="] = $f_url["date"]." 00:00:00";
+			$f_w["schedule_to <="] = $f_url["date"]." 23:59:59";
+		}
 		
-		array_unique($person_ids);
+		$appointments = $this->general->filter("appointment", $f_w, null, null, "schedule_from", "desc", 25, 25*($f_url["page"]-1));
+		foreach($appointments as $item){
+			$item->patient = $this->general->id("person", $item->patient_id)->name;
+			$item->doctor = $this->general->id("person", $item->doctor_id)->name;
+			$item->specialty = $this->general->id("specialty", $item->specialty_id)->name;
+		}
 		
-		$people_arr = array();
-		$people = $this->general->ids("person", $person_ids);
-		foreach($people as $p) $people_arr[$p->id] = $p->name;
-		
-		$se_id = $this->general->filter("status", ["code" => "enabled"])[0]->id;//status_enabled_id
-		
-		$specialties_arr = array();
+		$aux_f = ["status_id" => $this->general->filter("status", ["code" => "enabled"])[0]->id];
 		$specialties = $this->general->all("specialty", "name", "asc");
 		foreach($specialties as $s){
-			$s->doctor_qty = $this->general->counter("doctor", ["status_id" => $se_id, "specialty_id" => $s->id]);
-			$specialties_arr[$s->id] = $s->name;
+			$aux_f["specialty_id"] = $s->id;
+			$s->doctor_qty = $this->general->counter("doctor", $aux_f);
 		}
+		unset($aux_f["specialty_id"]);
 		
-		$doctors_arr = array();
-		$doctors = $this->general->filter("doctor", ["status_id" => $se_id]);
-		foreach($doctors as $d){
-			$d->name = $this->general->id("person", $d->person_id)->name;
-			$doctors_arr[$d->person_id] = $d;
-		}
+		$doctors = $this->general->filter("doctor", $aux_f);
+		foreach($doctors as $d) $d->name = $this->general->id("person", $d->person_id)->name;
 		usort($doctors, function($a, $b) {return strcmp(strtoupper($a->name), strtoupper($b->name));});
 		
 		$status_arr = array();
@@ -71,14 +64,13 @@ class Appointment extends CI_Controller {
 		foreach($status as $item) $status_arr[$item->id] = $item;
 		
 		$data = array(
+			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("appointment", $f_w)),
+			"f_url" => $f_url,
 			"status_arr" => $status_arr,
 			"appointments" => $appointments,
 			"specialties" => $specialties,
-			"specialties_arr" => $specialties_arr,
 			"doctors" => $doctors,
-			"doctors_arr" => $doctors_arr,
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
-			"people_arr" => $people_arr,
 			"title" => $this->lang->line('appointments'),
 			"main" => "appointment/list",
 			"init_js" => "appointment/list.js"
@@ -401,8 +393,8 @@ class Appointment extends CI_Controller {
 		$status = false; $type = "error"; $msg = null; $msgs = array();
 		$data = $this->input->post();
 		
-		if (!$data["hour"]) $msgs = $this->set_msg($msgs, "ra_time_msg", "error", "error_sho");
-		elseif (!$data["min"]) $msgs = $this->set_msg($msgs, "ra_time_msg", "error", "error_smi");
+		if (!$data["hour"]) $msgs = $this->my_val->set_msg($msgs, "ra_time_msg", "error", "error_sho");
+		elseif (!$data["min"]) $msgs = $this->my_val->set_msg($msgs, "ra_time_msg", "error", "error_smi");
 		else{
 			$appointment = $this->appointment->id($data["id"]);
 			if ($appointment){
@@ -455,9 +447,9 @@ class Appointment extends CI_Controller {
 		$status = false; $msgs = array(); $msg = null;
 		
 		//data validation
-		if (!$data["entry_mode"]) $msgs = $this->set_msg($msgs, "bd_entry_mode_msg", "error", "error_emo");
-		if (!$data["date"]) $msgs = $this->set_msg($msgs, "bd_date_msg", "error", "error_sda");
-		if (!$data["time"]) $msgs = $this->set_msg($msgs, "bd_time_msg", "error", "error_time");
+		if (!$data["entry_mode"]) $msgs = $this->my_val->set_msg($msgs, "bd_entry_mode_msg", "error", "error_emo");
+		if (!$data["date"]) $msgs = $this->my_val->set_msg($msgs, "bd_date_msg", "error", "error_sda");
+		if (!$data["time"]) $msgs = $this->my_val->set_msg($msgs, "bd_time_msg", "error", "error_time");
 		
 		//insurance validation
 		switch($data["insurance"]){
@@ -467,9 +459,9 @@ class Appointment extends CI_Controller {
 				break;
 			case "y":
 				$data["insurance"] = 1;
-				if (!$data["insurance_name"]) $msgs = $this->set_msg($msgs, "bd_insurance_name_msg", "error", "error_ina");
+				if (!$data["insurance_name"]) $msgs = $this->my_val->set_msg($msgs, "bd_insurance_name_msg", "error", "error_ina");
 				break;
-			default: $msgs = $this->set_msg($msgs, "bd_insurance_msg", "error", "error_ico");
+			default: $msgs = $this->my_val->set_msg($msgs, "bd_insurance_msg", "error", "error_ico");
 		}
 		
 		if ($msgs) $msg = $this->lang->line('error_occurred');
@@ -576,7 +568,7 @@ class Appointment extends CI_Controller {
 			$diags = $this->general->find("diag_impression_detail", "description", "code", $filter);
 			$qty = number_format(count($diags))." ".$this->lang->line('txt_results');
 			$status = true;
-		}else $msgs = $this->set_msg($msgs, "di_diagnosis_msg", "error", "error_fbl");
+		}else $msgs = $this->my_val->set_msg($msgs, "di_diagnosis_msg", "error", "error_fbl");
 		
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => $status, "msgs" => $msgs, "diags" => $diags, "qty" => $qty));
@@ -846,9 +838,9 @@ class Appointment extends CI_Controller {
 			$msg = $this->lang->line('error_nea');
 			$status = false;
 		}else{
-			if (!$data["physical_therapy_id"]) $msgs = $this->set_msg($msgs, "at_physical_therapy_msg", "error", "error_sth");
-			if ($data["session"] < 1) $msgs = $this->set_msg($msgs, "at_session_msg", "error", "error_mse");
-			if ($data["frequency"] < 1) $msgs = $this->set_msg($msgs, "at_frequency_msg", "error", "error_nfr");
+			if (!$data["physical_therapy_id"]) $msgs = $this->my_val->set_msg($msgs, "at_physical_therapy_msg", "error", "error_sth");
+			if ($data["session"] < 1) $msgs = $this->my_val->set_msg($msgs, "at_session_msg", "error", "error_mse");
+			if ($data["frequency"] < 1) $msgs = $this->my_val->set_msg($msgs, "at_frequency_msg", "error", "error_nfr");
 			
 			if ($msgs) $status = false;
 			else{
@@ -930,12 +922,12 @@ class Appointment extends CI_Controller {
 			$msg = $this->lang->line('error_nea');
 			$status = false;
 		}else{
-			if (!$data["medicine_id"]) $msgs = $this->set_msg($msgs, "md_medicine_msg", "error", "error_sme");
+			if (!$data["medicine_id"]) $msgs = $this->my_val->set_msg($msgs, "md_medicine_msg", "error", "error_sme");
 			if ($data["quantity"]){
 				if (is_numeric($data["quantity"])){
-					if ($data["quantity"] < 1) $msgs = $this->set_msg($msgs, "md_quantity_msg", "error", "error_nmq");
-				}else $msgs = $this->set_msg($msgs, "md_quantity_msg", "error", "error_inu");
-			}else $msgs = $this->set_msg($msgs, "md_quantity_msg", "error", "error_imq");
+					if ($data["quantity"] < 1) $msgs = $this->my_val->set_msg($msgs, "md_quantity_msg", "error", "error_nmq");
+				}else $msgs = $this->my_val->set_msg($msgs, "md_quantity_msg", "error", "error_inu");
+			}else $msgs = $this->my_val->set_msg($msgs, "md_quantity_msg", "error", "error_imq");
 				
 			if ($msgs) $status = false;
 			else{

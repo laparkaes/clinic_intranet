@@ -19,8 +19,12 @@ class My_val{
 	public function person($msgs, $prefix, $data){
 		if (!$data["name"]) $msgs = $this->set_msg($msgs, $prefix."name_msg", "error", "e_enter_name");
 		if (!$data["tel"]) $msgs = $this->set_msg($msgs, $prefix."tel_msg", "error", "e_enter_tel");
-		if (!$data["doc_type_id"]) $msgs = $this->set_msg($msgs, $prefix."doc_msg", "error", "e_select_doc_type");
-		if (!$data["doc_number"]) $msgs = $this->set_msg($msgs, $prefix."doc_msg", "error", "e_enter_doc_number");
+		if (!$data["doc_type_id"]) $msgs = $this->set_msg($msgs, $prefix."doc_type_msg", "error", "e_select_doc_type");
+		if (!$data["doc_number"]) $msgs = $this->set_msg($msgs, $prefix."doc_number_msg", "error", "e_enter_doc_number");
+		if (array_key_exists("email", $data))
+			if ($data["email"]) 
+				if (!filter_var($data["email"], FILTER_VALIDATE_EMAIL))
+					$msgs = $this->set_msg($msgs, $prefix."email_msg", "error", "e_enter_email_format");
 		/* optionals: $p["birthday"], $p["sex"], $p["blood_type"], $p["address"] */
 		
 		return $msgs;
@@ -146,6 +150,13 @@ class My_val{
 			if ($this->CI->general->get_by_room("surgery", $sur, $status_ids, null, $sur["room_id"])) 
 				$msgs = $this->set_msg($msgs, $prefix."room_msg", "error", "e_room_no_available");
 		}
+		
+		return $msgs;
+	}
+	
+	public function file_upload($msgs, $prefix, $title, $filename){
+		if (!$title) $msgs = $this->set_msg($msgs, $prefix."title_msg", "error", "e_enter_file_title");
+		if (!$filename) $msgs = $this->set_msg($msgs, $prefix."file_msg", "error", "e_select_file");
 		
 		return $msgs;
 	}

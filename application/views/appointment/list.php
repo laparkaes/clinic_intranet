@@ -21,45 +21,51 @@
 	<div class="card">
 		<div class="card-body">
 			<div class="row bl_content" id="bl_list">
-				<div class="col-md-2">
-					<div class="mb-3" id="appointment_list_length_new"></div>
-				</div>
-				<div class="col-md-6"></div>
-				<div class="col-md-4">
-					<div class="mb-3" id="appointment_list_filter_new"></div>
+				<div class="col-md-12 d-md-flex justify-content-end">
+					<form class="form-inline">
+						<input type="hidden" value="1" name="page">
+						<label class="sr-only" for="inp_date"><?= $this->lang->line('lb_date') ?></label>
+						<div class="input-group mb-2 mr-sm-2">
+							<input type="text" class="form-control date_picker_all bw" id="inp_date" name="date" placeholder="<?= $this->lang->line('lb_date') ?>" value="<?= $f_url["date"] ?>">
+							<div class="input-group-append">
+								<button class="btn btn-outline-primary" id="btn_clean_date" type="button">
+									<i class="far fa-eraser"></i>
+								</button>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary mb-2">
+							<i class="far fa-search"></i>
+						</button>
+					</form>
 				</div>
 				<div class="col-md-12">
+					<?php if ($appointments){ ?>
 					<div class="table-responsive">
-						<table id="appointment_list" class="table display">
+						<table class="table table-responsive-md">
 							<thead>
 								<tr>
-									<th class="text-left pt-0 pl-0"><?= $this->lang->line('hd_date') ?></th>
-									<th class="pt-0"><?= $this->lang->line('hd_time') ?></th>
-									<th class="pt-0"><?= $this->lang->line('hd_doctor') ?></th>
-									<th class="pt-0"><?= $this->lang->line('hd_patient') ?></th>
-									<th class="pt-0"><?= $this->lang->line('hd_status') ?></th>
-									<th class="text-right pt-0 pr-0"></th>
+									<th><strong>#</strong></th>
+									<th><strong><?= $this->lang->line('hd_itinerary') ?></strong></th>
+									<th><strong><?= $this->lang->line('hd_specialty') ?></strong></th>
+									<th><strong><?= $this->lang->line('hd_doctor') ?></strong></th>
+									<th><strong><?= $this->lang->line('hd_patient') ?></strong></th>
+									<th><strong><?= $this->lang->line('hd_status') ?></strong></th>
+									<th></th>
 								</tr>
 							</thead>
 							<tbody>
-								<?php foreach($appointments as $item){ ?>
+								<?php foreach($appointments as $i => $item){ ?>
 								<tr>
-									<td class="text-left text-nowrap pl-0">
-										<?= date("d.m.Y", strtotime($item->schedule_from)) ?>
-									</td>
+									<td><strong><?= number_format(($f_url["page"] - 1) * 25 + 1 + $i) ?></strong></td>
 									<td>
-										<span><?= date("h:i A", strtotime($item->schedule_from)) ?></span>
-										<br/>
-										<span class="text-nowrap">- <?= date("h:i A", strtotime($item->schedule_to)) ?></span>
+										<div><?= date("Y-m-d", strtotime($item->schedule_from)); ?></div>
+										<div class="text-nowrap"><?= date("h:i A", strtotime($item->schedule_from)); ?></div>
 									</td>
-									<td>
-										<?= $people_arr[$item->doctor_id] ?>
-										<br/>
-										<?= $specialties_arr[$doctors_arr[$item->doctor_id]->specialty_id] ?>
-									</td>
-									<td><?= $people_arr[$item->patient_id] ?></td>
-									<td><span class="text-<?= $status_arr[$item->status_id]->color ?>"><?= $this->lang->line($status_arr[$item->status_id]->code) ?></span></td>
-									<td class="text-right pr-0">
+									<td><?= $item->specialty ?></td>
+									<td><?= $item->doctor ?></td>
+									<td><?= $item->patient ?></td>
+									<td><span class="badge light badge-<?= $status_arr[$item->status_id]->color ?>"><?= $this->lang->line($status_arr[$item->status_id]->code) ?></span></td>
+									<td class="text-right">
 										<a href="<?= base_url() ?>appointment/detail/<?= $item->id ?>">
 											<button type="button" class="btn btn-primary light sharp border-0">
 												<i class="fas fa-search"></i>
@@ -70,7 +76,18 @@
 								<?php } ?>
 							</tbody>
 						</table>
+						<div class="btn-group" role="group" aria-label="paging">
+							<?php foreach($paging as $p){
+							$f_url["page"] = $p[0]; ?>
+							<a href="<?= base_url() ?>appointment?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
+								<?= $p[1] ?>
+							</a>
+							<?php } ?>
+						</div>
 					</div>
+					<?php }else{ ?>
+					<h5 class="text-danger mt-3"><?= $this->lang->line('msg_no_appointments') ?></h5>
+					<?php } ?>
 				</div>
 			</div>
 			<div class="row bl_content d-none" id="bl_add">
@@ -103,7 +120,7 @@
 							</div>
 							<div class="form-group col-md-6">
 								<label><?= $this->lang->line('lb_date') ?></label>
-								<input type="text" class="form-control date_picker" id="aa_date" name="sch[date]" value="<?= date('Y-m-d') ?>" readonly>
+								<input type="text" class="form-control bw date_picker" id="aa_date" name="sch[date]" value="<?= date('Y-m-d') ?>" readonly>
 								<div class="sys_msg" id="aa_date_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
@@ -194,4 +211,7 @@
 			<div class="modal-body" id="bl_weekly_schedule"></div>
 		</div>
 	</div>
+</div>
+<div class="d-none">
+	<input type="hidden" id="warning_rap" value="<?= $this->lang->line('warning_rap') ?>">
 </div>

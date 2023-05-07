@@ -127,7 +127,7 @@
 								<label><?= $this->lang->line('lb_remark') ?> (<?= $this->lang->line('lb_optional') ?>)</label>
 								<textarea class="form-control" rows="4" name="app[remark]" placeholder="<?= $this->lang->line('txt_remark') ?>"></textarea>
 							</div>
-							<div class="form-group col-md-12 text-right pt-3 mb-0">
+							<div class="form-group col-md-12 pt-3 mb-0">
 								<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
 							</div>
 						</div>
@@ -177,7 +177,7 @@
 							</div>
 							<div class="form-group col-md-6">
 								<label><?= $this->lang->line('lb_date') ?></label>
-								<input type="text" class="form-control date_picker" id="sur_date" name="sch[date]" value="<?= date('Y-m-d') ?>" readonly>
+								<input type="text" class="form-control bw date_picker" id="sur_date" name="sch[date]" value="<?= date('Y-m-d') ?>" readonly>
 								<div class="sys_msg" id="sur_date_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
@@ -292,7 +292,8 @@
 					</label>
 					<div class="sys_msg" id="pf_file_msg"></div>
 				</div>
-				<div class="form-group col-md-1 d-flex align-items-end">
+				<div class="form-group col-md-1">
+					<label class="d-md-block d-none">&nbsp;</label>
 					<button type="submit" class="btn btn-primary w-100"><i class="fas fa-plus"></i></button>
 				</div>
 			</form>
@@ -406,7 +407,7 @@
 											<?php foreach($appointments as $item){ ?>
 											<tr>
 												<td class="pl-0">
-													<?= date("d.m.Y", strtotime($item->schedule_from)) ?>
+													<?= date("Y-m-d", strtotime($item->schedule_from)) ?>
 												</td>
 												<td>
 													<div class="text-nowrap"><?= date("h:i A", strtotime($item->schedule_from)) ?></div>
@@ -463,11 +464,15 @@
 											<?php foreach($surgeries as $item){ ?>
 											<tr>
 												<td class="pl-0">
-													<?= date("d.m.Y", strtotime($item->schedule_from)) ?>
+													<?= date("Y-m-d", strtotime($item->schedule_from)) ?>
 												</td>
 												<td>
-													<div class="text-nowrap"><?= date("h:i A", strtotime($item->schedule_from)) ?></div>
-													<div class="text-nowrap">- <?= date("h:i A", strtotime($item->schedule_to)) ?></div>
+													<div class="text-nowrap">
+														<?= date("h:i A", strtotime($item->schedule_from)) ?>
+													</div>
+													<div class="text-nowrap">
+														- <?= date("h:i A", strtotime($item->schedule_to)) ?>
+													</div>
 												</td>
 												<td><?= $rooms_arr[$item->room_id] ?></td>
 												<td><?= $doctors_arr[$item->doctor_id]->name ?><br/><?= $specialty_arr[$item->specialty_id] ?></td>
@@ -602,7 +607,10 @@
 						<div class="row">
 							<div class="col-md-12">
 								<form action="#" id="form_update">
-									<input type="hidden" name="id" value="<?= $person->id ?>">
+									<input type="hidden" name="id" value="<?= $person->id ?>" readonly>
+									<input type="hidden" name="name" value="<?= $person->name ?>" readonly>
+									<input type="hidden" name="doc_type_id" value="<?= $person->doc_type_id ?>" readonly>
+									<input type="hidden" name="doc_number" value="<?= $person->doc_number ?>" readonly>
 									<div class="form-row">
 										<div class="form-group col-md-5">
 											<label><?= $this->lang->line('lb_name') ?></label>
@@ -694,5 +702,7 @@
 	</div>
 </div>
 <div class="d-none">
+	<input type="hidden" id="warning_rap" value="<?= $this->lang->line('warning_rap') ?>">
+	<input type="hidden" id="warning_rsu" value="<?= $this->lang->line('warning_rsu') ?>">
 	<input type="hidden" id="warning_dpf" value="<?= $this->lang->line('warning_dpf') ?>">
 </div>

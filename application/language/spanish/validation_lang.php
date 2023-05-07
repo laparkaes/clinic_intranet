@@ -32,3 +32,7 @@ $lang['e_doctor_no_available'] = 'Médico no disponible.';
 $lang['e_select_room'] = 'Elija una sala.';
 $lang['e_select_duration'] = 'Elija duración.';
 $lang['e_room_no_available'] = 'Sala no disponible.';
+
+/* file upload */
+$lang['e_enter_file_title'] = 'Ingrese título del archivo.';
+$lang['e_select_file'] = 'Elija un archivo.';

@@ -3,24 +3,11 @@
 $lang['patients'] = 'Pacientes';
 
 //messages
+$lang['warning_rap'] = '¿Desea generar nueva consulta del paciente?';//warning_register_appointment
+$lang['warning_rsu'] = '¿Desea generar nueva cirugía del paciente?';//warning_register_appointment
+$lang['warning_dpf'] = '¿Está seguro de eliminar archivo?';//warning_delete_patient_file
 
-$lang['warning_delete_patient'] = '¿Está seguro de eliminar registro de paciente?';
 
-$lang['error_ena'] = 'Ingrese nombre.';//error_enter_name
-$lang['error_ete'] = 'Ingrese teléfono/celular.';//error_enter_tel
-$lang['error_sdt'] = 'Elija tipo de documento.';//error_select_doc_type
-$lang['error_edn'] = 'Ingrese número de documento.';//error_enter_doc_number
-$lang['error_pex'] = 'Existe paciente registrado con documento ingresado.';//error_person_exists
-$lang['error_eus'] = 'Ingrese usuario.';//error_enter_username
-$lang['error_usf'] = 'Ingrese un correo electrónico.';//error_username_format
-$lang['error_usr'] = 'Usuario registrado.';//error_username_exists
-$lang['error_epa'] = 'Ingrese contraseña.';//error_enter_password
-$lang['error_pal'] = 'Ingrese mínimo 6 letras.';//error_password_length
-$lang['error_pac'] = 'Repita contraseña correctamente.';//error_password_confirm
-$lang['error_rpd'] = 'Ocurrió error al registrar datos personales. Intente nuevamente.';//error_register_personal_data
-$lang['error_rac'] = 'Ocurrió error al registrar usuario. Intente nuevamente.';//error_register_account
-$lang['error_fte'] = 'Ingrese título del archivo.';//error_file_title_enter
-$lang['error_fse'] = 'Elija un archivo.';//error_file_select
 $lang['error_upd'] = 'Ocurrió error al actualizar datos personales. Intente nuevamente.';//error_update_personal_data
 $lang['error_uac'] = 'Ocurrió error al actualizar usuario. Intente nuevamente.';//error_update_account
 $lang['success_rpa'] = 'Paciente ha sido registrado.';//success_register_doctor
@@ -28,7 +15,6 @@ $lang['success_cao'] = 'Usuario ha sido registrado.';//success_create_account
 $lang['success_ufi'] = 'Archivo ha sido cargado.';//success_upload_file
 $lang['success_dfi'] = 'Archivo ha sido eliminado.';//success_delete_file
 $lang['success_upd'] = 'Datos personales han sido actualizados.';//success_update_personal_data
-$lang['warning_dpf'] = '¿Está seguro de eliminar archivo?';//warning_delete_patient_file
 $lang['success_upa'] = 'Los datos del paciente han sido actualizados.';
 $lang['success_uae'] = 'Correo electrónico ha sido actualizada.';//success_update_account_email
 $lang['success_uep'] = 'Contraseña ha sido actualizada.';//success_update_email_password

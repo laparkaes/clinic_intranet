@@ -416,7 +416,7 @@ class Surgery extends CI_Controller {
 			
 			while(strtotime($run) < strtotime($date_end)){
 				$filter = ["room_id" => $room->id, "schedule_from >=" => $run." 00:00:00", "schedule_to <=" => $run." 23:59:59"];
-				$surgeries = $this->general->filter_adv("surgery", $filter, $filter_in);
+				$surgeries = $this->general->filter("surgery", $filter, null, $filter_in);
 				
 				$min_range = array([0, 15], [15, 30], [30, 45], [45, 60]);
 				$aux = array();

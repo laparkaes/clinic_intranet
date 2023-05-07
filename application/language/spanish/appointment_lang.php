@@ -3,6 +3,7 @@
 $lang['appointments'] = 'Consultas';
 
 //messages
+$lang['warning_rap'] = '¿Desea generar nueva consulta?';//warning_register_appointment
 $lang['warning_aca'] = '¿Desea cancelar consulta?';//warning_appointment_cancel
 $lang['warning_afi'] = '¿Desea finalizar consulta?';//warning_appointment_finish
 $lang['warning_are'] = '¿Desea reprogramar consulta?';//warning_appointment_reschedule
@@ -263,3 +264,5 @@ $lang['lb_diagnosis_type'] = 'Tipo de Diagnóstico';
 $lang['lb_image'] = 'Imagen';
 $lang['th_image'] = 'Imagen';
 $lang['th_category'] = 'Categoría';
+$lang['msg_no_appointments'] = 'No existe consultas registradas.';
+$lang['hd_itinerary'] = 'Itinerario';

@@ -53,7 +53,7 @@
 									<td><?= $item->name ?></td>
 									<td><?= $item->tel ?></td>
 									<td><?= $item->email ?></td>
-									<td class="text-right pr-0">
+									<td class="text-right">
 										<a href="<?= base_url() ?>patient/detail/<?= $item->id ?>">
 											<button type="button" class="btn btn-primary light sharp border-0">
 												<i class="far fa-search"></i>
@@ -84,22 +84,26 @@
 						<div class="col-md-12">
 							<h4 class="mb-3"><?= $this->lang->line('title_patient_register') ?></h4>
 							<div class="form-row">
-								<div class="form-group col-md-6">
+								<div class="form-group col-md-3">
 									<label><?= $this->lang->line('lb_document') ?></label>
+									<select class="form-control" id="pn_doc_type_id" name="doc_type_id">
+										<?php foreach($doc_types as $d){ if ($d->sunat_code){ ?>
+										<option value="<?= $d->id ?>"><?= $d->description ?></option>
+										<?php }} ?>
+									</select>
+									<div class="sys_msg" id="pn_doc_type_msg"></div>
+								</div>
+								<div class="form-group col-md-3">
+									<label class="d-md-block d-none">&nbsp;</label>
 									<div class="input-group">
-										<select class="form-control" id="pn_doc_type_id" name="doc_type_id">
-											<?php foreach($doc_types as $d){ if ($d->sunat_code){ ?>
-											<option value="<?= $d->id ?>"><?= $d->description ?></option>
-											<?php }} ?>
-										</select>
-										<input type="text" class="form-control border-left-0" id="pn_doc_number" name="doc_number" placeholder="<?= $this->lang->line('lb_number') ?>">
+										<input type="text" class="form-control" id="pn_doc_number" name="doc_number" placeholder="<?= $this->lang->line('lb_number') ?>">
 										<div class="input-group-append">
 											<button class="btn btn-primary border-0" type="button" id="btn_search_person_pn">
 												<i class="fas fa-search"></i>
 											</button>
 										</div>
 									</div>
-									<div class="sys_msg" id="pn_doc_msg"></div>
+									<div class="sys_msg" id="pn_doc_number_msg"></div>
 								</div>
 								<div class="form-group col-md-4">
 									<label><?= $this->lang->line('lb_name') ?></label>
@@ -118,7 +122,7 @@
 								</div>
 								<div class="form-group col-md-2">
 									<label><?= $this->lang->line('lb_birthday') ?></label>
-									<input type="text" class="form-control date_picker_all" name="birthday" readonly="">
+									<input type="text" class="form-control bw date_picker_all" name="birthday" readonly="">
 									<div class="sys_msg" id="pn_birthday_msg"></div>
 								</div>
 								<div class="form-group col-md-2">

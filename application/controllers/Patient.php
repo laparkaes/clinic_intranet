@@ -35,18 +35,18 @@ class Patient extends CI_Controller {
 		$doc_types = $this->general->all("doc_type", "id", "asc");
 		foreach($doc_types as $item) $doc_types_arr[$item->id] = $item->short;
 		
-		$data = array(
+		$data = [
 			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("person", $f_w, $f_l, $f_w_in)),
 			"f_url" => $f_url,
 			"patients" => $this->general->filter("person", $f_w, $f_l, $f_w_in, "registed_at", "desc", 25, 25*($f_url["page"]-1)),
 			"doc_types" => $doc_types,
 			"doc_types_arr" => $doc_types_arr,
-			"sex_ops" => $this->general->filter("sl_option", array("code" => "sex")),
-			"blood_type_ops" => $this->general->filter("sl_option", array("code" => "blood_type")),
+			"sex_ops" => $this->general->filter("sl_option", ["code" => "sex"]),
+			"blood_type_ops" => $this->general->filter("sl_option", ["code" => "blood_type"]),
 			"title" => $this->lang->line('patients'),
 			"main" => "patient/list",
 			"init_js" => "patient/list.js"
-		);
+		];
 		
 		$this->load->view('layout', $data);
 	}
@@ -113,7 +113,7 @@ class Patient extends CI_Controller {
 			"sales" => $this->general->filter("sale", ["client_id" => $person->id]),
 			"sex_ops" => $this->general->filter("sl_option", ["code" => "sex"]),
 			"blood_type_ops" => $this->general->filter("sl_option", ["code" => "blood_type"]),
-			"patient_files" => $this->general->filter("patient_file", ["patient_id" => $person->id, "active" => true]),
+			"patient_files" => $this->general->filter("patient_file", ["patient_id" => $person->id, "active" => true], null, null, "registed_at", "desc"),
 			"title" => $this->lang->line('patient'),
 			"main" => "patient/detail",
 			"init_js" => "patient/detail.js"
@@ -123,29 +123,16 @@ class Patient extends CI_Controller {
 	}
 	
 	public function register(){
-		$status = false; $type = "error"; $msgs = []; $msg = null; $move_to = null;
+		$type = "error"; $msgs = []; $msg = null; $move_to = null;
 		if ($this->utility_lib->check_access("patient", "register")){
 			$data = $this->input->post();
 			
-			//personal data validation
-			if (!$data["name"]) $msgs = $this->my_val->set_msg($msgs, "pn_name_msg", "error", "error_ena");
-			if (!$data["tel"]) $msgs = $this->my_val->set_msg($msgs, "pn_tel_msg", "error", "error_ete");
-			if (!$data["doc_type_id"]) $msgs = $this->my_val->set_msg($msgs, "pn_doc_msg", "error", "error_sdt");
-			if (!$data["doc_number"]) $msgs = $this->my_val->set_msg($msgs, "pn_doc_msg", "error", "error_edn");
-			if ($this->general->filter("person", array("doc_type_id" => $data["doc_type_id"], "doc_number" => $data["doc_number"])))
-				 $msgs = $this->my_val->set_msg($msgs, "pn_doc_msg", "error", "error_pex");
-			
-			//email is optional
-			if ($data["email"]){
-				if (filter_var($data["email"], FILTER_VALIDATE_EMAIL)){
-					if ($this->account->email($data["email"])) $msgs = $this->my_val->set_msg($msgs, "pn_email_msg", "error", "error_usr");
-				}else $msgs = $this->my_val->set_msg($msgs, "pn_email_msg", "error", "error_usf");
-			}
+			$this->load->library('my_val');
+			$msgs = $this->my_val->person($msgs, "pn_", $data);
 			
 			if (!$msgs){
 				//person data creation if does'nt exist
-				$filter = array("doc_type_id" => $data["doc_type_id"], "doc_number" => $data["doc_number"]);
-				$people = $this->general->filter("person", $filter, "id", "asc", 0, 1);
+				$people = $this->general->filter("person", ["doc_type_id" => $data["doc_type_id"], "doc_number" => $data["doc_number"]], null, null, "registed_at", "desc");
 				if ($people){
 					$person = $people[0];
 					$this->general->update("person", $person->id, $data);
@@ -158,31 +145,28 @@ class Patient extends CI_Controller {
 				}
 				
 				if ($person_id){
-					$status = true;
 					$type = "success";
 					$move_to = base_url()."patient/detail/".$person_id;
 					$msg = $this->lang->line('success_rpa');
-				}else $msgs = $this->my_val->set_msg($msgs, "dn_result_msg", "error", "error_rpd");
+				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line('error_occurred');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to));
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to]);
 	}
 	
 	public function update(){
-		$status = false; $type = "error"; $msgs = []; $msg = null;
+		$type = "error"; $msgs = []; $msg = null;
 		if ($this->utility_lib->check_access("patient", "update")){
 			$data = $this->input->post();
 			
-			if ($data["email"]){
-				if (filter_var($data["email"], FILTER_VALIDATE_EMAIL)){
-					if ($this->account->email($data["email"])) $msgs = $this->my_val->set_msg($msgs, "pu_email_msg", "error", "error_usr");
-				}else $msgs = $this->my_val->set_msg($msgs, "pu_email_msg", "error", "error_usf");
-			}else $data["email"] = null;
+			$this->load->library('my_val');
+			$msgs = $this->my_val->person($msgs, "pu_", $data);
 			
 			if (!$msgs){
 				if (!$data["tel"]) $data["tel"] = null;
+				if (!$data["email"]) $data["email"] = null;
 				if (!$data["address"]) $data["address"] = null;
 				if (!$data["birthday"]) $data["birthday"] = null;
 				if (!$data["sex_id"]) $data["sex_id"] = null;
@@ -192,7 +176,6 @@ class Patient extends CI_Controller {
 					$person = $this->general->id("person", $data["id"]);
 					$this->utility_lib->add_log("person_update", $person->name);
 					
-					$status = true;
 					$type = "success"; 
 					$msg = $this->lang->line('success_upd');
 				}else $msg = $this->lang->line('error_internal');
@@ -200,16 +183,16 @@ class Patient extends CI_Controller {
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg, "msgs" => $msgs));
+		echo json_encode(["type" => $type, "msg" => $msg, "msgs" => $msgs]);
 	}
 	
 	public function upload_file(){
-		$status = false; $msgs = []; $msg = null;
+		$type = "error"; $msgs = []; $msg = null;
 		if ($this->utility_lib->check_access("patient", "update")){
 			$title = $this->input->post("title");
 			
-			if (!$title) $msgs = $this->my_val->set_msg($msgs, "pf_title_msg", "error", "error_fte");
-			if (!$_FILES["upload_file"]["name"]) $msgs = $this->my_val->set_msg($msgs, "pf_file_msg", "error", "error_fse");
+			$this->load->library('my_val');
+			$msgs = $this->my_val->file_upload($msgs, "pf_", $title, $_FILES["upload_file"]["name"]);
 			
 			if (!$msgs){
 				$patient = $this->general->id("person", $this->input->post("patient_id"));
@@ -219,57 +202,57 @@ class Patient extends CI_Controller {
 					$upload_dir = $upload_dir."/";
 					
 					$this->load->library('upload');
-					$config_upload = array(
+					$config_upload = [
 						'upload_path' => $upload_dir,
 						'allowed_types' => '*',
 						'max_size' => 0,
 						'overwrite' => false,
 						'file_name' => date("YmdHis")
-					);
+					];
 					
 					$this->upload->initialize($config_upload);
 					if ($this->upload->do_upload("upload_file")){
 						$result = $this->upload->data();
-						$patient_file = array(
+						$patient_file = [
 							"patient_id" => $patient->id,
 							"title" => $title,
 							"filename" => $result["file_name"],
 							"active" => true,
 							"registed_at" => date('Y-m-d H:i:s', time())
-						);
+						];
 						
 						if ($this->patient_file->insert($patient_file)){
 							$this->utility_lib->add_log("file_upload", $patient->name." - ".$title);
 							
+							$type = "success";
 							$msg = $this->lang->line('success_ufi');
-							$status = true;
 						}else $msgs = $this->my_val->set_msg($msgs, "pf_result_msg", "error", "error_internal");
-					}else array_push($msgs, array("dom_id" => "pf_result_msg", "type" => "error", "msg" => $this->upload->display_errors("<span>","</span>")));
+					}else $msgs[] = ["dom_id" => "pf_result_msg", "type" => "error", "msg" => $this->upload->display_errors("<span>","</span>")];
 				}else $msgs = $this->my_val->set_msg($msgs, "pf_result_msg", "error", "error_internal_refresh");
 			}else $msg = $this->lang->line('error_occurred');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "msgs" => $msgs, "msg" => $msg));
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
 	}
 	
 	public function delete_file(){
-		$status = false; $msg = null;
+		$type = "error"; $msg = null;
 		
 		if ($this->utility_lib->check_access("patient", "update")){		
 			$patient_file = $this->general->id("patient_file", $this->input->post("id"));
 			
 			//change "active" field of DB without removing uploaded file
-			if ($this->patient_file->update($patient_file->id, array("active" => false))){
+			if ($this->patient_file->update($patient_file->id, ["active" => false])){
 				$person = $this->general->id("person", $patient_file->patient_id);
 				$this->utility_lib->add_log("file_delete", $person->name." - ".$patient_file->title);
 				
-				$status = true;
+				$type = "success";
 				$msg = $this->lang->line('success_dfi');
 			}else $msg = $this->lang->line('error_internal');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "msg" => $msg));
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 }

@@ -167,9 +167,10 @@ class Doctor extends CI_Controller {
 	public function register(){
 		$type = "error"; $msgs = []; $msg = null; $move_to = null;
 		if ($this->utility_lib->check_access("doctor", "register")){
-			$p = $this->input->post("personal");
-			$d = $this->input->post("doctor");
 			$a = $this->input->post("account");
+			$d = $this->input->post("doctor");
+			$p = $this->input->post("personal");
+			$p["email"] = $a["email"];
 			
 			$this->load->library('my_val');
 			$msgs = $this->my_val->person($msgs, "dn_", $p);
@@ -178,7 +179,6 @@ class Doctor extends CI_Controller {
 			
 			if (!$msgs){
 				/* person handle */
-				$p["email"] = $a["email"];
 				$person = $this->general->filter("person", ["doc_type_id" => $p["doc_type_id"], "doc_number" => $p["doc_number"]]);
 				if ($person){
 					$person = $person[0];

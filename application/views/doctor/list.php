@@ -63,7 +63,7 @@
 									<td><?= $item->person->name ?></td>
 									<td><?= $item->person->tel ?></td>
 									<td><span class="badge light badge-<?= $status[$item->status_id]->color ?>"><?= $status[$item->status_id]->text ?></span></td>
-									<td class="text-right pr-0">
+									<td class="text-right">
 										<a href="<?= base_url() ?>doctor/detail/<?= $item->id ?>">
 											<button type="button" class="btn btn-primary light sharp border-0">
 												<i class="far fa-search"></i>
@@ -101,11 +101,10 @@
 										<option value="<?= $d->id ?>"><?= $d->description ?></option>
 										<?php }} ?>
 									</select>
-									<div class="valid-feedback"></div>
-									<div class="invalid-feedback">Please provide a valid city.</div>
-									<div class="sys_msg" id="dn_doc_msg"></div>
+									<div class="sys_msg" id="dn_doc_type_msg"></div>
 								</div>
-								<div class="form-group d-flex align-items-end col-md-6">
+								<div class="form-group col-md-6">
+									<label class="d-md-block d-none">&nbsp;</label>
 									<div class="input-group">
 										<input type="text" class="form-control" id="dn_doc_number" name="personal[doc_number]" placeholder="<?= $this->lang->line('lb_number') ?>">
 										<div class="input-group-append">
@@ -114,6 +113,7 @@
 											</button>
 										</div>
 									</div>
+									<div class="sys_msg" id="dn_doc_number_msg"></div>
 								</div>
 								<div class="form-group col-md-8">
 									<label><?= $this->lang->line('lb_name') ?></label>

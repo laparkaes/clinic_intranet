@@ -1,106 +1,31 @@
-function delete_file(dom){
-	Swal.fire({
-		title: $("#alert_warning_title").val(),
-		text: $("#warning_dpf").val(),
-		icon: 'warning',
-		showCancelButton: true,
-		confirmButtonText: $("#alert_confirm_btn").val(),
-		cancelButtonText: $("#alert_cancel_btn").val()
-	}).then((result) => {
-		if (result.isConfirmed){
-			$.ajax({
-				url: $("#base_url").val() + "patient/delete_file",
-				type: "POST",
-				data: {id: $(dom).val()},
-				success:function(res){
-					var title;
-					var icon;
-					if (res.status == true){
-						title = $("#alert_success_title").val();
-						icon = "success";
-					}else{
-						title = $("#alert_error_title").val();
-						icon = "error";
-					}
-					Swal.fire({
-						title: title,
-						icon: icon,
-						text: res.msg,
-						confirmButtonText: $("#alert_confirm_btn").val()
-					}).then((result) => {
-						if (res.status == true) if (result.isConfirmed == true) location.reload();
-					});
-				}
-			});
-		}
+function delete_patient_file(dom){
+	ajax_simple_warning({id: $(dom).val()}, "patient/delete_file", $("#warning_dpf").val()).done(function(res) {
+		//set_msg(res.msgs);
+		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function upload_patient_file(dom){
 	$("#form_upload_patient_file .sys_msg").html("");
-	$.ajax({
-		url: $("#base_url").val() + "patient/upload_file",
-		type: "POST",
-		data: new FormData(dom),
-		contentType: false,
-		processData:false,
-		success:function(res){
-			if (res.status == true){
-				Swal.fire({
-					title: $("#alert_success_title").val(),
-					html: res.msg,
-					icon: 'success',
-					confirmButtonText: $("#alert_confirm_btn").val()
-				}).then((result) => {
-					if (result.isConfirmed == true) location.reload();
-				});
-			}else set_msg(res.msgs);
-		}
+	ajax_form(dom, "patient/upload_file").done(function(res) {
+		set_msg(res.msgs);
+		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function update_patient(dom){
 	$("#update_form .sys_msg").html("");
-	$.ajax({
-		url: $("#base_url").val() + "patient/update",
-		type: "POST",
-		data: new FormData(dom),
-		contentType: false,
-		processData:false,
-		success:function(res){
-			if (res.status == true){
-				Swal.fire({
-					title: $("#alert_success_title").val(),
-					html: res.msg,
-					icon: 'success',
-					confirmButtonText: $("#alert_confirm_btn").val()
-				}).then((result) => {
-					if (result.isConfirmed == true) location.reload();
-				});
-			}else set_msg(res.msgs);
-		}
+	ajax_form(dom, "patient/update").done(function(res) {
+		set_msg(res.msgs);
+		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function update(dom){
 	$("#form_update .sys_msg").html("");
-	$.ajax({
-		url: $("#base_url").val() + "patient/update",
-		type: "POST",
-		data: new FormData(dom),
-		contentType: false,
-		processData:false,
-		success:function(res){
-			set_msg(res.msgs);
-			Swal.fire({
-				title: $("#alert_" + res.type + "_title").val(),
-				icon: res.type,
-				html: res.msg,
-				confirmButtonText: $("#alert_confirm_btn").val()
-			}).then((result) => {
-				if (res.status == true) location.reload();
-			});
-		}
+	ajax_form(dom, "patient/update").done(function(res) {
+		set_msg(res.msgs);
+		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
@@ -125,62 +50,30 @@ function sur_set_doctor_sl(dom){
 }
 
 function register_appointment(dom){
-	$("#register_form .sys_msg").html("");
-	$.ajax({
-		url: $("#base_url").val() + "appointment/register",
-		type: "POST",
-		data: new FormData(dom),
-		contentType: false,
-		processData:false,
-		success:function(res){
-			set_msg(res.msgs);
-			if (res.msg != null){
-				Swal.fire({
-					title: $("#alert_" + res.type + "_title").val(),
-					icon: res.type,
-					html: res.msg,
-					confirmButtonText: $("#alert_confirm_btn").val()
-				}).then((result) => {
-					if (res.status == true) location.reload();
-				});
-			}
-		}
+	$("#add_appointment_form .sys_msg").html("");
+	ajax_form_warning(dom, "appointment/register", $("#warning_rap").val()).done(function(res) {
+		set_msg(res.msgs);
+		swal_redirection(res.type, res.msg, res.move_to);
 	});
 }
 
 function register_surgery(dom){
-	$("#register_form .sys_msg").html("");
-	$.ajax({
-		url: $("#base_url").val() + "surgery/register",
-		type: "POST",
-		data: new FormData(dom),
-		contentType: false,
-		processData:false,
-		success:function(res){
-			set_msg(res.msgs);
-			if (res.msg != null){
-				Swal.fire({
-					title: $("#alert_" + res.type + "_title").val(),
-					icon: res.type,
-					html: res.msg,
-					confirmButtonText: $("#alert_confirm_btn").val()
-				}).then((result) => {
-					if (res.status == true) location.href = res.move_to;
-				});
-			}
-		}
+	$("#sur_register_form .sys_msg").html("");
+	ajax_form_warning(dom, "surgery/register", $("#warning_rsu").val()).done(function(res) {
+		set_msg(res.msgs);
+		swal_redirection(res.type, res.msg, res.move_to);
 	});
 }
 
 $(document).ready(function() {
-	set_datatable("appointment_list", 10, false);
-	set_datatable("surgery_list", 10, false);
-	set_datatable("file_list", 10, false);
-	set_datatable("sale_list", 10, false);
 	$(".control_bl_simple").on('click',(function(e) {control_bl_simple(this);}));
 	$("#ic_doctor_schedule_w_aa").on('click',(function(e) {load_doctor_schedule_weekly($("#aa_doctor").val(), null, "bl_weekly_schedule");}));
 	$("#ic_doctor_schedule_w_sur").on('click',(function(e) {load_doctor_schedule_weekly($("#sur_doctor").val(), null, "bl_weekly_schedule");}));
 	$("#ic_room_availability_w").on('click',(function(e) {load_room_availability($("#sur_room_id").val(), null, "bl_room_availability");}));
+	set_datatable("appointment_list", 10, false);
+	set_datatable("surgery_list", 10, false);
+	set_datatable("file_list", 10, false);
+	set_datatable("sale_list", 10, false);
 	
 	//add appointment
 	aa_load_doctor_schedule();
@@ -199,7 +92,7 @@ $(document).ready(function() {
 	
 	//admin patient file
 	$("#form_upload_patient_file").submit(function(e) {e.preventDefault(); upload_patient_file(this);});
-	$(".btn_delete_file").on('click',(function(e) {delete_file(this);}));
+	$(".btn_delete_file").on('click',(function(e) {delete_patient_file(this);}));
 	$("#upload_file").change(function(e) {
 		$("#lb_selected_filename").html(e.target.files[0].name); 
 		$("#ip_selected_filename").val(e.target.files[0].name);
