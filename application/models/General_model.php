@@ -18,17 +18,14 @@ class General_model extends CI_Model{
 		}else return array();
 	}
 	
-    function filter($tablename, $filter, $order_by = "", $order = "", $limit = "", $offset = ""){
-		if ($filter) $this->db->where($filter);
-		if ($order_by) $this->db->order_by($order_by, $order);
-		$query = $this->db->get($tablename, $limit, $offset);
-		$result = $query->result();
-		return $result;
-	}
-	
-	function filter_adv($tablename, $filter, $filter_in = null, $order_by = "", $order = "", $limit = "", $offset = ""){
-		if ($filter) $this->db->where($filter);
-		if ($filter_in) foreach($filter_in as $f) $this->db->where_in($f["field"], $f["values"]);
+	function filter($tablename, $w = null, $l = null, $w_in = null, $order_by = "", $order = "", $limit = "", $offset = ""){
+		if ($w){ $this->db->group_start(); $this->db->where($w); $this->db->group_end(); }
+		if ($l){ $this->db->group_start(); $this->db->or_like($l); $this->db->group_end(); }
+		if ($w_in){
+			$this->db->group_start();
+			foreach($w_in as $item) $this->db->where_in($item["field"], $item["values"]);
+			$this->db->group_end();
+		}
 		if ($order_by) $this->db->order_by($order_by, $order);
 		$query = $this->db->get($tablename, $limit, $offset);
 		$result = $query->result();
@@ -66,17 +63,24 @@ class General_model extends CI_Model{
 		return $result;
 	}
 	
-	function only($tablename, $field, $where = null){
+	function only($tablename, $field, $w = null, $l = null, $w_in = null, $limit = "", $offset = ""){
 		$this->db->select($field);
-		if ($where) $this->db->where($where);
+		if ($w){ $this->db->group_start(); $this->db->where($w); $this->db->group_end(); }
+		if ($l){ $this->db->group_start(); $this->db->or_like($l); $this->db->group_end(); }
+		if ($w_in){
+			$this->db->group_start();
+			foreach($w_in as $item) $this->db->where_in($item["field"], $item["values"]);
+			$this->db->group_end();
+		}
 		$this->db->group_by($field);
 		$query = $this->db->get($tablename);
 		$result = $query->result();
 		return $result;
 	}
 	
-	function counter($tablename, $filter, $group_by = null){
-		if ($filter) $this->db->where($filter);
+	function counter($tablename, $where = null, $like = null, $group_by = null){
+		if ($where) $this->db->where($where);
+		if ($like) $this->db->where($like);
 		if ($group_by) $this->db->group_by($group_by);
 		$query = $this->db->get($tablename);
 		return $query->num_rows();

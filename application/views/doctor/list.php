@@ -21,6 +21,27 @@
 	<div class="card">
 		<div class="card-body">
 			<div class="row bl_content" id="bl_list">
+				<div class="col-md-12 d-md-flex justify-content-end">
+					<form class="form-inline">
+						<input type="hidden" value="1" name="page">
+						<label class="sr-only" for="sl_type"><?= $this->lang->line('sl_specialty') ?></label>
+						<select class="form-control mb-2 mr-sm-2" id="sl_type" name="specialty" style="max-width: 150px;">
+							<option value=""><?= $this->lang->line('sl_specialty') ?></option>
+							<?php foreach($specialties as $item){
+								if ($item->id == $f_url["specialty"]) $s = "selected"; else $s = ""; ?>
+							<option value="<?= $item->id ?>" <?= $s ?>><?= $item->name ?></option>
+							<?php } ?>
+						</select>
+						<label class="sr-only" for="inp_keyword"><?= $this->lang->line('lb_search') ?></label>
+						<input type="text" class="form-control mb-2 mr-sm-2" id="inp_keyword" name="keyword" placeholder="<?= $this->lang->line('lb_search') ?>" value="<?= $f_url["keyword"] ?>">
+						<button type="submit" class="btn btn-primary mb-2">
+							<i class="far fa-search"></i>
+						</button>
+					</form>
+				</div>
+			
+			
+			
 				<div class="col-md-2">
 					<div class="mb-3" id="doctor_list_length_new"></div>
 				</div>

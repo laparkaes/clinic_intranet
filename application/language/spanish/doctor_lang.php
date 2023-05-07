@@ -116,3 +116,5 @@ $lang['op_hours'] = 'horas';
 $lang['lb_room'] = 'Sala';
 $lang['hd_room'] = 'Sala';
 $lang['title_room_availability'] = 'Disponibilidad de Sala de Cirugía';
+$lang['sl_specialty'] = 'Especialidad';
+$lang['lb_search'] = 'Búsqueda';

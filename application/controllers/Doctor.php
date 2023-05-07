@@ -21,19 +21,62 @@ class Doctor extends CI_Controller {
 		return $msgs;
 	}
 	
+	/* function generate($num){
+		$this->load->library('my_func');
+		
+		$now = date('Y-m-d H:i:s', time());
+		$status_id = $this->general->filter("status", array("code" => "enabled"))[0]->id;
+		$specialties = $this->specialty->all();
+		$char_alf = "ABCDEFGHIJKLMN";
+		$char_num = "1234567890";
+		
+		$doc_arr = [];
+		$person_ids = $this->general->only("person", "id", null, null, null, $num, 40);
+		foreach($person_ids as $item){
+			//print_r($item);
+			$doc_arr[] = [
+				"status_id" => $status_id,
+				"person_id" => $item->id,
+				"specialty_id" => $specialties[array_rand($specialties)]->id,
+				"license" => $this->my_func->randomString($char_alf, 3).$this->my_func->randomString($char_num, 7),
+				"updated_at" => $now,
+				"registed_at" => $now,
+			];
+		}
+		
+		$this->general->insert_multi("doctor", $doc_arr);
+	} */
+	
 	public function index(){
 		if (!$this->session->userdata('logged_in')) redirect("/");
 		if (!$this->utility_lib->check_access("doctor", "index")) redirect("/errors/no_permission");
 		
+		$f_url = [
+			"page" => $this->input->get("page"),
+			"specialty" => $this->input->get("specialty"),
+			"keyword" => $this->input->get("keyword"),
+		];
+		if (!$f_url["page"]) $f_url["page"] = 1;
+		
+		$f_w = $f_l = $f_w_in = [];
+		if ($f_url["specialty"]) $f_w["specialty_id"] = $f_url["specialty"];
+		if ($f_url["keyword"]){
+			$aux = [];
+			$person_ids = $this->general->only("person", "id", null, ["name" => $f_url["keyword"]], null);
+			if ($person_ids){
+				foreach($person_ids as $item) $aux[] = $item->id;
+				$f_w_in[] = ["field" => "person_id", "values" => $aux];
+			}
+			
+			$f_l["license"] = $f_url["keyword"];
+		}
+
+		$doctors = $this->general->filter("doctor", $f_w, $f_l, $f_w_in, "registed_at", "desc", 25, 25*($f_url["page"]-1));
+		foreach($doctors as $item) $item->person = $this->general->id("person", $item->person_id);
+		
 		$specialties_arr = array();
 		$specialties = $this->specialty->all();
 		foreach($specialties as $item) $specialties_arr[$item->id] = $item->name;
-		
-		$doctors = $this->general->all("doctor");
-		foreach($doctors as $item) $item->person = $this->general->id("person", $item->person_id);
-		usort($doctors, function($a, $b) {
-			return strcmp($a->person->name, $b->person->name);
-		});
 		
 		$status = array();
 		$status_rec = $this->general->all("status");
@@ -43,6 +86,7 @@ class Doctor extends CI_Controller {
 		}
 		
 		$data = array(
+			"f_url" => $f_url,
 			"doc_types" => $this->general->all("doc_type", "sunat_code", "asc"),
 			"specialties_arr" => $specialties_arr,
 			"specialties" => $specialties,

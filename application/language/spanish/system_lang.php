@@ -84,6 +84,7 @@ $lang['btn_confirm'] = 'Confirmar';
 $lang['btn_finish'] = 'Finalizar';
 $lang['btn_new'] = 'Nuevo';
 $lang['btn_register'] = 'Registrar';
+$lang['btn_search'] = 'Buscar';
 
 //text
 $lang['txt_detail'] = 'Detalle';
