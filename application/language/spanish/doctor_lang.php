@@ -117,4 +117,5 @@ $lang['lb_room'] = 'Sala';
 $lang['hd_room'] = 'Sala';
 $lang['title_room_availability'] = 'Disponibilidad de Sala de Cirugía';
 $lang['sl_specialty'] = 'Especialidad';
-$lang['lb_search'] = 'Búsqueda';
+$lang['lb_search_by_name'] = 'Buscar por nombre';
+$lang['msg_no_doctors'] = 'No existe médicos registrados o cumplan con datos de búsqueda.';

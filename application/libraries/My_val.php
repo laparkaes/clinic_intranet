@@ -71,7 +71,7 @@ class My_val{
 	}
 	
 	public function appointment($msgs, $prefix, $app, $sch, $pt){
-		$msgs = $this->my_val->person($msgs, $prefix."pt_", $pt);//patient
+		$msgs = $this->person($msgs, $prefix."pt_", $pt);//patient
 		$msgs = $this->schedule($msgs, $prefix, $sch);//schedule
 		
 		//appointment data

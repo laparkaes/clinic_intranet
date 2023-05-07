@@ -13,6 +13,7 @@ class Surgery extends CI_Controller {
 		$this->load->model('surgery_model','surgery');
 		$this->load->model('status_model','status');
 		$this->load->model('general_model','general');
+		$this->nav_menu = "surgery";
 	}
 	
 	private function set_msg($msgs, $dom_id, $type, $msg_code){
@@ -25,7 +26,7 @@ class Surgery extends CI_Controller {
 		//PENDING! rol validation
 		
 		$filter = ["schedule_from >=" => date("Y-m-d", strtotime("-1 month"))];
-		$surgeries = $this->general->filter("surgery", $filter, "schedule_from", "desc");
+		$surgeries = $this->general->filter("surgery", $filter, null, null, "schedule_from", "desc");
 		
 		$person_ids = array();
 		$patient_ids = $this->general->only("surgery", "patient_id", $filter);

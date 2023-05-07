@@ -17,6 +17,7 @@ class Sale extends CI_Controller {
 		$this->load->model('status_model','status');
 		$this->load->model('account_model','account');
 		$this->load->model('specialty_model','specialty');
+		$this->nav_menu = "sale";
 	}
 	
 	private function set_msg($msgs, $dom_id, $type, $msg_code){

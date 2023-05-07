@@ -133,3 +133,5 @@ $lang['lb_duration'] = 'Duración';
 $lang['lb_room'] = 'Sala';
 $lang['hd_room'] = 'Sala';
 $lang['lb_number'] = 'Número';
+$lang['lb_search'] = 'Buscar';
+$lang['msg_no_patients'] = 'No existe pacientes registrados o cumplan con datos de búsqueda.';

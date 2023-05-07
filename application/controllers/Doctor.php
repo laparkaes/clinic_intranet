@@ -14,38 +14,8 @@ class Doctor extends CI_Controller {
 		$this->load->model('account_model','account');
 		$this->load->model('appointment_model','appointment');
 		$this->load->model('status_model','status');
+		$this->nav_menu = "doctor";
 	}
-	
-	private function set_msg($msgs, $dom_id, $type, $msg_code){
-		if ($msg_code) array_push($msgs, array("dom_id" => $dom_id, "type" => $type, "msg" => $this->lang->line($msg_code)));
-		return $msgs;
-	}
-	
-	/* function generate($num){
-		$this->load->library('my_func');
-		
-		$now = date('Y-m-d H:i:s', time());
-		$status_id = $this->general->filter("status", array("code" => "enabled"))[0]->id;
-		$specialties = $this->specialty->all();
-		$char_alf = "ABCDEFGHIJKLMN";
-		$char_num = "1234567890";
-		
-		$doc_arr = [];
-		$person_ids = $this->general->only("person", "id", null, null, null, $num, 40);
-		foreach($person_ids as $item){
-			//print_r($item);
-			$doc_arr[] = [
-				"status_id" => $status_id,
-				"person_id" => $item->id,
-				"specialty_id" => $specialties[array_rand($specialties)]->id,
-				"license" => $this->my_func->randomString($char_alf, 3).$this->my_func->randomString($char_num, 7),
-				"updated_at" => $now,
-				"registed_at" => $now,
-			];
-		}
-		
-		$this->general->insert_multi("doctor", $doc_arr);
-	} */
 	
 	public function index(){
 		if (!$this->session->userdata('logged_in')) redirect("/");
@@ -54,23 +24,22 @@ class Doctor extends CI_Controller {
 		$f_url = [
 			"page" => $this->input->get("page"),
 			"specialty" => $this->input->get("specialty"),
-			"keyword" => $this->input->get("keyword"),
+			"name" => $this->input->get("name"),
 		];
 		if (!$f_url["page"]) $f_url["page"] = 1;
 		
 		$f_w = $f_l = $f_w_in = [];
 		if ($f_url["specialty"]) $f_w["specialty_id"] = $f_url["specialty"];
-		if ($f_url["keyword"]){
+		if ($f_url["name"]){
 			$aux = [];
-			$person_ids = $this->general->only("person", "id", null, ["name" => $f_url["keyword"]], null);
+			$person_ids = $this->general->only("person", "id", null, ["name" => $f_url["name"]], null);
 			if ($person_ids){
 				foreach($person_ids as $item) $aux[] = $item->id;
 				$f_w_in[] = ["field" => "person_id", "values" => $aux];
 			}
-			
-			$f_l["license"] = $f_url["keyword"];
 		}
-
+		if ((!$f_w_in) and $f_url["name"]) $f_w_in[] = ["field" => "person_id", "values" => [-1]];
+		
 		$doctors = $this->general->filter("doctor", $f_w, $f_l, $f_w_in, "registed_at", "desc", 25, 25*($f_url["page"]-1));
 		foreach($doctors as $item) $item->person = $this->general->id("person", $item->person_id);
 		
@@ -86,6 +55,7 @@ class Doctor extends CI_Controller {
 		}
 		
 		$data = array(
+			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("doctor", $f_w, $f_l, $f_w_in)),
 			"f_url" => $f_url,
 			"doc_types" => $this->general->all("doc_type", "sunat_code", "asc"),
 			"specialties_arr" => $specialties_arr,
@@ -108,7 +78,9 @@ class Doctor extends CI_Controller {
 		
 		$doctor = $this->general->id("doctor", $id);
 		$person = $this->general->id("person", $doctor->person_id);
-		$account = $this->general->filter("account", array("person_id" => $person->id), "registed_at", "desc")[0];
+		$account = $this->general->filter("account", ["person_id" => $person->id], null, null, "registed_at", "desc");
+		if ($account) $account = $account[0];
+		else $account = $this->general->structure("account");
 		
 		//set doctor data
 		$doctor->specialty = $this->specialty->id($doctor->specialty_id)->name;
@@ -140,10 +112,10 @@ class Doctor extends CI_Controller {
 		
 		//load other data
 		$patient_ids = array();
-		$appointments = $this->general->filter("appointment", array("doctor_id" => $person->id), "schedule_from", "desc");
+		$appointments = $this->general->filter("appointment", ["doctor_id" => $person->id], null, null, "schedule_from", "desc");
 		foreach($appointments as $item) array_push($patient_ids, $item->patient_id);
 		
-		$surgeries = $this->general->filter("surgery", array("doctor_id" => $person->id), "schedule_from", "desc");
+		$surgeries = $this->general->filter("surgery", ["doctor_id" => $person->id], null, null, "schedule_from", "desc");
 		foreach($surgeries as $item) array_push($patient_ids, $item->patient_id);
 		$patient_ids = array_unique($patient_ids);
 		
@@ -354,4 +326,30 @@ class Doctor extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
+	
+	/* function generate($num){
+		$this->load->library('my_func');
+		
+		$now = date('Y-m-d H:i:s', time());
+		$status_id = $this->general->filter("status", array("code" => "enabled"))[0]->id;
+		$specialties = $this->specialty->all();
+		$char_alf = "ABCDEFGHIJKLMN";
+		$char_num = "1234567890";
+		
+		$doc_arr = [];
+		$person_ids = $this->general->only("person", "id", null, null, null, $num, 40);
+		foreach($person_ids as $item){
+			//print_r($item);
+			$doc_arr[] = [
+				"status_id" => $status_id,
+				"person_id" => $item->id,
+				"specialty_id" => $specialties[array_rand($specialties)]->id,
+				"license" => $this->my_func->randomString($char_alf, 3).$this->my_func->randomString($char_num, 7),
+				"updated_at" => $now,
+				"registed_at" => $now,
+			];
+		}
+		
+		$this->general->insert_multi("doctor", $doc_arr);
+	} */
 }

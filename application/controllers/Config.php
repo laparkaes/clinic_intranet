@@ -11,6 +11,7 @@ class Config extends CI_Controller {
 		$this->lang->load("log", "spanish");
 		$this->load->model('account_model','account');
 		$this->load->model('general_model','general');
+		$this->nav_menu = "config";
 	}
 	
 	private function set_msg($msgs, $dom_id, $type, $msg_code){

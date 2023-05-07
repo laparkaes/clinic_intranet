@@ -76,55 +76,64 @@
 		<div class="deznav">
             <div class="deznav-scroll">
 				<ul class="metismenu pt-0" id="menu">
-					<li>
+					<?php if (!strcmp("dashboard", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
+                    <li class="<?= $ac ?>">
 						<a class="ai-icon" href="<?= base_url() ?>dashboard" aria-expanded="false">
 							<i class="fas fa-home fa-fw mr-2"></i>
 							<span class="nav-text"><?= $this->lang->line('nav_dashboard') ?></span>
 						</a>
                     </li>
-                    <li>
+					<?php if (!strcmp("doctor", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
+                    <li class="<?= $ac ?>">
 						<a class="ai-icon" href="<?= base_url() ?>doctor" aria-expanded="false">
 							<i class="fas fa-user-md fa-fw mr-2"></i>
 							<span class="nav-text"><?= $this->lang->line('nav_doctors') ?></span>
 						</a>
 					</li>
-					<li>
+					<?php if (!strcmp("patient", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
+					<li class="<?= $ac ?>">
 						<a class="ai-icon" href="<?= base_url() ?>patient" aria-expanded="false">
 							<i class="fas fa-user-injured fa-fw mr-2"></i>
 							<span class="nav-text"><?= $this->lang->line('nav_patients') ?></span>
 						</a>
 					</li>
-					<li>
+					<?php if (!strcmp("appointment", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
+					<li class="<?= $ac ?>">
 						<a class="ai-icon" href="<?= base_url() ?>appointment" aria-expanded="false">
 							<i class="fas fa-notes-medical fa-fw mr-2"></i>
 							<span class="nav-text"><?= $this->lang->line('nav_appointments') ?></span>
 						</a>
 					</li>
-					<li>
+					<?php if (!strcmp("surgery", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
+					<li class="<?= $ac ?>">
 						<a class="ai-icon" href="<?= base_url() ?>surgery" aria-expanded="false">
 							<i class="fas fa-file-medical-alt fa-fw mr-2"></i>
 							<span class="nav-text"><?= $this->lang->line('nav_surgeries') ?></span>
 						</a>
 					</li>
-					<li>
+					<?php if (!strcmp("product", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
+					<li class="<?= $ac ?>">
 						<a class="ai-icon" href="<?= base_url() ?>product" aria-expanded="false">
 							<i class="fas fa-box fa-fw mr-2"></i>
 							<span class="nav-text"><?= $this->lang->line('nav_products') ?></span>
 						</a>
 					</li>
-					<li>
+					<?php if (!strcmp("sale", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
+					<li class="<?= $ac ?>">
 						<a class="ai-icon" href="<?= base_url() ?>sale" aria-expanded="false">
 							<i class="fas fa-shopping-basket fa-fw mr-2"></i>
 							<span class="nav-text"><?= $this->lang->line('nav_sales') ?></span>
 						</a>
 					</li>
-					<li>
+					<?php if (!strcmp("report", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
+					<li class="<?= $ac ?>">
 						<a class="ai-icon" href="<?= base_url() ?>report" aria-expanded="false">
 							<i class="fas fa-book fa-fw mr-2"></i>
 							<span class="nav-text"><?= $this->lang->line('nav_reports') ?></span>
 						</a>
 					</li>
-					<li>
+					<?php if (!strcmp("config", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
+					<li class="<?= $ac ?>">
 						<a class="ai-icon" href="<?= base_url() ?>config" aria-expanded="false">
 							<i class="fas fa-cogs fa-fw mr-2"></i>
 							<span class="nav-text"><?= $this->lang->line('nav_settings') ?></span>

@@ -1,0 +1,50 @@
+1. apt 최신버전으로 업데이트&업그레이드
+$ sudo apt-get update
+$ sudo apt-get upgrade
+
+2. apache2 설치 및 확인
+$ sudo apt-get install apache2
+$ apache2 -v
+
+4. php 설치
+$ sudo apt-get install php php-pear php-fpm php-cli php-gd php-curl libapache2-mod-php php-json -y
+
+4. php info.php 생성 및 수정
+$ sudo touch /var/www/html/info.php
+$ sudo vi /var/www/html/info.php
+
+i 입력
+<?php phpinfo(); ?> 입력
+Esc 입력
+:wq 입력
+
+4. 파이어 폭스 설치 및 실행
+$ sudo add-apt-repository ppa:ubuntu-mozilla-security/ppa
+$ sudo apt-get update
+$ sudo apt-get install firefox
+$ firefox -v
+주소창에 localhost/info.php 입력
+
+6. mariaDB 설치 및 실행
+$ sudo apt-get install mariadb-server -y
+$ sudo mysql
+
+7. phpmyadmin 설치
+$ sudo apt install phpmyadmin
+
+주소창에 localhost/phpmyadmin/ 입력
+$ sudo vim /etc/apache2/apache2.conf
+
+적절한 위치에아래 문구 추가
+Include /etc/phpmyadmin/apache.conf
+:wq 입력
+
+아파치 서비스 재시작
+$ sudo service apache2 restart
+
+8. mariaDB root 비밀번호 분실시
+$ sudo mysql -u root mysql
+MariaDB [(none)]> set password for 'root'@'localhost' = PASSWORD('123qwe');
+MariaDB [(none)]> flush privileges;
+
+9. 로그인 가능

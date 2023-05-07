@@ -12,6 +12,7 @@ class Dashboard extends CI_Controller {
 		$this->load->model('status_model','status');
 		$this->load->model('sl_option_model','sl_option');
 		$this->load->model('general_model','general');
+		$this->nav_menu = "dashboard";
 	}
 	
 	public function index(){

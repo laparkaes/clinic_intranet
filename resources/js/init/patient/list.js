@@ -46,7 +46,6 @@ function search_person_pn(){
 function enable_pn_name(){$("#pn_name").removeClass("bg-light").attr("readonly", false);}
 
 $(document).ready(function() {
-	set_datatable("patient_list", 25, false);
 	$(".control_bl").on('click',(function(e) {control_bl(this);}));
 	$("#register_form").submit(function(e) {e.preventDefault(); register_patient(this);});
 	$("#btn_search_person_pn").on('click',(function(e) {search_person_pn();}));

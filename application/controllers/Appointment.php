@@ -21,6 +21,7 @@ class Appointment extends CI_Controller {
 		$this->load->model('image_model','image');
 		$this->load->model('product_model','product');
 		$this->load->model('general_model','general');
+		$this->nav_menu = "appointment";
 	}
 	
 	private function set_msg($msgs, $dom_id, $type, $msg_code){
@@ -34,7 +35,7 @@ class Appointment extends CI_Controller {
 		
 		//getting appointments from today
 		$filter = ["schedule_from >=" => date("Y-m-d", strtotime("-1 month"))];
-		$appointments = $this->general->filter("appointment", $filter, "schedule_from", "desc");
+		$appointments = $this->general->filter("appointment", $filter, null, null, "schedule_from", "desc");
 		
 		$person_ids = array();
 		$patient_ids = $this->general->only("appointment", "patient_id", $filter);
@@ -58,7 +59,7 @@ class Appointment extends CI_Controller {
 		}
 		
 		$doctors_arr = array();
-		$doctors = $this->general->filter("doctor", array("status_id" => $se_id));
+		$doctors = $this->general->filter("doctor", ["status_id" => $se_id]);
 		foreach($doctors as $d){
 			$d->name = $this->general->id("person", $d->person_id)->name;
 			$doctors_arr[$d->person_id] = $d;

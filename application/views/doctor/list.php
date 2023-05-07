@@ -32,46 +32,37 @@
 							<option value="<?= $item->id ?>" <?= $s ?>><?= $item->name ?></option>
 							<?php } ?>
 						</select>
-						<label class="sr-only" for="inp_keyword"><?= $this->lang->line('lb_search') ?></label>
-						<input type="text" class="form-control mb-2 mr-sm-2" id="inp_keyword" name="keyword" placeholder="<?= $this->lang->line('lb_search') ?>" value="<?= $f_url["keyword"] ?>">
+						<label class="sr-only" for="inp_name"><?= $this->lang->line('lb_name') ?></label>
+						<input type="text" class="form-control mb-2 mr-sm-2" id="inp_name" name="name" placeholder="<?= $this->lang->line('lb_search_by_name') ?>" value="<?= $f_url["name"] ?>">
 						<button type="submit" class="btn btn-primary mb-2">
 							<i class="far fa-search"></i>
 						</button>
 					</form>
 				</div>
-			
-			
-			
-				<div class="col-md-2">
-					<div class="mb-3" id="doctor_list_length_new"></div>
-				</div>
-				<div class="col-md-6"></div>
-				<div class="col-md-4">
-					<div class="mb-3" id="doctor_list_filter_new"></div>
-				</div>
 				<div class="col-md-12">
+					<?php if ($doctors){ ?>
 					<div class="table-responsive">
-						<table id="doctor_list" class="table display">
+						<table class="table table-responsive-md">
 							<thead>
 								<tr>
-									<th class="pt-0 pl-0"><?= $this->lang->line('hd_license') ?></th>
-									<th class="pt-0"><?= $this->lang->line('hd_specialty') ?></th>
-									<th class="pt-0"><?= $this->lang->line('hd_name') ?></th>
-									<th class="pt-0"><?= $this->lang->line('hd_tel') ?></th>
-									<th class="pt-0"></th>
-									<th class="text-right pt-0 pr-0"></th>
+									<th><strong>#</strong></th>
+									<th><strong><?= $this->lang->line('hd_license') ?></strong></th>
+									<th><strong><?= $this->lang->line('hd_specialty') ?></strong></th>
+									<th><strong><?= $this->lang->line('hd_name') ?></strong></th>
+									<th><strong><?= $this->lang->line('hd_tel') ?></strong></th>
+									<th><strong><?= $this->lang->line('hd_status') ?></strong></th>
+									<th></th>
 								</tr>
 							</thead>
 							<tbody>
-								<?php foreach($doctors as $item){ ?>
+								<?php foreach($doctors as $i => $item){ ?>
 								<tr>
-									<td class="pl-0"><?= $item->license ?></td>
-									<td><?= $specialties_arr[$item->specialty_id] ?></td>
+									<td><strong><?= number_format(($f_url["page"] - 1) * 25 + 1 + $i) ?></strong></td>
+									<td><?= $item->license ?></td>
+									<td style="max-width: 150px;"><?= $specialties_arr[$item->specialty_id] ?></td>
 									<td><?= $item->person->name ?></td>
 									<td><?= $item->person->tel ?></td>
-									<td class="text-center">
-										<i class="fas fa-circle text-<?= $status[$item->status_id]->color ?>" title="<?= $status[$item->status_id]->text ?>"></i>
-									</td>
+									<td><span class="badge light badge-<?= $status[$item->status_id]->color ?>"><?= $status[$item->status_id]->text ?></span></td>
 									<td class="text-right pr-0">
 										<a href="<?= base_url() ?>doctor/detail/<?= $item->id ?>">
 											<button type="button" class="btn btn-primary light sharp border-0">
@@ -83,7 +74,18 @@
 								<?php } ?>
 							</tbody>
 						</table>
+						<div class="btn-group" role="group" aria-label="paging">
+							<?php foreach($paging as $p){
+							$f_url["page"] = $p[0]; ?>
+							<a href="<?= base_url() ?>doctor?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
+								<?= $p[1] ?>
+							</a>
+							<?php } ?>
+						</div>
 					</div>
+					<?php }else{ ?>
+					<h5 class="text-danger mt-3"><?= $this->lang->line('msg_no_doctors') ?></h5>
+					<?php } ?>
 				</div>
 			</div>
 			<div class="row bl_content d-none" id="bl_add">
@@ -92,22 +94,26 @@
 						<div class="col-md-6 col-sm-12">
 							<h5><?= $this->lang->line('title_personal_info') ?></h5>
 							<div class="form-row">
-								<div class="form-group col-md-12">
+								<div class="form-group col-md-6">
 									<label><?= $this->lang->line('lb_document') ?></label>
+									<select class="form-control" id="dn_doc_type_id" name="personal[doc_type_id]">
+										<?php foreach($doc_types as $d){ if ($d->sunat_code){ ?>
+										<option value="<?= $d->id ?>"><?= $d->description ?></option>
+										<?php }} ?>
+									</select>
+									<div class="valid-feedback"></div>
+									<div class="invalid-feedback">Please provide a valid city.</div>
+									<div class="sys_msg" id="dn_doc_msg"></div>
+								</div>
+								<div class="form-group d-flex align-items-end col-md-6">
 									<div class="input-group">
-										<select class="form-control" id="dn_doc_type_id" name="personal[doc_type_id]">
-											<?php foreach($doc_types as $d){ if ($d->sunat_code){ ?>
-											<option value="<?= $d->id ?>"><?= $d->description ?></option>
-											<?php }} ?>
-										</select>
-										<input type="text" class="form-control border-left-0" id="dn_doc_number" name="personal[doc_number]" placeholder="<?= $this->lang->line('lb_number') ?>">
+										<input type="text" class="form-control" id="dn_doc_number" name="personal[doc_number]" placeholder="<?= $this->lang->line('lb_number') ?>">
 										<div class="input-group-append">
 											<button class="btn btn-primary border-0" type="button" id="btn_search_person_dn">
 												<i class="fas fa-search"></i>
 											</button>
 										</div>
 									</div>
-									<div class="sys_msg" id="dn_doc_msg"></div>
 								</div>
 								<div class="form-group col-md-8">
 									<label><?= $this->lang->line('lb_name') ?></label>

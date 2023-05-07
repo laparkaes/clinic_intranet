@@ -71,7 +71,7 @@
 							</div>
 							<div class="form-group col-md-6">
 								<label><?= $this->lang->line('lb_date') ?></label>
-								<input type="text" class="form-control date_picker" id="aa_date" name="sch[date]" value="<?= date('Y-m-d') ?>" readonly>
+								<input type="text" class="form-control bw date_picker" id="aa_date" name="sch[date]" value="<?= date('Y-m-d') ?>" readonly>
 								<div class="sys_msg" id="aa_date_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
@@ -344,39 +344,39 @@
 						<div class="form-row">
 							<div class="form-group col-md-5">
 								<label><?= $this->lang->line('lb_name') ?></label>
-								<input type="text" class="form-control" value="<?= $person->name ?>" readonly>
+								<input type="text" class="form-control bw" value="<?= $person->name ?>" readonly>
 							</div>
 							<div class="form-group col-md-3">
 								<label><?= $this->lang->line('lb_document') ?></label>
-								<input type="text" class="form-control" value="<?= $person->doc_type." ".$person->doc_number ?>" readonly>
+								<input type="text" class="form-control bw" value="<?= $person->doc_type." ".$person->doc_number ?>" readonly>
 							</div>
 							<div class="form-group col-md-4">
 								<label><?= $this->lang->line('lb_email') ?></label>
-								<input type="text" class="form-control" value="<?= $person->email ?>" readonly>
+								<input type="text" class="form-control bw" value="<?= $person->email ?>" readonly>
 							</div>
 							<div class="form-group col-md-3">
 								<label><?= $this->lang->line('lb_tel') ?></label>
-								<input type="text" class="form-control" value="<?= $person->tel ?>" readonly>
+								<input type="text" class="form-control bw" value="<?= $person->tel ?>" readonly>
 							</div>
 							<div class="form-group col-md-9">
 								<label><?= $this->lang->line('lb_address') ?></label>
-								<input type="text" class="form-control" value="<?= $person->address ?>" readonly>
+								<input type="text" class="form-control bw" value="<?= $person->address ?>" readonly>
 							</div>
 							<div class="form-group col-md-3">
 								<label><?= $this->lang->line('lb_birthday') ?></label>
-								<input type="text" class="form-control" value="<?= $person->birthday ?>" readonly>
+								<input type="text" class="form-control bw" value="<?= $person->birthday ?>" readonly>
 							</div>
 							<div class="form-group col-md-3">
 								<label><?= $this->lang->line('lb_age') ?></label>
-								<input type="text" class="form-control" value="<?= $person->age ?>" readonly>
+								<input type="text" class="form-control bw" value="<?= $person->age ?>" readonly>
 							</div>
 							<div class="form-group col-md-3">
 								<label><?= $this->lang->line('lb_sex') ?></label>
-								<input type="text" class="form-control" value="<?= $person->sex ?>" readonly>
+								<input type="text" class="form-control bw" value="<?= $person->sex ?>" readonly>
 							</div>
 							<div class="form-group col-md-3">
 								<label><?= $this->lang->line('lb_blood_type') ?></label>
-								<input type="text" class="form-control" value="<?= $person->blood_type ?>" readonly>
+								<input type="text" class="form-control bw" value="<?= $person->blood_type ?>" readonly>
 							</div>
 						</div>
 					</div>
@@ -631,7 +631,7 @@
 										</div>
 										<div class="form-group col-md-4">
 											<label><?= $this->lang->line('lb_birthday') ?></label>
-											<input type="text" class="form-control date_picker_all" name="birthday" readonly="" value="<?= $person->birthday ?>">
+											<input type="text" class="form-control bw date_picker_all" name="birthday" readonly="" value="<?= $person->birthday ?>">
 											<div class="sys_msg" id="pu_birthday_msg"></div>
 										</div>
 										<div class="form-group col-md-4">

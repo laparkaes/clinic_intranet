@@ -1,2 +1,0 @@
-ALTER TABLE `person` ADD `updated_at` TIMESTAMP NULL AFTER `birthday`; 
-ALTER TABLE `doctor` ADD `updated_at` TIMESTAMP NULL AFTER `license`; 

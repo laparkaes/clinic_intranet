@@ -9,6 +9,7 @@ class Product extends CI_Controller {
 		$this->lang->load("product", "spanish");
 		$this->lang->load("system", "spanish");
 		$this->load->model('product_model','product');
+		$this->nav_menu = "product";
 	}
 	
 	private function set_msg($msgs, $dom_id, $type, $msg_code){

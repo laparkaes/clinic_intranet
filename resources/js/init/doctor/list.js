@@ -25,11 +25,8 @@ function reset_person(){
 }
 
 $(document).ready(function() {
-	//general
-	$(".control_bl").on('click',(function(e) {control_bl(this);}));
-	
 	//list
-	set_datatable("doctor_list", 25, false);
+	$(".control_bl").on('click',(function(e) {control_bl(this);}));
 	
 	//register
 	$("#register_form").submit(function(e) {e.preventDefault(); register_doctor(this);});

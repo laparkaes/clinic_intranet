@@ -21,29 +21,35 @@
 	<div class="card">
 		<div class="card-body">
 			<div class="row bl_content" id="bl_list">
-				<div class="col-md-2">
-					<div class="mb-3" id="patient_list_length_new"></div>
-				</div>
-				<div class="col-md-6"></div>
-				<div class="col-md-4">
-					<div class="mb-3" id="patient_list_filter_new"></div>
+				<div class="col-md-12 d-md-flex justify-content-end">
+					<form class="form-inline">
+						<input type="hidden" value="1" name="page">
+						<label class="sr-only" for="inp_search"><?= $this->lang->line('lb_search') ?></label>
+						<input type="text" class="form-control mb-2 mr-sm-2" id="inp_search" name="keyword" placeholder="<?= $this->lang->line('lb_search') ?>" value="<?= $f_url["keyword"] ?>">
+						<button type="submit" class="btn btn-primary mb-2">
+							<i class="far fa-search"></i>
+						</button>
+					</form>
 				</div>
 				<div class="col-md-12">
+					<?php if ($patients){ ?>
 					<div class="table-responsive">
-						<table id="patient_list" class="table display">
+						<table class="table table-responsive-md">
 							<thead>
 								<tr>
-									<th class="pt-0 pl-0"><?= $this->lang->line('hd_document') ?></th>
-									<th class="pt-0"><?= $this->lang->line('hd_name') ?></th>
-									<th class="pt-0"><?= $this->lang->line('hd_tel') ?></th>
-									<th class="pt-0"><?= $this->lang->line('hd_email') ?></th>
-									<th class="text-right pt-0 pr-0"></th>
+									<th><strong>#</strong></th>
+									<th><strong><?= $this->lang->line('hd_document') ?></strong></th>
+									<th><strong><?= $this->lang->line('hd_name') ?></strong></th>
+									<th><strong><?= $this->lang->line('hd_tel') ?></strong></th>
+									<th><strong><?= $this->lang->line('hd_email') ?></strong></th>
+									<th></th>
 								</tr>
 							</thead>
 							<tbody>
-								<?php foreach($patients as $item){ ?>
+								<?php foreach($patients as $i => $item){ ?>
 								<tr>
-									<td class="pl-0 text-nowrap"><?= $doc_types_arr[$item->doc_type_id]." ".$item->doc_number ?></td>
+									<td><strong><?= number_format(($f_url["page"] - 1) * 25 + 1 + $i) ?></strong></td>
+									<td><?= $doc_types_arr[$item->doc_type_id]." ".$item->doc_number ?></td>
 									<td><?= $item->name ?></td>
 									<td><?= $item->tel ?></td>
 									<td><?= $item->email ?></td>
@@ -58,7 +64,18 @@
 								<?php } ?>
 							</tbody>
 						</table>
+						<div class="btn-group" role="group" aria-label="paging">
+							<?php foreach($paging as $p){
+							$f_url["page"] = $p[0]; ?>
+							<a href="<?= base_url() ?>patient?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
+								<?= $p[1] ?>
+							</a>
+							<?php } ?>
+						</div>
 					</div>
+					<?php }else{ ?>
+					<h5 class="text-danger mt-3"><?= $this->lang->line('msg_no_patients') ?></h5>
+					<?php } ?>
 				</div>
 			</div>
 			<div class="row bl_content d-none" id="bl_add">
