@@ -26,44 +26,44 @@
 				<?php if ($appointment->detail){ ?>
 				<div class="form-group col-md-12">
 					<label><?= $this->lang->line('lb_detail') ?></label>
-					<input type="text" class="form-control" value="<?= $appointment->detail ?>" readonly>
+					<input type="text" class="form-control bw" value="<?= $appointment->detail ?>" readonly>
 				</div>
 				<?php } ?>
 				<div class="form-group col-md-3">
 					<label><?= $this->lang->line('lb_doctor') ?></label>
-					<input type="text" class="form-control" value="<?= $doctor->name ?>" readonly>
+					<input type="text" class="form-control bw" value="<?= $doctor->name ?>" readonly>
 				</div>
 				<div class="form-group col-md-3">
 					<label><?= $this->lang->line('lb_date') ?></label>
-					<input type="text" class="form-control" value="<?= date("Y-m-d", strtotime($appointment->schedule_from)) ?>" readonly>
+					<input type="text" class="form-control bw" value="<?= date("Y-m-d", strtotime($appointment->schedule_from)) ?>" readonly>
 				</div>
 				<div class="form-group col-md-3">
 					<label><?= $this->lang->line('lb_hour') ?></label>
-					<input type="text" class="form-control" value="<?= date("H:i A", strtotime($appointment->schedule_from)) ?>" readonly>
+					<input type="text" class="form-control bw" value="<?= date("H:i A", strtotime($appointment->schedule_from)) ?>" readonly>
 				</div>
 				<div class="form-group col-md-3">
 					<label><?= $this->lang->line('lb_status') ?></label>
-					<input type="text" class="form-control text-<?= $appointment->status->color ?>" value="<?= $this->lang->line($appointment->status->code) ?>" readonly>
+					<input type="text" class="form-control bw text-<?= $appointment->status->color ?>" value="<?= $this->lang->line($appointment->status->code) ?>" readonly>
 				</div>
 				<div class="form-group col-md-3">
 					<label><?= $this->lang->line('lb_patient') ?></label>
-					<input type="text" class="form-control" value="<?= $patient->name ?>" readonly>
+					<input type="text" class="form-control bw" value="<?= $patient->name ?>" readonly>
 				</div>
 				<div class="form-group col-md-3">
 					<label><?= $this->lang->line('lb_history_number') ?></label>
-					<input type="text" class="form-control" value="<?= $patient->doc_number ?>" readonly>
+					<input type="text" class="form-control bw" value="<?= $patient->doc_number ?>" readonly>
 				</div>
 				<div class="form-group col-md-2">
 					<label><?= $this->lang->line('lb_sex') ?></label>
-					<input type="text" class="form-control" value="<?= $patient->sex ?>" readonly>
+					<input type="text" class="form-control bw" value="<?= $patient->sex ?>" readonly>
 				</div>
 				<div class="form-group col-md-2">
 					<label><?= $this->lang->line('lb_age') ?></label>
-					<input type="text" class="form-control" value="<?= $patient->age ?>" readonly>
+					<input type="text" class="form-control bw" value="<?= $patient->age ?>" readonly>
 				</div>
 				<div class="form-group col-md-2">
 					<label><?= $this->lang->line('lb_blood_type') ?></label>
-					<input type="text" class="form-control" value="<?= $patient->blood_type ?>" readonly>
+					<input type="text" class="form-control bw" value="<?= $patient->blood_type ?>" readonly>
 				</div>
 			</div>
 			<div class="row d-none" id="app_reschedule">

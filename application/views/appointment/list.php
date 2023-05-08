@@ -24,15 +24,15 @@
 				<div class="col-md-12 d-md-flex justify-content-end">
 					<form class="form-inline">
 						<input type="hidden" value="1" name="page">
+						<label class="sr-only" for="sl_status">Estado</label>
+						<select class="form-control mb-2 mr-sm-2" id="sl_status" name="status" style="max-width: 150px;">
+							<option value="">Estado</option>
+							<?php foreach($status as $item){ if ($item->id == $f_url["status"]) $s = "selected"; else $s = ""; ?>
+							<option value="<?= $item->id ?>" <?= $s ?>><?= $this->lang->line($item->code) ?></option>
+							<?php } ?>
+						</select>
 						<label class="sr-only" for="inp_date"><?= $this->lang->line('lb_date') ?></label>
-						<div class="input-group mb-2 mr-sm-2">
-							<input type="text" class="form-control date_picker_all bw" id="inp_date" name="date" placeholder="<?= $this->lang->line('lb_date') ?>" value="<?= $f_url["date"] ?>">
-							<div class="input-group-append">
-								<button class="btn btn-outline-primary" id="btn_clean_date" type="button">
-									<i class="far fa-eraser"></i>
-								</button>
-							</div>
-						</div>
+						<input type="text" class="form-control date_picker_all bw mb-2 mr-sm-2" id="inp_date" name="date" placeholder="<?= $this->lang->line('lb_date') ?>" value="<?= $f_url["date"] ?>">
 						<button type="submit" class="btn btn-primary mb-2">
 							<i class="far fa-search"></i>
 						</button>

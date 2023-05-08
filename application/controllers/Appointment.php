@@ -30,11 +30,13 @@ class Appointment extends CI_Controller {
 		
 		$f_url = [
 			"page" => $this->input->get("page"),
+			"status" => $this->input->get("status"),
 			"date" => $this->input->get("date"),
 		];
 		
 		$f_w = [];
 		if (!$f_url["page"]) $f_url["page"] = 1;
+		if ($f_url["status"]) $f_w["status_id"] = $f_url["status"];
 		if ($f_url["date"]){
 			$f_w["schedule_from >="] = $f_url["date"]." 00:00:00";
 			$f_w["schedule_to <="] = $f_url["date"]." 23:59:59";
@@ -59,13 +61,20 @@ class Appointment extends CI_Controller {
 		foreach($doctors as $d) $d->name = $this->general->id("person", $d->person_id)->name;
 		usort($doctors, function($a, $b) {return strcmp(strtoupper($a->name), strtoupper($b->name));});
 		
+		$status_aux = [];
+		$status_ids = $this->general->only("appointment", "status_id");
+		foreach($status_ids as $item) $status_aux[] = $item->status_id;
+		
+		$f_status = [["field" => "id", "values" => $status_aux]];
+		
 		$status_arr = array();
-		$status = $this->status->all();
+		$status = $this->general->filter("status", null, null, [["field" => "id", "values" => $status_aux]]);
 		foreach($status as $item) $status_arr[$item->id] = $item;
 		
 		$data = array(
 			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("appointment", $f_w)),
 			"f_url" => $f_url,
+			"status" => $status,
 			"status_arr" => $status_arr,
 			"appointments" => $appointments,
 			"specialties" => $specialties,
@@ -695,11 +704,11 @@ class Appointment extends CI_Controller {
 		}
 		
 		if ($pr_ids){
-			$profiles = $this->general->filter_adv("examination_profile", null, [["field" => "id", "values" => $pr_ids]], "name", "asc");
+			$profiles = $this->general->filter("examination_profile", null, null, [["field" => "id", "values" => $pr_ids]], "name", "asc");
 			foreach($profiles as $item){
 				$aux_ex_arr = [];
 				$aux_ex_ids = explode(",", $item->examination_ids);
-				$aux_exams = $this->general->filter_adv("examination", null, [["field" => "id", "values" => $aux_ex_ids]]);
+				$aux_exams = $this->general->filter("examination", null, null, [["field" => "id", "values" => $aux_ex_ids]]);
 				foreach($aux_exams as $e) $aux_ex_arr[] = $e->name;
 				
 				$item->type = $this->lang->line('txt_profile');
@@ -708,7 +717,7 @@ class Appointment extends CI_Controller {
 		}else $profiles = [];
 		
 		if ($ex_ids){
-			$exams = $this->general->filter_adv("examination", null, [["field" => "id", "values" => $ex_ids]], "name", "asc");
+			$exams = $this->general->filter("examination", null, null, [["field" => "id", "values" => $ex_ids]], "name", "asc");
 			foreach($exams as $item) $item->type = $this->lang->line('txt_exam');	
 		}else $exams = [];
 		
