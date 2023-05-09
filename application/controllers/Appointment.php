@@ -67,7 +67,7 @@ class Appointment extends CI_Controller {
 		
 		$f_status = [["field" => "id", "values" => $status_aux]];
 		
-		$status_arr = array();
+		$status_arr = [];
 		$status = $this->general->filter("status", null, null, [["field" => "id", "values" => $status_aux]]);
 		foreach($status as $item) $status_arr[$item->id] = $item;
 		
@@ -143,7 +143,7 @@ class Appointment extends CI_Controller {
 		if ($physical) $physical = $physical[0];
 		else $physical = $this->general->structure("appointment_physical");
 		
-		$diag_ids = array();
+		$diag_ids = [];
 		$diags = $this->general->filter("appointment_diag_impression" , array("appointment_id" => $appointment->id));
 		foreach($diags as $diag) array_push($diag_ids, $diag->diag_id);
 		$diag_impression = $this->general->ids("diag_impression_detail", $diag_ids, "code");
@@ -175,7 +175,7 @@ class Appointment extends CI_Controller {
 		if (!$appointment) redirect("/appointment");
 		
 		$appointment->status = $this->general->id("status", $appointment->status_id);
-		$appointment->is_editable = false; $actions = array();
+		$appointment->is_editable = false; $actions = [];
 		switch($appointment->status->code){
 			case "reserved":
 				array_push($actions, "reschedule");
@@ -229,7 +229,7 @@ class Appointment extends CI_Controller {
 		}
 		
 		//start set history records > mix surgeries and appointments
-		$specialties = array();
+		$specialties = [];
 		$specialties_rec = $this->general->all("specialty");
 		foreach($specialties_rec as $item) $specialties[$item->id] = $item->name;
 		
@@ -256,7 +256,7 @@ class Appointment extends CI_Controller {
 		//end set history records
 		
 		//setting patho_pre_illnesses
-		$pre_illnesses = array();
+		$pre_illnesses = [];
 		array_push($pre_illnesses, array("id" => "patho_asma", "value" => $this->lang->line("lb_asthma")));
 		array_push($pre_illnesses, array("id" => "patho_hta", "value" => $this->lang->line("lb_aht")));
 		array_push($pre_illnesses, array("id" => "patho_dm", "value" => $this->lang->line("lb_dm")));
@@ -267,13 +267,13 @@ class Appointment extends CI_Controller {
 		array_push($pre_illnesses, array("id" => "patho_etu", "value" => $this->lang->line("lb_etu")));
 		
 		//examination records
-		$examinations_list = array();
+		$examinations_list = [];
 		$examinations = $this->examination->all();
 		foreach($examinations as $item) $examinations_list[$item->id] = $item;
 		
 		$exam_profiles = $this->examination->profile_all();
 		foreach($exam_profiles as $i => $item){
-			$exams_aux = $cate_aux = array();
+			$exams_aux = $cate_aux = [];
 			$item->examination_ids = explode(",", $item->examination_ids);
 			$exams = $this->examination->ids($item->examination_ids);
 			foreach($exams as $item){
@@ -289,8 +289,8 @@ class Appointment extends CI_Controller {
 		$codes = array("entry_mode", "civil_status", "medicine_dose", "medicine_via_application", "medicine_frequency", "medicine_duration", "diagnosis_type");
 		$options_rec = $this->sl_option->codes($codes);
 		
-		$options = array();
-		foreach($codes as $item) $options[$item] = array();
+		$options = [];
+		foreach($codes as $item) $options[$item] = [];
 		foreach($options_rec as $item) array_push($options[$item->code], $item);
 		
 		$data = array(
@@ -361,80 +361,71 @@ class Appointment extends CI_Controller {
 	}
 	
 	public function cancel(){
-		$status = false; $type = "error"; $msg = null;
-		$appointment = $this->appointment->id($this->input->post("id"));
+		$type = "error"; $msg = null;
+		//pending!! role validation
+		
+		$appointment = $this->general->id("appointment", $this->input->post("id"));
 		if ($appointment){
-			if ($this->appointment->update($appointment->id, array("status_id" => $this->status->code("canceled")->id))){
+			if ($this->general->update("appointment", $appointment->id, ["status_id" => $this->status->code("canceled")->id])){
 				$person = $this->general->id("person", $appointment->patient_id);
 				$this->utility_lib->add_log("appointment_cancel", $person->name);
 				
-				$status = true;
 				$type = "success";
 				$msg = $this->lang->line('success_cap');
 			}else $msg = $this->lang->line('error_internal');
 		}else $msg = $this->lang->line('error_nap');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg));
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 	
 	public function finish(){
-		$status = false; $type = "error"; $msg = null;
+		$type = "error"; $msg = null;
 		//pending!! role validation
 		
 		$appointment = $this->general->id("appointment", $this->input->post("id"));
 		if ($appointment){
-			if ($this->appointment->update($appointment->id, array("status_id" => $this->status->code("finished")->id))){
+			if ($this->general->update("appointment", $appointment->id, ["status_id" => $this->status->code("finished")->id])){
 				$person = $this->general->id("person", $appointment->patient_id);
 				$this->utility_lib->add_log("appointment_finish", $person->name);
 				
-				$status = true;
 				$type = "success";
 				$msg = $this->lang->line('success_fap');
 			}else $msg = $this->lang->line('error_internal');
 		}else $msg = $this->lang->line('error_nap');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg));
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 
 	public function reschedule(){
-		$status = false; $type = "error"; $msg = null; $msgs = array();
+		$status = false; $type = "error"; $msg = null; $msgs = [];
 		$data = $this->input->post();
+		$appointment = $this->general->id("appointment", $data["id"]);
 		
-		if (!$data["hour"]) $msgs = $this->my_val->set_msg($msgs, "ra_time_msg", "error", "error_sho");
-		elseif (!$data["min"]) $msgs = $this->my_val->set_msg($msgs, "ra_time_msg", "error", "error_smi");
-		else{
-			$appointment = $this->appointment->id($data["id"]);
-			if ($appointment){
+		if($appointment){
+			$this->load->library('my_val');
+			$msgs = $this->my_val->appointment_reschedule($msgs, "ra_", $appointment, $data);
+			
+			if (!$msgs){
 				$schedule_from = $data["date"]." ".$data["hour"].":".$data["min"];
-				$app = array(
+				$app = [
 					"id" => $appointment->id,
 					"doctor_id" => $appointment->doctor_id,
 					"schedule_from" => $schedule_from,
 					"schedule_to" => date("Y-m-d H:i:s", strtotime("+14 minutes", strtotime($schedule_from)))
-				);
+				];
 				
-				$status_ids = array();
-				array_push($status_ids, $this->status->code("reserved")->id);
-				array_push($status_ids, $this->status->code("confirmed")->id);
-				
-				//must be updated
-				//check appointment and surgery available
-				$sur_available = $this->general->is_available("surgery", $app, $status_ids);
-				$app_available = $this->general->is_available("appointment", $app, $status_ids, $app["id"]);
-				if ($sur_available and $app_available){
-					if ($this->appointment->update($app["id"], $app)){
-						$person = $this->general->id("person", $appointment->patient_id);
-						$this->utility_lib->add_log("appointment_reschedule", $person->name);
-						
-						$status = true;
-						$type = "success";
-						$msg = $this->lang->line('success_rsp');
-					}else $msg = $this->lang->line('error_internal');
-				}else $msg = $this->lang->line('error_dna');
-			}else $msg = $this->lang->line('error_internal_refresh');
-		}
+				if ($this->appointment->update($app["id"], $app)){
+					$person = $this->general->id("person", $appointment->patient_id);
+					$this->utility_lib->add_log("appointment_reschedule", $person->name);
+					
+					$status = true;
+					$type = "success";
+					$msg = $this->lang->line('success_rsp');
+				}else $msg = $this->lang->line('error_internal');
+			}else $msg = $this->lang->line('error_occurred');
+		}else $msg = $this->lang->line('error_internal_refresh');
 		
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg, "msgs" => $msgs));
@@ -452,29 +443,15 @@ class Appointment extends CI_Controller {
 	}
 
 	public function save_basic_data(){
+		$type = "error"; $msgs = []; $msg = null;
 		$data = $this->input->post();
-		$status = false; $msgs = array(); $msg = null;
 		
-		//data validation
-		if (!$data["entry_mode"]) $msgs = $this->my_val->set_msg($msgs, "bd_entry_mode_msg", "error", "error_emo");
-		if (!$data["date"]) $msgs = $this->my_val->set_msg($msgs, "bd_date_msg", "error", "error_sda");
-		if (!$data["time"]) $msgs = $this->my_val->set_msg($msgs, "bd_time_msg", "error", "error_time");
+		$this->load->library('my_val');
+		$msgs = $this->my_val->appointment_basic_data($msgs, $data);
 		
-		//insurance validation
-		switch($data["insurance"]){
-			case "n":
-				$data["insurance"] = 0;
-				$data["insurance_name"] = "";
-				break;
-			case "y":
-				$data["insurance"] = 1;
-				if (!$data["insurance_name"]) $msgs = $this->my_val->set_msg($msgs, "bd_insurance_name_msg", "error", "error_ina");
-				break;
-			default: $msgs = $this->my_val->set_msg($msgs, "bd_insurance_msg", "error", "error_ico");
-		}
-		
-		if ($msgs) $msg = $this->lang->line('error_occurred');
-		else{
+		if (!$msgs){
+			if (($data["insurance"] !== "0") or ($data["insurance"] !== "")) $data["insurance_name"] = null;
+			
 			//status validation
 			if ($data["appointment_id"]){
 				$appointment = $this->appointment->id($data["appointment_id"]);
@@ -485,159 +462,163 @@ class Appointment extends CI_Controller {
 					unset($data["date"]);
 					unset($data["time"]);
 					
-					$status = true;
+					$type = "success";
 					$msg = $this->save_data($data, "appointment_basic_data", "success_sbd");
 				}else $msg = $this->lang->line('error_anc');
 			}else $msg = $this->lang->line('error_internal_refresh');
-		}
+		}else $msg = $this->lang->line('error_occurred');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "msgs" => $msgs, "msg" => $msg));
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
 	}
 
 	public function save_personal_information(){
+		$type = "error"; $msgs = []; $msg = null;
 		$data = $this->input->post();
-		$status = false; $msgs = array(); $msg = null;
 		
 		//status validation
 		if ($data["appointment_id"]){
 			$appointment = $this->appointment->id($data["appointment_id"]);
 			$appointment->status = $this->status->id($appointment->status_id);
 			if (!strcmp("confirmed", $appointment->status->code)){
-				$status = true;
+				$type = "success";
 				$msg = $this->save_data($data, "appointment_anamnesis", "success_spi");
 			}else $msg = $this->lang->line('error_anc');
 		}else $msg = $this->lang->line('error_internal_refresh');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "msgs" => $msgs, "msg" => $msg));
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
 	}
 	
 	public function save_triage(){
+		$type = "error"; $msgs = []; $msg = null;
 		$data = $this->input->post();
-		$status = false; $msgs = array(); $msg = null;
 		
 		//status validation
 		if ($data["appointment_id"]){
 			$appointment = $this->appointment->id($data["appointment_id"]);
 			$appointment->status = $this->status->id($appointment->status_id);
 			if (!strcmp("confirmed", $appointment->status->code)){
-				$status = true;
+				$type = "success";
 				$msg = $this->save_data($data, "appointment_physical", "success_str");
 			}else $msg = $this->lang->line('error_anc');
 		}else $msg = $this->lang->line('error_internal_refresh');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "msgs" => $msgs, "msg" => $msg));
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
 	}
 
 	public function save_anamnesis(){
+		$type = "error"; $msgs = []; $msg = null;
 		$data = $this->input->post();
-		$status = false; $msgs = array(); $msg = null;
 		
 		//status validation
 		if ($data["appointment_id"]){
 			$appointment = $this->appointment->id($data["appointment_id"]);
 			$appointment->status = $this->status->id($appointment->status_id);
 			if (!strcmp("confirmed", $appointment->status->code)){
-				$data["patho_pre_illnesses"] = str_replace(", ",",", implode(",", $data["patho_pre_illnesses"]));
+				if (array_key_exists("patho_pre_illnesses", $data))
+					$data["patho_pre_illnesses"] = str_replace(", ",",", implode(",", $data["patho_pre_illnesses"]));
+				else $data["patho_pre_illnesses"] = null;
 				
-				$status = true;
+				$type = "success";
 				$msg = $this->save_data($data, "appointment_anamnesis", "success_san");
 			}else $msg = $this->lang->line('error_anc');
 		}else $msg = $this->lang->line('error_internal_refresh');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "msgs" => $msgs, "msg" => $msg));
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
 	}
 		
 	public function save_physical_exam(){
+		$type = "error"; $msgs = []; $msg = null;
 		$data = $this->input->post();
-		$status = false; $msgs = array(); $msg = null;
 		
 		//status validation
 		if ($data["appointment_id"]){
 			$appointment = $this->appointment->id($data["appointment_id"]);
 			$appointment->status = $this->status->id($appointment->status_id);
 			if (!strcmp("confirmed", $appointment->status->code)){
-				$status = true;
+				$type = "success";
 				$msg = $this->save_data($data, "appointment_physical", "success_spe");
 			}else $msg = $this->lang->line('error_anc');
 		}else $msg = $this->lang->line('error_internal_refresh');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "msgs" => $msgs, "msg" => $msg));
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
 	}
 	
 	public function search_diag(){
+		$type = "error"; $msgs = []; $diags = null; $qty = 0;
 		$filter = $this->input->post("filter");
-		$status = false; $msgs = array(); $diags = null; $qty = 0;
+		
 		if ($filter){
 			$filter = explode(" ", $filter);
 			$diags = $this->general->find("diag_impression_detail", "description", "code", $filter);
 			$qty = number_format(count($diags))." ".$this->lang->line('txt_results');
-			$status = true;
+			
+			$type = "success"; 
 		}else $msgs = $this->my_val->set_msg($msgs, "di_diagnosis_msg", "error", "error_fbl");
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "msgs" => $msgs, "diags" => $diags, "qty" => $qty));
+		echo json_encode(["type" => $type, "msgs" => $msgs, "diags" => $diags, "qty" => $qty]);
 	}
 	
 	public function add_diag(){
+		$type = "success"; $msg = $this->lang->line('success_adi'); $diags = [];
 		$data = $this->input->post();
-		$status = true; $msg = $this->lang->line('success_adi'); $diags = array();
 		
 		//appointment status validation
 		$appointment = $this->appointment->id($data["appointment_id"]);
-		if (in_array($this->status->id($appointment->status_id)->code, array("reserved", "finished", "canceled"))){
+		if (in_array($this->status->id($appointment->status_id)->code, ["reserved", "finished", "canceled"])){
 			$msg = $this->lang->line('error_nea');
-			$status = false;
+			$type = "error";
 		}else{
 			if (!$this->general->filter("appointment_diag_impression" , $data)){
 				if (!$this->general->insert("appointment_diag_impression" , $data)){
 					$msg = $this->lang->line('error_internal');
-					$status = false;
+					$type = "error";
 				}
 			}	
 		}
 		
-		$diag_ids = array();
-		$diags = $this->general->filter("appointment_diag_impression" , array("appointment_id" => $data["appointment_id"]));
+		$diag_ids = [];
+		$diags = $this->general->filter("appointment_diag_impression" , ["appointment_id" => $data["appointment_id"]]);
 		foreach($diags as $diag) array_push($diag_ids, $diag->diag_id);
 		$diags = $this->general->ids("diag_impression_detail", $diag_ids, "code");
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "msg" => $msg, "diags" => $diags));
+		echo json_encode(["type" => $type, "msg" => $msg, "diags" => $diags]);
 	}
 	
 	public function delete_diag(){
+		$type = "success"; $msg = $this->lang->line('success_ddi'); $diags = [];
 		$data = $this->input->post();
-		$status = true; $msg = $this->lang->line('success_ddi'); $diags = array();
 		
 		//appointment status validation
 		$appointment = $this->appointment->id($data["appointment_id"]);
-		if (in_array($this->status->id($appointment->status_id)->code, array("reserved", "finished", "canceled"))){
+		if (in_array($this->status->id($appointment->status_id)->code, ["reserved", "finished", "canceled"])){
 			$msg = $this->lang->line('error_nea');
-			$status = false;
+			$type = "error";
 		}else{
 			if (!$this->general->delete("appointment_diag_impression", $data)){
 				$msg = $this->lang->line('error_internal');
-				$status = false;
+				$type = "error";
 			}
 		}
 		
-		$diag_ids = array();
-		$diags = $this->general->filter("appointment_diag_impression" , array("appointment_id" => $data["appointment_id"]));
+		$diag_ids = [];
+		$diags = $this->general->filter("appointment_diag_impression" , ["appointment_id" => $data["appointment_id"]]);
 		foreach($diags as $diag) array_push($diag_ids, $diag->diag_id);
 		$diags = $this->general->ids("diag_impression_detail", $diag_ids, "code");
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "msg" => $msg, "diags" => $diags));
+		echo json_encode(["type" => $type, "msg" => $msg, "diags" => $diags]);
 	}
 	
 	public function save_result(){
 		$data = $this->input->post();
-		$status = false; $msgs = array(); $msg = null;
+		$status = false; $msgs = []; $msg = null;
 		
 		//status validation
 		if ($data["appointment_id"]){
@@ -839,7 +820,7 @@ class Appointment extends CI_Controller {
 	
 	public function add_therapy(){
 		$data = $this->input->post();
-		$status = true; $msgs = array(); $msg = null;
+		$status = true; $msgs = []; $msg = null;
 		
 		//appointment status validation
 		$appointment = $this->appointment->id($data["appointment_id"]);
@@ -904,7 +885,7 @@ class Appointment extends CI_Controller {
 	private function set_medicine_list($appointment_id){
 		$medicines = $this->general->filter("appointment_medicine", array("appointment_id" => $appointment_id));
 		foreach($medicines as $item){
-			$sub_txt_arr = array();
+			$sub_txt_arr = [];
 			if ($item->quantity > 1) $qty = $item->quantity." ".$this->lang->line('txt_units');
 			else $qty = $item->quantity." ".$this->lang->line('txt_unit');
 			array_push($sub_txt_arr, $qty);
@@ -922,7 +903,7 @@ class Appointment extends CI_Controller {
 	}
 	
 	public function add_medicine(){
-		$status = true; $msgs = array(); $msg = null;
+		$status = true; $msgs = []; $msg = null;
 		$data = $this->input->post();
 		
 		//appointment status validation

@@ -111,6 +111,50 @@ class My_val{
 		return $msgs;
 	}
 	
+	public function appointment_reschedule($msgs, $prefix, $appointment, $data){
+		$msgs = $this->schedule($msgs, $prefix, $data);//schedule
+		
+		if ($appointment){
+			$schedule_from = $data["date"]." ".$data["hour"].":".$data["min"];
+			$app = [
+				"id" => $appointment->id,
+				"doctor_id" => $appointment->doctor_id,
+				"schedule_from" => $schedule_from,
+				"schedule_to" => date("Y-m-d H:i:s", strtotime("+14 minutes", strtotime($schedule_from)))
+			];
+			
+			$status_ids = [
+				$this->CI->general->filter("status", ["code" => "reserved"])[0]->id,
+				$this->CI->general->filter("status", ["code" => "confirmed"])[0]->id
+			];
+			
+			//check appointment and surgery available
+			$sur_available = $this->CI->general->is_available("surgery", $app, $status_ids);
+			$app_available = $this->CI->general->is_available("appointment", $app, $status_ids);
+			if (!($sur_available and $app_available)) 
+				$msgs = $this->set_msg($msgs, $prefix."schedule_msg", "error", "e_doctor_no_available");
+		}
+		
+		return $msgs;
+	}
+	
+	public function appointment_basic_data($msgs, $data){
+		//data validation
+		if (!$data["entry_mode"]) $msgs = $this->set_msg($msgs, "bd_entry_mode_msg", "error", "e_entry_mode");
+		if (!$data["date"]) $msgs = $this->set_msg($msgs, "bd_date_msg", "error", "e_select_date");
+		if (!$data["time"]) $msgs = $this->set_msg($msgs, "bd_time_msg", "error", "e_select_hour");
+		
+		//insurance validation
+		
+		if ($data["insurance"] !== ""){
+			if ($data["insurance"] === "1")
+				if (!$data["insurance_name"])
+					$msgs = $this->set_msg($msgs, "bd_insurance_name_msg", "error", "e_insurance_name");
+		}else $msgs = $this->set_msg($msgs, "bd_insurance_msg", "error", "e_insurance_confirm");
+		
+		return $msgs;
+	}
+	
 	public function surgery($msgs, $prefix, $sur, $sch, $pt){
 		$msgs = $this->person($msgs, $prefix."pt_", $pt);//patient
 		$msgs = $this->schedule($msgs, $prefix, $sch);//schedule

@@ -75,11 +75,11 @@ $me = $appointment_datas["medicine"];
 						<div class="form-group col-md-12">
 							<label><?= $this->lang->line('lb_insured') ?></label>
 							<select class="form-control" name="insurance">
-								<option name=""><?= $this->lang->line('txt_select') ?>...</option>
-								<?php if (!strcmp($bd->insurance, "y")) $selected = "selected"; else $selected = ""; ?>
-								<option value="y" <?= $selected ?>><?= $this->lang->line('txt_yes') ?></option>
-								<?php if (!strcmp($bd->insurance, "n")) $selected = "selected"; else $selected = ""; ?>
-								<option value="n" <?= $selected ?>><?= $this->lang->line('txt_no') ?></option>
+								<option value=""><?= $this->lang->line('txt_select') ?>...</option>
+								<?php if ($bd->insurance == 1) $s = "selected"; else $s = ""; ?>
+								<option value="1" <?= $s ?>><?= $this->lang->line('txt_yes') ?></option>
+								<?php if ($bd->insurance == 0) $s = "selected"; else $s = ""; ?>
+								<option value="0" <?= $s ?>><?= $this->lang->line('txt_no') ?></option>
 							</select>
 							<div class="sys_msg" id="bd_insurance_msg"></div>
 						</div>
@@ -382,7 +382,7 @@ $me = $appointment_datas["medicine"];
 									</div>
 									<div class="form-group col-md-3">
 										<label><?= $this->lang->line('lb_sex') ?></label>
-										<select class="form-control" name="sex">
+										<select class="form-control" name="sex_id">
 											<option value=""><?= $this->lang->line('txt_select') ?>...</option>
 											<?php if (!strcmp("M", $an->sex)) $selected = "selected"; else $selected = ""; ?>
 											<option value="M" <?= $selected ?>><?= $this->lang->line('txt_male') ?></option>
@@ -1272,7 +1272,6 @@ $me = $appointment_datas["medicine"];
 		<div class="card-body">
 			<div class="text-center">
 				<button type="button" class="btn btn-primary btn-lg" id="btn_finish" value="<?= $appointment->id ?>">
-					<span class="d-none msg"><?= $this->lang->line('warning_afi') ?></span>
 					<?= $this->lang->line('btn_finish_appointment') ?>
 				</button>
 			</div>

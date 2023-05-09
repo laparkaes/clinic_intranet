@@ -1,113 +1,28 @@
 function cancel_appointment(dom){
-	Swal.fire({
-		title: $("#alert_warning_title").val(),
-		text: $(dom).find(".msg").html(),
-		icon: 'warning',
-		showCancelButton: true,
-		confirmButtonText: $("#alert_confirm_btn").val(),
-		cancelButtonText: $("#alert_cancel_btn").val()
-	}).then((result) => {
-		if (result.isConfirmed){
-			$.ajax({
-				url: $("#base_url").val() + "appointment/cancel",
-				type: "POST",
-				data: {id: $(dom).val()},
-				success:function(res){
-					Swal.fire({
-						title: $("#alert_" + res.type + "_title").val(),
-						html: res.msg,
-						icon: res.type,
-						confirmButtonText: $("#alert_confirm_btn").val()
-					}).then((result) => {
-						if (res.status == true) location.reload();
-					});
-				}
-			});
-		}
+	ajax_simple_warning({id: $(dom).val()}, "appointment/cancel", $("#warning_aca").val()).done(function(res) {
+		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function finish_appointment(dom){
-	Swal.fire({
-		title: $("#alert_warning_title").val(),
-		text: $(dom).find(".msg").html(),
-		icon: 'warning',
-		showCancelButton: true,
-		confirmButtonText: $("#alert_confirm_btn").val(),
-		cancelButtonText: $("#alert_cancel_btn").val()
-	}).then((result) => {
-		if (result.isConfirmed){
-			$.ajax({
-				url: $("#base_url").val() + "appointment/finish",
-				type: "POST",
-				data: {id: $(dom).val()},
-				success:function(res){
-					Swal.fire({
-						title: $("#alert_" + res.type + "_title").val(),
-						html: res.msg,
-						icon: res.type,
-						confirmButtonText: $("#alert_confirm_btn").val()
-					}).then((result) => {
-						if (res.status == true) location.reload();
-					});
-				}
-			});
-		}
+	ajax_simple_warning({id: $(dom).val()}, "appointment/finish", $("#warning_afi").val()).done(function(res) {
+		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function reschedule_appointment(dom){
 	$("#reschedule_form .sys_msg").html("");
-	Swal.fire({
-		title: $("#alert_warning_title").val(),
-		text: $("#warning_are").val(),
-		icon: 'warning',
-		showCancelButton: true,
-		confirmButtonText: $("#alert_confirm_btn").val(),
-		cancelButtonText: $("#alert_cancel_btn").val()
-	}).then((result) => {
-		if (result.isConfirmed){
-			$.ajax({
-				url: $("#base_url").val() + "appointment/reschedule",
-				type: "POST",
-				data: new FormData(dom),
-				contentType: false,
-				processData:false,
-				success:function(res){
-					set_msg(res.msgs);
-					Swal.fire({
-						title: $("#alert_" + res.type + "_title").val(),
-						icon: res.type,
-						text: res.msg,
-						confirmButtonText: $("#alert_confirm_btn").val(),
-					}).then((result) => {
-						if (res.status == true) location.reload();
-					});
-				}
-			});
-		}
+	ajax_form_warning(dom, "appointment/reschedule", $("#warning_are").val()).done(function(res) {
+		set_msg(res.msgs);
+		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function save_form(name, dom){
 	$("#form_" + name + " .sys_msg").html("");
-	var type = "error";
-	$.ajax({
-		url: $("#base_url").val() + "appointment/save_" + name,
-		type: "POST",
-		data: new FormData(dom),
-		contentType: false,
-		processData:false,
-		success:function(res){
-			set_msg(res.msgs);
-			if (res.status == true) type = "success";
-			if (res.msg != "") Swal.fire({
-				title: $("#alert_" + type + "_title").val(),
-				icon: type,
-				html: res.msg,
-				confirmButtonText: $("#alert_confirm_btn").val()
-			});
-		}
+	ajax_form(dom, "appointment/save_" + name).done(function(res) {
+		set_msg(res.msgs);
+		swal(res.type, res.msg);
 	});
 }
 
@@ -120,51 +35,32 @@ function set_diag(diags){
 }
 
 function add_diag(dom){
-	$.ajax({
-		url: $("#base_url").val() + "appointment/add_diag",
-		type: "POST",
-		data: {appointment_id: $("#appointment_id").val(), diag_id: $(dom).val()},
-		success:function(res){
-			if (res.status == true){
-				set_diag(res.diags);
-				swal("success", res.msg);
-			}else swal("error", res.msg);
-		}
+	var data = {appointment_id: $("#appointment_id").val(), diag_id: $(dom).val()};
+	ajax_simple(data, "appointment/add_diag").done(function(res) {
+		set_diag(res.diags);
+		swal(res.type, res.msg);
 	});
 }
 
 function delete_diag(dom){
-	$.ajax({
-		url: $("#base_url").val() + "appointment/delete_diag",
-		type: "POST",
-		data: {appointment_id: $("#appointment_id").val(), diag_id: $(dom).val()},
-		success:function(res){
-			if (res.status == true){
-				set_diag(res.diags);
-				 swal("success", res.msg);
-			}else swal("error", res.msg);
-		}
+	var data = {appointment_id: $("#appointment_id").val(), diag_id: $(dom).val()};
+	ajax_simple(data, "appointment/delete_diag").done(function(res) {
+		set_diag(res.diags);
+		swal(res.type, res.msg);
 	});
 }
 
 function search_diag(dom){
 	$("#form_search_diag .sys_msg").html("");
-	$.ajax({
-		url: $("#base_url").val() + "appointment/search_diag",
-		type: "POST",
-		data: new FormData(dom),
-		contentType: false,
-		processData:false,
-		success:function(res){
-			set_msg(res.msgs);
-			if (res.status == true){
-				$("#di_diagnosis_msg").html(res.qty);
-				$("#search_diag_result").html("");
-				res.diags.forEach(function (diag) {
-					$("#search_diag_result").append('<tr class="text-left"><td class="align-top" style="width:120px;">' + diag.code + '</td><td>' + diag.description + '</td><td class="align-top" class="text-right"><button type="button" class="btn tp-btn-light btn-success p-0 btn_add_diag" value="' + diag.id + '"><i class="fas fa-plus"></i></button></td></tr>');
-				});
-				$(".btn_add_diag").on('click',(function(e) {add_diag(this);}));
-			}
+	ajax_form(dom, "appointment/search_diag").done(function(res) {
+		set_msg(res.msgs);
+		if (res.type == "success"){
+			$("#di_diagnosis_msg").html(res.qty);
+			$("#search_diag_result").html("");
+			res.diags.forEach(function (diag) {
+				$("#search_diag_result").append('<tr class="text-left"><td class="align-top" style="width:120px;">' + diag.code + '</td><td>' + diag.description + '</td><td class="align-top" class="text-right"><button type="button" class="btn tp-btn-light btn-success p-0 btn_add_diag" value="' + diag.id + '"><i class="fas fa-plus"></i></button></td></tr>');
+			});
+			$(".btn_add_diag").on('click',(function(e) {add_diag(this);}));
 		}
 	});
 }
@@ -198,7 +94,6 @@ function add_therapy(dom){
 }
 
 function delete_therapy(dom){
-	console.log(dom);
 	$.ajax({
 		url: $("#base_url").val() + "appointment/delete_therapy",
 		type: "POST",

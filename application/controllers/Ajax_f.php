@@ -221,7 +221,7 @@ class Ajax_f extends CI_Controller {
 		);
 		if (!strcmp($this->session->userdata('role')->name, "doctor")) $filter["doctor_id"] = $this->session->userdata('aid');
 		
-		$appointments = $this->general->filter("appointment", $filter, "schedule_from", "asc");
+		$appointments = $this->general->filter("appointment", $filter, null, null, "schedule_from", "asc");
 		foreach($appointments as $item){
 			$data = array(
 				"id" => $item->id,
@@ -234,8 +234,7 @@ class Ajax_f extends CI_Controller {
 			array_push($appointments_arr[date("Y-m-d", strtotime($item->schedule_from))]["data"], $data);
 		}
 		
-		
-		$surgeries = $this->general->filter("surgery", $filter, "schedule_from", "asc");
+		$surgeries = $this->general->filter("surgery", $filter, null, null, "schedule_from", "asc");
 		foreach($surgeries as $item){
 			$data = array(
 				"id" => $item->id,

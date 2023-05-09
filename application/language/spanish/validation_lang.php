@@ -27,6 +27,9 @@ $lang['e_select_minute'] = 'Elija minuto.';
 $lang['e_person_doctor_patient'] = 'Una persona no puede ser médico y patiente a la vez.';
 $lang['e_select_doctor'] = 'Elija un médico.';
 $lang['e_doctor_no_available'] = 'Médico no disponible.';
+$lang['e_entry_mode'] = 'Elija un modo de ingreso.';
+$lang['e_insurance_name'] = 'Ingrese nombre de seguro.';
+$lang['e_insurance_confirm'] = 'Confirme disponibilidad de seguro.';
 
 /* surgery */
 $lang['e_select_room'] = 'Elija una sala.';

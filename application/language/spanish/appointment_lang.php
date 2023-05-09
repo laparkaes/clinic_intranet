@@ -13,9 +13,9 @@ $lang['error_rpa'] = 'Patiente registrado.';//error_registed_patient
 $lang['error_rpcb'] = 'Existe paciente con documento ingresado. Haga click a boton de lupa para cargar datos del paciente.';//error_registed_patient_click_btn
 $lang['error_rem'] = 'Email registrado.';//error_registered_email
 $lang['error_efo'] = 'Error de formato.';//error_format
-$lang['error_emo'] = 'Elija modo de ingreso.';//error_entry_mode
-$lang['error_ico'] = 'Confirme disponibilidad de seguro.';//error_insurance_confirm
-$lang['error_ina'] = 'Ingrese nombre de seguro.';//error_insurance_name
+
+
+
 $lang['error_npa'] = 'No existe paciente con datos ingresados. Ingrese nombre y teléfono del paciente para generar consulta.';//error_no_patient
 $lang['error_pap'] = 'Consulta pagada no puede ser cancelada. Intente reprogramar consulta o cancelar la venta relacionada.';//error_paid_appointment
 $lang['error_nap'] = 'Datos de consulta no recibida. Actualice página e intente nuevamente.';//error_no_appointment

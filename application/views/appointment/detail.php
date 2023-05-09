@@ -9,7 +9,6 @@
 				</button>
 				<?php } if (in_array("cancel", $actions)){ ?>
 				<button type="button" class="btn tp-btn btn-danger" id="btn_cancel" value="<?= $appointment->id ?>">
-					<span class="d-none msg"><?= $this->lang->line('warning_aca') ?></span>
 					<?= $this->lang->line('btn_cancel') ?>
 				</button>
 				<?php } if (in_array("report", $actions)){ ?>
@@ -86,7 +85,7 @@
 							</div>
 							<div class="form-group col-md-6">
 								<label><?= $this->lang->line('lb_date') ?></label>
-								<input type="text" class="form-control date_picker doc_schedule schedule" id="ra_date" name="date" value="<?= date('Y-m-d') ?>" readonly>
+								<input type="text" class="form-control bw date_picker doc_schedule schedule" id="ra_date" name="date" value="<?= date('Y-m-d') ?>" readonly>
 								<div class="sys_msg" id="ra_date_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
@@ -115,7 +114,7 @@
 										<option value="45">45</option>
 									</select>
 								</div>
-								<div class="sys_msg" id="ra_time_msg"></div>
+								<div class="sys_msg" id="ra_schedule_msg"></div>
 							</div>
 							<div class="form-group col-md-12 pt-3">
 								<button type="sumit" class="btn btn-primary"><?= $this->lang->line('btn_reschedule') ?></button>
@@ -165,4 +164,6 @@
 	<input type="hidden" id="bmi_class_obesity_2" value="<?= $this->lang->line('txt_bmi_class_obesity_2') ?>">
 	<input type="hidden" id="bmi_class_obesity_3" value="<?= $this->lang->line('txt_bmi_class_obesity_3') ?>">
 	<input type="hidden" id="warning_are" value="<?= $this->lang->line('warning_are') ?>">
+	<input type="hidden" id="warning_aca" value="<?= $this->lang->line('warning_aca') ?>">
+	<input type="hidden" id="warning_afi" value="<?= $this->lang->line('warning_afi') ?>">
 </div>
