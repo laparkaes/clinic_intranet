@@ -30,6 +30,15 @@ $lang['e_doctor_no_available'] = 'Médico no disponible.';
 $lang['e_entry_mode'] = 'Elija un modo de ingreso.';
 $lang['e_insurance_name'] = 'Ingrese nombre de seguro.';
 $lang['e_insurance_confirm'] = 'Confirme disponibilidad de seguro.';
+$lang['e_select_therapy'] = 'Elija una terapia.';
+$lang['e_min_session'] = 'Mínimo debe ingresar una sesión.';
+$lang['e_number_frequency'] = 'Ingrese un número para frecuencia.';
+$lang['e_therapy_exists'] = 'Terapia existe en la lista.';
+$lang['e_select_medicine'] = 'Elija un medicamento.';
+$lang['e_medicine_exists'] = 'Medicina existe en la lista.';
+$lang['e_number_medicine_quantity'] = 'Ingrese un número para cantidad de medicina.';
+$lang['e_insert_medicine_quantity'] = 'Ingrese cantidad de medicina.';
+
 
 /* surgery */
 $lang['e_select_room'] = 'Elija una sala.';

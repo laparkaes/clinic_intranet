@@ -13,20 +13,10 @@ $lang['error_rpa'] = 'Patiente registrado.';//error_registed_patient
 $lang['error_rpcb'] = 'Existe paciente con documento ingresado. Haga click a boton de lupa para cargar datos del paciente.';//error_registed_patient_click_btn
 $lang['error_rem'] = 'Email registrado.';//error_registered_email
 $lang['error_efo'] = 'Error de formato.';//error_format
-
-
-
 $lang['error_npa'] = 'No existe paciente con datos ingresados. Ingrese nombre y teléfono del paciente para generar consulta.';//error_no_patient
 $lang['error_pap'] = 'Consulta pagada no puede ser cancelada. Intente reprogramar consulta o cancelar la venta relacionada.';//error_paid_appointment
 $lang['error_nap'] = 'Datos de consulta no recibida. Actualice página e intente nuevamente.';//error_no_appointment
 $lang['error_fbl'] = 'Ingrese Palabras separadas con espacio.';//error_filter_blank
-$lang['error_sth'] = 'Elija una terapia.';//error_select_therapy
-$lang['error_mse'] = 'Mínimo debe ingresar una sesión.';//error_minimum_session
-$lang['error_nfr'] = 'Ingrese un número para frecuencia.';//error_number_frequency
-$lang['error_sme'] = 'Elija un medicamento.';//error_select_medicine
-$lang['error_imq'] = 'Ingrese cantidad.';//error_insert_medicine_quantity
-$lang['error_inu'] = 'Ingrese un número.';//error_insert_medicine_quantity
-$lang['error_nmq'] = 'Ingrese un número para frecuencia.';//error_number_medicine_quantity
 $lang['error_spr'] = 'Elija un perfil.';//error_select_profile
 $lang['error_dpr'] = 'Perfil ya esta agregado.';//error_duplicated_profile
 $lang['error_sex'] = 'Elija un examen.';//error_select_exam
@@ -45,6 +35,16 @@ $lang['success_sre'] = 'Resultado ha sido guardado.';//success_save_result
 $lang['success_adi'] = 'Diagnóstico ha sido agregado.';//success_add_diagnostic
 $lang['success_ddi'] = 'Diagnóstico ha sido eliminado.';//success_delete_diagnostic
 $lang['success_rsp'] = 'Consulta ha sido reprogramada.';//success_reschedule_appointment
+$lang['success_ath'] = 'Terapia ha sido agregada.';//success_add_therapy
+$lang['success_rth'] = 'Terapia ha sido eliminada de lista.';//success_remove_therapy
+$lang['success_ame'] = 'Medicina ha sido agregada.';//success_add_medicine
+$lang['success_rme'] = 'Medicina ha sido eliminada de lista.';//success_remove_medicine
+$lang['success_apr'] = 'Perfil ha sido agregado.';//success_add_profile
+$lang['success_rpr'] = 'Perfil ha sido eliminado de lista.';//success_remove_profile
+$lang['success_aex'] = 'Examen ha sido agregado.';//success_add_exam
+$lang['success_rex'] = 'Examen ha sido eliminado de lista.';//success_remove_exam
+$lang['success_aim'] = 'Imagen ha sido agregado.';//success_add_image
+$lang['success_rim'] = 'Imagen ha sido eliminado de lista.';//success_remove_image
 
 //components
 $lang['btn_attention'] = 'Atención';

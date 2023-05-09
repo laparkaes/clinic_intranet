@@ -145,12 +145,41 @@ class My_val{
 		if (!$data["time"]) $msgs = $this->set_msg($msgs, "bd_time_msg", "error", "e_select_hour");
 		
 		//insurance validation
-		
 		if ($data["insurance"] !== ""){
 			if ($data["insurance"] === "1")
 				if (!$data["insurance_name"])
 					$msgs = $this->set_msg($msgs, "bd_insurance_name_msg", "error", "e_insurance_name");
 		}else $msgs = $this->set_msg($msgs, "bd_insurance_msg", "error", "e_insurance_confirm");
+		
+		return $msgs;
+	}
+	
+	public function appointment_physical_therapy($msgs, $data){
+		if (!$data["physical_therapy_id"]) $msgs = $this->set_msg($msgs, "at_physical_therapy_msg", "error", "e_select_therapy");
+		if ($data["session"] < 1) $msgs = $this->set_msg($msgs, "at_session_msg", "error", "e_min_session");
+		if ($data["frequency"] < 1) $msgs = $this->set_msg($msgs, "at_frequency_msg", "error", "e_number_frequency");
+		
+		$filter = [
+			"appointment_id" => $data["appointment_id"],
+			"physical_therapy_id" => $data["physical_therapy_id"]
+		];
+		if ($this->CI->general->filter("appointment_therapy", $filter))
+			$msgs = $this->set_msg($msgs, "at_physical_therapy_msg", "error", "e_therapy_exists");
+		
+		return $msgs;
+	}
+	
+	public function appointment_medicine($msgs, $data){
+		if (!$data["medicine_id"]) $msgs = $this->set_msg($msgs, "md_medicine_msg", "error", "e_select_medicine");
+		if ($data["quantity"]){
+			if (is_numeric($data["quantity"])){
+				if ($data["quantity"] < 1) $msgs = $this->set_msg($msgs, "md_quantity_msg", "error", "e_number_medicine_quantity");
+			}else $msgs = $this->set_msg($msgs, "md_quantity_msg", "error", "e_number_medicine_quantity");
+		}else $msgs = $this->set_msg($msgs, "md_quantity_msg", "error", "e_insert_medicine_quantity");
+		
+		$filter = ["appointment_id" => $data["appointment_id"], "medicine_id" => $data["medicine_id"]];
+		if ($this->CI->general->filter("appointment_medicine", $filter))
+			$msgs = $this->set_msg($msgs, "md_medicine_msg", "error", "e_medicine_exists");
 		
 		return $msgs;
 	}

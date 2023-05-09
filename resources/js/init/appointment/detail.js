@@ -76,32 +76,19 @@ function set_therapy(therapies){
 
 function add_therapy(dom){
 	$("#form_add_therapy .sys_msg").html("");
-	$.ajax({
-		url: $("#base_url").val() + "appointment/add_therapy",
-		type: "POST",
-		data: new FormData(dom),
-		contentType: false,
-		processData:false,
-		success:function(res){
-			set_therapy(res.therapies);
-			if (res.status == true) $("#form_add_therapy")[0].reset();
-			else{
-				set_msg(res.msgs);
-				if (res.msg != null) swal("error", res.msg);
-			}
-		}
+	ajax_form(dom, "appointment/add_therapy").done(function(res) {
+		set_therapy(res.therapies);
+		set_msg(res.msgs);
+		swal(res.type, res.msg);
+		if (res.type == "success") $("#form_add_therapy")[0].reset();
 	});
 }
 
 function delete_therapy(dom){
-	$.ajax({
-		url: $("#base_url").val() + "appointment/delete_therapy",
-		type: "POST",
-		data: {appointment_id: $("#appointment_id").val(), id: $(dom).val()},
-		success:function(res){
-			set_therapy(res.therapies);
-			if (res.status == false) swal("error", res.msg);
-		}
+	var data = {appointment_id: $("#appointment_id").val(), id: $(dom).val()};
+	ajax_simple(data, "appointment/delete_therapy").done(function(res) {
+		set_therapy(res.therapies);
+		swal(res.type, res.msg);
 	});
 }
 
@@ -116,32 +103,19 @@ function set_medicine(medicines){
 
 function add_medicine(dom){
 	$("#form_add_medicine .sys_msg").html("");
-	$.ajax({
-		url: $("#base_url").val() + "appointment/add_medicine",
-		type: "POST",
-		data: new FormData(dom),
-		contentType: false,
-		processData:false,
-		success:function(res){
-			set_medicine(res.medicines);
-			if (res.status == true) $("#form_add_medicine")[0].reset();
-			else{
-				set_msg(res.msgs);
-				if (res.msg != null) swal("error", res.msg);
-			}
-		}
+	ajax_form(dom, "appointment/add_medicine").done(function(res) {
+		set_medicine(res.medicines);
+		set_msg(res.msgs);
+		swal(res.type, res.msg);
+		if (res.type == "success") $("#form_add_medicine")[0].reset();
 	});
 }
 
 function delete_medicine(dom){
-	$.ajax({
-		url: $("#base_url").val() + "appointment/delete_medicine",
-		type: "POST",
-		data: {id: $(dom).val(), appointment_id: $("#appointment_id").val()},
-		success:function(res){
-			set_medicine(res.medicines);
-			if (res.status == false) swal("error", res.msg);
-		}
+	var data = {appointment_id: $("#appointment_id").val(), id: $(dom).val()};
+	ajax_simple(data, "appointment/delete_medicine").done(function(res) {
+		set_medicine(res.medicines);
+		swal(res.type, res.msg);
 	});
 }
 
@@ -225,50 +199,34 @@ function set_profiles_exams(profiles, exams){
 }
 
 function add_exam_profile(profile_id){
-	$.ajax({
-		url: $("#base_url").val() + "appointment/add_exam_profile",
-		type: "POST",
-		data: {appointment_id: $("#appointment_id").val(), profile_id: profile_id},
-		success:function(res){
-			set_profiles_exams(res.profiles, res.exams);
-			if (res.status == false) swal("error", res.msg); 
-		}
+	var data = {appointment_id: $("#appointment_id").val(), profile_id: profile_id};
+	ajax_simple(data, "appointment/add_exam_profile").done(function(res) {
+		set_profiles_exams(res.profiles, res.exams);
+		swal(res.type, res.msg); 
 	});
 }
 
 function add_exam(exam_id){
-	$.ajax({
-		url: $("#base_url").val() + "appointment/add_exam",
-		type: "POST",
-		data: {appointment_id: $("#appointment_id").val(), examination_id: exam_id},
-		success:function(res){
-			set_profiles_exams(res.profiles, res.exams);
-			if (res.status == false) swal("error", res.msg); 
-		}
+	var data = {appointment_id: $("#appointment_id").val(), examination_id: exam_id};
+	ajax_simple(data, "appointment/add_exam").done(function(res) {
+		set_profiles_exams(res.profiles, res.exams);
+		swal(res.type, res.msg); 
 	});
 }
 
 function remove_exam_profile(profile_id){
-	$.ajax({
-		url: $("#base_url").val() + "appointment/remove_exam_profile",
-		type: "POST",
-		data: {appointment_id: $("#appointment_id").val(), profile_id: profile_id},
-		success:function(res){
-			set_profiles_exams(res.profiles, res.exams);
-			if (res.status == false) swal("error", res.msg); 
-		}
+	var data = {appointment_id: $("#appointment_id").val(), profile_id: profile_id};
+	ajax_simple(data, "appointment/remove_exam_profile").done(function(res) {
+		set_profiles_exams(res.profiles, res.exams);
+		swal(res.type, res.msg); 
 	});
 }
 
 function remove_exam(exam_id){
-	$.ajax({
-		url: $("#base_url").val() + "appointment/remove_exam",
-		type: "POST",
-		data: {appointment_id: $("#appointment_id").val(), examination_id: exam_id},
-		success:function(res){
-			set_profiles_exams(res.profiles, res.exams);
-			if (res.status == false) swal("error", res.msg); 
-		}
+	var data = {appointment_id: $("#appointment_id").val(), examination_id: exam_id};
+	ajax_simple(data, "appointment/remove_exam").done(function(res) {
+		set_profiles_exams(res.profiles, res.exams);
+		swal(res.type, res.msg); 
 	});
 }
 
@@ -289,29 +247,20 @@ function set_image(imgs){
 }
 
 function add_img(img_id){
-	$.ajax({
-		url: $("#base_url").val() + "appointment/add_image",
-		type: "POST",
-		data: {appointment_id: $("#appointment_id").val(), image_id: img_id},
-		success:function(res){
-			set_image(res.images);
-			if (res.status == false) swal("error", res.msg); 
-		}
+	var data = {appointment_id: $("#appointment_id").val(), image_id: img_id};
+	ajax_simple(data, "appointment/add_image").done(function(res) {
+		set_image(res.images);
+		swal(res.type, res.msg); 
 	});
 }
 
 function remove_image(image_id){
-	$.ajax({
-		url: $("#base_url").val() + "appointment/remove_image",
-		type: "POST",
-		data: {appointment_id: $("#appointment_id").val(), image_id: image_id},
-		success:function(res){
-			set_image(res.images);
-			if (res.status == false) swal("error", res.msg); 
-		}
+	var data = {appointment_id: $("#appointment_id").val(), image_id: image_id};
+	ajax_simple(data, "appointment/remove_image").done(function(res) {
+		set_image(res.images);
+		swal(res.type, res.msg); 
 	});
 }
-
 
 $(document).ready(function() {
 	//general

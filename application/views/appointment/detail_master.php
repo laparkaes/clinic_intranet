@@ -908,7 +908,7 @@ $me = $appointment_datas["medicine"];
 											</select>
 											<div class="input-group-append">
 												<button class="btn btn-primary" type="button" id="btn_add_exam_profile">
-													<?= $this->lang->line('btn_add') ?>
+													<i class="fas fa-plus"></i>
 												</button>
 											</div>
 										</div>
@@ -937,7 +937,7 @@ $me = $appointment_datas["medicine"];
 											</select>
 											<div class="input-group-append">
 												<button class="btn btn-primary" type="button" id="btn_add_exam">
-													<?= $this->lang->line('btn_add') ?>
+													<i class="fas fa-plus"></i>
 												</button>
 											</div>
 										</div>
@@ -1199,13 +1199,13 @@ $me = $appointment_datas["medicine"];
 										</div>
 										<div class="form-group col-md-6">
 											<label><?= $this->lang->line('lb_session') ?></label>
-											<input type="number" class="form-control" name="session" value="1">
+											<input type="number" class="form-control" name="session" value="1" min="1">
 											<div class="sys_msg" id="at_session_msg"></div>
 										</div>
 										<div class="form-group col-md-6">
 											<label><?= $this->lang->line('txt_one_session_each') ?></label>
 											<div class="input-group input-normal-o">
-												<input type="number" class="form-control" name="frequency" value="1">
+												<input type="number" class="form-control" name="frequency" value="1" min="1">
 												<select class="form-control" name="frequency_unit">
 													<option value="D"><?= $this->lang->line('txt_day') ?></option>
 													<option value="W"><?= $this->lang->line('txt_week') ?></option>
