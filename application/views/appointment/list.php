@@ -24,9 +24,9 @@
 				<div class="col-md-12 d-md-flex justify-content-end">
 					<form class="form-inline">
 						<input type="hidden" value="1" name="page">
-						<label class="sr-only" for="sl_status">Estado</label>
+						<label class="sr-only" for="sl_status"><?= $this->lang->line('lb_status') ?></label>
 						<select class="form-control mb-2 mr-sm-2" id="sl_status" name="status" style="max-width: 150px;">
-							<option value="">Estado</option>
+							<option value=""><?= $this->lang->line('lb_status') ?></option>
 							<?php foreach($status as $item){ if ($item->id == $f_url["status"]) $s = "selected"; else $s = ""; ?>
 							<option value="<?= $item->id ?>" <?= $s ?>><?= $this->lang->line($item->code) ?></option>
 							<?php } ?>
@@ -46,7 +46,6 @@
 								<tr>
 									<th><strong>#</strong></th>
 									<th><strong><?= $this->lang->line('hd_itinerary') ?></strong></th>
-									<th><strong><?= $this->lang->line('hd_specialty') ?></strong></th>
 									<th><strong><?= $this->lang->line('hd_doctor') ?></strong></th>
 									<th><strong><?= $this->lang->line('hd_patient') ?></strong></th>
 									<th><strong><?= $this->lang->line('hd_status') ?></strong></th>
@@ -61,8 +60,7 @@
 										<div><?= date("Y-m-d", strtotime($item->schedule_from)); ?></div>
 										<div class="text-nowrap"><?= date("h:i A", strtotime($item->schedule_from)); ?></div>
 									</td>
-									<td><?= $item->specialty ?></td>
-									<td><?= $item->doctor ?></td>
+									<td><?= $item->doctor ?><br/><?= $item->specialty ?></td>
 									<td><?= $item->patient ?></td>
 									<td><span class="badge light badge-<?= $status_arr[$item->status_id]->color ?>"><?= $this->lang->line($status_arr[$item->status_id]->code) ?></span></td>
 									<td class="text-right">

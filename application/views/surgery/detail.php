@@ -10,7 +10,6 @@
 				</button>
 				<?php } if (in_array("cancel", $actions)){ ?>
 				<button type="button" class="btn tp-btn btn-danger" id="btn_cancel" value="<?= $surgery->id ?>">
-					<span class="d-none msg"><?= $this->lang->line('warning_aca') ?></span>
 					<?= $this->lang->line('btn_cancel') ?>
 				</button>
 				<?php } if (in_array("report", $actions)){ ?>
@@ -305,4 +304,5 @@
 	<input type="hidden" id="surgery_id" value="<?= $surgery->id ?>">
 	<input type="hidden" id="warning_sre" value="<?= $this->lang->line('warning_sre') ?>">
 	<input type="hidden" id="warning_sfi" value="<?= $this->lang->line('warning_sfi') ?>">
+	<input type="hidden" id="warning_sca" value="<?= $this->lang->line('warning_sca') ?>">
 </div>

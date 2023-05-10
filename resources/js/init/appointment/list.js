@@ -38,7 +38,6 @@ $(document).ready(function() {
 	//general
 	load_doctor_schedule_appointment();
 	$(".control_bl").on('click',(function(e) {control_bl(this);}));
-	$("#btn_clean_date").on('click',(function(e) {$("#inp_date").val("");}));
 	
 	//register
 	$("#register_form").submit(function(e) {e.preventDefault(); register_appointment(this);});

@@ -1,29 +1,6 @@
 function cancel_surgery(dom){
-	Swal.fire({
-		title: $("#alert_warning_title").val(),
-		text: $(dom).find(".msg").html(),
-		icon: 'warning',
-		showCancelButton: true,
-		confirmButtonText: $("#alert_confirm_btn").val(),
-		cancelButtonText: $("#alert_cancel_btn").val()
-	}).then((result) => {
-		if (result.isConfirmed){
-			$.ajax({
-				url: $("#base_url").val() + "surgery/cancel",
-				type: "POST",
-				data: {id: $(dom).val()},
-				success:function(res){
-					Swal.fire({
-						title: $("#alert_" + res.type + "_title").val(),
-						html: res.msg,
-						icon: res.type,
-						confirmButtonText: $("#alert_confirm_btn").val()
-					}).then((result) => {
-						if (res.status == true) location.reload();
-					});
-				}
-			});
-		}
+	ajax_simple_warning({id: $(dom).val()}, "surgery/cancel", $("#warning_sca").val()).done(function(res) {
+		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 

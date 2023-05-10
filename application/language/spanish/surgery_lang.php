@@ -7,8 +7,10 @@ $lang['error_sre'] = 'Ingrese resultado.';//error_enter_result
 $lang['success_ras'] = 'Cirugía ha sido registrada.';//success_register_surgery
 $lang['success_fsu'] = 'Cirugía ha sido finalizada.';//success_finish_surgery
 $lang['success_rsu'] = 'Consulta ha sido reprogramada.';//success_reschedule_surgery
+$lang['warning_sca'] = '¿Desea cancelar cirugía?';//warning_surgery_cancel
 $lang['warning_sre'] = '¿Desea reprogramar cirugía?';//warning_surgery_reschedule
 $lang['warning_sfi'] = '¿Desea finalizar cirugía?';//warning_surgery_finish
+$lang['warning_rsp'] = '¿Desea generar nueva cirugía?';//warning_register_surgery
 
 $lang['surgery'] = 'Cirugía';
 $lang['surgeries'] = 'Cirugías';
@@ -71,3 +73,4 @@ $lang['lb_room'] = 'Sala';
 $lang['hd_room'] = 'Sala';
 $lang['title_doctor_agenda'] = 'Agenda del Médico';
 $lang['title_room_availability'] = 'Disponibilidad de Sala de Cirugía';
+$lang['hd_itinerary'] = 'Itinerario';

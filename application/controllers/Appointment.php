@@ -321,40 +321,43 @@ class Appointment extends CI_Controller {
 	
 	public function register(){
 		$type = "error"; $msgs = []; $msg = null; $move_to = null;
-		$app = $this->input->post("app");
-		$sch = $this->input->post("sch");
-		$pt = $this->input->post("pt");
-		
-		$this->load->library('my_val');
-		$msgs = $this->my_val->appointment($msgs, "aa_", $app, $sch, $pt);
-		
-		if (!$msgs){
-			$now = date('Y-m-d H:i:s', time());
-			$person = $this->general->filter("person", ["doc_type_id" => $pt["doc_type_id"], "doc_number" => $pt["doc_number"]]);
-			if ($person){
-				$person = $person[0];
-				$app["patient_id"] = $person->id;
-				$this->general->update("person", $person->id, $pt);
-				$this->utility_lib->add_log("person_update", $person->name);
-			}else{
-				$app["patient_id"] = $this->general->insert("person", $pt);
-				$person = $this->general->id("person", $app["patient_id"]);
-				$this->utility_lib->add_log("person_register", $person->name);
-			}
+		 	
+		if ($this->utility_lib->check_access("appointment", "register")){
+			$app = $this->input->post("app");
+			$sch = $this->input->post("sch");
+			$pt = $this->input->post("pt");
 			
-			$app["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
-			$app["schedule_to"] = date("Y-m-d H:i:s", strtotime("+14 minutes", strtotime($app["schedule_from"])));
-			$app["status_id"] = $this->status->code("reserved")->id;
-			$app["registed_at"] = $now;
-			$appointment_id = $this->appointment->insert($app);
-			if ($appointment_id){
-				$this->utility_lib->add_log("appointment_register", $pt["name"]);
+			$this->load->library('my_val');
+			$msgs = $this->my_val->appointment($msgs, "aa_", $app, $sch, $pt);
+			
+			if (!$msgs){
+				$now = date('Y-m-d H:i:s', time());
+				$person = $this->general->filter("person", ["doc_type_id" => $pt["doc_type_id"], "doc_number" => $pt["doc_number"]]);
+				if ($person){
+					$person = $person[0];
+					$app["patient_id"] = $person->id;
+					$this->general->update("person", $person->id, $pt);
+					$this->utility_lib->add_log("person_update", $person->name);
+				}else{
+					$app["patient_id"] = $this->general->insert("person", $pt);
+					$person = $this->general->id("person", $app["patient_id"]);
+					$this->utility_lib->add_log("person_register", $person->name);
+				}
 				
-				$type = "success";
-				$move_to = base_url()."appointment/detail/".$appointment_id;
-				$msg = $this->lang->line('success_rap');
-			}else $msg = $this->lang->line('error_internal');
-		}else $msg = $this->lang->line('error_occurred'); 
+				$app["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
+				$app["schedule_to"] = date("Y-m-d H:i:s", strtotime("+14 minutes", strtotime($app["schedule_from"])));
+				$app["status_id"] = $this->status->code("reserved")->id;
+				$app["registed_at"] = $now;
+				$appointment_id = $this->appointment->insert($app);
+				if ($appointment_id){
+					$this->utility_lib->add_log("appointment_register", $pt["name"]);
+					
+					$type = "success";
+					$move_to = base_url()."appointment/detail/".$appointment_id;
+					$msg = $this->lang->line('success_rap');
+				}else $msg = $this->lang->line('error_internal');
+			}else $msg = $this->lang->line('error_occurred');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to]);
@@ -362,37 +365,39 @@ class Appointment extends CI_Controller {
 	
 	public function cancel(){
 		$type = "error"; $msg = null;
-		//pending!! role validation
 		
-		$appointment = $this->general->id("appointment", $this->input->post("id"));
-		if ($appointment){
-			if ($this->general->update("appointment", $appointment->id, ["status_id" => $this->status->code("canceled")->id])){
-				$person = $this->general->id("person", $appointment->patient_id);
-				$this->utility_lib->add_log("appointment_cancel", $person->name);
+		if ($this->utility_lib->check_access("appointment", "update")){
+			$appointment = $this->general->id("appointment", $this->input->post("id"));
+			if ($appointment){
+				if ($this->general->update("appointment", $appointment->id, ["status_id" => $this->status->code("canceled")->id])){
+					$person = $this->general->id("person", $appointment->patient_id);
+					$this->utility_lib->add_log("appointment_cancel", $person->name);
+					
+					$type = "success";
+					$msg = $this->lang->line('success_cap');
+				}else $msg = $this->lang->line('error_internal');
+			}else $msg = $this->lang->line('error_nap');
+		}else $msg = $this->lang->line('error_no_permission');
 				
-				$type = "success";
-				$msg = $this->lang->line('success_cap');
-			}else $msg = $this->lang->line('error_internal');
-		}else $msg = $this->lang->line('error_nap');
-		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 	
 	public function finish(){
 		$type = "error"; $msg = null;
-		//pending!! role validation
 		
-		$appointment = $this->general->id("appointment", $this->input->post("id"));
-		if ($appointment){
-			if ($this->general->update("appointment", $appointment->id, ["status_id" => $this->status->code("finished")->id])){
-				$person = $this->general->id("person", $appointment->patient_id);
-				$this->utility_lib->add_log("appointment_finish", $person->name);
-				
-				$type = "success";
-				$msg = $this->lang->line('success_fap');
-			}else $msg = $this->lang->line('error_internal');
-		}else $msg = $this->lang->line('error_nap');
+		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){
+			$appointment = $this->general->id("appointment", $this->input->post("id"));
+			if ($appointment){
+				if ($this->general->update("appointment", $appointment->id, ["status_id" => $this->status->code("finished")->id])){
+					$person = $this->general->id("person", $appointment->patient_id);
+					$this->utility_lib->add_log("appointment_finish", $person->name);
+					
+					$type = "success";
+					$msg = $this->lang->line('success_fap');
+				}else $msg = $this->lang->line('error_internal');
+			}else $msg = $this->lang->line('error_nap');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);
@@ -400,32 +405,35 @@ class Appointment extends CI_Controller {
 
 	public function reschedule(){
 		$type = "error"; $msg = null; $msgs = [];
-		$data = $this->input->post();
-		$appointment = $this->general->id("appointment", $data["id"]);
 		
-		if($appointment){
-			$this->load->library('my_val');
-			$msgs = $this->my_val->appointment_reschedule($msgs, "ra_", $appointment, $data);
+		if ($this->utility_lib->check_access("appointment", "update")){			
+			$data = $this->input->post();
+			$appointment = $this->general->id("appointment", $data["id"]);
 			
-			if (!$msgs){
-				$schedule_from = $data["date"]." ".$data["hour"].":".$data["min"];
-				$app = [
-					"id" => $appointment->id,
-					"doctor_id" => $appointment->doctor_id,
-					"schedule_from" => $schedule_from,
-					"schedule_to" => date("Y-m-d H:i:s", strtotime("+14 minutes", strtotime($schedule_from)))
-				];
+			if($appointment){
+				$this->load->library('my_val');
+				$msgs = $this->my_val->appointment_reschedule($msgs, "ra_", $appointment, $data);
 				
-				if ($this->appointment->update($app["id"], $app)){
-					$person = $this->general->id("person", $appointment->patient_id);
-					$this->utility_lib->add_log("appointment_reschedule", $person->name);
+				if (!$msgs){
+					$schedule_from = $data["date"]." ".$data["hour"].":".$data["min"];
+					$app = [
+						"id" => $appointment->id,
+						"doctor_id" => $appointment->doctor_id,
+						"schedule_from" => $schedule_from,
+						"schedule_to" => date("Y-m-d H:i:s", strtotime("+14 minutes", strtotime($schedule_from)))
+					];
 					
-					$type = "success";
-					$msg = $this->lang->line('success_rsp');
-				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_occurred');
-		}else $msg = $this->lang->line('error_internal_refresh');
-		
+					if ($this->appointment->update($app["id"], $app)){
+						$person = $this->general->id("person", $appointment->patient_id);
+						$this->utility_lib->add_log("appointment_reschedule", $person->name);
+						
+						$type = "success";
+						$msg = $this->lang->line('success_rsp');
+					}else $msg = $this->lang->line('error_internal');
+				}else $msg = $this->lang->line('error_occurred');
+			}else $msg = $this->lang->line('error_internal_refresh');
+		}else $msg = $this->lang->line('error_no_permission');
+
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "msgs" => $msgs]);
 	}
@@ -443,29 +451,32 @@ class Appointment extends CI_Controller {
 
 	public function save_basic_data(){
 		$type = "error"; $msgs = []; $msg = null;
-		$data = $this->input->post();
 		
-		$this->load->library('my_val');
-		$msgs = $this->my_val->appointment_basic_data($msgs, $data);
-		
-		if (!$msgs){
-			if (($data["insurance"] !== "0") or ($data["insurance"] !== "")) $data["insurance_name"] = null;
+		if ($this->utility_lib->check_access("appointment", "update")){
+			$data = $this->input->post();
 			
-			//status validation
-			if ($data["appointment_id"]){
-				$appointment = $this->appointment->id($data["appointment_id"]);
-				$appointment->status = $this->status->id($appointment->status_id);
-				if (!strcmp("confirmed", $appointment->status->code)){
-					//set enterance time
-					$data["entered_at"] = $data["date"]." ".$data["time"];
-					unset($data["date"]);
-					unset($data["time"]);
-					
-					$type = "success";
-					$msg = $this->save_data($data, "appointment_basic_data", "success_sbd");
-				}else $msg = $this->lang->line('error_anc');
-			}else $msg = $this->lang->line('error_internal_refresh');
-		}else $msg = $this->lang->line('error_occurred');
+			$this->load->library('my_val');
+			$msgs = $this->my_val->appointment_basic_data($msgs, $data);
+			
+			if (!$msgs){
+				if (($data["insurance"] !== "0") or ($data["insurance"] !== "")) $data["insurance_name"] = null;
+				
+				//status validation
+				if ($data["appointment_id"]){
+					$appointment = $this->appointment->id($data["appointment_id"]);
+					$appointment->status = $this->status->id($appointment->status_id);
+					if (!strcmp("confirmed", $appointment->status->code)){
+						//set enterance time
+						$data["entered_at"] = $data["date"]." ".$data["time"];
+						unset($data["date"]);
+						unset($data["time"]);
+						
+						$type = "success";
+						$msg = $this->save_data($data, "appointment_basic_data", "success_sbd");
+					}else $msg = $this->lang->line('error_anc');
+				}else $msg = $this->lang->line('error_internal_refresh');
+			}else $msg = $this->lang->line('error_occurred');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
@@ -473,17 +484,20 @@ class Appointment extends CI_Controller {
 
 	public function save_personal_information(){
 		$type = "error"; $msgs = []; $msg = null;
-		$data = $this->input->post();
 		
-		//status validation
-		if ($data["appointment_id"]){
-			$appointment = $this->appointment->id($data["appointment_id"]);
-			$appointment->status = $this->status->id($appointment->status_id);
-			if (!strcmp("confirmed", $appointment->status->code)){
-				$type = "success";
-				$msg = $this->save_data($data, "appointment_anamnesis", "success_spi");
-			}else $msg = $this->lang->line('error_anc');
-		}else $msg = $this->lang->line('error_internal_refresh');
+		if ($this->utility_lib->check_access("appointment", "update")){
+			$data = $this->input->post();
+			
+			//status validation
+			if ($data["appointment_id"]){
+				$appointment = $this->appointment->id($data["appointment_id"]);
+				$appointment->status = $this->status->id($appointment->status_id);
+				if (!strcmp("confirmed", $appointment->status->code)){
+					$type = "success";
+					$msg = $this->save_data($data, "appointment_anamnesis", "success_spi");
+				}else $msg = $this->lang->line('error_anc');
+			}else $msg = $this->lang->line('error_internal_refresh');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
@@ -491,17 +505,20 @@ class Appointment extends CI_Controller {
 	
 	public function save_triage(){
 		$type = "error"; $msgs = []; $msg = null;
-		$data = $this->input->post();
 		
-		//status validation
-		if ($data["appointment_id"]){
-			$appointment = $this->appointment->id($data["appointment_id"]);
-			$appointment->status = $this->status->id($appointment->status_id);
-			if (!strcmp("confirmed", $appointment->status->code)){
-				$type = "success";
-				$msg = $this->save_data($data, "appointment_physical", "success_str");
-			}else $msg = $this->lang->line('error_anc');
-		}else $msg = $this->lang->line('error_internal_refresh');
+		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){
+			$data = $this->input->post();
+			
+			//status validation
+			if ($data["appointment_id"]){
+				$appointment = $this->appointment->id($data["appointment_id"]);
+				$appointment->status = $this->status->id($appointment->status_id);
+				if (!strcmp("confirmed", $appointment->status->code)){
+					$type = "success";
+					$msg = $this->save_data($data, "appointment_physical", "success_str");
+				}else $msg = $this->lang->line('error_anc');
+			}else $msg = $this->lang->line('error_internal_refresh');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
@@ -509,21 +526,24 @@ class Appointment extends CI_Controller {
 
 	public function save_anamnesis(){
 		$type = "error"; $msgs = []; $msg = null;
-		$data = $this->input->post();
 		
-		//status validation
-		if ($data["appointment_id"]){
-			$appointment = $this->appointment->id($data["appointment_id"]);
-			$appointment->status = $this->status->id($appointment->status_id);
-			if (!strcmp("confirmed", $appointment->status->code)){
-				if (array_key_exists("patho_pre_illnesses", $data))
-					$data["patho_pre_illnesses"] = str_replace(", ",",", implode(",", $data["patho_pre_illnesses"]));
-				else $data["patho_pre_illnesses"] = null;
-				
-				$type = "success";
-				$msg = $this->save_data($data, "appointment_anamnesis", "success_san");
-			}else $msg = $this->lang->line('error_anc');
-		}else $msg = $this->lang->line('error_internal_refresh');
+		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){			
+			$data = $this->input->post();
+			
+			//status validation
+			if ($data["appointment_id"]){
+				$appointment = $this->appointment->id($data["appointment_id"]);
+				$appointment->status = $this->status->id($appointment->status_id);
+				if (!strcmp("confirmed", $appointment->status->code)){
+					if (array_key_exists("patho_pre_illnesses", $data))
+						$data["patho_pre_illnesses"] = str_replace(", ",",", implode(",", $data["patho_pre_illnesses"]));
+					else $data["patho_pre_illnesses"] = null;
+					
+					$type = "success";
+					$msg = $this->save_data($data, "appointment_anamnesis", "success_san");
+				}else $msg = $this->lang->line('error_anc');
+			}else $msg = $this->lang->line('error_internal_refresh');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
@@ -531,17 +551,20 @@ class Appointment extends CI_Controller {
 		
 	public function save_physical_exam(){
 		$type = "error"; $msgs = []; $msg = null;
-		$data = $this->input->post();
 		
-		//status validation
-		if ($data["appointment_id"]){
-			$appointment = $this->appointment->id($data["appointment_id"]);
-			$appointment->status = $this->status->id($appointment->status_id);
-			if (!strcmp("confirmed", $appointment->status->code)){
-				$type = "success";
-				$msg = $this->save_data($data, "appointment_physical", "success_spe");
-			}else $msg = $this->lang->line('error_anc');
-		}else $msg = $this->lang->line('error_internal_refresh');
+		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){			
+			$data = $this->input->post();
+			
+			//status validation
+			if ($data["appointment_id"]){
+				$appointment = $this->appointment->id($data["appointment_id"]);
+				$appointment->status = $this->status->id($appointment->status_id);
+				if (!strcmp("confirmed", $appointment->status->code)){
+					$type = "success";
+					$msg = $this->save_data($data, "appointment_physical", "success_spe");
+				}else $msg = $this->lang->line('error_anc');
+			}else $msg = $this->lang->line('error_internal_refresh');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
@@ -565,20 +588,26 @@ class Appointment extends CI_Controller {
 	
 	public function add_diag(){
 		$type = "success"; $msg = $this->lang->line('success_adi'); $diags = [];
-		$data = $this->input->post();
 		
-		//appointment status validation
-		$appointment = $this->appointment->id($data["appointment_id"]);
-		if (in_array($this->status->id($appointment->status_id)->code, ["reserved", "finished", "canceled"])){
-			$msg = $this->lang->line('error_nea');
-			$type = "error";
+		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){			
+			$data = $this->input->post();
+			
+			//appointment status validation
+			$appointment = $this->appointment->id($data["appointment_id"]);
+			if (in_array($this->status->id($appointment->status_id)->code, ["reserved", "finished", "canceled"])){
+				$msg = $this->lang->line('error_nea');
+				$type = "error";
+			}else{
+				if (!$this->general->filter("appointment_diag_impression" , $data)){
+					if (!$this->general->insert("appointment_diag_impression" , $data)){
+						$msg = $this->lang->line('error_internal');
+						$type = "error";
+					}
+				}	
+			}
 		}else{
-			if (!$this->general->filter("appointment_diag_impression" , $data)){
-				if (!$this->general->insert("appointment_diag_impression" , $data)){
-					$msg = $this->lang->line('error_internal');
-					$type = "error";
-				}
-			}	
+			$msg = $this->lang->line('error_no_permission');
+			$type = "error";
 		}
 		
 		$diag_ids = [];
@@ -592,18 +621,24 @@ class Appointment extends CI_Controller {
 	
 	public function delete_diag(){
 		$type = "success"; $msg = $this->lang->line('success_ddi'); $diags = [];
-		$data = $this->input->post();
 		
-		//appointment status validation
-		$appointment = $this->appointment->id($data["appointment_id"]);
-		if (in_array($this->status->id($appointment->status_id)->code, ["reserved", "finished", "canceled"])){
-			$msg = $this->lang->line('error_nea');
-			$type = "error";
-		}else{
-			if (!$this->general->delete("appointment_diag_impression", $data)){
-				$msg = $this->lang->line('error_internal');
+		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){			
+			$data = $this->input->post();
+			
+			//appointment status validation
+			$appointment = $this->appointment->id($data["appointment_id"]);
+			if (in_array($this->status->id($appointment->status_id)->code, ["reserved", "finished", "canceled"])){
+				$msg = $this->lang->line('error_nea');
 				$type = "error";
+			}else{
+				if (!$this->general->delete("appointment_diag_impression", $data)){
+					$msg = $this->lang->line('error_internal');
+					$type = "error";
+				}
 			}
+		}else{
+			$msg = $this->lang->line('error_no_permission');
+			$type = "error";
 		}
 		
 		$diag_ids = [];
@@ -617,17 +652,20 @@ class Appointment extends CI_Controller {
 	
 	public function save_result(){
 		$type = "error"; $msgs = []; $msg = null;
-		$data = $this->input->post();
 		
-		//status validation
-		if ($data["appointment_id"]){
-			$appointment = $this->appointment->id($data["appointment_id"]);
-			$appointment->status = $this->status->id($appointment->status_id);
-			if (!strcmp("confirmed", $appointment->status->code)){
-				$type = "success";
-				$msg = $this->save_data($data, "appointment_result", "success_sre");
-			}else $msg = $this->lang->line('error_anc');
-		}else $msg = $this->lang->line('error_internal_refresh');
+		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){			
+			$data = $this->input->post();
+			
+			//status validation
+			if ($data["appointment_id"]){
+				$appointment = $this->appointment->id($data["appointment_id"]);
+				$appointment->status = $this->status->id($appointment->status_id);
+				if (!strcmp("confirmed", $appointment->status->code)){
+					$type = "success";
+					$msg = $this->save_data($data, "appointment_result", "success_sre");
+				}else $msg = $this->lang->line('error_anc');
+			}else $msg = $this->lang->line('error_internal_refresh');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
@@ -654,13 +692,15 @@ class Appointment extends CI_Controller {
 	public function add_image(){
 		$type = "error"; $msg = null;
 		
-		$data = $this->input->post();
-		if (!$this->general->filter("appointment_image", $data)){
-			if ($this->general->insert("appointment_image", $data)){
-				$type = "success";
-				$msg = $this->lang->line('success_aim');
-			}else $msg = $this->lang->line('error_internal');
-		}else $msg = $this->lang->line('error_dim');
+		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){			
+			$data = $this->input->post();
+			if (!$this->general->filter("appointment_image", $data)){
+				if ($this->general->insert("appointment_image", $data)){
+					$type = "success";
+					$msg = $this->lang->line('success_aim');
+				}else $msg = $this->lang->line('error_internal');
+			}else $msg = $this->lang->line('error_dim');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "images" => $this->set_images($data["appointment_id"])]);
@@ -668,12 +708,15 @@ class Appointment extends CI_Controller {
 	
 	public function remove_image(){
 		$type = "error"; $msg = null;
-		$data = $this->input->post();
 		
-		if ($this->general->delete("appointment_image", $data)){
-			$type = "success";
-			$msg = $this->lang->line('success_rim');
-		}else $msg = $this->lang->line('error_internal');
+		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){			
+			$data = $this->input->post();
+			
+			if ($this->general->delete("appointment_image", $data)){
+				$type = "success";
+				$msg = $this->lang->line('success_rim');
+			}else $msg = $this->lang->line('error_internal');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "images" => $this->set_images($data["appointment_id"])]);
@@ -711,15 +754,17 @@ class Appointment extends CI_Controller {
 	public function add_exam_profile(){
 		$type = "error"; $msg = null;
 		
-		$data = $this->input->post();
-		if ($data["profile_id"]){
-			if (!$this->general->filter("appointment_examination", $data)){
-				if ($this->general->insert("appointment_examination", $data)){
-					$type = "success";
-					$msg = $this->lang->line('success_apr');
-				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_dpr');
-		}else $msg = $this->lang->line('error_spr');
+		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){			
+			$data = $this->input->post();
+			if ($data["profile_id"]){
+				if (!$this->general->filter("appointment_examination", $data)){
+					if ($this->general->insert("appointment_examination", $data)){
+						$type = "success";
+						$msg = $this->lang->line('success_apr');
+					}else $msg = $this->lang->line('error_internal');
+				}else $msg = $this->lang->line('error_dpr');
+			}else $msg = $this->lang->line('error_spr');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		$result = $this->set_profiles_exams($data["appointment_id"]);
 		$profiles = $result["profiles"];
@@ -731,12 +776,15 @@ class Appointment extends CI_Controller {
 	
 	public function remove_exam_profile(){
 		$type = "error"; $msg = null;
-		$data = $this->input->post();
 		
-		if ($this->general->delete("appointment_examination", $data)){
-			$type = "success";
-			$msg = $this->lang->line('success_rex');
-		}else $msg = $this->lang->line('error_internal');
+		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){			
+			$data = $this->input->post();
+			
+			if ($this->general->delete("appointment_examination", $data)){
+				$type = "success";
+				$msg = $this->lang->line('success_rex');
+			}else $msg = $this->lang->line('error_internal');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		$result = $this->set_profiles_exams($data["appointment_id"]);
 		$profiles = $result["profiles"];
@@ -748,33 +796,36 @@ class Appointment extends CI_Controller {
 	
 	public function add_exam(){
 		$type = "error"; $msg = null; $profiles = []; $exams = [];
-		$data = $this->input->post();
 		
-		$tb_name = "appointment_examination";
-		if ($data["examination_id"]){
-			if (!$this->general->filter($tb_name, $data)){
-				$profile_ids_arr = [];
-				$profile_ids = $this->general->filter($tb_name, ["appointment_id" => $data["appointment_id"], "profile_id !=" => null]);
-				
-				$is_include = false;
-				foreach($profile_ids as $item){
-					$profile = $this->general->id("examination_profile", $item->profile_id);
-					$exam_ids_aux = explode(",", $profile->examination_ids);
+		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){			
+			$data = $this->input->post();
+			
+			$tb_name = "appointment_examination";
+			if ($data["examination_id"]){
+				if (!$this->general->filter($tb_name, $data)){
+					$profile_ids_arr = [];
+					$profile_ids = $this->general->filter($tb_name, ["appointment_id" => $data["appointment_id"], "profile_id !=" => null]);
 					
-					if (in_array($data["examination_id"], $exam_ids_aux)){
-						$is_include = true;
-						break;
+					$is_include = false;
+					foreach($profile_ids as $item){
+						$profile = $this->general->id("examination_profile", $item->profile_id);
+						$exam_ids_aux = explode(",", $profile->examination_ids);
+						
+						if (in_array($data["examination_id"], $exam_ids_aux)){
+							$is_include = true;
+							break;
+						}
 					}
-				}
-				
-				if (!$is_include){
-					if ($this->general->insert($tb_name, $data)){
-						$type = "success";
-						$msg = $this->lang->line('success_aex');
-					}else $msg = $this->lang->line('error_internal');	
-				}else $msg = str_replace("&profile&", $profile->name, $this->lang->line('error_pie'));
-			}else $msg = $this->lang->line('error_dex');
-		}else $msg = $this->lang->line('error_sex');
+					
+					if (!$is_include){
+						if ($this->general->insert($tb_name, $data)){
+							$type = "success";
+							$msg = $this->lang->line('success_aex');
+						}else $msg = $this->lang->line('error_internal');	
+					}else $msg = str_replace("&profile&", $profile->name, $this->lang->line('error_pie'));
+				}else $msg = $this->lang->line('error_dex');
+			}else $msg = $this->lang->line('error_sex');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		$result = $this->set_profiles_exams($data["appointment_id"]);
 		$profiles = $result["profiles"];
@@ -786,12 +837,15 @@ class Appointment extends CI_Controller {
 	
 	public function remove_exam(){
 		$type = "error"; $msg = null;
-		$data = $this->input->post();
 		
-		if ($this->general->delete("appointment_examination", $data)){
-			$type = "success";
-			$msg = $this->lang->line('success_rex');
-		}else $msg = $this->lang->line('error_internal');
+		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){			
+			$data = $this->input->post();
+			
+			if ($this->general->delete("appointment_examination", $data)){
+				$type = "success";
+				$msg = $this->lang->line('success_rex');
+			}else $msg = $this->lang->line('error_internal');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		$result = $this->set_profiles_exams($data["appointment_id"]);
 		$profiles = $result["profiles"];
@@ -831,22 +885,25 @@ class Appointment extends CI_Controller {
 	
 	public function add_therapy(){
 		$type = "error"; $msgs = []; $msg = null;
-		$data = $this->input->post();
 		
-		$this->load->library('my_val');
-		$msgs = $this->my_val->appointment_physical_therapy($msgs, $data);
-		
-		if (!$msgs){
-			$appointment = $this->appointment->id($data["appointment_id"]);
-			if (in_array($this->status->id($appointment->status_id)->code, ["reserved", "finished", "canceled"]))
-				$msg = $this->lang->line('error_nea');
-			elseif (!$this->general->insert("appointment_therapy", $data))
-				$msg = $this->lang->line('error_internal');
-			else{
-				$msg = $this->lang->line('success_ath');
-				$type = "success";
-			}
-		}else $msg = $this->lang->line('error_occurred');
+		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){			
+			$data = $this->input->post();
+			
+			$this->load->library('my_val');
+			$msgs = $this->my_val->appointment_physical_therapy($msgs, $data);
+			
+			if (!$msgs){
+				$appointment = $this->appointment->id($data["appointment_id"]);
+				if (in_array($this->status->id($appointment->status_id)->code, ["reserved", "finished", "canceled"]))
+					$msg = $this->lang->line('error_nea');
+				elseif (!$this->general->insert("appointment_therapy", $data))
+					$msg = $this->lang->line('error_internal');
+				else{
+					$msg = $this->lang->line('success_ath');
+					$type = "success";
+				}
+			}else $msg = $this->lang->line('error_occurred');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		$therapies = $this->set_therapy_list($data["appointment_id"]);
 		
@@ -855,22 +912,23 @@ class Appointment extends CI_Controller {
 	}
 	
 	public function delete_therapy(){
-		$data = $this->input->post();
+		$type = "error"; $msg = null;
 		
-		//appointment status validation
-		$appointment = $this->appointment->id($data["appointment_id"]);
-		if (in_array($this->status->id($appointment->status_id)->code, ["reserved", "finished", "canceled"])){
-			$msg = $this->lang->line('error_nea');
-			$type = "error";
-		}else{
-			if (!$this->general->delete("appointment_therapy", $data)){
-				$msg = $this->lang->line('error_internal');
-				$type = "error";
+		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){
+			$data = $this->input->post();
+		
+			//appointment status validation
+			$appointment = $this->appointment->id($data["appointment_id"]);
+			if (in_array($this->status->id($appointment->status_id)->code, ["reserved", "finished", "canceled"])){
+				$msg = $this->lang->line('error_nea');
 			}else{
-				$msg = $this->lang->line('success_rth');
-				$type = "success";
+				if (!$this->general->delete("appointment_therapy", $data)) $msg = $this->lang->line('error_internal');
+				else{
+					$msg = $this->lang->line('success_rth');
+					$type = "success";
+				}
 			}
-		}
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		$therapies = $this->set_therapy_list($data["appointment_id"]);
 		
@@ -900,22 +958,25 @@ class Appointment extends CI_Controller {
 	
 	public function add_medicine(){
 		$type = "error"; $msgs = []; $msg = null;
-		$data = $this->input->post();
 		
-		$this->load->library('my_val');
-		$msgs = $this->my_val->appointment_medicine($msgs, $data);
-		
-		if (!$msgs){
-			$appointment = $this->appointment->id($data["appointment_id"]);
-			if (in_array($this->status->id($appointment->status_id)->code, ["reserved", "finished", "canceled"]))
-				$msg = $this->lang->line('error_nea');
-			elseif (!$this->general->insert("appointment_medicine", $data))
-				$msg = $this->lang->line('error_internal');
-			else{
-				$msg = $this->lang->line('success_ame');
-				$type = "success";
-			}
-		}else $msg = $this->lang->line('error_occurred');
+		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){			
+			$data = $this->input->post();
+			
+			$this->load->library('my_val');
+			$msgs = $this->my_val->appointment_medicine($msgs, $data);
+			
+			if (!$msgs){
+				$appointment = $this->appointment->id($data["appointment_id"]);
+				if (in_array($this->status->id($appointment->status_id)->code, ["reserved", "finished", "canceled"]))
+					$msg = $this->lang->line('error_nea');
+				elseif (!$this->general->insert("appointment_medicine", $data))
+					$msg = $this->lang->line('error_internal');
+				else{
+					$msg = $this->lang->line('success_ame');
+					$type = "success";
+				}
+			}else $msg = $this->lang->line('error_occurred');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		$medicines = $this->set_medicine_list($data["appointment_id"]);
 		
@@ -924,22 +985,23 @@ class Appointment extends CI_Controller {
 	}
 	
 	public function delete_medicine(){
-		$data = $this->input->post();
+		$type = "error"; $msg = null;
 		
-		//appointment status validation
-		$appointment = $this->appointment->id($data["appointment_id"]);
-		if (in_array($this->status->id($appointment->status_id)->code, array("reserved", "finished", "canceled"))){
-			$msg = $this->lang->line('error_nea');
-			$type = "error";
-		}else{
-			if (!$this->general->delete("appointment_medicine", $data)){
-				$msg = $this->lang->line('error_internal');
-				$type = "error";
+		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){			
+			$data = $this->input->post();
+			
+			//appointment status validation
+			$appointment = $this->appointment->id($data["appointment_id"]);
+			if (in_array($this->status->id($appointment->status_id)->code, array("reserved", "finished", "canceled"))){
+				$msg = $this->lang->line('error_nea');
 			}else{
-				$msg = $this->lang->line('success_rme');
-				$type = "success";
+				if (!$this->general->delete("appointment_medicine", $data)) $msg = $this->lang->line('error_internal');
+				else{
+					$msg = $this->lang->line('success_rme');
+					$type = "success";
+				}
 			}
-		}
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		$medicines = $this->set_medicine_list($data["appointment_id"]);
 		
@@ -948,6 +1010,8 @@ class Appointment extends CI_Controller {
 	}
 	
 	public function report($id){
+		if (!$this->utility_lib->check_access("appointment", "report")) redirect("/errors/no_permission");
+		
 		$appointment = $this->appointment->id($id);
 		if (!$appointment) redirect("/appointment");
 		

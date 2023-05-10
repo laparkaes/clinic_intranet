@@ -16,49 +16,52 @@ class Surgery extends CI_Controller {
 		$this->nav_menu = "surgery";
 	}
 	
-	private function set_msg($msgs, $dom_id, $type, $msg_code){
-		if ($msg_code) array_push($msgs, array("dom_id" => $dom_id, "type" => $type, "msg" => $this->lang->line($msg_code)));
-		return $msgs;
-	}
-	
 	public function index(){
 		if (!$this->session->userdata('logged_in')) redirect(base_url());
-		//PENDING! rol validation
+		if (!$this->utility_lib->check_access("surgery", "index")) redirect("/errors/no_permission");
 		
-		$filter = ["schedule_from >=" => date("Y-m-d", strtotime("-1 month"))];
-		$surgeries = $this->general->filter("surgery", $filter, null, null, "schedule_from", "desc");
+		$f_url = [
+			"page" => $this->input->get("page"),
+			"status" => $this->input->get("status"),
+			"date" => $this->input->get("date"),
+		];
 		
-		$person_ids = array();
-		$patient_ids = $this->general->only("surgery", "patient_id", $filter);
-		$doctor_ids = $this->general->only("surgery", "doctor_id", $filter);
-		foreach($patient_ids as $item) array_push($person_ids, $item->patient_id);
-		foreach($doctor_ids as $item) array_push($person_ids, $item->doctor_id);
+		$f_w = [];
+		if (!$f_url["page"]) $f_url["page"] = 1;
+		if ($f_url["status"]) $f_w["status_id"] = $f_url["status"];
+		if ($f_url["date"]){
+			$f_w["schedule_from >="] = $f_url["date"]." 00:00:00";
+			$f_w["schedule_to <="] = $f_url["date"]." 23:59:59";
+		}
 		
-		array_unique($person_ids);
+		$surgeries = $this->general->filter("surgery", $f_w, null, null, "schedule_from", "desc", 25, 25*($f_url["page"]-1));
+		foreach($surgeries as $item){
+			$item->patient = $this->general->id("person", $item->patient_id)->name;
+			$item->doctor = $this->general->id("person", $item->doctor_id)->name;
+			$item->specialty = $this->general->id("specialty", $item->specialty_id)->name;
+			$item->room = $this->general->id("surgery_room", $item->room_id)->name;
+		}
 		
-		$people_arr = array();
-		$people = $this->general->ids("person", $person_ids);
-		foreach($people as $p) $people_arr[$p->id] = $p->name;
-		
-		$se_id = $this->general->filter("status", ["code" => "enabled"])[0]->id;//status_enabled_id
-		
-		$specialties_arr = array();
+		$aux_f = ["status_id" => $this->general->filter("status", ["code" => "enabled"])[0]->id];
 		$specialties = $this->general->all("specialty", "name", "asc");
 		foreach($specialties as $s){
-			$s->doctor_qty = $this->general->counter("doctor", ["status_id" => $se_id, "specialty_id" => $s->id]);
-			$specialties_arr[$s->id] = $s->name;
+			$aux_f["specialty_id"] = $s->id;
+			$s->doctor_qty = $this->general->counter("doctor", $aux_f);
 		}
+		unset($aux_f["specialty_id"]);
 		
-		$doctors_arr = array();
-		$doctors = $this->general->filter("doctor", array("status_id" => $se_id));
-		foreach($doctors as $d){
-			$d->name = $this->general->id("person", $d->person_id)->name;
-			$doctors_arr[$d->person_id] = $d;
-		}
+		$doctors = $this->general->filter("doctor", $aux_f);
+		foreach($doctors as $d) $d->name = $this->general->id("person", $d->person_id)->name;
 		usort($doctors, function($a, $b) {return strcmp(strtoupper($a->name), strtoupper($b->name));});
 		
-		$status_arr = array();
-		$status = $this->general->all("status");
+		$status_aux = [];
+		$status_ids = $this->general->only("surgery", "status_id");
+		foreach($status_ids as $item) $status_aux[] = $item->status_id;
+		
+		$f_status = [["field" => "id", "values" => $status_aux]];
+		
+		$status_arr = [];
+		$status = $this->general->filter("status", null, null, [["field" => "id", "values" => $status_aux]]);
 		foreach($status as $item) $status_arr[$item->id] = $item;
 		
 		$rooms_arr = array();
@@ -71,17 +74,17 @@ class Surgery extends CI_Controller {
 		for($i = 2; $i <= 12; $i++) array_push($duration_ops, ["value" => 60 * $i, "txt" => $i." ".$this->lang->line('op_hours')]);
 		
 		$data = array(
+			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("surgery", $f_w)),
+			"f_url" => $f_url,
+			"status" => $status,
 			"status_arr" => $status_arr,
 			"surgeries" => $surgeries,
 			"rooms" => $rooms,
 			"rooms_arr" => $rooms_arr,
 			"duration_ops" => $duration_ops,
 			"specialties" => $specialties,
-			"specialties_arr" => $specialties_arr,
 			"doctors" => $doctors,
-			"doctors_arr" => $doctors_arr,
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
-			"people_arr" => $people_arr,
 			"title" => $this->lang->line('surgeries'),
 			"main" => "surgery/list",
 			"init_js" => "surgery/list.js"
@@ -92,7 +95,7 @@ class Surgery extends CI_Controller {
 	
 	public function detail($id){
 		if (!$this->session->userdata('logged_in')) redirect(base_url());
-		//PENDING! rol validation
+		if (!$this->utility_lib->check_access("surgery", "detail")) redirect("/errors/no_permission");
 		
 		$surgery = $this->general->id("surgery", $id);
 		if (!$surgery) redirect("/surgery");
@@ -206,43 +209,45 @@ class Surgery extends CI_Controller {
 	
 	public function register(){
 		$type = "error"; $msgs = array(); $msg = null; $move_to = null;
-		
-		$sur = $this->input->post("sur"); $sur["schedule_from"] = null;
-		$sch = $this->input->post("sch");
-		$pt = $this->input->post("pt");
-		
-		$this->load->library('my_val');
-		$msgs = $this->my_val->surgery($msgs, "sur_", $sur, $sch, $pt);
-		
-		if (!$msgs){
-			$now = date('Y-m-d H:i:s', time());
-			$person = $this->general->filter("person", ["doc_type_id" => $pt["doc_type_id"], "doc_number" => $pt["doc_number"]]);
-			if ($person){
-				$person = $person[0];
-				$pt["updated_at"] = $now;
-				$this->general->update("person", $person->id, $pt);
-				$sur["patient_id"] = $person->id;
-				$this->utility_lib->add_log("person_update", $person->name);
-			}else{
-				$pt["registed_at"] = $now;
-				$sur["patient_id"] = $this->general->insert("person", $pt);
-				$person = $this->general->id("person", $sur["patient_id"]);
-				$this->utility_lib->add_log("person_register", $person->name);
-			}
+		 	
+		if ($this->utility_lib->check_access("surgery", "register")){			
+			$sur = $this->input->post("sur"); $sur["schedule_from"] = null;
+			$sch = $this->input->post("sch");
+			$pt = $this->input->post("pt");
 			
-			$sur["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
-			$sur["schedule_to"] = date("Y-m-d H:i:s", strtotime("+".($sch["duration"]-1)." minutes", strtotime($sur["schedule_from"])));
-			$sur["status_id"] = $this->status->code("reserved")->id;
-			$sur["registed_at"] = $now;
-			$surgery_id = $this->general->insert("surgery", $sur);
-			if ($surgery_id){
-				$this->utility_lib->add_log("surgery_register", $pt["name"]);
+			$this->load->library('my_val');
+			$msgs = $this->my_val->surgery($msgs, "sur_", $sur, $sch, $pt);
+			
+			if (!$msgs){
+				$now = date('Y-m-d H:i:s', time());
+				$person = $this->general->filter("person", ["doc_type_id" => $pt["doc_type_id"], "doc_number" => $pt["doc_number"]]);
+				if ($person){
+					$person = $person[0];
+					$pt["updated_at"] = $now;
+					$this->general->update("person", $person->id, $pt);
+					$sur["patient_id"] = $person->id;
+					$this->utility_lib->add_log("person_update", $person->name);
+				}else{
+					$pt["registed_at"] = $now;
+					$sur["patient_id"] = $this->general->insert("person", $pt);
+					$person = $this->general->id("person", $sur["patient_id"]);
+					$this->utility_lib->add_log("person_register", $person->name);
+				}
 				
-				$type = "success";
-				$move_to = base_url()."surgery/detail/".$surgery_id;
-				$msg = $this->lang->line('success_ras');
-			}else $msg = $this->lang->line('error_internal');	
-		}else $msg = $this->lang->line('error_occurred'); 
+				$sur["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
+				$sur["schedule_to"] = date("Y-m-d H:i:s", strtotime("+".($sch["duration"]-1)." minutes", strtotime($sur["schedule_from"])));
+				$sur["status_id"] = $this->status->code("reserved")->id;
+				$sur["registed_at"] = $now;
+				$surgery_id = $this->general->insert("surgery", $sur);
+				if ($surgery_id){
+					$this->utility_lib->add_log("surgery_register", $pt["name"]);
+					
+					$type = "success";
+					$move_to = base_url()."surgery/detail/".$surgery_id;
+					$msg = $this->lang->line('success_ras');
+				}else $msg = $this->lang->line('error_internal');	
+			}else $msg = $this->lang->line('error_occurred');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to]);
@@ -250,17 +255,20 @@ class Surgery extends CI_Controller {
 	
 	public function cancel(){
 		$status = false; $type = "error"; $msg = null;
-		$surgery = $this->surgery->id($this->input->post("id"));
-		if ($surgery){
-			if ($this->surgery->update($surgery->id, array("status_id" => $this->status->code("canceled")->id))){
-				$person = $this->general->id("person", $surgery->patient_id);
-				$this->utility_lib->add_log("surgery_cancel", $person->name);
-				
-				$status = true;
-				$type = "success";
-				$msg = $this->lang->line('success_cap');
-			}else $msg = $this->lang->line('error_internal');
-		}else $msg = $this->lang->line('error_nap');
+		
+		if ($this->utility_lib->check_access("surgery", "update")){			
+			$surgery = $this->surgery->id($this->input->post("id"));
+			if ($surgery){
+				if ($this->surgery->update($surgery->id, array("status_id" => $this->status->code("canceled")->id))){
+					$person = $this->general->id("person", $surgery->patient_id);
+					$this->utility_lib->add_log("surgery_cancel", $person->name);
+					
+					$status = true;
+					$type = "success";
+					$msg = $this->lang->line('success_cap');
+				}else $msg = $this->lang->line('error_internal');
+			}else $msg = $this->lang->line('error_nap');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg));
@@ -339,6 +347,8 @@ class Surgery extends CI_Controller {
 	}
 
 	public function report($id){
+		if (!$this->utility_lib->check_access("surgery", "report")) redirect("/errors/no_permission");
+		
 		$surgery = $this->surgery->id($id);
 		if (!$surgery) redirect("/surgery");
 		
