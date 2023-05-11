@@ -227,6 +227,40 @@ class My_val{
 		return $msgs;
 	}
 	
+	public function surgery_reschedule($msgs, $prefix, $surgery, $data){
+		$msgs = $this->schedule($msgs, $prefix, $data);//schedule
+		if (!$data["room_id"]) $msgs = $this->set_msg($msgs, $prefix."room_msg", "error", "e_select_room");
+		if (!$data["duration"]) $msgs = $this->set_msg($msgs, $prefix."duration_msg", "error", "e_select_duration");
+		
+		if ($surgery){
+			$schedule_from = $data["date"]." ".$data["hour"].":".$data["min"];
+			$sur = [
+				"id" => $surgery->id,
+				"doctor_id" => $surgery->doctor_id,
+				"room_id" => $data["room_id"],
+				"schedule_from" => $schedule_from,
+				"schedule_to" => date("Y-m-d H:i:s", strtotime("+14 minutes", strtotime($schedule_from)))
+			];
+			
+			$status_ids = [
+				$this->CI->general->filter("status", ["code" => "reserved"])[0]->id,
+				$this->CI->general->filter("status", ["code" => "confirmed"])[0]->id
+			];
+			
+			//check appointment and surgery available
+			$sur_available = $this->CI->general->is_available("surgery", $sur, $status_ids);
+			$app_available = $this->CI->general->is_available("appointment", $sur, $status_ids);
+			if (!($sur_available and $app_available)) 
+				$msgs = $this->set_msg($msgs, $prefix."schedule_msg", "error", "e_doctor_no_available");
+			
+			//check room availability
+			if ($this->CI->general->get_by_room("surgery", $sur, $status_ids, null, $sur["room_id"])) 
+				$msgs = $this->set_msg($msgs, $prefix."room_msg", "error", "e_room_no_available");
+		}
+		
+		return $msgs;
+	}
+	
 	public function file_upload($msgs, $prefix, $title, $filename){
 		if (!$title) $msgs = $this->set_msg($msgs, $prefix."title_msg", "error", "e_enter_file_title");
 		if (!$filename) $msgs = $this->set_msg($msgs, $prefix."file_msg", "error", "e_select_file");

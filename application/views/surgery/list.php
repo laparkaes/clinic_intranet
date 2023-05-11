@@ -58,11 +58,11 @@
 								<tr>
 									<td><strong><?= number_format(($f_url["page"] - 1) * 25 + 1 + $i) ?></strong></td>
 									<td>
-										<div><?= date("Y-m-d", strtotime($item->schedule_from)); ?></div>
 										<div class="text-nowrap"><?= date("h:i A", strtotime($item->schedule_from)); ?></div>
+										<div><small><?= date("Y-m-d", strtotime($item->schedule_from)); ?></small></div>
 									</td>
 									<td><?= $item->room ?></td>
-									<td><?= $item->doctor ?><br/><?= $item->specialty ?></td>
+									<td><?= $item->doctor ?><br/><small><?= $item->specialty ?></small></td>
 									<td><?= $item->patient ?></td>
 									<td><span class="badge light badge-<?= $status_arr[$item->status_id]->color ?>"><?= $this->lang->line($status_arr[$item->status_id]->code) ?></span></td>
 									<td class="text-right">

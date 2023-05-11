@@ -28,44 +28,44 @@
 				<?php if ($surgery->detail){ ?>
 				<div class="form-group col-md-12">
 					<label><?= $this->lang->line('lb_detail') ?></label>
-					<input type="text" class="form-control" value="<?= $surgery->detail ?>" readonly>
+					<input type="text" class="form-control bw" value="<?= $surgery->detail ?>" readonly>
 				</div>
 				<?php } ?>
 				<div class="form-group col-md-3">
 					<label><?= $this->lang->line('lb_doctor') ?></label>
-					<input type="text" class="form-control" value="<?= $doctor->name ?>" readonly>
+					<input type="text" class="form-control bw" value="<?= $doctor->name ?>" readonly>
 				</div>
 				<div class="form-group col-md-3">
 					<label><?= $this->lang->line('lb_date') ?></label>
-					<input type="text" class="form-control" value="<?= date("Y-m-d", strtotime($surgery->schedule_from)) ?>" readonly>
+					<input type="text" class="form-control bw" value="<?= date("Y-m-d", strtotime($surgery->schedule_from)) ?>" readonly>
 				</div>
 				<div class="form-group col-md-3">
 					<label><?= $this->lang->line('lb_hour') ?></label>
-					<input type="text" class="form-control" value="<?= date("H:i A", strtotime($surgery->schedule_from))." - ".date("H:i A", strtotime($surgery->schedule_to)) ?>" readonly>
+					<input type="text" class="form-control bw" value="<?= date("H:i A", strtotime($surgery->schedule_from))." - ".date("H:i A", strtotime($surgery->schedule_to)) ?>" readonly>
 				</div>
 				<div class="form-group col-md-3">
 					<label><?= $this->lang->line('lb_status') ?></label>
-					<input type="text" class="form-control text-<?= $surgery->status->color ?>" value="<?= $this->lang->line($surgery->status->code) ?>" readonly>
+					<input type="text" class="form-control bw text-<?= $surgery->status->color ?>" value="<?= $this->lang->line($surgery->status->code) ?>" readonly>
 				</div>
 				<div class="form-group col-md-3">
 					<label><?= $this->lang->line('lb_patient') ?></label>
-					<input type="text" class="form-control" value="<?= $patient->name ?>" readonly>
+					<input type="text" class="form-control bw" value="<?= $patient->name ?>" readonly>
 				</div>
 				<div class="form-group col-md-3">
 					<label><?= $this->lang->line('lb_history_number') ?></label>
-					<input type="text" class="form-control" value="<?= $patient->doc_number ?>" readonly>
+					<input type="text" class="form-control bw" value="<?= $patient->doc_number ?>" readonly>
 				</div>
 				<div class="form-group col-md-2">
 					<label><?= $this->lang->line('lb_sex') ?></label>
-					<input type="text" class="form-control" value="<?= $patient->sex ?>" readonly>
+					<input type="text" class="form-control bw" value="<?= $patient->sex ?>" readonly>
 				</div>
 				<div class="form-group col-md-2">
 					<label><?= $this->lang->line('lb_age') ?></label>
-					<input type="text" class="form-control" value="<?= $patient->age ?>" readonly>
+					<input type="text" class="form-control bw" value="<?= $patient->age ?>" readonly>
 				</div>
 				<div class="form-group col-md-2">
 					<label><?= $this->lang->line('lb_blood_type') ?></label>
-					<input type="text" class="form-control" value="<?= $patient->blood_type ?>" readonly>
+					<input type="text" class="form-control bw" value="<?= $patient->blood_type ?>" readonly>
 				</div>
 			</div>
 			<div class="row d-none" id="sur_reschedule">
@@ -88,7 +88,7 @@
 							</div>
 							<div class="form-group col-md-6">
 								<label><?= $this->lang->line('lb_date') ?></label>
-								<input type="text" class="form-control date_picker doc_schedule schedule" id="rs_date" name="date" value="<?= date('Y-m-d', strtotime($surgery->schedule_from)) ?>" readonly>
+								<input type="text" class="form-control date_picker bw doc_schedule schedule" id="rs_date" name="date" value="<?= date('Y-m-d', strtotime($surgery->schedule_from)) ?>" readonly>
 								<div class="sys_msg" id="rs_date_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
@@ -123,7 +123,7 @@
 										<option value="45" <?= $selected ?>>45</option>
 									</select>
 								</div>
-								<div class="sys_msg" id="rs_time_msg"></div>
+								<div class="sys_msg" id="rs_schedule_msg"></div>
 							</div>
 							<div class="form-group col-md-8">
 								<label>
@@ -171,7 +171,7 @@
 			<h4 class="mb-0"><?= $this->lang->line('title_remark') ?></h4>
 		</div>
 		<div class="card-body">
-			<textarea class="form-control" rows="3" readonly><?= $surgery->remark ?></textarea>
+			<textarea class="form-control bw" rows="3" readonly><?= $surgery->remark ?></textarea>
 		</div>
 	</div>
 </div>
@@ -262,7 +262,7 @@
 			<form action="#" id="form_result" class="form-row">
 				<div class="form-group col-md-12">
 					<?php if ($surgery->is_editable) $rd = ""; else $rd = "readonly"; ?>
-					<textarea class="form-control" rows="3" name="result" <?= $rd ?>><?= $surgery->result ?></textarea>
+					<textarea class="form-control bw" rows="3" name="result" <?= $rd ?>><?= $surgery->result ?></textarea>
 				</div>
 				<?php if ($surgery->is_editable){ ?>
 				<input type="hidden" name="id" value="<?= $surgery->id ?>">

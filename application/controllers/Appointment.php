@@ -418,7 +418,6 @@ class Appointment extends CI_Controller {
 					$schedule_from = $data["date"]." ".$data["hour"].":".$data["min"];
 					$app = [
 						"id" => $appointment->id,
-						"doctor_id" => $appointment->doctor_id,
 						"schedule_from" => $schedule_from,
 						"schedule_to" => date("Y-m-d H:i:s", strtotime("+14 minutes", strtotime($schedule_from)))
 					];

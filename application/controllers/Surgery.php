@@ -256,7 +256,7 @@ class Surgery extends CI_Controller {
 	public function cancel(){
 		$status = false; $type = "error"; $msg = null;
 		
-		if ($this->utility_lib->check_access("surgery", "update")){			
+		if ($this->utility_lib->check_access("surgery", "update")){
 			$surgery = $this->surgery->id($this->input->post("id"));
 			if ($surgery){
 				if ($this->surgery->update($surgery->id, array("status_id" => $this->status->code("canceled")->id))){
@@ -265,7 +265,7 @@ class Surgery extends CI_Controller {
 					
 					$status = true;
 					$type = "success";
-					$msg = $this->lang->line('success_cap');
+					$msg = $this->lang->line('success_csu');
 				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line('error_nap');
 		}else $msg = $this->lang->line('error_no_permission');
@@ -275,75 +275,61 @@ class Surgery extends CI_Controller {
 	}
 	
 	public function finish(){
-		$status = false; $type = "error"; $msg = null;
-		//pending!! role validation
+		$type = "error"; $msg = null;
 		
-		$data = $this->input->post();
-		$surgery = $this->general->id("surgery", $data["id"]);
-		
-		if ($data["result"]){
-			$data["status_id"] = $this->status->code("finished")->id;
-			if ($this->general->update("surgery", $data["id"], $data)){
-				$person = $this->general->id("person", $surgery->patient_id);
-				$this->utility_lib->add_log("surgery_finish", $person->name);
-				
-				$status = true;
-				$type = "success";
-				$msg = $this->lang->line('success_fsu');
-			}else $msg = $this->lang->line('error_internal');
-		}else $msg = $this->lang->line('error_sre');
+		if ($this->utility_lib->check_access("surgery", "update")){			
+			$data = $this->input->post();
+			$surgery = $this->general->id("surgery", $data["id"]);
+			
+			if ($data["result"]){
+				$data["status_id"] = $this->status->code("finished")->id;
+				if ($this->general->update("surgery", $data["id"], $data)){
+					$person = $this->general->id("person", $surgery->patient_id);
+					$this->utility_lib->add_log("surgery_finish", $person->name);
+					
+					$type = "success";
+					$msg = $this->lang->line('success_fsu');
+				}else $msg = $this->lang->line('error_internal');
+			}else $msg = $this->lang->line('error_sre');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg));
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 
 	public function reschedule(){
-		$status = false; $type = "error"; $msg = null; $msgs = array();
-		$data = $this->input->post();
+		$type = "error"; $msg = null; $msgs = [];
 		
-		if (!$data["room_id"]) $msgs = $this->set_msg($msgs, "rs_room_msg", "error", "error_sro");
-		if (!$data["duration"]) $msgs = $this->set_msg($msgs, "rs_duration_msg", "error", "error_sdu");
-		if (!$data["hour"]) $msgs = $this->set_msg($msgs, "rs_time_msg", "error", "error_sho");
-		elseif (!$data["min"]) $msgs = $this->set_msg($msgs, "rs_time_msg", "error", "error_smi");
-		
-		if ($msgs) $msg = $this->lang->line('error_occurred');
-		else{
-			$surgery = $this->surgery->id($data["id"]);
-			if ($surgery){
-				$schedule_from = $data["date"]." ".$data["hour"].":".$data["min"];
-				$sur = array(
-					"id" => $surgery->id,
-					"room_id" => $data["room_id"],
-					"doctor_id" => $surgery->doctor_id,
-					"schedule_from" => $schedule_from,
-					"schedule_to" => date("Y-m-d H:i:s", strtotime("+".($data["duration"]-1)." minutes", strtotime($schedule_from)))
-				);
+		if ($this->utility_lib->check_access("surgery", "update")){			
+			$data = $this->input->post();
+			$surgery = $this->general->id("surgery", $data["id"]);
+			
+			if($surgery){
+				$this->load->library('my_val');
+				$msgs = $this->my_val->surgery_reschedule($msgs, "rs_", $surgery, $data);
 				
-				$status_ids = array();
-				array_push($status_ids, $this->status->code("reserved")->id);
-				array_push($status_ids, $this->status->code("confirmed")->id);
-				
-				$sur_available = $this->general->is_available("surgery", $sur, $status_ids, $sur["id"]);
-				$app_available = $this->general->is_available("appointment", $sur, $status_ids);
-				
-				if ($sur_available and $app_available){
-					//room available
-					if (!$this->general->get_by_room("surgery", $sur, $status_ids, $data["id"], $data["room_id"])){
-						if ($this->surgery->update($sur["id"], $sur)){
-							$person = $this->general->id("person", $surgery->patient_id);
-							$this->utility_lib->add_log("surgery_reschedule", $person->name);
+				if (!$msgs){
+					$schedule_from = $data["date"]." ".$data["hour"].":".$data["min"];
+					$app = [
+						"id" => $surgery->id,
+						"room_id" => $data["room_id"],
+						"schedule_from" => $schedule_from,
+						"schedule_to" => date("Y-m-d H:i:s", strtotime("+".($data["duration"]-1)." minutes", strtotime($schedule_from)))
+					];
+					
+					if ($this->surgery->update($app["id"], $app)){
+						$person = $this->general->id("person", $surgery->patient_id);
+						$this->utility_lib->add_log("surgery_reschedule", $person->name);
 						
-							$status = true;
-							$type = "success";
-							$msg = $this->lang->line('success_rsu');
-						}else $msg = $this->lang->line('error_internal');						
-					}else $msg = $this->lang->line('error_rna');
-				}else $msg = $this->lang->line('error_dna');
+						$type = "success";
+						$msg = $this->lang->line('success_rsu');
+					}else $msg = $this->lang->line('error_internal');
+				}else $msg = $this->lang->line('error_occurred');
 			}else $msg = $this->lang->line('error_internal_refresh');
-		}
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg, "msgs" => $msgs));
+		echo json_encode(["type" => $type, "msg" => $msg, "msgs" => $msgs]);
 	}
 
 	public function report($id){
