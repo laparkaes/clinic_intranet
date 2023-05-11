@@ -56,39 +56,39 @@
 								<div class="form-row">
 									<div class="form-group col-md-12">
 										<label><?= $this->lang->line('p_category') ?></label>
-										<input type="text" class="form-control" value="<?= $product->category ?>" readonly="">
+										<input type="text" class="form-control bw" value="<?= $product->category ?>" readonly="">
 									</div>
 									<div class="form-group col-md-4">
 										<label><?= $this->lang->line('p_code') ?></label>
-										<input type="text" class="form-control" value="<?= $product->code ?>" readonly="">
+										<input type="text" class="form-control bw" value="<?= $product->code ?>" readonly="">
 									</div>
 									<div class="form-group col-md-4">
 										<label><?= $this->lang->line('p_type') ?></label>
-										<input type="text" class="form-control" value="<?= $product->type ?>" readonly="">
+										<input type="text" class="form-control bw" value="<?= $product->type ?>" readonly="">
 									</div>
 									<div class="form-group col-md-4">
 										<label><?= $this->lang->line('p_stock') ?></label>
-										<input type="text" class="form-control" value="<?= number_format($product->stock) ?>" readonly="">
+										<input type="text" class="form-control bw" value="<?= number_format($product->stock) ?>" readonly="">
 									</div>
 									<div class="form-group col-md-4">
 										<label><?= $this->lang->line('p_price') ?></label>
-										<input type="text" class="form-control" value="<?= $product->currency." ".number_format($product->price, 2) ?>" readonly="">
+										<input type="text" class="form-control bw" value="<?= $product->currency." ".number_format($product->price, 2) ?>" readonly="">
 									</div>
 									<div class="form-group col-md-4">
 										<label>Valor</label>
-										<input type="text" class="form-control" value="<?= $product->currency." ".number_format($product->value, 2) ?>" readonly="">
+										<input type="text" class="form-control bw" value="<?= $product->currency." ".number_format($product->value, 2) ?>" readonly="">
 									</div>
 									<div class="form-group col-md-4">
 										<label>IGV</label>
-										<input type="text" class="form-control" value="<?= $product->currency." ".number_format($product->vat, 2) ?>" readonly="">
+										<input type="text" class="form-control bw" value="<?= $product->currency." ".number_format($product->vat, 2) ?>" readonly="">
 									</div>
 									<div class="form-group col-md-6">
 										<label><?= $this->lang->line('p_last_updated') ?></label>
-										<input type="text" class="form-control" value="<?= $product->updated_at ?>" readonly="">
+										<input type="text" class="form-control bw" value="<?= $product->updated_at ?>" readonly="">
 									</div>
 									<div class="form-group col-md-6">
 										<label><?= $this->lang->line('p_register_date') ?></label>
-										<input type="text" class="form-control" value="<?= $product->registed_at ?>" readonly="">
+										<input type="text" class="form-control bw" value="<?= $product->registed_at ?>" readonly="">
 									</div>
 								</div>
 							</div>

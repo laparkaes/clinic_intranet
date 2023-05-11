@@ -1,129 +1,44 @@
 function add_image(dom){
 	$("#form_add_image .sys_msg").html("");
-	$.ajax({
-		url: $("#base_url").val() + "product/add_image",
-		type: "POST",
-		data: new FormData(dom),
-		contentType: false,
-		processData:false,
-		success:function(res){
-			Swal.fire({
-				title: $("#alert_" + res.type + "_title").val(),
-				html: res.msg,
-				icon: res.type,
-				confirmButtonText: $("#alert_confirm_btn").val()
-			}).then((result) => {
-				if (res.status == true){
-					$("#bl_images").append('<div class="col-md-3" id="img_' + res.img.id + '"><div class="text-center border rounded overflow-hidden mb-3 w-100"><div class="overflow-hidden" style="width: 100%; height: 100px;"><img src="' + res.img.link + '" style="max-weight: 100px; max-height: 100px;" /></div><div class="border-top"><button type="button" class="btn btn-xs text-info p-1 btn_set_img" id="btn_set_img_' + res.img.id + '" value="' + res.img.id + '"><i class="far fa-image"></i></button><button type="button" class="btn btn-xs text-danger p-1 btn_delete_img" id="btn_delete_img_' + res.img.id + '" value="' + res.img.id + '"><i class="far fa-trash"></i></button></div></div></div>');
-					
-					$("input[name=image]").val("");
-					$("#btn_delete_img_" + res.img.id).on('click',(function(e) {delete_image(this);}));
-					$("#btn_set_img_" + res.img.id).on('click',(function(e) {set_product_image(this);}));
-				}
-			});
+	ajax_form(dom, "product/add_image").done(function(res) {
+		//set_msg(res.msgs);
+		swal(res.type, res.msg);
+		if (res.type == "success"){
+			$("#bl_images").append('<div class="col-md-3" id="img_' + res.img.id + '"><div class="text-center border rounded overflow-hidden mb-3 w-100"><div class="overflow-hidden" style="width: 100%; height: 100px;"><img src="' + res.img.link + '" style="max-weight: 100px; max-height: 100px;" /></div><div class="border-top"><button type="button" class="btn btn-xs text-info p-1 btn_set_img" id="btn_set_img_' + res.img.id + '" value="' + res.img.id + '"><i class="far fa-image"></i></button><button type="button" class="btn btn-xs text-danger p-1 btn_delete_img" id="btn_delete_img_' + res.img.id + '" value="' + res.img.id + '"><i class="far fa-trash"></i></button></div></div></div>');
+			
+			$("input[name=image]").val("");
+			$("#btn_delete_img_" + res.img.id).on('click',(function(e) {delete_image(this);}));
+			$("#btn_set_img_" + res.img.id).on('click',(function(e) {set_product_image(this);}));
 		}
 	});
 }
 
 function delete_image(dom){
-	Swal.fire({
-		title: $("#alert_warning_title").val(),
-		html: $("#warning_di").val(),
-		icon: 'warning',
-		showCancelButton: true,
-		confirmButtonText: $("#alert_confirm_btn").val(),
-		cancelButtonText: $("#alert_cancel_btn").val()
-	}).then((result) => {
-		if (result.isConfirmed){
-			$.ajax({
-				url: $("#base_url").val() + "product/delete_image",
-				type: "POST",
-				data: {id: $(dom).val()},
-				success:function(res){
-					Swal.fire({
-						title: $("#alert_" + res.type + "_title").val(),
-						html: res.msg,
-						icon: res.type,
-						confirmButtonText: $("#alert_confirm_btn").val()
-					}).then((result) => {
-						if (res.status == true) $("#img_" + res.id).remove();
-					});
-				}
-			});
-		}
+	ajax_simple_warning({id: $(dom).val()}, "product/delete_image", $("#warning_di").val()).done(function(res) {
+		swal(res.type, res.msg);
+		if (res.type == "success") $("#img_" + res.id).remove();
 	});
 }
 
 function set_product_image(dom){
-	Swal.fire({
-		title: $("#alert_warning_title").val(),
-		html: $("#warning_pri").val(),
-		icon: 'warning',
-		showCancelButton: true,
-		confirmButtonText: $("#alert_confirm_btn").val(),
-		cancelButtonText: $("#alert_cancel_btn").val()
-	}).then((result) => {
-		if (result.isConfirmed){
-			$.ajax({
-				url: $("#base_url").val() + "product/set_product_image",
-				type: "POST",
-				data: {id: $(dom).val()},
-				success:function(res){
-					Swal.fire({
-						title: $("#alert_" + res.type + "_title").val(),
-						html: res.msg,
-						icon: res.type,
-						confirmButtonText: $("#alert_confirm_btn").val()
-					}).then((result) => {
-						if (res.status == true) location.reload();
-					});
-				}
-			});
-		}
+	ajax_simple_warning({id: $(dom).val()}, "product/set_product_image", $("#warning_pri").val()).done(function(res) {
+		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function save_provider(dom){
 	$("#form_edit_provider .sys_msg").html("");
-	$.ajax({
-		url: $("#base_url").val() + "product/save_provider",
-		type: "POST",
-		data: new FormData(dom),
-		contentType: false,
-		processData:false,
-		success:function(res){
-			set_msg(res.msgs);
-			if (res.msg != null){
-				Swal.fire({
-					title: $("#alert_" + res.type + "_title").val(),
-					html: res.msg,
-					icon: res.type,
-					confirmButtonText: $("#alert_confirm_btn").val()
-				}).then((result) => {
-					if (res.status == true) location.reload();
-				});
-			}
-		}
+	ajax_form(dom, "product/save_provider").done(function(res) {
+		set_msg(res.msgs);
+		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function clean_provider(){
-	$.ajax({
-		url: $("#base_url").val() + "product/clean_provider",
-		type: "POST",
-		data: {product_id: $('input[name="product_id"]').val()},
-		success:function(res){
-			Swal.fire({
-				title: $("#alert_" + res.type + "_title").val(),
-				html: res.msg,
-				icon: res.type,
-				confirmButtonText: $("#alert_confirm_btn").val()
-			}).then((result) => {
-				if (res.status == true) location.reload();
-			});
-		}
+	ajax_simple({product_id: $('input[name="product_id"]').val()}, "product/clean_provider").done(function(res) {
+		swal_redirection(res.type, res.msg, window.location.href);
 	});
-	}
+}
 
 function set_stock(dom){
 	if ($(dom).val() == 71){//service type

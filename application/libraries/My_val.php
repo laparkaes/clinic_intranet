@@ -267,4 +267,37 @@ class My_val{
 		
 		return $msgs;
 	}
+	
+	public function product_category_move($msgs, $prefix, $id_from, $id_to){
+		if (!$id_from) $msgs = $this->set_msg($msgs, $prefix."id_from_msg", "error", "e_category_from");
+		if (!$id_to) $msgs = $this->set_msg($msgs, $prefix."id_to_msg", "error", "e_category_to");
+		elseif ($id_from == $id_to) $msgs = $this->set_msg($msgs, $prefix."id_to_msg", "error", "e_category_diff");
+		
+		return $msgs;
+	}
+	
+	public function product($msgs, $prefix, $data){
+		//provider data is optional
+		if ($data["code"]){
+			if ($this->CI->product->filter(array("code" => $data["code"]))) 
+				$msgs = $this->set_msg($msgs, $prefix."code_msg", "error", "e_product_code_exists");
+		}else $msgs = $this->set_msg($msgs, $prefix."code_msg", "error", "e_product_code");
+		if (!$data["description"]) $msgs = $this->set_msg($msgs, $prefix."description_msg", "error", "e_product_name");
+		if (!$data["category_id"]) $msgs = $this->set_msg($msgs, $prefix."category_msg", "error", "e_product_category");
+		if (!$data["currency_id"]) $msgs = $this->set_msg($msgs, $prefix."price_msg", "error", "e_product_currency");
+		if ($data["price"]){
+			if (is_numeric($data["price"])){
+				if ($data["price"] < 0) $msgs = $this->set_msg($msgs, $prefix."price_msg", "error", "e_enter_positive_num");
+			}else $msgs = $this->set_msg($msgs, $prefix."price_msg", "error", "e_enter_number");
+		}else $msgs = $this->set_msg($msgs, $prefix."price_msg", "error", "e_enter_price");
+		
+		return $msgs;
+	}
+	
+	public function product_provider($msgs, $data){
+		if (!$data["company"]) $msgs = $this->set_msg($msgs, "epv_company_msg", "error", "e_enter_company");
+		if (!$data["ruc"]) $msgs = $this->set_msg($msgs, "epv_ruc_msg", "error", "e_enter_ruc");
+		
+		return $msgs;
+	}
 }

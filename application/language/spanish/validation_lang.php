@@ -48,3 +48,18 @@ $lang['e_room_no_available'] = 'Sala no disponible.';
 /* file upload */
 $lang['e_enter_file_title'] = 'Ingrese título del archivo.';
 $lang['e_select_file'] = 'Elija un archivo.';
+
+/* product */
+$lang["e_category_from"] = "Elija una categoría de partida.";
+$lang["e_category_to"] = "Elija una categoría de llegada.";
+$lang["e_category_diff"] = "Elija una categoría diferente.";
+$lang["e_product_code_exists"] = "Existe producto con código ingresado.";
+$lang["e_product_code"] = "Ingrese código.";
+$lang["e_product_name"] = "Ingrese nombre.";
+$lang["e_product_category"] = "Elija una categoría.";
+$lang["e_product_currency"] = "Elija moneda.";
+$lang["e_enter_positive_num"] = "Ingrese un número positivo.";
+$lang["e_enter_number"] = "Ingrese un número.";
+$lang["e_enter_price"] = "Ingrese precio de venta.";
+$lang["e_enter_company"] = "Ingrese nombre de proveedor.";
+$lang["e_enter_ruc"] = "Ingrese RUC o un documento de identidad.";
