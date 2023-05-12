@@ -276,11 +276,16 @@ class My_val{
 		return $msgs;
 	}
 	
-	public function product($msgs, $prefix, $data){
+	public function product($msgs, $prefix, $data, $id = null){
 		//provider data is optional
 		if ($data["code"]){
-			if ($this->CI->product->filter(array("code" => $data["code"]))) 
-				$msgs = $this->set_msg($msgs, $prefix."code_msg", "error", "e_product_code_exists");
+			$product = $this->CI->product->filter(array("code" => $data["code"]));
+			if ($product){
+				$product = $product[0];
+				if ($id){
+					if ($id != $product->id) $msgs = $this->set_msg($msgs, $prefix."code_msg", "error", "e_product_code_exists");
+				}else $msgs = $this->set_msg($msgs, $prefix."code_msg", "error", "e_product_code_exists");
+			}
 		}else $msgs = $this->set_msg($msgs, $prefix."code_msg", "error", "e_product_code");
 		if (!$data["description"]) $msgs = $this->set_msg($msgs, $prefix."description_msg", "error", "e_product_name");
 		if (!$data["category_id"]) $msgs = $this->set_msg($msgs, $prefix."category_msg", "error", "e_product_category");
@@ -297,6 +302,21 @@ class My_val{
 	public function product_provider($msgs, $data){
 		if (!$data["company"]) $msgs = $this->set_msg($msgs, "epv_company_msg", "error", "e_enter_company");
 		if (!$data["ruc"]) $msgs = $this->set_msg($msgs, "epv_ruc_msg", "error", "e_enter_ruc");
+		
+		return $msgs;
+	}
+	
+	public function product_option($msgs, $prefix, $data){
+		if ($data["description"]){
+			$f = array("product_id" => $data["product_id"], "description" => $data["description"]);
+			if ($this->CI->general->filter("product_option", $f))
+				$msgs = $this->set_msg($msgs, $prefix."description_msg", "error", "error_ope");
+		}else $msgs = $this->set_msg($msgs, $prefix."description_msg", "error", "error_opd");
+		if ($data["stock"]){
+			if (filter_var($data["stock"], FILTER_VALIDATE_INT) !== false){
+				if ($data["stock"] < 0) $msgs = $this->set_msg($msgs, $prefix."stock_msg", "error", "error_epn");
+			}else $msgs = $this->set_msg($msgs, $prefix."stock_msg", "error", "error_ein");
+		}else $msgs = $this->set_msg($msgs, $prefix."stock_msg", "error", "error_es");
 		
 		return $msgs;
 	}

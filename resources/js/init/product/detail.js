@@ -53,144 +53,33 @@ function set_stock(dom){
 
 function edit_product(dom){
 	$("#form_edit_product .sys_msg").html("");
-	$.ajax({
-		url: $("#base_url").val() + "product/edit_product",
-		type: "POST",
-		data: new FormData(dom),
-		contentType: false,
-		processData:false,
-		success:function(res){
-			set_msg(res.msgs);
-			Swal.fire({
-				title: $("#alert_" + res.type + "_title").val(),
-				html: res.msg,
-				icon: res.type,
-				confirmButtonText: $("#alert_confirm_btn").val()
-			}).then((result) => {
-				if (res.status == true) location.reload();
-			});
-		}
+	ajax_form(dom, "product/edit_product").done(function(res) {
+		set_msg(res.msgs);
+		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function delete_product(dom){
-	Swal.fire({
-		title: $("#alert_warning_title").val(),
-		html: $("#warning_dp").val(),
-		icon: 'warning',
-		showCancelButton: true,
-		confirmButtonText: $("#alert_confirm_btn").val(),
-		cancelButtonText: $("#alert_cancel_btn").val()
-	}).then((result) => {
-		if (result.isConfirmed){
-			$.ajax({
-				url: $("#base_url").val() + "product/delete_product",
-				type: "POST",
-				data: {id: $(dom).val()},
-				success:function(res){
-					Swal.fire({
-						title: $("#alert_" + res.type + "_title").val(),
-						icon: res.type,
-						html: res.msg,
-						confirmButtonText: $("#alert_confirm_btn").val()
-					}).then((result) => {
-						if (res.status == true) location.href = $("#base_url").val() + "product";
-					});
-				}
-			});
-		}
+	ajax_simple_warning({id: $(dom).val()}, "product/delete_product", $("#warning_dp").val()).done(function(res) {
+		swal_redirection(res.type, res.msg, res.move_to);
 	});
 }
 
 function add_option(dom){
-	Swal.fire({
-		title: $("#alert_warning_title").val(),
-		html: $("#warning_aop").val(),
-		icon: 'warning',
-		showCancelButton: true,
-		confirmButtonText: $("#alert_confirm_btn").val(),
-		cancelButtonText: $("#alert_cancel_btn").val()
-	}).then((result) => {
-		if (result.isConfirmed){
-			$.ajax({
-				url: $("#base_url").val() + "product/add_option",
-				type: "POST",
-				data: new FormData(dom),
-				contentType: false,
-				processData:false,
-				success:function(res){
-					set_msg(res.msgs);
-					Swal.fire({
-						title: $("#alert_" + res.type + "_title").val(),
-						icon: res.type,
-						html: res.msg,
-						confirmButtonText: $("#alert_confirm_btn").val()
-					}).then((result) => {
-						if (res.status == true) location.reload();
-					});
-				}
-			});
-		}
+	ajax_form_warning(dom, "product/add_option", $("#warning_aop").val()).done(function(res) {
+		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function edit_option(dom){
-	Swal.fire({
-		title: $("#alert_warning_title").val(),
-		html: $("#warning_aop").val(),
-		icon: 'warning',
-		showCancelButton: true,
-		confirmButtonText: $("#alert_confirm_btn").val(),
-		cancelButtonText: $("#alert_cancel_btn").val()
-	}).then((result) => {
-		if (result.isConfirmed){
-			$.ajax({
-				url: $("#base_url").val() + "product/edit_option",
-				type: "POST",
-				data: new FormData(dom),
-				contentType: false,
-				processData:false,
-				success:function(res){
-					Swal.fire({
-						title: $("#alert_" + res.type + "_title").val(),
-						icon: res.type,
-						html: res.msg,
-						confirmButtonText: $("#alert_confirm_btn").val()
-					}).then((result) => {
-						if (res.status == true) location.reload();
-					});
-				}
-			});
-		}
+	ajax_form_warning(dom, "product/edit_option", $("#warning_eop").val()).done(function(res) {
+		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function delete_option(dom){
-	Swal.fire({
-		title: $("#alert_warning_title").val(),
-		html: $("#warning_dop").val(),
-		icon: 'warning',
-		showCancelButton: true,
-		confirmButtonText: $("#alert_confirm_btn").val(),
-		cancelButtonText: $("#alert_cancel_btn").val()
-	}).then((result) => {
-		if (result.isConfirmed){
-			$.ajax({
-				url: $("#base_url").val() + "product/delete_option",
-				type: "POST",
-				data: {id: $(dom).val()},
-				success:function(res){
-					Swal.fire({
-						title: $("#alert_" + res.type + "_title").val(),
-						icon: res.type,
-						html: res.msg,
-						confirmButtonText: $("#alert_confirm_btn").val()
-					}).then((result) => {
-						if (res.status == true) location.reload();
-					});
-				}
-			});
-		}
+	ajax_simple_warning({id: $(dom).val()}, "product/delete_option", $("#warning_dop").val()).done(function(res) {
+		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
@@ -207,37 +96,22 @@ function control_op_edit_form(dom){
 }
 
 function search_provider(){
-	$.ajax({
-		url: $("#base_url").val() + "ajax_f/search_company",
-		type: "POST",
-		data: {ruc: $("#prov_ruc").val()},
-		success:function(res){
-			Swal.fire({
-				title: $("#alert_" + res.type + "_title").val(),
-				icon: res.type,
-				html: res.msg,
-				confirmButtonText: $("#alert_confirm_btn").val()
-			}).then((result) => {
-				if (res.status == true){
-					$("#prov_company").val(res.company.company);
-					$("#prov_web").val(res.company.web);
-					$("#prov_person").val(res.company.person);
-					$("#prov_tel").val(res.company.tel);
-					$("#prov_email").val(res.company.email);
-					$("#prov_address").val(res.company.address);
-					$("#prov_remark").val(res.company.remark);
-					
-					$("#prov_company").addClass("bg-light").prop("readonly", true);
-				}
-			});
+	ajax_simple({ruc: $("#prov_ruc").val()}, "ajax_f/search_company").done(function(res) {
+		swal(res.type, res.msg);
+		if (res.status == true){
+			$("#prov_company").val(res.company.company);
+			$("#prov_web").val(res.company.web);
+			$("#prov_person").val(res.company.person);
+			$("#prov_tel").val(res.company.tel);
+			$("#prov_email").val(res.company.email);
+			$("#prov_address").val(res.company.address);
+			$("#prov_remark").val(res.company.remark);
+			$("#prov_company").addClass("bg-light").prop("readonly", true);
 		}
 	});
 }
 
 $(document).ready(function() {
-	//general
-	set_datatable("provider_list", 5, false);
-	
 	//option
 	$("#form_add_option").submit(function(e) {e.preventDefault(); add_option(this);});
 	$(".form_edit_option").submit(function(e) {e.preventDefault(); edit_option(this);});

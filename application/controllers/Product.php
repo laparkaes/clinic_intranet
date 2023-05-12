@@ -29,6 +29,7 @@ class Product extends CI_Controller {
 		if ($f_url["type"]) $f_w["type_id"] = $f_url["type"];
 		if ($f_url["keyword"]) $f_l["description"] = $f_url["keyword"];
 		
+		$f_w["active"] = true;
 		$products = $this->general->filter("product", $f_w, $f_l, $f_w_in, "description", "asc", 25, 25*($f_url["page"]-1));
 		
 		$categories_arr = array();
@@ -224,6 +225,7 @@ class Product extends CI_Controller {
 		
 		$product = $this->product->id($product_id);
 		if (!$product) redirect("/errors/page_missing");
+		elseif(!$product->active) redirect("/errors/page_missing");
 		
 		$product->category = $this->product->category($product->category_id)->name;
 		$product->currency = $this->general->id("currency", $product->currency_id)->description;
@@ -254,39 +256,32 @@ class Product extends CI_Controller {
 	}
 	
 	public function add_option(){
-		$status = false; $type = "error"; $msgs = array(); $msg = null;
-		$data = $this->input->post();
+		$type = "error"; $msgs = []; $msg = null;
 		
-		if ($data["product_id"]){
-			if ($data["description"]){
-				$f = array("product_id" => $data["product_id"], "description" => $data["description"]);
-				if ($this->general->filter("product_option", $f))
-					$msgs = $this->set_msg($msgs, "aop_description_msg", "error", "error_ope");
-			}else $msgs = $this->set_msg($msgs, "aop_description_msg", "error", "error_opd");
-			if ($data["stock"]){
-				if (filter_var($data["stock"], FILTER_VALIDATE_INT) !== false){
-					if ($data["stock"] < 0) $msgs = $this->set_msg($msgs, "aop_stock_msg", "error", "error_epn");
-				}else $msgs = $this->set_msg($msgs, "aop_stock_msg", "error", "error_ein");
-			}else $msgs = $this->set_msg($msgs, "aop_stock_msg", "error", "error_es");
+		if ($this->utility_lib->check_access("product", "update")){
+			$data = $this->input->post();
+			if ($data["product_id"]){
+				$this->load->library('my_val');
+				$msgs = $this->my_val->product_option($msgs, "aop_", $data);
+			
+				if (!$msgs){
+					if ($this->general->insert("product_option", $data)){
+						//update product stock
+						$this->update_stock($data["product_id"]);
+						
+						$product = $this->general->id("product", $data["product_id"]);
+						$this->utility_lib->add_log("product_option_register", $product->description." > ".$data["description"]);
+						
+						$type = "success";
+						$msg = $this->lang->line('success_aop');
+					}else $this->lang->line('error_internal');
+				}else $msg = $this->lang->line('error_occurred');
+			}else $msg = $this->lang->line('error_internal_refresh');
+		}else $msg = $this->lang->line('error_no_permission');
 		
-			if ($msgs) $msg = $this->lang->line('error_occurred');
-			else{
-				if ($this->general->insert("product_option", $data)){
-					//update product stock
-					$this->update_stock($data["product_id"]);
-					
-					$product = $this->general->id("product", $data["product_id"]);
-					$this->utility_lib->add_log("product_option_register", $product->description." > ".$data["description"]);
-					
-					$status = true;
-					$type = "success";
-					$msg = $this->lang->line('success_aop');
-				}else $this->lang->line('error_internal');
-			}
-		}else $msg = $this->lang->line('error_internal_refresh');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msgs" => $msgs, "msg" => $msg));
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
 	}
 	
 	public function delete_option(){
@@ -311,6 +306,8 @@ class Product extends CI_Controller {
 	}
 	
 	public function edit_option(){
+		$type = "error"; $msg = null;
+		
 		$data = $this->input->post();
 		if ($this->general->update("product_option", $data["id"], $data)){
 			$this->update_stock($data["product_id"]);
@@ -319,73 +316,60 @@ class Product extends CI_Controller {
 			$product = $this->general->id("product", $product_op->product_id);
 			$this->utility_lib->add_log("product_option_update", $product->description." > ".$product_op->description);
 			
+			$type = "success";
 			$msg = $this->lang->line('success_eop');
-			$status = true;
-			$type = "success";
-		}else{
-			$msg = $this->lang->line('error_internal');
-			$status = false;
-			$type = "error";
-		}
-		
-		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg));
-	}
-	
-	public function edit_product(){
-		$data = $this->input->post();
-		$status = false; $type = "error"; $msgs = array(); $msg = null;
-		
-		//product datas validation. provider data is optional
-		if ($data["code"]){
-			$prod_f = $this->product->filter(array("code" => $data["code"]));
-			if ($prod_f) if ($prod_f[0]->id != $data["id"]) 
-				$msgs = $this->set_msg($msgs, "ep_code_msg", "error", "error_pcoe");
-		}else $msgs = $this->set_msg($msgs, "ep_code_msg", "error", "error_pco");
-		if (!$data["description"]) $msgs = $this->set_msg($msgs, "ep_description_msg", "error", "error_pn");
-		if (!$data["category_id"]) $msgs = $this->set_msg($msgs, "ep_category_msg", "error", "error_pca");
-		if (!$data["currency_id"]) $msgs = $this->set_msg($msgs, "ep_price_msg", "error", "error_pcu");
-		if ($data["price"]){
-			if (is_numeric($data["price"])){
-				if ($data["price"] < 0) $msgs = $this->set_msg($msgs, "ep_price_msg", "error", "error_epn");
-			}else $msgs = $this->set_msg($msgs, "ep_price_msg", "error", "error_enu");
-		}else $msgs = $this->set_msg($msgs, "ep_price_msg", "error", "error_ep");
-		
-		if ($msgs) $msg = $this->lang->line('error_occurred');
-		else{
-			$data["value"] = round($data["price"] / 1.18, 2);
-			$data["vat"] = $data["price"] - $data["value"];
-			$data["active"] = true;
-			$data["updated_at"] = date("Y-m-d H:i:s", time());
-			$this->general->update("product", $data["id"], $data);
-			$this->update_stock($data["id"]);
-			
-			$this->utility_lib->add_log("product_update", $data["description"]);
-			
-			$status = true;
-			$type = "success";
-			$msg = $this->lang->line('success_up');
-		}
-		
-		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msgs" => $msgs, "msg" => $msg));
-	}
-	
-	public function delete_product(){
-		$id = $this->input->post("id");
-		$status = false; $type = "error"; $msg = null;
-		
-		if ($this->product->update($id, array("active" => false))){
-			$product = $this->general->id("product", $id);
-			$this->utility_lib->add_log("product_delete", $product->description);
-			
-			$status = true;
-			$type = "success";
-			$msg = $this->lang->line('success_dp');
 		}else $msg = $this->lang->line('error_internal');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg));
+		echo json_encode(["type" => $type, "msg" => $msg]);
+	}
+	
+	public function edit_product(){
+		$type = "error"; $msgs = []; $msg = null;
+		
+		if ($this->utility_lib->check_access("product", "update")){
+			$data = $this->input->post();
+			
+			$this->load->library('my_val');
+			$msgs = $this->my_val->product($msgs, "ep_", $data, $data["id"]);
+			
+			if (!$msgs){
+				$data["value"] = round($data["price"] / 1.18, 2);
+				$data["vat"] = $data["price"] - $data["value"];
+				$data["active"] = true;
+				$data["updated_at"] = date("Y-m-d H:i:s", time());
+				$this->general->update("product", $data["id"], $data);
+				$this->update_stock($data["id"]);
+				
+				$this->utility_lib->add_log("product_update", $data["description"]);
+				
+				$type = "success";
+				$msg = $this->lang->line('success_up');
+			}else $msg = $this->lang->line('error_occurred');
+		}else $msg = $this->lang->line('error_no_permission');
+		
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
+	}
+	
+	public function delete_product(){
+		$type = "error"; $msg = null;
+		
+		if ($this->utility_lib->check_access("product", "delete")){
+			$id = $this->input->post("id");
+			if ($this->product->update($id, array("active" => false))){
+				$product = $this->general->id("product", $id);
+				$this->utility_lib->add_log("product_delete", $product->description);
+				
+				$move_to = base_url()."product";
+				$type = "success";
+				$msg = $this->lang->line('success_dp');
+			}else $msg = $this->lang->line('error_internal');
+		}else $msg = $this->lang->line('error_no_permission');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg, "move_to" => $move_to]);
 	}
 	
 	public function add_image(){
