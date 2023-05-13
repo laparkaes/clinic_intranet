@@ -20,11 +20,6 @@ class Sale extends CI_Controller {
 		$this->nav_menu = "sale";
 	}
 	
-	private function set_msg($msgs, $dom_id, $type, $msg_code){
-		if ($msg_code) array_push($msgs, array("dom_id" => $dom_id, "type" => $type, "msg" => $this->lang->line($msg_code)));
-		return $msgs;
-	}
-	
 	private function update_balance($sale_id){
 		//update paid and balance
 		$total_paid = 0;
@@ -48,6 +43,21 @@ class Sale extends CI_Controller {
 	public function index(){
 		if (!$this->session->userdata('logged_in')) redirect(base_url());
 		
+		$f_url = [
+			"page" => $this->input->get("page"),
+			"status" => $this->input->get("status"),
+			"date" => $this->input->get("date"),
+			"keyword" => $this->input->get("keyword"),
+		];
+		
+		$f_w = $f_l = $f_in = [];
+		if (!$f_url["page"]) $f_url["page"] = 1;
+		
+		
+		$sales = $this->general->filter("sale", $f_w, $f_l, $f_in, "registed_at", "desc", 25, 25 * ($f_url["page"] - 1));
+		
+		
+		
 		$specialties = $this->specialty->all();
 		$specialties_arr = array();
 		if ($specialties) foreach($specialties as $item) $specialties_arr[$item->id] = $item->name;
@@ -68,6 +78,8 @@ class Sale extends CI_Controller {
 		foreach($status_rec as $item) $status[$item->id] = $item;
 		
 		$data = array(
+			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("appointment", $f_w)),
+			"f_url" => $f_url,
 			"f_from" => $f_from,
 			"clients" => $clients,
 			"currencies" => $currencies,
@@ -76,7 +88,7 @@ class Sale extends CI_Controller {
 			"sale_type" => $this->general->all("sale_type", "description", "asc"),
 			"doc_types" => $this->general->all("doc_type", "sunat_code", "asc"),
 			"payment_methods" => $this->general->filter("sl_option", array("code" => "payment_method")),
-			"sales" => $this->general->filter("sale", $filter, "registed_at", "desc"),
+			"sales" => $sales,
 			"title" => $this->lang->line('sales'),
 			"main" => "sale/list",
 			"init_js" => "sale/list.js"

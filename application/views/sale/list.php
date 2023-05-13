@@ -21,6 +21,75 @@
 	<div class="card">
 		<div class="card-body">
 			<div class="row bl_content" id="bl_list">
+				<div class="col-md-12 d-md-flex justify-content-end">
+					<form class="form-inline">
+						<input type="hidden" value="1" name="page">
+						<label class="sr-only" for="sl_type"><?= $this->lang->line('sl_specialty') ?></label>
+						<select class="form-control mb-2 mr-sm-2" id="sl_type" name="specialty" style="max-width: 150px;">
+							<option value=""><?= $this->lang->line('sl_specialty') ?></option>
+							<?php foreach($specialties as $item){
+								if ($item->id == $f_url["specialty"]) $s = "selected"; else $s = ""; ?>
+							<option value="<?= $item->id ?>" <?= $s ?>><?= $item->name ?></option>
+							<?php } ?>
+						</select>
+						<label class="sr-only" for="inp_name"><?= $this->lang->line('lb_name') ?></label>
+						<input type="text" class="form-control mb-2 mr-sm-2" id="inp_name" name="name" placeholder="<?= $this->lang->line('lb_search_by_name') ?>" value="<?= $f_url["name"] ?>">
+						<button type="submit" class="btn btn-primary mb-2">
+							<i class="far fa-search"></i>
+						</button>
+					</form>
+				</div>
+				<div class="col-md-12">
+					<?php if ($doctors){ ?>
+					<div class="table-responsive">
+						<table class="table table-responsive-md">
+							<thead>
+								<tr>
+									<th><strong>#</strong></th>
+									<th><strong><?= $this->lang->line('hd_license') ?></strong></th>
+									<th><strong><?= $this->lang->line('hd_specialty') ?></strong></th>
+									<th><strong><?= $this->lang->line('hd_name') ?></strong></th>
+									<th><strong><?= $this->lang->line('hd_tel') ?></strong></th>
+									<th><strong><?= $this->lang->line('hd_status') ?></strong></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php foreach($doctors as $i => $item){ ?>
+								<tr>
+									<td><strong><?= number_format(($f_url["page"] - 1) * 25 + 1 + $i) ?></strong></td>
+									<td><?= $item->license ?></td>
+									<td style="max-width: 150px;"><?= $specialties_arr[$item->specialty_id] ?></td>
+									<td><?= $item->person->name ?></td>
+									<td><?= $item->person->tel ?></td>
+									<td><span class="badge light badge-<?= $status[$item->status_id]->color ?>"><?= $status[$item->status_id]->text ?></span></td>
+									<td class="text-right">
+										<a href="<?= base_url() ?>doctor/detail/<?= $item->id ?>">
+											<button type="button" class="btn btn-primary light sharp border-0">
+												<i class="far fa-search"></i>
+											</button>
+										</a>
+									</td>
+								</tr>
+								<?php } ?>
+							</tbody>
+						</table>
+						<div class="btn-group" role="group" aria-label="paging">
+							<?php foreach($paging as $p){
+							$f_url["page"] = $p[0]; ?>
+							<a href="<?= base_url() ?>doctor?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
+								<?= $p[1] ?>
+							</a>
+							<?php } ?>
+						</div>
+					</div>
+					<?php }else{ ?>
+					<h5 class="text-danger mt-3"><?= $this->lang->line('msg_no_doctors') ?></h5>
+					<?php } ?>
+				</div>
+			
+			
+			
 				<div class="col-md-2">
 					<div class="mb-3" id="sale_list_length_new"></div>
 				</div>

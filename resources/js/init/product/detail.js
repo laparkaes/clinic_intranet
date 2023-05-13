@@ -1,7 +1,6 @@
 function add_image(dom){
 	$("#form_add_image .sys_msg").html("");
 	ajax_form(dom, "product/add_image").done(function(res) {
-		//set_msg(res.msgs);
 		swal(res.type, res.msg);
 		if (res.type == "success"){
 			$("#bl_images").append('<div class="col-md-3" id="img_' + res.img.id + '"><div class="text-center border rounded overflow-hidden mb-3 w-100"><div class="overflow-hidden" style="width: 100%; height: 100px;"><img src="' + res.img.link + '" style="max-weight: 100px; max-height: 100px;" /></div><div class="border-top"><button type="button" class="btn btn-xs text-info p-1 btn_set_img" id="btn_set_img_' + res.img.id + '" value="' + res.img.id + '"><i class="far fa-image"></i></button><button type="button" class="btn btn-xs text-danger p-1 btn_delete_img" id="btn_delete_img_' + res.img.id + '" value="' + res.img.id + '"><i class="far fa-trash"></i></button></div></div></div>');
