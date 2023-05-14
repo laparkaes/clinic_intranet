@@ -154,3 +154,7 @@ $lang['msg_no_sales'] = 'No existe ventas registradas o cumplan con datos de bú
 $lang['title_add_product'] = 'Agregar Producto';
 $lang['lb_category'] = 'Categoría';
 $lang['lb_item'] = 'Ítem';
+$lang['lb_unit_price'] = 'Precio Unitario';
+$lang['lb_unit_discount'] = 'Descuento Unitario';
+$lang['lb_quantity'] = 'Cantidad';
+$lang['lb_subtotal'] = 'Subtotal';

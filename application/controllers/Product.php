@@ -525,6 +525,7 @@ class Product extends CI_Controller {
 					"description" => $item->description,
 					"currency" => $this->general->id("currency", $item->currency_id)->description,
 					"price" => $item->price,
+					"price_txt" => number_format($item->price, 2),
 					"value" => $item->value,
 					"vat" => $item->vat,
 				];

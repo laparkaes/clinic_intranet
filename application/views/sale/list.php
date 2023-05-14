@@ -339,7 +339,7 @@
 <div class="modal fade" id="basicModal" style="display: none;" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header border-0 pb-0">
 				<h5 class="modal-title"><?= $this->lang->line('title_add_product') ?></h5>
 				<button type="button" class="close" data-dismiss="modal"><span>×</span>
 				</button>
@@ -357,13 +357,29 @@
 					</div>
 					<div class="form-group col-md-12">
 						<label><?= $this->lang->line('lb_item') ?></label>
-						<select class="form-control" id="sl_pr_item">
+						<select class="form-control" id="sl_pr_items">
 							<option value="">--</option>
 						</select>
 					</div>
+					<div class="form-group col-md-6">
+						<label><?= $this->lang->line('lb_unit_price') ?></label>
+						<input type="text" class="form-control" id="sl_pr_uprice_txt" readonly>
+					</div>
+					<div class="form-group col-md-6">
+						<label><?= $this->lang->line('lb_unit_discount') ?></label>
+						<input type="number" class="form-control" id="sl_pr_udiscount" step="0.01" min="0">
+					</div>
+					<div class="form-group col-md-6">
+						<label><?= $this->lang->line('lb_quantity') ?></label>
+						<input type="number" class="form-control" id="sl_pr_quantity">
+					</div>
+					<div class="form-group col-md-6">
+						<label><?= $this->lang->line('lb_subtotal') ?></label>
+						<input type="txt" class="form-control bw border-0 text-right font-weight-bold" id="sl_pr_subtotal" value="0.00" readonly>
+					</div>
 				</div>
 			</div>
-			<div class="modal-footer">
+			<div class="modal-footer border-0 pt-0">
 				<button type="button" class="btn btn-danger light" data-dismiss="modal"><?= $this->lang->line('btn_close') ?></button>
 				<button type="button" class="btn btn-primary"><?= $this->lang->line('btn_add') ?></button>
 			</div>

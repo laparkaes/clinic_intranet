@@ -205,15 +205,6 @@ function load_product_list(){
 }
 */
 
-function load_items(category_id){
-	ajax_simple({category_id: category_id}, "product/load_by_category").done(function(res) {
-		if (res.type == "success"){
-			console.log(res.list);
-		}else swal(res.type, res.msg);
-		
-	});
-}
-
 function confirm_items(dom){
 	if ($(".row_pr").length > 0) $('#sale_process').smartWizard("next");//pass to next step
 	else Swal.fire({
@@ -366,6 +357,64 @@ function load_reservations(person_id){
 	});
 }
 
+function load_items(category_id){
+	ajax_simple({category_id: category_id}, "product/load_by_category").done(function(res) {
+		$("#sl_pr_items").html('');
+		$("#sl_pr_items").append('<option value="">--</option>');
+		if (res.type == "success"){
+			$.each(res.list, function(index, value) {
+				$("#sl_pr_items").append("<option value='" + JSON.stringify(value) + "'>" + value.description + "</option>");
+			});
+		}else swal(res.type, res.msg);
+		
+	});
+}
+
+function reset_pr_sl_form(){
+	
+	$("#sl_pr_uprice_txt").val(nf(0));
+	$("#sl_pr_udiscount").val(0);
+	$("#sl_pr_udiscount_txt").val(nf(0));
+}
+
+function select_item(){
+	var item = $("#sl_pr_items").val();
+	if (item == "") reset_pr_sl_form();
+	else{
+		var item = jQuery.parseJSON(item);
+		$("#sl_pr_uprice_txt").val(item.price_txt);
+		$("#sl_pr_udiscount").val(0);
+		$("#sl_pr_udiscount_txt").val(nf(0));
+		$("#sl_pr_quantity").val(1);
+		$("#sl_pr_subtotal").val(item.currency + " " + item.price_txt);
+	}
+}
+
+function calculate_subtotal(){
+	var item = $("#sl_pr_items").val();
+	if (item == "") reset_pr_sl_form();
+	else{
+		var item = jQuery.parseJSON(item);
+		var qty = parseFloat($("#sl_pr_quantity").val());
+		var discount = parseFloat($("#sl_pr_udiscount").val());
+		var price = item.price;
+		
+		if (discount == ""){
+			discount = 0;
+			$("#sl_pr_udiscount").val(nf(discount));
+		}else if (discount <= 0){
+			discount = 0;
+			$("#sl_pr_udiscount").val(nf(discount));
+		}else if (discount > price){
+			discount = price;
+			$("#sl_pr_udiscount").val(nf(discount));
+		}
+		
+		//$("#sl_pr_quantity").val(parseInt(qty));
+		$("#sl_pr_subtotal").val(item.currency + " " + nf(qty * (price - discount)));
+	}
+}
+
 $(document).ready(function() {
 	//general
 	$(".control_bl").on('click',(function(e) {control_bl(this);}));
@@ -373,6 +422,12 @@ $(document).ready(function() {
 	
 	//new sale - select item
 	$("#sl_pr_category").on('change',(function(e) {load_items($(this).val());}));
+	$("#sl_pr_items").on('change',(function(e) {select_item();}));
+	$("#sl_pr_udiscount").on('keyup',(function(e) {calculate_subtotal();}));
+	$("#sl_pr_udiscount").on('change',(function(e) {calculate_subtotal();}));
+	$("#sl_pr_quantity").on('keyup',(function(e) {calculate_subtotal();}));
+	$("#sl_pr_quantity").on('change',(function(e) {calculate_subtotal();}));
+	
 	
 	/*
 	load_product_list();
