@@ -511,4 +511,29 @@ class Product extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
+
+	public function load_by_category(){
+		$type = "error"; $msg = null; $list = [];
+		
+		$products = $this->general->filter("product", ["category_id" => $this->input->post("category_id")], null, null, "description", "asc");
+		
+		if ($products){
+			foreach($products as $item){
+				$list[] = [
+					"id" => $item->id,
+					"code" => $item->code,
+					"description" => $item->description,
+					"currency" => $this->general->id("currency", $item->currency_id)->description,
+					"price" => $item->price,
+					"value" => $item->value,
+					"vat" => $item->vat,
+				];
+			}
+			$type = "success";
+		}
+		else $msg = $this->lang->line('error_npin');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg, "list" => $list]);
+	}
 }

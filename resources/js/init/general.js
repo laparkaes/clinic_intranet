@@ -273,7 +273,7 @@ $(document).ready(function() {
 			lang: 'es',
 			minDate : new Date(),
 			okText: $("#bd_select").val(),
-			cancelText: $("#bd_cancel").val()
+			cancelText: $("#bd_cancel").val(),
 		});	
 	}
 	if ($(".date_picker_all").length > 0){
@@ -283,7 +283,9 @@ $(document).ready(function() {
 			minDate : null,
 			lang: 'es',
 			okText: $("#bd_select").val(),
-			cancelText: $("#bd_cancel").val()
+			cancelText: $("#bd_cancel").val(),
+			clearButton: true,
+			clearText: $("#bd_clean").val(),
 		});	
 	}
 	

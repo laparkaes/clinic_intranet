@@ -31,6 +31,7 @@ $lang["error_druc"] = "RUC ingreso existe en la base de datos.";//error_duplicat
 $lang["error_opd"] = "Ingrese descripción de opción.";//error_option_description
 $lang["error_ope"] = "Existe opción con misma descripción.";//error_option_exists
 $lang["error_sim"] = "Elija una imagen.";//error_select_image
+$lang["error_npin"] = "No hay ningun producto de categoría elegida.";//error_no_product_in_category
 $lang["warning_dp"] = "¿Seguro de eliminar producto?";//warning_delete_product
 $lang["warning_uc"] = "Los productos también modificará su categoría. ¿Desea actualizar categoría?";//warning_update_category
 $lang["warning_dc"] = "¿Desea eliminar categoría?";//warning_delete_category
@@ -43,6 +44,8 @@ $lang["warning_spv"] = "¿Desea elegir proveedor?";//warning_select_provider
 $lang["warning_aop"] = "¿Desea agregar nueva opción del producto?";//warning_add_option
 $lang["warning_dop"] = "¿Desea eliminar opción del producto?";//warning_delete_option
 $lang["warning_eop"] = "¿Desea actualizar opción del producto?";//warning_edit_option
+
+
 
 //component
 $lang['btn_new'] = 'Nuevo';

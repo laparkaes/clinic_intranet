@@ -208,6 +208,7 @@
 		<input type="hidden" id="j_datatable_no_record" value="<?= $this->lang->line('j_datatable_no_record') ?>">
 		<input type="hidden" id="bd_select" value="<?= $this->lang->line('bd_select') ?>">
 		<input type="hidden" id="bd_cancel" value="<?= $this->lang->line('bd_cancel') ?>">
+		<input type="hidden" id="bd_clean" value="<?= $this->lang->line('bd_clean') ?>">
 	</div>
     <script src="<?= base_url() ?>resources/vendor/global/global.min.js"></script>
 	<script src="<?= base_url() ?>resources/vendor/apexchart/apexcharts.min.js"></script>

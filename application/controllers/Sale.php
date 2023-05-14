@@ -47,44 +47,38 @@ class Sale extends CI_Controller {
 			"page" => $this->input->get("page"),
 			"status" => $this->input->get("status"),
 			"date" => $this->input->get("date"),
-			"keyword" => $this->input->get("keyword"),
 		];
 		
 		$f_w = $f_l = $f_in = [];
 		if (!$f_url["page"]) $f_url["page"] = 1;
+		if ($f_url["status"]) $f_w["status_id"] = $f_url["status"];
+		if ($f_url["date"]){
+			$f_w["registed_at >="] = $f_url["date"]." 00:00:00";
+			$f_w["registed_at <="] = $f_url["date"]." 23:59:59";
+		}
 		
+		$sales = $this->general->filter("sale", $f_w, $f_l, $f_in, "updated_at", "desc", 25, 25 * ($f_url["page"] - 1));
+		foreach($sales as $item){
+			$item->sale_type = $this->general->id("sale_type", $item->sale_type_id);
+			$item->currency = $this->general->id("currency", $item->currency_id);
+			$item->client = $this->general->id("person", $item->client_id);
+			$item->status = $this->general->id("status", $item->status_id);
+			$item->status->lang = $this->lang->line($item->status->code);
+		}
 		
-		$sales = $this->general->filter("sale", $f_w, $f_l, $f_in, "registed_at", "desc", 25, 25 * ($f_url["page"] - 1));
-		
-		
-		
-		$specialties = $this->specialty->all();
-		$specialties_arr = array();
-		if ($specialties) foreach($specialties as $item) $specialties_arr[$item->id] = $item->name;
-		
-		$clients = array();
-		$clients_rec = $this->general->all("person");
-		foreach($clients_rec as $c) $clients[$c->id] = $c->name;
-		
-		$f_from = $this->input->get("f_from"); if (!$f_from) $f_from = date("Y-m-d", strtotime("-6 months"));
-		$filter = array("registed_at >=" => $f_from);
-		
-		$currencies = array();
-		$currencies_rec = $this->general->all("currency");
-		foreach($currencies_rec as $item) $currencies[$item->id] = $item;
-		
-		$status = array();
-		$status_rec = $this->general->all("status");
-		foreach($status_rec as $item) $status[$item->id] = $item;
+		$status = [
+			$this->general->filter("status", ["code" => "in_progress"])[0],
+			$this->general->filter("status", ["code" => "finished"])[0],
+			$this->general->filter("status", ["code" => "canceled"])[0],
+		];
 		
 		$data = array(
 			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("appointment", $f_w)),
 			"f_url" => $f_url,
-			"f_from" => $f_from,
-			"clients" => $clients,
-			"currencies" => $currencies,
+			"categories" => $this->general->all("product_category", "name", "asc"),
+			"products" => $this->general->all("product", "description", "asc"),
+			"currencies" => $this->general->all("currency"),
 			"status" => $status,
-			"surgeries" => array(),
 			"sale_type" => $this->general->all("sale_type", "description", "asc"),
 			"doc_types" => $this->general->all("doc_type", "sunat_code", "asc"),
 			"payment_methods" => $this->general->filter("sl_option", array("code" => "payment_method")),

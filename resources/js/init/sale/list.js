@@ -193,6 +193,7 @@ function set_product_list(products){
 	}));
 }
 
+/*
 function load_product_list(){
 	$.ajax({
 		url: $("#base_url").val() + "sale/load_product_list",
@@ -200,6 +201,16 @@ function load_product_list(){
 		success:function(res){
 			set_product_list(res);
 		}
+	});
+}
+*/
+
+function load_items(category_id){
+	ajax_simple({category_id: category_id}, "product/load_by_category").done(function(res) {
+		if (res.type == "success"){
+			console.log(res.list);
+		}else swal(res.type, res.msg);
+		
 	});
 }
 
@@ -357,15 +368,17 @@ function load_reservations(person_id){
 
 $(document).ready(function() {
 	//general
-	set_datatable("sale_list", 25, false);
-	//set_sale_process();
+	$(".control_bl").on('click',(function(e) {control_bl(this);}));
 	$("#btn_register_sale").on('click',(function(e) {$("#form_sale").submit();}));
 	
 	//new sale - select item
+	$("#sl_pr_category").on('change',(function(e) {load_items($(this).val());}));
+	
+	/*
 	load_product_list();
-	$(".control_bl").on('click',(function(e) {control_bl(this);}));
 	$(".discount").on('change',(function(e) {set_amount();}));
 	$("#btn_confirm_items").on('click',(function(e) {confirm_items();}));
+	*/
 	
 	//new sale - payment data
 	$("#form_sale").submit(function(e) {e.preventDefault(); add_sale(this);});

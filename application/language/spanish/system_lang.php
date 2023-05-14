@@ -3,6 +3,7 @@
 //bootstrap datepicker
 $lang['bd_select'] = 'Elegir';
 $lang['bd_cancel'] = 'Cancelar';
+$lang['bd_clean'] = 'Limpiar';
 
 //jquery datatable
 $lang['j_datatable_search'] = 'Buscar';
