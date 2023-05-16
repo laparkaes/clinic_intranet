@@ -32,6 +32,7 @@ $lang["error_opd"] = "Ingrese descripción de opción.";//error_option_descripti
 $lang["error_ope"] = "Existe opción con misma descripción.";//error_option_exists
 $lang["error_sim"] = "Elija una imagen.";//error_select_image
 $lang["error_npin"] = "No hay ningun producto de categoría elegida.";//error_no_product_in_category
+$lang["error_wst"] = "Producto no cuenta con stock.";//error_without_stock
 $lang["warning_dp"] = "¿Seguro de eliminar producto?";//warning_delete_product
 $lang["warning_uc"] = "Los productos también modificará su categoría. ¿Desea actualizar categoría?";//warning_update_category
 $lang["warning_dc"] = "¿Desea eliminar categoría?";//warning_delete_category

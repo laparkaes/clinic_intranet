@@ -517,11 +517,16 @@ class Product extends CI_Controller {
 		
 		$products = $this->general->filter("product", ["category_id" => $this->input->post("category_id")], null, null, "description", "asc");
 		
+		$prod_types = [];
+		$prod_types_rec = $this->general->all("product_type");
+		foreach($prod_types_rec as $item) $prod_types[$item->id] = $item->description;
+		
 		if ($products){
 			foreach($products as $item){
 				$list[] = [
 					"id" => $item->id,
 					"code" => $item->code,
+					"type" => $prod_types[$item->type_id],
 					"description" => $item->description,
 					"currency" => $this->general->id("currency", $item->currency_id)->description,
 					"price" => $item->price,
@@ -533,6 +538,20 @@ class Product extends CI_Controller {
 			$type = "success";
 		}
 		else $msg = $this->lang->line('error_npin');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg, "list" => $list]);
+	}
+
+	public function load_option(){
+		$type = "error"; $msg = null; $list = [];
+		
+		$f_w = $this->input->post();
+		$f_w["stock >"] = 0;
+		
+		$list = $this->general->filter("product_option", $f_w, null, null, "id", "asc");
+		if (count($list)) $type = "success";
+		else $msg = $this->lang->line('error_wst');
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "list" => $list]);

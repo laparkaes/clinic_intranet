@@ -104,19 +104,31 @@
 								<tr>
 									<th><strong>#</strong></th>
 									<th><strong><?= $this->lang->line('hd_item') ?></strong></th>
-									<th><strong><?= $this->lang->line('hd_option') ?></strong></th>
 									<th><strong><?= $this->lang->line('hd_quantity') ?></strong></th>
-									<th><strong><?= $this->lang->line('hd_discount') ?></strong></th>
-									<th><strong><?= $this->lang->line('hd_subtotal') ?></strong></th>
-									<th class="text-right">
+									<th class="text-right"><strong><?= $this->lang->line('hd_price') ?></strong></th>
+									<th class="text-right"><strong><?= $this->lang->line('hd_subtotal') ?></strong></th>
+									<th class="text-right" style="width: 10px;">
 										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sl_product_modal"><i class="fas fa-search"></i></button>
 									</th>
 								</tr>
 							</thead>
-							<tbody id="tb_product_list"></tbody>
+							<tbody id="tb_product_list">
+								<tr>
+									<td><strong>1</strong></td>
+									<td><div>product algo</div><small>Talla XD</small></td>
+									<td>3</td>
+									<td class="text-right"><div>S/ 500.00</div><small class="text-danger">- S/ 5.75</small></td>
+									<td class="text-right">S/ 1,500.00</td>
+									<td>
+										<button type="button" class="btn btn-danger">
+											<i class="fas fa-trash"></i>
+										</button>
+									</td>
+								</tr>
+							</tbody>
 							<tfoot>
 								<tr>
-									<th class="text-right text-primary pt-4" colspan="5">
+									<th class="text-right text-primary pt-4" colspan="4">
 										<?= $this->lang->line('rs_total') ?>
 									</th>
 									<th class="text-right text-primary pt-4" colspan="2" id="pay_total">
@@ -124,7 +136,7 @@
 									</th>
 								</tr>
 								<tr>
-									<td class="text-right border-top-0" colspan="5">
+									<td class="text-right border-top-0" colspan="4">
 										<?= $this->lang->line('rs_sale') ?>
 									</td>
 									<td class="text-right border-top-0" colspan="2" id="pay_amount">
@@ -132,7 +144,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="text-right border-top-0" colspan="5">
+									<td class="text-right border-top-0" colspan="4">
 										<?= $this->lang->line('rs_vat') ?>
 									</td>
 									<td class="text-right border-top-0" colspan="2" id="pay_vat">
@@ -336,6 +348,7 @@
 	<input type="hidden" id="error_prlc" value="<?= $this->lang->line('error_prlc') ?>">
 	<input type="hidden" id="error_prsl" value="<?= $this->lang->line('error_prsl') ?>">
 	<input type="hidden" id="error_sit" value="<?= $this->lang->line('error_sit') ?>">
+	<input type="hidden" id="error_sio" value="<?= $this->lang->line('error_sio') ?>">
 </div>
 <div class="modal fade" id="sl_product_modal" style="display: none;" aria-hidden="true">
 	<div class="modal-dialog" role="document">
@@ -367,6 +380,12 @@
 						<input type="text" class="form-control" id="sl_pr_uprice_txt" readonly>
 					</div>
 					<div class="form-group col-md-6 sl_pr_detail d-none">
+						<label><?= $this->lang->line('lb_option') ?></label>
+						<select class="form-control" id="sl_pr_options">
+							<option value="">--</option>
+						</select>
+					</div>
+					<div class="form-group col-md-6 sl_pr_detail d-none">
 						<label><?= $this->lang->line('lb_unit_discount') ?></label>
 						<input type="text" class="form-control" id="sl_pr_udiscount" step="0.01" min="0">
 					</div>
@@ -374,7 +393,7 @@
 						<label><?= $this->lang->line('lb_quantity') ?></label>
 						<input type="text" class="form-control" id="sl_pr_quantity">
 					</div>
-					<div class="form-group col-md-6 sl_pr_detail d-none">
+					<div class="form-group col-md-12 sl_pr_detail d-none">
 						<label><?= $this->lang->line('lb_subtotal') ?></label>
 						<input type="txt" class="form-control bw border-0 text-right font-weight-bold" id="sl_pr_subtotal" value="0.00" readonly>
 					</div>

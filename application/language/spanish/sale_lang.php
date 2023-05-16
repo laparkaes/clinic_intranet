@@ -25,7 +25,7 @@ $lang['error_srs'] = 'Debe elegir una cirugía reservada del paciente.';//error_
 $lang['error_sai'] = 'Debe elegir un ítem de consulta para proceder con la venta.';//error_select_appointment_item
 $lang['error_ssi'] = 'Debe elegir un ítem de cirugía para proceder con la venta.';//error_select_appointment_item
 $lang['error_sit'] = 'Debe elegir un ítem.';//error_select_item
-
+$lang['error_sio'] = 'Debe elegir una opción del producto.';//error_select_item_option
 $lang['warning_asa'] = '¿Desea registrar la venta?';//warning_add_sale
 $lang['warning_apa'] = '¿Desea registrar pago?';//warning_add_payment
 $lang['warning_dpa'] = '¿Desea eliminar pago?';//warning_delete_payment
@@ -158,3 +158,4 @@ $lang['lb_unit_price'] = 'Precio Unitario';
 $lang['lb_unit_discount'] = 'Descuento Unitario';
 $lang['lb_quantity'] = 'Cantidad';
 $lang['lb_subtotal'] = 'Subtotal';
+$lang['lb_option'] = 'Opción';
