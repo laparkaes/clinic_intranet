@@ -109,7 +109,7 @@
 									<th><strong><?= $this->lang->line('hd_discount') ?></strong></th>
 									<th><strong><?= $this->lang->line('hd_subtotal') ?></strong></th>
 									<th class="text-right">
-										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#basicModal"><i class="fas fa-search"></i></button>
+										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sl_product_modal"><i class="fas fa-search"></i></button>
 									</th>
 								</tr>
 							</thead>
@@ -335,8 +335,9 @@
 	<input type="hidden" id="error_prl" value="<?= $this->lang->line('error_prl') ?>">
 	<input type="hidden" id="error_prlc" value="<?= $this->lang->line('error_prlc') ?>">
 	<input type="hidden" id="error_prsl" value="<?= $this->lang->line('error_prsl') ?>">
+	<input type="hidden" id="error_sit" value="<?= $this->lang->line('error_sit') ?>">
 </div>
-<div class="modal fade" id="basicModal" style="display: none;" aria-hidden="true">
+<div class="modal fade" id="sl_product_modal" style="display: none;" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header border-0 pb-0">
@@ -361,27 +362,27 @@
 							<option value="">--</option>
 						</select>
 					</div>
-					<div class="form-group col-md-6">
+					<div class="form-group col-md-6 sl_pr_detail d-none">
 						<label><?= $this->lang->line('lb_unit_price') ?></label>
 						<input type="text" class="form-control" id="sl_pr_uprice_txt" readonly>
 					</div>
-					<div class="form-group col-md-6">
+					<div class="form-group col-md-6 sl_pr_detail d-none">
 						<label><?= $this->lang->line('lb_unit_discount') ?></label>
-						<input type="number" class="form-control" id="sl_pr_udiscount" step="0.01" min="0">
+						<input type="text" class="form-control" id="sl_pr_udiscount" step="0.01" min="0">
 					</div>
-					<div class="form-group col-md-6">
+					<div class="form-group col-md-6 sl_pr_detail d-none">
 						<label><?= $this->lang->line('lb_quantity') ?></label>
-						<input type="number" class="form-control" id="sl_pr_quantity">
+						<input type="text" class="form-control" id="sl_pr_quantity">
 					</div>
-					<div class="form-group col-md-6">
+					<div class="form-group col-md-6 sl_pr_detail d-none">
 						<label><?= $this->lang->line('lb_subtotal') ?></label>
 						<input type="txt" class="form-control bw border-0 text-right font-weight-bold" id="sl_pr_subtotal" value="0.00" readonly>
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer border-0 pt-0">
-				<button type="button" class="btn btn-danger light" data-dismiss="modal"><?= $this->lang->line('btn_close') ?></button>
-				<button type="button" class="btn btn-primary"><?= $this->lang->line('btn_add') ?></button>
+				<button type="button" class="btn btn-danger light" id="btn_sl_pr_cancel" data-dismiss="modal"><?= $this->lang->line('btn_close') ?></button>
+				<button type="button" class="btn btn-primary" id="btn_sl_pr_add"><?= $this->lang->line('btn_add') ?></button>
 			</div>
 		</div>
 	</div>

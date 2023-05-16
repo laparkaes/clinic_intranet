@@ -215,49 +215,6 @@ function confirm_items(dom){
 	});
 }
 
-function calculate_payment(e, type){
-	if ((e.which == 13) || (e.which == 0)){
-		var total = parseFloat($("#sale_total").val());
-		var received = parseFloat($("#payment_received_v").val().replace(/,/g, ""));
-		var change = parseFloat($("#payment_change_v").val().replace(/,/g, ""));
-		var balance = parseFloat($("#payment_balance_v").val().replace(/,/g, ""));
-		
-		if (isNaN(change) || (change < 0)) change = 0;
-		else if (change > received) change = received;
-		
-		if (isNaN(received) || (received <= 0)) received = total;
-		
-		if (type == "received"){
-			if (received > total){
-				change = received - total;
-				balance = 0;
-			}else{
-				change = 0;
-				balance = total - received;
-			}
-		}else{//type = "change"
-			if (received > total){
-				var min_change = received - total;
-				if (change < min_change){
-					change = min_change;
-					balance = 0;
-				}
-			}
-			balance = total - received + change;
-		}
-		
-		//set payment data
-		$("#payment_received").val(received);
-		$("#payment_change").val(change);
-		$("#payment_balance").val(balance);
-		
-		//set payment view
-		$("#payment_received_v").val(nf(received));
-		$("#payment_change_v").val(nf(change));
-		$("#payment_balance_v").val(nf(balance));
-	}
-}
-
 function control_client_name(activate){
 	if (activate == true){
 		$("#client_name").val("");
@@ -358,61 +315,122 @@ function load_reservations(person_id){
 }
 
 function load_items(category_id){
-	ajax_simple({category_id: category_id}, "product/load_by_category").done(function(res) {
-		$("#sl_pr_items").html('');
-		$("#sl_pr_items").append('<option value="">--</option>');
-		if (res.type == "success"){
-			$.each(res.list, function(index, value) {
-				$("#sl_pr_items").append("<option value='" + JSON.stringify(value) + "'>" + value.description + "</option>");
-			});
-		}else swal(res.type, res.msg);
-		
-	});
+	$("#sl_pr_items").html('');
+	$("#sl_pr_items").append('<option value="">--</option>');
+	if (category_id == "") $(".sl_pr_detail").addClass("d-none");
+	else{
+		ajax_simple({category_id: category_id}, "product/load_by_category").done(function(res) {
+			if (res.type == "success"){
+				$.each(res.list, function(index, value) {
+					$("#sl_pr_items").append("<option value='" + JSON.stringify(value) + "'>" + value.description + "</option>");
+				});
+			}else swal(res.type, res.msg);
+		});
+		$(".sl_pr_detail").addClass("d-none");
+	}
 }
 
 function reset_pr_sl_form(){
-	
 	$("#sl_pr_uprice_txt").val(nf(0));
 	$("#sl_pr_udiscount").val(0);
 	$("#sl_pr_udiscount_txt").val(nf(0));
+	$("#sl_pr_subtotal").val("");
+	$(".sl_pr_detail").addClass("d-none");
 }
 
 function select_item(){
 	var item = $("#sl_pr_items").val();
+	$("#sl_pr_quantity").val(1);
 	if (item == "") reset_pr_sl_form();
 	else{
 		var item = jQuery.parseJSON(item);
 		$("#sl_pr_uprice_txt").val(item.price_txt);
 		$("#sl_pr_udiscount").val(0);
 		$("#sl_pr_udiscount_txt").val(nf(0));
-		$("#sl_pr_quantity").val(1);
 		$("#sl_pr_subtotal").val(item.currency + " " + item.price_txt);
+		$(".sl_pr_detail").removeClass("d-none");
 	}
 }
 
-function calculate_subtotal(){
-	var item = $("#sl_pr_items").val();
-	if (item == "") reset_pr_sl_form();
-	else{
-		var item = jQuery.parseJSON(item);
-		var qty = parseFloat($("#sl_pr_quantity").val());
-		var discount = parseFloat($("#sl_pr_udiscount").val());
-		var price = item.price;
+function calculate_payment(e, type){
+	if ((e.which == 13) || (e.which == 0)){
+		var total = parseFloat($("#sale_total").val());
+		var received = parseFloat($("#payment_received_v").val().replace(/,/g, ""));
+		var change = parseFloat($("#payment_change_v").val().replace(/,/g, ""));
+		var balance = parseFloat($("#payment_balance_v").val().replace(/,/g, ""));
 		
-		if (discount == ""){
-			discount = 0;
-			$("#sl_pr_udiscount").val(nf(discount));
-		}else if (discount <= 0){
-			discount = 0;
-			$("#sl_pr_udiscount").val(nf(discount));
-		}else if (discount > price){
-			discount = price;
-			$("#sl_pr_udiscount").val(nf(discount));
+		if (isNaN(change) || (change < 0)) change = 0;
+		else if (change > received) change = received;
+		
+		if (isNaN(received) || (received <= 0)) received = total;
+		
+		if (type == "received"){
+			if (received > total){
+				change = received - total;
+				balance = 0;
+			}else{
+				change = 0;
+				balance = total - received;
+			}
+		}else{//type = "change"
+			if (received > total){
+				var min_change = received - total;
+				if (change < min_change){
+					change = min_change;
+					balance = 0;
+				}
+			}
+			balance = total - received + change;
 		}
 		
-		//$("#sl_pr_quantity").val(parseInt(qty));
-		$("#sl_pr_subtotal").val(item.currency + " " + nf(qty * (price - discount)));
+		//set payment data
+		$("#payment_received").val(received);
+		$("#payment_change").val(change);
+		$("#payment_balance").val(balance);
+		
+		//set payment view
+		$("#payment_received_v").val(nf(received));
+		$("#payment_change_v").val(nf(change));
+		$("#payment_balance_v").val(nf(balance));
 	}
+}
+
+function calculate_subtotal(e){
+	if (((e.which == 13) || (e.which == 0)) && (item != $("#sl_pr_items").val())){
+		var item = jQuery.parseJSON($("#sl_pr_items").val());
+		var qty = parseInt($("#sl_pr_quantity").val().replace(/,/g, ""));
+		var discount = parseFloat($("#sl_pr_udiscount").val().replace(/,/g, ""));
+		var price = item.price;
+		
+		if (qty < 1) qty = 1;
+		if (discount < 0 ) discount = 0;
+		else if (discount > price) discount = price;
+		
+		$("#sl_pr_subtotal").val(item.currency + " " + nf(qty * (price - discount)));
+		$("#sl_pr_quantity").val(qty);
+		$("#sl_pr_udiscount").val(discount);
+	}
+}
+
+function sl_product_add(){
+	var item = $("#sl_pr_items").val();
+	if (item != ""){
+		item = jQuery.parseJSON(item);
+		var qty = parseInt($("#sl_pr_quantity").val().replace(/,/g, ""));
+		var discount = parseFloat($("#sl_pr_udiscount").val().replace(/,/g, ""));
+		var price = item.price;
+		
+		if (qty < 1) qty = 1;
+		if (discount < 0 ) discount = 0;
+		else if (discount > price) discount = price;
+		
+		console.log(item);
+		console.log(qty);
+		console.log(discount);
+		
+		$("#sl_product_modal").modal("hide");	
+	}else swal("error", $("#error_sit").val());
+	
 }
 
 $(document).ready(function() {
@@ -423,10 +441,15 @@ $(document).ready(function() {
 	//new sale - select item
 	$("#sl_pr_category").on('change',(function(e) {load_items($(this).val());}));
 	$("#sl_pr_items").on('change',(function(e) {select_item();}));
-	$("#sl_pr_udiscount").on('keyup',(function(e) {calculate_subtotal();}));
-	$("#sl_pr_udiscount").on('change',(function(e) {calculate_subtotal();}));
-	$("#sl_pr_quantity").on('keyup',(function(e) {calculate_subtotal();}));
-	$("#sl_pr_quantity").on('change',(function(e) {calculate_subtotal();}));
+	
+	
+	$("#sl_pr_udiscount").on('keyup',(function(e) {calculate_subtotal(e);}));
+	$("#sl_pr_udiscount").on('focusout',(function(e) {calculate_subtotal(e);}));
+	$("#sl_pr_udiscount").on('change',(function(e) {calculate_subtotal(e);}));
+	$("#sl_pr_quantity").on('keyup',(function(e) {calculate_subtotal(e);}));
+	$("#sl_pr_quantity").on('focusout',(function(e) {calculate_subtotal(e);}));
+	$("#sl_pr_quantity").on('change',(function(e) {calculate_subtotal(e);}));
+	$("#btn_sl_pr_add").on('click',(function(e) {sl_product_add();}));
 	
 	
 	/*

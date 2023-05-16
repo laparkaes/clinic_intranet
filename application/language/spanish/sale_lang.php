@@ -24,7 +24,7 @@ $lang['error_sra'] = 'Debe elegir una consulta reservada del paciente.';//error_
 $lang['error_srs'] = 'Debe elegir una cirugía reservada del paciente.';//error_select_reserved_surgery
 $lang['error_sai'] = 'Debe elegir un ítem de consulta para proceder con la venta.';//error_select_appointment_item
 $lang['error_ssi'] = 'Debe elegir un ítem de cirugía para proceder con la venta.';//error_select_appointment_item
-
+$lang['error_sit'] = 'Debe elegir un ítem.';//error_select_item
 
 $lang['warning_asa'] = '¿Desea registrar la venta?';//warning_add_sale
 $lang['warning_apa'] = '¿Desea registrar pago?';//warning_add_payment
