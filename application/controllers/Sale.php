@@ -91,34 +91,9 @@ class Sale extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	public function load_reservations(){
-		$appointments = $surgeries = array();
-		$filter = array("status_id" => $this->status->code("reserved")->id, "patient_id" => $this->input->post("person_id"));
-		
-		$appointments_db = $this->general->filter("appointment", $filter, "schedule_from", "desc");
-		$surgeries_db = $this->general->filter("surgery", $filter, "schedule_from", "desc");
-		
-		foreach($appointments_db as $item){
-			$p = $this->general->id("person", $item->doctor_id);
-			$d = $this->general->filter("doctor", array("person_id" => $p->id))[0];
-			$s = $this->specialty->id($d->specialty_id);
-			
-			array_push($appointments, array("id" => $item->id, "op" => date("d.m.Y", strtotime($item->schedule_from))." # ".date("h:i A", strtotime($item->schedule_from))." - ".date("h:i A", strtotime($item->schedule_to))." # ".$p->name." # ".$s->name));
-		}
-		
-		foreach($surgeries_db as $item){
-			$p = $this->general->id("person", $item->doctor_id);
-			$d = $this->general->filter("doctor", array("person_id" => $p->id))[0];
-			$s = $this->specialty->id($d->specialty_id);
-			
-			array_push($surgeries, array("id" => $item->id, "op" => date("d.m.Y", strtotime($item->schedule_from))." # ".date("h:i A", strtotime($item->schedule_from))." - ".date("h:i A", strtotime($item->schedule_to))." # ".$p->name." # ".$s->name." # ".$item->place));
-		}
-		
-		header('Content-Type: application/json');
-		echo json_encode(array("appointments" => $appointments, "surgeries" => $surgeries));
-	}
-	
 	public function add(){
+		print_r($this->input->post());
+		/*
 		$status = false; $type = "error"; $msg = null; $msgs = array(); $move_to = null;
 		$sale = $this->input->post("sale");
 		$client = $this->input->post("client");
@@ -269,6 +244,7 @@ class Sale extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg, "msgs" => $msgs, "move_to" => $move_to));
+		*/
 	}
 	
 	public function load_product_list(){

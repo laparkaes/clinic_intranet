@@ -96,239 +96,133 @@
 				</div>
 			</div>
 			<div class="row bl_content d-none" id="bl_add">
-				<div class="col-md-12">
-					<input type="hidden" id="op_currency" name="currency" value="">
-					<h4 class="mb-3">1. <?= $this->lang->line('tab_item_selection') ?></h4>
-					<div class="table-responsive">
-						<table class="table table-small table-responsive-md mb-0" id="tb_products">
-							<thead>
-								<tr>
-									<th><strong>#</strong></th>
-									<th><strong><?= $this->lang->line('hd_item') ?></strong></th>
-									<th class="text-center"><strong><?= $this->lang->line('hd_quantity') ?></strong></th>
-									<th class="text-right"><strong><?= $this->lang->line('hd_price') ?></strong></th>
-									<th class="text-right"><strong><?= $this->lang->line('hd_subtotal') ?></strong></th>
-									<th class="text-right"></th>
-								</tr>
-							</thead>
-							<tbody id="tb_product_list"></tbody>
-							<tfoot>
-								<tr>
-									<td class="border-0 text-center" colspan="6">
-										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sl_product_modal"><i class="fas fa-plus mr-2"></i><?= $this->lang->line('title_add_product') ?></button>
-									</td>
-								</tr>
-								<tr>
-									<th class="text-right text-primary pt-4" colspan="4">
-										<?= $this->lang->line('rs_total') ?>
-									</th>
-									<th class="text-right text-primary pt-4" colspan="2" id="pay_total">
-										S/ 0.00
-									</th>
-								</tr>
-								<tr>
-									<td class="text-right border-top-0" colspan="4">
-										<?= $this->lang->line('rs_sale') ?>
-									</td>
-									<td class="text-right border-top-0" colspan="2" id="pay_amount">
-										S/ 0.00
-									</td>
-								</tr>
-								<tr>
-									<td class="text-right border-top-0" colspan="4">
-										<?= $this->lang->line('rs_vat') ?>
-									</td>
-									<td class="text-right border-top-0" colspan="2" id="pay_vat">
-										S/ 0.00
-									</td>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
-				
-				</div>
-				<div class="col-md-12">
-					<h4 class="mb-3">2. <?= $this->lang->line('tab_payment_data') ?></h4>
-				
-				</div>
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				<div class="col-md-12">
-					<form id="form_sale" action="#">
+				<form id="form_add_sale">
+					<div class="col-md-12">
 						<div class="row">
-							<input type="hidden" id="sale_total" name="sale[total]">
-							<input type="hidden" id="sale_discount" name="sale[discount]">
-							<input type="hidden" id="sale_amount" name="sale[amount]">
-							<input type="hidden" id="sale_vat" name="sale[vat]">
-							<input type="hidden" id="payment_received" name="payment[received]">
-							<input type="hidden" id="payment_change" name="payment[change]">
-							<input type="hidden" id="payment_balance" name="payment[balance]">
-							
 							<div class="col-md-12">
 								<h4 class="mb-3">1. <?= $this->lang->line('tab_item_selection') ?></h4>
-								<div class="mb-3">
-									<input type="text" class="form-control border-primary" id="pr_search" placeholder="<?= $this->lang->line('search_product') ?>...">
-								</div>
 								<div class="table-responsive">
 									<table class="table table-small table-responsive-md mb-0" id="tb_products">
 										<thead>
 											<tr>
 												<th><strong>#</strong></th>
 												<th><strong><?= $this->lang->line('hd_item') ?></strong></th>
-												<th><strong><?= $this->lang->line('hd_option') ?></strong></th>
-												<th style="width:100px;"><strong><?= $this->lang->line('hd_quantity') ?></strong></th>
-												<th style="width:100px;"><strong><?= $this->lang->line('hd_discount') ?></strong></th>
-												<th><strong><?= $this->lang->line('hd_subtotal') ?></strong></th>
-												<th></th>
+												<th class="text-center"><strong><?= $this->lang->line('hd_quantity') ?></strong></th>
+												<th class="text-right"><strong><?= $this->lang->line('hd_price') ?></strong></th>
+												<th class="text-right"><strong><?= $this->lang->line('hd_subtotal') ?></strong></th>
+												<th class="text-right"></th>
 											</tr>
 										</thead>
-										<tbody id="sale_product_list"></tbody>
+										<tbody id="tb_product_list"></tbody>
 										<tfoot>
 											<tr>
-												<th class="text-right text-primary pt-4" colspan="5">
-													<?= $this->lang->line('rs_total') ?>
-												</th>
-												<th class="text-right text-primary pt-4" colspan="2" id="pay_total">
-													S/ 0.00
-												</th>
-											</tr>
-											<tr>
-												<td class="text-right border-top-0" colspan="5">
-													<?= $this->lang->line('rs_sale') ?>
-												</td>
-												<td class="text-right border-top-0" colspan="2" id="pay_amount">
-													S/ 0.00
-												</td>
-											</tr>
-											<tr>
-												<td class="text-right border-top-0" colspan="5">
-													<?= $this->lang->line('rs_vat') ?>
-												</td>
-												<td class="text-right border-top-0" colspan="2" id="pay_vat">
-													S/ 0.00
+												<td class="border-0" colspan="6">
+													<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sl_product_modal"><i class="fas fa-plus mr-2"></i><?= $this->lang->line('title_add_product') ?></button>
 												</td>
 											</tr>
 										</tfoot>
 									</table>
 								</div>
 							</div>
-							<div class="col-md-12 d-none" id="bl_payment_data">
-								<hr>
+							<div class="col-md-6"></div>
+							<div class="col-md-6 d-flex justify-content-between text-primary">
+								<h3 class="text-primary mt-3">Total</h3>
+								<h3 class="text-primary mt-3" id="sl_pr_total_amount">0.00</h3>
+							</div>
+						</div>
+						<hr/>
+						<div class="row mt-3">
+							<div class="col-md-12">
 								<h4 class="mb-3">2. <?= $this->lang->line('tab_payment_data') ?></h4>
-								<div class="row">
-									<div class="col-md-6 col-sm-12">
-										<h5><?= $this->lang->line('title_client') ?></h5>
-										<div class="form-row">
-											<div class="form-group col-md-12">
-												<label><?= $this->lang->line('lb_document') ?></label>
-												<div class="input-group">
-													<select class="form-control" id="client_doc_type" name="client[doc_type_id]" style="border-right:0;">
-														<?php foreach($doc_types as $item){ ?>
-														<option value="<?= $item->id ?>"><?= $item->description ?></option>
-														<?php } ?>
-													</select>
-													<input type="text" class="form-control" id="client_doc_number" name="client[doc_number]" style="border-left:0;" placeholder="<?= $this->lang->line('txt_number') ?>">
-													<div class="input-group-append">
-														<button class="btn btn-primary border-0" type="button" id="btn_search_client">
-															<i class="fas fa-search"></i>
-														</button>
-													</div>
-												</div>
-												<div class="sys_msg" id="client_doc_number_msg"></div>
-											</div>
-											<div class="form-group col-md-12">
-												<label><?= $this->lang->line('label_name') ?></label>
-												<input type="text" class="form-control" id="client_name" name="client[name]">
-												<div class="sys_msg" id="client_name_msg"></div>
-											</div>
-											<div class="form-group col-md-6" id="sl_appointment">
-												<label><?= $this->lang->line('label_appointment') ?></label>
-												<select class="form-control" name="sale[appointment_id]" id="app_select">
-													<option value="">--</option>
-												</select>
-												<div class="sys_msg" id="appointment_msg"></div>
-											</div>
-											<div class="form-group col-md-6" id="sl_surgery">
-												<label><?= $this->lang->line('label_surgery') ?></label>
-												<select class="form-control" name="sale[surgery_id]" id="sur_select">
-													<option value="">--</option>
-												</select>
-												<div class="sys_msg" id="surgery_msg"></div>
+							</div>
+							<div class="col-md-6 col-sm-12">
+								<h5><?= $this->lang->line('title_client') ?></h5>
+								<div class="form-row">
+									<div class="form-group col-md-6">
+										<label><?= $this->lang->line('lb_document') ?></label>
+										<select class="form-control" id="client_doc_type" name="client[doc_type_id]">
+											<?php foreach($doc_types as $item){ ?>
+											<option value="<?= $item->id ?>"><?= $item->description ?></option>
+											<?php } ?>
+										</select>
+										<div class="sys_msg" id="client_doc_type_msg"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label class="d-md-block d-none">&nbsp;</label>
+										<div class="input-group">
+											<input type="text" class="form-control" id="client_doc_number" name="client[doc_number]" placeholder="<?= $this->lang->line('txt_number') ?>">
+											<div class="input-group-append">
+												<button class="btn btn-primary border-0" type="button" id="btn_search_client">
+													<i class="fas fa-search"></i>
+												</button>
 											</div>
 										</div>
+										<div class="sys_msg" id="client_doc_number_msg"></div>
 									</div>
-									<div class="col-md-6 col-sm-12">
-										<h5><?= $this->lang->line('title_operation') ?></h5>
-										<div class="form-row">
-											<div class="form-group col-md-12">
-												<label><?= $this->lang->line('label_payment_method') ?></label>
-												<select class="form-control" name="payment[payment_method_id]">
-													<?php foreach($payment_methods as $item){ ?>
-													<option value="<?= $item->id ?>"><?= $item->description ?></option>
-													<?php } ?>
-												</select>
-												<div class="sys_msg" id="payment_method_msg"></div>
-											</div>
-											<div class="form-group col-md-6">
-												<label><?= $this->lang->line('label_received') ?></label>
-												<div class="input-group input-normal-o">
-													<div class="input-group-prepend">
-														<span class="input-group-text payment_currency"></span>
-													</div>
-													<input type="text" class="form-control text-right" id="payment_received_v">
-												</div>
-												<div class="sys_msg" id="pay_received_msg"></div>
-											</div>
-											<div class="form-group col-md-6">
-												<label><?= $this->lang->line('label_amount_to_pay') ?></label>
-												<div class="input-group input-info-o">
-													<div class="input-group-prepend">
-														<span class="input-group-text bg-light payment_currency"></span>
-													</div>
-													<input type="text" class="form-control bg-light text-right" id="payment_total_v" readonly>
-												</div>
-												<div class="sys_msg" id="total_msg"></div>
-											</div>
-											<div class="form-group col-md-6">
-												<label><?= $this->lang->line('label_change') ?></label>
-												<div class="input-group input-normal-o">
-													<div class="input-group-prepend">
-														<span class="input-group-text payment_currency"></span>
-													</div>
-													<input type="text" class="form-control text-right" id="payment_change_v" value="0.00">
-												</div>
-												<div class="sys_msg" id="pay_change_msg"></div>
-											</div>
-											<div class="form-group col-md-6">
-												<label><?= $this->lang->line('label_balance') ?></label>
-												<div class="input-group input-warning-o">
-													<div class="input-group-prepend">
-														<span class="input-group-text bg-light payment_currency"></span>
-													</div>
-													<input type="text" class="form-control bg-light text-right" id="payment_balance_v" value="0.00" readonly>
-												</div>
-												<div class="sys_msg" id="pay_balance_msg"></div>
-											</div>
-										</div>
-									</div>
-									<div class="col-md-12">
-										<button type="button" class="btn btn-primary mt-3" id="btn_register_sale">
-											<?= $this->lang->line('btn_register_sale') ?>
-										</button>
+									<div class="form-group col-md-12">
+										<label><?= $this->lang->line('label_name') ?></label>
+										<input type="text" class="form-control" id="client_name" name="client[name]">
+										<div class="sys_msg" id="client_name_msg"></div>
 									</div>
 								</div>
 							</div>
+							<div class="col-md-6 col-sm-12">
+								<input type="hidden" id="sale_total">
+								<input type="hidden" id="op_currency" name="currency" value="">
+								<input type="hidden" id="payment_received" name="payment[received]">
+								<input type="hidden" id="payment_change" name="payment[change]">
+								<input type="hidden" id="payment_balance" name="payment[balance]">
+								<h5><?= $this->lang->line('title_operation') ?></h5>
+								<div class="form-row">
+									<div class="form-group col-md-6">
+										<label><?= $this->lang->line('label_payment_method') ?></label>
+										<select class="form-control" name="payment[payment_method_id]">
+											<?php foreach($payment_methods as $item){ ?>
+											<option value="<?= $item->id ?>"><?= $item->description ?></option>
+											<?php } ?>
+										</select>
+										<div class="sys_msg" id="payment_method_msg"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label><?= $this->lang->line('label_received') ?></label>
+										<div class="input-group input-normal-o">
+											<div class="input-group-prepend">
+												<span class="input-group-text payment_currency"></span>
+											</div>
+											<input type="text" class="form-control text-right" id="payment_received_v">
+										</div>
+										<div class="sys_msg" id="pay_received_msg"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label><?= $this->lang->line('label_change') ?></label>
+										<div class="input-group input-normal-o">
+											<div class="input-group-prepend">
+												<span class="input-group-text payment_currency"></span>
+											</div>
+											<input type="text" class="form-control text-right" id="payment_change_v" value="0.00">
+										</div>
+										<div class="sys_msg" id="pay_change_msg"></div>
+									</div>
+									<div class="form-group col-md-6">
+										<label><?= $this->lang->line('label_balance') ?></label>
+										<div class="input-group input-warning-o">
+											<div class="input-group-prepend">
+												<span class="input-group-text bg-light payment_currency"></span>
+											</div>
+											<input type="text" class="form-control bg-light text-right" id="payment_balance_v" value="0.00" readonly>
+										</div>
+										<div class="sys_msg" id="pay_balance_msg"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<button type="submit" class="btn btn-primary mt-3" id="btn_register_sale">
+									<?= $this->lang->line('btn_register_sale') ?>
+								</button>
+							</div>
 						</div>
-					</form>
-				</div>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>

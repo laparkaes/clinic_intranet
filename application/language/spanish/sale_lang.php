@@ -160,3 +160,4 @@ $lang['lb_unit_discount'] = 'Descuento Unitario';
 $lang['lb_quantity'] = 'Cantidad';
 $lang['lb_subtotal'] = 'Subtotal';
 $lang['lb_option'] = 'Opción';
+$lang['txt_number'] = 'Número';
