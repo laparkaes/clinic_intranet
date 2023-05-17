@@ -26,6 +26,7 @@ $lang['error_sai'] = 'Debe elegir un ítem de consulta para proceder con la vent
 $lang['error_ssi'] = 'Debe elegir un ítem de cirugía para proceder con la venta.';//error_select_appointment_item
 $lang['error_sit'] = 'Debe elegir un ítem.';//error_select_item
 $lang['error_sio'] = 'Debe elegir una opción del producto.';//error_select_item_option
+$lang['error_psq'] = 'Debe ingresar cantidad menor que stock de opción.';//error_product_stock_qty
 $lang['warning_asa'] = '¿Desea registrar la venta?';//warning_add_sale
 $lang['warning_apa'] = '¿Desea registrar pago?';//warning_add_payment
 $lang['warning_dpa'] = '¿Desea eliminar pago?';//warning_delete_payment

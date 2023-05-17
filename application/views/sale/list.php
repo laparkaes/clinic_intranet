@@ -104,29 +104,19 @@
 								<tr>
 									<th><strong>#</strong></th>
 									<th><strong><?= $this->lang->line('hd_item') ?></strong></th>
-									<th><strong><?= $this->lang->line('hd_quantity') ?></strong></th>
+									<th class="text-center"><strong><?= $this->lang->line('hd_quantity') ?></strong></th>
 									<th class="text-right"><strong><?= $this->lang->line('hd_price') ?></strong></th>
 									<th class="text-right"><strong><?= $this->lang->line('hd_subtotal') ?></strong></th>
-									<th class="text-right" style="width: 10px;">
-										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sl_product_modal"><i class="fas fa-search"></i></button>
-									</th>
+									<th class="text-right"></th>
 								</tr>
 							</thead>
-							<tbody id="tb_product_list">
+							<tbody id="tb_product_list"></tbody>
+							<tfoot>
 								<tr>
-									<td><strong>1</strong></td>
-									<td><div>product algo</div><small>Talla XD</small></td>
-									<td>3</td>
-									<td class="text-right"><div>S/ 500.00</div><small class="text-danger">- S/ 5.75</small></td>
-									<td class="text-right">S/ 1,500.00</td>
-									<td>
-										<button type="button" class="btn btn-danger">
-											<i class="fas fa-trash"></i>
-										</button>
+									<td class="border-0" colspan="6">
+										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sl_product_modal"><i class="fas fa-plus mr-2"></i>Agregar Producto</button>
 									</td>
 								</tr>
-							</tbody>
-							<tfoot>
 								<tr>
 									<th class="text-right text-primary pt-4" colspan="4">
 										<?= $this->lang->line('rs_total') ?>
@@ -349,6 +339,7 @@
 	<input type="hidden" id="error_prsl" value="<?= $this->lang->line('error_prsl') ?>">
 	<input type="hidden" id="error_sit" value="<?= $this->lang->line('error_sit') ?>">
 	<input type="hidden" id="error_sio" value="<?= $this->lang->line('error_sio') ?>">
+	<input type="hidden" id="error_psq" value="<?= $this->lang->line('error_psq') ?>">
 </div>
 <div class="modal fade" id="sl_product_modal" style="display: none;" aria-hidden="true">
 	<div class="modal-dialog" role="document">
