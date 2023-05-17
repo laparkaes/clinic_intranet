@@ -97,6 +97,7 @@
 			</div>
 			<div class="row bl_content d-none" id="bl_add">
 				<div class="col-md-12">
+					<input type="hidden" id="op_currency" name="currency" value="">
 					<h4 class="mb-3">1. <?= $this->lang->line('tab_item_selection') ?></h4>
 					<div class="table-responsive">
 						<table class="table table-small table-responsive-md mb-0" id="tb_products">
@@ -113,8 +114,8 @@
 							<tbody id="tb_product_list"></tbody>
 							<tfoot>
 								<tr>
-									<td class="border-0" colspan="6">
-										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sl_product_modal"><i class="fas fa-plus mr-2"></i>Agregar Producto</button>
+									<td class="border-0 text-center" colspan="6">
+										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sl_product_modal"><i class="fas fa-plus mr-2"></i><?= $this->lang->line('title_add_product') ?></button>
 									</td>
 								</tr>
 								<tr>
@@ -170,7 +171,7 @@
 							<input type="hidden" id="payment_received" name="payment[received]">
 							<input type="hidden" id="payment_change" name="payment[change]">
 							<input type="hidden" id="payment_balance" name="payment[balance]">
-							<input type="hidden" id="op_currency" name="currency" value="">
+							
 							<div class="col-md-12">
 								<h4 class="mb-3">1. <?= $this->lang->line('tab_item_selection') ?></h4>
 								<div class="mb-3">

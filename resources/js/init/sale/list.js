@@ -437,6 +437,17 @@ function set_sl_pr_num(){
 	});
 }
 
+function set_sl_pr_total_amount(){
+	var rows = $(".sl_pr_arr");
+	var prod;
+	$.each(rows, function(index, value){
+		prod = $(value).val();
+		console.log(prod);
+	});
+}
+
+
+
 function sl_product_delete(row_id){
 	$("#sl_pr_" + row_id).remove();
 	set_sl_pr_num();
@@ -446,6 +457,9 @@ function sl_product_add(){
 	var item = $("#sl_pr_items").val();
 	if (item == ""){ swal("error", $("#error_sit").val()); return; }
 	else item = jQuery.parseJSON(item);
+	
+	console.log(item);
+	//$("#op_currency").val("");
 	
 	var qty = parseInt($("#sl_pr_quantity").val().replace(/,/g, ""));
 	var discount = parseFloat($("#sl_pr_udiscount").val().replace(/,/g, ""));
@@ -463,7 +477,7 @@ function sl_product_add(){
 		if (qty > opt.stock){ swal("error", $("#error_psq").val()); return; }
 	}
 	
-	//validate if product is already added
+	if ($('#sl_pr_' + item.id + '_' + opt_id).length > 0) { swal("error", $("#error_prl").val()); return; }
 	
 	if (qty < 1) qty = 1;
 	if (discount < 0 ) discount = 0;
@@ -473,13 +487,14 @@ function sl_product_add(){
 	var prod = {product_id: item.id, option_id: opt_id, price: item.price, discount: discount, qty: qty};
 	var dom_str = '<tr id="sl_pr_' + item.id + '_' + opt_id + '"><td class="sl_pr_num"></td><td><div>' + item.description + '</div>';
 	if (opt_description != "") dom_str += '<small>' + opt_description + '</small>';
-	dom_str += '</td><td class="text-center">' + qty + '</td><td class="text-right">' + item.currency + ' ' + nf(price) + '</td><td class="text-right">' + item.currency + ' ' + nf(price * qty) + '</td><td><textarea class="sl_pr_arr d-none" name="sl_pr[' + item.id + '_' + opt_id + ']">' + JSON.stringify(prod) + '</textarea><button type="button" class="btn btn-danger" id="btn_sl_pr_delete_' + item.id + '_' + opt_id + '" value="' + item.id + '_' + opt_id + '"><i class="fas fa-trash"></i></button></td></tr>';
+	dom_str += '</td><td class="text-center">' + qty + '</td><td class="text-right">' + item.currency + ' ' + nf(price - discount) + '</td><td class="text-right">' + item.currency + ' ' + nf((price - discount) * qty) + '</td><td class="text-right"><textarea class="sl_pr_arr d-none" name="sl_pr[' + item.id + '_' + opt_id + ']">' + JSON.stringify(prod) + '</textarea><button type="button" class="btn btn-danger" id="btn_sl_pr_delete_' + item.id + '_' + opt_id + '" value="' + item.id + '_' + opt_id + '"><i class="fas fa-trash"></i></button></td></tr>';
 	
 	$("#tb_product_list").append(dom_str);
 	
 	$("#sl_pr_items").val("");
 	reset_pr_sl_form();
 	set_sl_pr_num();
+	set_sl_pr_total_amount();
 	$('#btn_sl_pr_delete_' + item.id + '_' + opt_id).on('click',(function(e) {sl_product_delete($(this).val());}));
 	
 	$("#sl_product_modal").modal("hide");	
