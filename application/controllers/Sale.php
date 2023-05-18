@@ -92,13 +92,24 @@ class Sale extends CI_Controller {
 	}
 	
 	public function add(){
-		print_r($this->input->post());
-		/*
-		$status = false; $type = "error"; $msg = null; $msgs = array(); $move_to = null;
-		$sale = $this->input->post("sale");
+		$type = "error"; $msg = null; $msgs = []; $move_to = null;
+		$products_json = $this->input->post("sl_pr");
 		$client = $this->input->post("client");
-		$payment = $this->input->post("payment");
 		$currency = $this->input->post("currency");
+		$payment = $this->input->post("payment");
+		
+		$products = [];
+		foreach($products_json as $item){
+			$prod = json_decode($item);
+			$products[] = $prod;
+		}
+		
+		print_r($products);
+		
+		//print_r($this->input->post());
+		
+		
+		/*
 		$products = $this->input->post("products");
 		
 		//client validation

@@ -114,20 +114,15 @@
 											</tr>
 										</thead>
 										<tbody id="tb_product_list"></tbody>
-										<tfoot>
-											<tr>
-												<td class="border-0" colspan="6">
-													<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sl_product_modal"><i class="fas fa-plus mr-2"></i><?= $this->lang->line('title_add_product') ?></button>
-												</td>
-											</tr>
-										</tfoot>
 									</table>
 								</div>
 							</div>
-							<div class="col-md-6"></div>
-							<div class="col-md-6 d-flex justify-content-between text-primary">
-								<h3 class="text-primary mt-3">Total</h3>
-								<h3 class="text-primary mt-3" id="sl_pr_total_amount">0.00</h3>
+							<div class="col-md-6 pt-3">
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sl_product_modal"><i class="fas fa-plus mr-2"></i><?= $this->lang->line('title_add_product') ?></button>
+							</div>
+							<div class="col-md-6 d-flex justify-content-between text-primary pt-5">
+								<h3 class="text-primary">Total</h3>
+								<h3 class="text-primary" id="sl_pr_total_amount">0.00</h3>
 							</div>
 						</div>
 						<hr/>
