@@ -23,18 +23,15 @@ class Sale extends CI_Controller {
 	private function update_balance($sale_id){
 		//update paid and balance
 		$total_paid = 0;
-		$payments = $this->general->filter("payment", array("sale_id" => $sale_id), "registed_at", "asc");
+		$payments = $this->general->filter("payment", ["sale_id" => $sale_id], null, null, "registed_at", "asc");
 		foreach($payments as $item) $total_paid = $total_paid + $item->received - $item->change;
 		
 		$sale = $this->general->id("sale", $sale_id);
 		$sale_data = array("paid" => $total_paid, "balance" => $sale->total - $total_paid);
 		$cancel_id = $this->status->code("canceled")->id;
-		if ($sale_data["balance"]){
-			if ($sale->status_id != $cancel_id) $sale_data["status_id"] = $this->status->code("in_progress")->id;
-			$sale_data["is_finished"] = false;
-		}else{
-			if ($sale->status_id != $cancel_id) $sale_data["status_id"] = $this->status->code("finished")->id;
-			$sale_data["is_finished"] = true;
+		if ($sale->status_id != $cancel_id){
+			if ($sale_data["balance"]) $sale_data["status_id"] = $this->status->code("in_progress")->id;
+			else $sale_data["status_id"] = $this->status->code("finished")->id;
 		}
 		
 		$this->general->update("sale", $sale->id, $sale_data);
@@ -42,6 +39,7 @@ class Sale extends CI_Controller {
 	
 	public function index(){
 		if (!$this->session->userdata('logged_in')) redirect(base_url());
+		if (!$this->utility_lib->check_access("sale", "index")) redirect("/errors/no_permission");
 		
 		$f_url = [
 			"page" => $this->input->get("page"),
@@ -93,185 +91,125 @@ class Sale extends CI_Controller {
 	
 	public function add(){
 		$type = "error"; $msg = null; $msgs = []; $move_to = null;
-		$products_json = $this->input->post("sl_pr");
-		$client = $this->input->post("client");
-		$payment = $this->input->post("payment");
-		$currency = $this->input->post("currency");
-		$sale_id = null;
 		
-		//calient validation
-		$this->load->library('my_val');
-		$msgs = $this->my_val->sale_client($msgs, $client);
-		$msgs = $this->my_val->sale_payment($msgs, $payment);
-		
-		if (!$msgs){
-			$res = $this->my_val->sale_products($products_json);
-			$msg = $res["msg"];
-			if (!$msg){
-				//client processing
-				$doc_type = $this->general->id("doc_type", $client["doc_type_id"]);
-				if ($doc_type->description === "Sin Documento") $client_id = null;
-				else{
-					$client_rec = $this->general->filter("person", $client);
-					if ($client_rec) $client_id = $client_rec[0]->id;
-					else $client_id = $this->general->insert("person", $client);
-				}
-				
-				//set sale data
-				$products = $res["products"];
-				$prod_type = $this->general->id("product_type", $this->general->id("product", $products[0]->product_id)->type_id);
-				$sale_type = $this->general->filter("sale_type", ["description" => $prod_type->description])[0];
-				$currency = $this->general->filter("currency", ["description" => $currency])[0];
-				
-				
-				//basic sale data
-				$now = date('Y-m-d H:i:s', time());
-				$sale_data = [
-					"sale_type_id" => $sale_type->id,
-					"currency_id" => $currency->id,
-					"client_id" => $client_id,
-					"is_finished" => false,
-					"updated_at" => $now,
-					"registed_at" => $now,
-				];
-				
-				//insert products
-				$total = 0;
-				$sale_id = $this->general->insert("sale", $sale_data);
-				foreach($products as $item){
-					$item->sale_id = $sale_id;
-					$this->general->insert("sale_product", $item);
-					$total += $item->qty * ($item->price - $item->discount);
-					if ($item->option_id){
-						$op = $this->general->id("product_option", $item->option_id);
-						$this->general->update("product_option", $item->option_id, ["stock" => ($op->stock - $item->qty)]);
-						
-						$sum = $this->general->sum("product_option", "stock", ["product_id" => $item->product_id]);
-						$this->general->update("product", $item->product_id, ["stock" => $sum->stock]);
+		if ($this->utility_lib->check_access("sale", "register")){
+			$products_json = $this->input->post("sl_pr");
+			$client = $this->input->post("client");
+			$payment = $this->input->post("payment");
+			$currency = $this->input->post("currency");
+			$sale_id = null;
+			
+			//calient validation
+			$this->load->library('my_val');
+			$msgs = $this->my_val->sale_client($msgs, $client);
+			$msgs = $this->my_val->sale_payment($msgs, $payment);
+			
+			if (!$msgs){
+				$res = $this->my_val->sale_products($products_json);
+				$msg = $res["msg"];
+				if (!$msg){
+					//client processing
+					$doc_type = $this->general->id("doc_type", $client["doc_type_id"]);
+					if ($doc_type->description === "Sin Documento") $client_id = null;
+					else{
+						$client_rec = $this->general->filter("person", $client);
+						if ($client_rec) $client_id = $client_rec[0]->id;
+						else $client_id = $this->general->insert("person", $client);
+					}
+					
+					//set sale data
+					$products = $res["products"];
+					$prod_type = $this->general->id("product_type", $this->general->id("product", $products[0]->product_id)->type_id);
+					$sale_type = $this->general->filter("sale_type", ["description" => $prod_type->description])[0];
+					$currency = $this->general->filter("currency", ["description" => $currency])[0];
+					
+					//basic sale data
+					$now = date('Y-m-d H:i:s', time());
+					$sale_data = [
+						"sale_type_id" => $sale_type->id,
+						"currency_id" => $currency->id,
+						"client_id" => $client_id,
+						"updated_at" => $now,
+						"registed_at" => $now,
+					];
+					
+					//insert products
+					$total = 0;
+					$sale_id = $this->general->insert("sale", $sale_data);
+					foreach($products as $item){
+						$item->sale_id = $sale_id;
+						$this->general->insert("sale_product", $item);
+						$total += $item->qty * ($item->price - $item->discount);
+						if ($item->option_id){
+							$op = $this->general->id("product_option", $item->option_id);
+							$this->general->update("product_option", $item->option_id, ["stock" => ($op->stock - $item->qty)]);
+							
+							$sum = $this->general->sum("product_option", "stock", ["product_id" => $item->product_id]);
+							$this->general->update("product", $item->product_id, ["stock" => $sum->stock]);
+						}
+					}
+					
+					$payment["sale_id"] = $sale_id;
+					$payment["registed_at"] = $now;
+					$this->general->insert("payment", $payment);
+					
+					if ($total == $payment["received"]) $status = $this->general->filter("status", ["code" => "finished"])[0];
+					else $status = $this->general->filter("status", ["code" => "in_progress"])[0];
+					
+					$vat = $total * 0.18;
+					$amount = $total - $vat;
+					$sale_data = [
+						"status_id" => $status->id,
+						"total" => $total,
+						"amount" => $amount,
+						"vat" => $vat,
+						"paid" => $payment["received"],
+						"balance" => $payment["balance"],
+					];
+					
+					if ($this->general->update("sale", $sale_id, $sale_data)){
+						$type = "success";
+						$msg = $this->lang->line('success_isa');
+						$move_to = base_url()."sale/detail/".$sale_id;
 					}
 				}
-				
-				$payment["sale_id"] = $sale_id;
-				$payment["registed_at"] = $now;
-				$this->general->insert("payment", $payment);
-				
-				if ($total == $payment["received"]) $status = $this->general->filter("status", ["code" => "finished"])[0];
-				else $status = $this->general->filter("status", ["code" => "in_progress"])[0];
-				
-				$vat = $total * 0.18;
-				$amount = $total - $vat;
-				$sale_data = [
-					"status_id" => $status->id,
-					"total" => $total,
-					"amount" => $amount,
-					"vat" => $vat,
-					"paid" => $payment["received"],
-					"balance" => $payment["balance"],
-				];
-				
-				if ($this->general->update("sale", $sale_id, $sale_data)){
-					$type = "success";
-					$msg = $this->lang->line('success_isa');
-					$move_to = base_url()."sale/detail/".$sale_id;
-				}
-			}
-		}else $msg = $this->lang->line('error_occurred');
-		
-		//rollback
-		if ($type === "error") if ($sale_id){
-			$sale_products = $this->general->filter("sale_product", ["sale_id" => $sale_id]);
-			if ($sale_products){
-				//reverse stocks to product
-				foreach($sale_products as $p){
-					$prod_op = $this->general->id("product_option", $p->option_id);
-					$prod_op_data = ["stock" => ($prod_op->stock + $p->qty)];
-					$this->general->update("product_option", $prod_op->id, $prod_op_data);
-				}
-				$this->general->delete("sale_product", ["sale_id" => $sale_id]);
-			}
+			}else $msg = $this->lang->line('error_occurred');
 			
-			$this->general->delete("sale", ["id" => $sale_id]);
-			$this->general->delete("payment", ["sale_id" => $sale_id]);
-		}
+			//rollback
+			if ($type === "error") if ($sale_id){
+				$sale_products = $this->general->filter("sale_product", ["sale_id" => $sale_id]);
+				if ($sale_products){
+					//reverse stocks to product
+					foreach($sale_products as $p){
+						$prod_op = $this->general->id("product_option", $p->option_id);
+						$prod_op_data = ["stock" => ($prod_op->stock + $p->qty)];
+						$this->general->update("product_option", $prod_op->id, $prod_op_data);
+					}
+					$this->general->delete("sale_product", ["sale_id" => $sale_id]);
+				}
+				
+				$this->general->delete("sale", ["id" => $sale_id]);
+				$this->general->delete("payment", ["sale_id" => $sale_id]);
+			}
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "msgs" => $msgs, "move_to" => $move_to]);
 	}
 	
-	public function load_product_list(){
-		$currencies = array();
-		$currencies_rec = $this->general->all("currency");
-		foreach($currencies_rec as $item) $currencies[$item->id] = $item->description;
-		
-		$prod_categories = array();
-		$prod_categories_rec = $this->general->all("product_category");
-		foreach($prod_categories_rec as $item) $prod_categories[$item->id] = $item->name;
-		
-		$products = array();
-		$products_rec = $this->general->filter("product", array("active" => true));
-		foreach($products_rec as $item){
-			$currency = $currencies[$item->currency_id];
-			$label = array(
-				$prod_categories[$item->category_id], 
-				$item->description, 
-				$currency." ".number_format($item->price)
-			);
-			
-			array_push($products, array("value" => $item->id, "label" => implode(", ", $label), "currency" => $currency));
-		}
-		usort($products, function($a, $b) {return strcmp($a["label"], $b["label"]);});
-		
-		header('Content-Type: application/json');
-		echo json_encode($products);
-	}
-	
-	public function load_product(){
-		$status = false; $msg = $prod = $options = null;
-		
-		
-		$product = $this->general->id("product", $this->input->post("id"));
-		if ($product){
-			$category = $this->general->id("product_category", $product->category_id)->name;
-			
-			$prod = array(
-				"id" => $product->id,
-				"description" => $category.", ".$product->description,
-				"type" => $this->general->id("product_type", $product->type_id)->description,
-				"currency" => $this->general->id("currency", $product->currency_id)->description,
-				"price" => $product->price,
-				"price_txt" => number_format($product->price, 2),
-				"value" => $product->value,
-				"vat" => $product->vat
-			);
-			
-			$options = $this->general->filter("product_option", array("product_id" => $product->id));
-			
-			$status = true;
-		}else $msg = $this->lang->line('error_internal');
-		
-		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "msg" => $msg, "prod" => $prod, "options" => $options));
-	}
-	
 	public function detail($id){
 		if (!$this->session->userdata('logged_in')) redirect(base_url());
-		//pending! rol validation
+		if (!$this->utility_lib->check_access("sale", "detail")) redirect("/errors/no_permission");
 		
 		$this->update_balance($id);
 		
 		$sale = $this->general->id("sale", $id);
 		$sale->type = $this->general->id("sale_type", $sale->sale_type_id);
 		$sale->currency = $this->general->id("currency", $sale->currency_id)->description;
-		$sale->status_code = $this->status->id($sale->status_id)->code;
-		$sale->status = $this->lang->line($sale->status_code);
-		switch($sale->status_code){
-			case "in_progress": $sale->status_color = "warning"; break;
-			case "canceled": $sale->status_color = "danger"; break;
-			default: $sale->status_color = "success";
-		}
+		$sale->status = $this->general->id("status", $sale->status_id);
 		
 		$company = new stdClass;
-		$company->doc_type_id = $this->general->filter("doc_type", array("short" => "RUC"))[0]->id;
+		$company->doc_type_id = $this->general->filter("doc_type", ["short" => "RUC"])[0]->id;
 		if ($sale->client_id){
 			$client = $this->general->id("person", $sale->client_id);
 			$client->doc_type = $this->general->id("doc_type", $client->doc_type_id)->short;	
@@ -290,22 +228,35 @@ class Sale extends CI_Controller {
 			$company->ruc = null;
 		}
 		
-		$filter = array("sale_id" => $sale->id);
+		$filter = ["sale_id" => $sale->id];
 		
-		$payments = $this->general->filter("payment", $filter, "registed_at", "desc");
+		$payments = $this->general->filter("payment", $filter, null, null, "registed_at", "desc");
 		foreach($payments as $item) $item->payment_method = $this->sl_option->id($item->payment_method_id)->description;
 		
+		$appo_qty = $surg_qty = 0;
 		$products = $this->general->filter("sale_product", $filter);
 		foreach($products as $item){
 			$item->product = $this->product->id($item->product_id);
 			$item->product->category = $this->general->id("product_category", $item->product->category_id)->name;
+			
+			if(strpos(strtoupper($item->product->description), strtoupper("consulta")) !== false) $appo_qty++;
+			if(strpos(strtoupper($item->product->category), strtoupper("cirugía")) !== false) $surg_qty++;
 		}
+		usort($products, function($a, $b) { return strcmp($a->product->description, $b->product->description); });
 		
 		$voucher = $this->general->filter("voucher", $filter);
 		if ($voucher) $voucher = $voucher[0];
+		else $voucher = $this->general->structure("voucher");
+		if ($voucher->sunat_sent) $voucher->color = "success";
+		else {
+			$voucher->color = "danger";
+			if ($voucher->sunat_sent == null) $voucher->sunat_msg = $this->lang->line('msg_no_voucher');
+		}
 		
 		$data = array(
 			"canceled_id" => $this->status->code("canceled")->id,
+			"appo_qty" => $appo_qty,
+			"surg_qty" => $surg_qty,
 			"sale" => $sale,
 			"client" => $client,
 			"company" => $company,

@@ -16,7 +16,7 @@
 <?php if ($sale->status_id != $canceled_id){ ?>
 <div class="col-md-12">
 	<div class="row d-flex justify-content-center">
-		<?php if ($voucher){ ?>
+		<?php if ($voucher->sale_id){ ?>
 		<div class="col-md-4">
 			<a href="<?= base_url() ?>sale/voucher/<?= $voucher->id ?>" target="_blank">
 				<button class="btn btn-primary w-100 mb-3">
@@ -61,6 +61,11 @@
 						</a>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#tab_medical">
+							<i class="far fa-notes-medical fa-fw mr-3"></i><?= $this->lang->line("tab_medical") ?>
+						</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#tab_payments">
 							<i class="far fa-money-check fa-fw mr-3"></i><?= $this->lang->line("tab_payments") ?>
 						</a>
@@ -73,74 +78,48 @@
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane fade show active" id="tab_data" role="tabpanel">
-						<div class="form-row">
-							<div class="form-group col-md-3">
-								<label><?= $this->lang->line('label_date') ?></label>
-								<input type="text" class="form-control" value="<?= $sale->registed_at ?>" readonly>
+						<div class="row">
+							<div class="col-md-3 mb-4">
+								<p class="mb-2"><?= $this->lang->line('label_date') ?></p>
+								<h4 class="text-black"><?= $sale->registed_at ?></h4>
 							</div>
-							<div class="form-group col-md-3">
-								<label><?= $this->lang->line('label_document') ?></label>
-								<?php if ($client->doc_number) $doc_val = $client->doc_type." / ".$client->doc_number; else $doc_val = ""; ?>
-								<input type="text" class="form-control" value="<?= $doc_val ?>" readonly>
+							<div class="col-md-3 mb-4">
+								<?php if ($client->doc_number) $doc_val = $client->doc_type." ".$client->doc_number;
+								else $doc_val = ""; ?>
+								<p class="mb-2"><?= $this->lang->line('label_document') ?></p>
+								<h4 class="text-black"><?= $doc_val ?></h4>
 							</div>
-							<div class="form-group col-md-6">
-								<label><?= $this->lang->line('label_client') ?></label>
-								<input type="text" class="form-control" value="<?= $client->name ?>" readonly>
+							<div class="col-md-6 mb-4">
+								<p class="mb-2"><?= $this->lang->line('label_client') ?></p>
+								<h4 class="text-black"><?= $client->name ?></h4>
 							</div>
-							<div class="form-group col-md-3">
-								<label><?= $this->lang->line('label_status') ?></label>
-								<input type="text" class="form-control text-<?= $sale->status_color ?>" value="<?= $sale->status ?>" readonly>
+							<div class="col-md-3 mb-4">
+								<p class="mb-2"><?= $this->lang->line('label_status') ?></p>
+								<h4 class="text-black"><?= $this->lang->line($sale->status->code) ?></h4>
 							</div>
-							<div class="form-group col-md-3">
-								<label><?= $this->lang->line('label_total') ?></label>
-								<input type="text" class="form-control" value="<?= $sale->currency." ".number_format($sale->total, 2) ?>" readonly>
+							<div class="col-md-3 mb-4">
+								<p class="mb-2"><?= $this->lang->line('label_total') ?></p>
+								<h4 class="text-black"><?= $sale->currency." ".number_format($sale->total, 2) ?></h4>
 							</div>
-							<div class="form-group col-md-3">
-								<label><?= $this->lang->line('label_balance') ?></label>
-								<input type="text" class="form-control" value="<?= $sale->currency." ".number_format($sale->balance, 2) ?>" readonly>
+							<div class="col-md-3 mb-4">
+								<p class="mb-2"><?= $this->lang->line('label_balance') ?></p>
+								<h4 class="text-black"><?= $sale->currency." ".number_format($sale->balance, 2) ?></h4>
 							</div>
-							<div class="form-group col-md-3">
-								<label><?= $this->lang->line('label_last_update') ?></label>
-								<input type="text" class="form-control" value="<?= $sale->updated_at ?>" readonly>
+							<div class="col-md-3 mb-4">
+								<p class="mb-2"><?= $this->lang->line('label_last_update') ?></p>
+								<h4 class="text-black"><?= $sale->updated_at ?></h4>
 							</div>
-						</div>
-						<?php if ($sale->appointment_id or $sale->surgery_id){ ?>
-						<hr>
-						<div class="form-row">
-							<?php if ($sale->appointment_id){ ?>
-							<div class="form-group col-md-3">
-								<label><?= $this->lang->line('label_appointment') ?></label>
-								<a href="<?= base_url() ?>appointment/detail/<?= $sale->appointment_id ?>" target="_blank">
-									<button type="button" class="btn btn-primary btn-block">
-										<?= $this->lang->line('btn_view') ?>
-									</button>
-								</a>
-							</div>
-							<?php } if ($sale->surgery_id){ ?>
-							<div class="form-group col-md-3">
-								<label><?= $this->lang->line('label_appointment') ?></label>
-								<a href="<?= base_url() ?>surgery/detail/<?= $sale->surgery_id ?>" target="_blank">
-									<button type="button" class="btn btn-primary btn-block">
-										<?= $this->lang->line('btn_view') ?>
-									</button>
-								</a>
-							</div>
-							<?php } ?>
-						</div>
-						<?php } if ($voucher){ 
-							if ($voucher->sunat_sent){ $color = "success"; $text = $this->lang->line('txt_sent'); }
-							else{ $color = "danger"; $text = $this->lang->line('txt_error'); } ?>
-						<hr>
-						<div class="form-row">
-							<div class="form-group col-md-3">
-								<label><?= $this->lang->line('label_sunat') ?></label>
-								<input type="text" class="form-control text-<?= $color ?>" value="<?= $text ?>" readonly>
-							</div>
-							<div class="form-group col-md-9">
-								<label><?= $this->lang->line('label_msg') ?></label>
-								<input type="text" class="form-control" value="<?= $voucher->sunat_msg ?>" readonly>
+							<div class="col-md-12">
+								<p class="mb-2"><?= $this->lang->line('label_sunat') ?></p>
+								<h4 class="text-<?= $voucher->color ?> mb-0"><?= $voucher->sunat_msg ?></h4>
 							</div>
 						</div>
+					</div>
+					<div class="tab-pane fade" id="tab_medical" role="tabpanel">
+						<?php if ($appo_qty or $surg_qty){ ?>
+						<h4>Hola mundo.</h4>	
+						<?php }else{ ?>
+						<h4><?= $this->lang->line('msg_no_medical_attention') ?></h4>
 						<?php } ?>
 					</div>
 					<div class="tab-pane fade" id="tab_payments" role="tabpanel">
@@ -304,7 +283,7 @@
 		</div>
 	</div>
 </div>
-<?php if (!$voucher){ ?>
+<?php if (!$voucher->sale_id){ ?>
 <div class="modal fade md_voucher" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">

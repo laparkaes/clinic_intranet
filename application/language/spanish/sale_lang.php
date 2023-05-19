@@ -103,7 +103,6 @@ $lang['hd_status'] = 'Estado';
 $lang['rs_total'] = 'Total';
 $lang['rs_sale'] = 'Venta';
 $lang['rs_vat'] = 'IGV 18%';
-$lang['btn_voucher'] = 'Comprobante';
 $lang['btn_appointment'] = 'Datos de Consulta';
 $lang['btn_detail'] = 'Detalle de Venta';
 $lang['btn_finish'] = 'Finalizar Venta';
@@ -114,6 +113,7 @@ $lang['btn_search'] = 'Buscar';
 
 //detail
 $lang['tab_items'] = 'Ítems';
+$lang['tab_medical'] = 'Atención Médica';
 $lang['tab_payments'] = 'Pagos';
 $lang['tab_vouchers'] = 'Comprobantes';
 $lang['tab_data'] = 'Datos';
@@ -158,3 +158,5 @@ $lang['lb_quantity'] = 'Cantidad';
 $lang['lb_subtotal'] = 'Subtotal';
 $lang['lb_option'] = 'Opción';
 $lang['txt_number'] = 'Número';
+$lang['msg_no_medical_attention'] = 'Esta venta no tiene vínculo con ninguna atención médica.';
+$lang['msg_no_voucher'] = 'Venta sin comprobante emitido.';
