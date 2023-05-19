@@ -97,6 +97,7 @@ class Sale extends CI_Controller {
 		$client = $this->input->post("client");
 		$payment = $this->input->post("payment");
 		$currency = $this->input->post("currency");
+		$sale_id = null;
 		
 		//calient validation
 		$this->load->library('my_val');
@@ -107,162 +108,94 @@ class Sale extends CI_Controller {
 			$res = $this->my_val->sale_products($products_json);
 			$msg = $res["msg"];
 			if (!$msg){
-				$products = $res["products"];
+				//client processing
+				$doc_type = $this->general->id("doc_type", $client["doc_type_id"]);
+				if ($doc_type->description === "Sin Documento") $client_id = null;
+				else{
+					$client_rec = $this->general->filter("person", $client);
+					if ($client_rec) $client_id = $client_rec[0]->id;
+					else $client_id = $this->general->insert("person", $client);
+				}
 				
 				//set sale data
+				$products = $res["products"];
 				$prod_type = $this->general->id("product_type", $this->general->id("product", $products[0]->product_id)->type_id);
-				$sale_type = $this->general->filter("sale_type", ["description" => $prod_type->description]);
-				$currency = $this->general->filter("currency", ["description" => $currency]);
+				$sale_type = $this->general->filter("sale_type", ["description" => $prod_type->description])[0];
+				$currency = $this->general->filter("currency", ["description" => $currency])[0];
+				
+				
+				//basic sale data
+				$now = date('Y-m-d H:i:s', time());
+				$sale_data = [
+					"sale_type_id" => $sale_type->id,
+					"currency_id" => $currency->id,
+					"client_id" => $client_id,
+					"is_finished" => false,
+					"updated_at" => $now,
+					"registed_at" => $now,
+				];
 				
 				//insert products
+				$total = 0;
+				$sale_id = $this->general->insert("sale", $sale_data);
+				foreach($products as $item){
+					$item->sale_id = $sale_id;
+					$this->general->insert("sale_product", $item);
+					$total += $item->qty * ($item->price - $item->discount);
+					if ($item->option_id){
+						$op = $this->general->id("product_option", $item->option_id);
+						$this->general->update("product_option", $item->option_id, ["stock" => ($op->stock - $item->qty)]);
+						
+						$sum = $this->general->sum("product_option", "stock", ["product_id" => $item->product_id]);
+						$this->general->update("product", $item->product_id, ["stock" => $sum->stock]);
+					}
+				}
 				
-				print_r($products);
+				$payment["sale_id"] = $sale_id;
+				$payment["registed_at"] = $now;
+				$this->general->insert("payment", $payment);
+				
+				if ($total == $payment["received"]) $status = $this->general->filter("status", ["code" => "finished"])[0];
+				else $status = $this->general->filter("status", ["code" => "in_progress"])[0];
+				
+				$vat = $total * 0.18;
+				$amount = $total - $vat;
+				$sale_data = [
+					"status_id" => $status->id,
+					"total" => $total,
+					"amount" => $amount,
+					"vat" => $vat,
+					"paid" => $payment["received"],
+					"balance" => $payment["balance"],
+				];
+				
+				if ($this->general->update("sale", $sale_id, $sale_data)){
+					$type = "success";
+					$msg = $this->lang->line('success_isa');
+					$move_to = base_url()."sale/detail/".$sale_id;
+				}
 			}
 		}else $msg = $this->lang->line('error_occurred');
 		
-		
-		echo $msg;
-		print_r($msgs);
-		
-		//print_r($this->input->post());
-		
-		
-		/*
-		
-		//product stock validation
-		$op_stock_arr = $cat_prod_arr = array();
-		if ($products){
-			$product_type_id_prod = $this->general->filter("product_type", array("description" => "Producto"))[0]->id;
-			foreach($products as $p){
-				$prod = $this->general->id("product", $p["product_id"]);
-				array_push($cat_prod_arr, $this->general->id("product_category", $prod->category_id)->name." ".$prod->description);
-				
-				if ($prod->type_id == $product_type_id_prod){
-					if ($p["option_id"]){
-						$prod_option = $this->general->id("product_option", $p["option_id"]);
-						if (!array_key_exists($p["option_id"], $op_stock_arr))
-							$op_stock_arr[$p["option_id"]] = $prod_option->stock;
-						
-						$op_stock_arr[$p["option_id"]] = $op_stock_arr[$p["option_id"]] - $p["qty"];
-						if ($op_stock_arr[$p["option_id"]] < 0){
-							$msg = str_replace("%product%", $prod->description, $this->lang->line('error_spons'));
-							$msg = str_replace("%option%", $prod_option->description, $msg);
-						}
-					}else $msg = str_replace("%product%", $prod->description, $this->lang->line('error_spo'));
+		//rollback
+		if ($type === "error") if ($sale_id){
+			$sale_products = $this->general->filter("sale_product", ["sale_id" => $sale_id]);
+			if ($sale_products){
+				//reverse stocks to product
+				foreach($sale_products as $p){
+					$prod_op = $this->general->id("product_option", $p->option_id);
+					$prod_op_data = ["stock" => ($prod_op->stock + $p->qty)];
+					$this->general->update("product_option", $prod_op->id, $prod_op_data);
 				}
+				$this->general->delete("sale_product", ["sale_id" => $sale_id]);
 			}
-		}else $msg = $this->lang->line('error_spr');
-		
-		//appointment & surgery item validation
-		$need_app = $need_sur = false;
-		foreach($cat_prod_arr as $item){
-			if (strpos($item, "Consulta") !== false) $need_app = true;
-			if (strpos($item, "Cirugía") !== false) $need_sur = true;
-		}
-		
-		if ($need_app){
-			if (!$sale["appointment_id"]) $msg = $this->lang->line('error_sra');
-		}else{
-			if ($sale["appointment_id"]) $msg = $this->lang->line('error_sai');
-			else $sale["appointment_id"] = null;
-		}
-		
-		if ($need_sur){
-			if (!$sale["surgery_id"]) $msg = $this->lang->line('error_srs');
-		}else{
-			if ($sale["surgery_id"]) $msg = $this->lang->line('error_ssi');
-			else $sale["surgery_id"] = null;
-		} 
-		
-		if ($msgs) $msg = $this->lang->line('error_occurred');
-		elseif (!$msg){
-			$now = date('Y-m-d H:i:s', time());
 			
-			//client id asign
-			if ($doc_type->sunat_code){//any document selected (Sin Documento = 0)
-				$f = $client; unset($f["name"]);
-				$client_rec = $this->general->filter("person", $f);
-				if ($client_rec){//update client info
-					$sale["client_id"] = $client_rec[0]->id;
-					$this->general->update("person", $client_rec[0]->id, $client);
-				}else{//create new client
-					$client["registed_at"] = $now;
-					$sale["client_id"] = $this->general->insert("person", $client);
-				}
-			}else $sale["client_id"] = null;//sale without client info
-			
-			//set sale data
-			$sale["currency_id"] = $this->general->filter("currency", array("description" => $currency))[0]->id;
-			$sale["paid"] = 0;
-			$sale["balance"] = $sale["total"];
-			$sale["is_finished"] = false;
-			$sale["registed_at"] = $sale["updated_at"] = $now;
-			$sale_id = $this->general->insert("sale", $sale);
-			if ($sale_id){
-				$payment["sale_id"] = $sale_id;
-				$payment["registed_at"] = $now;
-				if ($this->general->insert("payment", $payment)){
-					$this->update_balance($sale_id);
-					$sale_type_id = $this->general->filter("sale_type", array("description" => "Servicio"))[0]->id;
-					
-					//process sale products
-					foreach($products as $p){
-						$prod = $this->general->id("product", $p["product_id"]);
-						$prod->type = $this->general->id("product_type", $prod->type_id)->description;
-						$p["sale_id"] = $sale_id;
-						$p["price"] = $prod->price;
-						if ($this->general->insert("sale_product", $p)){
-							//stock control
-							if (!strcmp("Producto", $prod->type)){
-								$sale_type_id = $this->general->filter("sale_type", array("description" => "Producto"))[0]->id;
-								$prod_op = $this->general->id("product_option", $p["option_id"]);
-								$prod_op_data = array("stock" => $prod_op->stock - $p["qty"]);
-								$this->general->update("product_option", $prod_op->id, $prod_op_data);
-							}
-						}
-					}
-
-					//update appointment or surgery if this is case
-					if ($sale["appointment_id"] or $sale["surgery_id"]){
-						$status_data = array("status_id" => $this->status->code("confirmed")->id);
-						if ($sale["appointment_id"]) $this->appointment->update($sale["appointment_id"], $status_data);
-						if ($sale["surgery_id"]) $this->surgery->update($sale["surgery_id"], $status_data);
-					}
-					
-					$this->general->update("sale", $sale_id, array("sale_type_id" => $sale_type_id));
-
-					//success
-					$this->utility_lib->add_log("sale_register", $this->lang->line('sale')." #".$sale_id);
-					
-					$move_to = base_url()."sale/detail/".$sale_id;
-					$status = true;
-					$type = "success";
-					$msg = $this->lang->line('success_isa');
-				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_internal');
-			
-			//rollback
-			if (!$status) if ($sale_id){
-				$this->general->delete("sale", array("id" => $sale_id));
-				$this->general->delete("payment", array("sale_id" => $sale_id));
-				
-				$sale_products = $this->general->filter("sale_product", array("sale_id" => $sale_id));
-				if ($sale_products){
-					//reverse stocks to product
-					foreach($sale_products as $p){
-						$prod_op = $this->general->id("product_option", $p->option_id);
-						$prod_op_data = array("stock" => $prod_op->stock + $p->qty);
-						$this->general->update("product_option", $prod_op->id, $prod_op_data);
-					}
-					$this->general->delete("sale_product", array("sale_id" => $sale_id));
-				}
-				
-			}
+			$this->general->delete("sale", ["id" => $sale_id]);
+			$this->general->delete("payment", ["sale_id" => $sale_id]);
 		}
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg, "msgs" => $msgs, "move_to" => $move_to));
-		*/
+		echo json_encode(["type" => $type, "msg" => $msg, "msgs" => $msgs, "move_to" => $move_to]);
 	}
 	
 	public function load_product_list(){

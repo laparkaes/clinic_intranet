@@ -241,10 +241,8 @@ function sl_product_add(){
 function add_sale(dom){
 	$("#form_sale .sys_msg").html("");
 	ajax_form_warning(dom, "sale/add", $("#warning_asa").val()).done(function(res) {
-		
-		alert(res);
-		//set_msg(res.msgs);
-		//swal_redirection(res.type, res.msg, res.move_to);
+		set_msg(res.msgs);
+		swal_redirection(res.type, res.msg, res.move_to);
 	});
 }
 
@@ -252,6 +250,7 @@ $(document).ready(function() {
 	//general
 	$(".control_bl").on('click',(function(e) {control_bl(this);}));
 	$("#form_add_sale").submit(function(e) {e.preventDefault(); add_sale(this);});
+	$("#btn_add_sale").on('click',(function(e) {$("#form_add_sale").submit();}));
 	
 	//new sale - select item
 	$("#sl_pr_category").on('change',(function(e) {load_items($(this).val());}));

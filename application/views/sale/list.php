@@ -211,7 +211,7 @@
 								</div>
 							</div>
 							<div class="col-md-12">
-								<button type="submit" class="btn btn-primary mt-3" id="btn_register_sale">
+								<button type="button" class="btn btn-primary mt-3" id="btn_add_sale">
 									<?= $this->lang->line('btn_register_sale') ?>
 								</button>
 							</div>
