@@ -63,3 +63,9 @@ $lang["e_enter_number"] = "Ingrese un número.";
 $lang["e_enter_price"] = "Ingrese precio de venta.";
 $lang["e_enter_company"] = "Ingrese nombre de proveedor.";
 $lang["e_enter_ruc"] = "Ingrese RUC o un documento de identidad.";
+
+/* sale */
+$lang['e_no_received'] = 'Monto debe ser mayor de cero.';
+$lang['e_product_select'] = 'Debe elegir al menos un ítem.';
+$lang['e_product_type_mixed'] = 'Elija un solo tipo de ítem para la venta. No se permite generar una venta de servicio y producto mezclada.';
+$lang['e_product_no_stock'] = 'no cuenta con suficiente disponibilidad para la venta.';

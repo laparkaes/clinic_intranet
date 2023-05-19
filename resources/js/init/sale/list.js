@@ -84,7 +84,10 @@ function select_item(){
 
 function calculate_payment(e, type){
 	if ((e.which == 13) || (e.which == 0)){
-		var total = parseFloat($("#sale_total").val());
+		var total = $("#sale_total").val();
+		if (total == ""){ swal("error", $("#error_prsl").val()); return; }
+		else total = parseFloat(total);
+		
 		var received = parseFloat($("#payment_received_v").val().replace(/,/g, ""));
 		var change = parseFloat($("#payment_change_v").val().replace(/,/g, ""));
 		var balance = parseFloat($("#payment_balance_v").val().replace(/,/g, ""));
@@ -193,7 +196,7 @@ function sl_product_add(){
 	
 	var op_currency = $("#op_currency").val();
 	if (op_currency == "") $("#op_currency").val(item.currency);
-	else if (op_currency != item.currency) { swal("error", $("#error_prlc").val()); return; }
+	else if (op_currency != item.currency){ swal("error", $("#error_prlc").val()); return; }
 	
 	var qty = parseInt($("#sl_pr_quantity").val().replace(/,/g, ""));
 	var discount = parseFloat($("#sl_pr_udiscount").val().replace(/,/g, ""));

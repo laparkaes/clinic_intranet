@@ -320,4 +320,46 @@ class My_val{
 		
 		return $msgs;
 	}
+	
+	public function sale_client($msgs, $data){
+		$doc_type = $this->CI->general->id("doc_type", $data["doc_type_id"]);
+		if ($doc_type->description !== "Sin Documento"){
+			if (!$data["doc_number"]) $msgs = $this->set_msg($msgs, "client_doc_number_msg", "error", "e_enter_doc_number");
+			if (!$data["name"]) $msgs = $this->set_msg($msgs, "client_name_msg", "error", "e_enter_name");
+		}
+		
+		return $msgs;
+	}
+	
+	public function sale_payment($msgs, $data){
+		if (($data["received"] <= 0) or (!$data["received"]))
+			$msgs = $this->set_msg($msgs, "pay_received_msg", "error", "e_no_received");
+		
+		return $msgs;
+	}
+	
+	public function sale_products($products_json){
+		$msg = null; $products = [];
+		if ($products_json){
+			$types = [];
+			foreach($products_json as $item){
+				$prod = json_decode($item);
+				$prod_rec = $this->CI->general->id("product", $prod->product_id);
+				$types[] = $prod_rec->type_id;
+				
+				//stock validation
+				if ($prod->option_id){
+					if ($prod->qty > $this->CI->general->id("product_option", $prod->option_id)->stock)
+						$msg = $prod_rec->description." ".$this->CI->lang->line('e_product_no_stock');
+				}
+				
+				$products[] = $prod;
+			}
+			
+			$types = array_unique($types);
+			if (count($types) > 1) $msg = $this->CI->lang->line('e_product_type_mixed');
+		}else $msg = $this->CI->lang->line('e_product_select');
+		
+		return ["msg" => $msg, "products" => $products];
+	}
 }

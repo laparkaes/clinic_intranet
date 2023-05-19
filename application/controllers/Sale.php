@@ -95,32 +95,39 @@ class Sale extends CI_Controller {
 		$type = "error"; $msg = null; $msgs = []; $move_to = null;
 		$products_json = $this->input->post("sl_pr");
 		$client = $this->input->post("client");
-		$currency = $this->input->post("currency");
 		$payment = $this->input->post("payment");
+		$currency = $this->input->post("currency");
 		
-		$products = [];
-		foreach($products_json as $item){
-			$prod = json_decode($item);
-			$products[] = $prod;
-		}
+		//calient validation
+		$this->load->library('my_val');
+		$msgs = $this->my_val->sale_client($msgs, $client);
+		$msgs = $this->my_val->sale_payment($msgs, $payment);
 		
-		print_r($products);
+		if (!$msgs){
+			$res = $this->my_val->sale_products($products_json);
+			$msg = $res["msg"];
+			if (!$msg){
+				$products = $res["products"];
+				
+				//set sale data
+				$prod_type = $this->general->id("product_type", $this->general->id("product", $products[0]->product_id)->type_id);
+				$sale_type = $this->general->filter("sale_type", ["description" => $prod_type->description]);
+				$currency = $this->general->filter("currency", ["description" => $currency]);
+				
+				//insert products
+				
+				print_r($products);
+			}
+		}else $msg = $this->lang->line('error_occurred');
+		
+		
+		echo $msg;
+		print_r($msgs);
 		
 		//print_r($this->input->post());
 		
 		
 		/*
-		$products = $this->input->post("products");
-		
-		//client validation
-		$doc_type = $this->general->id("doc_type", $client["doc_type_id"]);
-		if ($doc_type->sunat_code){
-			if (!$client["doc_number"]) $msgs = $this->set_msg($msgs, "client_doc_number_msg", "error", "error_idn");
-			if (!$client["name"]) $msgs = $this->set_msg($msgs, "client_name_msg", "error", "error_icn");
-		}
-		
-		//total vs balance validation
-		if ($sale["total"] <= $payment["balance"]) $msg = $this->lang->line('error_npa');
 		
 		//product stock validation
 		$op_stock_arr = $cat_prod_arr = array();
