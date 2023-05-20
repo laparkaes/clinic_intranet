@@ -122,16 +122,13 @@ class Surgery extends CI_Controller {
 		$room = $this->general->id("surgery_room", $surgery->room_id);
 		if ($room) $surgery->detail = $room->name; else $surgery->detail = "";
 		
-		$surgery_sale = $this->general->filter("sale", array("surgery_id" => $surgery->id));
+		$surgery_sale = $this->general->filter("sale_product", ["surgery_id" => $surgery->id]);
 		if ($surgery_sale){
-			$sale_items = $this->general->filter("sale_product", array("sale_id" => $surgery_sale[0]->id));
-			foreach($sale_items as $item){
-				$product = $this->general->id("product", $item->product_id);
-				$category = $this->general->id("product_category", $product->category_id)->name;
-				
-				$str = $category.", ".$product->description;
-				if (strpos($str, "Cirugía") !== false) $surgery->detail = $surgery->detail." / ".$str;
-			}
+			$product = $this->general->id("product", $surgery_sale[0]->product_id);
+			$category = $this->general->id("product_category", $product->category_id)->name;
+			
+			$str = $category.", ".$product->description;
+			if (strpos($str, "Cirugía") !== false) $surgery->detail = $surgery->detail." / ".$str;
 		}
 		
 		$doctor = $this->general->id("person", $surgery->doctor_id);

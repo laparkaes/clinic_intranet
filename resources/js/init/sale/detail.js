@@ -215,8 +215,33 @@ function search_company_mv(){
 	});
 }
 
+function asign_reservation(attn, attn_id){
+	var data = {id: $("#rs_selected_product").val(), attn_id: attn_id, field: attn};
+	ajax_simple(data, "sale/asign_reservation").done(function(res) {
+		swal_redirection(res.type, res.msg, window.location.href);
+	});
+}
+
+function search_reservations(attn){
+	var data = {doc_number: $("#rs_sur_doc_number").val(), attn: attn};
+	ajax_simple(data, "sale/search_reservations").done(function(res) {
+		$("#rs_list").html("");
+		if (res.type == "error") swal(res.type, res.msg);
+		$.each(res.reservations, function(index, value) {
+			$("#rs_list").append('<tr><td><strong>' + (index + 1) + '</strong></td><td><div>' + value.schedule + '</div><div>' + value.pt_name + '</div><small>' + value.pt_doc + '</small></td><td class="text-right"><button type="button" class="btn btn-info btn-xxs btn_rs_select" value="' + value.id + '">' + $("#btn_select_lang").val() + '</button></td></tr>');
+		});
+		
+		$(".btn_rs_select").on('click',(function(e) {asign_reservation(attn, $(this).val());}));
+	});
+}
+
 $(document).ready(function() {
 	//$("#btn_add_payment").on('click',(function(e) {make_voucher(this);}));
+	
+	//asign medical attention
+	$(".btn_select_product").on('click',(function(e) { $("#rs_selected_product").val($(this).val()); }));
+	$("#btn_search_surgery").on('click',(function(e) {search_reservations("surgery");}));
+	
 	
 	//voucher
 	$("#form_make_voucher").submit(function(e) {e.preventDefault(); make_voucher(this);});

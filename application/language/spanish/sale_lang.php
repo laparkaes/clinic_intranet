@@ -24,6 +24,7 @@ $lang['error_ssi'] = 'Debe elegir un ítem de cirugía para proceder con la vent
 $lang['error_sit'] = 'Debe elegir un ítem.';//error_select_item
 $lang['error_sio'] = 'Debe elegir una opción del producto.';//error_select_item_option
 $lang['error_psq'] = 'Debe ingresar cantidad menor que stock de opción.';//error_product_stock_qty
+$lang['error_nsr'] = 'No hay reserva de cirugía con documento ingresado.';//error_no_surgery_reservation
 $lang['warning_asa'] = '¿Desea registrar la venta?';//warning_add_sale
 $lang['warning_apa'] = '¿Desea registrar pago?';//warning_add_payment
 $lang['warning_dpa'] = '¿Desea eliminar pago?';//warning_delete_payment
@@ -35,6 +36,8 @@ $lang['success_csa'] = 'Venta ha sido cancelada con éxito.';//success_cancel_sa
 $lang['success_ipa'] = 'Pago ha sido registrado con éxito.';//success_insert_payment
 $lang['success_dpa'] = 'Pago ha sido eliminado con éxito.';//success_delete_payment
 $lang['success_gvo'] = '#type# ha sido generada con éxito.';//success_generate_voucher
+$lang['success_sas'] = 'Cirugía ha sido asignado al producto de venta.';//success_surgery_assigned
+$lang['success_apa'] = 'Consulta ha sido asignado al producto de venta';//success_appointment_assigned
 
 //list(index)
 $lang['btn_close'] = 'Cerrar';
@@ -160,3 +163,6 @@ $lang['lb_option'] = 'Opción';
 $lang['txt_number'] = 'Número';
 $lang['msg_no_medical_attention'] = 'Esta venta no tiene vínculo con ninguna atención médica.';
 $lang['msg_no_voucher'] = 'Venta sin comprobante emitido.';
+$lang['txt_appointment'] = 'Consulta';
+$lang['txt_surgery'] = 'Cirugía';
+$lang['hd_schedule'] = 'Horario';

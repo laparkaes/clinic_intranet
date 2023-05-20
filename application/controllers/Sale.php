@@ -239,8 +239,14 @@ class Sale extends CI_Controller {
 			$item->product = $this->product->id($item->product_id);
 			$item->product->category = $this->general->id("product_category", $item->product->category_id)->name;
 			
-			if(strpos(strtoupper($item->product->description), strtoupper("consulta")) !== false) $appo_qty++;
-			if(strpos(strtoupper($item->product->category), strtoupper("cirugía")) !== false) $surg_qty++;
+			$item->type = null;
+			if(strpos(strtoupper($item->product->description), strtoupper("consulta")) !== false){
+				$item->type = $this->lang->line('txt_appointment');
+				$appo_qty++;
+			}elseif(strpos(strtoupper($item->product->category), strtoupper("cirugía")) !== false){
+				$item->type = $this->lang->line('txt_surgery');
+				$surg_qty++;
+			}
 		}
 		usort($products, function($a, $b) { return strcmp($a->product->description, $b->product->description); });
 		
@@ -272,6 +278,60 @@ class Sale extends CI_Controller {
 		);
 		
 		$this->load->view('layout', $data);
+	}
+
+	public function search_reservations(){
+		$data = $this->input->post();
+		
+		$reservations = $patient_ids = [];
+		if ($data["doc_number"]){
+			$people = $this->general->filter("person", null, ["doc_number" => $data["doc_number"]]);
+			foreach($people as $item) $patient_ids[] = $item->id;
+		}
+		
+		if ($patient_ids){
+			$w = ["status_id" => $this->status->code("reserved")->id];
+			$w_in = [["field" => "patient_id", "values" => $patient_ids]];
+			
+			$attns = $this->general->filter($data["attn"], $w, null, $w_in, "schedule_from", "asc");
+			foreach($attns as $item){
+				$patient = $this->general->id("person", $item->patient_id);
+				$patient->doc_type = $this->general->id("doc_type", $patient->doc_type_id)->short;
+				$reservations[] = [
+					"id" => $item->id, 
+					"schedule" => $item->schedule_from, 
+					"pt_name" => $patient->name,
+					"pt_doc" => $patient->doc_type." ".$patient->doc_number,
+				];
+			}
+		}
+		
+		if ($reservations){
+			$type = "success";
+			$msg = null;
+		}else{
+			$type = "error";
+			$msg = $this->lang->line('error_nsr');
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg, "reservations" => $reservations]);
+	}
+	
+	public function asign_reservation(){
+		$type = "error"; $msg = null;
+		$data = $this->input->post();
+		
+		if ($this->general->update("sale_product", $data["id"], [$data["field"]."_id" => $data["attn_id"]])){
+			$status_confirm_id = $this->general->filter("status", ["code" => "confirmed"])[0]->id;
+			$this->general->update($data["field"], $data["attn_id"], ["status_id" => $status_confirm_id]);
+			
+			$type = "success";
+			$msg = $this->lang->line('success_sas');
+		}else $msg = $this->lang->line('error_internal');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 
 	public function add_payment(){

@@ -95,7 +95,7 @@
 							</div>
 							<div class="col-md-3 mb-4">
 								<p class="mb-2"><?= $this->lang->line('label_status') ?></p>
-								<h4 class="text-black"><?= $this->lang->line($sale->status->code) ?></h4>
+								<h4 class="text-<?= $sale->status->color ?>"><?= $this->lang->line($sale->status->code) ?></h4>
 							</div>
 							<div class="col-md-3 mb-4">
 								<p class="mb-2"><?= $this->lang->line('label_total') ?></p>
@@ -117,7 +117,45 @@
 					</div>
 					<div class="tab-pane fade" id="tab_medical" role="tabpanel">
 						<?php if ($appo_qty or $surg_qty){ ?>
-						<h4>Hola mundo.</h4>	
+						<div class="table-responsive">
+							<table class="table table-responsive-md">
+								<thead>
+									<tr>
+										<th style="width: 70px;"><strong>#</strong></th>
+										<th><strong><?= $this->lang->line('hd_type') ?></strong></th>
+										<th><strong><?= $this->lang->line('hd_product') ?></strong></th>
+										<th><strong><?= $this->lang->line('hd_attention') ?></strong></th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php foreach($products as $i => $item){ if($item->type){ ?>
+									<tr>
+										<td><?= $i + 1 ?></td>
+										<td><?= $item->type ?></td>
+										<td>
+											<div><?= $item->product->description ?></div>
+											<div><small><?= $item->product->category ?></small></div>
+										</td>
+										<td><td>
+										<td class="text-right">
+											<?php if ($item->appointment_id or $item->surgery_id){ ?>
+											<button type="button" class="btn btn-danger">
+												<i class="fas fa-trash"></i>
+											</button>
+											<?php }else{ 
+											if ($item->type === $this->lang->line('txt_surgery')) $md = "surgery";
+											else $md = "appointment"; ?>
+											<button type="button" class="btn btn-primary btn_select_product" data-toggle="modal" data-target="#md_reservation_<?= $md ?>" value="<?= $item->id ?>">
+												<i class="fas fa-plus"></i>
+											</button>
+											<?php } ?>
+										</td>
+									</tr>
+									<?php }} ?>
+								</tbody>
+							</table>
+						</div>
 						<?php }else{ ?>
 						<h4><?= $this->lang->line('msg_no_medical_attention') ?></h4>
 						<?php } ?>
@@ -133,7 +171,7 @@
 										<th><strong><?= $this->lang->line('hd_received') ?></strong></th>
 										<th><strong><?= $this->lang->line('hd_change') ?></strong></th>
 										<th><strong><?= $this->lang->line('hd_balance') ?></strong></th>
-										<?php if (!$voucher){ ?>
+										<?php if (!$voucher->sale_id){ ?>
 										<th></th>
 										<?php } ?>
 									</tr>
@@ -148,7 +186,7 @@
 										<td><?php if ($p->change) echo $sale->currency." ".number_format($p->change, 2);
 										else echo "-" ?></td>
 										<td><?= $sale->currency." ".number_format($p->balance, 2) ?></td>
-										<?php if (!$voucher){ ?>
+										<?php if (!$voucher->sale_id){ ?>
 										<td class="text-right">
 											<?php if (!$i){ ?>
 											<button type="button" class="btn light btn-danger" id="btn_delete_payment" value="<?= $p->id ?>">
@@ -287,7 +325,7 @@
 <div class="modal fade md_voucher" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header border-0 pb-0">
+			<div class="modal-header">
 				<h5 class="modal-title"><?= $this->lang->line('title_issuance_receipt') ?></h5>
 				<button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
 			</div>
@@ -341,8 +379,8 @@
 				</form>
 				<?php } ?>
 			</div>
-			<div class="modal-footer border-0 pt-0">
-				<button type="button" class="btn tp-btn btn-secondary" data-dismiss="modal">
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger light" data-dismiss="modal">
 					<?= $this->lang->line('btn_close') ?>
 				</button>
 				<?php if (!$sale->balance){ ?>
@@ -355,8 +393,52 @@
 	</div>
 </div>
 <?php } ?>
+<input type="hidden" id="rs_selected_product">
+<div class="modal fade" id="md_reservation_surgery" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Asignar Cirugia</h5>
+				<button type="button" class="close" data-dismiss="modal"><span>×</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-row">
+					<div class="form-group col-md-12">
+						<label><?= $this->lang->line('label_doc_number') ?></label>
+						<div class="input-group">
+							<input type="text" class="form-control" id="rs_sur_doc_number">
+							<div class="input-group-append">
+								<button class="btn btn-primary border-0" type="button" id="btn_search_surgery">
+									<i class="fas fa-search"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="form-group col-md-12" style="max-height: 300px; overflow-y: auto;">
+						<table class="table">
+							<thead>
+								<tr>
+									<th><strong>#</strong></th>
+									<th><strong>Reservaciones</strong></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody id="rs_list"></tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger light" data-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-primary">Guardar</button>
+			</div>
+		</div>
+	</div>
+</div>
 <input type="hidden" id="warning_apa" value="<?= $this->lang->line('warning_apa') ?>">
 <input type="hidden" id="warning_dpa" value="<?= $this->lang->line('warning_dpa') ?>">
 <input type="hidden" id="warning_csa" value="<?= $this->lang->line('warning_csa') ?>">
 <input type="hidden" id="warning_mvo" value="<?= $this->lang->line('warning_mvo') ?>">
 <input type="hidden" id="warning_mti" value="<?= $this->lang->line('warning_mti') ?>">
+<input type="hidden" id="btn_select_lang" value="<?= $this->lang->line('btn_select') ?>">
