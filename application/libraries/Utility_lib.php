@@ -202,12 +202,13 @@ class Utility_lib{
 		curl_close($curl);
 		
 		$res = new stdClass;
-		if (property_exists($response, 'success')){
-			$res->status = $response->success;
-			$res->data = $response->result;
-		}else{
-			$res->status = false;
-			$res->data = null;
+		$res->status = false;
+		$res->data = null;
+		if ($response){
+			if (property_exists($response, 'success')){
+				$res->status = $response->success;
+				$res->data = $response->result;
+			}	
 		}
 		
 		return $res;
@@ -216,7 +217,7 @@ class Utility_lib{
 	public function utildatos_ruc($ruc){
 		$curl = curl_init();
 
-		curl_setopt_array($curl, array(
+		curl_setopt_array($curl, [
 			CURLOPT_URL => 'https://utildatos.com/api/sunat-reducido',
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => '',
@@ -225,20 +226,21 @@ class Utility_lib{
 			CURLOPT_FOLLOWLOCATION => false,
 			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 			CURLOPT_CUSTOMREQUEST => 'POST',
-			CURLOPT_POSTFIELDS => array('ruc' => $ruc),
-			CURLOPT_HTTPHEADER => array('Authorization: Bearer {3a0d55aad08e889e277a8585e6d24e}')
-		));
+			CURLOPT_POSTFIELDS => ['ruc' => $ruc],
+			CURLOPT_HTTPHEADER => ['Authorization: Bearer {3a0d55aad08e889e277a8585e6d24e}']
+		]);
 
 		$response = json_decode(curl_exec($curl));
 		curl_close($curl);
 		
 		$res = new stdClass;
-		if (property_exists($response, 'success')){
-			$res->status = $response->success;
-			$res->data = $response->result;
-		}else{
-			$res->status = false;
-			$res->data = null;
+		$res->status = false;
+		$res->data = null;
+		if ($response){
+			if (property_exists($response, 'success')){
+				$res->status = $response->success;
+				$res->data = $response->result;
+			}	
 		}
 		
 		return $res;

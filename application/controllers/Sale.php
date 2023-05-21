@@ -236,8 +236,10 @@ class Sale extends CI_Controller {
 		$appo_qty = $surg_qty = 0;
 		$products = $this->general->filter("sale_product", $filter);
 		foreach($products as $item){
-			$item->product = $this->product->id($item->product_id);
+			$item->product = $this->general->id("product", $item->product_id);
 			$item->product->category = $this->general->id("product_category", $item->product->category_id)->name;
+			if ($item->option_id) $item->product->option = $this->general->id("product_option", $item->option_id)->description;
+			else $item->product->option = "";
 			
 			$item->type = null;
 			$item->attention = null;
@@ -435,75 +437,53 @@ class Sale extends CI_Controller {
 			
 			//sale status validation => no canceled sale
 			$status_canceled_id = $this->general->filter("status", ["code" => "canceled"])[0]->id;
+			$status_reserved_id = $this->general->filter("status", ["code" => "reserved"])[0]->id;
 			if ($sale->status_id != $status_canceled_id){
 				$products = $this->general->filter("sale_product", ["sale_id" => $sale->id]);
+				foreach($products as $item){
+					//product stock update
+					$prod = $this->general->id("product", $item->product_id);
+					$prod_t = $this->general->id("product_type", $prod->type_id);
+					if ($prod_t->description === "Producto"){
+						$op = $this->general->id("product_option", $item->option_id);
+						$this->general->update("product_option", $item->option_id, ["stock" => ($op->stock + $item->qty)]);
+					}
+					
+					//appointment update
+					if ($item->appointment_id) $this->general->update("appointment", $item->appointment_id, ["status_id" => $status_reserved_id]);
+					
+					//surgery update
+					if ($item->surgery_id) $this->general->update("surgery", $item->surgery_id, ["status_id" => $status_reserved_id]);
+					
+					//unassign appointment & surgery from sale_product
+					$this->general->update("sale_product", $item->id, ["appointment_id" => null, "surgery_id" => null]);
+				}
 				
-				//product stock(sum quantities), appointment & surgery rec(set null and change status to reserved)
-				
-				print_r($products);
+				if ($this->general->update("sale", $sale->id, ["status_id" => $status_canceled_id])){
+					$this->utility_lib->add_log("sale_cancel", $this->lang->line('sale')." #".$sale->id);
+					
+					$type = "success";
+					$msg = $this->lang->line("success_csa");
+					
+					$voucher = $this->general->filter("voucher", ["sale_id" => $sale->id]);
+					if ($voucher){
+						$voucher = $voucher[0];
+						
+						//update voucher status in DB
+						$this->general->update("voucher", $voucher->id, ["status_id" => $status_canceled_id]);
+						$this->utility_lib->add_log("voucher_cancel", $this->lang->line('sale')." #".$sale->id);
+						
+						//send cancel request to sunat
+						$sunat_result = $this->utility_lib->cancel_voucher_sunat($this->set_voucher_data($voucher->id));
+						$this->general->update("voucher", $voucher->id, $sunat_result);
+						if ($sunat_result["sunat_sent"]){$color = "success"; $ic = "check";}
+						else{$color = "danger"; $ic = "times";}
+						
+						$msg = $msg.'<br/><br/><span class="text-'.$color.'">Sunat <i class="fas fa-'.$ic.'"></i></span><br/>'.$sunat_result["sunat_msg"];
+					}
+				}else $msg = $this->lang->line("error_internal");
 			}else $msg = $this->lang->line('error_sac');
 		}else $msg = $this->lang->line('error_no_permission');
-		
-		
-		
-		//sale_product
-		//    => set appointment & surgery to reserved status
-		//    => set stocks if item is a product, not service
-		//voucher
-		//    => set voucher status to canceled
-		//    => send to sunat for cancel sent voucher
-		//set sale status to canceled
-		
-		/*
-		if (!$msg){
-			//update appointment or surgery if this is case
-			if ($sale->appointment_id or $sale->surgery_id){
-				$status_data = array("status_id" => $this->status->code("reserved")->id);
-				if ($sale->appointment_id) $this->appointment->update($sale->appointment_id, $status_data);
-				if ($sale->surgery_id) $this->surgery->update($sale->surgery_id, $status_data);
-			}
-			
-			$sale_data = array("status_id" => $this->status->code("canceled")->id);
-			if ($this->general->update("sale", $sale->id, $sale_data)){
-				$this->utility_lib->add_log("sale_cancel", $this->lang->line('sale')." #".$sale->id);
-				
-				$status = true;
-				$type = "success";
-				$msg = $this->lang->line("success_csa");
-			}else $msg = $this->lang->line("error_internal");
-		}
-		
-		if ($status){
-			//cancel voucher
-			$voucher = $this->general->filter("voucher", array("sale_id" => $sale->id));
-			if ($voucher){
-				$voucher = $voucher[0];
-				
-				//update voucher status in DB
-				$this->general->update("voucher", $voucher->id, ["status_id" => $this->status->code("canceled")->id]);
-				$this->utility_lib->add_log("voucher_cancel", $this->lang->line('sale')." #".$sale->id);
-				
-				//send cancel request to sunat
-				$sunat_result = $this->utility_lib->cancel_voucher_sunat($this->set_voucher_data($voucher->id));
-				$this->general->update("voucher", $voucher->id, $sunat_result);
-				if ($sunat_result["sunat_sent"]){$color = "success"; $ic = "check";}
-				else{$color = "danger"; $ic = "times";}
-				
-				$msg = $msg.'<br/><br/><span class="text-'.$color.'">Sunat <i class="fas fa-'.$ic.'"></i></span><br/>'.$sunat_result["sunat_msg"];
-			}
-			
-			//update products stocks
-			$products = $this->general->filter("sale_product", ["sale_id" => $sale->id]);
-			foreach($products as $item){
-				$p_op = $this->general->id("product_option", $item->option_id);
-				$new_stock = $p_op->stock + $item->qty;
-				$this->general->update("product_option", $p_op->id, ["stock" => $new_stock]);
-				
-				$sum = $this->general->sum("product_option", "stock", ["product_id" => $item->product_id]);
-				$this->general->update("product", $item->product_id, ["stock" => $sum->stock]);
-			}
-		}
-		*/
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);
@@ -524,7 +504,7 @@ class Sale extends CI_Controller {
 			"serie" => $this->general->id("sale_type", $sale->sale_type_id)->sunat_serie
 		);
 		
-		$last_voucher = $this->general->filter("voucher", $voucher_data, "correlative", "desc", 1, 0);
+		$last_voucher = $this->general->filter("voucher", $voucher_data, null, null, "correlative", "desc", 1, 0);
 		if ($last_voucher) $voucher_data["correlative"] = $last_voucher[0]->correlative + 1;
 		else $voucher_data["correlative"] = 1;
 		
@@ -600,49 +580,45 @@ class Sale extends CI_Controller {
 	}
 	
 	public function make_voucher(){
-		$status = false; $type = "error"; $msg = null; $msgs = array();
+		$type = "error"; $msg = null; $msgs = [];
 		$sale = $this->general->id("sale", $this->input->post("sale_id"));
 		$voucher_type = $this->general->id("voucher_type", $this->input->post("voucher_type_id"));
 		$company = $this->input->post("company");
 		
-		/*
-		validations
-		1. voucher exists?
-		2. finished sale?
-		3. company info in case of "Factura"
-		*/
-		if ($this->general->filter("voucher", array("sale_id" => $sale->id))) $msg = $this->lang->line('error_voe');
-		elseif ($sale->balance) $msg = $this->lang->line('error_sba');
-		elseif (!strcmp("Factura", $voucher_type->description)){
-			if (!$company["name"]) $msgs = $this->set_msg($msgs, "vou_com_name_msg", "error", "error_icor");
-			if (!$company["doc_number"]) $msgs = $this->set_msg($msgs, "vou_com_ruc_msg", "error", "error_icr");
+		//validation voucher type
+		if ($voucher_type->description === "Factura"){
+			$this->load->library('my_val');
+			$msgs = $this->my_val->company($msgs, "vou_com", $company);
 		}
 		
-		if (!$msg and !$msgs){
-			if (!strcmp("Factura", $voucher_type->description)){
-				$f = $company; unset($f["name"]);
-				$person = $this->general->filter("person", $f);
-				if ($person) $client_id = $person[0]->id;
-				else $client_id = $this->general->insert("person", $company);
-			}else $client_id = $sale->client_id;
-			
-			$voucher_id = $this->create_voucher($sale, $voucher_type->id, $client_id);
-			if ($voucher_id){
-				//make sunat process
-				$sunat_result = $this->utility_lib->send_sunat($this->set_voucher_data($voucher_id));
-				$this->general->update("voucher", $voucher_id, $sunat_result);
-				
-				if ($sunat_result["sunat_sent"]){ $color = "success"; $ic = "check"; } 
-				else{ $color = "danger"; $ic = "times"; }
-				
-				$status = true;
-				$type = "success";
-				$msg = str_replace("#type#", $voucher_type->description, $this->lang->line('success_gvo')).'<br/><br/><span class="text-'.$color.'">Sunat <i class="fas fa-'.$ic.'"></i></span><br/>'.$sunat_result["sunat_msg"];
-			}
-		}elseif (!$msg) $msg = $this->lang->line('error_occurred');
+		if (!$msgs){
+			if (!$this->general->filter("voucher", ["sale_id" => $sale->id])){
+				if (!$sale->balance){
+					if (!strcmp("Factura", $voucher_type->description)){
+						$f = $company; unset($f["name"]);
+						$person = $this->general->filter("person", $f);
+						if ($person) $client_id = $person[0]->id;
+						else $client_id = $this->general->insert("person", $company);
+					}else $client_id = $sale->client_id;
+					
+					$voucher_id = $this->create_voucher($sale, $voucher_type->id, $client_id);
+					if ($voucher_id){
+						//make sunat process
+						$sunat_result = $this->utility_lib->send_sunat($this->set_voucher_data($voucher_id));
+						$this->general->update("voucher", $voucher_id, $sunat_result);
+						
+						if ($sunat_result["sunat_sent"]){ $color = "success"; $ic = "check"; } 
+						else{ $color = "danger"; $ic = "times"; }
+						
+						$type = "success";
+						$msg = str_replace("#type#", $voucher_type->description, $this->lang->line('success_gvo')).'<br/><br/><span class="text-'.$color.'">Sunat <i class="fas fa-'.$ic.'"></i></span><br/>'.$sunat_result["sunat_msg"];
+					}
+				}else $msg = $this->lang->line('error_sba');
+			}else $this->lang->line('error_voe');
+		}else $msg = $this->lang->line('error_occurred');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg, "msgs" => $msgs));
+		echo json_encode(["type" => $type, "msg" => $msg, "msgs" => $msgs]);
 	}
 	
 	private function set_voucher_data($id){
@@ -679,11 +655,11 @@ class Sale extends CI_Controller {
 		$invoice = $this->utility_lib->make_invoice_greenter($data);
 		
 		//QR Code => RUC|TIPO DE DOCUMENTO|SERIE|NUMERO|MTO TOTAL IGV|MTO TOTAL DEL COMPROBANTE|FECHA DE EMISION|TIPO DE DOCUMENTO ADQUIRENTE|NUMERO DE DOCUMENTO ADQUIRENTE
-		$qr_data = array(
+		$qr_data = [
 			$invoice->getCompany()->getRuc(), $invoice->getTipoDoc(), $invoice->getSerie(), $invoice->getCorrelativo(), 
 			$invoice->getTotalImpuestos(), $invoice->getMtoImpVenta(), $invoice->getFechaEmision()->format('Y-m-d'), 
 			$invoice->getClient()->getTipoDoc(), $invoice->getClient()->getNumDoc(), $data["voucher"]->hash
-		);
+		];
 			
 		$this->load->library('ciqrcode');
 		$qr_params = array(
@@ -693,7 +669,7 @@ class Sale extends CI_Controller {
 		
 		$data["qr"] = base64_encode(file_get_contents($this->ciqrcode->generate($qr_params)));
 		$data["title"] = $invoice->getSerie()." - ".str_pad($invoice->getCorrelativo(), 6, '0', STR_PAD_LEFT);
-		$data["logo"] = base64_encode(file_get_contents(FCPATH."/resorces/images/logo.png"));
+		$data["logo"] = base64_encode(file_get_contents(FCPATH."/resources/images/logo.png"));
 		$data["invoice"] = $invoice;
 		
 		//echo $this->load->view("voucher/invoice", $data, true);
@@ -702,7 +678,7 @@ class Sale extends CI_Controller {
 	
 	public function payment_report($sale_id){
 		$sale = $this->general->id("sale", $sale_id);
-		$filter = array("sale_id" => $sale->id);
+		$filter = ["sale_id" => $sale->id];
 		//if (!$sale->balance){echo "Esta venta no cuenta con saldo pendiente."; return;}
 		
 		if ($sale->client_id){
@@ -730,7 +706,7 @@ class Sale extends CI_Controller {
 		
 		$title = "REPORTE DE PAGOS";
 		
-		$data = array(
+		$data = [
 			"sale" => $sale,
 			"client" => $client,
 			"company" => $company,
@@ -738,8 +714,8 @@ class Sale extends CI_Controller {
 			"payments" => $payments,
 			"products" => $products,
 			"title" => $title,
-			"logo" => base64_encode(file_get_contents(FCPATH."/resorces/images/logo.png")),
-		);
+			"logo" => base64_encode(file_get_contents(FCPATH."/resources/images/logo.png")),
+		];
 		
 		//echo $this->load->view("voucher/ticket", $data, true);
 		$this->make_pdf($this->load->view("voucher/ticket", $data, true), $title);

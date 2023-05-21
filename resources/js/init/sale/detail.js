@@ -63,48 +63,10 @@ function cancel_sale(dom){
 	});
 }
 
-function make_ticket(dom){
-	Swal.fire({
-		title: $("#alert_warning_title").val(),
-		text: $("#warning_mti").val(),
-		icon: 'warning',
-		showCancelButton: true,
-		confirmButtonText: $("#alert_confirm_btn").val(),
-		cancelButtonText: $("#alert_cancel_btn").val()
-	}).then((result) => {
-		if (result.isConfirmed) window.open($("#base_url").val() + "sale/ticket/" + $(dom).val(), '_blank');
-	});
-}
-
 function make_voucher(dom){
-	Swal.fire({
-		title: $("#alert_warning_title").val(),
-		text: $("#warning_mvo").val(),
-		icon: 'warning',
-		showCancelButton: true,
-		confirmButtonText: $("#alert_confirm_btn").val(),
-		cancelButtonText: $("#alert_cancel_btn").val()
-	}).then((result) => {
-		if (result.isConfirmed){
-			$.ajax({
-				url: $("#base_url").val() + "sale/make_voucher",
-				type: "POST",
-				data: new FormData(dom),
-				contentType: false,
-				processData:false,
-				success:function(res){
-					set_msg(res.msgs);
-					Swal.fire({
-						title: $("#alert_" + res.type + "_title").val(),
-						html: res.msg,
-						icon: res.type,
-						confirmButtonText: $("#alert_confirm_btn").val()
-					}).then((result) => {
-						if (res.status == true) location.reload();
-					});
-				}
-			});
-		}
+	ajax_form_warning(dom, "sale/make_voucher", $("#warning_mvo").val()).done(function(res) {
+		set_msg(res.msgs);
+		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
@@ -119,27 +81,17 @@ function set_company_info(dom){
 }
 
 function search_company_mv(){
-	$.ajax({
-		url: $("#base_url").val() + "ajax_f/search_person",
-		type: "POST",
-		data: {doc_type_id: $("#company_doc_type").val(), doc_number: $("#company_doc_number").val()},
-		success:function(res){
-			Swal.fire({
-				title: $("#alert_" + res.type + "_title").val(),
-				icon: res.type,
-				html: res.msg,
-				confirmButtonText: $("#alert_confirm_btn").val()
-			}).then((result) => {
-				if (res.status == true){
-					$("#company_name").val(res.person.name);
-					$("#company_name").addClass("bg-light");
-					$("#company_name").attr("readonly", true);
-				}else{
-					$("#company_name").val("");
-					$("#company_name").removeClass("bg-light");
-					$("#company_name").attr("readonly", false);
-				}
-			});
+	var data = {doc_type_id: $("#company_doc_type").val(), doc_number: $("#company_doc_number").val()};
+	ajax_simple(data, "ajax_f/search_person").done(function(res) {
+		swal(res.type, res.msg);
+		if (res.type == "success"){
+			$("#company_name").val(res.person.name);
+			$("#company_name").addClass("bg-light");
+			$("#company_name").attr("readonly", true);
+		}else{
+			$("#company_name").val("");
+			$("#company_name").removeClass("bg-light");
+			$("#company_name").attr("readonly", false);
 		}
 	});
 }
@@ -189,7 +141,6 @@ $(document).ready(function() {
 	
 	//sale
 	$("#btn_cancel_sale").on('click',(function(e) {cancel_sale(this);}));
-	$("#btn_make_ticket").on('click',(function(e) {make_ticket(this);}));
 	
 	//payment
 	$("#form_add_payment").submit(function(e) {e.preventDefault(); add_payment(this);});

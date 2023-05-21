@@ -17,7 +17,7 @@
 <div class="col-md-12">
 	<div class="row d-flex justify-content-center">
 		<?php if ($voucher->sale_id){ ?>
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<a href="<?= base_url() ?>sale/voucher/<?= $voucher->id ?>" target="_blank">
 				<button class="btn btn-primary w-100 mb-3">
 					<div><i class="fal fa-sticky-note fa-5x fa-fw"></i></div>
@@ -26,22 +26,29 @@
 			</a>
 		</div>
 		<?php }else{ ?>
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<button class="btn btn-primary w-100 mb-3" data-toggle="modal" data-target=".md_voucher">
 				<div><i class="fal fa-sticky-note fa-5x fa-fw"></i></div>
 				<div class="fs-16 mt-2 pt-2 border-top border-white"><?= $this->lang->line('btn_voucher') ?></div>
 			</button>
 		</div>
 		<?php } ?>
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<a href="<?= base_url() ?>sale/payment_report/<?= $sale->id ?>" target="_blank">
-				<button class="btn btn-info w-100 mb-3">
+				<button class="btn btn-primary w-100 mb-3">
 					<div><i class="fal fa-money-check-edit fa-5x fa-fw"></i></div>
 					<div class="fs-16 mt-2 pt-2 border-top border-white"><?= $this->lang->line('btn_payment_report') ?></div>
 				</button>
 			</a>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-3">
+			<?php if ($sale->balance && ($sale->status_id != $canceled_id)) $d = ""; else $d = "disabled"; ?>
+			<button class="btn btn-info w-100 mb-3" data-toggle="modal" data-target="#md_add_payment" <?= $d ?>>
+				<div><i class="fal fa-cash-register fa-5x fa-fw"></i></div>
+				<div class="fs-16 mt-2 pt-2 border-top border-white"><?= $this->lang->line('btn_add_payment') ?></div>
+			</button>
+		</div>
+		<div class="col-md-3">
 			<button class="btn btn-outline-danger w-100 mb-3" id="btn_cancel_sale" value="<?= $sale->id ?>">
 				<div><i class="fal fa-trash fa-5x fa-fw"></i></div>
 				<div class="fs-16 mt-2 pt-2 border-top border-danger"><?= $this->lang->line('btn_cancel_sale') ?></div>
@@ -51,7 +58,7 @@
 </div>
 <?php } ?>
 <div class="col-md-12">
-	<div class="card">
+	<div class="card" style="min-height: 400px;">
 		<div class="card-body">
 			<div class="custom-tab-1">
 				<ul class="nav nav-tabs mb-4" role="tablist">
@@ -178,13 +185,7 @@
 										<th><strong><?= $this->lang->line('hd_change') ?></strong></th>
 										<th><strong><?= $this->lang->line('hd_balance') ?></strong></th>
 										<?php if (!$voucher->sale_id){ ?>
-										<th class="text-right">
-											<?php if ($sale->balance && ($sale->status_id != $canceled_id)){ ?>
-											<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#md_add_payment">
-												<i class="fas fa-plus"></i>
-											</button>
-											<?php } ?>
-										</th>
+										<th></th>
 										<?php } ?>
 									</tr>
 								</thead>
@@ -230,7 +231,14 @@
 									<?php $i = 0; foreach($products as $p){ $price = $p->price - $p->discount; $i++; ?>
 									<tr>
 										<td><?= $i ?></td>
-										<td><?= "[".$p->product->code."] ".$p->product->category.", ".$p->product->description ?></td>
+										<td>
+											<div><?= $p->product->category ?></div>
+											<div><?= $p->product->code ?></div>
+											<div><?= $p->product->description ?></div>
+											<?php if ($p->product->option){ ?>
+											<div><?= $p->product->option ?></div>
+											<?php } ?>
+										</td>
 										<td class="text-nowrap"><?= $sale->currency." ".number_format($p->price, 2) ?></td>
 										<td>
 											<?php if ($p->discount) echo $sale->currency." ".number_format($p->discount, 2);

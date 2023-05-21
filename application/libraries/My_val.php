@@ -362,4 +362,11 @@ class My_val{
 		
 		return ["msg" => $msg, "products" => $products];
 	}
+	
+	public function company($msgs, $prefix, $data){
+		if (!$data["name"]) $msgs = $this->set_msg($msgs, $prefix."_name_msg", "error", "e_enter_company_name");
+		if (!$data["doc_number"]) $msgs = $this->set_msg($msgs, $prefix."_ruc_msg", "error", "e_enter_company_ruc");
+		
+		return $msgs;
+	}
 }
