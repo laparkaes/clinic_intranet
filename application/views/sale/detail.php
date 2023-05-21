@@ -153,7 +153,7 @@
 										</td>
 										<td class="text-right">
 											<?php if ($item->appointment_id or $item->surgery_id){ ?>
-											<button type="button" class="btn btn-danger btn_delete_reservation" value="<?= $item->id ?>">
+											<button type="button" class="btn btn-danger btn_unassign_reservation" value="<?= $item->id ?>">
 												<i class="fas fa-trash"></i>
 											</button>
 											<?php }else{ 
@@ -273,43 +273,40 @@
 					<input type="hidden" name="sale_id" value="<?= $sale->id ?>">
 					<div class="form-row">
 						<div class="form-group col-md-12">
-							<label><?= $this->lang->line('label_voucher_type') ?></label>
-							<select class="form-control" id="voucher_type" name="voucher_type_id">
+							<label><?= $this->lang->line('label_type') ?></label>
+							<select class="form-control" name="voucher_type_id">
 								<?php foreach($voucher_types as $item){ ?>
 								<option value="<?= $item->id ?>"><?= $item->description ?></option>
 								<?php } ?>
 							</select>
-							<div class="sys_msg" id="vou_doc_type_msg"></div>
+							<div class="sys_msg" id="mv_voucher_type_msg"></div>
 						</div>
-					</div>
-					<div class="form-row" id="client_info">
-						<div class="form-group col-md-12">
+						<div class="form-group col-md-6">
 							<label><?= $this->lang->line('label_document') ?></label>
-							<input type="text" class="form-control bg-light" value="<?= $doc_val ?>" readonly>
+							<select class="form-control" id="mv_doc_type" name="cli[doc_type_id]">
+								<?php foreach($doc_types as $item){
+									if ($item->id == $client->doc_type_id) $s = "selected"; else $s= ""; ?>
+								<option value="<?= $item->id ?>" <?= $s ?>><?= $item->description ?></option>
+								<?php } ?>
+							</select>
+							<div class="sys_msg" id="mv_doc_type_msg"></div>
 						</div>
-						<div class="form-group col-md-12">
-							<label><?= $this->lang->line('label_client') ?></label>
-							<input type="text" class="form-control bg-light" value="<?= $client->name ?>" readonly>
-						</div>
-					</div>
-					<div class="form-row d-none" id="company_info">
-						<input type="hidden" id="company_doc_type" name="company[doc_type_id]" value="<?= $company->doc_type_id ?>" readonly>
-						<div class="form-group col-md-12">
-							<label><?= $this->lang->line('label_ruc') ?></label>
+						<div class="form-group col-md-6">
+							<label class="d-md-block d-none">&nbsp;</label>
 							<div class="input-group">
-								<input type="text" class="form-control" id="company_doc_number" name="company[doc_number]" value="<?= $company->ruc ?>">
+								<input type="text" class="form-control" id="mv_doc_number" name="cli[doc_number]" value="<?= $client->doc_number ?>">
 								<div class="input-group-append">
-									<button class="btn btn-primary border-0" type="button" id="btn_search_company">
+									<button class="btn btn-primary border-0" type="button" id="btn_search_person_mv">
 										<i class="fas fa-search"></i>
 									</button>
 								</div>
 							</div>
-							<div class="sys_msg" id="vou_com_ruc_msg"></div>
+							<div class="sys_msg" id="mv_doc_number_msg"></div>
 						</div>
-						<div class="form-group col-md-12">
-							<label><?= $this->lang->line('label_company') ?></label>
-							<input type="text" class="form-control bg-light" id="company_name" name="company[name]" value="<?= $company->name ?>" readonly>
-							<div class="sys_msg" id="vou_com_name_msg"></div>
+						<div class="form-group col-md-12 mb-0">
+							<label><?= $this->lang->line('label_client') ?></label>
+							<input type="text" class="form-control" id="mv_name" name="cli[name]" value="<?= $client->name ?>">
+							<div class="sys_msg" id="mv_name_msg"></div>
 						</div>
 					</div>
 				</form>

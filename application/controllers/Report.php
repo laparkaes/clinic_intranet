@@ -30,32 +30,29 @@ class Report extends CI_Controller {
 	}
 	
 	public function generate_report(){
-		$status = false; $msgs = []; $msg = null; $link_to = null;
+		$type = "error"; $msgs = []; $msg = null; $move_to = null;
 		$data = $this->input->post();
 		
 		//permission validateion
-		if (!$this->utility_lib->check_access("report", "index")) $msg = $this->lang->line('error_no_permission');
-		
-		//data validation
-		if (!$data["type_id"]) $msgs = $this->set_msg($msgs, "gr_type_msg", "error", "error_srt");
-		if (!$data["from"]) $msgs = $this->set_msg($msgs, "gr_from_msg", "error", "error_sdf");
-		if ($msgs) $msg = $this->lang->line('error_occurred');
-		
-		if (!$msg){
-			if (!$data["to"]) $data["to"] = date("Y-m-d");
-			
-			$type = $this->general->id("report_type", $data["type_id"]);
-			$data["type_name"] = $type->name;
-			
-			$link_to = $this->make_excel($data);
-			if ($link_to){
-				$this->utility_lib->add_log("report_generate", $type->name.", ".$data["from"]."~".$data["to"]);
-				$status = true;
-			}	
-		}
+		if ($this->utility_lib->check_access("report", "index")){
+			$this->load->library('my_val');
+			$msgs = $this->my_val->report($msgs, "gr_", $data);
+			if (!$msgs){
+				if (!$data["to"]) $data["to"] = date("Y-m-d");
+				
+				$type = $this->general->id("report_type", $data["type_id"]);
+				$data["type_name"] = $type->name;
+				
+				$move_to = $this->make_excel($data);
+				if ($move_to){
+					$this->utility_lib->add_log("report_generate", $type->name.", ".$data["from"]."~".$data["to"]);
+					$type = "success";
+				}	
+			}else $msg = $this->lang->line('error_occurred');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "msgs" => $msgs, "msg" => $msg, "link_to" => $link_to));
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to]);
 	}
 	
 	private function upload_dir(){
@@ -131,7 +128,7 @@ class Report extends CI_Controller {
 	
 	private function set_sheet_doctor($data){
 		$sl_options_arr = [];
-		$sl_options = $this->general->filter_adv("sl_option", null, [["field" => "code", "values" => ["sex", "blood_type"]]]);
+		$sl_options = $this->general->filter("sl_option", null, null, [["field" => "code", "values" => ["sex", "blood_type"]]]);
 		foreach($sl_options as $item) $sl_options_arr[$item->id] = $item->description;
 		
 		$doc_type_arr = [];
@@ -143,7 +140,7 @@ class Report extends CI_Controller {
 		foreach($person_ids_only as $item) $person_ids[] = $item->person_id;
 		
 		$people_arr = [];
-		$people = $this->general->filter_adv("person", null, [["field" => "id", "values" => $person_ids]]);
+		$people = $this->general->filter("person", null, null, [["field" => "id", "values" => $person_ids]]);
 		foreach($people as $item) $people_arr[$item->id] = $item;
 		
 		$status_arr = [];
@@ -182,7 +179,7 @@ class Report extends CI_Controller {
 			"registed_at >=" => $data["from"],
 			"registed_at <" => date("Y-m-d", strtotime("+1 day", strtotime($data["to"])))
 		];
-		$doctors = $this->general->filter("doctor", $filter, "registed_at", "desc");
+		$doctors = $this->general->filter("doctor", $filter, null, null, "registed_at", "desc");
 		foreach ($doctors as $d){
 			$person = $people_arr[$d->person_id];
 			if ($person->doc_type_id) $person->doc_type = $doc_type_arr[$person->doc_type_id]; else $person->doc_type = null;
@@ -213,7 +210,7 @@ class Report extends CI_Controller {
 	
 	private function set_sheet_patient($data){
 		$sl_options_arr = [];
-		$sl_options = $this->general->filter_adv("sl_option", null, [["field" => "code", "values" => ["sex", "blood_type"]]]);
+		$sl_options = $this->general->filter("sl_option", null, null, [["field" => "code", "values" => ["sex", "blood_type"]]]);
 		foreach($sl_options as $item) $sl_options_arr[$item->id] = $item->description;
 		
 		$doc_type_arr = [];
@@ -290,7 +287,7 @@ class Report extends CI_Controller {
 		foreach($doctor_ids as $item) $person_ids[] = $item->doctor_id;
 		
 		$people_arr = [];
-		$people = $this->general->filter_adv("person", null, [["field" => "id", "values" => $person_ids]]);
+		$people = $this->general->filter("person", null, null, [["field" => "id", "values" => $person_ids]]);
 		foreach($people as $item) $people_arr[$item->id] = $item->name;
 		
 		$headers = [
@@ -312,7 +309,7 @@ class Report extends CI_Controller {
 		$row = 2;
 		$style_arr = ['alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT]];
 		
-		$apps = $this->general->filter("appointment", $filter, "schedule_from", "desc");
+		$apps = $this->general->filter("appointment", $filter, null, null, "schedule_from", "desc");
 		foreach($apps as $item){
 			$sheet->setCellValue('A'.$row, $item->id);
 			$sheet->setCellValue('B'.$row, $item->registed_at);
@@ -355,7 +352,7 @@ class Report extends CI_Controller {
 		foreach($doctor_ids as $item) $person_ids[] = $item->doctor_id;
 		
 		$people_arr = [];
-		$people = $this->general->filter_adv("person", null, [["field" => "id", "values" => $person_ids]]);
+		$people = $this->general->filter("person", null, null, [["field" => "id", "values" => $person_ids]]);
 		foreach($people as $item) $people_arr[$item->id] = $item->name;
 		
 		$headers = [
@@ -379,7 +376,7 @@ class Report extends CI_Controller {
 		$row = 2;
 		$style_arr = ['alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT]];
 		
-		$sur = $this->general->filter("surgery", $filter, "schedule_from", "desc");
+		$sur = $this->general->filter("surgery", $filter, null, null, "schedule_from", "desc");
 		foreach($sur as $item){
 			$sheet->setCellValue('A'.$row, $item->id);
 			$sheet->setCellValue('B'.$row, $item->registed_at);
@@ -443,9 +440,9 @@ class Report extends CI_Controller {
 			"registed_at <" => date("Y-m-d", strtotime("+1 day", strtotime($data["to"])))
 		];
 		
-		$products = $this->general->filter("product", $filter, "registed_at", "desc");
+		$products = $this->general->filter("product", $filter, null, null, "registed_at", "desc");
 		foreach($products as $item){
-			$prod_options = $this->general->filter("product_option", ["product_id" => $item->id], "id", "asc");
+			$prod_options = $this->general->filter("product_option", ["product_id" => $item->id], null, null, "id", "asc");
 			if ($prod_options){
 				$prod_op_aux = [];
 				foreach($prod_options as $o) $prod_op_aux[] = $o->description." (".number_format($o->stock).")";
@@ -506,7 +503,7 @@ class Report extends CI_Controller {
 		foreach($client_ids as $item) $person_ids[] = $item->client_id;
 		
 		$people_arr = [];
-		$people = $this->general->filter_adv("person", null, [["field" => "id", "values" => $person_ids]]);
+		$people = $this->general->filter("person", null, null, [["field" => "id", "values" => $person_ids]]);
 		foreach($people as $item) $people_arr[$item->id] = $item->name;
 		
 		$headers = [
@@ -517,15 +514,12 @@ class Report extends CI_Controller {
 			$this->lang->line('hd_type'),
 			$this->lang->line('hd_client'),
 			$this->lang->line('hd_currency'),
-			$this->lang->line('hd_discount'),
 			$this->lang->line('hd_total'),
 			$this->lang->line('hd_amount'),
 			$this->lang->line('hd_vat'),
 			$this->lang->line('hd_paid'),
 			$this->lang->line('hd_balance'),
 			$this->lang->line('hd_detail_payment'),
-			$this->lang->line('hd_appointment_id'),
-			$this->lang->line('hd_surgery_id'),
 			$this->lang->line('hd_products')
 		];
 		
@@ -536,7 +530,7 @@ class Report extends CI_Controller {
 		$row = 2;
 		$style_arr = ['alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT]];
 		
-		$sales = $this->general->filter("sale", $filter, "registed_at", "desc");
+		$sales = $this->general->filter("sale", $filter, null, null, "registed_at", "desc");
 		foreach($sales as $item){
 			$curr = $currency_arr[$item->currency_id];
 			if ($item->client_id) $client = $people_arr[$item->client_id]; else $client = null;
@@ -566,16 +560,13 @@ class Report extends CI_Controller {
 			$sheet->setCellValue('E'.$row, $type_arr[$item->sale_type_id]);
 			$sheet->setCellValue('F'.$row, $client);
 			$sheet->setCellValue('G'.$row, $curr);
-			$sheet->setCellValue('H'.$row, number_format($item->discount, 2));
-			$sheet->setCellValue('I'.$row, number_format($item->total, 2));
-			$sheet->setCellValue('J'.$row, number_format($item->amount, 2));
-			$sheet->setCellValue('K'.$row, number_format($item->vat, 2));
-			$sheet->setCellValue('L'.$row, number_format($item->paid, 2));
-			$sheet->setCellValue('M'.$row, number_format($item->balance, 2));
-			$sheet->setCellValue('N'.$row, $payment_detail);
-			$sheet->setCellValue('O'.$row, $item->appointment_id);
-			$sheet->setCellValue('P'.$row, $item->surgery_id);
-			$sheet->setCellValue('Q'.$row, $products_txt);
+			$sheet->setCellValue('H'.$row, number_format($item->total, 2));
+			$sheet->setCellValue('I'.$row, number_format($item->amount, 2));
+			$sheet->setCellValue('J'.$row, number_format($item->vat, 2));
+			$sheet->setCellValue('K'.$row, number_format($item->paid, 2));
+			$sheet->setCellValue('L'.$row, number_format($item->balance, 2));
+			$sheet->setCellValue('M'.$row, $payment_detail);
+			$sheet->setCellValue('N'.$row, $products_txt);
 			$sheet->getStyle($row)->applyFromArray($style_arr);
 			
 			$row++;
@@ -600,7 +591,7 @@ class Report extends CI_Controller {
 		foreach($client_ids as $item) $person_ids[] = $item->client_id;
 		
 		$people_arr = [];
-		$people = $this->general->filter_adv("person", null, [["field" => "id", "values" => $person_ids]]);
+		$people = $this->general->filter("person", null, null, [["field" => "id", "values" => $person_ids]]);
 		foreach($people as $item) $people_arr[$item->id] = $item->name;
 		
 		$headers = [
@@ -631,7 +622,7 @@ class Report extends CI_Controller {
 		$row = 2;
 		$style_arr = ['alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT]];
 		
-		$vouchers = $this->general->filter("voucher", $filter, "registed_at", "desc");
+		$vouchers = $this->general->filter("voucher", $filter, null, null, "registed_at", "desc");
 		foreach($vouchers as $item){
 			if ($item->sunat_sent) $sunat_sent = "o"; else $sunat_sent = "x";
 			if ($item->client_id) $client = $people_arr[$item->client_id]; else $client = null;
@@ -693,7 +684,7 @@ class Report extends CI_Controller {
 			"registed_at >=" => $data["from"],
 			"registed_at <" => date("Y-m-d", strtotime("+1 day", strtotime($data["to"])))
 		];
-		$logs = $this->general->filter("log", $filter, "registed_at", "desc");
+		$logs = $this->general->filter("log", $filter, null, null, "registed_at", "desc");
 		foreach($logs as $item){
 			$sheet->setCellValue('A'.$row, $item->id);
 			$sheet->setCellValue('B'.$row, $item->registed_at);
@@ -735,7 +726,7 @@ class Report extends CI_Controller {
 			"registed_at <" => date("Y-m-d", strtotime("+1 day", strtotime($data["to"])))
 		];
 		
-		$accounts = $this->general->filter("account", $filter, "registed_at", "desc");
+		$accounts = $this->general->filter("account", $filter, null, null, "registed_at", "desc");
 		foreach($accounts as $item){
 			$person = $this->general->id("person", $item->person_id);
 			if ($person) $person_name = $person->name; else $person_name = "";

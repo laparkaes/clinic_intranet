@@ -208,24 +208,12 @@ class Sale extends CI_Controller {
 		$sale->currency = $this->general->id("currency", $sale->currency_id)->description;
 		$sale->status = $this->general->id("status", $sale->status_id);
 		
-		$company = new stdClass;
-		$company->doc_type_id = $this->general->filter("doc_type", ["short" => "RUC"])[0]->id;
 		if ($sale->client_id){
 			$client = $this->general->id("person", $sale->client_id);
-			$client->doc_type = $this->general->id("doc_type", $client->doc_type_id)->short;	
-			if (!strcmp("RUC", $client->doc_type)){
-				$company->name = $client->name;
-				$company->ruc = $client->doc_number;
-			}else{
-				$company->name = null;
-				$company->ruc = null;
-			}
+			$client->doc_type = $this->general->id("doc_type", $client->doc_type_id)->short;
 		}else{
 			$client = $this->general->structure("person");
-			$client->name = $this->lang->line('txt_no_name');
 			$client->doc_type = null;
-			$company->name = null;
-			$company->ruc = null;
 		}
 		
 		$filter = ["sale_id" => $sale->id];
@@ -288,12 +276,11 @@ class Sale extends CI_Controller {
 			"surg_qty" => $surg_qty,
 			"sale" => $sale,
 			"client" => $client,
-			"company" => $company,
 			"voucher" => $voucher,
 			"payments" => $payments,
 			"products" => $products,
 			"payment_method" => $this->sl_option->code("payment_method"),
-			"doc_types" => $this->sl_option->code("doc_identity_type"),
+			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"voucher_types" => $this->general->all("voucher_type", "description", "asc"),
 			"title" => $this->lang->line('sale'),
 			"main" => "sale/detail",
@@ -360,10 +347,10 @@ class Sale extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 	
-	public function delete_reservation(){
+	public function unassign_reservation(){
 		$type = "error"; $msg = null;
 		
-		if ($this->utility_lib->check_access("sale", "update")){
+		if ($this->utility_lib->check_access("sale", "register")){
 			$sale_prod = $this->general->id("sale_product", $this->input->post("id"));
 			$status_reserved_id = $this->general->filter("status", ["code" => "reserved"])[0]->id;
 			if ($this->general->update("sale_product", $sale_prod->id, ["appointment_id" => null, "surgery_id" => null])){
@@ -518,7 +505,8 @@ class Sale extends CI_Controller {
 			$voucher_data["received"] = $payments[0]->received;
 			$voucher_data["change"] = $payments[0]->change;
 		}else{
-			$payment_method = $this->sl_option->id(63);//Efectivo
+			$f = ["code" => "payment_method", "description" => "Efectivo"];
+			$payment_method = $this->general->filter("sl_option", $f)[0];//Efectivo
 			$voucher_data["received"] = $sale->total;
 			$voucher_data["change"] = 0;
 		}
@@ -581,41 +569,41 @@ class Sale extends CI_Controller {
 	
 	public function make_voucher(){
 		$type = "error"; $msg = null; $msgs = [];
-		$sale = $this->general->id("sale", $this->input->post("sale_id"));
-		$voucher_type = $this->general->id("voucher_type", $this->input->post("voucher_type_id"));
-		$company = $this->input->post("company");
 		
-		//validation voucher type
-		if ($voucher_type->description === "Factura"){
+		if ($this->utility_lib->check_access("sale", "admin_voucher")){
+			$sale = $this->general->id("sale", $this->input->post("sale_id"));
+			$voucher_type = $this->general->id("voucher_type", $this->input->post("voucher_type_id"));
+			$client = $this->input->post("cli");
+			
 			$this->load->library('my_val');
-			$msgs = $this->my_val->company($msgs, "vou_com", $company);
-		}
-		
-		if (!$msgs){
-			if (!$this->general->filter("voucher", ["sale_id" => $sale->id])){
-				if (!$sale->balance){
-					if (!strcmp("Factura", $voucher_type->description)){
-						$f = $company; unset($f["name"]);
-						$person = $this->general->filter("person", $f);
-						if ($person) $client_id = $person[0]->id;
-						else $client_id = $this->general->insert("person", $company);
-					}else $client_id = $sale->client_id;
-					
-					$voucher_id = $this->create_voucher($sale, $voucher_type->id, $client_id);
-					if ($voucher_id){
-						//make sunat process
-						$sunat_result = $this->utility_lib->send_sunat($this->set_voucher_data($voucher_id));
-						$this->general->update("voucher", $voucher_id, $sunat_result);
+			$msgs = $this->my_val->voucher($msgs, "mv_", $voucher_type, $client);
+			
+			if (!$msgs){
+				if (!$this->general->filter("voucher", ["sale_id" => $sale->id])){
+					if (!$sale->balance){
+						if (!strcmp("Factura", $voucher_type->description)){
+							$f = $client; unset($f["name"]);
+							$person = $this->general->filter("person", $f);
+							if ($person) $client_id = $person[0]->id;
+							else $client_id = $this->general->insert("person", $client);
+						}else $client_id = $sale->client_id;
 						
-						if ($sunat_result["sunat_sent"]){ $color = "success"; $ic = "check"; } 
-						else{ $color = "danger"; $ic = "times"; }
-						
-						$type = "success";
-						$msg = str_replace("#type#", $voucher_type->description, $this->lang->line('success_gvo')).'<br/><br/><span class="text-'.$color.'">Sunat <i class="fas fa-'.$ic.'"></i></span><br/>'.$sunat_result["sunat_msg"];
-					}
-				}else $msg = $this->lang->line('error_sba');
-			}else $this->lang->line('error_voe');
-		}else $msg = $this->lang->line('error_occurred');
+						$voucher_id = $this->create_voucher($sale, $voucher_type->id, $client_id);
+						if ($voucher_id){
+							//make sunat process
+							$sunat_result = $this->utility_lib->send_sunat($this->set_voucher_data($voucher_id));
+							$this->general->update("voucher", $voucher_id, $sunat_result);
+							
+							if ($sunat_result["sunat_sent"]){ $color = "success"; $ic = "check"; } 
+							else{ $color = "danger"; $ic = "times"; }
+							
+							$type = "success";
+							$msg = str_replace("#type#", $voucher_type->description, $this->lang->line('success_gvo')).'<br/><br/><span class="text-'.$color.'">Sunat <i class="fas fa-'.$ic.'"></i></span><br/>'.$sunat_result["sunat_msg"];
+						}
+					}else $msg = $this->lang->line('error_sba');
+				}else $this->lang->line('error_voe');
+			}else $msg = $this->lang->line('error_occurred');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "msgs" => $msgs]);
@@ -629,7 +617,7 @@ class Sale extends CI_Controller {
 			$client->doc_type = $this->general->id("doc_type", $client->doc_type_id);	
 		}else{
 			$client = $this->general->structure("person");
-			$client->doc_type = $this->general->filter("doc_type", array("sunat_code" => 0))[0];
+			$client->doc_type = $this->general->filter("doc_type", ["sunat_code" => 0])[0];
 		}
 		
 		$company = $this->general->id("company", 1);
@@ -637,87 +625,91 @@ class Sale extends CI_Controller {
 		$company->province = $this->general->id("address_province", $company->province_id)->name;
 		$company->district = $this->general->id("address_district", $company->district_id)->name;
 		
-		$products = $this->general->filter("sale_product", array("sale_id" => $voucher->sale_id));
+		$products = $this->general->filter("sale_product", ["sale_id" => $voucher->sale_id]);
 		foreach($products as $item){
 			$item->unit_price = $item->price - $item->discount;
 			$item->value = round($item->unit_price/1.18, 2);
 			$item->vat = $item->unit_price - $item->value;
 			$item->data = $this->general->id("product", $item->product_id);
 			$item->type = $this->general->id("product_type", $item->data->type_id);
-			if ($item->option_id) $item->data->description = $item->data->description." ".$this->general->id("product_option", $item->option_id)->description;
+			//if ($item->option_id) $item->data->description = $item->data->description." ".$this->general->id("product_option", $item->option_id)->description;
 		}
 		
-		return array("voucher" => $voucher, "client" => $client, "company" => $company, "products" => $products);
+		return ["voucher" => $voucher, "client" => $client, "company" => $company, "products" => $products];
 	}
 	
 	public function voucher($id){
-		$data = $this->set_voucher_data($id);
-		$invoice = $this->utility_lib->make_invoice_greenter($data);
-		
-		//QR Code => RUC|TIPO DE DOCUMENTO|SERIE|NUMERO|MTO TOTAL IGV|MTO TOTAL DEL COMPROBANTE|FECHA DE EMISION|TIPO DE DOCUMENTO ADQUIRENTE|NUMERO DE DOCUMENTO ADQUIRENTE
-		$qr_data = [
-			$invoice->getCompany()->getRuc(), $invoice->getTipoDoc(), $invoice->getSerie(), $invoice->getCorrelativo(), 
-			$invoice->getTotalImpuestos(), $invoice->getMtoImpVenta(), $invoice->getFechaEmision()->format('Y-m-d'), 
-			$invoice->getClient()->getTipoDoc(), $invoice->getClient()->getNumDoc(), $data["voucher"]->hash
-		];
+		if ($this->utility_lib->check_access("sale", "admin_voucher")){
+			$data = $this->set_voucher_data($id);
+			$invoice = $this->utility_lib->make_invoice_greenter($data);
 			
-		$this->load->library('ciqrcode');
-		$qr_params = array(
-			"data" => implode("|", $qr_data), "level" => 'H', 
-			"size" => 10, "savename" => FCPATH.'/uploaded/qr.png'
-		);
-		
-		$data["qr"] = base64_encode(file_get_contents($this->ciqrcode->generate($qr_params)));
-		$data["title"] = $invoice->getSerie()." - ".str_pad($invoice->getCorrelativo(), 6, '0', STR_PAD_LEFT);
-		$data["logo"] = base64_encode(file_get_contents(FCPATH."/resources/images/logo.png"));
-		$data["invoice"] = $invoice;
-		
-		//echo $this->load->view("voucher/invoice", $data, true);
-		$this->make_pdf($this->load->view("voucher/invoice", $data, true), $data["title"]);
+			//QR Code => RUC|TIPO DE DOCUMENTO|SERIE|NUMERO|MTO TOTAL IGV|MTO TOTAL DEL COMPROBANTE|FECHA DE EMISION|TIPO DE DOCUMENTO ADQUIRENTE|NUMERO DE DOCUMENTO ADQUIRENTE
+			$qr_data = [
+				$invoice->getCompany()->getRuc(), $invoice->getTipoDoc(), $invoice->getSerie(), $invoice->getCorrelativo(), 
+				$invoice->getTotalImpuestos(), $invoice->getMtoImpVenta(), $invoice->getFechaEmision()->format('Y-m-d'), 
+				$invoice->getClient()->getTipoDoc(), $invoice->getClient()->getNumDoc(), $data["voucher"]->hash
+			];
+				
+			$this->load->library('ciqrcode');
+			$qr_params = array(
+				"data" => implode("|", $qr_data), "level" => 'H', 
+				"size" => 10, "savename" => FCPATH.'/uploaded/qr.png'
+			);
+			
+			$data["qr"] = base64_encode(file_get_contents($this->ciqrcode->generate($qr_params)));
+			$data["title"] = $invoice->getSerie()." - ".str_pad($invoice->getCorrelativo(), 6, '0', STR_PAD_LEFT);
+			$data["logo"] = base64_encode(file_get_contents(FCPATH."/resources/images/logo.png"));
+			$data["invoice"] = $invoice;
+			
+			//echo $this->load->view("voucher/invoice", $data, true);
+			$this->make_pdf($this->load->view("voucher/invoice", $data, true), $data["title"]);
+		}else echo $this->lang->line('error_no_permission');
 	}
 	
 	public function payment_report($sale_id){
-		$sale = $this->general->id("sale", $sale_id);
-		$filter = ["sale_id" => $sale->id];
-		//if (!$sale->balance){echo "Esta venta no cuenta con saldo pendiente."; return;}
-		
-		if ($sale->client_id){
-			$client = $this->general->id("person", $sale->client_id);
-			$client->doc_type = $this->general->id("doc_type", $client->doc_type_id);	
-		}else $client = $this->general->structure("person");
-		
-		$company = $this->general->id("company", 1);
-		$company->department = $this->general->id("address_department", $company->department_id)->name;
-		$company->province = $this->general->id("address_province", $company->province_id)->name;
-		$company->district = $this->general->id("address_district", $company->district_id)->name;
-		
-		$currency = $this->general->id("currency", $sale->currency_id);
-		$payments = $this->general->filter("payment", $filter);
-		
-		$products = $this->general->filter("sale_product", $filter);
-		foreach($products as $item){
-			$prod = $this->general->id("product", $item->product_id);
-			$item->unit_price = $item->price - $item->discount;
-			$item->value = round($item->unit_price/1.18, 2);
-			$item->vat = $item->unit_price - $item->value;
-			$item->description = $prod->description;
-			if ($item->option_id) $item->description = $item->description." ".$this->general->id("product_option", $item->option_id)->description;
-		}
-		
-		$title = "REPORTE DE PAGOS";
-		
-		$data = [
-			"sale" => $sale,
-			"client" => $client,
-			"company" => $company,
-			"currency" => $currency,
-			"payments" => $payments,
-			"products" => $products,
-			"title" => $title,
-			"logo" => base64_encode(file_get_contents(FCPATH."/resources/images/logo.png")),
-		];
-		
-		//echo $this->load->view("voucher/ticket", $data, true);
-		$this->make_pdf($this->load->view("voucher/ticket", $data, true), $title);
+		if ($this->utility_lib->check_access("sale", "admin_voucher")){
+			$sale = $this->general->id("sale", $sale_id);
+			$filter = ["sale_id" => $sale->id];
+			//if (!$sale->balance){echo "Esta venta no cuenta con saldo pendiente."; return;}
+			
+			if ($sale->client_id){
+				$client = $this->general->id("person", $sale->client_id);
+				$client->doc_type = $this->general->id("doc_type", $client->doc_type_id);	
+			}else $client = $this->general->structure("person");
+			
+			$company = $this->general->id("company", 1);
+			$company->department = $this->general->id("address_department", $company->department_id)->name;
+			$company->province = $this->general->id("address_province", $company->province_id)->name;
+			$company->district = $this->general->id("address_district", $company->district_id)->name;
+			
+			$currency = $this->general->id("currency", $sale->currency_id);
+			$payments = $this->general->filter("payment", $filter);
+			
+			$products = $this->general->filter("sale_product", $filter);
+			foreach($products as $item){
+				$prod = $this->general->id("product", $item->product_id);
+				$item->unit_price = $item->price - $item->discount;
+				$item->value = round($item->unit_price/1.18, 2);
+				$item->vat = $item->unit_price - $item->value;
+				$item->description = $prod->description;
+				if ($item->option_id) $item->description = $item->description." ".$this->general->id("product_option", $item->option_id)->description;
+			}
+			
+			$title = "REPORTE DE PAGOS";
+			
+			$data = [
+				"sale" => $sale,
+				"client" => $client,
+				"company" => $company,
+				"currency" => $currency,
+				"payments" => $payments,
+				"products" => $products,
+				"title" => $title,
+				"logo" => base64_encode(file_get_contents(FCPATH."/resources/images/logo.png")),
+			];
+			
+			//echo $this->load->view("voucher/ticket", $data, true);
+			$this->make_pdf($this->load->view("voucher/ticket", $data, true), $title);
+		}else echo $this->lang->line('error_no_permission');
 	}
 }

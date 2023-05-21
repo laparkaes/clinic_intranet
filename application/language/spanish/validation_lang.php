@@ -69,5 +69,8 @@ $lang['e_no_received'] = 'Monto debe ser mayor de cero.';
 $lang['e_product_select'] = 'Debe elegir al menos un ítem.';
 $lang['e_product_type_mixed'] = 'Elija un solo tipo de ítem para la venta. No se permite generar una venta de servicio y producto mezclada.';
 $lang['e_product_no_stock'] = 'no cuenta con suficiente disponibilidad para la venta.';
-$lang['e_enter_company_name'] = 'Ingrese nombre de empresa.';
-$lang['e_enter_company_ruc'] = 'Ingrese RUC de empresa.';
+$lang['e_select_ruc'] = 'Debe eligir RUC.';
+
+/* report */
+$lang['e_select_report_type'] = 'Elija tipo de reporte.';
+$lang['e_select_date_from'] = 'Elija fecha inicio de reporte.';

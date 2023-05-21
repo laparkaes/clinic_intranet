@@ -1,18 +1,8 @@
 function generate_report(dom){
-	$("#form_generate_report .sys_msg").html("");
-	$.ajax({
-		url: $("#base_url").val() + "report/generate_report",
-		type: "POST",
-		data: new FormData(dom),
-		contentType: false,
-		processData:false,
-		success:function(res){
-			if (res.status == true) location.href = res.link_to;
-			else{
-				set_msg(res.msgs);
-				swal("error", res.msg);
-			}
-		}
+	ajax_form(dom, "report/generate_report").done(function(res) {
+		set_msg(res.msgs);
+		if (res.type == "success") location.href = res.move_to;
+		else swal(res.type, res.msg);
 	});
 }
 

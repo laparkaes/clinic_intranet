@@ -14,15 +14,17 @@
 	<?php $items = $invoice->getDetails(); ?>
 	<table>
 		<tr>
-			<td>
-				<div style="margin-bottom: 3px; font-size: 1.5rem;"><strong><?= $company->name ?></strong></div>
+			<td style="text-align: center;">
+				<div style="margin-bottom: 3px;"><strong><?= $company->name ?></strong></div>
 				<div><?= $company->address ?></div>
 				<div><?= $company->urbanization ?></div>
 				<div><?= $company->district." - ".$company->province." - ".$company->department ?></div>
 			</td>
+			<!--
 			<td style="text-align: right; vertical-align: top;">
 				<img src="data:image/png;base64,<?= $logo ?>" style="max-width: 80px;"/>
 			</td>
+			-->
 		</tr>
 	</table>
 	<div class="text-center mt">

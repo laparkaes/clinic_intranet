@@ -70,30 +70,34 @@ function make_voucher(dom){
 	});
 }
 
-function set_company_info(dom){
-	if ("Factura" == $(dom).find("option:selected").text()){
-		$("#company_info").removeClass("d-none");
-		$("#client_info").addClass("d-none");
-	}else{
-		$("#company_info").addClass("d-none");
-		$("#client_info").removeClass("d-none");
-	}
+function control_client_name(activate){
+	if (activate == true){
+		$("#mv_name").val("");
+		$("#mv_name").prop("readonly", false);
+	}else $("#mv_name").prop("readonly", true);
 }
 
-function search_company_mv(){
-	var data = {doc_type_id: $("#company_doc_type").val(), doc_number: $("#company_doc_number").val()};
+function search_person_mv(){
+	var data = {doc_type_id: $("#mv_doc_type").val(), doc_number: $("#mv_doc_number").val()};
 	ajax_simple(data, "ajax_f/search_person").done(function(res) {
 		swal(res.type, res.msg);
 		if (res.type == "success"){
-			$("#company_name").val(res.person.name);
-			$("#company_name").addClass("bg-light");
-			$("#company_name").attr("readonly", true);
-		}else{
-			$("#company_name").val("");
-			$("#company_name").removeClass("bg-light");
-			$("#company_name").attr("readonly", false);
-		}
+			$("#mv_name").val(res.person.name);
+			$("#mv_name").attr("readonly", true);
+			control_client_name(false);
+		}else control_client_name(true);
 	});
+}
+
+function control_doc_number(){
+	$("#mv_doc_number, #mv_name").val("");
+	if ($("#mv_doc_type").val() == 1){
+		$("#mv_doc_number, #mv_name").prop("readonly", true);
+		$("#btn_search_person_mv").prop("disabled", true);
+	}else{
+		$("#mv_doc_number, #mv_name").prop("readonly", false);
+		$("#btn_search_person_mv").prop("disabled", false);
+	}
 }
 
 function asign_reservation(attn, attn_id){
@@ -116,28 +120,26 @@ function search_reservations(attn){
 	});
 }
 
-function delete_reservation(prod_id){
+function unassign_reservation(prod_id){
 	var data = {id: prod_id};
-	ajax_simple_warning(data, "sale/delete_reservation", $("#warning_siu").val()).done(function(res) {
+	ajax_simple_warning(data, "sale/unassign_reservation", $("#warning_siu").val()).done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 $(document).ready(function() {
-	//$("#btn_add_payment").on('click',(function(e) {make_voucher(this);}));
-	
 	//asign medical attention
 	$(".btn_select_product").on('click',(function(e) { $("#rs_selected_product").val($(this).val()); }));
 	$("#btn_search_surgery").on('click',(function(e) {search_reservations("surgery");}));
 	$("#btn_search_appointment").on('click',(function(e) {search_reservations("appointment");}));
-	$(".btn_delete_reservation").on('click',(function(e) {delete_reservation($(this).val());}));
+	$(".btn_unassign_reservation").on('click',(function(e) {unassign_reservation($(this).val());}));
 	
 	//voucher
 	$("#form_make_voucher").submit(function(e) {e.preventDefault(); make_voucher(this);});
 	$("#btn_make_voucher").on('click',(function(e) {$("#form_make_voucher").submit();}));
-	$("#voucher_type").on('change',(function(e) {set_company_info(this);}));
-	$("#company_ruc").keyup(function() {$("#company_name").val("");});
-	$("#btn_search_company").on('click',(function(e) {search_company_mv();}));
+	$("#mv_doc_type").on('change',(function(e) {control_doc_number();}));
+	$("#mv_doc_number").keyup(function() {control_client_name(true);});
+	$("#btn_search_person_mv").on('click',(function(e) {search_person_mv();}));
 	
 	//sale
 	$("#btn_cancel_sale").on('click',(function(e) {cancel_sale(this);}));

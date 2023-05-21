@@ -2,9 +2,12 @@
 $lang['report'] = 'Reporte';
 $lang['reports'] = 'Reportes';
 
-$lang['error_srt'] = 'Elija tipo de reporte.';//error_select_report_type
-$lang['error_sdf'] = 'Elija fecha inicio de reporte.';//error_select_date_from
-
+//general
+$lang['title_detailed_report'] = 'Reporte Detallado';
+$lang['title_example'] = 'Ejemplo';
+$lang['lb_type'] = 'Tipo';
+$lang['lb_from'] = 'Desde';
+$lang['lb_to'] = 'Hasta';
 $lang['btn_generate'] = 'Generar';
 
 //report table headers_list

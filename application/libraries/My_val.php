@@ -11,7 +11,6 @@ class My_val{
 	}
 	
 	public function set_msg($msgs, $dom_id, $type, $msg_code){
-		//if ($msg_code) array_push($msgs, array("dom_id" => $dom_id, "type" => $type, "msg" => $this->lang->line($msg_code)));
 		if ($msg_code) $msgs[] = ["dom_id" => $dom_id, "type" => $type, "msg" => $this->CI->lang->line($msg_code)];
 		return $msgs;
 	}
@@ -363,9 +362,23 @@ class My_val{
 		return ["msg" => $msg, "products" => $products];
 	}
 	
-	public function company($msgs, $prefix, $data){
-		if (!$data["name"]) $msgs = $this->set_msg($msgs, $prefix."_name_msg", "error", "e_enter_company_name");
-		if (!$data["doc_number"]) $msgs = $this->set_msg($msgs, $prefix."_ruc_msg", "error", "e_enter_company_ruc");
+	public function voucher($msgs, $prefix, $voucher_type, $client){
+		$doc_type = $this->CI->general->filter("doc_type", ["id" => $client["doc_type_id"]])[0];
+		if ($doc_type->description !== "Sin Documento"){
+			if (!$client["name"]) $msgs = $this->set_msg($msgs, $prefix."name_msg", "error", "e_enter_name");
+			if (!$client["doc_type_id"]) $msgs = $this->set_msg($msgs, $prefix."doc_type_msg", "error", "e_select_doc_type");
+			if (!$client["doc_number"]) $msgs = $this->set_msg($msgs, $prefix."doc_number_msg", "error", "e_enter_doc_number");	
+		}
+		
+		if ($voucher_type->description === "Factura")
+			if ("RUC" !== $doc_type->short) $msgs = $this->set_msg($msgs, $prefix."doc_type_msg", "error", "e_select_ruc");
+		
+		return $msgs;
+	}
+	
+	public function report($msgs, $prefix, $data){
+		if (!$data["type_id"]) $msgs = $this->set_msg($msgs, $prefix."type_msg", "error", "e_select_report_type");
+		if (!$data["from"]) $msgs = $this->set_msg($msgs, $prefix."from_msg", "error", "e_select_date_from");
 		
 		return $msgs;
 	}
