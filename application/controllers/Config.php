@@ -25,7 +25,7 @@ class Config extends CI_Controller {
 		
 		$modules = array("dashboard", "doctor", "patient", "appointment", "surgery", "product", "sale", "report", "config");
 		$access = array();
-		foreach($modules as $item) $access[$item] = $this->general->filter("access", ["module" => $item], "id", "asc");
+		foreach($modules as $item) $access[$item] = $this->general->filter("access", ["module" => $item], null, null, "id", "asc");
 		
 		$role_access = [];
 		$role_access_rec = $this->general->all("role_access", null);
@@ -40,7 +40,7 @@ class Config extends CI_Controller {
 		foreach($people_ids as $item) $people_ids_arr[] = $item->person_id;
 		
 		$people_arr = [];
-		$people = $this->general->filter_adv("person", null, [["field" => "id", "values" => $people_ids_arr]]);
+		$people = $this->general->filter("person", null, null, [["field" => "id", "values" => $people_ids_arr]]);
 		foreach($people as $item) $people_arr[$item->id] = $item->name;
 		
 		$exams_arr = [];
@@ -50,7 +50,7 @@ class Config extends CI_Controller {
 		$sl_options = $this->general->only("sl_option", "code");
 		foreach($sl_options as $item){
 			$item->lang = $this->lang->line("slop_".$item->code);
-			$item->values = $this->general->filter("sl_option", ["code" => $item->code], "id", "asc");
+			$item->values = $this->general->filter("sl_option", ["code" => $item->code], null, null, "id", "asc");
 		}
 		usort($sl_options, function($a, $b) { return strcmp($a->lang, $b->lang); });
 		
@@ -62,7 +62,7 @@ class Config extends CI_Controller {
 		$log_codes = $this->general->all("log_code");
 		foreach($log_codes as $item) $log_code_arr[$item->id] = $this->lang->line('log_'.$item->code);
 		
-		$logs = $this->general->filter("log", ["registed_at <=" => date("Y-m-d 00:00:00", strtotime("-6 months")), "registed_at <=" => date("Y-m-d 00:00:00", strtotime("+1 day"))], "registed_at", "desc");
+		$logs = $this->general->filter("log", ["registed_at <=" => date("Y-m-d 00:00:00", strtotime("-6 months")), "registed_at <=" => date("Y-m-d 00:00:00", strtotime("+1 day"))], null, null, "registed_at", "desc");
 		
 		$data = array(
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),

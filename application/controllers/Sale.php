@@ -28,7 +28,7 @@ class Sale extends CI_Controller {
 		
 		$sale = $this->general->id("sale", $sale_id);
 		$sale_data = array("paid" => $total_paid, "balance" => $sale->total - $total_paid);
-		$cancel_id = $this->status->code("canceled")->id;
+		$cancel_id = $this->general->filter("status", ["code" => "canceled"])[0]->id;
 		if ($sale->status_id != $cancel_id){
 			if ($sale_data["balance"]) $sale_data["status_id"] = $this->status->code("in_progress")->id;
 			else $sale_data["status_id"] = $this->status->code("finished")->id;
@@ -240,12 +240,33 @@ class Sale extends CI_Controller {
 			$item->product->category = $this->general->id("product_category", $item->product->category_id)->name;
 			
 			$item->type = null;
+			$item->attention = null;
 			if(strpos(strtoupper($item->product->description), strtoupper("consulta")) !== false){
-				$item->type = $this->lang->line('txt_appointment');
 				$appo_qty++;
+				$item->type = $this->lang->line('txt_appointment');
+				
+				if ($item->appointment_id){
+					$app = $this->general->id("appointment", $item->appointment_id);
+					$patient = $this->general->id("person", $app->patient_id);
+					$doc_type = $this->general->id("doc_type", $patient->doc_type_id);
+					$item->attention = new stdClass;
+					$item->attention->schedule = $app->schedule_from;
+					$item->attention->patient = $patient->name;
+					$item->attention->patient_doc = $doc_type->short." ".$patient->doc_number;
+				}
 			}elseif(strpos(strtoupper($item->product->category), strtoupper("cirugía")) !== false){
-				$item->type = $this->lang->line('txt_surgery');
 				$surg_qty++;
+				$item->type = $this->lang->line('txt_surgery');
+				
+				if ($item->surgery_id){
+					$sur = $this->general->id("surgery", $item->surgery_id);
+					$patient = $this->general->id("person", $sur->patient_id);
+					$doc_type = $this->general->id("doc_type", $patient->doc_type_id);
+					$item->attention = new stdClass;
+					$item->attention->schedule = $sur->schedule_from;
+					$item->attention->patient = $patient->name;
+					$item->attention->patient_doc = $doc_type->short." ".$patient->doc_number;
+				}
 			}
 		}
 		usort($products, function($a, $b) { return strcmp($a->product->description, $b->product->description); });
@@ -311,7 +332,7 @@ class Sale extends CI_Controller {
 			$msg = null;
 		}else{
 			$type = "error";
-			$msg = $this->lang->line('error_nsr');
+			$msg = $this->lang->line('error_nre');
 		}
 		
 		header('Content-Type: application/json');
@@ -320,70 +341,120 @@ class Sale extends CI_Controller {
 	
 	public function asign_reservation(){
 		$type = "error"; $msg = null;
-		$data = $this->input->post();
 		
-		if ($this->general->update("sale_product", $data["id"], [$data["field"]."_id" => $data["attn_id"]])){
-			$status_confirm_id = $this->general->filter("status", ["code" => "confirmed"])[0]->id;
-			$this->general->update($data["field"], $data["attn_id"], ["status_id" => $status_confirm_id]);
-			
-			$type = "success";
-			$msg = $this->lang->line('success_sas');
-		}else $msg = $this->lang->line('error_internal');
+		if ($this->utility_lib->check_access("sale", "register")){
+			$data = $this->input->post();
+			if ($this->general->update("sale_product", $data["id"], [$data["field"]."_id" => $data["attn_id"]])){
+				$status_confirm_id = $this->general->filter("status", ["code" => "confirmed"])[0]->id;
+				$this->general->update($data["field"], $data["attn_id"], ["status_id" => $status_confirm_id]);
+				
+				$type = "success";
+				if ("appointment" === $data["field"]) $msg = $this->lang->line('success_apa');
+				else $msg = $this->lang->line('success_sas');
+			}else $msg = $this->lang->line('error_internal');
+		}else $msg = $this->lang->line('error_no_permission');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
+	}
+	
+	public function delete_reservation(){
+		$type = "error"; $msg = null;
+		
+		if ($this->utility_lib->check_access("sale", "update")){
+			$sale_prod = $this->general->id("sale_product", $this->input->post("id"));
+			$status_reserved_id = $this->general->filter("status", ["code" => "reserved"])[0]->id;
+			if ($this->general->update("sale_product", $sale_prod->id, ["appointment_id" => null, "surgery_id" => null])){
+				//reset appointment or surgery to reserved status
+				if ($sale_prod->appointment_id) $this->general->update("appointment", $sale_prod->appointment_id, ["status_id" => $status_reserved_id]);
+				elseif ($sale_prod->surgery_id) $this->general->update("surgery", $sale_prod->surgery_id, ["status_id" => $status_reserved_id]);
+				
+				$type = "success";
+				$msg = $this->lang->line('success_siu');
+			}else $msg = $this->lang->line('error_internal');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 
 	public function add_payment(){
-		$payment = $this->input->post();
-		$status = false; $type = "error"; $msg = null;
+		$type = "error"; $msg = null;
 		
-		//update last sale status
-		$this->update_balance($payment["sale_id"]);
-		$sale = $this->general->id("sale", $payment["sale_id"]);
-		
-		//validate sale balance and total payment amount
-		if ($sale->balance != $payment["total"]) $msg = $this->lang->line("error_bup");
-		
-		if (!$msg){
-			unset($payment["total"]);//remove total field of payment
-			$payment["registed_at"] = date('Y-m-d H:i:s', time());
-			if ($this->general->insert("payment", $payment)){//register payment
-				$this->update_balance($payment["sale_id"]);
-				$this->utility_lib->add_log("payment_register", $this->lang->line('sale')." #".$sale->id);
-				
-				$status = true;
-				$type = "success";
-				$msg = $this->lang->line("success_ipa");
-			}else $msg = $this->lang->line("error_internal");
-		}
+		if ($this->utility_lib->check_access("sale", "admin_payment")){
+			$payment = $this->input->post();
+			
+			//update last sale status
+			$this->update_balance($payment["sale_id"]);
+			$sale = $this->general->id("sale", $payment["sale_id"]);
+			
+			//validate sale balance and total payment amount at moment
+			if ($sale->balance == $payment["total"]){
+				unset($payment["total"]);//remove total field of payment
+				$payment["registed_at"] = date('Y-m-d H:i:s', time());
+				if ($this->general->insert("payment", $payment)){//register payment
+					$this->update_balance($payment["sale_id"]);
+					$this->general->update("sale", $sale->id, ["updated_at" => date('Y-m-d H:i:s', time())]);
+					$this->utility_lib->add_log("payment_register", $this->lang->line('sale')." #".$sale->id);
+					
+					$type = "success";
+					$msg = $this->lang->line("success_ipa");
+				}else $msg = $this->lang->line("error_internal");
+			}else $msg = $this->lang->line("error_bup");
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg));
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 	
 	public function delete_payment(){
-		$status = false; $type = "error"; $msg = null;
-		$payment = $this->general->id("payment", $this->input->post("id"));
+		$type = "error"; $msg = null;
 		
-		//pending!! role validation
-		if ($this->general->delete("payment", array("id" => $payment->id))){
-			$this->update_balance($payment->sale_id);
-			$this->utility_lib->add_log("payment_delete", $this->lang->line('sale')." #".$payment->sale_id);
-			
-			$status = true;
-			$type = "success";
-			$msg = $this->lang->line("success_dpa");
-		}else $msg = $this->lang->line("error_internal");
+		if ($this->utility_lib->check_access("sale", "admin_payment")){
+			$payment = $this->general->id("payment", $this->input->post("id"));
+			if ($this->general->delete("payment", ["id" => $payment->id])){
+				$this->update_balance($payment->sale_id);
+				$this->general->update("sale", $payment->sale_id, ["updated_at" => date('Y-m-d H:i:s', time())]);
+				$this->utility_lib->add_log("payment_delete", $this->lang->line('sale')." #".$payment->sale_id);
+				
+				$type = "success";
+				$msg = $this->lang->line("success_dpa");
+			}else $msg = $this->lang->line("error_internal");
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg));
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 	
 	public function cancel_sale(){
-		$status = false; $type = "error"; $msg = null;
-		$sale = $this->general->id("sale", $this->input->post("id"));
+		$type = "error"; $msg = null;
 		
+		//permission validation
+		if ($this->utility_lib->check_access("sale", "cancel")){
+			$sale = $this->general->id("sale", $this->input->post("id"));
+			
+			//sale status validation => no canceled sale
+			$status_canceled_id = $this->general->filter("status", ["code" => "canceled"])[0]->id;
+			if ($sale->status_id != $status_canceled_id){
+				$products = $this->general->filter("sale_product", ["sale_id" => $sale->id]);
+				
+				//product stock(sum quantities), appointment & surgery rec(set null and change status to reserved)
+				
+				print_r($products);
+			}else $msg = $this->lang->line('error_sac');
+		}else $msg = $this->lang->line('error_no_permission');
+		
+		
+		
+		//sale_product
+		//    => set appointment & surgery to reserved status
+		//    => set stocks if item is a product, not service
+		//voucher
+		//    => set voucher status to canceled
+		//    => send to sunat for cancel sent voucher
+		//set sale status to canceled
+		
+		/*
 		if (!$msg){
 			//update appointment or surgery if this is case
 			if ($sale->appointment_id or $sale->surgery_id){
@@ -432,9 +503,10 @@ class Sale extends CI_Controller {
 				$this->general->update("product", $item->product_id, ["stock" => $sum->stock]);
 			}
 		}
+		*/
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg));
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 	
 	private function create_voucher($sale, $voucher_type_id, $client_id){

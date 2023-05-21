@@ -137,10 +137,16 @@
 											<div><?= $item->product->description ?></div>
 											<div><small><?= $item->product->category ?></small></div>
 										</td>
-										<td><td>
+										<td>
+											<?php if ($item->attention){ ?>
+											<div><?= $item->attention->schedule ?></div>
+											<div><?= $item->attention->patient ?></div>
+											<small><?= $item->attention->patient_doc ?></small>
+											<?php } ?>
+										</td>
 										<td class="text-right">
 											<?php if ($item->appointment_id or $item->surgery_id){ ?>
-											<button type="button" class="btn btn-danger">
+											<button type="button" class="btn btn-danger btn_delete_reservation" value="<?= $item->id ?>">
 												<i class="fas fa-trash"></i>
 											</button>
 											<?php }else{ 
@@ -172,12 +178,18 @@
 										<th><strong><?= $this->lang->line('hd_change') ?></strong></th>
 										<th><strong><?= $this->lang->line('hd_balance') ?></strong></th>
 										<?php if (!$voucher->sale_id){ ?>
-										<th></th>
+										<th class="text-right">
+											<?php if ($sale->balance && ($sale->status_id != $canceled_id)){ ?>
+											<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#md_add_payment">
+												<i class="fas fa-plus"></i>
+											</button>
+											<?php } ?>
+										</th>
 										<?php } ?>
 									</tr>
 								</thead>
 								<tbody>
-									<?php foreach($payments as $i => $p){ ?>
+									<?php $p_qty = count($payments); foreach($payments as $i => $p){ ?>
 									<tr>
 										<td><?= $i + 1 ?></td>
 										<td><?= $p->registed_at ?></td>
@@ -188,9 +200,9 @@
 										<td><?= $sale->currency." ".number_format($p->balance, 2) ?></td>
 										<?php if (!$voucher->sale_id){ ?>
 										<td class="text-right">
-											<?php if (!$i){ ?>
-											<button type="button" class="btn light btn-danger" id="btn_delete_payment" value="<?= $p->id ?>">
-												<i class="far fa-trash"></i>
+											<?php if ((!$i) and ($p_qty > 1)){ ?>
+											<button type="button" class="btn btn-danger" id="btn_delete_payment" value="<?= $p->id ?>">
+												<i class="fas fa-trash"></i>
 											</button>
 											<?php } ?>
 										</td>
@@ -200,90 +212,6 @@
 								</tbody>
 							</table>
 						</div>
-						<?php if ($sale->balance && ($sale->status_id != $canceled_id)){ ?>
-						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#basicModal">
-							<?= $this->lang->line('btn_new_payment') ?>
-						</button>
-						<div class="modal fade" id="basicModal" style="display: none;" aria-hidden="true">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<div class="modal-header border-0">
-										<h5 class="modal-title"><?= $this->lang->line('title_new_payment') ?></h5>
-										<button type="button" class="close" data-dismiss="modal"><span>×</span>
-										</button>
-									</div>
-									<div class="modal-body">
-										<form id="form_payment" action="#">
-											<div class="form-row">
-												<input type="hidden" name="sale_id" value="<?= $sale->id ?>">
-												<input type="hidden" name="total" value="<?= $sale->balance ?>">
-												<input type="hidden" id="payment_received" name="received" value="<?= $sale->balance ?>">
-												<input type="hidden" id="payment_change" name="change" value="0">
-												<input type="hidden" id="payment_balance" name="balance" value="0">
-												<div class="form-group col-md-6">
-													<label><?= $this->lang->line('label_received') ?></label>
-													<div class="input-group input-normal-o">
-														<div class="input-group-prepend">
-															<span class="input-group-text"><?= $sale->currency ?></span>
-														</div>
-														<input type="text" class="form-control text-right" id="payment_received_v" value="<?= number_format($sale->balance, 2) ?>">
-													</div>
-													<div class="sys_msg" id="pay_received_msg"></div>
-												</div>
-												<div class="form-group col-md-6">
-													<label><?= $this->lang->line('label_amount_to_pay') ?></label>
-													<div class="input-group input-info-o">
-														<div class="input-group-prepend">
-															<span class="input-group-text bg-light"><?= $sale->currency ?></span>
-														</div>
-														<input type="text" class="form-control bg-light text-right" id="payment_total_v" value="<?= number_format($sale->balance, 2) ?>" readonly>
-													</div>
-													<div class="sys_msg" id="total_msg"></div>
-												</div>
-												<div class="form-group col-md-6">
-													<label><?= $this->lang->line('label_change') ?></label>
-													<div class="input-group input-normal-o">
-														<div class="input-group-prepend">
-															<span class="input-group-text"><?= $sale->currency ?></span>
-														</div>
-														<input type="text" class="form-control text-right" id="payment_change_v" value="0.00">
-													</div>
-													<div class="sys_msg" id="pay_change_msg"></div>
-												</div>
-												<div class="form-group col-md-6">
-													<label><?= $this->lang->line('label_balance') ?></label>
-													<div class="input-group input-warning-o">
-														<div class="input-group-prepend">
-															<span class="input-group-text bg-light"><?= $sale->currency ?></span>
-														</div>
-														<input type="text" class="form-control bg-light text-right" id="payment_balance_v" value="0.00" readonly>
-													</div>
-													<div class="sys_msg" id="pay_balance_msg"></div>
-												</div>
-												<div class="form-group col-md-6">
-													<label><?= $this->lang->line('label_payment_method') ?></label>
-													<select class="form-control" name="payment_method_id">
-														<?php foreach($payment_method as $item){ ?>
-														<option value="<?= $item->id ?>"><?= $item->description ?></option>
-														<?php } ?>
-													</select>
-													<div class="sys_msg" id="payment_method_msg"></div>
-												</div>
-											</div>
-										</form>
-									</div>
-									<div class="modal-footer border-0">
-										<button type="button" class="btn btn-secondary light" data-dismiss="modal">
-											<?= $this->lang->line('btn_cancel') ?>
-										</button>
-										<button type="button" class="btn btn-primary" id="btn_add_payment">
-											<?= $this->lang->line('btn_save') ?>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<?php } ?>
 					</div>
 					<div class="tab-pane fade" id="tab_items" role="tabpanel">
 						<div class="table-responsive">
@@ -392,13 +320,13 @@
 		</div>
 	</div>
 </div>
-<?php } ?>
+<?php } if ($appo_qty or $surg_qty){ ?>
 <input type="hidden" id="rs_selected_product">
-<div class="modal fade" id="md_reservation_surgery" aria-hidden="true">
+<div class="modal fade" id="md_reservation_appointment" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Asignar Cirugia</h5>
+				<h5 class="modal-title"><?= $this->lang->line('title_assign_appointment') ?></h5>
 				<button type="button" class="close" data-dismiss="modal"><span>×</span>
 				</button>
 			</div>
@@ -407,7 +335,50 @@
 					<div class="form-group col-md-12">
 						<label><?= $this->lang->line('label_doc_number') ?></label>
 						<div class="input-group">
-							<input type="text" class="form-control" id="rs_sur_doc_number">
+							<input type="text" class="form-control" id="rs_appointment_doc_number">
+							<div class="input-group-append">
+								<button class="btn btn-primary border-0" type="button" id="btn_search_appointment">
+									<i class="fas fa-search"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="form-group col-md-12" style="max-height: 300px; overflow-y: auto;">
+						<table class="table">
+							<thead>
+								<tr>
+									<th><strong>#</strong></th>
+									<th><strong><?= $this->lang->line('hd_reservations') ?></strong></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody id="rs_appointment_list"></tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger light" data-dismiss="modal">
+					<?= $this->lang->line('btn_close') ?>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="md_reservation_surgery" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title"><?= $this->lang->line('title_assign_surgery') ?></h5>
+				<button type="button" class="close" data-dismiss="modal"><span>×</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-row">
+					<div class="form-group col-md-12">
+						<label><?= $this->lang->line('label_doc_number') ?></label>
+						<div class="input-group">
+							<input type="text" class="form-control" id="rs_surgery_doc_number">
 							<div class="input-group-append">
 								<button class="btn btn-primary border-0" type="button" id="btn_search_surgery">
 									<i class="fas fa-search"></i>
@@ -420,25 +391,102 @@
 							<thead>
 								<tr>
 									<th><strong>#</strong></th>
-									<th><strong>Reservaciones</strong></th>
+									<th><strong><?= $this->lang->line('hd_reservations') ?></strong></th>
 									<th></th>
 								</tr>
 							</thead>
-							<tbody id="rs_list"></tbody>
+							<tbody id="rs_surgery_list"></tbody>
 						</table>
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-danger light" data-dismiss="modal">Cerrar</button>
-				<button type="button" class="btn btn-primary">Guardar</button>
+				<button type="button" class="btn btn-danger light" data-dismiss="modal">
+					<?= $this->lang->line('btn_close') ?>
+				</button>
 			</div>
 		</div>
 	</div>
 </div>
+<?php } if ($sale->balance && ($sale->status_id != $canceled_id)){ ?>
+<div class="modal fade" id="md_add_payment" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title"><?= $this->lang->line('title_new_payment') ?></h5>
+				<button type="button" class="close" data-dismiss="modal"><span>×</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="form_add_payment">
+					<input type="hidden" name="sale_id" value="<?= $sale->id ?>" readonly>
+					<input type="hidden" id="payment_total" name="total" value="<?= $sale->balance ?>" readonly>
+					<input type="hidden" id="payment_received" name="received" value="<?= $sale->balance ?>">
+					<input type="hidden" id="payment_change" name="change" value="0">
+					<input type="hidden" id="payment_balance" name="balance" value="0">
+					<div class="form-row">
+						<div class="form-group col-md-12 d-flex justify-content-between text-primary">
+							<h3 class="text-primary"><?= $this->lang->line('label_amount_to_pay') ?></h3>
+							<h3 class="text-primary"><?= $sale->currency." ".number_format($sale->balance, 2) ?></h3>
+						</div>
+						<div class="form-group col-md-6">
+							<label><?= $this->lang->line('label_payment_method') ?></label>
+							<select class="form-control" name="payment_method_id">
+								<?php foreach($payment_method as $item){ ?>
+								<option value="<?= $item->id ?>"><?= $item->description ?></option>
+								<?php } ?>
+							</select>
+							<div class="sys_msg" id="payment_method_msg"></div>
+						</div>
+						<div class="form-group col-md-6">
+							<label><?= $this->lang->line('label_received') ?></label>
+							<div class="input-group input-normal-o">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><?= $sale->currency ?></span>
+								</div>
+								<input type="text" class="form-control text-right" id="payment_received_v" value="<?= number_format($sale->balance, 2) ?>">
+							</div>
+							<div class="sys_msg" id="pay_received_msg"></div>
+						</div>
+						<div class="form-group col-md-6">
+							<label><?= $this->lang->line('label_change') ?></label>
+							<div class="input-group input-normal-o">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><?= $sale->currency ?></span>
+								</div>
+								<input type="text" class="form-control text-right" id="payment_change_v" value="0.00">
+							</div>
+							<div class="sys_msg" id="pay_change_msg"></div>
+						</div>
+						<div class="form-group col-md-6">
+							<label><?= $this->lang->line('label_balance') ?></label>
+							<div class="input-group input-warning-o">
+								<div class="input-group-prepend">
+									<span class="input-group-text bg-light"><?= $sale->currency ?></span>
+								</div>
+								<input type="text" class="form-control bg-light text-right" id="payment_balance_v" value="0.00" readonly>
+							</div>
+							<div class="sys_msg" id="pay_balance_msg"></div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger light" data-dismiss="modal">
+					<?= $this->lang->line('btn_cancel') ?>
+				</button>
+				<button type="button" class="btn btn-primary" id="btn_add_payment">
+					<?= $this->lang->line('btn_save') ?>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<?php } ?>
 <input type="hidden" id="warning_apa" value="<?= $this->lang->line('warning_apa') ?>">
 <input type="hidden" id="warning_dpa" value="<?= $this->lang->line('warning_dpa') ?>">
 <input type="hidden" id="warning_csa" value="<?= $this->lang->line('warning_csa') ?>">
 <input type="hidden" id="warning_mvo" value="<?= $this->lang->line('warning_mvo') ?>">
 <input type="hidden" id="warning_mti" value="<?= $this->lang->line('warning_mti') ?>">
+<input type="hidden" id="warning_siu" value="<?= $this->lang->line('warning_siu') ?>">
 <input type="hidden" id="btn_select_lang" value="<?= $this->lang->line('btn_select') ?>">

@@ -169,7 +169,7 @@ class Appointment extends CI_Controller {
 	
 	public function detail($id){
 		if (!$this->session->userdata('logged_in')) redirect(base_url());
-		//PENDING! rol validation
+		if (!$this->utility_lib->check_access("appointment", "detail")) redirect("/errors/no_permission");
 		
 		$appointment = $this->appointment->id($id);
 		if (!$appointment) redirect("/appointment");
@@ -192,16 +192,13 @@ class Appointment extends CI_Controller {
 		}
 		
 		$appointment->detail = null;
-		$appointment_sale = $this->general->filter("sale", ["appointment_id" => $appointment->id]);
+		$appointment_sale = $this->general->filter("sale_product", ["appointment_id" => $appointment->id]);
 		if ($appointment_sale){
-			$sale_items = $this->general->filter("sale_product", ["sale_id" => $appointment_sale[0]->id]);
-			foreach($sale_items as $item){
-				$product = $this->general->id("product", $item->product_id);
-				$category = $this->general->id("product_category", $product->category_id)->name;
-				
-				$str = $category.", ".$product->description;
-				if (strpos($str, "Consulta") !== false) $appointment->detail = $str;
-			}
+			$product = $this->general->id("product", $appointment_sale[0]->product_id);
+			$category = $this->general->id("product_category", $product->category_id)->name;
+			
+			$str = $category.", ".$product->description;
+			if (strpos($str, "Consulta") !== false) $appointment->detail = $str;
 		}
 		
 		$doctor = $this->general->id("person", $appointment->doctor_id);
