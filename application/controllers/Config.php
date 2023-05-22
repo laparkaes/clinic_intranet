@@ -199,25 +199,12 @@ class Config extends CI_Controller {
 	
 	public function update_company_data(){
 		$datas = $this->input->post();
-		$status = false; $type = "error"; $msgs = array(); $msg = null; $cert_link = null;
+		$type = "error"; $msgs = []; $msg = null;
 		
-		//validations
-		if (!$datas["ruc"]) $msgs = $this->set_msg($msgs, "com_ruc_msg", "error", "error_cru");
-		if (!$datas["name"]) $msgs = $this->set_msg($msgs, "com_name_msg", "error", "error_cna");
-		if (!$datas["email"]) $msgs = $this->set_msg($msgs, "com_email_msg", "error", "error_cem");
-		if (!$datas["tel"]) $msgs = $this->set_msg($msgs, "com_tel_msg", "error", "error_cte");
-		if (!$datas["address"]) $msgs = $this->set_msg($msgs, "com_address_msg", "error", "error_cad");
-		if (!$datas["department_id"]) $msgs = $this->set_msg($msgs, "com_department_msg", "error", "error_cde");
-		if (!$datas["province_id"]) $msgs = $this->set_msg($msgs, "com_province_msg", "error", "error_cpr");
-		if (!$datas["district_id"]) $msgs = $this->set_msg($msgs, "com_district_msg", "error", "error_cdi");
-		if (!$datas["sunat_resolution"]) $msgs = $this->set_msg($msgs, "s_res_msg", "error", "error_sre");
-		if (!$datas["sunat_clave_sol"]) $msgs = $this->set_msg($msgs, "s_cla_msg", "error", "error_scs");
-		if (!$datas["sunat_password"]) $msgs = $this->set_msg($msgs, "s_pas_msg", "error", "error_spa");
-		if (!$_FILES["sunat_cert_file"]["name"]) if (!$this->general->id("company", 1)->sunat_cert_filename) 
-			$msgs = $this->set_msg($msgs, "s_cer_msg", "error", "error_sce");
-	
-		if ($msgs) $msg = $this->lang->line("error_occurred");
-		else{
+		$this->load->library('my_val');
+		$msgs = $this->my_val->config_company($msgs, "com_", $datas);
+		
+		if (!$msgs){
 			$datas["ubigeo"] = $this->general->id("address_district", $datas["district_id"])->ubigeo;
 			$datas["updated_by"] = $this->session->userdata('aid');
 			$datas["updated_at"] = date("Y-m-d H:i:s", time());
@@ -227,31 +214,30 @@ class Config extends CI_Controller {
 				$upload_dir = $upload_dir."/";
 				
 				$this->load->library('upload');
-				$config_upload = array(
+				$config_upload = [
 					'upload_path' => $upload_dir,
 					'allowed_types' => '*',
 					'max_size' => 0,
 					'overwrite' => true
-				);
+				];
 				
 				$this->upload->initialize($config_upload);
 				if ($this->upload->do_upload("sunat_cert_file")){
 					$result = $this->upload->data();
 					$datas["sunat_cert_filename"] = $result["file_name"];
-				}else $msgs = $this->set_msg($msgs, "s_cer_msg", "error", $this->upload->display_errors("<span>","</span>"));
+				}else $msg = $this->upload->display_errors("<span>","</span>");
 			}
 			
-			if ($this->general->update("company", 1, $datas)){
+			if (!$msg) if ($this->general->update("company", 1, $datas)){
 				$this->utility_lib->add_log("company_update", null);
 				
-				$status = true;
 				$type = "success";
 				$msg = $this->lang->line("success_cup");
 			}else $msg = $this->lang->line("error_internal");
-		}
+		}else $msg = $this->lang->line("error_occurred");
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msgs" => $msgs, "msg" => $msg));
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
 	}
 
 	public function add_sl_value(){

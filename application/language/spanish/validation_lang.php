@@ -74,3 +74,16 @@ $lang['e_select_ruc'] = 'Debe eligir RUC.';
 /* report */
 $lang['e_select_report_type'] = 'Elija tipo de reporte.';
 $lang['e_select_date_from'] = 'Elija fecha inicio de reporte.';
+
+/* config */
+$lang['e_enter_ruc_o'] = 'Ingrese RUC.';
+$lang['e_enter_company_o'] = 'Ingrese nombre de empresa.';
+$lang['e_company_email'] = 'Ingrese correo electrónico central.';
+$lang['e_company_tel'] = 'Ingrese teléfono central.';
+$lang['e_company_address'] = 'Ingrese dirección.';
+$lang['e_company_department'] = 'Elija un departamento.';
+$lang['e_company_province'] = 'Elija una provincia.';
+$lang['e_company_district'] = 'Elija un distrito.';
+$lang['e_sunat_resolution'] = 'Ingrese número de resolución.';
+$lang['e_sunat_clave_sol'] = 'Ingrese clave sol.';
+$lang['e_sunat_password'] = 'Ingrese contraseña de Sunat.';

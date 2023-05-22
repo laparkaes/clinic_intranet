@@ -1,37 +1,22 @@
 function update_company_data(dom){
-	$("#form_update_company .sys_msg").html("");
-	$.ajax({
-		url: $("#base_url").val() + "config/update_company_data",
-		type: "POST",
-		data: new FormData(dom),
-		contentType: false,
-		processData:false,
-		success:function(res){
-			Swal.fire({
-				title: $("#alert_" + res.type + "_title").val(),
-				icon: res.type,
-				html: res.msg,
-				confirmButtonText: $("#alert_confirm_btn").val()
-			}).then((result) => {
-				if (res.status == true) location.reload();
-				else set_msg(res.msgs);
-			});
-		}
+	ajax_form(dom, "config/update_company_data").done(function(res) {
+		set_msg(res.msgs);
+		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
-function control_province(){
+function control_province(dom){
 	$("#sl_province").val("");
 	$("#sl_province .province").addClass("d-none");
-	$("#sl_province .d" + $(this).val()).removeClass("d-none");
+	$("#sl_province .d" + $(dom).val()).removeClass("d-none");
 	$("#sl_district").val("");
 	$("#sl_district .district").addClass("d-none");
 }
 
-function control_district(){
+function control_district(dom){
 	$("#sl_district").val("");
 	$("#sl_district .district").addClass("d-none");
-	$("#sl_district .p" + $(this).val()).removeClass("d-none");
+	$("#sl_district .p" + $(dom).val()).removeClass("d-none");
 }
 
 function control_role_access(dom){
@@ -304,8 +289,8 @@ $(document).ready(function() {
 	
 	//company
 	$("#form_update_company_data").submit(function(e) {e.preventDefault(); update_company_data(this);});
-	$("#sl_department").change(function() {control_province();});
-	$("#sl_province").change(function() {control_district();});
+	$("#sl_department").change(function() {control_province(this);});
+	$("#sl_province").change(function() {control_district(this);});
 	
 	//profile
 	$("#form_register_profile").submit(function(e) {e.preventDefault(); register_profile(this);});

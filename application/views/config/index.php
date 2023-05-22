@@ -292,7 +292,7 @@
 									<div class="form-group col-md-12">
 										<label><?= $this->lang->line('lb_resolution') ?></label>
 										<input type="text" class="form-control" value="<?= $company->sunat_resolution ?>" name="sunat_resolution">
-										<div class="sys_msg" id="s_res_msg"></div>
+										<div class="sys_msg" id="com_sunat_res_msg"></div>
 									</div>
 									<div class="form-group col-md-12">
 										<div class="d-flex justify-content-between">
@@ -307,12 +307,12 @@
 									<div class="form-group col-md-12">
 										<label><?= $this->lang->line('lb_password_SOL') ?></label>
 										<input type="text" class="form-control" value="<?= $company->sunat_clave_sol ?>" name="sunat_clave_sol">
-										<div class="sys_msg" id="s_cla_msg"></div>
+										<div class="sys_msg" id="com_sunat_cla_msg"></div>
 									</div>
 									<div class="form-group col-md-12">
 										<label><?= $this->lang->line('lb_password') ?></label>
 										<input type="text" class="form-control" value="<?= $company->sunat_password ?>" name="sunat_password">
-										<div class="sys_msg" id="s_pas_msg"></div>
+										<div class="sys_msg" id="com_sunat_pass_msg"></div>
 									</div>
 								</div>
 							</div>
