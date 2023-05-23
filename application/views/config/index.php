@@ -51,10 +51,10 @@
 							</div>
 							<div class="col-md-6 text-right">
 								<div class="btn-group mb-3">
-									<button type="button" class="btn control_bl_account btn-primary btn-xs" id="btn_list" value="bl_account_list">
+									<button type="button" class="btn control_bl_account btn-primary" id="btn_list" value="bl_account_list">
 										<i class="fas fa-list"></i>
 									</button>
-									<button type="button" class="btn control_bl_account btn-outline-primary btn-xs" value="bl_account_add">
+									<button type="button" class="btn control_bl_account btn-outline-primary" value="bl_account_add">
 										<i class="fas fa-plus"></i>
 									</button>
 								</div>
@@ -66,22 +66,27 @@
 									<div class="col-md-6 col-sm-12">
 										<h5><?= $this->lang->line('title_personal_info') ?></h5>
 										<div class="form-row">
-											<div class="form-group col-md-12">
+										
+											<div class="form-group col-md-6">
 												<label><?= $this->lang->line('lb_document') ?></label>
+												<select class="form-control" id="ra_doc_type_id" name="p[doc_type_id]">
+													<?php foreach($doc_types as $d){ if ($d->sunat_code){ ?>
+													<option value="<?= $d->id ?>"><?= $d->description ?></option>
+													<?php }} ?>
+												</select>
+												<div class="sys_msg" id="ra_doc_type_msg"></div>
+											</div>
+											<div class="form-group col-md-6">
+												<label class="d-md-block d-none">&nbsp;</label>
 												<div class="input-group">
-													<select class="form-control" id="ra_doc_type_id" name="p[doc_type_id]">
-														<?php foreach($doc_types as $d){ if ($d->sunat_code){ ?>
-														<option value="<?= $d->id ?>"><?= $d->description ?></option>
-														<?php }} ?>
-													</select>
-													<input type="text" class="form-control border-left-0" id="ra_doc_number" name="p[doc_number]" placeholder="<?= $this->lang->line('lb_number') ?>">
+													<input type="text" class="form-control" id="ra_doc_number" name="p[doc_number]" placeholder="<?= $this->lang->line('lb_number') ?>">
 													<div class="input-group-append">
 														<button class="btn btn-primary border-0" type="button" id="btn_search_person_ra">
 															<i class="fas fa-search"></i>
 														</button>
 													</div>
 												</div>
-												<div class="sys_msg" id="ra_doc_msg"></div>
+												<div class="sys_msg" id="ra_doc_number_msg"></div>
 											</div>
 											<div class="form-group col-md-8">
 												<label><?= $this->lang->line('lb_name') ?></label>
@@ -160,7 +165,7 @@
 														<td><?= $people_arr[$item->person_id] ?></td>
 														<td class="text-right">
 															<button type="button" class="btn btn-info shadow btn-xs sharp reset_password" value="<?= $item->id ?>">
-																<i class="fas fa-unlock-alt"></i>
+																<i class="fas fa-key"></i>
 															</button>
 															<button type="button" class="btn btn-danger shadow btn-xs sharp remove_account" value="<?= $item->id ?>">
 																<i class="fas fa-trash"></i>
@@ -195,11 +200,13 @@
 											<?php foreach($a_list as $a){ ?>
 											<tr>
 												<td class="text-left pl-4"><?= $this->lang->line('access_'.$a->description) ?></td>
-												<?php foreach($roles as $r){ $value = $r->id."_".$a->id;
-												if (in_array($value, $role_access)) $checked = "checked"; else $checked = ""; ?>
+												<?php foreach($roles as $r){ 
+												$value = $r->id."_".$a->id;
+												if (in_array($value, $role_access)) $c = "checked"; else $c = "";
+												if ($r->name === "master") $d = "disabled"; else $d = ""; ?>
 												<td>
 													<div class="custom-control custom-checkbox">
-														<input type="checkbox" class="custom-control-input chk_access" id="chk_<?= $value ?>" value="<?= $value ?>" <?= $checked ?>>
+														<input type="checkbox" class="custom-control-input chk_access" id="chk_<?= $value ?>" value="<?= $value ?>" <?= $c ?> <?= $d ?>>
 														<label class="custom-control-label" for="chk_<?= $value ?>"></label>
 													</div>
 												</td>

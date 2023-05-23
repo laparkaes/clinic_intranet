@@ -93,108 +93,104 @@ class Config extends CI_Controller {
 	}
 	
 	public function register_account(){
-		$status = false; $type = "error"; $msgs = []; $msg = null;
+		$type = "error"; $msgs = []; $msg = null;
 		
-		$p = $this->input->post("p");
-		$a = $this->input->post("a");
-		
-		//personal data validation
-		if (!$p["name"]) $msgs = $this->set_msg($msgs, "ra_name_msg", "error", "error_ena");
-		if (!$p["tel"]) $msgs = $this->set_msg($msgs, "ra_tel_msg", "error", "error_ete");
-		if (!$p["doc_type_id"]) $msgs = $this->set_msg($msgs, "ra_doc_msg", "error", "error_sdt");
-		if (!$p["doc_number"]) $msgs = $this->set_msg($msgs, "ra_doc_msg", "error", "error_edn");
-		
-		//account data validation
-		if (!$a["role_id"]) $msgs = $this->set_msg($msgs, "ra_role_msg", "error", "error_sro");
-		if ($a["email"]){
-			if (filter_var($a["email"], FILTER_VALIDATE_EMAIL)){
-				if ($this->account->email($a["email"])) $msgs = $this->set_msg($msgs, "ra_email_msg", "error", "error_usr");
-			}else $msgs = $this->set_msg($msgs, "ra_email_msg", "error", "error_usf");
-		}else $msgs = $this->set_msg($msgs, "ra_email_msg", "error", "error_eus");
-		if ($a["password"]){
-			if (strlen($a["password"]) < 6) $msgs = $this->set_msg($msgs, "ra_password_msg", "error", "error_pal");
-		}else $msgs = $this->set_msg($msgs, "ra_password_msg", "error", "error_epa");
-		if (strcmp($a["password"], $a["confirm"])) $msgs = $this->set_msg($msgs, "ra_confirm_msg", "error", "error_pac");
-		
-		if ($msgs) $msg = $this->lang->line('error_occurred');
-		else{
-			$person = $this->general->filter("person", ["doc_type_id" => $p["doc_type_id"], "doc_number" => $p["doc_number"]]);
-			if ($person){
-				$this->general->update("person", $person[0]->id, $p);
-				$a["person_id"] = $person[0]->id;
-			}else{
-				$p["registed_at"] = date('Y-m-d H:i:s', time());
-				$a["person_id"] = $this->general->insert("person", $p);
-			}
+		if ($this->utility_lib->check_access("config", "admin_account")){			
+			$p = $this->input->post("p");
+			$a = $this->input->post("a");
 			
-			if ($this->general->filter("account", ["role_id" => $a["role_id"], "person_id" => $a["person_id"]])) 
-				$msg = $this->lang->line('error_pra');
-			else{
-				unset($a["confirm"]);
-				$a["password"] = password_hash($a["password"], PASSWORD_BCRYPT);
-				$a["active"] = true;
-				$a["registed_at"] = date('Y-m-d H:i:s', time());
-				if ($this->account->insert($a)){
-					$this->utility_lib->add_log("account_register", $a["email"]);
-					
-					$status = true;
-					$type = "success";
-					$msg = $this->lang->line('success_rac');
-				}else $msg = $this->lang->line('error_internal');	
-			}
-		}
+			$this->load->library('my_val');
+			$msgs = $this->my_val->person($msgs, "ra_", $p);
+			$msgs = $this->my_val->account($msgs, "ra_", $a);
+			if (!$a["role_id"]) $msgs = $this->my_val->set_msg($msgs, "ra_role_msg", "error", "error_sro");
+			
+			if (!$msgs){
+				$person = $this->general->filter("person", ["doc_type_id" => $p["doc_type_id"], "doc_number" => $p["doc_number"]]);
+				if ($person){
+					$this->general->update("person", $person[0]->id, $p);
+					$a["person_id"] = $person[0]->id;
+				}else{
+					$p["registed_at"] = date('Y-m-d H:i:s', time());
+					$a["person_id"] = $this->general->insert("person", $p);
+				}
+				
+				if (!$this->general->filter("account", ["role_id" => $a["role_id"], "person_id" => $a["person_id"]])){
+					unset($a["confirm"]);
+					$a["password"] = password_hash($a["password"], PASSWORD_BCRYPT);
+					$a["active"] = true;
+					$a["registed_at"] = date('Y-m-d H:i:s', time());
+					if ($this->account->insert($a)){
+						$this->utility_lib->add_log("account_register", $a["email"]);
+						
+						$type = "success";
+						$msg = $this->lang->line('success_rac');
+					}else $msg = $this->lang->line('error_internal');	
+				}else $msg = $this->lang->line('error_pra');
+			}else $msg = $this->lang->line('error_occurred');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msgs" => $msgs, "msg" => $msg));
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
 	}
 	
 	public function remove_account(){
-		$account = $this->general->id("account", $this->input->post("id"));
-		if ($this->general->delete("account", ["id" => $account->id])){
-			$this->utility_lib->add_log("account_delete", $account->email);
-			
-			$status = true;
-			$type = "success";
-			$msg = $this->lang->line('success_dac');
-		}else{
-			$status = false;
-			$type = "error";
-			$msg = $this->lang->line('error_internal');
-		}
+		$type = "error"; $msg = null;
+		
+		if ($this->utility_lib->check_access("config", "admin_account")){
+			$account = $this->general->id("account", $this->input->post("id"));
+			if ($this->general->delete("account", ["id" => $account->id])){
+				$this->utility_lib->add_log("account_delete", $account->email);
+				
+				$type = "success";
+				$msg = $this->lang->line('success_dac');
+			}else $msg = $this->lang->line('error_internal');
+		}else $msg = $this->lang->line('error_no_permission');
+		
 		
 		header('Content-Type: application/json');
-		echo json_encode(["status" => $status, "type" => $type, "msg" => $msg]);
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 	
 	public function reset_password(){
-		$status = false; $type = "error"; $msg = null;
+		$type = "error"; $msg = null;
 		
-		$account = $this->general->id("account", $this->input->post("id"));
-		if ($account){
-			$person = $this->general->id("person", $account->person_id);
-			if ($person) $pw = $person->doc_number;
-			else $pw = "1234567890";
-			
-			if ($this->general->update("account", $account->id, ["password" => password_hash($pw, PASSWORD_BCRYPT)])){
-				$status = true;
-				$type = "success";
-				$msg = str_replace("&pw&", $pw, $this->lang->line('success_uap'));
-			}else $msg = $this->lang->line('error_internal');
-		}else $msg = $this->lang->line('error_internal_refresh');
+		if ($this->utility_lib->check_access("config", "admin_account")){
+			$account = $this->general->id("account", $this->input->post("id"));
+			if ($account){
+				$person = $this->general->id("person", $account->person_id);
+				if ($person) $pw = $person->doc_number;
+				else $pw = "1234567890";
+				
+				if ($this->general->update("account", $account->id, ["password" => password_hash($pw, PASSWORD_BCRYPT)])){
+					$type = "success";
+					$msg = str_replace("&pw&", $pw, $this->lang->line('success_uap'));
+				}else $msg = $this->lang->line('error_internal');
+			}else $msg = $this->lang->line('error_internal_refresh');
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg));
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 	
 	public function control_role_access(){
-		$setting = $this->input->post("setting");
-		$setting = isset($setting) && $setting === 'true';
+		$type = "error"; $msg = null;
+
+		if ($this->utility_lib->check_access("config", "admin_role_access")){
+			$setting = $this->input->post("setting");
+			$setting = isset($setting) && $setting === 'true';
+			
+			$value = explode("_", $this->input->post("value"));
+			$data = array("role_id" => $value[0], "access_id" => $value[1]);
+			
+			if ($setting) $this->general->insert("role_access", $data);
+			else $this->general->delete("role_access", $data);
+			
+			$type = "success";
+			$msg = $this->lang->line('success_aup');	
+		}else $msg = $this->lang->line('error_no_permission');
 		
-		$value = explode("_", $this->input->post("value"));
-		$data = array("role_id" => $value[0], "access_id" => $value[1]);
-		
-		if ($setting) $this->general->insert("role_access", $data);
-		else $this->general->delete("role_access", $data);
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 	
 	public function update_company_data(){

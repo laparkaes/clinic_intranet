@@ -2,16 +2,6 @@
 $lang['setting'] = 'Configuración';
 
 //messages
-$lang['error_ena'] = 'Ingrese nombre.';//error_enter_name
-$lang['error_ete'] = 'Ingrese teléfono/celular.';//error_enter_tel
-$lang['error_sdt'] = 'Elija tipo de documento.';//error_select_doc_type
-$lang['error_edn'] = 'Ingrese número de documento.';//error_enter_doc_number
-$lang['error_usr'] = 'Usuario registrado.';//error_username_exists
-$lang['error_usf'] = 'Ingrese un correo electrónico.';//error_username_format
-$lang['error_eus'] = 'Ingrese usuario.';//error_enter_username
-$lang['error_pal'] = 'Ingrese mínimo 6 letras.';//error_password_length
-$lang['error_epa'] = 'Ingrese contraseña.';//error_enter_password
-$lang['error_pac'] = 'Repita contraseña correctamente.';//error_password_confirm
 $lang['error_sro'] = 'Elija un rol.';//error_select_role
 $lang['error_pra'] = 'Persona ya cuenta con usuario con role elegido.';//error_person_has_role_account
 $lang['error_epn'] = 'Ingrese nombre de perfil.';//error_enter_profile_name
@@ -26,12 +16,10 @@ $lang['success_dsv'] = 'Nuevo valor ha sido eliminado.';//success_delete_sl_valu
 $lang['success_uap'] = 'Contraseña ha sido configurado a "&pw&".';//success_update_account_password
 $lang['success_rep'] = 'Perfil de examen ha sido registrado.';//success_register_exam_perfil
 $lang['success_dep'] = 'Perfil de examen ha sido eliminado.';//success_delete_exam_perfil
+$lang['success_aup'] = 'Acceso ha sido actualizado.';//success_access_updated
 $lang['warning_rac'] = '¿Desea eliminar usuario elegido?';//warning_remove_account
 $lang['warning_rpa'] = '¿Desea restablecer contraseña de usuario por su número de documento de identidad?';//warning_reset_password
 $lang['warning_rpr'] = '¿Desea eliminar perfil elegido?';//warning_remove_profile
-
-//content
-$lang['btn_save'] = 'Guardar';
 
 //role
 $lang['role_master'] = 'Maestro';

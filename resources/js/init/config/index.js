@@ -20,110 +20,47 @@ function control_district(dom){
 }
 
 function control_role_access(dom){
-	$.ajax({
-		url: $("#base_url").val() + "config/control_role_access",
-		type: "POST",
-		data: {setting: $(dom).is(':checked'), value: $(dom).val()}
+	var data = {setting: $(dom).is(':checked'), value: $(dom).val()};
+	ajax_simple(data, "config/control_role_access").done(function(res) {
+		swal(res.type, res.msg);
 	});
 }
 
 function reset_password(dom){
-	Swal.fire({
-		title: $("#alert_warning_title").val(),
-		html: $("#warning_rpa").val(),
-		icon: 'warning',
-		showCancelButton: true,
-		confirmButtonText: $("#alert_confirm_btn").val(),
-		cancelButtonText: $("#alert_cancel_btn").val()
-	}).then((result) => {
-		if (result.isConfirmed){
-			$.ajax({
-				url: $("#base_url").val() + "config/reset_password",
-				type: "POST",
-				data: {id: $(dom).val()},
-				success:function(res){
-					swal(res.type, res.msg);
-				}
-			});
-		}
+	ajax_simple_warning({id: $(dom).val()}, "config/reset_password", $("#warning_rpa").val()).done(function(res) {
+		swal(res.type, res.msg);
 	});
 }
 
 function remove_account(dom){
-	Swal.fire({
-		title: $("#alert_warning_title").val(),
-		html: $("#warning_rac").val(),
-		icon: 'warning',
-		showCancelButton: true,
-		confirmButtonText: $("#alert_confirm_btn").val(),
-		cancelButtonText: $("#alert_cancel_btn").val()
-	}).then((result) => {
-		if (result.isConfirmed){
-			$.ajax({
-				url: $("#base_url").val() + "config/remove_account",
-				type: "POST",
-				data: {id: $(dom).val()},
-				success:function(res){
-					Swal.fire({
-						title: $("#alert_" + res.type + "_title").val(),
-						icon: res.type,
-						html: res.msg,
-						confirmButtonText: $("#alert_confirm_btn").val()
-					}).then((result) => {
-						if (res.status == true) location.reload();
-					});
-				}
-			});
-		}
+	ajax_simple_warning({id: $(dom).val()}, "config/remove_account", $("#warning_rac").val()).done(function(res) {
+		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function register_account(dom){
-	$("#form_register_account .sys_msg").html("");
-	$.ajax({
-		url: $("#base_url").val() + "config/register_account",
-		type: "POST",
-		data: new FormData(dom),
-		contentType: false,
-		processData:false,
-		success:function(res){
-			set_msg(res.msgs);
-			if (res.msg != null) Swal.fire({
-				title: $("#alert_" + res.type + "_title").val(),
-				text: res.msg,
-				icon: res.type,
-				confirmButtonText: $("#alert_confirm_btn").val()
-			}).then((result) => {
-				if (res.status == true) location.reload();
-			});
-		}
+	ajax_form(dom, "config/register_account").done(function(res) {
+		set_msg(res.msgs);
+		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function search_person_ra(){
-	$.ajax({
-		url: $("#base_url").val() + "ajax_f/search_person",
-		type: "POST",
-		data: {doc_type_id: $("#ra_doc_type_id").val(), doc_number: $("#ra_doc_number").val()},
-		success:function(res){
-			Swal.fire({
-				title: $("#alert_" + res.type + "_title").val(),
-				icon: res.type,
-				html: res.msg,
-				confirmButtonText: $("#alert_confirm_btn").val()
-			}).then((result) => {
-				if (res.status == true){
-					$("#ra_name").val(res.person.name);
-					$("#ra_tel").val(res.person.tel);
-					$("#ra_email").val(res.person.email);
-					$("#ra_name").addClass("bg-light");
-					$("#ra_name").attr("readonly", true);
-				}else{
-					$("#ra_name").removeClass("bg-light").attr("readonly", false);
-				}
-			});
-		}
+	var data = {doc_type_id: $("#ra_doc_type_id").val(), doc_number: $("#ra_doc_number").val()};
+	ajax_simple(data, "ajax_f/search_person").done(function(res) {
+		swal(res.type, res.msg);
+		if (res.type == "success"){
+			$("#ra_name").attr("readonly", true);
+			$("#ra_name").val(res.person.name);
+			$("#ra_tel").val(res.person.tel);
+		}else reset_person();
 	});
+}
+
+function reset_person(){
+	$("#ra_name").attr("readonly", false);
+	$("#ra_name").val("");
+	$("#ra_tel").val("");
 }
 
 function control_bl_group(dom, group){
@@ -276,9 +213,11 @@ function remove_profile(dom){
 }
 
 $(document).ready(function() {
-	//account role
+	//account
 	$("#form_register_account").submit(function(e) {e.preventDefault(); register_account(this);});
 	$("#btn_search_person_ra").on('click',(function(e) {search_person_ra();}));
+	$("#ra_doc_type_id").on('change',(function(e) {reset_person();}));
+	$("#ra_doc_number").keyup(function() {reset_person();});
 	$(".reset_password").on('click',(function(e) {reset_password(this);}));
 	$(".remove_account").on('click',(function(e) {remove_account(this);}));
 	$(".control_bl_account").on('click',(function(e) {control_bl_group(this, "account");}));
