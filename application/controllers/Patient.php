@@ -41,8 +41,8 @@ class Patient extends CI_Controller {
 			"patients" => $this->general->filter("person", $f_w, $f_l, $f_w_in, "registed_at", "desc", 25, 25*($f_url["page"]-1)),
 			"doc_types" => $doc_types,
 			"doc_types_arr" => $doc_types_arr,
-			"sex_ops" => $this->general->filter("sl_option", ["code" => "sex"]),
-			"blood_type_ops" => $this->general->filter("sl_option", ["code" => "blood_type"]),
+			"sex_ops" => $this->general->all("sex", "description", "asc"),
+			"blood_type_ops" => $this->general->all("blood_type", "description", "asc"),
 			"title" => $this->lang->line('patients'),
 			"main" => "patient/list",
 			"init_js" => "patient/list.js"
@@ -58,11 +58,11 @@ class Patient extends CI_Controller {
 		$person = $this->general->id("person", $id);
 		$person->doc_type = $this->general->id("doc_type", $person->doc_type_id)->short;
 		if ($person->birthday) $person->age = $this->utility_lib->age_calculator($person->birthday);
-		else $person->age = "";
-		if ($person->sex_id) $person->sex = $this->general->id("sl_option", $person->sex_id)->description;
-		else $person->sex = "";
-		if ($person->blood_type_id) $person->blood_type = $this->general->id("sl_option", $person->blood_type_id)->description;
-		else $person->blood_type = "";
+		else $person->age = null;
+		if ($person->sex_id) $person->sex = $this->general->id("sex", $person->sex_id)->description;
+		else $person->sex = null;
+		if ($person->blood_type_id) $person->blood_type = $this->general->id("blood_type", $person->blood_type_id)->description;
+		else $person->blood_type = null;
 		
 		$f_pt = ["patient_id" => $person->id];
 		$appointments = $this->general->filter("appointment", $f_pt, null, null, "schedule_from", "desc");
@@ -111,8 +111,8 @@ class Patient extends CI_Controller {
 			"status_arr" => $status_arr,
 			"currencies_arr" => $currencies_arr,
 			"sales" => $this->general->filter("sale", ["client_id" => $person->id]),
-			"sex_ops" => $this->general->filter("sl_option", ["code" => "sex"]),
-			"blood_type_ops" => $this->general->filter("sl_option", ["code" => "blood_type"]),
+			"sex_ops" => $this->general->all("sex", "description", "asc"),
+			"blood_type_ops" => $this->general->all("blood_type", "description", "asc"),
 			"patient_files" => $this->general->filter("patient_file", ["patient_id" => $person->id, "active" => true], null, null, "registed_at", "desc"),
 			"title" => $this->lang->line('patient'),
 			"main" => "patient/detail",

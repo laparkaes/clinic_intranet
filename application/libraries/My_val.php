@@ -139,16 +139,14 @@ class My_val{
 	
 	public function appointment_basic_data($msgs, $data){
 		//data validation
-		if (!$data["entry_mode"]) $msgs = $this->set_msg($msgs, "bd_entry_mode_msg", "error", "e_entry_mode");
+		if (!$data["entry_mode_id"]) $msgs = $this->set_msg($msgs, "bd_entry_mode_msg", "error", "e_entry_mode");
 		if (!$data["date"]) $msgs = $this->set_msg($msgs, "bd_date_msg", "error", "e_select_date");
 		if (!$data["time"]) $msgs = $this->set_msg($msgs, "bd_time_msg", "error", "e_select_hour");
 		
 		//insurance validation
-		if ($data["insurance"] !== ""){
-			if ($data["insurance"] === "1")
-				if (!$data["insurance_name"])
-					$msgs = $this->set_msg($msgs, "bd_insurance_name_msg", "error", "e_insurance_name");
-		}else $msgs = $this->set_msg($msgs, "bd_insurance_msg", "error", "e_insurance_confirm");
+		if ($data["insurance"] === "1")
+			if (!$data["insurance_name"])
+				$msgs = $this->set_msg($msgs, "bd_insurance_name_msg", "error", "e_insurance_name");
 		
 		return $msgs;
 	}

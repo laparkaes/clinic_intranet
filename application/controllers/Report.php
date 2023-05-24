@@ -127,9 +127,13 @@ class Report extends CI_Controller {
 	}
 	
 	private function set_sheet_doctor($data){
-		$sl_options_arr = [];
-		$sl_options = $this->general->filter("sl_option", null, null, [["field" => "code", "values" => ["sex", "blood_type"]]]);
-		foreach($sl_options as $item) $sl_options_arr[$item->id] = $item->description;
+		$sex_arr = [];
+		$sex = $this->general->all("sex");
+		foreach($sex as $item) $sex_arr[$item->id] = $item->description;
+		
+		$blood_type_arr = [];
+		$blood_type = $this->general->all("blood_type");
+		foreach($blood_type as $item) $blood_type_arr[$item->id] = $item->description;
 		
 		$doc_type_arr = [];
 		$doc_type = $this->general->all("doc_type");
@@ -183,8 +187,8 @@ class Report extends CI_Controller {
 		foreach ($doctors as $d){
 			$person = $people_arr[$d->person_id];
 			if ($person->doc_type_id) $person->doc_type = $doc_type_arr[$person->doc_type_id]; else $person->doc_type = null;
-			if ($person->sex_id) $person->sex = $sl_options_arr[$person->sex_id]; else $person->sex = null;
-			if ($person->blood_type_id) $person->blood_type = $sl_options_arr[$person->blood_type_id]; else $person->blood_type = null;
+			if ($person->sex_id) $person->sex = $sex_arr[$person->sex_id]; else $person->sex = null;
+			if ($person->blood_type_id) $person->blood_type = $blood_type_arr[$person->blood_type_id]; else $person->blood_type = null;
 			
 			$sheet->setCellValue('A'.$row, $d->id);
 			$sheet->setCellValue('B'.$row, $d->registed_at);
@@ -209,9 +213,13 @@ class Report extends CI_Controller {
 	}
 	
 	private function set_sheet_patient($data){
-		$sl_options_arr = [];
-		$sl_options = $this->general->filter("sl_option", null, null, [["field" => "code", "values" => ["sex", "blood_type"]]]);
-		foreach($sl_options as $item) $sl_options_arr[$item->id] = $item->description;
+		$sex_arr = [];
+		$sex = $this->general->all("sex");
+		foreach($sex as $item) $sex_arr[$item->id] = $item->description;
+		
+		$blood_type_arr = [];
+		$blood_type = $this->general->all("blood_type");
+		foreach($blood_type as $item) $blood_type_arr[$item->id] = $item->description;
 		
 		$doc_type_arr = [];
 		$doc_type = $this->general->all("doc_type");
@@ -245,8 +253,8 @@ class Report extends CI_Controller {
 		$people = $this->general->filter("person", $filter);
 		foreach($people as $person){
 			if ($person->doc_type_id) $person->doc_type = $doc_type_arr[$person->doc_type_id]; else $person->doc_type = null;
-			if ($person->sex_id) $person->sex = $sl_options_arr[$person->sex_id]; else $person->sex = null;
-			if ($person->blood_type_id) $person->blood_type = $sl_options_arr[$person->blood_type_id]; else $person->blood_type = null;
+			if ($person->sex_id) $person->sex = $sex_arr[$person->sex_id]; else $person->sex = null;
+			if ($person->blood_type_id) $person->blood_type = $blood_type_arr[$person->blood_type_id]; else $person->blood_type = null;
 			
 			$sheet->setCellValue('A'.$row, $person->id);
 			$sheet->setCellValue('B'.$row, $person->registed_at);

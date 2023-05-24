@@ -78,9 +78,8 @@ $lang['lb_password'] = 'Contraseña';
 $lang['lb_confirm'] = 'Confirmación';
 
 //system
-$lang['title_system'] = 'Sistema';
-$lang['title_system_admin'] = 'Gestión de Sistema';
-$lang['title_add_new_value'] = 'Agregar Nuevo Valor';
+$lang['title_medicine'] = 'Medicina';
+$lang['title_medicine_admin'] = 'Gestión de Medicina';
 $lang['slop_blood_type'] = 'Tipo de Sangre';
 $lang['slop_civil_status'] = 'Estado Civil';
 $lang['slop_diagnosis_type'] = 'Tipo de Diagnosis';
@@ -99,7 +98,7 @@ $lang['lb_profile'] = 'Perfil';
 $lang['lb_profile_name'] = 'Nombre de perfil';
 $lang['lb_examination_list'] = 'Lista de exámenes';
 $lang['lb_exam_category'] = 'Categoría de examen';
-$lang['lb_filter'] = 'Filter';
+$lang['lb_filter'] = 'Filtro';
 $lang['txt_view_all'] = 'Ver todos';
 $lang['msg_no_result'] = 'No hay resultado con datos ingresados.';
 
@@ -120,7 +119,7 @@ $lang['lb_password'] = 'Contraseña';
 //log
 $lang['title_log'] = 'Historial';
 $lang['title_system_log'] = 'Historial de Sistema';
-$lang['msg_last_6_months'] = 'Se muestra hasta últimos 6 meses.';
+$lang['msg_last_6_months'] = 'Registros de último mes.';
 $lang['th_action'] = 'Acción';
 $lang['th_detail'] = 'Detalle';
 $lang['th_time'] = 'Hora';

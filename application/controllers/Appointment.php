@@ -16,7 +16,6 @@ class Appointment extends CI_Controller {
 		$this->load->model('specialty_model','specialty');
 		$this->load->model('appointment_model','appointment');
 		$this->load->model('patient_file_model','patient_file');
-		$this->load->model('sl_option_model','sl_option');
 		$this->load->model('examination_model','examination');
 		$this->load->model('image_model','image');
 		$this->load->model('product_model','product');
@@ -99,20 +98,19 @@ class Appointment extends CI_Controller {
 			$basic_data->date = date("Y-m-d");
 			$basic_data->time = date("H:i");
 		}
-		$basic_data->date_f = date("d/m/Y", strtotime($basic_data->entered_at));
-		$basic_data->time_f = date("H:i a", strtotime($basic_data->entered_at));
-		if ($basic_data->entry_mode) $basic_data->entry_mode_txt = $this->sl_option->id($basic_data->entry_mode)->description;
-		else $basic_data->entry_mode_txt = "";
-		if ($basic_data->insurance) $basic_data->insurance = "y"; else $basic_data->insurance = "n";
+		if ($basic_data->entry_mode_id)
+			$basic_data->entry_mode = $this->general->id("entry_mode", $basic_data->entry_mode_id)->description;
+		else $basic_data->entry_mode = "";
 		
 		$anamnesis = $this->general->filter("appointment_anamnesis", ["appointment_id" => $appointment->id]);
 		if ($anamnesis) $anamnesis = $anamnesis[0];
 		else{
 			$patient = $this->general->id("person", $appointment->patient_id);
 			if (!$patient) $patient = $this->general->structure("person");
-			if ($patient->sex_id) $patient->sex = $this->general->id("sl_option", $patient->sex_id)->description;
+				
+			if ($patient->sex_id) $patient->sex = $this->general->id("sex", $patient->sex_id)->description;
 			else $patient->sex = null;
-			if ($patient->blood_type_id) $patient->blood_type = $this->general->id("sl_option", $patient->blood_type_id)->description;
+			if ($patient->blood_type_id) $patient->blood_type = $this->general->id("blood_type", $patient->blood_type_id)->description;
 			else $patient->blood_type = null;
 			if ($patient->birthday) $patient->age = $this->utility_lib->age_calculator($patient->birthday, true);
 			else $patient->birthday = $patient->age = null;
@@ -126,14 +124,18 @@ class Appointment extends CI_Controller {
 			$anamnesis->address = $patient->address;
 			if ($patient->birthday) $anamnesis->birthday = $patient->birthday;
 		}
-		if ($anamnesis->age) $anamnesis->age_txt = $anamnesis->age." ".$this->lang->line('txt_year_p');
-		else $anamnesis->age_txt = "";
-		if ($anamnesis->sex_id) $anamnesis->sex_txt = $this->general->id("sl_option", $anamnesis->sex_id)->description;
-		else $anamnesis->sex_txt = "";
-		if ($anamnesis->birthday) $anamnesis->birthday_f = date("d/m/Y", strtotime($anamnesis->birthday));
-		else $anamnesis->birthday_f = "";
-		if ($anamnesis->civil_status) $anamnesis->civil_status_txt = $this->sl_option->id($anamnesis->civil_status)->description;
-		else $anamnesis->civil_status_txt = "";
+		if ($anamnesis->age) $anamnesis->age = $anamnesis->age." ".$this->lang->line('txt_year_p');
+		else $anamnesis->age = null;
+		
+		if ($anamnesis->sex_id) $anamnesis->sex = $this->general->id("sex", $anamnesis->sex_id)->description;
+		else $anamnesis->sex = null;
+		
+		if ($anamnesis->birthday) $anamnesis->birthday = date("Y-m-d", strtotime($anamnesis->birthday));
+		else $anamnesis->birthday = null;
+		
+		if ($anamnesis->civil_status_id)
+			$anamnesis->civil_status = $this->general->id("civil_status", $anamnesis->civil_status_id)->description;
+		else $anamnesis->civil_status = null;
 		
 		$anamnesis->patho_pre_illnesses = explode(",", $anamnesis->patho_pre_illnesses);
 		$anamnesis->patho_pre_illnesses_txt = implode(", ", $anamnesis->patho_pre_illnesses);
@@ -216,12 +218,12 @@ class Appointment extends CI_Controller {
 		
 		$patient = $this->general->id("person", $appointment->patient_id);
 		if ($patient){
-			$patient->doc_type = $this->sl_option->id($patient->doc_type_id)->description;
+			$patient->doc_type = $this->general->id("doc_type", $patient->doc_type_id)->description;
 			if ($patient->birthday) $patient->age = $this->utility_lib->age_calculator($patient->birthday, true);
 			else $patient->age = null;
-			if ($patient->sex_id) $patient->sex = $this->general->id("sl_option", $patient->sex_id)->description;
+			if ($patient->sex_id) $patient->sex = $this->general->id("sex", $patient->sex_id)->description;
 			else $patient->sex = null;
-			if ($patient->blood_type_id) $patient->blood_type = $this->general->id("sl_option", $patient->blood_type_id)->description;
+			if ($patient->blood_type_id) $patient->blood_type = $this->general->id("blood_type", $patient->blood_type_id)->description;
 			else $patient->blood_type = null;
 		}
 		
@@ -283,12 +285,15 @@ class Appointment extends CI_Controller {
 		}
 		
 		//load select options
-		$codes = array("entry_mode", "civil_status", "medicine_dose", "medicine_via_application", "medicine_frequency", "medicine_duration", "diagnosis_type");
-		$options_rec = $this->sl_option->codes($codes);
-		
-		$options = [];
-		foreach($codes as $item) $options[$item] = [];
-		foreach($options_rec as $item) array_push($options[$item->code], $item);
+		$options = [
+			"entry_mode" => $this->general->all("entry_mode", "description", "asc"), 
+			"civil_status" => $this->general->all("civil_status", "description", "asc"), 
+			"medicine_dose" => $this->general->all("medicine_dose", "description", "asc"), 
+			"medicine_application_way" => $this->general->all("medicine_application_way", "description", "asc"), 
+			"medicine_frequency" => $this->general->all("medicine_frequency", "description", "asc"), 
+			"medicine_duration" => $this->general->all("medicine_duration", "description", "asc"), 
+			"diagnosis_type" => $this->general->all("diagnosis_type", "description", "asc"),
+		];
 		
 		$data = array(
 			"actions" => $actions,
@@ -305,7 +310,7 @@ class Appointment extends CI_Controller {
 			"examinations" => $examinations,
 			"aux_image_categories" => $this->general->all("image_category", "name", "asc"),
 			"aux_images" => $this->general->all("image", "name", "asc"),
-			"sex_ops" => $this->general->filter("sl_option", array("code" => "sex")),
+			"sex_ops" => $this->general->all("sex", "description", "asc"),
 			"physical_therapies" => $this->general->all("physical_therapy", "name", "asc"),
 			"medicines" => $this->general->all("medicine", "name", "asc"),
 			"title" => "Consulta",
@@ -455,7 +460,7 @@ class Appointment extends CI_Controller {
 			$msgs = $this->my_val->appointment_basic_data($msgs, $data);
 			
 			if (!$msgs){
-				if (($data["insurance"] !== "0") or ($data["insurance"] !== "")) $data["insurance_name"] = null;
+				if (!$data["insurance"]) $data["insurance_name"] = null;
 				
 				//status validation
 				if ($data["appointment_id"]){
@@ -936,13 +941,20 @@ class Appointment extends CI_Controller {
 		$medicines = $this->general->filter("appointment_medicine", ["appointment_id" => $appointment_id]);
 		foreach($medicines as $item){
 			$sub_txt_arr = [];
-			if ($item->quantity > 1) $qty = $item->quantity." ".$this->lang->line('txt_units');
-			else $qty = $item->quantity." ".$this->lang->line('txt_unit');
-			array_push($sub_txt_arr, $qty);
-			if ($item->dose) array_push($sub_txt_arr, $this->sl_option->id($item->dose)->description);
-			if ($item->via_application) array_push($sub_txt_arr, $this->sl_option->id($item->via_application)->description);
-			if ($item->frequency) array_push($sub_txt_arr, $this->sl_option->id($item->frequency)->description);
-			if ($item->duration) array_push($sub_txt_arr, $this->sl_option->id($item->duration)->description);
+			if ($item->quantity > 1) $sub_txt_arr[] = number_format($item->quantity)." ".$this->lang->line('txt_units');
+			else $sub_txt_arr[] = number_format($item->quantity)." ".$this->lang->line('txt_unit');
+			
+			if ($item->dose_id) 
+				$sub_txt_arr[] = $this->general->id("medicine_dose", $item->dose_id)->description;
+			
+			if ($item->application_way_id) 
+				$sub_txt_arr[] = $this->general->id("medicine_application_way ", $item->application_way_id)->description;
+			
+			if ($item->frequency_id) 
+				$sub_txt_arr[] = $this->general->id("medicine_frequency", $item->frequency_id)->description;
+			
+			if ($item->duration_id) 
+				$sub_txt_arr[] = $this->general->id("medicine_duration", $item->duration_id)->description;
 			
 			$item->medicine = $this->general->id("medicine", $item->medicine_id)->name;
 			$item->sub_txt = implode(", ", $sub_txt_arr);
@@ -1026,7 +1038,7 @@ class Appointment extends CI_Controller {
 		
 		$patient = $this->general->id("person", $appointment->patient_id);
 		if ($patient){
-			$patient->doc_type = $this->sl_option->id($patient->doc_type_id)->description;
+			$patient->doc_type = $this->general->id("doc_type", $patient->doc_type_id)->description;
 			if ($patient->birthday) $patient->age = $this->utility_lib->age_calculator($patient->birthday, true);
 			else $patient->birthday = $patient->age = null;	
 		}else $patient = $this->general->structure("person");

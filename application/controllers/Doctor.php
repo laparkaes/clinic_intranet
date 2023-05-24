@@ -8,7 +8,6 @@ class Doctor extends CI_Controller {
 		date_default_timezone_set('America/Lima');
 		$this->lang->load("doctor", "spanish");
 		$this->lang->load("system", "spanish");
-		$this->load->model('sl_option_model','sl_option');
 		$this->load->model('specialty_model','specialty');
 		$this->load->model('role_model','role');
 		$this->load->model('account_model','account');
@@ -62,8 +61,8 @@ class Doctor extends CI_Controller {
 			"specialties" => $specialties,
 			"doctors" => $doctors,
 			"status" => $status,
-			"sex_ops" => $this->general->filter("sl_option", array("code" => "sex")),
-			"blood_type_ops" => $this->general->filter("sl_option", array("code" => "blood_type")),
+			"sex_ops" => $this->general->all("sex", "description", "asc"),
+			"blood_type_ops" => $this->general->all("blood_type", "description", "asc"),
 			"title" => $this->lang->line('doctors'),
 			"main" => "doctor/list",
 			"init_js" => "doctor/list.js"
@@ -105,9 +104,9 @@ class Doctor extends CI_Controller {
 			$person->age = null;
 			$person->birthday = null;
 		}
-		if ($person->sex_id) $person->sex = $this->general->id("sl_option", $person->sex_id)->description;
+		if ($person->sex_id) $person->sex = $this->general->id("sex", $person->sex_id)->description;
 		else $person->sex = null;
-		if ($person->blood_type_id) $person->blood_type = $this->general->id("sl_option", $person->blood_type_id)->description;
+		if ($person->blood_type_id) $person->blood_type = $this->general->id("blood_type", $person->blood_type_id)->description;
 		else $person->blood_type = null;
 		
 		//load other data
@@ -155,8 +154,8 @@ class Doctor extends CI_Controller {
 			"status_arr" => $status_arr,
 			"specialties" => $specialties,
 			"specialties_arr" => $specialties_arr,
-			"sex_ops" => $this->general->filter("sl_option", array("code" => "sex")),
-			"blood_type_ops" => $this->general->filter("sl_option", array("code" => "blood_type")),
+			"sex_ops" => $this->general->all("sex", "description", "asc"),
+			"blood_type_ops" => $this->general->all("blood_type", "description", "asc"),
 			"title" => $this->lang->line('doctor'),
 			"main" => "doctor/detail",
 			"init_js" => "doctor/detail.js"

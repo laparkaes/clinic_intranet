@@ -47,13 +47,6 @@ class Config extends CI_Controller {
 		$exams = $this->general->all("examination", "name", "asc");
 		foreach($exams as $item) $exams_arr[$item->id] = $item->name;
 		
-		$sl_options = $this->general->only("sl_option", "code");
-		foreach($sl_options as $item){
-			$item->lang = $this->lang->line("slop_".$item->code);
-			$item->values = $this->general->filter("sl_option", ["code" => $item->code], null, null, "id", "asc");
-		}
-		usort($sl_options, function($a, $b) { return strcmp($a->lang, $b->lang); });
-		
 		$account_arr = [];
 		$accounts = $this->general->all("account");
 		foreach($accounts as $item) $account_arr[$item->id] = $item->email;
@@ -62,7 +55,7 @@ class Config extends CI_Controller {
 		$log_codes = $this->general->all("log_code");
 		foreach($log_codes as $item) $log_code_arr[$item->id] = $this->lang->line('log_'.$item->code);
 		
-		$logs = $this->general->filter("log", ["registed_at <=" => date("Y-m-d 00:00:00", strtotime("-6 months")), "registed_at <=" => date("Y-m-d 00:00:00", strtotime("+1 day"))], null, null, "registed_at", "desc");
+		$logs = $this->general->filter("log", ["registed_at <=" => date("Y-m-d 00:00:00", strtotime("-1 month")), "registed_at <=" => date("Y-m-d 00:00:00", strtotime("+1 day"))], null, null, "registed_at", "desc");
 		
 		$data = array(
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
@@ -71,7 +64,6 @@ class Config extends CI_Controller {
 			"roles" => $roles,
 			"access" => $access,
 			"people_arr" => $people_arr,
-			"sl_options" => $sl_options,
 			"account_arr" => $account_arr,
 			"log_code_arr" => $log_code_arr,
 			"logs" => $logs,
@@ -236,67 +228,32 @@ class Config extends CI_Controller {
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
 	}
 
-	public function add_sl_value(){
-		$data = $this->input->post();
-		$status = false; $type = "error"; $msg = null;
-		
-		if ($data["description"]){
-			$new_id = $this->general->insert("sl_option", $data);
-			if ($new_id){
-				$new_value = $this->general->id("sl_option", $new_id);
-				$this->utility_lib->add_log("sl_value_register", $new_value->description);
-				
-				$msg = $this->lang->line("success_rsv");
-				$type = "success";
-				$status = true;
-			}else $msg = $this->lang->line("error_internal");
-		}else $msg = $this->lang->line("error_evd");
-		
-		header('Content-Type: application/json');
-		echo json_encode(["status" => $status, "type" => $type, "msg" => $msg, "new_value" => $new_value]);
-	}
-	
-	public function remove_sl_value(){
-		$id = $this->input->post("id");
-		$status = false; $type = "error"; $msg = null;
-		
-		$removed_value = $this->general->id("sl_option", $id);
-		if ($this->general->delete("sl_option", ["id" => $id])){
-			$this->utility_lib->add_log("sl_value_delete", $removed_value->description);
-			
-			$msg = $this->lang->line("success_dsv");
-			$type = "success";
-			$status = true;
-		}else $msg = $this->lang->line("error_internal");
-		
-		header('Content-Type: application/json');
-		echo json_encode(["status" => $status, "type" => $type, "msg" => $msg, "removed_value" => $removed_value]);
-	}
-	
 	public function register_profile(){
-		$status = false; $type = "error"; $msgs = []; $msg = null;
+		$type = "error"; $msgs = []; $msg = null;
 		
-		$name = $this->input->post("name");
-		$exams = $this->input->post("exams");
-		
-		if (!$name) $msgs = $this->set_msg($msgs, "rp_name_msg", "error", "error_epn");
-		elseif ($this->general->filter("examination_profile", ["name" => $name])) $msgs = $this->set_msg($msgs, "rp_name_msg", "error", "error_dpn");
-		if (!$exams) $msgs = $this->set_msg($msgs, "rp_exams_msg", "error", "error_spe");
-		
-		if ($msgs) $msg = $this->lang->line("error_occurred");
-		else{
-			sort($exams);
-			if ($this->general->insert("examination_profile", ["name" => $name, "examination_ids" => implode(",", $exams)])){
-				$this->utility_lib->add_log("profile_register", $name);
-				
-				$status = true;
-				$type = "success";
-				$msg = $this->lang->line("success_rep");
+		if ($this->utility_lib->check_access("config", "admin_profile")){
+			
+			$name = $this->input->post("name");
+			$exams = $this->input->post("exams");
+			
+			if (!$name) $msgs = $this->set_msg($msgs, "rp_name_msg", "error", "error_epn");
+			elseif ($this->general->filter("examination_profile", ["name" => $name])) $msgs = $this->set_msg($msgs, "rp_name_msg", "error", "error_dpn");
+			if (!$exams) $msgs = $this->set_msg($msgs, "rp_exams_msg", "error", "error_spe");
+			
+			if ($msgs) $msg = $this->lang->line("error_occurred");
+			else{
+				sort($exams);
+				if ($this->general->insert("examination_profile", ["name" => $name, "examination_ids" => implode(",", $exams)])){
+					$this->utility_lib->add_log("profile_register", $name);
+					
+					$type = "success";
+					$msg = $this->lang->line("success_rep");
+				}
 			}
-		}
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msgs" => $msgs, "msg" => $msg));
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
 	}
 	
 	public function remove_profile(){

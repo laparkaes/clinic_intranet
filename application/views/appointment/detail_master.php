@@ -48,10 +48,10 @@ $me = $appointment_datas["medicine"];
 					<div class="form-row">
 						<div class="form-group col-md-12">
 							<label><?= $this->lang->line('lb_entry_mode') ?></label>
-							<select class="form-control" name="entry_mode">
-								<option value=""><?= $this->lang->line('txt_select') ?>...</option>
+							<select class="form-control" name="entry_mode_id">
+								<option value="">--</option>
 								<?php $entry_mode = $options["entry_mode"]; foreach($entry_mode as $item){ 
-								if ($bd->entry_mode == $item->id) $selected = "selected"; else $selected = ""; ?>
+								if ($bd->entry_mode_id == $item->id) $selected = "selected"; else $selected = ""; ?>
 								<option value="<?= $item->id ?>" <?= $selected ?>><?= $item->description ?></option>
 								<?php } ?>
 							</select>
@@ -75,11 +75,10 @@ $me = $appointment_datas["medicine"];
 						<div class="form-group col-md-12">
 							<label><?= $this->lang->line('lb_insured') ?></label>
 							<select class="form-control" name="insurance">
-								<option value=""><?= $this->lang->line('txt_select') ?>...</option>
-								<?php if ($bd->insurance == 1) $s = "selected"; else $s = ""; ?>
+								<?php if ($bd->insurance) $s = "selected"; else $s = ""; ?>
 								<option value="1" <?= $s ?>><?= $this->lang->line('txt_yes') ?></option>
-								<?php if ($bd->insurance == 0) $s = "selected"; else $s = ""; ?>
-								<option value="0" <?= $s ?>><?= $this->lang->line('txt_no') ?></option>
+								<?php if (!$bd->insurance) $s = "selected"; else $s = ""; ?>
+								<option value="" <?= $s ?>><?= $this->lang->line('txt_no') ?></option>
 							</select>
 							<div class="sys_msg" id="bd_insurance_msg"></div>
 						</div>
@@ -171,10 +170,10 @@ $me = $appointment_datas["medicine"];
 				</div>
 				<div class="form-group col-md-3">
 					<label><?= $this->lang->line('lb_marital_status') ?></label>
-					<select class="form-control" name="civil_status">
+					<select class="form-control" name="civil_status_id">
 						<option value="" selected="">--</option>
 						<?php $civil_status = $options["civil_status"]; foreach($civil_status as $item){
-						if ($item->id == $an->civil_status) $selected = "selected"; else $selected = ""; ?>
+						if ($item->id == $an->civil_status_id) $selected = "selected"; else $selected = ""; ?>
 						<option value="<?= $item->id ?>" <?= $selected ?>><?= $item->description ?></option>
 						<?php } ?>
 					</select>
@@ -433,10 +432,10 @@ $me = $appointment_datas["medicine"];
 									</div>
 									<div class="form-group col-md-3">
 										<label><?= $this->lang->line('lb_marital_status') ?></label>
-										<select class="form-control" name="civil_status">
-											<option value="" selected=""><?= $this->lang->line('txt_select') ?>...</option>
+										<select class="form-control" name="civil_status_id">
+											<option value="" selected="">--</option>
 											<?php $civil_status = $options["civil_status"]; foreach($civil_status as $item){
-											if ($item->id == $an->civil_status) $selected = "selected"; else $selected = ""; ?>
+											if ($item->id == $an->civil_status_id) $selected = "selected"; else $selected = ""; ?>
 											<option value="<?= $item->id ?>" <?= $selected ?>><?= $item->description ?></option>
 											<?php } ?>
 										</select>
@@ -1101,7 +1100,7 @@ $me = $appointment_datas["medicine"];
 										</div>
 										<div class="form-group col-md-6">
 											<label><?= $this->lang->line('lb_dose') ?></label>
-											<select class="form-control" name="dose">
+											<select class="form-control" name="dose_id">
 												<option value="">--</option>
 												<?php $medicine_dose = $options["medicine_dose"];
 												foreach($medicine_dose as $item){ ?>
@@ -1111,11 +1110,11 @@ $me = $appointment_datas["medicine"];
 											<div class="sys_msg" id="md_quantity_msg"></div>
 										</div>
 										<div class="form-group col-md-4">
-											<label><?= $this->lang->line('lb_via_application') ?></label>
-											<select class="form-control" name="via_application">
+											<label><?= $this->lang->line('lb_application_way') ?></label>
+											<select class="form-control" name="application_way_id">
 												<option value="">--</option>
-												<?php $medicine_via_application = $options["medicine_via_application"];
-												foreach($medicine_via_application as $item){ ?>
+												<?php $application_way = $options["medicine_application_way"];
+												foreach($application_way as $item){ ?>
 												<option value="<?= $item->id ?>"><?= $item->description ?></option>
 												<?php } ?>
 											</select>
@@ -1123,7 +1122,7 @@ $me = $appointment_datas["medicine"];
 										</div>
 										<div class="form-group col-md-4">
 											<label><?= $this->lang->line('lb_frequency') ?></label>
-											<select class="form-control" name="frequency">
+											<select class="form-control" name="frequency_id">
 												<option value="">--</option>
 												<?php $medicine_frequency = $options["medicine_frequency"];
 												foreach($medicine_frequency as $item){ ?>
@@ -1134,7 +1133,7 @@ $me = $appointment_datas["medicine"];
 										</div>
 										<div class="form-group col-md-4">
 											<label><?= $this->lang->line('lb_duration') ?></label>
-											<select class="form-control" name="duration">
+											<select class="form-control" name="duration_id">
 												<option value="">--</option>
 												<?php $medicine_duration = $options["medicine_duration"];
 												foreach($medicine_duration as $item){ ?>

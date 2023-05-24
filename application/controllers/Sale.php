@@ -79,7 +79,7 @@ class Sale extends CI_Controller {
 			"status" => $status,
 			"sale_type" => $this->general->all("sale_type", "description", "asc"),
 			"doc_types" => $this->general->all("doc_type", "sunat_code", "asc"),
-			"payment_methods" => $this->general->filter("sl_option", array("code" => "payment_method")),
+			"payment_methods" => $this->general->all("payment_method", "description", "asc"),
 			"sales" => $sales,
 			"title" => $this->lang->line('sales'),
 			"main" => "sale/list",
@@ -219,7 +219,8 @@ class Sale extends CI_Controller {
 		$filter = ["sale_id" => $sale->id];
 		
 		$payments = $this->general->filter("payment", $filter, null, null, "registed_at", "desc");
-		foreach($payments as $item) $item->payment_method = $this->sl_option->id($item->payment_method_id)->description;
+		foreach($payments as $item) 
+			$item->payment_method = $this->general->id("payment_method", $item->payment_method_id)->description;
 		
 		$appo_qty = $surg_qty = 0;
 		$products = $this->general->filter("sale_product", $filter);
@@ -279,7 +280,7 @@ class Sale extends CI_Controller {
 			"voucher" => $voucher,
 			"payments" => $payments,
 			"products" => $products,
-			"payment_method" => $this->sl_option->code("payment_method"),
+			"payment_method" => $this->general->all("payment_method", "description", "asc"),
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"voucher_types" => $this->general->all("voucher_type", "description", "asc"),
 			"title" => $this->lang->line('sale'),
@@ -501,12 +502,11 @@ class Sale extends CI_Controller {
 		}
 		
 		if (count($payments) == 1){
-			$payment_method = $this->sl_option->id($payments[0]->payment_method_id);
+			$payment_method = $this->general->id("payment_method", $payments[0]->payment_method_id);
 			$voucher_data["received"] = $payments[0]->received;
 			$voucher_data["change"] = $payments[0]->change;
 		}else{
-			$f = ["code" => "payment_method", "description" => "Efectivo"];
-			$payment_method = $this->general->filter("sl_option", $f)[0];//Efectivo
+			$payment_method = $this->general->filter("payment_method", ["description" => "Efectivo"])[0];//Efectivo
 			$voucher_data["received"] = $sale->total;
 			$voucher_data["change"] = 0;
 		}

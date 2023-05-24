@@ -146,12 +146,15 @@ class Surgery extends CI_Controller {
 		
 		$patient = $this->general->id("person", $surgery->patient_id);
 		if ($patient){
-			$patient->doc_type = $this->sl_option->id($patient->doc_type_id)->description;
+			$patient->doc_type = $this->general->id("doc_type", $patient->doc_type_id)->description;
 			if ($patient->birthday) $patient->age = $this->utility_lib->age_calculator($patient->birthday, true);
 			else $patient->age = null;
-			if ($patient->sex_id) $patient->sex = $this->general->id("sl_option", $patient->sex_id)->description;
+			
+			if ($patient->sex_id) $patient->sex = $this->general->id("sex", $patient->sex_id)->description;
 			else $patient->sex = null;
-			if ($patient->blood_type_id) $patient->blood_type = $this->general->id("sl_option", $patient->blood_type_id)->description;
+			
+			if ($patient->blood_type_id)
+				$patient->blood_type = $this->general->id("blood_type", $patient->blood_type_id)->description;
 			else $patient->blood_type = null;
 		}
 		
@@ -350,7 +353,7 @@ class Surgery extends CI_Controller {
 		
 		$patient = $this->general->id("person", $surgery->patient_id);
 		if ($patient){
-			$patient->doc_type = $this->sl_option->id($patient->doc_type_id)->description;
+			$patient->doc_type = $this->general->id("doc_type", $patient->doc_type_id)->description;
 			if ($patient->birthday) $patient->age = $this->utility_lib->age_calculator($patient->birthday, true);
 			else $patient->birthday = $patient->age = null;	
 		}else $patient = $this->general->structure("person");

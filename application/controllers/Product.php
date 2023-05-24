@@ -39,17 +39,6 @@ class Product extends CI_Controller {
 			$item->prod_qty = $this->product->count(array("category_id" => $item->id));
 		}
 		
-		//sl_options
-		$codes = array("product_type");
-		$options_rec = $this->sl_option->codes($codes);
-		
-		$options = $options_arr = array();
-		foreach($codes as $item) $options[$item] = array();
-		foreach($options_rec as $item){
-			$options_arr[$item->id] = $item;
-			array_push($options[$item->code], $item);
-		}
-		
 		$currencies_arr = array();
 		$currencies = $this->general->all("currency", "description", "asc");
 		foreach($currencies as $item) $currencies_arr[$item->id] = $item;

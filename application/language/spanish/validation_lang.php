@@ -29,7 +29,6 @@ $lang['e_select_doctor'] = 'Elija un médico.';
 $lang['e_doctor_no_available'] = 'Médico no disponible.';
 $lang['e_entry_mode'] = 'Elija un modo de ingreso.';
 $lang['e_insurance_name'] = 'Ingrese nombre de seguro.';
-$lang['e_insurance_confirm'] = 'Confirme disponibilidad de seguro.';
 $lang['e_select_therapy'] = 'Elija una terapia.';
 $lang['e_min_session'] = 'Mínimo debe ingresar una sesión.';
 $lang['e_number_frequency'] = 'Ingrese un número para frecuencia.';

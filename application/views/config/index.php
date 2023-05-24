@@ -33,8 +33,8 @@
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#bl_system_admin">
-							<i class="fal fa-tools mr-3"></i><?= $this->lang->line("title_system") ?>
+						<a class="nav-link" data-toggle="tab" href="#bl_medicine_admin">
+							<i class="fal fa-pills mr-3"></i><?= $this->lang->line("title_medicine") ?>
 						</a>
 					</li>
 					<li class="nav-item">
@@ -335,10 +335,10 @@
 							</div>
 							<div class="col-md-6 text-right">
 								<div class="btn-group mb-3">
-									<button type="button" class="btn control_bl_profile btn-primary btn-xs" id="btn_list" value="bl_profile_list">
+									<button type="button" class="btn control_bl_profile btn-primary" id="btn_list" value="bl_profile_list">
 										<i class="fas fa-list"></i>
 									</button>
-									<button type="button" class="btn control_bl_profile btn-outline-primary btn-xs" value="bl_profile_add">
+									<button type="button" class="btn control_bl_profile btn-outline-primary" value="bl_profile_add">
 										<i class="fas fa-plus"></i>
 									</button>
 								</div>
@@ -362,7 +362,7 @@
 										</select>
 										<div class="sys_msg" id="rp_exams_msg"></div>
 									</div>
-									<div class="form-group col-md-4">
+									<div class="form-group col-md-6">
 										<label><?= $this->lang->line('lb_filter') ?></label>
 										<input type="text" class="form-control" id="rp_filter">
 									</div>
@@ -370,9 +370,10 @@
 										<?= $this->lang->line('msg_no_result') ?>
 									</div>
 									<div class="form-group col-md-12 mb-0">
+										<label><?= $this->lang->line('lb_examination_list') ?></label>
 										<div class="row">
 											<?php foreach($exams as $ex){ ?>
-											<div class="col-md-4 ex_profile ex_profile_<?= $ex->category_id ?>">
+											<div class="col-md-6 ex_profile ex_profile_<?= $ex->category_id ?>">
 												<div class="custom-control custom-checkbox mb-3">
 													<input type="checkbox" class="custom-control-input" id="exam_<?= $ex->id ?>" value="<?= $ex->id ?>" name="exams[]">
 													<label class="custom-control-label" for="exam_<?= $ex->id ?>"><?= $ex->name ?></label>
@@ -434,47 +435,12 @@
 							</div>
 						</div>
 					</div>
-					<div class="tab-pane fade" id="bl_system_admin">
+					<div class="tab-pane fade" id="bl_medicine_admin">
 						<div class="row">
 							<div class="col-md-12">
-								<h5 class="text-primary mb-3"><?= $this->lang->line("title_system_admin") ?></h5>
+								<h5 class="text-primary mb-3"><?= $this->lang->line("title_medicine_admin") ?></h5>
 							</div>
-							<div class="col-md-6">
-								<div class="basic-list-group">
-									<div class="list-group">
-										<?php foreach($sl_options as $i => $item){
-										if (!$i) $active = "active"; else $active = ""; ?>
-										<button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center <?= $active ?> py-1 sl_group" id="btn_sl_<?= $item->code ?>" value="<?= $item->code ?>">
-											<span class="sl_group_name"><?= $item->lang ?></span><span class="badge badge-primary badge-pill"><?= count($item->values) ?></span>
-										</button>
-										<?php } ?>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div>
-									<h5><?= $this->lang->line('title_add_new_value') ?></h5>
-									<form action="#" class="form-row" id="form_add_sl_value">
-										<input type="hidden" id="sl_add_code" name="code" value="<?= $sl_options[0]->code ?>">
-										<div class="form-group col-md-8">
-											<label><?= $this->lang->line('lb_name') ?></label>
-											<input type="text" class="form-control" id="asl_description" name="description">
-										</div>
-										<div class="form-group col-md-4 d-flex align-items-end">
-											<button type="submit" class="btn btn-primary w-100">
-												<?= $this->lang->line('btn_save') ?>
-											</button>
-										</div>
-									</form>
-								</div>
-								<?php $d = ""; foreach($sl_options as $i => $item){ ?>
-								<div class="sl_values <?= $d ?>" id="sl_<?= $item->code ?>">
-									<?php foreach($item->values as $val){ ?>
-									<button type="button" class="btn btn-outline-primary btn-xs mb-1 btn_sl_remove" value="<?= $val->id ?>"><?= $val->description; ?> <i class="fa fa-close ml-1"></i></button>
-									<?php } ?>
-								</div>
-								<?php $d = "d-none";} ?>
-							</div>
+							<div class="col-md-12"></div>
 						</div>
 					</div>
 					<div class="tab-pane fade" id="bl_history_admin">
