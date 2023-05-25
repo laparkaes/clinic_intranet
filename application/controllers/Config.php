@@ -71,7 +71,7 @@ class Config extends CI_Controller {
 			"exam_category" => $this->general->all("examination_category", "name", "asc"),
 			"exams_arr" => $exams_arr,
 			"exams" => $exams,
-			"accounts" => $this->general->all("account", "role_id", "asc"),
+			"accounts" => $this->general->all("account", "registed_at", "desc", 10, 0),
 			"departments" => $this->general->all("address_department", "name", "asc"),
 			"provinces" => $this->general->all("address_province", "name", "asc"),
 			"districts" => $this->general->all("address_district", "name", "asc"),
@@ -138,7 +138,6 @@ class Config extends CI_Controller {
 			}else $msg = $this->lang->line('error_internal');
 		}else $msg = $this->lang->line('error_no_permission');
 		
-		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
@@ -164,21 +163,23 @@ class Config extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 	
-	public function control_role_access(){
+	public function control_access(){
 		$type = "error"; $msg = null;
 
-		if ($this->utility_lib->check_access("config", "admin_role_access")){
+		if ($this->utility_lib->check_access("config", "admin_access")){
 			$setting = $this->input->post("setting");
 			$setting = isset($setting) && $setting === 'true';
 			
 			$value = explode("_", $this->input->post("value"));
 			$data = array("role_id" => $value[0], "access_id" => $value[1]);
 			
-			if ($setting) $this->general->insert("role_access", $data);
-			else $this->general->delete("role_access", $data);
-			
-			$type = "success";
-			$msg = $this->lang->line('success_aup');	
+			if (!(($this->general->id("role", $value[0])->name === "master") and (!$setting))){
+				if ($setting) $this->general->insert("role_access", $data);
+				else $this->general->delete("role_access", $data);
+				
+				$msg = $this->lang->line('success_aup');
+				$type = "success";
+			}else $msg = $this->lang->line('error_nmar');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -232,7 +233,6 @@ class Config extends CI_Controller {
 		$type = "error"; $msgs = []; $msg = null;
 		
 		if ($this->utility_lib->check_access("config", "admin_profile")){
-			
 			$name = $this->input->post("name");
 			$exams = $this->input->post("exams");
 			
@@ -257,22 +257,36 @@ class Config extends CI_Controller {
 	}
 	
 	public function remove_profile(){
-		$status = false; $type = "error"; $msg = null;
+		$type = "error"; $msg = null;
 		
-		$profile = $this->general->id("examination_profile", $this->input->post("id"));
-		if ($this->general->delete("examination_profile", ["id" => $profile->id])){
-			$this->utility_lib->add_log("profile_delete", $profile->name);
-			
-			$status = true;
-			$type = "success";
-			$msg = $this->lang->line('success_dep');
-		}else{
-			$status = false;
-			$type = "error";
-			$msg = $this->lang->line('error_internal');
+		if ($this->utility_lib->check_access("config", "admin_profile")){
+			$profile = $this->general->id("examination_profile", $this->input->post("id"));
+			if ($this->general->filter("appointment_examination", ["profile_id" => $profile->id])){
+				if ($this->general->delete("examination_profile", ["id" => $profile->id])){
+					$this->utility_lib->add_log("profile_delete", $profile->name);
+					
+					$type = "success";
+					$msg = $this->lang->line('success_dep');
+				}else $msg = $this->lang->line('error_internal');
+			}else $msg = $this->lang->line('error_npr');
+		}else $msg = $this->lang->line('error_no_permission');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
+	}
+
+	public function load_more_account(){
+		$roles_arr = [];
+		$roles = $this->general->all("role", "id", "asc");
+		foreach($roles as $item) $roles_arr[$item->id] = $this->lang->line('role_'.$item->name);
+		
+		$accounts = $this->general->all("account", "registed_at", "desc", 10, $this->input->post("count"));
+		foreach($accounts as $item){
+			$item->role = $roles_arr[$item->role_id];
+			$item->person = $this->general->id("person", $item->person_id)->name;
 		}
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg));
+		echo json_encode($accounts);
 	}
 }

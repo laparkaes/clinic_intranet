@@ -7,7 +7,9 @@ $lang['error_pra'] = 'Persona ya cuenta con usuario con role elegido.';//error_p
 $lang['error_epn'] = 'Ingrese nombre de perfil.';//error_enter_profile_name
 $lang['error_dpn'] = 'Nombre de perfil existe.';//error_duplate_profile_name
 $lang['error_spe'] = 'Seleccione al menos un examen para perfil.';//error_select_profile_exams
+$lang['error_npr'] = 'Perfil es aplicado en alguna consulta del sistema.';//error_no_profile_remove
 $lang['error_evd'] = 'Ingrese descripción de nuevo valor.';//error_enter_value_description
+$lang['error_nmar'] = 'No puede eliminar acceso de cuenta maestro.';//error_no_master_access_remove
 $lang['success_rac'] = 'Usuario ha sido registrado.';//success_register_account
 $lang['success_cup'] = 'Empresa ha sido actualizada.';//success_company_update
 $lang['success_dac'] = 'Usuario ha sido eliminado.';//success_delete_account
@@ -20,6 +22,9 @@ $lang['success_aup'] = 'Acceso ha sido actualizado.';//success_access_updated
 $lang['warning_rac'] = '¿Desea eliminar usuario elegido?';//warning_remove_account
 $lang['warning_rpa'] = '¿Desea restablecer contraseña de usuario por su número de documento de identidad?';//warning_reset_password
 $lang['warning_rpr'] = '¿Desea eliminar perfil elegido?';//warning_remove_profile
+
+//component
+$lang['btn_load_more'] = 'Cargar más';
 
 //role
 $lang['role_master'] = 'Maestro';
@@ -41,8 +46,8 @@ $lang['module_report'] = 'Módulo Reporte';
 $lang['module_config'] = 'Módulo Configuración';
 
 //access
-$lang['title_role_access'] = 'Rol / Acceso';
-$lang['title_role_access_admin'] = 'Gestión de Rol / Acceso';
+$lang['title_access'] = 'Acceso';
+$lang['title_access_admin'] = 'Gestión Acceso';
 $lang['access_index'] = 'Ver lista';
 $lang['access_detail'] = 'Ver detalle';
 $lang['access_register'] = 'Registrar/Generar';
@@ -56,8 +61,9 @@ $lang['access_cancel'] = 'Cancelar';
 $lang['access_admin_payment'] = 'Gestión de pagos';
 $lang['access_admin_voucher'] = 'Gestión de comprobantes';
 $lang['access_admin_account'] = 'Gestión de usuario';
-$lang['access_admin_role_access'] = 'Gestión de rol/acceso';
-$lang['access_admin_system'] = 'Gestión de sistema';
+$lang['access_admin_access'] = 'Gestión de acceso';
+$lang['access_admin_medicine'] = 'Gestión de medicina';
+$lang['access_admin_profile'] = 'Gestión de perfil';
 $lang['access_admin_log'] = 'Gestión de historial';
 
 //account

@@ -18,8 +18,8 @@
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#bl_role_admin">
-							<i class="fal fa-lock-alt mr-3"></i><?= $this->lang->line("title_role_access") ?>
+						<a class="nav-link" data-toggle="tab" href="#bl_access_admin">
+							<i class="fal fa-lock-alt mr-3"></i><?= $this->lang->line("title_access") ?>
 						</a>
 					</li>
 					<li class="nav-item">
@@ -137,16 +137,9 @@
 							</div>
 							<div class="col-md-12 bl_account" id="bl_account_list">
 								<div class="row">
-									<div class="col-md-2">
-										<div id="account_list_length_new"></div>
-									</div>
-									<div class="col-md-6"></div>
-									<div class="col-md-4">
-										<div id="account_list_filter_new"></div>
-									</div>
 									<div class="col-md-12">
 										<div class="table-responsive">
-											<table id="account_list" class="table table-responsive-md">
+											<table class="table table-responsive-md">
 												<thead>
 													<tr>
 														<th><strong>#</strong></th>
@@ -156,7 +149,7 @@
 														<th></th>
 													</tr>
 												</thead>
-												<tbody>
+												<tbody id="account_list">
 													<?php foreach($accounts as $i => $item){ ?>
 													<tr>
 														<td><?= $i + 1 ?></td>
@@ -175,16 +168,19 @@
 													<?php } ?>
 												</tbody>
 											</table>
+											<div class="text-center mt-3 pb-1">
+												<button type="button" class="btn btn-outline-primary" id="btn_load_more_account"><?= $this->lang->line('btn_load_more') ?></button>
+											</div>
 										</div>	
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="tab-pane fade" id="bl_role_admin">
+					<div class="tab-pane fade" id="bl_access_admin">
 						<div class="row">
 							<div class="col-md-12">
-								<h5 class="text-primary mb-3"><?= $this->lang->line('title_role_access_admin') ?></h5>
+								<h5 class="text-primary mb-3"><?= $this->lang->line('title_access_admin') ?></h5>
 							</div>
 							<div class="col-md-12">
 								<div class="table-responsive">
@@ -199,14 +195,16 @@
 											</tr>
 											<?php foreach($a_list as $a){ ?>
 											<tr>
-												<td class="text-left pl-4"><?= $this->lang->line('access_'.$a->description) ?></td>
+												<td class="text-left pl-4">
+													<?= $a->description ?><br/>
+													<?= $this->lang->line('access_'.$a->description) ?>
+												</td>
 												<?php foreach($roles as $r){ 
 												$value = $r->id."_".$a->id;
-												if (in_array($value, $role_access)) $c = "checked"; else $c = "";
-												if ($r->name === "master") $d = "disabled"; else $d = ""; ?>
+												if (in_array($value, $role_access)) $c = "checked"; else $c = ""; ?>
 												<td>
 													<div class="custom-control custom-checkbox">
-														<input type="checkbox" class="custom-control-input chk_access" id="chk_<?= $value ?>" value="<?= $value ?>" <?= $c ?> <?= $d ?>>
+														<input type="checkbox" class="custom-control-input chk_access" id="chk_<?= $value ?>" value="<?= $value ?>" <?= $c ?>>
 														<label class="custom-control-label" for="chk_<?= $value ?>"></label>
 													</div>
 												</td>

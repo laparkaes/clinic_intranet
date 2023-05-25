@@ -19,10 +19,11 @@ function control_district(dom){
 	$("#sl_district .p" + $(dom).val()).removeClass("d-none");
 }
 
-function control_role_access(dom){
+function control_access(dom){
 	var data = {setting: $(dom).is(':checked'), value: $(dom).val()};
-	ajax_simple(data, "config/control_role_access").done(function(res) {
+	ajax_simple(data, "config/control_access").done(function(res) {
 		swal(res.type, res.msg);
+		if (res.type == "error") $(dom).prop('checked', !$(dom).is(':checked'));
 	});
 }
 
@@ -123,31 +124,22 @@ function register_profile(dom){
 }
 
 function remove_profile(dom){
-	Swal.fire({
-		title: $("#alert_warning_title").val(),
-		html: $("#warning_rpr").val(),
-		icon: 'warning',
-		showCancelButton: true,
-		confirmButtonText: $("#alert_confirm_btn").val(),
-		cancelButtonText: $("#alert_cancel_btn").val()
-	}).then((result) => {
-		if (result.isConfirmed){
-			$.ajax({
-				url: $("#base_url").val() + "config/remove_profile",
-				type: "POST",
-				data: {id: $(dom).val()},
-				success:function(res){
-					Swal.fire({
-						title: $("#alert_" + res.type + "_title").val(),
-						icon: res.type,
-						html: res.msg,
-						confirmButtonText: $("#alert_confirm_btn").val()
-					}).then((result) => {
-						if (res.status == true) location.reload();
-					});
-				}
+	ajax_simple_warning({id: $(dom).val()}, "config/remove_profile", $("#warning_rpr").val()).done(function(res) {
+		swal_redirection(res.type, res.msg, window.location.href);
+	});
+}
+
+function load_more_account(){
+	var count = $("#account_list").children().length;
+	ajax_simple({count: count}, "config/load_more_account").done(function(res) {
+		if (res.length > 0){
+			$.each(res, function(index, item) {
+				$("#account_list").append('<tr><td>' + (count + index + 1) + '</td><td>' + item.role + '</td><td>' + item.email + '</td><td>' + item.person + '</td><td class="text-right"><button type="button" class="btn btn-info shadow btn-xs sharp reset_password" value="' + item.id + '"><i class="fas fa-key"></i></button> <button type="button" class="btn btn-danger shadow btn-xs sharp remove_account" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
 			});
-		}
+			
+			$('.reset_password').off('click').on('click',(function(e) {reset_password(this);}));
+			$('.remove_account').off('click').on('click',(function(e) {remove_account(this);}));
+		}else $("#btn_load_more_account").remove();
 	});
 }
 
@@ -160,10 +152,10 @@ $(document).ready(function() {
 	$(".reset_password").on('click',(function(e) {reset_password(this);}));
 	$(".remove_account").on('click',(function(e) {remove_account(this);}));
 	$(".control_bl_account").on('click',(function(e) {control_bl_group(this, "account");}));
-	set_datatable("account_list", 25, false);
+	$("#btn_load_more_account").on('click',(function(e) {load_more_account();}));
 	
 	//role & access
-	$(".chk_access").on('click',(function(e) {control_role_access(this);}));
+	$(".chk_access").on('click',(function(e) {control_access(this);}));
 	
 	//company
 	$("#form_update_company_data").submit(function(e) {e.preventDefault(); update_company_data(this);});
