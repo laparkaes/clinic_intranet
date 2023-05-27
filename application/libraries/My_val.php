@@ -396,4 +396,14 @@ class My_val{
 		
 		return $msgs;
 	}
+	
+	public function profile($msgs, $prefix, $name, $exams){
+		if (!$name) $msgs = $this->set_msg($msgs, $prefix."name_msg", "error", "e_enter_profile_name");
+		elseif ($this->CI->general->filter("examination_profile", ["name" => $name])) 
+			$msgs = $this->set_msg($msgs, $prefix."name_msg", "error", "e_duplate_profile_name");
+			
+		if (!$exams) $msgs = $this->set_msg($msgs, $prefix."exams_msg", "error", "e_select_profile_exams");
+		
+		return $msgs;
+	}
 }

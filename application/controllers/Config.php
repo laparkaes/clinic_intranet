@@ -35,21 +35,27 @@ class Config extends CI_Controller {
 		$roles = $this->general->all("role", "id", "asc");
 		foreach($roles as $item) $roles_arr[$item->id] = $item->name;
 		
-		$people_ids_arr = [];
-		$people_ids = $this->general->only("account", "person_id", null);
-		foreach($people_ids as $item) $people_ids_arr[] = $item->person_id;
+		$accounts = $this->general->all("account", "registed_at", "desc", 20, 0);
+		foreach($accounts as $item) $item->person = $this->general->id("person", $item->person_id)->name;
 		
-		$people_arr = [];
-		$people = $this->general->filter("person", null, null, [["field" => "id", "values" => $people_ids_arr]]);
-		foreach($people as $item) $people_arr[$item->id] = $item->name;
+		$exam_category_arr = [];
+		$exam_category = $this->general->all("examination_category", "name", "asc");
+		foreach($exam_category as $item) $exam_category_arr[$item->id] = $item->name;
 		
 		$exams_arr = [];
 		$exams = $this->general->all("examination", "name", "asc");
-		foreach($exams as $item) $exams_arr[$item->id] = $item->name;
+		foreach($exams as $item){
+			$exams_arr[$item->id] = $item->name;
+			$item->category = $exam_category_arr[$item->category_id];
+		}
 		
-		$account_arr = [];
-		$accounts = $this->general->all("account");
-		foreach($accounts as $item) $account_arr[$item->id] = $item->email;
+		$exam_profiles = $this->general->all("examination_profile", "name", "asc", 20, 0);
+		foreach($exam_profiles as $item){
+			$aux = [];
+			$exam_ids = explode(",", $item->examination_ids);
+			foreach($exam_ids as $exam_id) $aux[] = $exams_arr[$exam_id];
+			$item->exams = implode(", ", $aux);
+		}
 		
 		$log_code_arr = [];
 		$log_codes = $this->general->all("log_code");
@@ -63,15 +69,12 @@ class Config extends CI_Controller {
 			"roles_arr" => $roles_arr,
 			"roles" => $roles,
 			"access" => $access,
-			"people_arr" => $people_arr,
-			"account_arr" => $account_arr,
 			"log_code_arr" => $log_code_arr,
 			"logs" => $logs,
-			"exam_profiles" => $this->general->all("examination_profile", "name", "asc"),
-			"exam_category" => $this->general->all("examination_category", "name", "asc"),
-			"exams_arr" => $exams_arr,
+			"exam_profiles" => $exam_profiles,
+			"exam_category" => $exam_category,
 			"exams" => $exams,
-			"accounts" => $this->general->all("account", "registed_at", "desc", 10, 0),
+			"accounts" => $accounts,
 			"departments" => $this->general->all("address_department", "name", "asc"),
 			"provinces" => $this->general->all("address_province", "name", "asc"),
 			"districts" => $this->general->all("address_district", "name", "asc"),
@@ -236,20 +239,18 @@ class Config extends CI_Controller {
 			$name = $this->input->post("name");
 			$exams = $this->input->post("exams");
 			
-			if (!$name) $msgs = $this->set_msg($msgs, "rp_name_msg", "error", "error_epn");
-			elseif ($this->general->filter("examination_profile", ["name" => $name])) $msgs = $this->set_msg($msgs, "rp_name_msg", "error", "error_dpn");
-			if (!$exams) $msgs = $this->set_msg($msgs, "rp_exams_msg", "error", "error_spe");
+			$this->load->library('my_val');
+			$msgs = $this->my_val->profile($msgs, "rp_", $name, $exams);
 			
-			if ($msgs) $msg = $this->lang->line("error_occurred");
-			else{
+			if (!$msgs){
 				sort($exams);
 				if ($this->general->insert("examination_profile", ["name" => $name, "examination_ids" => implode(",", $exams)])){
 					$this->utility_lib->add_log("profile_register", $name);
 					
 					$type = "success";
 					$msg = $this->lang->line("success_rep");
-				}
-			}
+				}else $msg = $this->lang->line("error_internal");
+			}else $msg = $this->lang->line("error_occurred");
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -261,7 +262,7 @@ class Config extends CI_Controller {
 		
 		if ($this->utility_lib->check_access("config", "admin_profile")){
 			$profile = $this->general->id("examination_profile", $this->input->post("id"));
-			if ($this->general->filter("appointment_examination", ["profile_id" => $profile->id])){
+			if (!$this->general->filter("appointment_examination", ["profile_id" => $profile->id])){
 				if ($this->general->delete("examination_profile", ["id" => $profile->id])){
 					$this->utility_lib->add_log("profile_delete", $profile->name);
 					
@@ -280,7 +281,7 @@ class Config extends CI_Controller {
 		$roles = $this->general->all("role", "id", "asc");
 		foreach($roles as $item) $roles_arr[$item->id] = $this->lang->line('role_'.$item->name);
 		
-		$accounts = $this->general->all("account", "registed_at", "desc", 10, $this->input->post("count"));
+		$accounts = $this->general->all("account", "registed_at", "desc", 20, $this->input->post("offset"));
 		foreach($accounts as $item){
 			$item->role = $roles_arr[$item->role_id];
 			$item->person = $this->general->id("person", $item->person_id)->name;
@@ -288,5 +289,96 @@ class Config extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode($accounts);
+	}
+	
+	public function load_more_profile(){
+		$exams_arr = [];
+		$exams = $this->general->all("examination", "name", "asc");
+		foreach($exams as $item) $exams_arr[$item->id] = $item->name;
+		
+		$exam_profiles = $this->general->all("examination_profile", "name", "asc", 20, $this->input->post("offset"));
+		foreach($exam_profiles as $item){
+			$aux = [];
+			$exam_ids = explode(",", $item->examination_ids);
+			foreach($exam_ids as $exam_id) $aux[] = $exams_arr[$exam_id];
+			$item->exams = implode(", ", $aux);
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode($exam_profiles);
+	}
+	
+	public function add_exam_category(){
+		$type = "error"; $msg = null;
+		
+		if ($this->utility_lib->check_access("config", "admin_profile")){
+			$data = $this->input->post();
+			if ($data["name"]){
+				if (!$this->general->filter("examination_category", $data)){
+					if ($this->general->insert("examination_category", $data)){
+						$type = "success";
+						$msg = $this->lang->line('success_rec')." ".$this->lang->line('success_upp');
+					}else $msg = $this->lang->line('error_internal');
+				}else $msg = $this->lang->line('error_dcn');
+			}else $msg = $this->lang->line('error_eecn');
+		}else $msg = $this->lang->line('error_no_permission');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
+	}
+	
+	public function remove_exam_category(){
+		$type = "error"; $msg = null;
+		
+		if ($this->utility_lib->check_access("config", "admin_profile")){
+			$id = $this->input->post("id");
+			if (!$this->general->filter("examination", ["category_id" => $id])){
+				if ($this->general->delete("examination_category", ["id" => $id])){
+					$type = "success";
+					$msg = $this->lang->line('success_dec')." ".$this->lang->line('success_upp');
+				}else $msg = $this->lang->line('error_internal');
+			}else $msg = $this->lang->line('error_eic');
+		}else $msg = $this->lang->line('error_no_permission');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
+	}
+	
+	public function add_exam(){
+		$type = "error"; $msg = null;
+		
+		if ($this->utility_lib->check_access("config", "admin_profile")){
+			$data = $this->input->post();
+			if ($data["category_id"]){
+				if ($data["name"]){
+					if (!$this->general->filter("examination", $data)){
+						if ($this->general->insert("examination", $data)){
+							$type = "success";
+							$msg = $this->lang->line('success_rex')." ".$this->lang->line('success_upp');
+						}else $msg = $this->lang->line('error_internal');
+					}else $msg = $this->lang->line('error_dex');
+				}else $msg = $this->lang->line('error_een');
+			}else $msg = $this->lang->line('error_sec');
+		}else $msg = $this->lang->line('error_no_permission');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
+	}
+	
+	public function remove_exam(){
+		$type = "error"; $msg = null;
+		
+		if ($this->utility_lib->check_access("config", "admin_profile")){
+			$id = $this->input->post("id");
+			if (!$this->general->filter("appointment_examination", ["examination_id" => $id])){
+				if ($this->general->delete("examination", ["id" => $id])){
+					$type = "success";
+					$msg = $this->lang->line('success_dex')." ".$this->lang->line('success_upp');
+				}else $msg = $this->lang->line('error_internal');
+			}else $msg = $this->lang->line('error_uex');
+		}else $msg = $this->lang->line('error_no_permission');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 }

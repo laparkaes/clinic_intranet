@@ -130,16 +130,53 @@ function remove_profile(dom){
 }
 
 function load_more_account(){
-	var count = $("#account_list").children().length;
-	ajax_simple({count: count}, "config/load_more_account").done(function(res) {
+	var offset = $("#account_list").children().length;
+	ajax_simple({offset: offset}, "config/load_more_account").done(function(res) {
 		if (res.length > 0){
 			$.each(res, function(index, item) {
-				$("#account_list").append('<tr><td>' + (count + index + 1) + '</td><td>' + item.role + '</td><td>' + item.email + '</td><td>' + item.person + '</td><td class="text-right"><button type="button" class="btn btn-info shadow btn-xs sharp reset_password" value="' + item.id + '"><i class="fas fa-key"></i></button> <button type="button" class="btn btn-danger shadow btn-xs sharp remove_account" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+				$("#account_list").append('<tr><td>' + (offset + index + 1) + '</td><td>' + item.role + '</td><td>' + item.email + '</td><td>' + item.person + '</td><td class="text-right"><button type="button" class="btn btn-info shadow btn-xs sharp reset_password" value="' + item.id + '"><i class="fas fa-key"></i></button> <button type="button" class="btn btn-danger shadow btn-xs sharp remove_account" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
 			});
 			
 			$('.reset_password').off('click').on('click',(function(e) {reset_password(this);}));
 			$('.remove_account').off('click').on('click',(function(e) {remove_account(this);}));
 		}else $("#btn_load_more_account").remove();
+	});
+}
+
+function load_more_profile(){
+	var offset = $("#profile_list").children().length;
+	ajax_simple({offset: offset}, "config/load_more_profile").done(function(res) {
+		if (res.length > 0){
+			$.each(res, function(index, item) {
+				$("#profile_list").append('<tr><td>' + (offset + index + 1) + '</td><td>' + item.name + '</td><td>' + item.exams + '</td><td class="text-right"><button type="button" class="btn btn-danger shadow btn-xs sharp remove_profile" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+			});
+			
+			$('.remove_profile').off('click').on('click',(function(e) {remove_profile(this);}));
+		}else $("#btn_load_more_profile").remove();
+	});
+}
+
+function add_exam_category(dom){
+	ajax_form(dom, "config/add_exam_category").done(function(res){
+		swal(res.type, res.msg);
+	});
+}
+
+function remove_exam_category(cat_id){
+	ajax_simple({id: cat_id}, "config/remove_exam_category").done(function(res){
+		swal(res.type, res.msg);
+	});
+}
+
+function add_exam(dom){
+	ajax_form(dom, "config/add_exam").done(function(res){
+		swal(res.type, res.msg);
+	});
+}
+
+function remove_exam(ex_id){
+	ajax_simple({id: ex_id}, "config/remove_exam").done(function(res){
+		swal(res.type, res.msg);
 	});
 }
 
@@ -164,11 +201,16 @@ $(document).ready(function() {
 	
 	//profile
 	$("#form_register_profile").submit(function(e) {e.preventDefault(); register_profile(this);});
+	$("#form_add_exam_category").submit(function(e) {e.preventDefault(); add_exam_category(this);});
+	$("#form_add_exam").submit(function(e) {e.preventDefault(); add_exam(this);});
+	
 	$(".remove_profile").on('click',(function(e) {remove_profile(this);}));
 	$("#rp_category").change(function() {filter_exams();});
 	$("#rp_filter").keyup(function() {filter_exams();});
 	$(".control_bl_profile").on('click',(function(e) {control_bl_group(this, "profile");}));
-	set_datatable("profile_list", 25, false);
+	$("#btn_load_more_profile").on('click',(function(e) {load_more_profile();}));
+	$(".btn_remove_exam_category").on('click',(function(e) {remove_exam_category($(this).val());}));
+	$(".btn_remove_exam").on('click',(function(e) {remove_exam($(this).val());}));
 	
 	//medicine
 	

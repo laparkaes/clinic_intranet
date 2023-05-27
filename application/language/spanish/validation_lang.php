@@ -86,3 +86,8 @@ $lang['e_company_district'] = 'Elija un distrito.';
 $lang['e_sunat_resolution'] = 'Ingrese número de resolución.';
 $lang['e_sunat_clave_sol'] = 'Ingrese clave sol.';
 $lang['e_sunat_password'] = 'Ingrese contraseña de Sunat.';
+
+/* profile */
+$lang['e_enter_profile_name'] = 'Ingrese nombre de perfil.';
+$lang['e_duplate_profile_name'] = 'Nombre de perfil existe.';
+$lang['e_select_profile_exams'] = 'Seleccione al menos un examen para perfil.';

@@ -155,7 +155,7 @@
 														<td><?= $i + 1 ?></td>
 														<td><?= $this->lang->line('role_'.$roles_arr[$item->role_id]) ?></td>
 														<td><?= $item->email ?></td>
-														<td><?= $people_arr[$item->person_id] ?></td>
+														<td><?= $item->person ?></td>
 														<td class="text-right">
 															<button type="button" class="btn btn-info shadow btn-xs sharp reset_password" value="<?= $item->id ?>">
 																<i class="fas fa-key"></i>
@@ -350,26 +350,26 @@
 										<input type="text" class="form-control" name="name">
 										<div class="sys_msg" id="rp_name_msg"></div>
 									</div>
-									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_exam_category') ?></label>
-										<select class="form-control" id="rp_category">
-											<option value=""><?= $this->lang->line('txt_view_all') ?></option>
-											<?php foreach($exam_category as $ec){ ?>
-											<option value="<?= $ec->id ?>"><?= $ec->name ?></option>
-											<?php } ?>
-										</select>
-										<div class="sys_msg" id="rp_exams_msg"></div>
-									</div>
-									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_filter') ?></label>
-										<input type="text" class="form-control" id="rp_filter">
-									</div>
-									<div class="form-group col-md-12 text-danger d-none" id="rp_no_result_msg">
-										<?= $this->lang->line('msg_no_result') ?>
-									</div>
-									<div class="form-group col-md-12 mb-0">
-										<label><?= $this->lang->line('lb_examination_list') ?></label>
+									<div class="form-group col-md-12">
+										<label><?= $this->lang->line('lb_examinations') ?> <i class="fas fa-cog text-info" data-toggle="modal" data-target="#md_admin_exam"></i></label>
 										<div class="row">
+											<div class="col-auto">
+												<select class="form-control mb-3" id="rp_category">
+													<option value=""><?= $this->lang->line('txt_view_all') ?></option>
+													<?php foreach($exam_category as $ec){ ?>
+													<option value="<?= $ec->id ?>"><?= $ec->name ?></option>
+													<?php } ?>
+												</select>
+											</div>
+											<div class="col-auto">
+												<input type="text" class="form-control mb-3" id="rp_filter" placeholder="<?= $this->lang->line('lb_filter') ?>">
+											</div>
+											<div class="col-12 sys_msg" id="rp_exams_msg"></div>
+										</div>
+										<div class="row" style="max-height: 400px; overflow-y: auto;">
+											<div class="col-md-12 text-danger d-none" id="rp_no_result_msg">
+												<?= $this->lang->line('msg_no_result') ?>
+											</div>
 											<?php foreach($exams as $ex){ ?>
 											<div class="col-md-6 ex_profile ex_profile_<?= $ex->category_id ?>">
 												<div class="custom-control custom-checkbox mb-3">
@@ -386,48 +386,33 @@
 								</form>
 							</div>
 							<div class="col-md-12 bl_profile" id="bl_profile_list">
-								<div class="row">
-									<div class="col-md-2">
-										<div id="profile_list_length_new"></div>
-									</div>
-									<div class="col-md-6"></div>
-									<div class="col-md-4">
-										<div id="profile_list_filter_new"></div>
-									</div>
-									<div class="col-md-12">
-										<div class="table-responsive">
-											<table id="profile_list" class="table table-responsive-md">
-												<thead>
-													<tr>
-														<th><strong>#</strong></th>
-														<th><strong><?= $this->lang->line('lb_profile') ?></strong></th>
-														<th><strong><?= $this->lang->line('lb_examination_list') ?></strong></th>
-														<th></th>
-													</tr>
-												</thead>
-												<tbody>
-													<?php foreach($exam_profiles as $i => $item){ ?>
-													<tr>
-														<td><?= $i + 1 ?></td>
-														<td><?= $item->name ?></td>
-														<td>
-															<?php
-															$aux = [];
-															$exam_ids = explode(",", $item->examination_ids);
-															foreach($exam_ids as $exam_id) $aux[] = $exams_arr[$exam_id];
-															echo implode(", ", $aux);
-															?>
-														</td>
-														<td class="text-right">
-															<button type="button" class="btn btn-danger shadow btn-xs sharp remove_profile" value="<?= $item->id ?>">
-																<i class="fas fa-trash"></i>
-															</button>
-														</td>
-													</tr>
-													<?php } ?>
-												</tbody>
-											</table>
-										</div>	
+								<div class="table-responsive">
+									<table class="table table-responsive-md">
+										<thead>
+											<tr>
+												<th><strong>#</strong></th>
+												<th class="w-30"><strong><?= $this->lang->line('lb_profile') ?></strong></th>
+												<th><strong><?= $this->lang->line('lb_examination_list') ?></strong></th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody id="profile_list">
+											<?php foreach($exam_profiles as $i => $item){ ?>
+											<tr>
+												<td><?= $i + 1 ?></td>
+												<td><?= $item->name ?></td>
+												<td><?= $item->exams ?></td>
+												<td class="text-right">
+													<button type="button" class="btn btn-danger shadow btn-xs sharp remove_profile" value="<?= $item->id ?>">
+														<i class="fas fa-trash"></i>
+													</button>
+												</td>
+											</tr>
+											<?php } ?>
+										</tbody>
+									</table>
+									<div class="text-center mt-3 pb-1">
+										<button type="button" class="btn btn-outline-primary" id="btn_load_more_profile">Cargar más</button>
 									</div>
 								</div>
 							</div>
@@ -495,4 +480,119 @@
 	<input type="hidden" id="warning_rac" value="<?= $this->lang->line('warning_rac') ?>">
 	<input type="hidden" id="warning_rpa" value="<?= $this->lang->line('warning_rpa') ?>">
 	<input type="hidden" id="warning_rpr" value="<?= $this->lang->line('warning_rpr') ?>">
+</div>
+<div class="modal fade" id="md_admin_exam">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title"><?= $this->lang->line('lb_examination_admin') ?></h5>
+				<button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+				</button>
+			</div>
+			<div class="card-body">
+				<ul class="nav nav-tabs mb-3">
+					<li class="nav-item">
+						<a href="#ad_category" class="nav-link active" data-toggle="tab" aria-expanded="false"><?= $this->lang->line('btn_category') ?></a>
+					</li>
+					<li class="nav-item">
+						<a href="#ad_examination" class="nav-link" data-toggle="tab" aria-expanded="false"><?= $this->lang->line('btn_examination') ?></a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div id="ad_category" class="tab-pane active">
+						<div class="row">
+							<div class="col-md-12" style="max-height: 350px; overflow-y: auto;">
+								<table class="table">
+									<thead>
+										<tr>
+											<th><strong>#</strong></th>
+											<th><strong><?= $this->lang->line("th_category") ?></strong></th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<form id="form_add_exam_category">
+												<td colspan="2">
+													<input type="text" class="form-control" name="name" placeholder="<?= $this->lang->line("lb_category_name") ?>">
+												</td>
+												<td class="text-right">
+													<button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i></button>
+												</td>
+											</form>
+										</tr>
+										<?php foreach($exam_category as $i => $item){ ?>
+										<tr>
+											<td><strong><?= $i + 1 ?></strong></td>
+											<td><?= $item->name ?></td>
+											<td class="text-right">
+												<button type="button" class="btn light btn-danger btn_remove_exam_category" value="<?= $item->id ?>"><i class="fas fa-trash"></i></button>
+											</td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div id="ad_examination" class="tab-pane">
+						<div class="row">
+							<div class="col-md-12" style="max-height: 350px; overflow-y: auto;">
+								<table class="table">
+									<thead>
+										<tr>
+											<th><strong>#</strong></th>
+											<th><strong><?= $this->lang->line("th_examination") ?></strong></th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<form id="form_add_exam">
+												<td colspan="2">
+													<div class="form-row">
+														<div class="col-sm-5">
+															<select class="form-control" name="category_id">
+																<option value="">--</option>
+																<?php foreach($exam_category as $item){ ?>
+																<option value="<?= $item->id ?>"><?= $item->name ?></option>
+																<?php } ?>
+															</select>
+														</div>
+														<div class="col-sm-7 mt-2 mt-sm-0">
+															<input type="text" class="form-control" name="name" placeholder="<?= $this->lang->line("lb_examination_name") ?>">
+														</div>
+													</div>
+												</td>
+												<td class="text-right">
+													<button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i></button>
+												</td>
+											</form>
+										</tr>
+										<?php foreach($exams as $i => $item){ ?>
+										<tr>
+											<td><strong><?= $i + 1 ?></strong></td>
+											<td>
+												<?= $item->name ?><br/>
+												<small><?= $item->category ?></small>
+											</td>
+											<td class="text-right">
+												<button type="button" class="btn light btn-danger btn_remove_exam" value="<?= $item->id ?>"><i class="fas fa-trash"></i></button>
+											</td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger light" data-dismiss="modal">
+					<?= $this->lang->line('btn_close') ?>
+				</button>
+			</div>
+		</div>
+	</div>
 </div>
