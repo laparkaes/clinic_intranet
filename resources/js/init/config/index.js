@@ -156,27 +156,59 @@ function load_more_profile(){
 	});
 }
 
+function set_exam_cat(categories, exams){
+	if (categories.length > 0){
+		$(".ad_cat_rows").remove();
+		$("#ad_ex_category").html(""); $("#ad_ex_category").append('<option value="">--</option>');
+		$("#rp_category").html(""); $("#rp_category").append('<option value="">' + $("#txt_view_all").val() + '</option>');
+		
+		$.each(categories, function(index, item) {
+			$("#ad_category_list").append('<tr class="ad_cat_rows"><td><strong>' + (index + 1) + '</strong></td><td>' + item.name + '</td><td class="text-right"><button type="button" class="btn light btn-danger btn_remove_exam_category" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+			$("#rp_category").append('<option value="' + item.id + '">' + item.name + '</option>');
+			$("#ad_ex_category").append('<option value="' + item.id + '">' + item.name + '</option>');
+		});
+		
+		$(".btn_remove_exam_category").on('click',(function(e) {remove_exam_category($(this).val());}));
+	}
+	
+	if (exams.length > 0){
+		$(".ad_exam_rows").remove();
+		$(".ex_profile").remove();
+		$.each(exams, function(index, item) {
+			$("#ad_exam_list").append('<tr class="ad_exam_rows"><td><strong>' + (index + 1) + '</strong></td><td>' + item.name + '<br/><small>' + item.category + '</small></td><td class="text-right"><button type="button" class="btn light btn-danger btn_remove_exam" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+			
+			$("#ex_profile_list").append('<div class="col-md-6 ex_profile ex_profile_' + item.category_id + '"><div class="custom-control custom-checkbox mb-3"><input type="checkbox" class="custom-control-input" id="exam_' + item.id + '" value="' + item.id + '"name="exams[]"><label class="custom-control-label" for="exam_' + item.id + '">' + item.name + '</label></div></div>');
+		});
+		
+		$(".btn_remove_exam").on('click',(function(e) {remove_exam($(this).val());}));
+	}
+}
+
 function add_exam_category(dom){
 	ajax_form(dom, "config/add_exam_category").done(function(res){
 		swal(res.type, res.msg);
+		set_exam_cat(res.data.cats, res.data.exams);
 	});
 }
 
 function remove_exam_category(cat_id){
 	ajax_simple({id: cat_id}, "config/remove_exam_category").done(function(res){
 		swal(res.type, res.msg);
+		set_exam_cat(res.data.cats, res.data.exams);
 	});
 }
 
 function add_exam(dom){
 	ajax_form(dom, "config/add_exam").done(function(res){
 		swal(res.type, res.msg);
+		set_exam_cat(res.data.cats, res.data.exams);
 	});
 }
 
 function remove_exam(ex_id){
 	ajax_simple({id: ex_id}, "config/remove_exam").done(function(res){
 		swal(res.type, res.msg);
+		set_exam_cat(res.data.cats, res.data.exams);
 	});
 }
 

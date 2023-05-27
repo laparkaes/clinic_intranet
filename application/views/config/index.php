@@ -18,16 +18,6 @@
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#bl_access_admin">
-							<i class="fal fa-lock-alt mr-3"></i><?= $this->lang->line("title_access") ?>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#bl_company_admin">
-							<i class="fal fa-building mr-3"></i><?= $this->lang->line("title_company") ?>
-						</a>
-					</li>
-					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#bl_profile_admin">
 							<i class="fal fa-diagnoses mr-3"></i><?= $this->lang->line("title_profile") ?>
 						</a>
@@ -35,6 +25,16 @@
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#bl_medicine_admin">
 							<i class="fal fa-pills mr-3"></i><?= $this->lang->line("title_medicine") ?>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#bl_access_admin">
+							<i class="fal fa-lock-alt mr-3"></i><?= $this->lang->line("title_access") ?>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#bl_company_admin">
+							<i class="fal fa-building mr-3"></i><?= $this->lang->line("title_company") ?>
 						</a>
 					</li>
 					<li class="nav-item">
@@ -177,6 +177,106 @@
 							</div>
 						</div>
 					</div>
+					<div class="tab-pane fade" id="bl_profile_admin">
+						<div class="row">
+							<div class="col-md-6">
+								<h5 class="text-primary mb-3"><?= $this->lang->line("title_profile_admin") ?></h5>
+							</div>
+							<div class="col-md-6 text-right">
+								<div class="btn-group mb-3">
+									<button type="button" class="btn control_bl_profile btn-primary" id="btn_list" value="bl_profile_list">
+										<i class="fas fa-list"></i>
+									</button>
+									<button type="button" class="btn control_bl_profile btn-outline-primary" value="bl_profile_add">
+										<i class="fas fa-plus"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 bl_profile d-none" id="bl_profile_add">
+								<form class="form-row" id="form_register_profile" action="#">
+									<div class="form-group col-md-12">
+										<label><?= $this->lang->line('lb_profile_name') ?></label>
+										<input type="text" class="form-control" name="name">
+										<div class="sys_msg" id="rp_name_msg"></div>
+									</div>
+									<div class="form-group col-md-12">
+										<label><?= $this->lang->line('lb_examinations') ?> <i class="fas fa-cog text-info" data-toggle="modal" data-target="#md_admin_exam"></i></label>
+										<div class="row">
+											<div class="col-md-6">
+												<select class="form-control mb-3" id="rp_category">
+													<option value=""><?= $this->lang->line('txt_view_all') ?></option>
+													<?php foreach($exam_category as $ec){ ?>
+													<option value="<?= $ec->id ?>"><?= $ec->name ?></option>
+													<?php } ?>
+												</select>
+											</div>
+											<div class="col-md-6">
+												<input type="text" class="form-control mb-3" id="rp_filter" placeholder="<?= $this->lang->line('lb_filter') ?>">
+											</div>
+											<div class="col-md-12 sys_msg" id="rp_exams_msg"></div>
+										</div>
+										<div class="row" id="ex_profile_list" style="max-height: 400px; overflow-y: auto;">
+											<div class="col-md-12 text-danger d-none" id="rp_no_result_msg">
+												<?= $this->lang->line('msg_no_result') ?>
+											</div>
+											<?php foreach($exams as $ex){ ?>
+											<div class="col-md-6 ex_profile ex_profile_<?= $ex->category_id ?>">
+												<div class="custom-control custom-checkbox mb-3">
+													<input type="checkbox" class="custom-control-input" id="exam_<?= $ex->id ?>" value="<?= $ex->id ?>" name="exams[]">
+													<label class="custom-control-label" for="exam_<?= $ex->id ?>"><?= $ex->name ?></label>
+												</div>
+											</div>
+											<?php } ?>
+										</div>
+									</div>
+									<div class="form-group col-md-12 pt-3">
+										<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
+									</div>
+								</form>
+							</div>
+							<div class="col-md-12 bl_profile" id="bl_profile_list">
+								<div class="table-responsive">
+									<table class="table table-responsive-md">
+										<thead>
+											<tr>
+												<th><strong>#</strong></th>
+												<th class="w-30"><strong><?= $this->lang->line('lb_profile') ?></strong></th>
+												<th><strong><?= $this->lang->line('lb_examination_list') ?></strong></th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody id="profile_list">
+											<?php foreach($exam_profiles as $i => $item){ ?>
+											<tr>
+												<td><?= $i + 1 ?></td>
+												<td><?= $item->name ?></td>
+												<td><?= $item->exams ?></td>
+												<td class="text-right">
+													<button type="button" class="btn btn-danger shadow btn-xs sharp remove_profile" value="<?= $item->id ?>">
+														<i class="fas fa-trash"></i>
+													</button>
+												</td>
+											</tr>
+											<?php } ?>
+										</tbody>
+									</table>
+									<div class="text-center mt-3 pb-1">
+										<button type="button" class="btn btn-outline-primary" id="btn_load_more_profile">Cargar más</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="bl_medicine_admin">
+						<div class="row">
+							<div class="col-md-12">
+								<h5 class="text-primary mb-3"><?= $this->lang->line("title_medicine_admin") ?></h5>
+							</div>
+							<div class="col-md-12"></div>
+						</div>
+					</div>
 					<div class="tab-pane fade" id="bl_access_admin">
 						<div class="row">
 							<div class="col-md-12">
@@ -196,7 +296,6 @@
 											<?php foreach($a_list as $a){ ?>
 											<tr>
 												<td class="text-left pl-4">
-													<?= $a->description ?><br/>
 													<?= $this->lang->line('access_'.$a->description) ?>
 												</td>
 												<?php foreach($roles as $r){ 
@@ -326,106 +425,6 @@
 							</div>
 						</form>
 					</div>
-					<div class="tab-pane fade" id="bl_profile_admin">
-						<div class="row">
-							<div class="col-md-6">
-								<h5 class="text-primary mb-3"><?= $this->lang->line("title_profile_admin") ?></h5>
-							</div>
-							<div class="col-md-6 text-right">
-								<div class="btn-group mb-3">
-									<button type="button" class="btn control_bl_profile btn-primary" id="btn_list" value="bl_profile_list">
-										<i class="fas fa-list"></i>
-									</button>
-									<button type="button" class="btn control_bl_profile btn-outline-primary" value="bl_profile_add">
-										<i class="fas fa-plus"></i>
-									</button>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12 bl_profile d-none" id="bl_profile_add">
-								<form class="form-row" id="form_register_profile" action="#">
-									<div class="form-group col-md-12">
-										<label><?= $this->lang->line('lb_profile_name') ?></label>
-										<input type="text" class="form-control" name="name">
-										<div class="sys_msg" id="rp_name_msg"></div>
-									</div>
-									<div class="form-group col-md-12">
-										<label><?= $this->lang->line('lb_examinations') ?> <i class="fas fa-cog text-info" data-toggle="modal" data-target="#md_admin_exam"></i></label>
-										<div class="row">
-											<div class="col-auto">
-												<select class="form-control mb-3" id="rp_category">
-													<option value=""><?= $this->lang->line('txt_view_all') ?></option>
-													<?php foreach($exam_category as $ec){ ?>
-													<option value="<?= $ec->id ?>"><?= $ec->name ?></option>
-													<?php } ?>
-												</select>
-											</div>
-											<div class="col-auto">
-												<input type="text" class="form-control mb-3" id="rp_filter" placeholder="<?= $this->lang->line('lb_filter') ?>">
-											</div>
-											<div class="col-12 sys_msg" id="rp_exams_msg"></div>
-										</div>
-										<div class="row" style="max-height: 400px; overflow-y: auto;">
-											<div class="col-md-12 text-danger d-none" id="rp_no_result_msg">
-												<?= $this->lang->line('msg_no_result') ?>
-											</div>
-											<?php foreach($exams as $ex){ ?>
-											<div class="col-md-6 ex_profile ex_profile_<?= $ex->category_id ?>">
-												<div class="custom-control custom-checkbox mb-3">
-													<input type="checkbox" class="custom-control-input" id="exam_<?= $ex->id ?>" value="<?= $ex->id ?>" name="exams[]">
-													<label class="custom-control-label" for="exam_<?= $ex->id ?>"><?= $ex->name ?></label>
-												</div>
-											</div>
-											<?php } ?>
-										</div>
-									</div>
-									<div class="form-group col-md-12 pt-3">
-										<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
-									</div>
-								</form>
-							</div>
-							<div class="col-md-12 bl_profile" id="bl_profile_list">
-								<div class="table-responsive">
-									<table class="table table-responsive-md">
-										<thead>
-											<tr>
-												<th><strong>#</strong></th>
-												<th class="w-30"><strong><?= $this->lang->line('lb_profile') ?></strong></th>
-												<th><strong><?= $this->lang->line('lb_examination_list') ?></strong></th>
-												<th></th>
-											</tr>
-										</thead>
-										<tbody id="profile_list">
-											<?php foreach($exam_profiles as $i => $item){ ?>
-											<tr>
-												<td><?= $i + 1 ?></td>
-												<td><?= $item->name ?></td>
-												<td><?= $item->exams ?></td>
-												<td class="text-right">
-													<button type="button" class="btn btn-danger shadow btn-xs sharp remove_profile" value="<?= $item->id ?>">
-														<i class="fas fa-trash"></i>
-													</button>
-												</td>
-											</tr>
-											<?php } ?>
-										</tbody>
-									</table>
-									<div class="text-center mt-3 pb-1">
-										<button type="button" class="btn btn-outline-primary" id="btn_load_more_profile">Cargar más</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="tab-pane fade" id="bl_medicine_admin">
-						<div class="row">
-							<div class="col-md-12">
-								<h5 class="text-primary mb-3"><?= $this->lang->line("title_medicine_admin") ?></h5>
-							</div>
-							<div class="col-md-12"></div>
-						</div>
-					</div>
 					<div class="tab-pane fade" id="bl_history_admin">
 						<div class="row">
 							<div class="col-md-6">
@@ -480,6 +479,7 @@
 	<input type="hidden" id="warning_rac" value="<?= $this->lang->line('warning_rac') ?>">
 	<input type="hidden" id="warning_rpa" value="<?= $this->lang->line('warning_rpa') ?>">
 	<input type="hidden" id="warning_rpr" value="<?= $this->lang->line('warning_rpr') ?>">
+	<input type="hidden" id="txt_view_all" value="<?= $this->lang->line('txt_view_all') ?>">
 </div>
 <div class="modal fade" id="md_admin_exam">
 	<div class="modal-dialog" role="document">
@@ -510,7 +510,7 @@
 											<th></th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody id="ad_category_list">
 										<tr>
 											<form id="form_add_exam_category">
 												<td colspan="2">
@@ -522,7 +522,7 @@
 											</form>
 										</tr>
 										<?php foreach($exam_category as $i => $item){ ?>
-										<tr>
+										<tr class="ad_cat_rows">
 											<td><strong><?= $i + 1 ?></strong></td>
 											<td><?= $item->name ?></td>
 											<td class="text-right">
@@ -546,13 +546,13 @@
 											<th></th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody id="ad_exam_list">
 										<tr>
 											<form id="form_add_exam">
 												<td colspan="2">
 													<div class="form-row">
 														<div class="col-sm-5">
-															<select class="form-control" name="category_id">
+															<select class="form-control" id="ad_ex_category" name="category_id">
 																<option value="">--</option>
 																<?php foreach($exam_category as $item){ ?>
 																<option value="<?= $item->id ?>"><?= $item->name ?></option>
@@ -570,7 +570,7 @@
 											</form>
 										</tr>
 										<?php foreach($exams as $i => $item){ ?>
-										<tr>
+										<tr class="ad_exam_rows">
 											<td><strong><?= $i + 1 ?></strong></td>
 											<td>
 												<?= $item->name ?><br/>

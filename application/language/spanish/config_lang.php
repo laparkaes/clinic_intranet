@@ -26,7 +26,6 @@ $lang['success_rec'] = 'Categoría del examen ha sido registrada.';//success_reg
 $lang['success_dec'] = 'Categoría del examen ha sido eliminada.';//success_delete_exam_category
 $lang['success_rex'] = 'El examen ha sido registrado.';//success_register_exam
 $lang['success_dex'] = 'El examen ha sido eliminado.';//success_delete_exam
-$lang['success_upp'] = 'Actualice página para visualizar el cambio. (F5)';//success_update_page
 $lang['warning_rac'] = '¿Desea eliminar usuario elegido?';//warning_remove_account
 $lang['warning_rpa'] = '¿Desea restablecer contraseña de usuario por su número de documento de identidad?';//warning_reset_password
 $lang['warning_rpr'] = '¿Desea eliminar perfil elegido?';//warning_remove_profile

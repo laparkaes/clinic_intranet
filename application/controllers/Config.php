@@ -53,8 +53,12 @@ class Config extends CI_Controller {
 		foreach($exam_profiles as $item){
 			$aux = [];
 			$exam_ids = explode(",", $item->examination_ids);
-			foreach($exam_ids as $exam_id) $aux[] = $exams_arr[$exam_id];
+			foreach($exam_ids as $i => $exam_id){
+				if (array_key_exists($exam_id, $exams_arr)) $aux[] = $exams_arr[$exam_id];
+				else unset($exam_ids[$i]);
+			}
 			$item->exams = implode(", ", $aux);
+			$this->general->update("examination_profile", $item->id, ["examination_ids" => implode(",", $exam_ids)]);
 		}
 		
 		$log_code_arr = [];
@@ -308,6 +312,22 @@ class Config extends CI_Controller {
 		echo json_encode($exam_profiles);
 	}
 	
+	private function get_exam_data(){
+		$exam_category_arr = [];
+		$exam_category = $this->general->all("examination_category", "name", "asc");
+		foreach($exam_category as $item) $exam_category_arr[$item->id] = $item->name;
+		
+		$exams = $this->general->all("examination", "name", "asc");
+		foreach($exams as $item){
+			$item->category = $exam_category_arr[$item->category_id];
+		}
+		
+		return [
+			"cats" => $exam_category,
+			"exams" => $exams,
+		];
+	}
+	
 	public function add_exam_category(){
 		$type = "error"; $msg = null;
 		
@@ -317,14 +337,14 @@ class Config extends CI_Controller {
 				if (!$this->general->filter("examination_category", $data)){
 					if ($this->general->insert("examination_category", $data)){
 						$type = "success";
-						$msg = $this->lang->line('success_rec')." ".$this->lang->line('success_upp');
+						$msg = $this->lang->line('success_rec');
 					}else $msg = $this->lang->line('error_internal');
 				}else $msg = $this->lang->line('error_dcn');
 			}else $msg = $this->lang->line('error_eecn');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg]);
+		echo json_encode(["type" => $type, "msg" => $msg, "data" => $this->get_exam_data()]);
 	}
 	
 	public function remove_exam_category(){
@@ -335,13 +355,13 @@ class Config extends CI_Controller {
 			if (!$this->general->filter("examination", ["category_id" => $id])){
 				if ($this->general->delete("examination_category", ["id" => $id])){
 					$type = "success";
-					$msg = $this->lang->line('success_dec')." ".$this->lang->line('success_upp');
+					$msg = $this->lang->line('success_dec');
 				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line('error_eic');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg]);
+		echo json_encode(["type" => $type, "msg" => $msg, "data" => $this->get_exam_data()]);
 	}
 	
 	public function add_exam(){
@@ -354,7 +374,7 @@ class Config extends CI_Controller {
 					if (!$this->general->filter("examination", $data)){
 						if ($this->general->insert("examination", $data)){
 							$type = "success";
-							$msg = $this->lang->line('success_rex')." ".$this->lang->line('success_upp');
+							$msg = $this->lang->line('success_rex');
 						}else $msg = $this->lang->line('error_internal');
 					}else $msg = $this->lang->line('error_dex');
 				}else $msg = $this->lang->line('error_een');
@@ -362,7 +382,7 @@ class Config extends CI_Controller {
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg]);
+		echo json_encode(["type" => $type, "msg" => $msg, "data" => $this->get_exam_data()]);
 	}
 	
 	public function remove_exam(){
@@ -373,12 +393,12 @@ class Config extends CI_Controller {
 			if (!$this->general->filter("appointment_examination", ["examination_id" => $id])){
 				if ($this->general->delete("examination", ["id" => $id])){
 					$type = "success";
-					$msg = $this->lang->line('success_dex')." ".$this->lang->line('success_upp');
+					$msg = $this->lang->line('success_dex');
 				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line('error_uex');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg]);
+		echo json_encode(["type" => $type, "msg" => $msg, "data" => $this->get_exam_data()]);
 	}
 }
