@@ -235,7 +235,6 @@ $(document).ready(function() {
 	$("#form_register_profile").submit(function(e) {e.preventDefault(); register_profile(this);});
 	$("#form_add_exam_category").submit(function(e) {e.preventDefault(); add_exam_category(this);});
 	$("#form_add_exam").submit(function(e) {e.preventDefault(); add_exam(this);});
-	
 	$(".remove_profile").on('click',(function(e) {remove_profile(this);}));
 	$("#rp_category").change(function() {filter_exams();});
 	$("#rp_filter").keyup(function() {filter_exams();});
@@ -245,6 +244,7 @@ $(document).ready(function() {
 	$(".btn_remove_exam").on('click',(function(e) {remove_exam($(this).val());}));
 	
 	//medicine
+	
 	
 	//log
 	set_datatable("log_list", 25, false);

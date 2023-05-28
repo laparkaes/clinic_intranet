@@ -79,6 +79,7 @@ class Config extends CI_Controller {
 			"exam_category" => $exam_category,
 			"exams" => $exams,
 			"accounts" => $accounts,
+			"medicines" => $this->general->all("medicine", "name", "asc", 20, 0),
 			"departments" => $this->general->all("address_department", "name", "asc"),
 			"provinces" => $this->general->all("address_province", "name", "asc"),
 			"districts" => $this->general->all("address_district", "name", "asc"),

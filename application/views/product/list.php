@@ -1,23 +1,19 @@
-<div class="col-md-12">
-	<div class="row page-titles mx-0">
-		<div class="col-sm-6 p-md-0">
-			<div class="welcome-text">
-				<h4><?= $this->lang->line('products') ?></h4>
-			</div>
-		</div>
-		<div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-			<div class="btn-group">
-				<button type="button" class="btn btn-primary control_bl" id="btn_list" value="bl_list">
-					<i class="fas fa-list"></i>
-				</button>
-				<button type="button" class="btn btn-outline-primary control_bl" value="bl_category">
-					<i class="fas fa-sitemap"></i>
-				</button>
-				<button type="button" class="btn btn-outline-primary control_bl" value="bl_add">
-					<i class="fas fa-plus"></i>
-				</button>
-			</div>
-		</div>
+<div class="col-sm-12 pb-md-0 pb-3">
+	<div class="welcome-text d-md-none d-block">
+		<h4 class="text-primary mb-0"><?= $this->lang->line('products') ?></h4>
+	</div>
+</div>
+<div class="col-sm-12 pb-3">
+	<div class="btn-group">
+		<button type="button" class="btn btn-primary control_bl" id="btn_list" value="bl_list">
+			<i class="fas fa-list mr-2"></i><?= $this->lang->line('btn_list') ?>
+		</button>
+		<button type="button" class="btn btn-outline-primary control_bl" value="bl_category">
+			<i class="fas fa-sitemap mr-2"></i><?= $this->lang->line('btn_categories') ?>
+		</button>
+		<button type="button" class="btn btn-outline-primary control_bl" value="bl_add">
+			<i class="fas fa-plus mr-2"></i><?= $this->lang->line('btn_add') ?>
+		</button>
 	</div>
 </div>
 <div class="col-md-12">

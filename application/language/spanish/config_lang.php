@@ -124,6 +124,9 @@ $lang['btn_category'] = 'Categoría';
 $lang['th_category'] = 'Categoría';
 $lang['th_examination'] = 'Examen';
 
+//medicine
+$lang['lb_medicine'] = 'Medicina';
+
 //company
 $lang['title_company'] = 'Empresa';
 $lang['title_legal_data'] = 'Datos Legales';

@@ -87,6 +87,7 @@ $lang['btn_new'] = 'Nuevo';
 $lang['btn_register'] = 'Registrar';
 $lang['btn_search'] = 'Buscar';
 $lang['btn_select'] = 'Elegir';
+$lang['btn_list'] = 'Lista';
 
 //text
 $lang['txt_detail'] = 'Detalle';

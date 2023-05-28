@@ -46,9 +46,8 @@ $lang["warning_aop"] = "¿Desea agregar nueva opción del producto?";//warning_a
 $lang["warning_dop"] = "¿Desea eliminar opción del producto?";//warning_delete_option
 $lang["warning_eop"] = "¿Desea actualizar opción del producto?";//warning_edit_option
 
-
-
 //component
+$lang['btn_categories'] = 'Categorías';
 $lang['btn_new'] = 'Nuevo';
 $lang['btn_add'] = 'Agregar';
 $lang['btn_cancel'] = 'Cancelar';

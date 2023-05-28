@@ -1,4 +1,4 @@
-<div class="col-md-12">
+<div class="col-md-12 d-md-none d-block">
 	<div class="row page-titles mx-0">
 		<div class="col-sm-6 p-md-0">
 			<div class="welcome-text">
@@ -46,11 +46,9 @@
 				<div class="tab-content mt-4" style="min-height: 500px;">
 					<div class="tab-pane fade show active" id="bl_user_admin" role="tabpanel">
 						<div class="row">
-							<div class="col-md-6">
-								<h5 class="text-primary mb-3"><?= $this->lang->line("title_account_admin") ?></h5>
-							</div>
-							<div class="col-md-6 text-right">
-								<div class="btn-group mb-3">
+							<div class="col-md-12 d-flex justify-content-between">
+								<h5 class="text-primary"><?= $this->lang->line("title_account_admin") ?></h5>
+								<div class="btn-group">
 									<button type="button" class="btn control_bl_account btn-primary" id="btn_list" value="bl_account_list">
 										<i class="fas fa-list"></i>
 									</button>
@@ -179,11 +177,9 @@
 					</div>
 					<div class="tab-pane fade" id="bl_profile_admin">
 						<div class="row">
-							<div class="col-md-6">
-								<h5 class="text-primary mb-3"><?= $this->lang->line("title_profile_admin") ?></h5>
-							</div>
-							<div class="col-md-6 text-right">
-								<div class="btn-group mb-3">
+							<div class="col-md-12 d-flex justify-content-between">
+								<h5 class="text-primary"><?= $this->lang->line("title_profile_admin") ?></h5>
+								<div class="btn-group">
 									<button type="button" class="btn control_bl_profile btn-primary" id="btn_list" value="bl_profile_list">
 										<i class="fas fa-list"></i>
 									</button>
@@ -243,7 +239,7 @@
 											<tr>
 												<th><strong>#</strong></th>
 												<th class="w-30"><strong><?= $this->lang->line('lb_profile') ?></strong></th>
-												<th><strong><?= $this->lang->line('lb_examination_list') ?></strong></th>
+												<th><strong><?= $this->lang->line('lb_examinations') ?></strong></th>
 												<th></th>
 											</tr>
 										</thead>
@@ -271,10 +267,46 @@
 					</div>
 					<div class="tab-pane fade" id="bl_medicine_admin">
 						<div class="row">
-							<div class="col-md-12">
-								<h5 class="text-primary mb-3"><?= $this->lang->line("title_medicine_admin") ?></h5>
+							<div class="col-md-12 d-flex justify-content-between">
+								<h5 class="text-primary"><?= $this->lang->line("title_medicine_admin") ?></h5>
+								<div class="btn-group">
+									<button type="button" class="btn btn-primary">
+										<i class="fas fa-list"></i>
+									</button>
+									<button type="button" class="btn btn-outline-primary">
+										<i class="fas fa-plus"></i>
+									</button>
+								</div>
 							</div>
-							<div class="col-md-12"></div>
+							<div class="col-md-12">
+								<div class="table-responsive">
+									<table class="table table-responsive-md">
+										<thead>
+											<tr>
+												<th><strong>#</strong></th>
+												<th><strong><?= $this->lang->line('lb_medicine') ?></strong></th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody id="medicine_list">
+											<?php foreach($medicines as $i => $item){ ?>
+											<tr>
+												<td><?= $i + 1 ?></td>
+												<td><?= $item->name ?></td>
+												<td class="text-right">
+													<button type="button" class="btn btn-danger shadow btn-xs sharp remove_medicine" value="<?= $item->id ?>">
+														<i class="fas fa-trash"></i>
+													</button>
+												</td>
+											</tr>
+											<?php } ?>
+										</tbody>
+									</table>
+									<div class="text-center mt-3 pb-1">
+										<button type="button" class="btn btn-outline-primary" id="btn_load_more_medicine">Cargar más</button>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="tab-pane fade" id="bl_access_admin">
@@ -427,13 +459,9 @@
 					</div>
 					<div class="tab-pane fade" id="bl_history_admin">
 						<div class="row">
-							<div class="col-md-6">
-								<h5 class="text-primary mb-3"><?= $this->lang->line('title_system_log') ?></h5>
-							</div>
-							<div class="col-md-6">
-								<p class="text-right">
-									<small class="text-info"><?= $this->lang->line('msg_last_6_months') ?></small>
-								</p>
+							<div class="col-md-12 d-flex justify-content-between">
+								<h5 class="text-primary"><?= $this->lang->line('title_system_log') ?></h5>
+								<small class="text-info"><?= $this->lang->line('msg_last_6_months') ?></small>
 							</div>
 							<div class="col-md-2">
 								<div class="mb-3" id="log_list_length_new"></div>

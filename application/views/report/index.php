@@ -1,4 +1,4 @@
-<div class="col-md-12">
+<div class="col-md-12 d-md-none d-block">
 	<div class="row page-titles mx-0">
 		<div class="col-sm-12 p-md-0">
 			<div class="welcome-text">
