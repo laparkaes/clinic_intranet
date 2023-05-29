@@ -159,7 +159,7 @@ class General_model extends CI_Model{
 	}
 	
 	function update($tablename, $id, $data){ 
-		$this->db->where('id', $id);
+		if ($id) $this->db->where('id', $id);
 		return $this->db->update($tablename, $data);
 	}
 	

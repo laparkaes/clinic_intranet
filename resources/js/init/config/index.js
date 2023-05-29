@@ -1,24 +1,15 @@
-function update_company_data(dom){
-	ajax_form(dom, "config/update_company_data").done(function(res) {
-		set_msg(res.msgs);
-		swal_redirection(res.type, res.msg, window.location.href);
-	});
+function control_bl_group(dom, group){
+	$(dom).parent().children().removeClass("btn-primary");
+	$(dom).parent().children().addClass("btn-outline-primary");
+	
+	$(dom).removeClass("btn-outline-primary");
+	$(dom).addClass("btn-primary");
+	
+	$(".bl_" + group).addClass("d-none");
+	$("#" + $(dom).val()).removeClass("d-none");
 }
 
-function control_province(dom){
-	$("#sl_province").val("");
-	$("#sl_province .province").addClass("d-none");
-	$("#sl_province .d" + $(dom).val()).removeClass("d-none");
-	$("#sl_district").val("");
-	$("#sl_district .district").addClass("d-none");
-}
-
-function control_district(dom){
-	$("#sl_district").val("");
-	$("#sl_district .district").addClass("d-none");
-	$("#sl_district .p" + $(dom).val()).removeClass("d-none");
-}
-
+/* start access */
 function control_access(dom){
 	var data = {setting: $(dom).is(':checked'), value: $(dom).val()};
 	ajax_simple(data, "config/control_access").done(function(res) {
@@ -26,26 +17,50 @@ function control_access(dom){
 		if (res.type == "error") $(dom).prop('checked', !$(dom).is(':checked'));
 	});
 }
+/* end access */
 
-function reset_password(dom){
-	ajax_simple_warning({id: $(dom).val()}, "config/reset_password", $("#warning_rpa").val()).done(function(res) {
+/* start company */
+function control_province(department_id){
+	$("#uc_province_id").val("");
+	$("#uc_province_id .province").addClass("d-none");
+	$("#uc_province_id .d" + department_id).removeClass("d-none");
+	$("#uc_district_id").val("");
+	$("#uc_district_id .district").addClass("d-none");
+}
+
+function control_district(province_id){
+	$("#uc_district_id").val("");
+	$("#uc_district_id .district").addClass("d-none");
+	$("#uc_district_id .p" + province_id).removeClass("d-none");
+}
+
+function search_company(){
+	ajax_simple({tax_id: $("#uc_tax_id").val()}, "ajax_f/search_company").done(function(res) {
 		swal(res.type, res.msg);
+		control_province(res.company.department_id);
+		control_district(res.company.province_id);
+		$("#uc_tax_id").val(res.company.tax_id);
+		$("#uc_name").val(res.company.name);
+		$("#uc_email").val(res.company.email);
+		$("#uc_tel").val(res.company.tel);
+		$("#uc_address").val(res.company.address);
+		$("#uc_urbanization").val(res.company.urbanization);
+		$("#uc_ubigeo").val(res.company.ubigeo);
+		$("#uc_department_id").val(res.company.department_id);
+		$("#uc_province_id").val(res.company.province_id);
+		$("#uc_district_id").val(res.company.district_id);
 	});
 }
 
-function remove_account(dom){
-	ajax_simple_warning({id: $(dom).val()}, "config/remove_account", $("#warning_rac").val()).done(function(res) {
-		swal_redirection(res.type, res.msg, window.location.href);
-	});
-}
-
-function register_account(dom){
-	ajax_form(dom, "config/register_account").done(function(res) {
+function update_company_data(dom){
+	ajax_form(dom, "config/update_company_data").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
+/* end company */
 
+/* start account */
 function search_person_ra(){
 	var data = {doc_type_id: $("#ra_doc_type_id").val(), doc_number: $("#ra_doc_number").val()};
 	ajax_simple(data, "ajax_f/search_person").done(function(res) {
@@ -64,25 +79,83 @@ function reset_person(){
 	$("#ra_tel").val("");
 }
 
-function control_bl_group(dom, group){
-	$(dom).parent().children().removeClass("btn-primary");
-	$(dom).parent().children().addClass("btn-outline-primary");
-	
-	$(dom).removeClass("btn-outline-primary");
-	$(dom).addClass("btn-primary");
-	
-	$(".bl_" + group).addClass("d-none");
-	$("#" + $(dom).val()).removeClass("d-none");
+function reset_password(dom){
+	ajax_simple_warning({id: $(dom).val()}, "config/reset_password", $("#warning_rpa").val()).done(function(res) {
+		swal(res.type, res.msg);
+	});
 }
 
-function control_sl_group(dom){
-	$(".sl_group").removeClass("active");
-	$(dom).addClass("active");
-	
-	$(".sl_values").addClass("d-none");
-	$("#sl_" + $(dom).val()).removeClass("d-none");
-	
-	$("#sl_add_code").val($(dom).val());
+function reset_account_list(){
+	$("#account_list").html("");
+	$("#btn_load_more_account").removeClass("d-none");
+	load_more_account();
+}
+
+function register_account(dom){
+	ajax_form(dom, "config/register_account").done(function(res) {
+		set_msg(res.msgs);
+		swal(res.type, res.msg);
+		reset_account_list();
+		$('#btn_list_account').trigger('click');
+	});
+}
+
+function remove_account(dom){
+	ajax_simple_warning({id: $(dom).val()}, "config/remove_account", $("#warning_rac").val()).done(function(res) {
+		swal(res.type, res.msg);
+		reset_account_list();
+	});
+}
+
+function load_more_account(){
+	var offset = $("#account_list").children().length;
+	ajax_simple({offset: offset}, "config/load_more_account").done(function(res) {
+		if (res.length > 0){
+			$.each(res, function(index, item) {
+				$("#account_list").append('<tr><td>' + (offset + index + 1) + '</td><td>' + item.role + '</td><td>' + item.email + '</td><td>' + item.person + '</td><td class="text-right"><button type="button" class="btn btn-info shadow btn-xs sharp reset_password" value="' + item.id + '"><i class="fas fa-key"></i></button> <button type="button" class="btn btn-danger shadow btn-xs sharp remove_account" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+			});
+			
+			$('.reset_password').off('click').on('click',(function(e) {reset_password(this);}));
+			$('.remove_account').off('click').on('click',(function(e) {remove_account(this);}));
+		}else $("#btn_load_more_account").addClass("d-none");
+	});
+}
+/* end account */
+
+/* start profile */
+function reset_profile_list(){
+	$("#profile_list").html("");
+	$("#btn_load_more_profile").removeClass("d-none");
+	load_more_profile();
+}
+
+function register_profile(dom){
+	ajax_form(dom, "config/register_profile").done(function(res) {
+		set_msg(res.msgs);
+		swal(res.type, res.msg);
+		reset_profile_list();
+		$('#btn_list_profile').trigger('click');
+	});
+}
+
+function remove_profile(dom){
+	ajax_simple_warning({id: $(dom).val()}, "config/remove_profile", $("#warning_rpr").val()).done(function(res) {
+		swal(res.type, res.msg);
+		reset_profile_list();
+	});
+}
+
+function load_more_profile(){
+	var offset = $("#profile_list").children().length;
+	ajax_simple({offset: offset}, "config/load_more_profile").done(function(res) {
+		if (res.length > 0){
+			$.each(res, function(index, item) {
+				$("#profile_list").append('<tr><td>' + (offset + index + 1) + '</td><td>' + item.name + '</td><td>' + item.exams + '</td><td class="text-right"><button type="button" class="btn btn-danger shadow btn-xs sharp remove_profile" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+			});
+			
+			$('.remove_profile').off('click').on('click',(function(e) {remove_profile(this);}));
+		}else $("#btn_load_more_profile").addClass("d-none");
+	});
 }
 
 function filter_exams(){
@@ -114,46 +187,6 @@ function filter_exams(){
 	
 	if ($(".ex_profile:not(.d-none)").length > 0) $("#rp_no_result_msg").addClass("d-none");
 	else $("#rp_no_result_msg").removeClass("d-none");
-}
-
-function register_profile(dom){
-	ajax_form(dom, "config/register_profile").done(function(res) {
-		set_msg(res.msgs);
-		swal_redirection(res.type, res.msg, window.location.href);
-	});
-}
-
-function remove_profile(dom){
-	ajax_simple_warning({id: $(dom).val()}, "config/remove_profile", $("#warning_rpr").val()).done(function(res) {
-		swal_redirection(res.type, res.msg, window.location.href);
-	});
-}
-
-function load_more_account(){
-	var offset = $("#account_list").children().length;
-	ajax_simple({offset: offset}, "config/load_more_account").done(function(res) {
-		if (res.length > 0){
-			$.each(res, function(index, item) {
-				$("#account_list").append('<tr><td>' + (offset + index + 1) + '</td><td>' + item.role + '</td><td>' + item.email + '</td><td>' + item.person + '</td><td class="text-right"><button type="button" class="btn btn-info shadow btn-xs sharp reset_password" value="' + item.id + '"><i class="fas fa-key"></i></button> <button type="button" class="btn btn-danger shadow btn-xs sharp remove_account" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
-			});
-			
-			$('.reset_password').off('click').on('click',(function(e) {reset_password(this);}));
-			$('.remove_account').off('click').on('click',(function(e) {remove_account(this);}));
-		}else $("#btn_load_more_account").remove();
-	});
-}
-
-function load_more_profile(){
-	var offset = $("#profile_list").children().length;
-	ajax_simple({offset: offset}, "config/load_more_profile").done(function(res) {
-		if (res.length > 0){
-			$.each(res, function(index, item) {
-				$("#profile_list").append('<tr><td>' + (offset + index + 1) + '</td><td>' + item.name + '</td><td>' + item.exams + '</td><td class="text-right"><button type="button" class="btn btn-danger shadow btn-xs sharp remove_profile" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
-			});
-			
-			$('.remove_profile').off('click').on('click',(function(e) {remove_profile(this);}));
-		}else $("#btn_load_more_profile").remove();
-	});
 }
 
 function set_exam_cat(categories, exams){
@@ -211,19 +244,44 @@ function remove_exam(ex_id){
 		set_exam_cat(res.data.cats, res.data.exams);
 	});
 }
+/* end profile */
+
+/* start medicine */
+function reset_medicine_list(){
+	$("#medicine_list").html("");
+	$("#btn_load_more_medicine").removeClass("d-none");
+	load_more_medicine();
+}
 
 function register_medicine(dom){
 	ajax_form(dom, "config/register_medicine").done(function(res) {
 		set_msg(res.msgs);
-		swal_redirection(res.type, res.msg, window.location.href);
+		swal(res.type, res.msg);
+		reset_medicine_list();
+		$('#btn_list_medicine').trigger('click');
 	});
 }
 
 function remove_medicine(dom){
 	ajax_simple_warning({id: $(dom).val()}, "config/remove_medicine", $("#warning_rme").val()).done(function(res) {
-		swal_redirection(res.type, res.msg, window.location.href);
+		swal(res.type, res.msg);
+		reset_medicine_list();
 	});
 }
+
+function load_more_medicine(){
+	var offset = $("#medicine_list").children().length;
+	ajax_simple({offset: offset}, "config/load_more_medicine").done(function(res) {
+		if (res.length > 0){
+			$.each(res, function(index, item) {
+				$("#medicine_list").append('<tr><td>' + (offset + index + 1) + '</td><td>' + item.name + '</td><td class="text-right"><button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_medicine" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+			});
+			
+			$('.btn_remove_medicine').off('click').on('click',(function(e) {remove_medicine(this);}));
+		}else $("#btn_load_more_medicine").addClass("d-none");
+	});
+}
+/* end medicine */
 
 $(document).ready(function() {
 	//account
@@ -241,8 +299,9 @@ $(document).ready(function() {
 	
 	//company
 	$("#form_update_company_data").submit(function(e) {e.preventDefault(); update_company_data(this);});
-	$("#sl_department").change(function() {control_province(this);});
-	$("#sl_province").change(function() {control_district(this);});
+	$("#btn_search_company").on('click',(function(e) {search_company();}));
+	$("#uc_department_id").change(function() {control_province($(this).val());});
+	$("#uc_province_id").change(function() {control_district($(this).val());});
 	
 	//profile
 	$("#form_register_profile").submit(function(e) {e.preventDefault(); register_profile(this);});
@@ -260,6 +319,7 @@ $(document).ready(function() {
 	$("#form_register_medicine").submit(function(e) {e.preventDefault(); register_medicine(this);});
 	$(".control_bl_medicine").on('click',(function(e) {control_bl_group(this, "medicine");}));
 	$(".btn_remove_medicine").on('click',(function(e) {remove_medicine(this);}));
+	$("#btn_load_more_medicine").on('click',(function(e) {load_more_medicine();}));
 	
 	//log
 	set_datatable("log_list", 25, false);

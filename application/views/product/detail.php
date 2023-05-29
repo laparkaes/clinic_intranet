@@ -198,7 +198,7 @@
 							<div class="form-group col-md-4">
 								<label><?= $this->lang->line('p_ruc') ?></label>
 								<div class="input-group">
-									<input type="text" class="form-control" id="prov_ruc" name="ruc" value="<?= $provider->ruc ?>">
+									<input type="text" class="form-control" id="prov_ruc" name="tax_id" value="<?= $provider->tax_id ?>">
 									<div class="input-group-append">
 										<button class="btn btn-primary border-0" id="btn_search_provider" type="button">
 											<i class="fas fa-search"></i>
@@ -209,7 +209,7 @@
 							</div>
 							<div class="form-group col-md-4">
 								<label><?= $this->lang->line('p_company') ?></label>
-								<input type="text" class="form-control" id="prov_company" name="company" value="<?= $provider->company ?>">
+								<input type="text" class="form-control" id="prov_name" name="name" value="<?= $provider->name ?>">
 								<div class="sys_msg" id="epv_company_msg"></div>
 							</div>
 							<div class="form-group col-md-4">

@@ -133,10 +133,11 @@ $lang['lb_medicine'] = 'Medicina';
 
 //company
 $lang['title_company'] = 'Empresa';
-$lang['title_legal_data'] = 'Datos Legales';
+$lang['title_company_data'] = 'Datos de Empresa';
 $lang['title_sunat_access'] = 'Acceso de Sunat';
 $lang['lb_tax_id'] = 'RUC';
 $lang['lb_urbanization'] = 'Urbanización';
+$lang['lb_ubigeo'] = 'Ubigeo';
 $lang['lb_department'] = 'Departamento';
 $lang['lb_province'] = 'Provincia';
 $lang['lb_district'] = 'Distrito';

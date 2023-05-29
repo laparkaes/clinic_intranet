@@ -49,7 +49,7 @@
 							<div class="col-md-12 d-flex justify-content-between">
 								<h5 class="text-primary"><?= $this->lang->line("title_account_admin") ?></h5>
 								<div class="btn-group">
-									<button type="button" class="btn control_bl_account btn-primary" id="btn_list" value="bl_account_list">
+									<button type="button" class="btn control_bl_account btn-primary" id="btn_list_account" value="bl_account_list">
 										<i class="fas fa-list"></i>
 									</button>
 									<button type="button" class="btn control_bl_account btn-outline-primary" value="bl_account_add">
@@ -180,7 +180,7 @@
 							<div class="col-md-12 d-flex justify-content-between">
 								<h5 class="text-primary"><?= $this->lang->line("title_profile_admin") ?></h5>
 								<div class="btn-group">
-									<button type="button" class="btn control_bl_profile btn-primary" id="btn_list" value="bl_profile_list">
+									<button type="button" class="btn control_bl_profile btn-primary" id="btn_list_profile" value="bl_profile_list">
 										<i class="fas fa-list"></i>
 									</button>
 									<button type="button" class="btn control_bl_profile btn-outline-primary" value="bl_profile_add">
@@ -259,7 +259,9 @@
 										</tbody>
 									</table>
 									<div class="text-center mt-3 pb-1">
-										<button type="button" class="btn btn-outline-primary" id="btn_load_more_profile">Cargar más</button>
+										<button type="button" class="btn btn-outline-primary" id="btn_load_more_profile">
+											<?= $this->lang->line('btn_load_more') ?>
+										</button>
 									</div>
 								</div>
 							</div>
@@ -270,7 +272,7 @@
 							<div class="col-md-12 d-flex justify-content-between">
 								<h5 class="text-primary"><?= $this->lang->line("title_medicine_admin") ?></h5>
 								<div class="btn-group">
-									<button type="button" class="btn control_bl_medicine btn-primary" id="btn_list" value="bl_medicine_list">
+									<button type="button" class="btn control_bl_medicine btn-primary" id="btn_list_medicine" value="bl_medicine_list">
 										<i class="fas fa-list"></i>
 									</button>
 									<button type="button" class="btn control_bl_medicine btn-outline-primary" value="bl_medicine_add">
@@ -317,7 +319,9 @@
 										</tbody>
 									</table>
 									<div class="text-center mt-3 pb-1">
-										<button type="button" class="btn btn-outline-primary" id="btn_load_more_medicine">Cargar más</button>
+										<button type="button" class="btn btn-outline-primary" id="btn_load_more_medicine">
+											<?= $this->lang->line('btn_load_more') ?>
+										</button>
 									</div>
 								</div>
 							</div>
@@ -364,41 +368,49 @@
 					</div>
 					<div class="tab-pane fade" id="bl_company_admin">
 						<form action="#" id="form_update_company_data" class="row">
-							<div class="col-md-6">
-								<h5 class="text-primary mb-3"><?= $this->lang->line('title_legal_data') ?></h5>
+							<div class="col-md-12">
+								<h5 class="text-primary mb-3"><?= $this->lang->line('title_company_data') ?></h5>
 								<div class="form-row">
 									<div class="form-group col-md-4">
 										<label><?= $this->lang->line('lb_tax_id') ?></label>
-										<input type="text" class="form-control" value="<?= $company->ruc ?>" name="ruc">
-										<div class="sys_msg" id="com_ruc_msg"></div>
+										
+										<div class="input-group">
+                                            <input type="text" class="form-control" id="uc_tax_id" value="<?= $company->tax_id ?>" name="tax_id">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" id="btn_search_company" type="button">
+													<i class="fas fa-search"></i>
+												</button>
+                                            </div>
+                                        </div>
+										<div class="sys_msg" id="uc_tax_id_msg"></div>
 									</div>
 									<div class="form-group col-md-8">
 										<label><?= $this->lang->line('lb_name') ?></label>
-										<input type="text" class="form-control" value="<?= $company->name ?>" name="name">
-										<div class="sys_msg" id="com_name_msg"></div>
+										<input type="text" class="form-control" id="uc_name" value="<?= $company->name ?>" name="name">
+										<div class="sys_msg" id="uc_name_msg"></div>
 									</div>
 									<div class="form-group col-md-8">
 										<label><?= $this->lang->line('lb_email') ?></label>
-										<input type="text" class="form-control" value="<?= $company->email ?>" name="email">
-										<div class="sys_msg" id="com_email_msg"></div>
+										<input type="text" class="form-control" id="uc_email" value="<?= $company->email ?>" name="email">
+										<div class="sys_msg" id="uc_email_msg"></div>
 									</div>
 									<div class="form-group col-md-4">
 										<label><?= $this->lang->line('lb_tel') ?></label>
-										<input type="text" class="form-control" value="<?= $company->tel ?>" name="tel">
-										<div class="sys_msg" id="com_tel_msg"></div>
+										<input type="text" class="form-control" id="uc_tel" value="<?= $company->tel ?>" name="tel">
+										<div class="sys_msg" id="uc_tel_msg"></div>
 									</div>
-									<div class="form-group col-md-6">
+									<div class="form-group col-md-8">
 										<label><?= $this->lang->line('lb_address') ?></label>
-										<input type="text" class="form-control" value="<?= $company->address ?>" name="address">
-										<div class="sys_msg" id="com_address_msg"></div>
-									</div>
-									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_urbanization') ?></label>
-										<input type="text" class="form-control" value="<?= $company->urbanization ?>" name="urbanization">
+										<input type="text" class="form-control" id="uc_address" value="<?= $company->address ?>" name="address">
+										<div class="sys_msg" id="uc_address_msg"></div>
 									</div>
 									<div class="form-group col-md-4">
+										<label><?= $this->lang->line('lb_urbanization') ?></label>
+										<input type="text" class="form-control" id="uc_urbanization" value="<?= $company->urbanization ?>" name="urbanization">
+									</div>
+									<div class="form-group col-md-3">
 										<label><?= $this->lang->line('lb_department') ?></label>
-										<select class="form-control" id="sl_department" name="department_id">
+										<select class="form-control" id="uc_department_id" name="department_id">
 											<option value="">-</option>
 											<?php foreach($departments as $item){
 												if ($item->id == $company->department_id) $selected = "selected";
@@ -406,11 +418,11 @@
 											<option value="<?= $item->id ?>" <?= $selected ?>><?= $item->name ?></option>
 											<?php } ?>
 										</select>
-										<div class="sys_msg" id="com_department_msg"></div>
+										<div class="sys_msg" id="uc_department_msg"></div>
 									</div>
-									<div class="form-group col-md-4">
+									<div class="form-group col-md-3">
 										<label><?= $this->lang->line('lb_province') ?></label>
-										<select class="form-control" id="sl_province" name="province_id">
+										<select class="form-control" id="uc_province_id" name="province_id">
 											<option value="">-</option>
 											<?php foreach($provinces as $item){
 												$selected = ""; $class = "d-none";
@@ -419,11 +431,11 @@
 											<option class="province d<?= $item->department_id ?> <?= $class ?>" value="<?= $item->id ?>" <?= $selected ?>><?= $item->name ?></option>
 											<?php } ?>
 										</select>
-										<div class="sys_msg" id="com_province_msg"></div>
+										<div class="sys_msg" id="uc_province_msg"></div>
 									</div>
-									<div class="form-group col-md-4">
+									<div class="form-group col-md-3">
 										<label><?= $this->lang->line('lb_district') ?></label>
-										<select class="form-control" id="sl_district" name="district_id">
+										<select class="form-control" id="uc_district_id" name="district_id">
 											<option value="">-</option>
 											<?php foreach($districts as $item){
 												$selected = ""; $class = "d-none";
@@ -432,42 +444,17 @@
 											<option class="district p<?= $item->province_id ?> <?= $class ?>" value="<?= $item->id ?>" <?= $selected ?>><?= $item->name ?></option>
 											<?php } ?>
 										</select>
-										<div class="sys_msg" id="com_district_msg"></div>
+										<div class="sys_msg" id="uc_district_msg"></div>
+									</div>
+									<div class="form-group col-md-3">
+										<label><?= $this->lang->line('lb_ubigeo') ?></label>
+										<input type="text" class="form-control" id="uc_ubigeo" value="<?= $company->ubigeo ?>" name="ubigeo">
+										<div class="sys_msg" id="uc_ubigeo_msg"></div>
+									</div>
+									<div class="form-group col-md-12 pt-3">
+										<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_save') ?></button>
 									</div>
 								</div>
-							</div>
-							<div class="col-md-6">
-								<h5 class="text-primary mb-3"><?= $this->lang->line('title_sunat_access') ?></h5>
-								<div class="form-row">
-									<div class="form-group col-md-12">
-										<label><?= $this->lang->line('lb_resolution') ?></label>
-										<input type="text" class="form-control" value="<?= $company->sunat_resolution ?>" name="sunat_resolution">
-										<div class="sys_msg" id="com_sunat_res_msg"></div>
-									</div>
-									<div class="form-group col-md-12">
-										<div class="d-flex justify-content-between">
-											<label><?= $this->lang->line('lb_digital_certificate') ?></label>
-											<?php if ($company->sunat_cert_filename){ ?>
-											<a href="<?= base_url()."uploaded/sunat/".$company->sunat_cert_filename ?>" class="text-info" id="ic_cert" target="_blank"><i class="fas fa-download"></i></a>
-											<?php } ?>
-										</div>
-										<input type="file" class="form-control" name="sunat_cert_file">
-										<div class="sys_msg" id="s_cer_msg"></div>
-									</div>
-									<div class="form-group col-md-12">
-										<label><?= $this->lang->line('lb_password_SOL') ?></label>
-										<input type="text" class="form-control" value="<?= $company->sunat_clave_sol ?>" name="sunat_clave_sol">
-										<div class="sys_msg" id="com_sunat_cla_msg"></div>
-									</div>
-									<div class="form-group col-md-12">
-										<label><?= $this->lang->line('lb_password') ?></label>
-										<input type="text" class="form-control" value="<?= $company->sunat_password ?>" name="sunat_password">
-										<div class="sys_msg" id="com_sunat_pass_msg"></div>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-12 pt-3">
-								<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_save') ?></button>
 							</div>
 						</form>
 					</div>

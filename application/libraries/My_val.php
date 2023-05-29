@@ -297,8 +297,8 @@ class My_val{
 	}
 	
 	public function product_provider($msgs, $data){
-		if (!$data["company"]) $msgs = $this->set_msg($msgs, "epv_company_msg", "error", "e_enter_company");
-		if (!$data["ruc"]) $msgs = $this->set_msg($msgs, "epv_ruc_msg", "error", "e_enter_ruc");
+		if (!$data["name"]) $msgs = $this->set_msg($msgs, "epv_company_msg", "error", "e_enter_company");
+		if (!$data["tax_id"]) $msgs = $this->set_msg($msgs, "epv_ruc_msg", "error", "e_enter_ruc");
 		
 		return $msgs;
 	}
@@ -382,7 +382,7 @@ class My_val{
 	}
 	
 	public function config_company($msgs, $prefix, $data){
-		if (!$data["ruc"]) $msgs = $this->set_msg($msgs, $prefix."ruc_msg", "error", "e_enter_ruc_o");
+		if (!$data["tax_id"]) $msgs = $this->set_msg($msgs, $prefix."tax_id_msg", "error", "e_enter_ruc_o");
 		if (!$data["name"]) $msgs = $this->set_msg($msgs, $prefix."name_msg", "error", "e_enter_company_o");
 		if (!$data["email"]) $msgs = $this->set_msg($msgs, $prefix."email_msg", "error", "e_company_email");
 		if (!$data["tel"]) $msgs = $this->set_msg($msgs, $prefix."tel_msg", "error", "e_company_tel");
@@ -390,9 +390,6 @@ class My_val{
 		if (!$data["department_id"]) $msgs = $this->set_msg($msgs, $prefix."department_msg", "error", "e_company_department");
 		if (!$data["province_id"]) $msgs = $this->set_msg($msgs, $prefix."province_msg", "error", "e_company_province");
 		if (!$data["district_id"]) $msgs = $this->set_msg($msgs, $prefix."district_msg", "error", "e_company_district");
-		if (!$data["sunat_resolution"]) $msgs = $this->set_msg($msgs, $prefix."sunat_res_msg", "error", "e_sunat_resolution");
-		if (!$data["sunat_clave_sol"]) $msgs = $this->set_msg($msgs, $prefix."sunat_cla_msg", "error", "e_sunat_clave_sol");
-		if (!$data["sunat_password"]) $msgs = $this->set_msg($msgs, $prefix."sunat_pass_msg", "error", "e_sunat_password");
 		
 		return $msgs;
 	}

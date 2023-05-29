@@ -50,75 +50,44 @@ class Ajax_f extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "person" => $person]);
-		/*
-		$status = false; $type = "error"; $msg = null; $person = null;
-		
-		
-		if ($data["doc_number"]){
-			$person = $this->general->filter("person", $data);
-			if ($person){
-				$person = $person[0];
-				$person = array("id" => $person->id, "name" => $person->name, "tel" => $person->tel, "email" => $person->email);
-				$type = "success";
-				$status = true;
-			}else{
-				$name = null;
-				switch($this->general->id("doc_type", $data["doc_type_id"])->description){
-					case "DNI - Documento Nacional de Identidad":
-						$ud = $this->utility_lib->utildatos_dni($data["doc_number"]);
-						if ($ud->status) $name = $ud->data->nombres." ".$ud->data->apellidoPaterno." ".$ud->data->apellidoMaterno;
-						break;
-					case "RUC - Registro Unico de Contributentes":
-						$ud = $this->utility_lib->utildatos_ruc($data["doc_number"]);
-						if ($ud->status) $name = $ud->data->razon_social;
-						break;
-				}
-				
-				if ($name){
-					$person = array("id" => null, "name" => $name, "tel" => null, "email" => null);
-					$type = "success";
-					$status = true;
-				}else $msg = $this->lang->line('error_insert_manually');
-			}
-		}else $msg = $this->lang->line('error_doc_number');
-		
-		if ($status) $msg = $this->lang->line('success_data_loaded');
-		
-		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg, "person" => $person));
-		
-		*/
 	}
 	
 	public function search_company(){
-		$status = false; $type = "error"; $msg = null; $company = null;
+		$type = "error"; $msg = null; $company = $this->general->structure("company");
 		$data = $this->input->post();
 		
-		if ($data["ruc"]){
-			$company = $this->general->filter("provider", $data);
-			if ($company){
-				$company = $company[0];
+		if (array_key_exists('tax_id', $data)){
+			$company_rec = $this->general->filter("company", ["tax_id" => $data["tax_id"]], null, null, "updated_at", "desc");
+			if ($company_rec) $company = $company_rec[0];
+			
+			$ud = $this->utility_lib->utildatos_ruc($data["tax_id"]);
+			if ($ud->status){
+				$company->tax_id = $ud->data->ruc;
+				$company->name = $ud->data->razon_social;
+				$company->address = $ud->data->direccion;
+				$company->ubigeo = $ud->data->ubigeo;
+				$company->urbanization = $ud->data->codigo_zona." ".$ud->data->tipo_zona;
 				
-				$status = true;
+				$district = $this->general->filter("address_district", ["ubigeo" => $company->ubigeo]);
+				if ($district){
+					$district = $district[0];
+					$province = $this->general->id("address_province", $district->province_id);
+					$department = $this->general->id("address_department", $province->department_id);
+					
+					$company->district_id = $district->id;
+					$company->province_id = $province->id;
+					$company->department_id = $department->id;
+				}
+			}
+			
+			if ($company->tax_id){
 				$type = "success";
 				$msg = $this->lang->line('success_data_loaded');
-			}else{
-				$ud = $this->utility_lib->utildatos_ruc($data["ruc"]);
-				$company = $this->general->structure("provider");
-				if ($ud->status){
-					$company->ruc = $ud->data->ruc;
-					$company->company = $ud->data->razon_social;
-					$company->address = $ud->data->direccion;
-					
-					$status = true;
-					$type = "success";
-					$msg = $this->lang->line('success_data_loaded');
-				}else $msg = $this->lang->line('error_insert_manually');
-			}
+			}else $msg = $this->lang->line('error_insert_manually');
 		}else $msg = $this->lang->line('error_ruc');
 		
 		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "type" => $type, "msg" => $msg, "company" => $company));
+		echo json_encode(["type" => $type, "msg" => $msg, "company" => $company]);
 	}
 	
 	private function set_doctor_schedule_cell($doctor_id, $date){

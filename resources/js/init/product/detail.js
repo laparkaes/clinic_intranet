@@ -95,17 +95,16 @@ function control_op_edit_form(dom){
 }
 
 function search_provider(){
-	ajax_simple({ruc: $("#prov_ruc").val()}, "ajax_f/search_company").done(function(res) {
+	ajax_simple({tax_id: $("#prov_ruc").val()}, "ajax_f/search_company").done(function(res) {
 		swal(res.type, res.msg);
-		if (res.status == true){
-			$("#prov_company").val(res.company.company);
+		if (res.type == "success"){
+			$("#prov_name").val(res.company.name);
 			$("#prov_web").val(res.company.web);
 			$("#prov_person").val(res.company.person);
 			$("#prov_tel").val(res.company.tel);
 			$("#prov_email").val(res.company.email);
 			$("#prov_address").val(res.company.address);
 			$("#prov_remark").val(res.company.remark);
-			$("#prov_company").addClass("bg-light").prop("readonly", true);
 		}
 	});
 }

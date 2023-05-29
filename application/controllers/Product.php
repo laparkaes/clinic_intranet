@@ -220,8 +220,8 @@ class Product extends CI_Controller {
 		$product->currency = $this->general->id("currency", $product->currency_id)->description;
 		$product->type = $this->general->id("product_type", $product->type_id)->description;
 		
-		if ($product->provider_id) $provider = $this->general->id("provider", $product->provider_id);
-		else $provider = $this->general->structure("provider");
+		if ($product->provider_id) $provider = $this->general->id("company", $product->provider_id);
+		else $provider = $this->general->structure("company");
 		
 		$data = array(
 			"categories" => $this->product->category_all(),
@@ -462,17 +462,17 @@ class Product extends CI_Controller {
 		
 		if (!$msgs){
 			$product_id = $data["product_id"]; unset($data["product_id"]);
-			$company = $this->general->filter("provider", array("ruc" => $data["ruc"]));
+			$company = $this->general->filter("company", ["tax_id" => $data["tax_id"]]);
 			if ($company){
 				$provider_id = $company[0]->id;
-				$this->general->update("provider", $company[0]->id, $data);
-			}else $provider_id = $this->general->insert("provider", $data);
+				$this->general->update("company", $company[0]->id, $data);
+			}else $provider_id = $this->general->insert("company", $data);
 			
-			$this->general->update("product", $product_id, array("provider_id" => $provider_id));
+			$this->general->update("product", $product_id, ["provider_id" => $provider_id]);
 			
-			$provider = $this->general->id("provider", $provider_id);
+			$provider = $this->general->id("company", $provider_id);
 			$product = $this->general->id("product", $product_id);
-			$this->utility_lib->add_log("provider_save", $product->description." > ".$provider->company);
+			$this->utility_lib->add_log("provider_save", $product->description." > ".$provider->name);
 			
 			$type = "success";
 			$msg = $this->lang->line('success_spv');

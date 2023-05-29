@@ -35,7 +35,7 @@ class Config extends CI_Controller {
 		$roles = $this->general->all("role", "id", "asc");
 		foreach($roles as $item) $roles_arr[$item->id] = $item->name;
 		
-		$accounts = $this->general->all("account", "registed_at", "desc", 20, 0);
+		$accounts = $this->general->all("account", "email", "asc", 20, 0);
 		foreach($accounts as $item) $item->person = $this->general->id("person", $item->person_id)->name;
 		
 		$exam_category_arr = [];
@@ -83,7 +83,7 @@ class Config extends CI_Controller {
 			"departments" => $this->general->all("address_department", "name", "asc"),
 			"provinces" => $this->general->all("address_province", "name", "asc"),
 			"districts" => $this->general->all("address_district", "name", "asc"),
-			"company" => $this->general->id("company", 1),
+			"company" => $this->general->filter("company", ["is_owner" => true], null, null, "updated_at", "desc")[0],
 			"title" => $this->lang->line('setting'),
 			"main" => "config/index",
 			"init_js" => "config/index.js"
@@ -138,12 +138,14 @@ class Config extends CI_Controller {
 		
 		if ($this->utility_lib->check_access("config", "admin_account")){
 			$account = $this->general->id("account", $this->input->post("id"));
-			if ($this->general->delete("account", ["id" => $account->id])){
-				$this->utility_lib->add_log("account_delete", $account->email);
-				
-				$type = "success";
-				$msg = $this->lang->line('success_dac');
-			}else $msg = $this->lang->line('error_internal');
+			if ($account){
+				if ($this->general->delete("account", ["id" => $account->id])){
+					$this->utility_lib->add_log("account_delete", $account->email);
+					
+					$type = "success";
+					$msg = $this->lang->line('success_dac');
+				}else $msg = $this->lang->line('error_internal');
+			}else $msg = $this->lang->line('error_internal_refresh');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -195,41 +197,28 @@ class Config extends CI_Controller {
 	}
 	
 	public function update_company_data(){
-		$datas = $this->input->post();
+		$data = $this->input->post();
 		$type = "error"; $msgs = []; $msg = null;
 		
 		$this->load->library('my_val');
-		$msgs = $this->my_val->config_company($msgs, "com_", $datas);
+		$msgs = $this->my_val->config_company($msgs, "uc_", $data);
 		
 		if (!$msgs){
-			$datas["ubigeo"] = $this->general->id("address_district", $datas["district_id"])->ubigeo;
-			$datas["updated_by"] = $this->session->userdata('aid');
-			$datas["updated_at"] = date("Y-m-d H:i:s", time());
-			if ($_FILES["sunat_cert_file"]["name"]){
-				$upload_dir = "uploaded/sunat";
-				if(!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
-				$upload_dir = $upload_dir."/";
-				
-				$this->load->library('upload');
-				$config_upload = [
-					'upload_path' => $upload_dir,
-					'allowed_types' => '*',
-					'max_size' => 0,
-					'overwrite' => true
-				];
-				
-				$this->upload->initialize($config_upload);
-				if ($this->upload->do_upload("sunat_cert_file")){
-					$result = $this->upload->data();
-					$datas["sunat_cert_filename"] = $result["file_name"];
-				}else $msg = $this->upload->display_errors("<span>","</span>");
-			}
+			$data["is_owner"] = true;
+			$data["updated_at"] = date("Y-m-d H:i:s", time());
 			
-			if (!$msg) if ($this->general->update("company", 1, $datas)){
+			$com_id = null;
+			$company_rec = $this->general->filter("company", ["tax_id" => $data["tax_id"]]);
+			$this->general->update("company", null, ["is_owner" => false]);
+			if ($company_rec){
+				$com_id = $company_rec[0]->id;
+				$this->general->update("company", $com_id, $data);
+			}else $com_id = $this->general->insert("company", $data);
+			
+			if ($com_id){
 				$this->utility_lib->add_log("company_update", null);
-				
 				$type = "success";
-				$msg = $this->lang->line("success_cup");
+				$msg = $this->lang->line("success_cup");	
 			}else $msg = $this->lang->line("error_internal");
 		}else $msg = $this->lang->line("error_occurred");
 		
@@ -286,7 +275,7 @@ class Config extends CI_Controller {
 		$roles = $this->general->all("role", "id", "asc");
 		foreach($roles as $item) $roles_arr[$item->id] = $this->lang->line('role_'.$item->name);
 		
-		$accounts = $this->general->all("account", "registed_at", "desc", 20, $this->input->post("offset"));
+		$accounts = $this->general->all("account", "email", "asc", 20, $this->input->post("offset"));
 		foreach($accounts as $item){
 			$item->role = $roles_arr[$item->role_id];
 			$item->person = $this->general->id("person", $item->person_id)->name;
@@ -443,5 +432,10 @@ class Config extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);
+	}
+	
+	public function load_more_medicine(){
+		header('Content-Type: application/json');
+		echo json_encode($this->general->all("medicine", "name", "asc", 20, $this->input->post("offset")));
 	}
 }
