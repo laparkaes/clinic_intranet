@@ -270,15 +270,29 @@
 							<div class="col-md-12 d-flex justify-content-between">
 								<h5 class="text-primary"><?= $this->lang->line("title_medicine_admin") ?></h5>
 								<div class="btn-group">
-									<button type="button" class="btn btn-primary">
+									<button type="button" class="btn control_bl_medicine btn-primary" id="btn_list" value="bl_medicine_list">
 										<i class="fas fa-list"></i>
 									</button>
-									<button type="button" class="btn btn-outline-primary">
+									<button type="button" class="btn control_bl_medicine btn-outline-primary" value="bl_medicine_add">
 										<i class="fas fa-plus"></i>
 									</button>
 								</div>
 							</div>
-							<div class="col-md-12">
+						</div>
+						<div class="row">
+							<div class="col-md-12 bl_medicine d-none" id="bl_medicine_add">
+								<form class="form-row" id="form_register_medicine" action="#">
+									<div class="form-group col-md-12">
+										<label><?= $this->lang->line('lb_medicine') ?></label>
+										<input type="text" class="form-control" name="name">
+										<div class="sys_msg" id="rm_name_msg"></div>
+									</div>
+									<div class="form-group col-md-12 pt-3">
+										<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
+									</div>
+								</form>
+							</div>
+							<div class="col-md-12 bl_medicine" id="bl_medicine_list">
 								<div class="table-responsive">
 									<table class="table table-responsive-md">
 										<thead>
@@ -294,7 +308,7 @@
 												<td><?= $i + 1 ?></td>
 												<td><?= $item->name ?></td>
 												<td class="text-right">
-													<button type="button" class="btn btn-danger shadow btn-xs sharp remove_medicine" value="<?= $item->id ?>">
+													<button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_medicine" value="<?= $item->id ?>">
 														<i class="fas fa-trash"></i>
 													</button>
 												</td>
@@ -507,6 +521,7 @@
 	<input type="hidden" id="warning_rac" value="<?= $this->lang->line('warning_rac') ?>">
 	<input type="hidden" id="warning_rpa" value="<?= $this->lang->line('warning_rpa') ?>">
 	<input type="hidden" id="warning_rpr" value="<?= $this->lang->line('warning_rpr') ?>">
+	<input type="hidden" id="warning_rme" value="<?= $this->lang->line('warning_rme') ?>">
 	<input type="hidden" id="txt_view_all" value="<?= $this->lang->line('txt_view_all') ?>">
 </div>
 <div class="modal fade" id="md_admin_exam">

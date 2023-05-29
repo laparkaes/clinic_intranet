@@ -91,3 +91,7 @@ $lang['e_sunat_password'] = 'Ingrese contraseña de Sunat.';
 $lang['e_enter_profile_name'] = 'Ingrese nombre de perfil.';
 $lang['e_duplate_profile_name'] = 'Nombre de perfil existe.';
 $lang['e_select_profile_exams'] = 'Seleccione al menos un examen para perfil.';
+
+/* medicine */
+$lang['e_enter_medicine_name'] = 'Ingrese nombre de medicina.';
+$lang['e_duplate_medicine_name'] = 'Nombre de medicina existe.';

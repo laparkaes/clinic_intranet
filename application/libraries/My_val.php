@@ -406,4 +406,12 @@ class My_val{
 		
 		return $msgs;
 	}
+	
+	public function medicine($msgs, $prefix, $data){
+		if (!$data["name"]) $msgs = $this->set_msg($msgs, $prefix."name_msg", "error", "e_enter_medicine_name");
+		elseif ($this->CI->general->filter("medicine", $data)) 
+			$msgs = $this->set_msg($msgs, $prefix."name_msg", "error", "e_duplate_medicine_name");
+			
+		return $msgs;
+	}
 }

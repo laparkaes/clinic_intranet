@@ -46,3 +46,5 @@ $lang['log_voucher_register'] = 'Registrar comprobante';
 $lang['log_report_generate'] = 'Generar reporte';
 $lang['log_profile_register'] = 'Registrar perfil de examen';
 $lang['log_profile_delete'] = 'Eliminar perfil de examen';
+$lang['log_medicine_register'] = 'Registrar medicina';
+$lang['log_medicine_delete'] = 'Eliminar medicina';

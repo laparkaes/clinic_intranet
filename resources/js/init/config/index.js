@@ -212,6 +212,19 @@ function remove_exam(ex_id){
 	});
 }
 
+function register_medicine(dom){
+	ajax_form(dom, "config/register_medicine").done(function(res) {
+		set_msg(res.msgs);
+		swal_redirection(res.type, res.msg, window.location.href);
+	});
+}
+
+function remove_medicine(dom){
+	ajax_simple_warning({id: $(dom).val()}, "config/remove_medicine", $("#warning_rme").val()).done(function(res) {
+		swal_redirection(res.type, res.msg, window.location.href);
+	});
+}
+
 $(document).ready(function() {
 	//account
 	$("#form_register_account").submit(function(e) {e.preventDefault(); register_account(this);});
@@ -244,7 +257,9 @@ $(document).ready(function() {
 	$(".btn_remove_exam").on('click',(function(e) {remove_exam($(this).val());}));
 	
 	//medicine
-	
+	$("#form_register_medicine").submit(function(e) {e.preventDefault(); register_medicine(this);});
+	$(".control_bl_medicine").on('click',(function(e) {control_bl_group(this, "medicine");}));
+	$(".btn_remove_medicine").on('click',(function(e) {remove_medicine(this);}));
 	
 	//log
 	set_datatable("log_list", 25, false);

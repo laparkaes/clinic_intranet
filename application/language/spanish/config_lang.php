@@ -13,6 +13,7 @@ $lang['error_dex'] = 'Hay un examen registrado.';//error_duplicate_exam
 $lang['error_een'] = 'Ingrese el nombre del examen.';//error_enter_exam_name
 $lang['error_sec'] = 'Elija una categoría para el examen.';//error_select_exam_category
 $lang['error_uex'] = 'No se pudo eliminar debido a que este examen ha sido asignado por algún registro de consulta.';//error_using_exam
+$lang['error_nmr'] = 'Medicina es aplicada en alguna consulta del sistema.';//error_no_medicine_remove
 $lang['success_rac'] = 'Usuario ha sido registrado.';//success_register_account
 $lang['success_cup'] = 'Empresa ha sido actualizada.';//success_company_update
 $lang['success_dac'] = 'Usuario ha sido eliminado.';//success_delete_account
@@ -26,9 +27,12 @@ $lang['success_rec'] = 'Categoría del examen ha sido registrada.';//success_reg
 $lang['success_dec'] = 'Categoría del examen ha sido eliminada.';//success_delete_exam_category
 $lang['success_rex'] = 'El examen ha sido registrado.';//success_register_exam
 $lang['success_dex'] = 'El examen ha sido eliminado.';//success_delete_exam
+$lang['success_rem'] = 'El medicina ha sido registrada.';//success_register_medicine
+$lang['success_dem'] = 'Medicina de examen ha sido eliminada.';//success_delete_exam_medicine
 $lang['warning_rac'] = '¿Desea eliminar usuario elegido?';//warning_remove_account
 $lang['warning_rpa'] = '¿Desea restablecer contraseña de usuario por su número de documento de identidad?';//warning_reset_password
 $lang['warning_rpr'] = '¿Desea eliminar perfil elegido?';//warning_remove_profile
+$lang['warning_rme'] = '¿Desea eliminar medicina elegida?';//warning_remove_medicine
 
 //component
 $lang['btn_load_more'] = 'Cargar más';

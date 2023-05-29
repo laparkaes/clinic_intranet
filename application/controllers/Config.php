@@ -402,4 +402,46 @@ class Config extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "data" => $this->get_exam_data()]);
 	}
+	
+	public function register_medicine(){
+		$type = "error"; $msgs = []; $msg = null;
+		
+		if ($this->utility_lib->check_access("config", "admin_medicine")){
+			$data = $this->input->post();
+			
+			$this->load->library('my_val');
+			$msgs = $this->my_val->medicine($msgs, "rm_", $data);
+			
+			if (!$msgs){
+				if ($this->general->insert("medicine", $data)){
+					$this->utility_lib->add_log("medicine_register", $data["name"]);
+						
+					$type = "success";
+					$msg = $this->lang->line("success_rem");	
+				}else $msg = $this->lang->line('error_internal');
+			}else $msg = $this->lang->line("error_occurred");
+		}else $msg = $this->lang->line('error_no_permission');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
+	}
+	
+	public function remove_medicine(){
+		$type = "error"; $msg = null;
+		
+		if ($this->utility_lib->check_access("config", "admin_medicine")){
+			$medicine = $this->general->id("medicine", $this->input->post("id"));
+			if (!$this->general->filter("appointment_medicine", ["medicine_id" => $medicine->id])){
+				if ($this->general->delete("medicine", ["id" => $medicine->id])){
+					$this->utility_lib->add_log("medicine_delete", $medicine->name);
+					
+					$type = "success";
+					$msg = $this->lang->line('success_dep');
+				}else $msg = $this->lang->line('error_internal');
+			}else $msg = $this->lang->line('error_nmr');
+		}else $msg = $this->lang->line('error_no_permission');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
+	}
 }
