@@ -1,9 +1,0 @@
-if (!$this->utility_lib->check_access("dashboard", "index")) redirect("/errors/no_permission");
-
-if (!$this->utility_lib->check_access("dashboard", "index")) $msg = $this->lang->line('error_no_permission');
-
-
-		if ($this->utility_lib->check_access("surgery", "register")){
-		}else $msg = $this->lang->line('error_no_permission');
-
-swal("error", res.msg);

@@ -440,7 +440,7 @@ class Appointment extends CI_Controller {
 	}
 
 	private function save_data($data, $tb_name, $success_msg){
-		$data = $this->utility_lib->clean_array($data);
+		foreach($data as $i => $val) if (!$val) $data[$i] = null;
 					
 		$f = array("appointment_id" => $data["appointment_id"]);
 		$app_bd = $this->general->filter($tb_name, $f);

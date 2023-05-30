@@ -19,11 +19,6 @@ class Utility_lib{
 		$this->CI->load->model('general_model','general');
 	}
 	
-	public function clean_array($data){
-		foreach($data as $i => $val) if (!$val) $data[$i] = null;
-		return $data;
-	}
-	
 	public function age_calculator($birthday, $need_number = false){
 		$date1 = date_create($birthday);
 		$date2 = date_create(date("Y-m-d"));
@@ -78,7 +73,7 @@ class Utility_lib{
 			->setCodLocal('0000'); // Codigo de establecimiento asignado por SUNAT, 0000 por defecto.
 			
 		$company = (new Company())
-			->setRuc($co->ruc)
+			->setRuc($co->tax_id)
 			->setRazonSocial($co->name)
 			->setNombreComercial($co->name)
 			->setAddress($address);
@@ -127,41 +122,6 @@ class Utility_lib{
 		$invoice->setDetails($items)->setLegends([$legend]);
 		
 		return $invoice;
-	}
-	
-	public function set_voucher_datas($payment_id){
-		$payment = $this->CI->general->id("payment", $payment_id);
-		if ($payment){
-			$payment->currency = $this->CI->sl_option->id($payment->currency_id)->description;
-			$payment->payment_method = $this->CI->sl_option->id($payment->payment_method_id)->description;
-			$payment->voucher_type = $this->CI->sl_option->id($payment->voucher_type_id)->description;
-			$payment->payer_doc_type = $this->CI->sl_option->id($payment->payer_doc_type_id)->description;
-			
-			$company_rec = $this->CI->general->id("company", 1);
-			$company_rec->department = $this->CI->general->id("address_department", $company_rec->department_id)->name;
-			$company_rec->province = $this->CI->general->id("address_province", $company_rec->province_id)->name;
-			$company_rec->district = $this->CI->general->id("address_district", $company_rec->district_id)->name;
-			
-			$invoice = $this->set_greenter($payment, $company_rec);
-			
-			//set qr string
-			$qr_data = array(
-				$invoice->getCompany()->getRuc(), $invoice->getTipoDoc(), $invoice->getSerie(), $invoice->getCorrelativo(), $invoice->getTotalImpuestos(), 
-				$invoice->getMtoImpVenta(), $invoice->getFechaEmision()->format('Y-m-d'), $invoice->getClient()->getTipoDoc(), $invoice->getClient()->getNumDoc(), $payment->sunat_hash
-			);
-			//'RUC|TIPO DE DOCUMENTO|SERIE|NUMERO|MTO TOTAL IGV|MTO TOTAL DEL COMPROBANTE|FECHA DE EMISION|TIPO DE DOCUMENTO ADQUIRENTE|NUMERO DE DOCUMENTO ADQUIRENTE'
-			
-			$datas = array(
-				"company" => $company_rec,
-				"payment" => $payment,
-				"title" => $this->CI->lang->line($this->CI->sl_option->id($payment->voucher_type_id)->description."_u")." ".$this->CI->lang->line("of_electronic_sale_u"),
-				"logo" => base64_encode(file_get_contents(FCPATH."/resorces/images/logo.png")),
-				"resolution_text" => $this->CI->lang->line("resolution_num")." ".$company_rec->sunat_resolution,
-				"qr_text" => implode("|", $qr_data)
-			);
-			
-			return array("invoice" => $invoice, "datas" => $datas);
-		}else return null;
 	}
 	
 	public function add_log($code, $detail){

@@ -18,6 +18,7 @@ class Sale extends CI_Controller {
 		$this->load->model('account_model','account');
 		$this->load->model('specialty_model','specialty');
 		$this->nav_menu = "sale";
+		$this->sunat_resolution = "0180050001138";
 	}
 	
 	private function update_balance($sale_id){

@@ -65,7 +65,12 @@ class Config extends CI_Controller {
 		$log_codes = $this->general->all("log_code");
 		foreach($log_codes as $item) $log_code_arr[$item->id] = $this->lang->line('log_'.$item->code);
 		
-		$logs = $this->general->filter("log", ["registed_at <=" => date("Y-m-d 00:00:00", strtotime("-1 month")), "registed_at <=" => date("Y-m-d 00:00:00", strtotime("+1 day"))], null, null, "registed_at", "desc");
+		$logs = $this->general->all("log", "registed_at", "desc", 20, 0);
+		foreach($logs as $item){
+			$account_aux = $this->general->id("account", $item->account_id);
+			if ($account_aux) $item->account = $account_aux->email; else $item->account = null;
+			$item->log_txt = $log_code_arr[$item->log_code_id];
+		}
 		
 		$data = array(
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
@@ -437,5 +442,21 @@ class Config extends CI_Controller {
 	public function load_more_medicine(){
 		header('Content-Type: application/json');
 		echo json_encode($this->general->all("medicine", "name", "asc", 20, $this->input->post("offset")));
+	}
+	
+	public function load_more_log(){
+		$log_code_arr = [];
+		$log_codes = $this->general->all("log_code");
+		foreach($log_codes as $item) $log_code_arr[$item->id] = $this->lang->line('log_'.$item->code);
+		
+		$logs = $this->general->all("log", "registed_at", "desc", 20, $this->input->post("offset"));
+		foreach($logs as $item){
+			$account_aux = $this->general->id("account", $item->account_id);
+			if ($account_aux) $item->account = $account_aux->email; else $item->account = null;
+			$item->log_txt = $log_code_arr[$item->log_code_id];
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode($logs);
 	}
 }

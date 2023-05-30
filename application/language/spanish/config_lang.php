@@ -148,7 +148,7 @@ $lang['lb_password'] = 'Contraseña';
 
 //log
 $lang['title_log'] = 'Historial';
-$lang['title_system_log'] = 'Historial de Sistema';
+$lang['title_system_log'] = 'Historial del Sistema';
 $lang['msg_last_6_months'] = 'Registros de último mes.';
 $lang['th_action'] = 'Acción';
 $lang['th_detail'] = 'Detalle';

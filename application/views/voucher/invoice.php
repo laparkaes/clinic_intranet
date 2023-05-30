@@ -28,7 +28,7 @@
 		</tr>
 	</table>
 	<div class="text-center mt">
-		<div><strong><?= $this->lang->line('label_ruc') ?>: <?= $company->ruc ?></strong></div>
+		<div><strong><?= $this->lang->line('label_ruc') ?>: <?= $company->tax_id ?></strong></div>
 		<div><strong><?= strtoupper($voucher->type)." ".$this->lang->line("of_electronic_sale_u") ?></strong></div>
 		<div><strong><?= $title ?></strong></div>
 	</div>
@@ -89,7 +89,7 @@
 	</div>
 	<div class="mt text-center">
 		<div><img src="data:image/png;base64,<?= $qr ?>" style="max-width: 100px;"/></div>
-		<div><?= $this->lang->line("resolution_num").": ".$company->sunat_resolution ?></div>
+		<div><?= $this->lang->line("resolution_num").": ".$this->sunat_resolution ?></div>
 		<div><?= $this->lang->line("hash_code").": ".$voucher->hash ?></div>
 	</div>
 </body>

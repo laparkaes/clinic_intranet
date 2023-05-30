@@ -283,6 +283,19 @@ function load_more_medicine(){
 }
 /* end medicine */
 
+/* start log */
+function load_more_log(){
+	var offset = $("#log_list").children().length;
+	ajax_simple({offset: offset}, "config/load_more_log").done(function(res) {
+		if (res.length > 0){
+			$.each(res, function(index, item) {
+				$("#log_list").append('<tr><td>' + (offset + index + 1) + '</td><td>' + item.account + '</td><td>' + item.log_txt + '<br/>' + item.detail + '</td><td>' + item.registed_at + '</td></tr>');
+			});
+		}else $("#btn_load_more_log").addClass("d-none");
+	});
+}
+/* end log */
+
 $(document).ready(function() {
 	//account
 	$("#form_register_account").submit(function(e) {e.preventDefault(); register_account(this);});
@@ -322,5 +335,5 @@ $(document).ready(function() {
 	$("#btn_load_more_medicine").on('click',(function(e) {load_more_medicine();}));
 	
 	//log
-	set_datatable("log_list", 25, false);
+	$("#btn_load_more_log").on('click',(function(e) {load_more_log();}));
 });

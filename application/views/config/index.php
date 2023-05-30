@@ -373,11 +373,10 @@
 								<div class="form-row">
 									<div class="form-group col-md-4">
 										<label><?= $this->lang->line('lb_tax_id') ?></label>
-										
 										<div class="input-group">
                                             <input type="text" class="form-control" id="uc_tax_id" value="<?= $company->tax_id ?>" name="tax_id">
                                             <div class="input-group-append">
-                                                <button class="btn btn-primary" id="btn_search_company" type="button">
+                                                <button class="btn btn-primary border-0" id="btn_search_company" type="button">
 													<i class="fas fa-search"></i>
 												</button>
                                             </div>
@@ -460,42 +459,35 @@
 					</div>
 					<div class="tab-pane fade" id="bl_history_admin">
 						<div class="row">
-							<div class="col-md-12 d-flex justify-content-between">
-								<h5 class="text-primary"><?= $this->lang->line('title_system_log') ?></h5>
-								<small class="text-info"><?= $this->lang->line('msg_last_6_months') ?></small>
-							</div>
-							<div class="col-md-2">
-								<div class="mb-3" id="log_list_length_new"></div>
-							</div>
-							<div class="col-md-6"></div>
-							<div class="col-md-4">
-								<div class="mb-3" id="log_list_filter_new"></div>
-							</div>
 							<div class="col-md-12">
+								<h5 class="text-primary mb-3"><?= $this->lang->line('title_system_log') ?></h5>
 								<div class="table-responsive">
-									<table id="log_list" class="table display">
+									<table class="table display">
 										<thead>
 											<tr>
 												<th>#</th>
 												<th><?= $this->lang->line('lb_email') ?></th>
-												<th><?= $this->lang->line('th_action') ?></th>
 												<th><?= $this->lang->line('th_detail') ?></th>
 												<th><?= $this->lang->line('th_time') ?></th>
 											</tr>
 										</thead>
-										<tbody>
+										<tbody id="log_list">
 											<?php foreach($logs as $i => $item){ ?>
 											<tr>
 												<td><?= $i + 1 ?></td>
-												<td><?= $account_arr[$item->account_id] ?></td>
-												<td><?= $log_code_arr[$item->log_code_id] ?></td>
-												<td><?= $item->detail ?></td>
-												<td><?= str_replace(" ","<br/>", $item->registed_at) ?></td>
+												<td><?= $item->account ?></td>
+												<td><?= $item->log_txt ?><br/><?= $item->detail ?></td>
+												<td><?= $item->registed_at ?></td>
 											</tr>
 											<?php } ?>
 										</tbody>
 									</table>
-								</div>
+									<div class="text-center mt-3 pb-1">
+										<button type="button" class="btn btn-outline-primary" id="btn_load_more_log">
+											<?= $this->lang->line('btn_load_more') ?>
+										</button>
+									</div>
+								</div>	
 							</div>
 						</div>
 					</div>
