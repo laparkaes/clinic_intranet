@@ -56,28 +56,30 @@ class Dashboard extends CI_Controller {
 		$series = $xaxis = array();
 		foreach($currencies as $currency){
 			$filter["currency_id"] = $currency->id;
+			$filter["updated_at >="] = date('Y-m-01 00:00:00', strtotime(date("Y-m-d", strtotime("-5 months"))));
+			$filter["updated_at <="] = date('Y-m-t 23:59:59', strtotime(date("Y-m-d")));
 			
-			$values = $months = array(); 
-			setlocale(LC_TIME, 'spanish');
-			for($i = 11; $i >= 0; $i--){//last 12 months including this month
-				$actual = date("Y-m-d", strtotime("-".$i." months"));
-				$filter["updated_at >="] = date('Y-m-01 00:00:00', strtotime($actual));
-				$filter["updated_at <="] = date('Y-m-t 23:59:59', strtotime($actual));
-				$value = round($this->general->sum("sale", "total", $filter)->total, 2);
-				if (!$value) $value = null;
-				array_push($values, $value);
-				
-				if (!$xaxis){
-					$aux = DateTime::createFromFormat("Y-m-d", $actual)->getTimestamp();
-					$month = substr(ucfirst(strftime("%B", $aux)), 0, 3);
-					if (strftime("%m", $aux) == 1) $month = $month." ".strftime("%Y", $aux);
+			if ($this->general->sum("sale", "total", $filter)->total){
+				$values = $months = array(); 
+				setlocale(LC_TIME, 'spanish');
+				for($i = 5; $i >= 0; $i--){//last 6 months including this month
+					$actual = date("Y-m-d", strtotime("-".$i." months"));
+					$filter["updated_at >="] = date('Y-m-01 00:00:00', strtotime($actual));
+					$filter["updated_at <="] = date('Y-m-t 23:59:59', strtotime($actual));
+					$values[] = round($this->general->sum("sale", "total", $filter)->total, 2);
 					
-					array_push($months, $month);	
+					if (!$xaxis){
+						$aux = DateTime::createFromFormat("Y-m-d", $actual)->getTimestamp();
+						$month = substr(ucfirst(strftime("%B", $aux)), 0, 3);
+						if (strftime("%m", $aux) == 1) $month = $month." ".strftime("%Y", $aux);
+						
+						array_push($months, $month);	
+					}
 				}
+				
+				array_push($series, array("name" => $currency->description, "data" => $values));
+				if (!$xaxis) $xaxis = $months;
 			}
-			
-			array_push($series, array("name" => $currency->description, "data" => $values));
-			if (!$xaxis) $xaxis = $months;
 		}
 		
 		header('Content-Type: application/json');

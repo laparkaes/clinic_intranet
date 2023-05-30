@@ -17,6 +17,7 @@ $lang['surgery'] = 'Cirugía';
 $lang['surgeries'] = 'Cirugías';
 $lang['hd_schedule'] = 'Horario';
 $lang['hd_place'] = 'Lugar';
+$lang['hd_specialty'] = 'Especialidad';
 $lang['hd_doctor'] = 'Médico';
 $lang['hd_patient'] = 'Paciente';
 $lang['hd_status'] = 'Estado';

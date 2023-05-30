@@ -46,12 +46,34 @@
 		</div>
 	</div>
 </div>
-<div class="col-12">
-	<h4 class="mb-3"><?= $this->lang->line('title_monthly_income') ?></h4>
-</div>
-<div class="col-md-12">
+<div class="col-md-6">
 	<div class="card">
 		<div class="card-body">
+			<h5><?= $this->lang->line('tab_monthly_income') ?></h5>
+			<div id="chart_monthly_income"></div>
+		</div>
+	</div>
+</div>
+<div class="col-md-6">
+	<div class="card">
+		<div class="card-body">
+			<h5><?= $this->lang->line('tab_sale_type') ?></h5>
+			<div id="chart_monthly_income"></div>
+		</div>
+	</div>
+</div>
+<div class="col-md-6">
+	<div class="card">
+		<div class="card-body">
+			<h5><?= $this->lang->line('tab_appointment_surgery') ?></h5>
+			<div id="chart_monthly_income"></div>
+		</div>
+	</div>
+</div>
+<div class="col-md-6">
+	<div class="card">
+		<div class="card-body">
+			<h5><?= $this->lang->line('tab_best_seller') ?></h5>
 			<div id="chart_monthly_income"></div>
 		</div>
 	</div>

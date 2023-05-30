@@ -44,6 +44,7 @@
 									<th><strong><?= $this->lang->line('hd_total') ?></strong></th>
 									<th><strong><?= $this->lang->line('hd_balance') ?></strong></th>
 									<th><strong><?= $this->lang->line('hd_status') ?></strong></th>
+									<th><strong><?= $this->lang->line('hd_sunat') ?></strong></th>
 									<th></th>
 								</tr>
 							</thead>
@@ -63,6 +64,11 @@
 										<span class="badge light badge-<?= $item->status->color ?>">
 											<?= $item->status->lang ?>
 										</span>
+									</td>
+									<td>
+										<?php if ($item->voucher){ ?>
+										<i class="fas fa-circle text-<?= $item->voucher->color ?>" title="<?= $item->voucher->sunat_msg ?>"></i>
+										<?php } ?>
 									</td>
 									<td class="text-right">
 										<a href="<?= base_url() ?>sale/detail/<?= $item->id ?>">

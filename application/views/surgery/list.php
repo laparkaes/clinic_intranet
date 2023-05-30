@@ -40,8 +40,9 @@
 								<tr>
 									<th><strong>#</strong></th>
 									<th><strong><?= $this->lang->line('hd_itinerary') ?></strong></th>
-									<th><strong><?= $this->lang->line('hd_doctor') ?></strong></th>
-									<th><strong><?= $this->lang->line('hd_patient') ?></strong></th>
+									<th><strong><?= $this->lang->line('hd_room') ?></strong></th>
+									<th><strong><?= $this->lang->line('hd_specialty') ?></strong></th>
+									<th><strong><?= $this->lang->line('hd_doctor') ?> / <?= $this->lang->line('hd_patient') ?></strong></th>
 									<th><strong><?= $this->lang->line('hd_status') ?></strong></th>
 									<th></th>
 								</tr>
@@ -51,12 +52,12 @@
 								<tr>
 									<td><strong><?= number_format(($f_url["page"] - 1) * 25 + 1 + $i) ?></strong></td>
 									<td>
-										<div class="text-primary"><?= $item->room ?></div>
 										<div class="text-nowrap"><?= date("h:i A", strtotime($item->schedule_from)); ?></div>
-										<div><small><?= date("Y-m-d", strtotime($item->schedule_from)); ?></small></div>
+										<div><?= date("Y-m-d", strtotime($item->schedule_from)); ?></div>
 									</td>
-									<td><?= $item->doctor ?><br/><small><?= $item->specialty ?></small></td>
-									<td><?= $item->patient ?></td>
+									<td class="text-nowrap"><?= $item->room ?></td>
+									<td><?= $item->specialty ?></td>
+									<td><?= $item->doctor ?><br/>/ <?= $item->patient ?></td>
 									<td><span class="badge light badge-<?= $status_arr[$item->status_id]->color ?>"><?= $this->lang->line($status_arr[$item->status_id]->code) ?></span></td>
 									<td class="text-right">
 										<a href="<?= base_url() ?>surgery/detail/<?= $item->id ?>">

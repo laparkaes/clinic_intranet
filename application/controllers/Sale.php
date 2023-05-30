@@ -63,6 +63,13 @@ class Sale extends CI_Controller {
 			$item->client = $this->general->id("person", $item->client_id);
 			$item->status = $this->general->id("status", $item->status_id);
 			$item->status->lang = $this->lang->line($item->status->code);
+			
+			$voucher = $this->general->filter("voucher", ["sale_id" => $item->id]);
+			if ($voucher){
+				$item->voucher = $voucher[0];
+				if ($item->voucher->sunat_sent) $item->voucher->color = "success";
+				else $item->voucher->color = "danger";
+			}else $item->voucher = null;
 		}
 		
 		$status = [
