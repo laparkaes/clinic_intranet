@@ -47,6 +47,50 @@ class Dashboard extends CI_Controller {
 		return $data;
 	}
 	
+	public function load_chart_data(){
+		$currencies = $this->general->all("currency");
+		$sale_types = $this->general->all("sale_type");
+		$yaxis = $series = [];
+		
+		setlocale(LC_TIME, 'spanish');
+		
+		$filter = ["status_id" => $this->general->filter("status", ["code" => "finished"])[0]->id];
+		foreach($currencies as $cur){
+			$filter["currency_id"] = $cur->id;
+			$filter["updated_at >="] = date('Y-m-01 00:00:00', strtotime(date("Y-m-d", strtotime("-5 months"))));
+			$filter["updated_at <="] = date('Y-m-t 23:59:59', strtotime(date("Y-m-d")));
+			
+			if ($this->general->sum("sale", "total", $filter)->total){
+				foreach($sale_types as $st){
+					$serie = [
+						"name" => $st->description,
+						"type" => "area",
+						"data" => [],
+					];
+					
+					$filter["sale_type_id"] = $st->id;
+					for($i = 5; $i >= 0; $i--){//last 6 months including this month
+						$actual = date("Y-m-t", strtotime("-".$i." months"));
+						$filter["updated_at >="] = date('Y-m-01 00:00:00', strtotime($actual));
+						$filter["updated_at <="] = date('Y-m-t 23:59:59', strtotime($actual));
+						$serie["data"][] = round($this->general->sum("sale", "total", $filter)->total, 2);
+					}
+					
+					echo $cur->description." ".$st->description."<br/><br/>";
+				
+					$yaxis[] = $cur->description;
+					$series[] = $serie;
+				}
+			}
+		}
+		
+		foreach($series as $item){
+			print_r($item);
+			echo "<br/>";
+		}
+		print_r($yaxis);
+	}
+	
 	public function load_chart_monthly_income(){
 		$currencies = $this->general->all("currency");
 		

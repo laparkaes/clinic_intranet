@@ -58,7 +58,7 @@
 	<div class="card">
 		<div class="card-body">
 			<h5><?= $this->lang->line('tab_sale_type') ?></h5>
-			<div id="chart_monthly_income"></div>
+			<div id="chart_sale_type"></div>
 		</div>
 	</div>
 </div>
