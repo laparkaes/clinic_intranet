@@ -11,3 +11,4 @@ $lang['tab_best_seller'] = 'Mas Vendidos';
 $lang['lb_appointments'] = 'Consultas';
 $lang['lb_surgeries'] = 'Cirugías';
 $lang['lb_sales'] = 'Ventas';
+$lang['txt_total'] = 'Total';

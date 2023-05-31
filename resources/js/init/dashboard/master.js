@@ -178,9 +178,20 @@ function set_chart(){
         chart.render();
 }
 
+function load_income_chart(currency_id){
+	ajax_simple({currency_id: currency_id}, "dashboard/load_income_chart").done(function(res) {
+		alert(res);
+		//swal(res.type, res.msg);
+		//if (res.type == "error") $(dom).prop('checked', !$(dom).is(':checked'));
+	});
+}
+
 $(document).ready(function() {
 	setTimeout(function(){
 		load_chart_monthly_income();
 		set_chart();
 	}, 1000);
+	
+	$(".btn_load_income_chart").on('click',(function(e) {load_income_chart($(this).val());}));
+	
 });
