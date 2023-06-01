@@ -6,6 +6,7 @@ class Dashboard extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		date_default_timezone_set('America/Lima');
+		setlocale(LC_TIME, 'spanish');
 		$this->lang->load("dashboard", "spanish");
 		$this->lang->load("system", "spanish");
 		$this->load->model('appointment_model','appointment');
@@ -13,6 +14,7 @@ class Dashboard extends CI_Controller {
 		$this->load->model('sl_option_model','sl_option');
 		$this->load->model('general_model','general');
 		$this->nav_menu = "dashboard";
+		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 	}
 	
 	public function index(){
@@ -53,13 +55,13 @@ class Dashboard extends CI_Controller {
 		}
 		
 		$data["currencies"] = $currencies;
+		$data["month"] = ucfirst(strftime("%B", DateTime::createFromFormat("Y-m-d", date("Y-m-d"))->getTimestamp()));
 		
 		return $data;
 	}
 	
 	public function load_income_chart(){
 		$currency = $this->general->id("currency", $this->input->post("currency_id"));
-		setlocale(LC_TIME, 'spanish');
 		
 		$xaxis = $series = [];
 		$filter = ["currency_id" => $currency->id];
@@ -98,89 +100,5 @@ class Dashboard extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode(["series" => $series, "xaxis" => $xaxis]);
-	}
-	
-	public function load_chart_data(){
-		
-		$currencies = $this->general->all("currency");
-		$sale_types = $this->general->all("sale_type");
-		$yaxis = $series = [];
-		
-		setlocale(LC_TIME, 'spanish');
-		
-		$filter = ["status_id" => $this->general->filter("status", ["code" => "finished"])[0]->id];
-		foreach($currencies as $cur){
-			$filter["currency_id"] = $cur->id;
-			$filter["updated_at >="] = date('Y-m-01 00:00:00', strtotime(date("Y-m-d", strtotime("-5 months"))));
-			$filter["updated_at <="] = date('Y-m-t 23:59:59', strtotime(date("Y-m-d")));
-			
-			if ($this->general->sum("sale", "total", $filter)->total){
-				foreach($sale_types as $st){
-					$serie = [
-						"name" => $st->description,
-						"type" => "area",
-						"data" => [],
-					];
-					
-					$filter["sale_type_id"] = $st->id;
-					for($i = 5; $i >= 0; $i--){//last 6 months including this month
-						$actual = date("Y-m-t", strtotime("-".$i." months"));
-						$filter["updated_at >="] = date('Y-m-01 00:00:00', strtotime($actual));
-						$filter["updated_at <="] = date('Y-m-t 23:59:59', strtotime($actual));
-						$serie["data"][] = round($this->general->sum("sale", "total", $filter)->total, 2);
-					}
-					
-					echo $cur->description." ".$st->description."<br/><br/>";
-				
-					$yaxis[] = $cur->description;
-					$series[] = $serie;
-				}
-			}
-		}
-		
-		foreach($series as $item){
-			print_r($item);
-			echo "<br/>";
-		}
-		print_r($yaxis);
-	}
-	
-	public function load_chart_monthly_income(){
-		$currencies = $this->general->all("currency");
-		
-		$status_finished = $this->general->filter("status", array("code" => "finished"))[0];
-		$filter = array("status_id" => $status_finished->id);
-		
-		$series = $xaxis = array();
-		foreach($currencies as $currency){
-			$filter["currency_id"] = $currency->id;
-			$filter["updated_at >="] = date('Y-m-01 00:00:00', strtotime(date("Y-m-d", strtotime("-5 months"))));
-			$filter["updated_at <="] = date('Y-m-t 23:59:59', strtotime(date("Y-m-d")));
-			
-			if ($this->general->sum("sale", "total", $filter)->total){
-				$values = $months = array(); 
-				setlocale(LC_TIME, 'spanish');
-				for($i = 5; $i >= 0; $i--){//last 6 months including this month
-					$actual = date("Y-m-d", strtotime("-".$i." months"));
-					$filter["updated_at >="] = date('Y-m-01 00:00:00', strtotime($actual));
-					$filter["updated_at <="] = date('Y-m-t 23:59:59', strtotime($actual));
-					$values[] = round($this->general->sum("sale", "total", $filter)->total, 2);
-					
-					if (!$xaxis){
-						$aux = DateTime::createFromFormat("Y-m-d", $actual)->getTimestamp();
-						$month = substr(ucfirst(strftime("%B", $aux)), 0, 3);
-						if (strftime("%m", $aux) == 1) $month = $month." ".strftime("%Y", $aux);
-						
-						array_push($months, $month);	
-					}
-				}
-				
-				array_push($series, array("name" => $currency->description, "data" => $values));
-				if (!$xaxis) $xaxis = $months;
-			}
-		}
-		
-		header('Content-Type: application/json');
-		echo json_encode(array("series" => $series, "xaxis" => $xaxis));
 	}
 }

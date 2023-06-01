@@ -14,6 +14,7 @@ class Doctor extends CI_Controller {
 		$this->load->model('appointment_model','appointment');
 		$this->load->model('status_model','status');
 		$this->nav_menu = "doctor";
+		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 	}
 	
 	public function index(){

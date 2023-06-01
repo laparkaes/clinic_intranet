@@ -1,5 +1,5 @@
 <div class="col-12">
-	<h4 class="mb-3"><?= $this->lang->line('title_monthly_resume') ?></h4>
+	<h4 class="mb-3"><?= $this->lang->line('title_resume_of')." ".$month ?></h4>
 </div>
 <div class="col-md-4">
 	<div class="widget-stat card">
@@ -56,22 +56,6 @@
 				<?php $cl = "-outline";} ?>
 			</div>
 		</div>
-		<div class="card-body" id="chart_monthly_income"></div>
-	</div>
-</div>
-<div class="col-md-6">
-	<div class="card">
-		<div class="card-body">
-			<h5><?= $this->lang->line('tab_appointment_surgery') ?></h5>
-			<div id="chart_monthly_income"></div>
-		</div>
-	</div>
-</div>
-<div class="col-md-6">
-	<div class="card">
-		<div class="card-body">
-			<h5><?= $this->lang->line('tab_best_seller') ?></h5>
-			<div id="chart_monthly_income"></div>
-		</div>
+		<div class="card-body pt-0" id="chart_monthly_income"></div>
 	</div>
 </div>

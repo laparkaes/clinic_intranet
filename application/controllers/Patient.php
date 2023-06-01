@@ -16,6 +16,7 @@ class Patient extends CI_Controller {
 		$this->load->model('status_model','status');
 		$this->load->model('patient_file_model','patient_file');
 		$this->nav_menu = "patient";
+		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 	}
 	
 	public function index(){

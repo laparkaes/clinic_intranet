@@ -118,7 +118,6 @@ class Auth extends CI_Controller {
 				unset($a["confirm"]);
 				$a["person_id"] = $person_id;
 				$a["password"] = password_hash($a["password"], PASSWORD_BCRYPT);
-				$a["active"] = true;
 				$a["registed_at"] = date('Y-m-d H:i:s', time());
 				$account_id = $this->general->insert("account", $a);
 				if ($account_id){

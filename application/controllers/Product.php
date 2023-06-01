@@ -10,6 +10,7 @@ class Product extends CI_Controller {
 		$this->lang->load("system", "spanish");
 		$this->load->model('product_model','product');
 		$this->nav_menu = "product";
+		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 	}
 	
 	public function index(){

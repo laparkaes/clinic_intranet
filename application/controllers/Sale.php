@@ -18,6 +18,7 @@ class Sale extends CI_Controller {
 		$this->load->model('account_model','account');
 		$this->load->model('specialty_model','specialty');
 		$this->nav_menu = "sale";
+		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 		$this->sunat_resolution = "0180050001138";
 	}
 	

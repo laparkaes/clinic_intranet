@@ -76,69 +76,79 @@
 		<div class="deznav">
             <div class="deznav-scroll">
 				<ul class="metismenu pt-0" id="menu">
-					<?php if (!strcmp("dashboard", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
+					<?php if (in_array("dashboard", $this->nav_menus)){
+						if (!strcmp("dashboard", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
                     <li class="<?= $ac ?>">
 						<a class="ai-icon" href="<?= base_url() ?>dashboard" aria-expanded="false">
-							<i class="fas fa-home fa-fw mr-2"></i>
-							<span class="nav-text"><?= $this->lang->line('nav_dashboard') ?></span>
+							<i class="fas fa-home fa-fw"></i>
+							<span class="nav-text ml-2"><?= $this->lang->line('nav_dashboard') ?></span>
 						</a>
                     </li>
-					<?php if (!strcmp("doctor", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
+					<?php } if (in_array("doctor", $this->nav_menus)){
+						if (!strcmp("doctor", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
                     <li class="<?= $ac ?>">
 						<a class="ai-icon" href="<?= base_url() ?>doctor" aria-expanded="false">
-							<i class="fas fa-user-md fa-fw mr-2"></i>
-							<span class="nav-text"><?= $this->lang->line('nav_doctors') ?></span>
+							<i class="fas fa-user-md fa-fw p-0"></i>
+							<span class="nav-text ml-2"><?= $this->lang->line('nav_doctors') ?></span>
 						</a>
 					</li>
-					<?php if (!strcmp("patient", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
+					<?php } if (in_array("patient", $this->nav_menus)){
+						if (!strcmp("patient", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
 					<li class="<?= $ac ?>">
 						<a class="ai-icon" href="<?= base_url() ?>patient" aria-expanded="false">
-							<i class="fas fa-user-injured fa-fw mr-2"></i>
-							<span class="nav-text"><?= $this->lang->line('nav_patients') ?></span>
+							<i class="fas fa-user-injured fa-fw p-0"></i>
+							<span class="nav-text ml-2"><?= $this->lang->line('nav_patients') ?></span>
 						</a>
 					</li>
-					<?php if (!strcmp("appointment", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
+					<?php } if (in_array("appointment", $this->nav_menus)){
+						if (!strcmp("appointment", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
 					<li class="<?= $ac ?>">
 						<a class="ai-icon" href="<?= base_url() ?>appointment" aria-expanded="false">
-							<i class="fas fa-notes-medical fa-fw mr-2"></i>
-							<span class="nav-text"><?= $this->lang->line('nav_appointments') ?></span>
+							<i class="fas fa-notes-medical fa-fw p-0"></i>
+							<span class="nav-text ml-2"><?= $this->lang->line('nav_appointments') ?></span>
 						</a>
 					</li>
-					<?php if (!strcmp("surgery", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
+					<?php } if (in_array("surgery", $this->nav_menus)){
+						if (!strcmp("surgery", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
 					<li class="<?= $ac ?>">
 						<a class="ai-icon" href="<?= base_url() ?>surgery" aria-expanded="false">
-							<i class="fas fa-file-medical-alt fa-fw mr-2"></i>
-							<span class="nav-text"><?= $this->lang->line('nav_surgeries') ?></span>
+							<i class="fas fa-file-medical-alt fa-fw p-0"></i>
+							<span class="nav-text ml-2"><?= $this->lang->line('nav_surgeries') ?></span>
 						</a>
 					</li>
-					<?php if (!strcmp("product", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
+					<?php } if (in_array("product", $this->nav_menus)){
+						if (!strcmp("product", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
 					<li class="<?= $ac ?>">
 						<a class="ai-icon" href="<?= base_url() ?>product" aria-expanded="false">
-							<i class="fas fa-box fa-fw mr-2"></i>
-							<span class="nav-text"><?= $this->lang->line('nav_products') ?></span>
+							<i class="fas fa-box fa-fw p-0"></i>
+							<span class="nav-text ml-2"><?= $this->lang->line('nav_products') ?></span>
 						</a>
 					</li>
-					<?php if (!strcmp("sale", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
+					<?php } if (in_array("sale", $this->nav_menus)){
+						if (!strcmp("sale", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
 					<li class="<?= $ac ?>">
 						<a class="ai-icon" href="<?= base_url() ?>sale" aria-expanded="false">
-							<i class="fas fa-shopping-basket fa-fw mr-2"></i>
-							<span class="nav-text"><?= $this->lang->line('nav_sales') ?></span>
+							<i class="fas fa-shopping-basket fa-fw p-0"></i>
+							<span class="nav-text ml-2"><?= $this->lang->line('nav_sales') ?></span>
 						</a>
 					</li>
-					<?php if (!strcmp("report", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
+					<?php } if (in_array("report", $this->nav_menus)){
+						if (!strcmp("report", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
 					<li class="<?= $ac ?>">
 						<a class="ai-icon" href="<?= base_url() ?>report" aria-expanded="false">
-							<i class="fas fa-book fa-fw mr-2"></i>
-							<span class="nav-text"><?= $this->lang->line('nav_reports') ?></span>
+							<i class="fas fa-book fa-fw p-0"></i>
+							<span class="nav-text ml-2"><?= $this->lang->line('nav_reports') ?></span>
 						</a>
 					</li>
-					<?php if (!strcmp("config", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
+					<?php } if (in_array("config", $this->nav_menus)){
+						if (!strcmp("config", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
 					<li class="<?= $ac ?>">
 						<a class="ai-icon" href="<?= base_url() ?>config" aria-expanded="false">
-							<i class="fas fa-cogs fa-fw mr-2"></i>
-							<span class="nav-text"><?= $this->lang->line('nav_settings') ?></span>
+							<i class="fas fa-cogs fa-fw p-0"></i>
+							<span class="nav-text ml-2"><?= $this->lang->line('nav_settings') ?></span>
 						</a>
 					</li>
+					<?php } ?>
                 </ul>
 				<div class="copyright mt-5">
 					<p><strong><?= $this->lang->line('cr_owner') ?></strong></p>

@@ -15,7 +15,6 @@ class Utility_lib{
 	public function __construct(){
 		$this->CI = &get_instance();
 		$this->CI->lang->load("system", "spanish");
-		$this->CI->load->model('sl_option_model','sl_option');
 		$this->CI->load->model('general_model','general');
 	}
 	
@@ -207,6 +206,18 @@ class Utility_lib{
 		
 		//stdClass Object ( [status] => [message] => No se encontro el ruc ) 
 		//stdClass Object ( [success] => 1 [result] => stdClass Object ( [ruc] => 20557939645 [razon_social] => MOARA PERU E.I.R.L. [estado] => SUSPENSION TEMPORAL [condicion_domicilio] => HABIDO [ubigeo] => 150130 [tipo_via] => AV. [nombre_via] => SAN BORJA SUR [codigo_zona] => URB. [tipo_zona] => SAN BORJA [numero] => 689 [interior] => - [lote] => - [departamento] => 401 [manzana] => - [kilometro] => - [direccion] => AV. SAN BORJA SUR URB. SAN BORJA Nro. 689 Dpto. 401 ) ) 
+	}
+	
+	public function get_visible_nav_menus(){
+		$access_ids = [];
+		$role_access = $this->CI->general->filter("role_access", ["role_id" => $this->CI->session->userdata('role')->id]);
+		foreach($role_access as $item) $access_ids[] = $item->access_id;
+		
+		$nav_menus = [];
+		$access = $this->CI->general->filter("access", ["description" => "index"], null, [["field" => "id", "values" => $access_ids]]);
+		foreach($access as $item) $nav_menus[] = $item->module;
+		
+		return $nav_menus;
 	}
 	
 }

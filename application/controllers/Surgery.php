@@ -14,6 +14,7 @@ class Surgery extends CI_Controller {
 		$this->load->model('status_model','status');
 		$this->load->model('general_model','general');
 		$this->nav_menu = "surgery";
+		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 	}
 	
 	public function index(){

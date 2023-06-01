@@ -13,6 +13,7 @@ class Report extends CI_Controller {
 		$this->lang->load("report", "spanish");
 		$this->load->model('general_model','general');
 		$this->nav_menu = "report";
+		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 	}
 	
 	public function index(){
