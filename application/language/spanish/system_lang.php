@@ -61,6 +61,7 @@ $lang['nav_surgeries'] = 'Cirugías';
 $lang['nav_products'] = 'Productos';
 $lang['nav_sales'] = 'Ventas';
 $lang['nav_reports'] = 'Reportes';
+$lang['nav_accounts'] = 'Usuarios';
 $lang['nav_settings'] = 'Ajustes';
 $lang['nav_back_to_list'] = 'Volver a Lista';
 

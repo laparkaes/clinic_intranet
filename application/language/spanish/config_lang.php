@@ -14,12 +14,9 @@ $lang['error_een'] = 'Ingrese el nombre del examen.';//error_enter_exam_name
 $lang['error_sec'] = 'Elija una categoría para el examen.';//error_select_exam_category
 $lang['error_uex'] = 'No se pudo eliminar debido a que este examen ha sido asignado por algún registro de consulta.';//error_using_exam
 $lang['error_nmr'] = 'Medicina es aplicada en alguna consulta del sistema.';//error_no_medicine_remove
-$lang['success_rac'] = 'Usuario ha sido registrado.';//success_register_account
 $lang['success_cup'] = 'Empresa ha sido actualizada.';//success_company_update
-$lang['success_dac'] = 'Usuario ha sido eliminado.';//success_delete_account
 $lang['success_rsv'] = 'Nuevo valor ha sido registrado.';//success_register_sl_value
 $lang['success_dsv'] = 'Nuevo valor ha sido eliminado.';//success_delete_sl_value
-$lang['success_uap'] = 'Contraseña ha sido configurado a "&pw&".';//success_update_account_password
 $lang['success_rep'] = 'Perfil de examen ha sido registrado.';//success_register_exam_perfil
 $lang['success_dep'] = 'Perfil de examen ha sido eliminado.';//success_delete_exam_perfil
 $lang['success_aup'] = 'Acceso ha sido actualizado.';//success_access_updated
@@ -29,21 +26,11 @@ $lang['success_rex'] = 'El examen ha sido registrado.';//success_register_exam
 $lang['success_dex'] = 'El examen ha sido eliminado.';//success_delete_exam
 $lang['success_rem'] = 'El medicina ha sido registrada.';//success_register_medicine
 $lang['success_dem'] = 'Medicina de examen ha sido eliminada.';//success_delete_exam_medicine
-$lang['warning_rac'] = '¿Desea eliminar usuario elegido?';//warning_remove_account
-$lang['warning_rpa'] = '¿Desea restablecer contraseña de usuario por su número de documento de identidad?';//warning_reset_password
 $lang['warning_rpr'] = '¿Desea eliminar perfil elegido?';//warning_remove_profile
 $lang['warning_rme'] = '¿Desea eliminar medicina elegida?';//warning_remove_medicine
 
 //component
 $lang['btn_load_more'] = 'Cargar más';
-
-//role
-$lang['role_master'] = 'Maestro';
-$lang['role_admin'] = 'Admin';
-$lang['role_reception'] = 'Recepción';
-$lang['role_doctor'] = 'Médico';
-$lang['role_patient'] = 'Paciente';
-$lang['role_nurse'] = 'Enfermera';
 
 //access modules
 $lang['module_dashboard'] = 'Módulo Tablero';
@@ -54,6 +41,7 @@ $lang['module_surgery'] = 'Módulo Cirugía';
 $lang['module_product'] = 'Módulo Producto';
 $lang['module_sale'] = 'Módulo Venta';
 $lang['module_report'] = 'Módulo Reporte';
+$lang['module_account'] = 'Módulo Usuario';
 $lang['module_config'] = 'Módulo Configuración';
 
 //access
@@ -69,6 +57,7 @@ $lang['access_update_company'] = 'Actualizar datos de empresa';
 $lang['access_admin_category'] = 'Gestión de categorias';
 $lang['access_delete'] = 'Eliminar';
 $lang['access_cancel'] = 'Cancelar';
+$lang['access_reset_password'] = 'Restablecer contraseña';
 $lang['access_admin_payment'] = 'Gestión de pagos';
 $lang['access_admin_voucher'] = 'Gestión de comprobantes';
 $lang['access_admin_account'] = 'Gestión de usuario';
@@ -76,23 +65,6 @@ $lang['access_admin_access'] = 'Gestión de acceso';
 $lang['access_admin_medicine'] = 'Gestión de medicina';
 $lang['access_admin_profile'] = 'Gestión de perfil';
 $lang['access_admin_log'] = 'Gestión de historial';
-
-//account
-$lang['title_personal_info'] = 'Datos Personales';
-$lang['title_account'] = 'Usuario';
-$lang['title_account_admin'] = 'Gestión de Usuarios';
-$lang['lb_document'] = 'Documento';
-$lang['lb_number'] = 'Número';
-$lang['lb_name'] = 'Nombre';
-$lang['lb_tel'] = 'Teléfono';
-$lang['lb_birthday'] = 'F. Nacimiento';
-$lang['lb_sex'] = 'Sexo';
-$lang['lb_blood_type'] = 'G. Sangre';
-$lang['lb_address'] = 'Dirección';
-$lang['lb_role'] = 'Rol';
-$lang['lb_email'] = 'Email';
-$lang['lb_password'] = 'Contraseña';
-$lang['lb_confirm'] = 'Confirmación';
 
 //system
 $lang['title_medicine'] = 'Medicina';
@@ -136,6 +108,9 @@ $lang['title_company'] = 'Empresa';
 $lang['title_company_data'] = 'Datos de Empresa';
 $lang['title_sunat_access'] = 'Acceso de Sunat';
 $lang['lb_tax_id'] = 'RUC';
+$lang['lb_name'] = 'Nombre';
+$lang['lb_email'] = 'Correo Electrónico';
+$lang['lb_tel'] = 'Teléfono';
 $lang['lb_urbanization'] = 'Urbanización';
 $lang['lb_ubigeo'] = 'Ubigeo';
 $lang['lb_department'] = 'Departamento';
@@ -153,3 +128,4 @@ $lang['msg_last_6_months'] = 'Registros de último mes.';
 $lang['th_action'] = 'Acción';
 $lang['th_detail'] = 'Detalle';
 $lang['th_time'] = 'Hora';
+$lang['th_account'] = 'Usuario';

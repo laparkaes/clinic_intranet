@@ -60,68 +60,6 @@ function update_company_data(dom){
 }
 /* end company */
 
-/* start account */
-function search_person_ra(){
-	var data = {doc_type_id: $("#ra_doc_type_id").val(), doc_number: $("#ra_doc_number").val()};
-	ajax_simple(data, "ajax_f/search_person").done(function(res) {
-		swal(res.type, res.msg);
-		if (res.type == "success"){
-			$("#ra_name").attr("readonly", true);
-			$("#ra_name").val(res.person.name);
-			$("#ra_tel").val(res.person.tel);
-		}else reset_person();
-	});
-}
-
-function reset_person(){
-	$("#ra_name").attr("readonly", false);
-	$("#ra_name").val("");
-	$("#ra_tel").val("");
-}
-
-function reset_password(dom){
-	ajax_simple_warning({id: $(dom).val()}, "config/reset_password", $("#warning_rpa").val()).done(function(res) {
-		swal(res.type, res.msg);
-	});
-}
-
-function reset_account_list(){
-	$("#account_list").html("");
-	$("#btn_load_more_account").removeClass("d-none");
-	load_more_account();
-}
-
-function register_account(dom){
-	ajax_form(dom, "config/register_account").done(function(res) {
-		set_msg(res.msgs);
-		swal(res.type, res.msg);
-		reset_account_list();
-		$('#btn_list_account').trigger('click');
-	});
-}
-
-function remove_account(dom){
-	ajax_simple_warning({id: $(dom).val()}, "config/remove_account", $("#warning_rac").val()).done(function(res) {
-		swal(res.type, res.msg);
-		reset_account_list();
-	});
-}
-
-function load_more_account(){
-	var offset = $("#account_list").children().length;
-	ajax_simple({offset: offset}, "config/load_more_account").done(function(res) {
-		if (res.length > 0){
-			$.each(res, function(index, item) {
-				$("#account_list").append('<tr><td>' + (offset + index + 1) + '</td><td>' + item.role + '</td><td>' + item.email + '</td><td>' + item.person + '</td><td class="text-right"><button type="button" class="btn btn-info shadow btn-xs sharp reset_password" value="' + item.id + '"><i class="fas fa-key"></i></button> <button type="button" class="btn btn-danger shadow btn-xs sharp remove_account" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
-			});
-			
-			$('.reset_password').off('click').on('click',(function(e) {reset_password(this);}));
-			$('.remove_account').off('click').on('click',(function(e) {remove_account(this);}));
-		}else $("#btn_load_more_account").addClass("d-none");
-	});
-}
-/* end account */
-
 /* start profile */
 function reset_profile_list(){
 	$("#profile_list").html("");
@@ -297,16 +235,6 @@ function load_more_log(){
 /* end log */
 
 $(document).ready(function() {
-	//account
-	$("#form_register_account").submit(function(e) {e.preventDefault(); register_account(this);});
-	$("#btn_search_person_ra").on('click',(function(e) {search_person_ra();}));
-	$("#ra_doc_type_id").on('change',(function(e) {reset_person();}));
-	$("#ra_doc_number").keyup(function() {reset_person();});
-	$(".reset_password").on('click',(function(e) {reset_password(this);}));
-	$(".remove_account").on('click',(function(e) {remove_account(this);}));
-	$(".control_bl_account").on('click',(function(e) {control_bl_group(this, "account");}));
-	$("#btn_load_more_account").on('click',(function(e) {load_more_account();}));
-	
 	//role & access
 	$(".chk_access").on('click',(function(e) {control_access(this);}));
 	

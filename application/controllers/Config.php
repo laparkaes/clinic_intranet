@@ -15,17 +15,12 @@ class Config extends CI_Controller {
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 	}
 	
-	private function set_msg($msgs, $dom_id, $type, $msg_code){
-		if ($msg_code) array_push($msgs, array("dom_id" => $dom_id, "type" => $type, "msg" => $this->lang->line($msg_code)));
-		return $msgs;
-	}
-	
 	public function index(){
 		if (!$this->session->userdata('logged_in')) redirect(base_url());
-		//pending! rol validation
+		if (!$this->utility_lib->check_access("config", "index")) redirect("/errors/no_permission");
 		
-		$modules = array("dashboard", "doctor", "patient", "appointment", "surgery", "product", "sale", "report", "config");
-		$access = array();
+		$modules = ["dashboard", "doctor", "patient", "appointment", "surgery", "product", "sale", "report", "account", "config"];
+		$access = [];
 		foreach($modules as $item) $access[$item] = $this->general->filter("access", ["module" => $item], null, null, "id", "asc");
 		
 		$role_access = [];
@@ -35,9 +30,6 @@ class Config extends CI_Controller {
 		$roles_arr = [];
 		$roles = $this->general->all("role", "id", "asc");
 		foreach($roles as $item) $roles_arr[$item->id] = $item->name;
-		
-		$accounts = $this->general->all("account", "email", "asc", 20, 0);
-		foreach($accounts as $item) $item->person = $this->general->id("person", $item->person_id)->name;
 		
 		$exam_category_arr = [];
 		$exam_category = $this->general->all("examination_category", "name", "asc");
@@ -74,7 +66,6 @@ class Config extends CI_Controller {
 		}
 		
 		$data = array(
-			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"role_access" => $role_access,
 			"roles_arr" => $roles_arr,
 			"roles" => $roles,
@@ -84,7 +75,6 @@ class Config extends CI_Controller {
 			"exam_profiles" => $exam_profiles,
 			"exam_category" => $exam_category,
 			"exams" => $exams,
-			"accounts" => $accounts,
 			"medicines" => $this->general->all("medicine", "name", "asc", 20, 0),
 			"departments" => $this->general->all("address_department", "name", "asc"),
 			"provinces" => $this->general->all("address_province", "name", "asc"),
@@ -96,87 +86,6 @@ class Config extends CI_Controller {
 		);
 		
 		$this->load->view('layout', $data);
-	}
-	
-	public function register_account(){
-		$type = "error"; $msgs = []; $msg = null;
-		
-		if ($this->utility_lib->check_access("config", "admin_account")){			
-			$p = $this->input->post("p");
-			$a = $this->input->post("a");
-			
-			$this->load->library('my_val');
-			$msgs = $this->my_val->person($msgs, "ra_", $p);
-			$msgs = $this->my_val->account($msgs, "ra_", $a);
-			if (!$a["role_id"]) $msgs = $this->my_val->set_msg($msgs, "ra_role_msg", "error", "error_sro");
-			
-			if (!$msgs){
-				$person = $this->general->filter("person", ["doc_type_id" => $p["doc_type_id"], "doc_number" => $p["doc_number"]]);
-				if ($person){
-					$this->general->update("person", $person[0]->id, $p);
-					$a["person_id"] = $person[0]->id;
-				}else{
-					$p["registed_at"] = date('Y-m-d H:i:s', time());
-					$a["person_id"] = $this->general->insert("person", $p);
-				}
-				
-				if (!$this->general->filter("account", ["role_id" => $a["role_id"], "person_id" => $a["person_id"]])){
-					unset($a["confirm"]);
-					$a["password"] = password_hash($a["password"], PASSWORD_BCRYPT);
-					$a["active"] = true;
-					$a["registed_at"] = date('Y-m-d H:i:s', time());
-					if ($this->account->insert($a)){
-						$this->utility_lib->add_log("account_register", $a["email"]);
-						
-						$type = "success";
-						$msg = $this->lang->line('success_rac');
-					}else $msg = $this->lang->line('error_internal');	
-				}else $msg = $this->lang->line('error_pra');
-			}else $msg = $this->lang->line('error_occurred');
-		}else $msg = $this->lang->line('error_no_permission');
-		
-		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
-	}
-	
-	public function remove_account(){
-		$type = "error"; $msg = null;
-		
-		if ($this->utility_lib->check_access("config", "admin_account")){
-			$account = $this->general->id("account", $this->input->post("id"));
-			if ($account){
-				if ($this->general->delete("account", ["id" => $account->id])){
-					$this->utility_lib->add_log("account_delete", $account->email);
-					
-					$type = "success";
-					$msg = $this->lang->line('success_dac');
-				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_internal_refresh');
-		}else $msg = $this->lang->line('error_no_permission');
-		
-		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg]);
-	}
-	
-	public function reset_password(){
-		$type = "error"; $msg = null;
-		
-		if ($this->utility_lib->check_access("config", "admin_account")){
-			$account = $this->general->id("account", $this->input->post("id"));
-			if ($account){
-				$person = $this->general->id("person", $account->person_id);
-				if ($person) $pw = $person->doc_number;
-				else $pw = "1234567890";
-				
-				if ($this->general->update("account", $account->id, ["password" => password_hash($pw, PASSWORD_BCRYPT)])){
-					$type = "success";
-					$msg = str_replace("&pw&", $pw, $this->lang->line('success_uap'));
-				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_internal_refresh');
-		}else $msg = $this->lang->line('error_no_permission');
-		
-		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 	
 	public function control_access(){
@@ -203,30 +112,33 @@ class Config extends CI_Controller {
 	}
 	
 	public function update_company_data(){
-		$data = $this->input->post();
 		$type = "error"; $msgs = []; $msg = null;
 		
-		$this->load->library('my_val');
-		$msgs = $this->my_val->config_company($msgs, "uc_", $data);
-		
-		if (!$msgs){
-			$data["is_owner"] = true;
-			$data["updated_at"] = date("Y-m-d H:i:s", time());
+		if ($this->utility_lib->check_access("config", "update_company")){
+			$data = $this->input->post();
 			
-			$com_id = null;
-			$company_rec = $this->general->filter("company", ["tax_id" => $data["tax_id"]]);
-			$this->general->update("company", null, ["is_owner" => false]);
-			if ($company_rec){
-				$com_id = $company_rec[0]->id;
-				$this->general->update("company", $com_id, $data);
-			}else $com_id = $this->general->insert("company", $data);
+			$this->load->library('my_val');
+			$msgs = $this->my_val->config_company($msgs, "uc_", $data);
 			
-			if ($com_id){
-				$this->utility_lib->add_log("company_update", null);
-				$type = "success";
-				$msg = $this->lang->line("success_cup");	
-			}else $msg = $this->lang->line("error_internal");
-		}else $msg = $this->lang->line("error_occurred");
+			if (!$msgs){
+				$data["is_owner"] = true;
+				$data["updated_at"] = date("Y-m-d H:i:s", time());
+				
+				$com_id = null;
+				$company_rec = $this->general->filter("company", ["tax_id" => $data["tax_id"]]);
+				$this->general->update("company", null, ["is_owner" => false]);
+				if ($company_rec){
+					$com_id = $company_rec[0]->id;
+					$this->general->update("company", $com_id, $data);
+				}else $com_id = $this->general->insert("company", $data);
+				
+				if ($com_id){
+					$this->utility_lib->add_log("company_update", null);
+					$type = "success";
+					$msg = $this->lang->line("success_cup");	
+				}else $msg = $this->lang->line("error_internal");
+			}else $msg = $this->lang->line("error_occurred");
+		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
@@ -276,21 +188,6 @@ class Config extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 
-	public function load_more_account(){
-		$roles_arr = [];
-		$roles = $this->general->all("role", "id", "asc");
-		foreach($roles as $item) $roles_arr[$item->id] = $this->lang->line('role_'.$item->name);
-		
-		$accounts = $this->general->all("account", "email", "asc", 20, $this->input->post("offset"));
-		foreach($accounts as $item){
-			$item->role = $roles_arr[$item->role_id];
-			$item->person = $this->general->id("person", $item->person_id)->name;
-		}
-		
-		header('Content-Type: application/json');
-		echo json_encode($accounts);
-	}
-	
 	public function load_more_profile(){
 		$exams_arr = [];
 		$exams = $this->general->all("examination", "name", "asc");
