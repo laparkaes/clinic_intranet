@@ -295,7 +295,7 @@
 											<tr class="bg-light">
 												<td class="text-left"><strong><?= $this->lang->line("module_".$module) ?></strong></td>
 												<?php foreach($roles as $item){ ?>
-												<td style="width: 105px;"><strong><?= $this->lang->line('role_'.$item->name) ?></strong></td>
+												<td style="width: 105px;"><strong><?= $this->lang->line($item->name) ?></strong></td>
 												<?php } ?>
 											</tr>
 											<?php foreach($a_list as $a){ ?>

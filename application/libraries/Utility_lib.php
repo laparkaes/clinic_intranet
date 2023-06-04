@@ -210,6 +210,7 @@ class Utility_lib{
 	
 	public function get_visible_nav_menus(){
 		$access_ids = [];
+		
 		$role_access = $this->CI->general->filter("role_access", ["role_id" => $this->CI->session->userdata('role')->id]);
 		foreach($role_access as $item) $access_ids[] = $item->access_id;
 		
