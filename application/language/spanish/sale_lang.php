@@ -114,6 +114,7 @@ $lang['btn_next'] = 'Siguiente';
 $lang['btn_previous'] = 'Anterior';
 $lang['btn_register_sale'] = 'Registrar Venta';
 $lang['btn_search'] = 'Buscar';
+$lang['msg_need_send_sunat'] = 'Requiere enviar a Sunat.';
 
 //detail
 $lang['tab_items'] = 'Ítems';

@@ -12,3 +12,18 @@ $lang['lb_appointments'] = 'Consultas';
 $lang['lb_surgeries'] = 'Cirugías';
 $lang['lb_sales'] = 'Ventas';
 $lang['txt_total'] = 'Total';
+$lang['title_today_progress'] = 'Progreso de Hoy';
+
+//admin
+$lang['lb_attended_appointments'] = 'Consultas Atendidas';
+$lang['lb_attended_surgeries'] = 'Cirugías Atendidas';
+$lang['txt_reserved_today'] = 'reservas por atender';
+$lang['title_sales'] = 'Ventas';
+$lang['msg_need_send_sunat'] = 'Requiere enviar a Sunat.';
+$lang['msg_no_sales'] = 'No hay ventas registradas.';
+$lang['hd_date'] = 'Fecha';
+$lang['hd_client'] = 'Cliente';
+$lang['hd_total'] = 'Total';
+$lang['hd_balance'] = 'Saldo';
+$lang['hd_status'] = 'Estado';
+$lang['hd_sunat'] = 'Sunat';

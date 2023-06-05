@@ -70,7 +70,11 @@ class Sale extends CI_Controller {
 				$item->voucher = $voucher[0];
 				if ($item->voucher->sunat_sent) $item->voucher->color = "success";
 				else $item->voucher->color = "danger";
-			}else $item->voucher = null;
+			}else{
+				$item->voucher = $this->general->structure("voucher");
+				$item->voucher->color = "warning";
+				$item->voucher->sunat_msg = $this->lang->line('msg_need_send_sunat');
+			}
 		}
 		
 		$status = [

@@ -29,7 +29,7 @@ class Dashboard extends CI_Controller {
 			"main" => "dashboard/".$role_name,
 		);
 		
-		switch($this->session->userdata('role')->name){
+		switch($role_name){
 			case "master": $data = $this->set_master_datas($data); break;
 			case "admin": $data = $this->set_admin_datas($data); break;
 		}
@@ -38,26 +38,40 @@ class Dashboard extends CI_Controller {
 	
 	private function set_admin_datas($data){
 		//set monthly resume
-		$from = date('Y-m-01 00:00:00');
-		$to = date('Y-m-t 23:59:59');
-		$status_finished = $this->general->filter("status", array("code" => "finished"))[0];
-		$filter_1 = array("schedule_from >=" => $from, "schedule_from <=" => $to, "status_id" => $status_finished->id);
-		$filter_2 = array("updated_at >=" => $from, "updated_at <=" => $to, "status_id" => $status_finished->id);
-		$data["appointment_qty"] = $this->general->counter("appointment", $filter_1);
-		$data["surgery_qty"] = 333;//$this->general->counter("surgery", $filter_1);
-		$data["sale_qty"] = $this->general->counter("sale", $filter_2);
+		$from = date('Y-m-d 00:00:00');
+		$to = date('Y-m-d 23:59:59');
+		$s_finished = $this->general->filter("status", ["code" => "finished"])[0];
+		$s_reserved = $this->general->filter("status", ["code" => "reserved"])[0];
 		
-		$filter["updated_at >="] = date('Y-m-01 00:00:00', strtotime(date("Y-m-d", strtotime("-5 months"))));
-		$filter["updated_at <="] = date('Y-m-t 23:59:59', strtotime(date("Y-m-d")));
-		$currencies = $this->general->all("currency", "id", "asc");
-		foreach($currencies as $i => $item){
-			$filter["currency_id"] = $item->id;
-			if (!$this->general->sum("sale", "total", $filter)->total) unset($currencies[$i]);
+		$filter_f = ["schedule_from >=" => $from, "schedule_from <=" => $to, "status_id" => $s_finished->id];
+		$filter_r = ["schedule_from >=" => $from, "schedule_from <=" => $to, "status_id" => $s_reserved->id];
+		
+		$data["app_attended"] = $this->general->counter("appointment", $filter_f);
+		$data["app_reserved"] = $this->general->counter("appointment", $filter_r);
+		$data["sur_attended"] = $this->general->counter("surgery", $filter_f);
+		$data["sur_reserved"] = $this->general->counter("surgery", $filter_r);
+		
+		$sales = $this->general->all("sale", "updated_at", "desc", 10);
+		foreach($sales as $item){
+			$item->sale_type = $this->general->id("sale_type", $item->sale_type_id);
+			$item->currency = $this->general->id("currency", $item->currency_id);
+			$item->client = $this->general->id("person", $item->client_id);
+			$item->status = $this->general->id("status", $item->status_id);
+			$item->status->lang = $this->lang->line($item->status->code);
+			
+			$voucher = $this->general->filter("voucher", ["sale_id" => $item->id]);
+			if ($voucher){
+				$item->voucher = $voucher[0];
+				if ($item->voucher->sunat_sent) $item->voucher->color = "success";
+				else $item->voucher->color = "danger";
+			}else{
+				$item->voucher = $this->general->structure("voucher");
+				$item->voucher->color = "warning";
+				$item->voucher->sunat_msg = $this->lang->line('msg_need_send_sunat');
+			}
 		}
 		
-		$data["currencies"] = $currencies;
-		$data["month"] = ucfirst(strftime("%B", DateTime::createFromFormat("Y-m-d", date("Y-m-d"))->getTimestamp()));
-		
+		$data["sales"] = $sales;
 		return $data;
 	}
 	
@@ -65,11 +79,11 @@ class Dashboard extends CI_Controller {
 		//set monthly resume
 		$from = date('Y-m-01 00:00:00');
 		$to = date('Y-m-t 23:59:59');
-		$status_finished = $this->general->filter("status", array("code" => "finished"))[0];
-		$filter_1 = array("schedule_from >=" => $from, "schedule_from <=" => $to, "status_id" => $status_finished->id);
-		$filter_2 = array("updated_at >=" => $from, "updated_at <=" => $to, "status_id" => $status_finished->id);
+		$status_finished = $this->general->filter("status", ["code" => "finished"])[0];
+		$filter_1 = ["schedule_from >=" => $from, "schedule_from <=" => $to, "status_id" => $status_finished->id];
+		$filter_2 = ["updated_at >=" => $from, "updated_at <=" => $to, "status_id" => $status_finished->id];
 		$data["appointment_qty"] = $this->general->counter("appointment", $filter_1);
-		$data["surgery_qty"] = 333;//$this->general->counter("surgery", $filter_1);
+		$data["surgery_qty"] = $this->general->counter("surgery", $filter_1);
 		$data["sale_qty"] = $this->general->counter("sale", $filter_2);
 		
 		$filter["updated_at >="] = date('Y-m-01 00:00:00', strtotime(date("Y-m-d", strtotime("-5 months"))));

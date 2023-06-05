@@ -65,7 +65,6 @@ class Account extends CI_Controller {
 			$msgs = $this->my_val->person($msgs, "ra_", $p);
 			$msgs = $this->my_val->account($msgs, "ra_", $a);
 			if (!$a["role_id"]) $msgs = $this->my_val->set_msg($msgs, "ra_role_msg", "error", "error_sro");
-			
 			if (!$msgs){
 				$person = $this->general->filter("person", ["doc_type_id" => $p["doc_type_id"], "doc_number" => $p["doc_number"]]);
 				if ($person){
@@ -80,6 +79,7 @@ class Account extends CI_Controller {
 					unset($a["confirm"]);
 					$a["password"] = password_hash($a["password"], PASSWORD_BCRYPT);
 					$a["registed_at"] = date('Y-m-d H:i:s', time());
+					print_r($a);
 					if ($this->general->insert("account", $a)){
 						$this->utility_lib->add_log("account_register", $a["email"]);
 						
@@ -100,12 +100,15 @@ class Account extends CI_Controller {
 		if ($this->utility_lib->check_access("account", "delete")){
 			$account = $this->general->id("account", $this->input->post("id"));
 			if ($account){
-				if ($this->general->delete("account", ["id" => $account->id])){
-					$this->utility_lib->add_log("account_delete", $account->email);
-					
-					$type = "success";
-					$msg = $this->lang->line('success_dac');
-				}else $msg = $this->lang->line('error_internal');
+				$role = $this->general->id("role", $account->role_id);
+				if ($role->name !== "master"){
+					if ($this->general->delete("account", ["id" => $account->id])){
+						$this->utility_lib->add_log("account_delete", $account->email);
+						
+						$type = "success";
+						$msg = $this->lang->line('success_dac');
+					}else $msg = $this->lang->line('error_internal');
+				}else $msg = $this->lang->line('error_nrma');
 			}else $msg = $this->lang->line('error_internal_refresh');
 		}else $msg = $this->lang->line('error_no_permission');
 		

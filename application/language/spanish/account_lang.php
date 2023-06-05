@@ -3,6 +3,8 @@ $lang['accounts'] = 'Usuarios';
 $lang['account'] = 'Usuario';
 
 //messages
+$lang['error_nrma'] = 'Eliminar usuario maestro no esta permitido. Consulte al area de TI.';//error_no_remove_master_account
+$lang['error_pra'] = 'Persona ya cuenta con usuario de rol elegido.';//error_account_exists
 $lang['warning_rac'] = '¿Desea eliminar usuario elegido?';//warning_remove_account
 $lang['warning_rpa'] = '¿Desea restablecer contraseña de usuario por su número de documento de identidad?';//warning_reset_password
 $lang['success_rac'] = 'Usuario ha sido registrado.';//success_register_account
