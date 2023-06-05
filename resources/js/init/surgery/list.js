@@ -39,6 +39,9 @@ $(document).ready(function() {
 	load_doctor_schedule_surgery();
 	$(".control_bl").on('click',(function(e) {control_bl(this);}));
 	
+	var params = get_params(); console.log(params);
+	if (params.a == "add") $("#btn_add").trigger("click");
+	
 	//register
 	$("#register_form").submit(function(e) {e.preventDefault(); register_surgery(this);});
 	$("#sur_specialty").change(function() {set_doctor_sl(this);});

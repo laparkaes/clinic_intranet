@@ -6,7 +6,7 @@
 		<button type="button" class="btn btn-primary control_bl" id="btn_list" value="bl_list">
 			<i class="fas fa-list mr-2"></i><?= $this->lang->line('btn_list') ?>
 		</button>
-		<button type="button" class="btn btn-outline-primary control_bl" value="bl_add">
+		<button type="button" class="btn btn-outline-primary control_bl" id="btn_add" value="bl_add">
 			<i class="fas fa-plus mr-2"></i><?= $this->lang->line('btn_add') ?>
 		</button>
 	</div>

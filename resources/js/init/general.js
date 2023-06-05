@@ -265,6 +265,25 @@ function set_between_dates(id_from, id_to){
 	}); 
 }
 
+function get_params(){
+	var url = window.location.href;
+	var params = {};
+	if (url.indexOf("?") !== -1) {
+		var queryString = url.split("?")[1];
+		if (queryString !== ""){
+			var pairs = queryString.split("&");
+
+			for (var i = 0; i < pairs.length; i++) {
+				var pair = pairs[i].split("=");
+				var key = decodeURIComponent(pair[0]);
+				var value = decodeURIComponent(pair[1]);
+				params[key] = value;
+			}	
+		}
+	}
+	return params;
+}
+
 $(document).ready(function() {
 	if ($(".date_picker").length > 0){
 		$(".date_picker").bootstrapMaterialDatePicker({

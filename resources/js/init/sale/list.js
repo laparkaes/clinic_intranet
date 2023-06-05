@@ -252,6 +252,9 @@ $(document).ready(function() {
 	$("#form_add_sale").submit(function(e) {e.preventDefault(); add_sale(this);});
 	$("#btn_add_sale").on('click',(function(e) {$("#form_add_sale").submit();}));
 	
+	var params = get_params(); console.log(params);
+	if (params.a == "add") $("#btn_add").trigger("click");
+	
 	//new sale - select item
 	$("#sl_pr_category").on('change',(function(e) {load_items($(this).val());}));
 	$("#sl_pr_items").on('change',(function(e) {select_item();}));
