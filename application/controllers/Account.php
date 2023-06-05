@@ -79,7 +79,7 @@ class Account extends CI_Controller {
 					unset($a["confirm"]);
 					$a["password"] = password_hash($a["password"], PASSWORD_BCRYPT);
 					$a["registed_at"] = date('Y-m-d H:i:s', time());
-					print_r($a);
+					
 					if ($this->general->insert("account", $a)){
 						$this->utility_lib->add_log("account_register", $a["email"]);
 						

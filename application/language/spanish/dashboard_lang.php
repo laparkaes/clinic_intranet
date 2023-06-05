@@ -27,3 +27,7 @@ $lang['hd_total'] = 'Total';
 $lang['hd_balance'] = 'Saldo';
 $lang['hd_status'] = 'Estado';
 $lang['hd_sunat'] = 'Sunat';
+
+//reception
+$lang['title_appointments'] = 'Consultas';
+$lang['title_surgeries'] = 'Cirugías';
