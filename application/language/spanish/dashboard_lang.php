@@ -37,3 +37,13 @@ $lang['title_surgery'] = 'Cirugía';
 $lang['title_sale'] = 'Venta';
 $lang['msg_no_appointment'] = 'No hay consultas registradas para la fecha.';
 $lang['msg_no_surgery'] = 'No hay cirugías registradas para la fecha.';
+
+//doctor
+$lang['cl_today'] = 'Hoy';
+$lang['cl_month'] = 'Mes';
+$lang['cl_week'] = 'Semana';
+$lang['cl_day'] = 'Día';
+$lang['cl_list'] = 'Lista';
+$lang['cl_allday'] = 'Todo el día';
+$lang['ev_appointment'] = 'Consulta';
+$lang['ev_surgery'] = 'Cirugía';

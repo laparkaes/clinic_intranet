@@ -1,3 +1,10 @@
+<div class="col-md-12">
+	<div class="card">
+		<div class="card-body">
+			Aqui va barra de navegador de fechas
+		</div>
+	</div>
+</div>
 <div class="col-md-6">
 	<div class="card">
 		<div class="card-header pb-0 border-0">
@@ -60,3 +67,9 @@
 		</div>
 	</div>
 </div>
+<input type="hidden" id="cl_today" value="<?= $this->lang->line('cl_today') ?>">
+<input type="hidden" id="cl_month" value="<?= $this->lang->line('cl_month') ?>">
+<input type="hidden" id="cl_week" value="<?= $this->lang->line('cl_week') ?>">
+<input type="hidden" id="cl_day" value="<?= $this->lang->line('cl_day') ?>">
+<input type="hidden" id="cl_list" value="<?= $this->lang->line('cl_list') ?>">
+<input type="hidden" id="cl_allday" value="<?= $this->lang->line('cl_allday') ?>">

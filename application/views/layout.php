@@ -6,14 +6,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title><?= $title ?></title>
     <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url() ?>resources/images/favicon.png">
-	<link rel="stylesheet" href="<?= base_url() ?>resources/vendor/fullcalendar/css/main.min.css">
 	<link rel="stylesheet" href="<?= base_url() ?>resources/vendor/datatables/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>resources/vendor/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css">
 	<link rel="stylesheet" href="<?= base_url() ?>resources/vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
 	<link rel="stylesheet" href="<?= base_url() ?>resources/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.css">
 	<link rel="stylesheet" href="<?= base_url() ?>resources/vendor_/jquery-ui-1.13.2/jquery-ui.min.css">
 	<link rel="stylesheet" href="<?= base_url() ?>resources/vendor_/fontawesome5pro/css/all.min.css">
-	<link rel="stylesheet" href="<?= base_url() ?>resources/vendor_/jquery-smartwizard-6.0.6/smart_wizard_all.customized.min.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="<?= base_url() ?>resources/css/style.css">
 	<link rel="stylesheet" href="<?= base_url() ?>resources/css/setting.css">
@@ -231,13 +229,11 @@
     <script src="<?= base_url() ?>resources/vendor/global/global.min.js"></script>
 	<script src="<?= base_url() ?>resources/vendor/apexchart/apexcharts.min.js"></script>
 	<script src="<?= base_url() ?>resources/vendor/moment/moment.min.js"></script>
-	<script src="<?= base_url() ?>resources/vendor/fullcalendar/js/main.min.js"></script>
 	<script src="<?= base_url() ?>resources/vendor/datatables/js/jquery.dataTables.min.js"></script>
     <script src="<?= base_url() ?>resources/vendor/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
 	<script src="<?= base_url() ?>resources/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
     <script src="<?= base_url() ?>resources/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.js"></script>
 	<script src="<?= base_url() ?>resources/vendor_/jquery-ui-1.13.2/jquery-ui.min.js"></script>
-	<script src="<?= base_url() ?>resources/vendor_/jquery-smartwizard-6.0.6/jquery.smartWizard.min.js"></script>
 	<?php if ($init_js){ ?><script src="<?= base_url() ?>resources/js/init/<?= $init_js ?>"></script><?php } ?>
     <script src="<?= base_url() ?>resources/js/custom.min.js"></script>
 	<script src="<?= base_url() ?>resources/js/deznav-init.js"></script>

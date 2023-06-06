@@ -207,4 +207,40 @@ class Dashboard extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(["series" => $series, "xaxis" => $xaxis]);
 	}
+	
+	public function load_doctor_calendar(){
+		$account = $this->general->id("account", $this->session->userdata("aid"));
+		$today = date("Y-m-d");
+		$filter = [
+			"doctor_id" => $account->person_id,
+			"schedule_from >=" => date("Y-m-01", strtotime("-3 months", strtotime($today))),
+			"schedule_from <=" => date("Y-m-t", strtotime("+3 months", strtotime($today))),
+		];
+		$events = [];
+		
+		$apps = $this->general->filter("appointment", $filter, null, null, "schedule_from", "asc");
+		foreach($apps as $item){
+			$patient = $this->general->id("person", $item->patient_id);
+			$events[] = [
+				"title" => $this->lang->line('ev_appointment')."] ".$patient->name,
+				"start" => $item->schedule_from,
+				//"end" => $item->schedule_to,
+				//"className" => "bg-danger",
+			];
+		}
+		
+		$surs = $this->general->filter("appointment", $filter, null, null, "schedule_from", "asc");
+		foreach($surs as $item){
+			$patient = $this->general->id("person", $item->patient_id);
+			$events[] = [
+				"title" => $this->lang->line('ev_surgery')."] ".$patient->name,
+				"start" => $item->schedule_from,
+				//"end" => $item->schedule_to,
+				//"className" => "bg-danger",
+			];
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode(["events" => $events]);
+	}
 }
