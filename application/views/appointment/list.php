@@ -147,15 +147,19 @@
 						<h5 class="my-3"><?= $this->lang->line('lb_patient') ?></h5>
 						<input type="hidden" id="aa_pt_id" name="app[patient_id]" value="">
 						<div class="form-row">
-							<div class="form-group col-md-12">
+							<div class="form-group col-md-6">
 								<label><?= $this->lang->line('lb_document') ?></label>
+								<select class="form-control" id="aa_pt_doc_type_id" name="pt[doc_type_id]">
+									<?php foreach($doc_types as $item){ if ($item->sunat_code){ ?>
+									<option value="<?= $item->id ?>"><?= $item->description ?></option>
+									<?php }} ?>
+								</select>
+								<div class="sys_msg" id="aa_pt_doc_type_msg"></div>
+							</div>
+							<div class="form-group col-md-6">
+								<label class="d-md-block d-none">&nbsp;</label>
 								<div class="input-group">
-									<select class="form-control" id="aa_pt_doc_type_id" name="pt[doc_type_id]" style="border-right:0;">
-										<?php foreach($doc_types as $item){ if ($item->sunat_code){ ?>
-										<option value="<?= $item->id ?>"><?= $item->description ?></option>
-										<?php }} ?>
-									</select>
-									<input type="text" class="form-control" id="aa_pt_doc_number" name="pt[doc_number]" style="border-left:0;" placeholder="<?= $this->lang->line('txt_number') ?>">
+									<input type="text" class="form-control" id="aa_pt_doc_number" name="pt[doc_number]" placeholder="<?= $this->lang->line('txt_number') ?>">
 									<div class="input-group-append">
 										<button class="btn btn-primary border-0" type="button" id="btn_search_pt">
 											<i class="fas fa-search"></i>

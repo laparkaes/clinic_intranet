@@ -31,3 +31,9 @@ $lang['hd_sunat'] = 'Sunat';
 //reception
 $lang['title_appointments'] = 'Consultas';
 $lang['title_surgeries'] = 'Cirugías';
+$lang['title_generate'] = 'Generar';
+$lang['title_appointment'] = 'Consulta';
+$lang['title_surgery'] = 'Cirugía';
+$lang['title_sale'] = 'Venta';
+$lang['msg_no_appointment'] = 'No hay consultas registradas para la fecha.';
+$lang['msg_no_surgery'] = 'No hay cirugías registradas para la fecha.';

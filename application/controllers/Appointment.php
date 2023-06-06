@@ -58,7 +58,10 @@ class Appointment extends CI_Controller {
 		unset($aux_f["specialty_id"]);
 		
 		$doctors = $this->general->filter("doctor", $aux_f);
-		foreach($doctors as $d) $d->name = $this->general->id("person", $d->person_id)->name;
+		foreach($doctors as $d){
+			if (!$this->general->id("person", $d->person_id)) echo $d->person_id."<br/>";
+			$d->name = $this->general->id("person", $d->person_id)->name;
+		}
 		usort($doctors, function($a, $b) {return strcmp(strtoupper($a->name), strtoupper($b->name));});
 		
 		$status_aux = [];
