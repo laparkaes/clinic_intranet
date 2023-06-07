@@ -1,5 +1,5 @@
-<div class="col-12">
-	<h4 class="mb-3"><?= $this->lang->line('title_today_progress') ?></h4>
+<div class="col-md-12">
+	<h3 class="mb-3"><?= ucfirst(strftime("%A, %d de %B de %Y", time())) ?></h3>
 </div>
 <div class="col-md-6">
 	<div class="widget-stat card">

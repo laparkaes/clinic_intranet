@@ -1,5 +1,5 @@
 <div class="col-md-12">
-	<h3 class="text-primary mb-3"><?= $title_dash ?></h3>
+	<h3 class="mb-3"><?= ucfirst(strftime("%A, %d de %B de %Y", time())) ?></h3>
 </div>
 <div class="col-md-6">
 	<div class="card">

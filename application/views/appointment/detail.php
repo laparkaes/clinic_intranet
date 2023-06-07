@@ -1,68 +1,69 @@
 <div class="col-md-12">
 	<div class="card">
-		<div class="card-header pb-0 border-0">
+		<div class="card-header">
 			<h4 class="mb-0"><?= $doctor->data->specialty ?></h4>
-			<div class="text-right">
-				<?php if (in_array("reschedule", $actions)){ ?>
-				<button type="button" class="btn tp-btn btn-info" id="btn_reschedule">
-					<?= $this->lang->line('btn_reschedule') ?>
-				</button>
-				<?php } if (in_array("cancel", $actions)){ ?>
-				<button type="button" class="btn tp-btn btn-danger" id="btn_cancel" value="<?= $appointment->id ?>">
-					<?= $this->lang->line('btn_cancel') ?>
-				</button>
-				<?php } if (in_array("report", $actions)){ ?>
-				<a href="<?= base_url() ?>appointment/report/<?= $appointment->id ?>" target="_blank">
-					<button type="button" class="btn btn-primary">
-						<?= $this->lang->line('btn_report') ?>
+			<div role="group">
+				<i class="far fa-bars text-primary pointer" data-toggle="dropdown"></i>
+				<div class="dropdown-menu dropdown-menu-right">
+					<?php if (in_array("reschedule", $actions)){ ?>
+					<button type="button" class="dropdown-item text-info" id="btn_reschedule">
+						<?= $this->lang->line('btn_reschedule') ?>
 					</button>
-				</a>
-				<?php } ?>
+					<?php } if (in_array("cancel", $actions)){ ?>
+					<button type="button" class="dropdown-item text-danger" id="btn_cancel" value="<?= $appointment->id ?>">
+						<?= $this->lang->line('btn_cancel_appointment') ?>
+					</button>
+					<?php } if (in_array("report", $actions)){ ?>
+					<a class="dropdown-item text-success" href="<?= base_url() ?>appointment/report/<?= $appointment->id ?>" target="_blank">
+						<?= $this->lang->line('btn_report') ?>
+					</a>
+					<?php } ?>
+				</div>
 			</div>
 		</div>
 		<div class="card-body">
-			<div class="form-row" id="app_info">
+			<div class="row" id="app_info">
 				<?php if ($appointment->detail){ ?>
-				<div class="form-group col-md-12">
-					<label><?= $this->lang->line('lb_detail') ?></label>
-					<input type="text" class="form-control bw" value="<?= $appointment->detail ?>" readonly>
+				<div class="col-md-12 mb-3">
+					<h5 class="mb-1"><?= $this->lang->line('lb_detail') ?></h5>
+					<div><?= $appointment->detail ?></div>
 				</div>
 				<?php } ?>
-				<div class="form-group col-md-3">
-					<label><?= $this->lang->line('lb_doctor') ?></label>
-					<input type="text" class="form-control bw" value="<?= $doctor->name ?>" readonly>
+				<div class="col-md-3 mb-3">
+					<h5 class="mb-1"><?= $this->lang->line('lb_doctor') ?></h5>
+					<div><?= $doctor->name ?></div>
 				</div>
-				<div class="form-group col-md-3">
-					<label><?= $this->lang->line('lb_date') ?></label>
-					<input type="text" class="form-control bw" value="<?= date("Y-m-d", strtotime($appointment->schedule_from)) ?>" readonly>
+				<div class="col-md-3 mb-3">
+					<h5 class="mb-1"><?= $this->lang->line('lb_date') ?></h5>
+					<div><?= date("Y-m-d", strtotime($appointment->schedule_from)) ?></div>
 				</div>
-				<div class="form-group col-md-3">
-					<label><?= $this->lang->line('lb_hour') ?></label>
-					<input type="text" class="form-control bw" value="<?= date("H:i A", strtotime($appointment->schedule_from)) ?>" readonly>
+				<div class="col-md-3 mb-3">
+					<h5 class="mb-1"><?= $this->lang->line('lb_hour') ?></h5>
+					<div><?= date("h:i A", strtotime($appointment->schedule_from)) ?></div>
 				</div>
-				<div class="form-group col-md-3">
-					<label><?= $this->lang->line('lb_status') ?></label>
-					<input type="text" class="form-control bw text-<?= $appointment->status->color ?>" value="<?= $this->lang->line($appointment->status->code) ?>" readonly>
+				<div class="col-md-3 mb-3">
+					<h5 class="mb-1"><?= $this->lang->line('lb_status') ?></h5>
+					<div class="text-<?= $appointment->status->color ?>"><?= $this->lang->line($appointment->status->code) ?></div>
 				</div>
-				<div class="form-group col-md-3">
-					<label><?= $this->lang->line('lb_patient') ?></label>
-					<input type="text" class="form-control bw" value="<?= $patient->name ?>" readonly>
+				<div class="col-md-3 mb-3">
+					<h5 class="mb-1"><?= $this->lang->line('lb_patient') ?></h5>
+					<div><?= $patient->name ?></div>
 				</div>
-				<div class="form-group col-md-3">
-					<label><?= $this->lang->line('lb_history_number') ?></label>
-					<input type="text" class="form-control bw" value="<?= $patient->doc_number ?>" readonly>
+				<div class="col-md-3 mb-3">
+					<h5 class="mb-1"><?= $this->lang->line('lb_history_number') ?></h5>
+					<div><?= $patient->doc_number ?></div>
 				</div>
-				<div class="form-group col-md-2">
-					<label><?= $this->lang->line('lb_sex') ?></label>
-					<input type="text" class="form-control bw" value="<?= $patient->sex ?>" readonly>
+				<div class="col-md-2 mb-3">
+					<h5 class="mb-1"><?= $this->lang->line('lb_sex') ?></h5>
+					<div><?= $patient->sex ?></div>
 				</div>
-				<div class="form-group col-md-2">
-					<label><?= $this->lang->line('lb_age') ?></label>
-					<input type="text" class="form-control bw" value="<?= $patient->age ?>" readonly>
+				<div class="col-md-2 mb-3">
+					<h5 class="mb-1"><?= $this->lang->line('lb_age') ?></h5>
+					<div><?= $patient->age ?></div>
 				</div>
-				<div class="form-group col-md-2">
-					<label><?= $this->lang->line('lb_blood_type') ?></label>
-					<input type="text" class="form-control bw" value="<?= $patient->blood_type ?>" readonly>
+				<div class="col-md-2 mb-3">
+					<h5 class="mb-1"><?= $this->lang->line('lb_blood_type') ?></h5>
+					<div><?= $patient->blood_type ?></div>
 				</div>
 			</div>
 			<div class="row d-none" id="app_reschedule">
@@ -77,11 +78,11 @@
 									<span class="mr-1"><?= $this->lang->line('lb_doctor') ?></span>
 									<span><i class="far fa-clock" id="ic_doctor_schedule_w" data-toggle="modal" data-target=".md_weekly_doctor_agenda"></i></span>
 								</label>
-								<input type="text" class="form-control bg-light" value="<?= $doctor->name ?>" readonly>
+								<div><strong><?= $doctor->name ?></strong></div>
 							</div>
 							<div class="form-group col-md-12">
 								<label><?= $this->lang->line('lb_patient') ?></label>
-								<input type="text" class="form-control bg-light" value="<?= $patient->name ?>" readonly>
+								<div><strong><?= $patient->name ?></strong></div>
 							</div>
 							<div class="form-group col-md-6">
 								<label><?= $this->lang->line('lb_date') ?></label>
@@ -134,18 +135,18 @@
 <?php if ($appointment->remark){ ?>
 <div class="col-md-12">
 	<div class="card">
-		<div class="card-header pb-0 border-0">
+		<div class="card-header">
 			<h4 class="mb-0"><?= $this->lang->line('title_remark') ?></h4>
 		</div>
 		<div class="card-body">
-			<textarea class="form-control" rows="3" readonly><?= $appointment->remark ?></textarea>
+			<div style="white-space: pre;"><?= $appointment->remark ?></div>
 		</div>
 	</div>
 </div>
 <?php } ?>
 <div class="col-md-6">
 	<div class="card">
-		<div class="card-header pb-0 border-0">
+		<div class="card-header">
 			<h4 class="mb-0"><?= $this->lang->line('title_clinical_histories') ?></h4>
 		</div>
 		<div class="card-body ap_content_list">
@@ -186,7 +187,7 @@
 </div>
 <div class="col-md-6">
 	<div class="card">
-		<div class="card-header pb-0 border-0">
+		<div class="card-header">
 			<h4 class="mb-0"><?= $this->lang->line('title_files') ?></h4>
 		</div>
 		<div class="card-body ap_content_list">

@@ -11,7 +11,7 @@ $me = $appointment_datas["medicine"];
 ?>
 <div class="col-md-12">
 	<div class="card">
-		<div class="card-header pb-0 border-0">
+		<div class="card-header">
 			<h4 class="mb-0"><?= $this->lang->line('title_anamnesis') ?></h4>
 		</div>
 		<div class="card-body">
@@ -57,11 +57,11 @@ $me = $appointment_datas["medicine"];
 									<div class="form-group col-md-3">
 										<label><?= $this->lang->line('lb_sex') ?></label>
 										<select class="form-control" name="sex_id">
-											<option value=""><?= $this->lang->line('txt_select') ?>...</option>
-											<?php if (!strcmp("M", $an->sex)) $selected = "selected"; else $selected = ""; ?>
-											<option value="M" <?= $selected ?>><?= $this->lang->line('txt_male') ?></option>
-											<?php if (!strcmp("F", $an->sex)) $selected = "selected"; else $selected = ""; ?>
-											<option value="F" <?= $selected ?>><?= $this->lang->line('txt_female') ?></option>
+											<option value="">--</option>
+											<?php foreach($sex_ops as $item){
+											if ($item->id == $an->sex_id) $s = "selected"; else $s = ""; ?>
+											<option value="<?= $item->id ?>" <?= $s ?>><?= $item->description ?></option>
+											<?php } ?>
 										</select>
 										<div class="sys_msg" id="an_sex_msg"></div>
 									</div>
@@ -202,7 +202,7 @@ $me = $appointment_datas["medicine"];
 								</div>
 							</div>
 							<div id="anamnesis-4" class="tab-pane">
-								<h5 class="font-weight-normal"><?= $this->lang->line('title_pathological') ?></h5>
+								<h5><?= $this->lang->line('title_pathological') ?></h5>
 								<div class="form-row">
 									<div class="form-group col-md-12">
 										<label><?= $this->lang->line('lb_previous_illnesses') ?></label>
@@ -247,7 +247,7 @@ $me = $appointment_datas["medicine"];
 										<div class="sys_msg" id="an_patho_pre_medication_msg"></div>
 									</div>
 								</div>
-								<h5 class="font-weight-normal mt-3"><?= $this->lang->line('title_gynecological') ?></h5>
+								<h5 class="mt-3"><?= $this->lang->line('title_gynecological') ?></h5>
 								<div class="form-row">
 									<div class="form-group col-md-3">
 										<label><?= $this->lang->line('lb_fur') ?></label>
@@ -270,7 +270,7 @@ $me = $appointment_datas["medicine"];
 										<div class="sys_msg" id="an_gyne_mac_msg"></div>
 									</div>
 								</div>
-								<h5 class="font-weight-normal mt-3"><?= $this->lang->line('title_family_background') ?></h5>
+								<h5 class="mt-3"><?= $this->lang->line('title_family_background') ?></h5>
 								<div class="form-row">
 									<div class="form-group col-md-12">
 										<textarea class="form-control" rows="3" name="family_history"><?= $an->family_history ?></textarea>
@@ -293,7 +293,7 @@ $me = $appointment_datas["medicine"];
 </div>
 <div class="col-md-12">
 	<div class="card">
-		<div class="card-header pb-0 border-0">
+		<div class="card-header">
 			<h4 class="mb-0"><?= $this->lang->line('title_physical_exam') ?></h4>
 		</div>
 		<div class="card-body">
@@ -451,10 +451,10 @@ $me = $appointment_datas["medicine"];
 </div>
 <div class="col-md-12">
 	<div class="card">
-		<div class="card-header border-0">
+		<div class="card-header">
 			<h4 class="mb-0"><?= $this->lang->line('title_diagnostic_impression') ?></h4>
 		</div>
-		<div class="card-body pt-0">
+		<div class="card-body">
 			<div class="row">
 				<?php if ($appointment->is_editable){ $next_col = 6; ?>
 				<div class="col-md-6">
@@ -505,7 +505,7 @@ $me = $appointment_datas["medicine"];
 </div>
 <div class="col-md-12">
 	<div class="card">
-		<div class="card-header pb-0 border-0">
+		<div class="card-header">
 			<h4 class="mb-0"><?= $this->lang->line('title_result') ?></h4>
 		</div>
 		<div class="card-body">
@@ -548,7 +548,7 @@ $me = $appointment_datas["medicine"];
 </div>
 <div class="col-md-12">
 	<div class="card">
-		<div class="card-header pb-0 border-0">
+		<div class="card-header">
 			<h4 class="mb-0"><?= $this->lang->line('title_auxiliary_exam') ?></h4>
 		</div>
 		<div class="card-body">
@@ -626,7 +626,7 @@ $me = $appointment_datas["medicine"];
 									<thead>
 										<tr>
 											<th><strong><?= $this->lang->line('th_type') ?></strong></th>
-											<th><strong><?= $this->lang->line('th_profile') ?></strong></th>
+											<th class="w-30"><strong><?= $this->lang->line('th_profile') ?></strong></th>
 											<th><strong><?= $this->lang->line('th_exams') ?></strong></th>
 											<?php if ($appointment->is_editable){ ?><th></th><?php } ?>
 										</tr>
@@ -732,7 +732,7 @@ $me = $appointment_datas["medicine"];
 </div>
 <div class="col-md-12">
 	<div class="card">
-		<div class="card-header pb-0 border-0">
+		<div class="card-header">
 			<h4 class="mb-0"><?= $this->lang->line('title_treatment') ?></h4>
 		</div>
 		<div class="card-body">
@@ -932,7 +932,7 @@ $me = $appointment_datas["medicine"];
 </div>
 <div class="col-md-12">
 	<div class="card">
-		<div class="card-header pb-0 border-0">
+		<div class="card-header">
 			<h4 class="mb-0"><?= $this->lang->line('title_sick_leave') ?></h4>
 		</div>
 		<div class="card-body">

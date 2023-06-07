@@ -11,7 +11,7 @@ $me = $appointment_datas["medicine"];
 ?>
 <div class="col-md-12">
 	<div class="card">
-		<div class="card-header pb-0 border-0">
+		<div class="card-header">
 			<h4 class="mb-0"><?= $this->lang->line('title_basic_data') ?></h4>
 		</div>
 		<div class="card-body">
@@ -75,7 +75,7 @@ $me = $appointment_datas["medicine"];
 </div>
 <div class="col-md-12">
 	<div class="card">
-		<div class="card-header pb-0 border-0">
+		<div class="card-header">
 			<h4 class="mb-0"><?= $this->lang->line('title_personal_information') ?></h4>
 		</div>
 		<div class="card-body">

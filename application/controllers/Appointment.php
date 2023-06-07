@@ -109,27 +109,19 @@ class Appointment extends CI_Controller {
 		$anamnesis = $this->general->filter("appointment_anamnesis", ["appointment_id" => $appointment->id]);
 		if ($anamnesis) $anamnesis = $anamnesis[0];
 		else{
-			$patient = $this->general->id("person", $appointment->patient_id);
-			if (!$patient) $patient = $this->general->structure("person");
-				
-			if ($patient->sex_id) $patient->sex = $this->general->id("sex", $patient->sex_id)->description;
-			else $patient->sex = null;
-			if ($patient->blood_type_id) $patient->blood_type = $this->general->id("blood_type", $patient->blood_type_id)->description;
-			else $patient->blood_type = null;
-			if ($patient->birthday) $patient->age = $this->utility_lib->age_calculator($patient->birthday, true);
-			else $patient->birthday = $patient->age = null;
-			
 			$anamnesis = $this->general->structure("appointment_anamnesis");
-			$anamnesis->name = $anamnesis->responsible = $patient->name;
-			$anamnesis->age = $patient->age;
-			$anamnesis->birthday = $patient->birthday;
-			$anamnesis->sex_id = $patient->sex_id;
-			$anamnesis->tel = $patient->tel;
-			$anamnesis->address = $patient->address;
-			if ($patient->birthday) $anamnesis->birthday = $patient->birthday;
+			$patient = $this->general->id("person", $appointment->patient_id);
+			if ($patient){
+				$anamnesis->name = $anamnesis->responsible = $patient->name;
+				$anamnesis->sex_id = $patient->sex_id;
+				$anamnesis->tel = $patient->tel;
+				$anamnesis->address = $patient->address;
+				if ($patient->birthday){
+					$anamnesis->birthday = $patient->birthday;
+					$anamnesis->age = $this->utility_lib->age_calculator($patient->birthday, false);
+				}
+			}
 		}
-		if ($anamnesis->age) $anamnesis->age = $anamnesis->age." ".$this->lang->line('txt_year_p');
-		else $anamnesis->age = null;
 		
 		if ($anamnesis->sex_id) $anamnesis->sex = $this->general->id("sex", $anamnesis->sex_id)->description;
 		else $anamnesis->sex = null;

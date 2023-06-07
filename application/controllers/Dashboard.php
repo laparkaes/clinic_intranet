@@ -34,8 +34,40 @@ class Dashboard extends CI_Controller {
 			case "admin": $data = $this->set_admin_datas($data); break;
 			case "reception": $data = $this->set_reception_datas($data); break;
 			case "doctor": $data = $this->set_doctor_datas($data); break;
+			case "nurse": $data = $this->set_nurse_datas($data); break;
 		}
 		$this->load->view('layout', $data);
+	}
+	
+	private function set_nurse_datas($data){
+		//set monthly resume
+		$from = date('Y-m-d 00:00:00');
+		$to = date('Y-m-d 23:59:59');
+		
+		$filter = ["schedule_from >=" => $from, "schedule_from <=" => $to];
+		
+		$apps = $this->general->filter("appointment", $filter, null, null, "schedule_from", "asc");
+		foreach($apps as $item){
+			$item->from = date("h:i a", strtotime($item->schedule_from));
+			$item->specialty = $this->general->id("specialty", $item->specialty_id)->name;
+			$item->doctor = $this->general->id("person", $item->doctor_id)->name;
+			$item->patient = $this->general->id("person", $item->patient_id)->name;
+			$item->status = $this->general->id("status", $item->status_id);
+		}
+		
+		$surs = $this->general->filter("surgery", $filter, null, null, "schedule_from", "asc");
+		foreach($surs as $item){
+			$item->from = date("h:i a", strtotime($item->schedule_from));
+			$item->specialty = $this->general->id("specialty", $item->specialty_id)->name;
+			$item->doctor = $this->general->id("person", $item->doctor_id)->name;
+			$item->patient = $this->general->id("person", $item->patient_id)->name;
+			$item->status = $this->general->id("status", $item->status_id);
+		}
+		
+		$data["apps"] = $apps;
+		$data["surs"] = $surs;
+		
+		return $data;
 	}
 	
 	private function set_doctor_datas($data){
@@ -67,7 +99,6 @@ class Dashboard extends CI_Controller {
 		
 		$data["apps"] = $apps;
 		$data["surs"] = $surs;
-		$data["title_dash"] = ucfirst(strftime("%A, %d de %B de %Y", time()));
 		
 		return $data;
 	}
@@ -162,7 +193,6 @@ class Dashboard extends CI_Controller {
 		}
 		
 		$data["currencies"] = $currencies;
-		$data["month"] = ucfirst(strftime("%B", DateTime::createFromFormat("Y-m-d", date("Y-m-d"))->getTimestamp()));
 		
 		return $data;
 	}
