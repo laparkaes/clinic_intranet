@@ -6,7 +6,7 @@ class Dashboard extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		date_default_timezone_set('America/Lima');
-		setlocale(LC_TIME, 'spanish');
+		setlocale(LC_TIME, 'spanish.utf8');
 		$this->lang->load("dashboard", "spanish");
 		$this->lang->load("system", "spanish");
 		$this->load->model('appointment_model','appointment');
@@ -67,6 +67,7 @@ class Dashboard extends CI_Controller {
 		
 		$data["apps"] = $apps;
 		$data["surs"] = $surs;
+		$data["title_dash"] = ucfirst(strftime("%A, %d de %B de %Y", time()));
 		
 		return $data;
 	}

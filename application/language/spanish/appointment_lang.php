@@ -259,3 +259,4 @@ $lang['th_image'] = 'Imagen';
 $lang['th_category'] = 'Categoría';
 $lang['msg_no_appointments'] = 'No existe consultas registradas.';
 $lang['hd_itinerary'] = 'Itinerario';
+$lang['msg_no_confirmed'] = 'Consulta aún no ha sido confirmada.';

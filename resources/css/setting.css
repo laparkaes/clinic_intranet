@@ -1,8 +1,8 @@
-h1, h2, h3, h4, h5, h6{color: var(--sw-anchor-active-primary-color);}
+h1, h2, h3, h4, h5, h6{color: #1a8d5f !important;}
 textarea{resize: none;}
 .sys_msg{font-size: 80%;} 
 
-.form-control:disabled, .form-control[readonly]{background-color: #e9ecef;}
+.form-control:disabled, .form-control[readonly]{background-color: #eee;}
 .bw.form-control:disabled, .bw.form-control[readonly]{background-color: #fff;}
 
 .w-30{width: 30% !important;}

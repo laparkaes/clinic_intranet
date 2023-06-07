@@ -1,9 +1,5 @@
 <div class="col-md-12">
-	<div class="card">
-		<div class="card-body">
-			Aqui va barra de navegador de fechas
-		</div>
-	</div>
+	<h3 class="text-primary mb-3"><?= $title_dash ?></h3>
 </div>
 <div class="col-md-6">
 	<div class="card">
