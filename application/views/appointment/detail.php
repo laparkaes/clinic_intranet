@@ -163,7 +163,7 @@
 				<tbody>
 					<?php foreach($histories as $item){ ?>
 					<tr class="text-left">
-						<td class="pl-0"><?= date("d.m.Y<\b\\r>H:i a", strtotime($item->schedule_from)) ?></td>
+						<td class="pl-0"><?= date("Y-m-d<\b\\r>h:i a", strtotime($item->schedule_from)) ?></td>
 						<td><?= $item->type ?></td>
 						<td><?= $item->specialty ?></td>
 						<td class="text-right pr-0">
@@ -204,7 +204,7 @@
 					<?php $file_path = base_url()."uploaded/patient_files/".$patient->doc_type_id."_".$patient->doc_number."/";
 					foreach($patient_files as $item){ ?>
 					<tr>
-						<td class="pl-0"><?= date("d.m.Y<\b\\r>H:i:s", strtotime($item->registed_at)) ?></td>
+						<td class="pl-0"><?= date("Y-m-d<\b\\r>h:i:s", strtotime($item->registed_at)) ?></td>
 						<td><?= $item->title ?></td>
 						<td class="pr-0">
 							<a href="<?= $file_path.$item->filename ?>" target="_blank">
@@ -225,11 +225,7 @@
 <div class="col-md-12">
 	<h3 class="text-center text-danger mb-5"><?= $this->lang->line('msg_no_confirmed') ?></h3>
 </div>	
-<?php }elseif ($appointment->status->code === "confirmed"){
-$this->load->view('appointment/detail_'.$this->session->userdata("role")->name); ?>
-<?php }else{ ?>
-show confirmed / canceled data
-<?php } ?>
+<?php } elseif ($appointment->status->code === "confirmed") $this->load->view('appointment/detail_'.$this->session->userdata("role")->name); elseif ($appointment->status->code === "finished") $this->load->view('appointment/detail_finished'); ?>
 <div class="modal fade md_weekly_doctor_agenda" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
