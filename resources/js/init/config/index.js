@@ -184,6 +184,34 @@ function remove_exam(ex_id){
 }
 /* end profile */
 
+/* start image */
+function reset_image_list(){
+	$("#image_list").html("");
+	$("#btn_load_more_image").removeClass("d-none");
+	load_more_image();
+}
+
+function remove_image(dom){
+	ajax_simple_warning({id: $(dom).val()}, "config/remove_image", $("#warning_rim").val()).done(function(res) {
+		swal(res.type, res.msg);
+		reset_image_list();
+	});
+}
+
+function load_more_image(){
+	var offset = $("#image_list").children().length;
+	ajax_simple({offset: offset}, "config/load_more_image").done(function(res) {
+		if (res.length > 0){
+			$.each(res, function(index, item) {
+				$("#image_list").append('<tr><td>' + (offset + index + 1) + '</td><td>' + item.category + '</td><td>' + item.name + '</td><td class="text-right"><button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_image" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+			});
+			
+			$('.btn_remove_image').off('click').on('click',(function(e) {remove_image(this);}));
+		}else $("#btn_load_more_image").addClass("d-none");
+	});
+}
+/* end image */
+
 /* start medicine */
 function reset_medicine_list(){
 	$("#medicine_list").html("");
@@ -255,6 +283,11 @@ $(document).ready(function() {
 	$("#btn_load_more_profile").on('click',(function(e) {load_more_profile();}));
 	$(".btn_remove_exam_category").on('click',(function(e) {remove_exam_category($(this).val());}));
 	$(".btn_remove_exam").on('click',(function(e) {remove_exam($(this).val());}));
+	
+	//image
+	$(".control_bl_image").on('click',(function(e) {control_bl_group(this, "image");}));
+	$("#btn_load_more_image").on('click',(function(e) {load_more_image();}));
+	$(".btn_remove_image").on('click',(function(e) {remove_image(this);}));
 	
 	//medicine
 	$("#form_register_medicine").submit(function(e) {e.preventDefault(); register_medicine(this);});

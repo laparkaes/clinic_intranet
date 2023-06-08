@@ -14,6 +14,7 @@ $lang['error_een'] = 'Ingrese el nombre del examen.';//error_enter_exam_name
 $lang['error_sec'] = 'Elija una categoría para el examen.';//error_select_exam_category
 $lang['error_uex'] = 'No se pudo eliminar debido a que este examen ha sido asignado por algún registro de consulta.';//error_using_exam
 $lang['error_nmr'] = 'Medicina es aplicada en alguna consulta del sistema.';//error_no_medicine_remove
+$lang['error_nir'] = 'Imagen es aplicada en alguna consulta del sistema.';//error_no_image_remove
 $lang['success_cup'] = 'Empresa ha sido actualizada.';//success_company_update
 $lang['success_rsv'] = 'Nuevo valor ha sido registrado.';//success_register_sl_value
 $lang['success_dsv'] = 'Nuevo valor ha sido eliminado.';//success_delete_sl_value
@@ -26,8 +27,10 @@ $lang['success_rex'] = 'El examen ha sido registrado.';//success_register_exam
 $lang['success_dex'] = 'El examen ha sido eliminado.';//success_delete_exam
 $lang['success_rem'] = 'El medicina ha sido registrada.';//success_register_medicine
 $lang['success_dem'] = 'Medicina de examen ha sido eliminada.';//success_delete_exam_medicine
+$lang['success_dim'] = 'imagen ha sido eliminada.';//success_delete_image
 $lang['warning_rpr'] = '¿Desea eliminar perfil elegido?';//warning_remove_profile
 $lang['warning_rme'] = '¿Desea eliminar medicina elegida?';//warning_remove_medicine
+$lang['warning_rim'] = '¿Desea eliminar imagen elegida?';//warning_remove_image
 
 //component
 $lang['btn_load_more'] = 'Cargar más';
@@ -65,6 +68,7 @@ $lang['access_admin_access'] = 'Gestión de acceso';
 $lang['access_admin_medicine'] = 'Gestión de medicina';
 $lang['access_admin_profile'] = 'Gestión de perfil';
 $lang['access_admin_log'] = 'Gestión de historial';
+$lang['access_admin_image'] = 'Gestión de imagen';
 
 //system
 $lang['title_medicine'] = 'Medicina';
@@ -80,9 +84,9 @@ $lang['slop_medicine_via_application'] = 'Vía Aplicación';
 $lang['slop_payment_method'] = 'Metodo de Pago';
 $lang['slop_sex'] = 'Sexo';
 
-//profile
-$lang['title_profile'] = 'Perfil';
-$lang['title_profile_admin'] = 'Gestión de Perfil de Exámenes';
+//laboratory
+$lang['title_laboratory'] = 'Laboratorio';
+$lang['title_laboratory_admin'] = 'Gestión de Laboratorio';
 $lang['lb_profile'] = 'Perfil';
 $lang['lb_profile_name'] = 'Nombre de perfil';
 $lang['lb_examinations'] = 'Exámenes';
@@ -99,6 +103,11 @@ $lang['btn_examination'] = 'Examen';
 $lang['btn_category'] = 'Categoría';
 $lang['th_category'] = 'Categoría';
 $lang['th_examination'] = 'Examen';
+
+//image
+$lang['title_image'] = 'Imagen';
+$lang['title_image_admin'] = 'Gestión de Imagen';
+$lang['th_image'] = 'Imagen';
 
 //medicine
 $lang['lb_medicine'] = 'Medicina';

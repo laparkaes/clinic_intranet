@@ -65,6 +65,10 @@ class Config extends CI_Controller {
 			$item->log_txt = $log_code_arr[$item->log_code_id];
 		}
 		
+		$image_category_arr = [];
+		$image_categories = $this->general->all("image_category", "name", "asc");
+		foreach($image_categories as $item) $image_category_arr[$item->id] = $item->name;
+		
 		$data = array(
 			"role_access" => $role_access,
 			"roles_arr" => $roles_arr,
@@ -75,6 +79,9 @@ class Config extends CI_Controller {
 			"exam_profiles" => $exam_profiles,
 			"exam_category" => $exam_category,
 			"exams" => $exams,
+			"image_category_arr" => $image_category_arr,
+			"image_categories" => $image_categories,
+			"images" => $this->general->all("image", "name", "asc", 20, 0),
 			"medicines" => $this->general->all("medicine", "name", "asc", 20, 0),
 			"departments" => $this->general->all("address_department", "name", "asc"),
 			"provinces" => $this->general->all("address_province", "name", "asc"),
@@ -356,5 +363,36 @@ class Config extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode($logs);
+	}
+	
+	public function load_more_image(){
+		$image_category_arr = [];
+		$image_categories = $this->general->all("image_category", "name", "asc");
+		foreach($image_categories as $item) $image_category_arr[$item->id] = $item->name;
+		
+		$images = $this->general->all("image", "name", "asc", 20, $this->input->post("offset"));
+		foreach($images as $item) $item->category = $image_category_arr[$item->category_id];
+		
+		header('Content-Type: application/json');
+		echo json_encode($images);
+	}
+	
+	public function remove_image(){
+		$type = "error"; $msg = null;
+		
+		if ($this->utility_lib->check_access("config", "admin_image")){
+			$image = $this->general->id("image", $this->input->post("id"));
+			if (!$this->general->filter("appointment_image", ["image_id" => $image->id])){
+				if ($this->general->delete("image", ["id" => $image->id])){
+					$this->utility_lib->add_log("image_delete", $image->name);
+					
+					$type = "success";
+					$msg = $this->lang->line('success_dim');
+				}else $msg = $this->lang->line('error_internal');
+			}else $msg = $this->lang->line('error_nir');
+		}else $msg = $this->lang->line('error_no_permission');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 }

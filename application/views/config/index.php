@@ -18,8 +18,13 @@
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#bl_profile_admin">
-							<i class="fal fa-diagnoses mr-3"></i><?= $this->lang->line("title_profile") ?>
+						<a class="nav-link" data-toggle="tab" href="#bl_laboratory_admin">
+							<i class="fal fa-vial mr-3"></i><?= $this->lang->line("title_laboratory") ?>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#bl_image_admin">
+							<i class="fal fa-x-ray mr-3"></i><?= $this->lang->line("title_image") ?>
 						</a>
 					</li>
 					<li class="nav-item">
@@ -130,10 +135,10 @@
 							</div>
 						</form>
 					</div>
-					<div class="tab-pane fade" id="bl_profile_admin">
+					<div class="tab-pane fade" id="bl_laboratory_admin">
 						<div class="row">
 							<div class="col-md-12 d-flex justify-content-between">
-								<h5 class="text-primary"><?= $this->lang->line("title_profile_admin") ?></h5>
+								<h5 class="text-primary"><?= $this->lang->line("title_laboratory_admin") ?></h5>
 								<div class="btn-group">
 									<button type="button" class="btn control_bl_profile btn-primary" id="btn_list_profile" value="bl_profile_list">
 										<i class="fas fa-list"></i>
@@ -222,6 +227,59 @@
 							</div>
 						</div>
 					</div>
+					<div class="tab-pane fade" id="bl_image_admin">
+						<div class="row">
+							<div class="col-md-12 d-flex justify-content-between">
+								<h5 class="text-primary"><?= $this->lang->line("title_image_admin") ?></h5>
+								<div class="btn-group">
+									<button type="button" class="btn control_bl_image btn-primary" id="btn_list_image" value="bl_image_list">
+										<i class="fas fa-list"></i>
+									</button>
+									<button type="button" class="btn control_bl_image btn-outline-primary" value="bl_image_add">
+										<i class="fas fa-plus"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 bl_image d-none" id="bl_image_add">
+								add new image
+							</div>
+							<div class="col-md-12 bl_image" id="bl_image_list">
+								<div class="table-responsive">
+									<table class="table table-responsive-md">
+										<thead>
+											<tr>
+												<th><strong>#</strong></th>
+												<th><strong><?= $this->lang->line('th_category') ?></strong></th>
+												<th><strong><?= $this->lang->line('th_image') ?></strong></th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody id="image_list">
+											<?php foreach($images as $i => $item){ ?>
+											<tr>
+												<td><?= number_format($i + 1) ?></td>
+												<td><?= $image_category_arr[$item->category_id] ?></td>
+												<td><?= $item->name ?></td>
+												<td class="text-right">
+													<button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_image" value="<?= $item->id ?>">
+														<i class="fas fa-trash"></i>
+													</button>
+												</td>
+											</tr>
+											<?php } ?>
+										</tbody>
+									</table>
+									<div class="text-center mt-3 pb-1">
+										<button type="button" class="btn btn-outline-primary" id="btn_load_more_image">
+											<?= $this->lang->line('btn_load_more') ?>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 					<div class="tab-pane fade" id="bl_medicine_admin">
 						<div class="row">
 							<div class="col-md-12 d-flex justify-content-between">
@@ -262,7 +320,7 @@
 										<tbody id="medicine_list">
 											<?php foreach($medicines as $i => $item){ ?>
 											<tr>
-												<td><?= $i + 1 ?></td>
+												<td><?= number_format($i + 1) ?></td>
 												<td><?= $item->name ?></td>
 												<td class="text-right">
 													<button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_medicine" value="<?= $item->id ?>">
@@ -363,6 +421,7 @@
 <div class="d-none">
 	<input type="hidden" id="warning_rpr" value="<?= $this->lang->line('warning_rpr') ?>">
 	<input type="hidden" id="warning_rme" value="<?= $this->lang->line('warning_rme') ?>">
+	<input type="hidden" id="warning_rim" value="<?= $this->lang->line('warning_rim') ?>">
 	<input type="hidden" id="txt_view_all" value="<?= $this->lang->line('txt_view_all') ?>">
 </div>
 <div class="modal fade" id="md_admin_exam">

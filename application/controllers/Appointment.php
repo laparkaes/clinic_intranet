@@ -937,20 +937,14 @@ class Appointment extends CI_Controller {
 		$medicines = $this->general->filter("appointment_medicine", ["appointment_id" => $appointment_id]);
 		foreach($medicines as $item){
 			$sub_txt_arr = [];
+			
 			if ($item->quantity > 1) $sub_txt_arr[] = number_format($item->quantity)." ".$this->lang->line('txt_units');
 			else $sub_txt_arr[] = number_format($item->quantity)." ".$this->lang->line('txt_unit');
 			
-			if ($item->dose_id) 
-				$sub_txt_arr[] = $this->general->id("medicine_dose", $item->dose_id)->description;
-			
-			if ($item->application_way_id) 
-				$sub_txt_arr[] = $this->general->id("medicine_application_way ", $item->application_way_id)->description;
-			
-			if ($item->frequency_id) 
-				$sub_txt_arr[] = $this->general->id("medicine_frequency", $item->frequency_id)->description;
-			
-			if ($item->duration_id) 
-				$sub_txt_arr[] = $this->general->id("medicine_duration", $item->duration_id)->description;
+			if ($item->dose_id) $sub_txt_arr[] = $this->general->id("medicine_dose", $item->dose_id)->description;
+			if ($item->application_way_id) $sub_txt_arr[] = $this->general->id("medicine_application_way ", $item->application_way_id)->description;
+			if ($item->frequency_id) $sub_txt_arr[] = $this->general->id("medicine_frequency", $item->frequency_id)->description;
+			if ($item->duration_id) $sub_txt_arr[] = $this->general->id("medicine_duration", $item->duration_id)->description;
 			
 			$item->medicine = $this->general->id("medicine", $item->medicine_id)->name;
 			$item->sub_txt = implode(", ", $sub_txt_arr);
