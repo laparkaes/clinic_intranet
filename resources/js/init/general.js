@@ -118,30 +118,6 @@ function set_autocomplete(dom_id, data_dom_id){
 	}));
 }
 
-function load_schedule(){
-	$.ajax({
-		url: $("#base_url").val() + "Ajax_f/load_schedule",
-		type: "POST",
-		success:function(res){
-			var app_baseurl = $("#base_url").val() + "appointment/detail/";
-			var sur_baseurl = $("#base_url").val() + "surgery/detail/";
-			$.each(res.appointments, function(key, day) {
-				$("#sch_list_appointment").append('<li class="name-first-letter">' + day.title + '</li>');
-				$.each(day.data, function(key, item) {
-					$("#sch_list_appointment").append('<li><div class="d-flex bd-highlight"><div class="user_info text-black fs-13"><div><i class="fas fa-user-injured fa-fw mr-1"></i>' + item.patient + '</div><div><i class="fas fa-user-md fa-fw mr-1"></i>' + item.doctor + '</div><div class="text-muted">' + item.specialty + '<br/>' + item.schedule + '</div></div><div class="ml-auto"><a href="' + app_baseurl + item.id + '" class="btn btn-' + item.color + ' btn-xs sharp mr-1"><i class="fas fa-chevron-right"></i></a></div></div></li>');
-				});
-			});
-			
-			$.each(res.surgeries, function(key, day) {
-				$("#sch_list_surgery").append('<li class="name-first-letter">' + day.title + '</li>');
-				$.each(day.data, function(key, item) {
-					$("#sch_list_surgery").append('<li><div class="d-flex bd-highlight"><div class="user_info text-black fs-13"><div><i class="fas fa-user-injured fa-fw mr-1"></i>' + item.patient + '</div><div><i class="fas fa-user-md fa-fw mr-1"></i>' + item.doctor + '</div><div class="text-muted">' + item.specialty + '<br/>' + item.schedule+ ', ' + item.room + '</div></div><div class="ml-auto"><a href="' + sur_baseurl + item.id + '" class="btn btn-' + item.color + ' btn-xs sharp mr-1"><i class="fas fa-chevron-right"></i></a></div></div></li>');
-				});
-			});
-		}
-	});
-}
-
 function set_datatable(dom_id, pl, o){
 	var table = $('#' + dom_id).DataTable({
 		pageLength: pl,
@@ -321,8 +297,4 @@ $(document).ready(function() {
 	}
 	
 	$(".content-body").css("min-height", "0");
-	
-	load_schedule();
-	$('.schedule_block').on('click',function(){ $('.schedule_box').addClass('active'); });
-	$('.schedule_box-close').on('click',function(){ $('.schedule_box').removeClass('active'); });
 });

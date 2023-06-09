@@ -395,4 +395,27 @@ class Config extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
+	
+	public function register_image(){
+		$type = "error"; $msgs = []; $msg = null;
+		
+		if ($this->utility_lib->check_access("config", "admin_image")){
+			$data = $this->input->post();
+			
+			$this->load->library('my_val');
+			$msgs = $this->my_val->image($msgs, "ri_", $data);
+			
+			if (!$msgs){
+				if ($this->general->insert("image", $data)){
+					$this->utility_lib->add_log("image_register", $data["name"]);
+						
+					$type = "success";
+					$msg = $this->lang->line("success_rim");	
+				}else $msg = $this->lang->line('error_internal');
+			}else $msg = $this->lang->line("error_occurred");
+		}else $msg = $this->lang->line('error_no_permission');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
+	}
 }

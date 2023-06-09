@@ -411,4 +411,14 @@ class My_val{
 			
 		return $msgs;
 	}
+	
+	public function image($msgs, $prefix, $data){
+		if (!$data["category_id"]) $msgs = $this->set_msg($msgs, $prefix."category_id_msg", "error", "e_select_category");
+		
+		if (!$data["name"]) $msgs = $this->set_msg($msgs, $prefix."name_msg", "error", "e_enter_image_name");
+		elseif ($this->CI->general->filter("image", $data)) 
+			$msgs = $this->set_msg($msgs, $prefix."name_msg", "error", "e_duplate_image_name");
+			
+		return $msgs;
+	}
 }

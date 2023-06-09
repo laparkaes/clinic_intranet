@@ -243,7 +243,26 @@
 						</div>
 						<div class="row">
 							<div class="col-md-12 bl_image d-none" id="bl_image_add">
-								add new image
+								<form class="form-row" id="form_register_image" action="#">
+									<div class="form-group col-md-4">
+										<label><?= $this->lang->line('lb_category') ?></label>
+										<select class="form-control" name="category_id">
+											<option value="">--</option>
+											<?php foreach($image_categories as $item){ ?>
+											<option value="<?= $item->id ?>"><?= $item->name ?></option>
+											<?php } ?>
+										</select>
+										<div class="sys_msg" id="ri_category_id_msg"></div>
+									</div>
+									<div class="form-group col-md-8">
+										<label><?= $this->lang->line('lb_name') ?></label>
+										<input type="text" class="form-control" name="name">
+										<div class="sys_msg" id="ri_name_msg"></div>
+									</div>
+									<div class="form-group col-md-12 pt-3">
+										<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
+									</div>
+								</form>
 							</div>
 							<div class="col-md-12 bl_image" id="bl_image_list">
 								<div class="table-responsive">

@@ -210,6 +210,15 @@ function load_more_image(){
 		}else $("#btn_load_more_image").addClass("d-none");
 	});
 }
+
+function register_image(dom){
+	ajax_form(dom, "config/register_image").done(function(res) {
+		set_msg(res.msgs);
+		swal(res.type, res.msg);
+		reset_image_list();
+		$('#btn_list_image').trigger('click');
+	});
+}
 /* end image */
 
 /* start medicine */
@@ -285,6 +294,7 @@ $(document).ready(function() {
 	$(".btn_remove_exam").on('click',(function(e) {remove_exam($(this).val());}));
 	
 	//image
+	$("#form_register_image").submit(function(e) {e.preventDefault(); register_image(this);});
 	$(".control_bl_image").on('click',(function(e) {control_bl_group(this, "image");}));
 	$("#btn_load_more_image").on('click',(function(e) {load_more_image();}));
 	$(".btn_remove_image").on('click',(function(e) {remove_image(this);}));

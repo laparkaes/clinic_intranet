@@ -95,3 +95,8 @@ $lang['e_select_profile_exams'] = 'Seleccione al menos un examen para perfil.';
 /* medicine */
 $lang['e_enter_medicine_name'] = 'Ingrese nombre de medicina.';
 $lang['e_duplate_medicine_name'] = 'Nombre de medicina existe.';
+
+/* image */
+$lang['e_select_category'] = 'Elija una categoría.';
+$lang['e_enter_image_name'] = 'Ingrese nombre de imagen.';
+$lang['e_duplate_image_name'] = 'Nombre de imagen existe.';

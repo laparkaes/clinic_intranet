@@ -46,11 +46,6 @@
                             </div>
                         </div>
                         <ul class="navbar-nav header-right">
-							<li class="nav-item dropdown notification_dropdown">
-                                <a class="nav-link text-primary border-primary schedule_block" href="#">
-                                    <i class="fas fa-laptop-medical"></i>
-                                </a>
-							</li>
                             <li class="nav-item dropdown header-profile">
                                 <a class="nav-link" href="#" role="button" data-toggle="dropdown">
                                     <img src="<?= base_url() ?>resources/images/user.png" width="20" alt=""/>
@@ -174,44 +169,6 @@
                 <p><?= $this->lang->line('cr_text')." ".$this->lang->line('cr_by') ?> <strong><?= $this->lang->line('cr_owner') ?></strong></p>
             </div>
         </div>
-	</div>
-	<label class="btn-side-menu nav-control">
-		<i class="far fa-bars text-white"></i>
-	</label>
-	<div class="schedule_box chatbox">
-		<div class="schedule_box-close chatbox-close"></div>
-		<div class="custom-tab-1">
-			<ul class="nav nav-tabs d-flex justify-content-start">
-				<li class="nav-item">
-					<a class="nav-link active" data-toggle="tab" href="#sch_appointment"><?= $this->lang->line('txt_appointments') ?></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#sch_surgery"><?= $this->lang->line('txt_surgeries') ?></a>
-				</li>
-			</ul>
-			<div class="tab-content">
-				<div class="tab-pane fade active show" id="sch_appointment">
-					<div class="card mb-sm-3 mb-md-0 contacts_card">
-						<div class="card-header chat-list-header text-center">
-							<h6 class="mb-0"><?= $this->lang->line('txt_appointments_list') ?></h6>
-						</div>
-						<div class="card-body contacts_body p-0 dz-scroll" id="DZ_W_Contacts_Body1">
-							<ul class="contacts" id="sch_list_appointment"></ul>
-						</div>
-					</div>
-				</div>
-				<div class="tab-pane fade" id="sch_surgery">
-					<div class="card mb-sm-3 mb-md-0 contacts_card">
-						<div class="card-header chat-list-header text-center">
-							<h6 class="mb-0"><?= $this->lang->line('txt_surgeries_list') ?></h6>
-						</div>
-						<div class="card-body contacts_body p-0 dz-scroll" id="DZ_W_Contacts_Body1">
-							<ul class="contacts" id="sch_list_surgery"></ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
 	<div class="d-none">
 		<input type="hidden" id="base_url" value="<?= base_url() ?>">

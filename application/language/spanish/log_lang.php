@@ -48,3 +48,5 @@ $lang['log_profile_register'] = 'Registrar perfil de examen';
 $lang['log_profile_delete'] = 'Eliminar perfil de examen';
 $lang['log_medicine_register'] = 'Registrar medicina';
 $lang['log_medicine_delete'] = 'Eliminar medicina';
+$lang['log_image_register'] = 'Registrar imagen';
+$lang['log_image_delete'] = 'Eliminar imagen';
