@@ -10,15 +10,6 @@ class Appointment extends CI_Controller {
 		date_default_timezone_set('America/Lima');
 		$this->lang->load("appointment", "spanish");
 		$this->lang->load("system", "spanish");
-		$this->load->model('role_model','role');
-		$this->load->model('status_model','status');
-		$this->load->model('account_model','account');
-		$this->load->model('specialty_model','specialty');
-		$this->load->model('appointment_model','appointment');
-		$this->load->model('patient_file_model','patient_file');
-		$this->load->model('examination_model','examination');
-		$this->load->model('image_model','image');
-		$this->load->model('product_model','product');
 		$this->load->model('general_model','general');
 		$this->nav_menu = "appointment";
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
@@ -170,7 +161,7 @@ class Appointment extends CI_Controller {
 		if (!$this->session->userdata('logged_in')) redirect(base_url());
 		if (!$this->utility_lib->check_access("appointment", "detail")) redirect("/errors/no_permission");
 		
-		$appointment = $this->appointment->id($id);
+		$appointment = $this->general->id("appointment", $id);
 		if (!$appointment) redirect("/appointment");
 		
 		$appointment->status = $this->general->id("status", $appointment->status_id);
@@ -205,7 +196,7 @@ class Appointment extends CI_Controller {
 			$data = $this->general->filter("doctor", ["person_id" => $doctor->id]);
 			if ($data){
 				$doctor->data = $data[0];
-				$doctor->data->specialty = $this->specialty->id($doctor->data->specialty_id)->name;
+				$doctor->data->specialty = $this->general->id("specialty", $doctor->data->specialty_id)->name;
 			}
 		}else{
 			$doctor = $this->general->structure("person");
@@ -229,7 +220,8 @@ class Appointment extends CI_Controller {
 		$specialties_rec = $this->general->all("specialty");
 		foreach($specialties_rec as $item) $specialties[$item->id] = $item->name;
 		
-		$filter = array("patient_id" => $patient->id, "status_id" => $this->status->code("finished")->id);
+		$s_finished = $this->general->filter("status", ["code" => "finished"])[0];
+		$filter = array("patient_id" => $patient->id, "status_id" => $s_finished->id);
 		
 		$surgery_histories = $this->general->filter("surgery", $filter);
 		foreach($surgery_histories as $item){
@@ -264,14 +256,15 @@ class Appointment extends CI_Controller {
 		
 		//examination records
 		$examinations_list = [];
-		$examinations = $this->examination->all();
+		$examinations = $this->general->all("examination", "name", "asc");
 		foreach($examinations as $item) $examinations_list[$item->id] = $item;
 		
-		$exam_profiles = $this->examination->profile_all();
+		$exam_profiles = $this->general->all("examination_profile", "name", "asc");
 		foreach($exam_profiles as $i => $item){
 			$exams_aux = $cate_aux = [];
 			$item->examination_ids = explode(",", $item->examination_ids);
-			$exams = $this->examination->ids($item->examination_ids);
+			$f_in = [["field" => "id", "values" => $item->examination_ids]];
+			$exams = $this->general->filter("examination", null, null, $f_in, "name", "asc");
 			foreach($exams as $item){
 				array_push($exams_aux, $item->name);
 				array_push($cate_aux, $item->category_id);
@@ -292,6 +285,8 @@ class Appointment extends CI_Controller {
 			"diagnosis_type" => $this->general->all("diagnosis_type", "description", "asc"),
 		];
 		
+		$patient_files = $this->general->filter("patient_file", ["patient_id" => $appointment->patient_id], null, null, "registed_at", "desc");
+		
 		$data = array(
 			"actions" => $actions,
 			"appointment" => $appointment,
@@ -299,11 +294,11 @@ class Appointment extends CI_Controller {
 			"doctor" => $doctor,
 			"patient" => $patient,
 			"histories" => $histories,
-			"patient_files" => $this->patient_file->filter(array("patient_id" => $appointment->patient_id)),
+			"patient_files" => $patient_files,
 			"pre_illnesses" => $pre_illnesses,
 			"options" => $options,
 			"exam_profiles" => $exam_profiles,
-			"exam_categories" => $this->examination->category_all(),
+			"exam_categories" => $this->general->all("examination_category", "name", "asc"),
 			"examinations" => $examinations,
 			"aux_image_categories" => $this->general->all("image_category", "name", "asc"),
 			"aux_images" => $this->general->all("image", "name", "asc"),
@@ -345,9 +340,9 @@ class Appointment extends CI_Controller {
 				
 				$app["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
 				$app["schedule_to"] = date("Y-m-d H:i:s", strtotime("+14 minutes", strtotime($app["schedule_from"])));
-				$app["status_id"] = $this->status->code("reserved")->id;
+				$app["status_id"] = $this->general->filter("status", ["code" => "reserved"])[0]->id;
 				$app["registed_at"] = $now;
-				$appointment_id = $this->appointment->insert($app);
+				$appointment_id = $this->general->insert("appointment", $app);
 				if ($appointment_id){
 					$this->utility_lib->add_log("appointment_register", $pt["name"]);
 					
@@ -368,7 +363,8 @@ class Appointment extends CI_Controller {
 		if ($this->utility_lib->check_access("appointment", "update")){
 			$appointment = $this->general->id("appointment", $this->input->post("id"));
 			if ($appointment){
-				if ($this->general->update("appointment", $appointment->id, ["status_id" => $this->status->code("canceled")->id])){
+				$s_cancel = $this->general->filter("status", ["code" => "canceled"])[0];
+				if ($this->general->update("appointment", $appointment->id, ["status_id" => $s_cancel->id])){
 					$person = $this->general->id("person", $appointment->patient_id);
 					$this->utility_lib->add_log("appointment_cancel", $person->name);
 					
@@ -388,7 +384,8 @@ class Appointment extends CI_Controller {
 		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){
 			$appointment = $this->general->id("appointment", $this->input->post("id"));
 			if ($appointment){
-				if ($this->general->update("appointment", $appointment->id, ["status_id" => $this->status->code("finished")->id])){
+				$s_finished = $this->general->filter("status", ["code" => "finished"])[0];
+				if ($this->general->update("appointment", $appointment->id, ["status_id" => $s_finished->id])){
 					$person = $this->general->id("person", $appointment->patient_id);
 					$this->utility_lib->add_log("appointment_finish", $person->name);
 					
@@ -421,7 +418,7 @@ class Appointment extends CI_Controller {
 						"schedule_to" => date("Y-m-d H:i:s", strtotime("+14 minutes", strtotime($schedule_from)))
 					];
 					
-					if ($this->appointment->update($app["id"], $app)){
+					if ($this->general->update("appointment", $app["id"], $app)){
 						$person = $this->general->id("person", $appointment->patient_id);
 						$this->utility_lib->add_log("appointment_reschedule", $person->name);
 						
@@ -461,8 +458,8 @@ class Appointment extends CI_Controller {
 				
 				//status validation
 				if ($data["appointment_id"]){
-					$appointment = $this->appointment->id($data["appointment_id"]);
-					$appointment->status = $this->status->id($appointment->status_id);
+					$appointment = $this->general->id("appointment", $data["appointment_id"]);
+					$appointment->status = $this->general->id("status", $appointment->status_id);
 					if (!strcmp("confirmed", $appointment->status->code)){
 						//set enterance time
 						$data["entered_at"] = $data["date"]." ".$data["time"];
@@ -488,8 +485,9 @@ class Appointment extends CI_Controller {
 			
 			//status validation
 			if ($data["appointment_id"]){
-				$appointment = $this->appointment->id($data["appointment_id"]);
-				$appointment->status = $this->status->id($appointment->status_id);
+				$appointment = $this->general->id("appointment", $data["appointment_id"]);
+				$appointment->status = $this->general->id("status", $appointment->status_id);
+					
 				if (!strcmp("confirmed", $appointment->status->code)){
 					$type = "success";
 					$msg = $this->save_data($data, "appointment_anamnesis", "success_spi");
@@ -509,8 +507,8 @@ class Appointment extends CI_Controller {
 			
 			//status validation
 			if ($data["appointment_id"]){
-				$appointment = $this->appointment->id($data["appointment_id"]);
-				$appointment->status = $this->status->id($appointment->status_id);
+				$appointment = $this->general->id("appointment", $data["appointment_id"]);
+				$appointment->status = $this->general->id("status", $appointment->status_id);
 				if (!strcmp("confirmed", $appointment->status->code)){
 					$type = "success";
 					$msg = $this->save_data($data, "appointment_physical", "success_str");
@@ -530,8 +528,8 @@ class Appointment extends CI_Controller {
 			
 			//status validation
 			if ($data["appointment_id"]){
-				$appointment = $this->appointment->id($data["appointment_id"]);
-				$appointment->status = $this->status->id($appointment->status_id);
+				$appointment = $this->general->id("appointment", $data["appointment_id"]);
+				$appointment->status = $this->general->id("status", $appointment->status_id);
 				if (!strcmp("confirmed", $appointment->status->code)){
 					if (array_key_exists("patho_pre_illnesses", $data))
 						$data["patho_pre_illnesses"] = str_replace(", ",",", implode(",", $data["patho_pre_illnesses"]));
@@ -555,8 +553,8 @@ class Appointment extends CI_Controller {
 			
 			//status validation
 			if ($data["appointment_id"]){
-				$appointment = $this->appointment->id($data["appointment_id"]);
-				$appointment->status = $this->status->id($appointment->status_id);
+				$appointment = $this->general->id("appointment", $data["appointment_id"]);
+				$appointment->status = $this->general->id("status", $appointment->status_id);
 				if (!strcmp("confirmed", $appointment->status->code)){
 					$type = "success";
 					$msg = $this->save_data($data, "appointment_physical", "success_spe");
@@ -591,8 +589,9 @@ class Appointment extends CI_Controller {
 			$data = $this->input->post();
 			
 			//appointment status validation
-			$appointment = $this->appointment->id($data["appointment_id"]);
-			if (in_array($this->status->id($appointment->status_id)->code, ["reserved", "finished", "canceled"])){
+			$appointment = $this->general->id("appointment", $data["appointment_id"]);
+			$appointment->status = $this->general->id("status", $appointment->status_id);
+			if (in_array($appointment->status->code, ["reserved", "finished", "canceled"])){
 				$msg = $this->lang->line('error_nea');
 				$type = "error";
 			}else{
@@ -624,8 +623,9 @@ class Appointment extends CI_Controller {
 			$data = $this->input->post();
 			
 			//appointment status validation
-			$appointment = $this->appointment->id($data["appointment_id"]);
-			if (in_array($this->status->id($appointment->status_id)->code, ["reserved", "finished", "canceled"])){
+			$appointment = $this->general->id("appointment", $data["appointment_id"]);
+			$appointment->status = $this->general->id("status", $appointment->status_id);
+			if (in_array($appointment->status->code, ["reserved", "finished", "canceled"])){
 				$msg = $this->lang->line('error_nea');
 				$type = "error";
 			}else{
@@ -656,8 +656,8 @@ class Appointment extends CI_Controller {
 			
 			//status validation
 			if ($data["appointment_id"]){
-				$appointment = $this->appointment->id($data["appointment_id"]);
-				$appointment->status = $this->status->id($appointment->status_id);
+				$appointment = $this->general->id("appointment", $data["appointment_id"]);
+				$appointment->status = $this->general->id("status", $appointment->status_id);
 				if (!strcmp("confirmed", $appointment->status->code)){
 					$type = "success";
 					$msg = $this->save_data($data, "appointment_result", "success_sre");
@@ -671,12 +671,14 @@ class Appointment extends CI_Controller {
 	
 	public function set_images($app_id){
 		$images = $this->general->filter("appointment_image", ["appointment_id" => $app_id]);
-		foreach($images as $item){
-			$img = $this->general->id("image", $item->image_id);
-			$img_category = $this->general->id("image_category", $img->category_id);
-			$item->category = $img_category->name;
-			$item->category_id = $img->category_id;
-			$item->name = $img->name;
+		foreach($images as $i => $item){
+			$img = $this->general->id("image", $item->image_id); 
+			if ($img){
+				$img_category = $this->general->id("image_category", $img->category_id);
+				$item->category = $img_category->name;
+				$item->category_id = $img->category_id;
+				$item->name = $img->name;	
+			}else unset($images[$i]);
 		}
 		
 		usort($images, function($a, $b) {
@@ -891,8 +893,9 @@ class Appointment extends CI_Controller {
 			$msgs = $this->my_val->appointment_physical_therapy($msgs, $data);
 			
 			if (!$msgs){
-				$appointment = $this->appointment->id($data["appointment_id"]);
-				if (in_array($this->status->id($appointment->status_id)->code, ["reserved", "finished", "canceled"]))
+				$appointment = $this->general->id("appointment", $data["appointment_id"]);
+				$appointment->status = $this->general->id("status", $appointment->status_id);
+				if (in_array($appointment->status->code, ["reserved", "finished", "canceled"]))
 					$msg = $this->lang->line('error_nea');
 				elseif (!$this->general->insert("appointment_therapy", $data))
 					$msg = $this->lang->line('error_internal');
@@ -916,8 +919,9 @@ class Appointment extends CI_Controller {
 			$data = $this->input->post();
 		
 			//appointment status validation
-			$appointment = $this->appointment->id($data["appointment_id"]);
-			if (in_array($this->status->id($appointment->status_id)->code, ["reserved", "finished", "canceled"])){
+			$appointment = $this->general->id("appointment", $data["appointment_id"]);
+			$appointment->status = $this->general->id("status", $appointment->status_id);
+			if (in_array($appointment->status->code, ["reserved", "finished", "canceled"])){
 				$msg = $this->lang->line('error_nea');
 			}else{
 				if (!$this->general->delete("appointment_therapy", $data)) $msg = $this->lang->line('error_internal');
@@ -965,8 +969,9 @@ class Appointment extends CI_Controller {
 			$msgs = $this->my_val->appointment_medicine($msgs, $data);
 			
 			if (!$msgs){
-				$appointment = $this->appointment->id($data["appointment_id"]);
-				if (in_array($this->status->id($appointment->status_id)->code, ["reserved", "finished", "canceled"]))
+				$appointment = $this->general->id("appointment", $data["appointment_id"]);
+				$appointment->status = $this->general->id("status", $appointment->status_id);
+				if (in_array($appointment->status->code, ["reserved", "finished", "canceled"]))
 					$msg = $this->lang->line('error_nea');
 				elseif (!$this->general->insert("appointment_medicine", $data))
 					$msg = $this->lang->line('error_internal');
@@ -990,8 +995,9 @@ class Appointment extends CI_Controller {
 			$data = $this->input->post();
 			
 			//appointment status validation
-			$appointment = $this->appointment->id($data["appointment_id"]);
-			if (in_array($this->status->id($appointment->status_id)->code, array("reserved", "finished", "canceled"))){
+			$appointment = $this->general->id("appointment", $data["appointment_id"]);
+			$appointment->status = $this->general->id("status", $appointment->status_id);
+			if (in_array($appointment->status->code, array("reserved", "finished", "canceled"))){
 				$msg = $this->lang->line('error_nea');
 			}else{
 				if (!$this->general->delete("appointment_medicine", $data)) $msg = $this->lang->line('error_internal');
@@ -1011,7 +1017,7 @@ class Appointment extends CI_Controller {
 	public function report($id){
 		if (!$this->utility_lib->check_access("appointment", "report")) redirect("/errors/no_permission");
 		
-		$appointment = $this->appointment->id($id);
+		$appointment = $this->general->id("appointment", $id);
 		if (!$appointment) redirect("/appointment");
 		
 		$doctor = $this->general->id("person", $appointment->doctor_id);
@@ -1019,7 +1025,7 @@ class Appointment extends CI_Controller {
 			$data = $this->general->filter("doctor", ["person_id" => $doctor->id]);
 			if ($data){
 				$doctor->data = $data[0];
-				$doctor->data->specialty = $this->specialty->id($doctor->data->specialty_id)->name;
+				$doctor->data->specialty = $this->general->id("specialty", $doctor->data->specialty_id)->name;
 			}
 		}else{
 			$doctor = $this->general->structure("person");

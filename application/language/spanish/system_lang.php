@@ -48,7 +48,7 @@ $lang['enabled'] = 'Activado';
 $lang['disabled'] = 'Desactivado';
 
 //header
-$lang['hd_profile'] = 'Perfil';
+$lang['hd_password'] = 'Contraseña';
 $lang['hd_logout'] = 'Salir';
 
 //navbar

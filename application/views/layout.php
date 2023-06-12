@@ -59,8 +59,12 @@
 									</div>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
+									<a href="<?= base_url() ?>auth/change_password" class="dropdown-item ai-icon">
+										<i class="fa fa-lock fa-lg fa-fw text-info"></i>
+                                        <span class="ml-2"><?= $this->lang->line('hd_password') ?></span>
+                                    </a>
                                     <a href="<?= base_url() ?>auth/logout" class="dropdown-item ai-icon">
-										<i class="fa fa-sign-out fa-lg text-danger" style="width:18px;"></i>
+										<i class="fa fa-sign-out fa-lg fa-fw text-danger"></i>
                                         <span class="ml-2"><?= $this->lang->line('hd_logout') ?></span>
                                     </a>
                                 </div>

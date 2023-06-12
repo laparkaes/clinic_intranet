@@ -7,8 +7,9 @@ class Product extends CI_Controller {
 		parent::__construct();
 		date_default_timezone_set('America/Lima');
 		$this->lang->load("product", "spanish");
-		$this->lang->load("system", "spanish");
+		$this->lang->load("system", "spanish");	
 		$this->load->model('product_model','product');
+		$this->load->model('general_model','general');
 		$this->nav_menu = "product";
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 	}

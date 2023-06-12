@@ -9,9 +9,6 @@ class Dashboard extends CI_Controller {
 		setlocale(LC_TIME, 'spanish.utf8');
 		$this->lang->load("dashboard", "spanish");
 		$this->lang->load("system", "spanish");
-		$this->load->model('appointment_model','appointment');
-		$this->load->model('status_model','status');
-		$this->load->model('sl_option_model','sl_option');
 		$this->load->model('general_model','general');
 		$this->nav_menu = "dashboard";
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
@@ -98,11 +95,17 @@ class Dashboard extends CI_Controller {
 		$s_finished = $this->general->filter("status", ["code" => "finished"])[0];
 		$filter = ["doctor_id" => $this->session->userdata("pid"), "status_id" => $s_finished->id];
 		
+		$patient_arr = [];
+		$patient_rec = array_merge($this->general->only("appointment", "patient_id", $filter), $this->general->only("appointment", "patient_id", $filter));
+		foreach($patient_rec as $item) $patient_arr[] = $item->patient_id;
+		array_unique($patient_arr);
+		
 		$data["apps"] = $apps;
 		$data["surs"] = $surs;
 		$data["appointment_qty"] = $this->general->counter("appointment", $filter);
 		$data["surgery_qty"] = $this->general->counter("surgery", $filter);
-		$data["patient_qty"] = $this->general->get_patient_qty($this->session->userdata("pid"), $s_finished->id);
+		$data["patient_qty"] = count($patient_arr);
+		//$this->general->get_patient_qty($this->session->userdata("pid"), $s_finished->id);
 		
 		return $data;
 	}

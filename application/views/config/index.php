@@ -437,12 +437,10 @@
 		</div>
 	</div>
 </div>
-<div class="d-none">
-	<input type="hidden" id="warning_rpr" value="<?= $this->lang->line('warning_rpr') ?>">
-	<input type="hidden" id="warning_rme" value="<?= $this->lang->line('warning_rme') ?>">
-	<input type="hidden" id="warning_rim" value="<?= $this->lang->line('warning_rim') ?>">
-	<input type="hidden" id="txt_view_all" value="<?= $this->lang->line('txt_view_all') ?>">
-</div>
+<input type="hidden" id="warning_rpr" value="<?= $this->lang->line('warning_rpr') ?>">
+<input type="hidden" id="warning_rme" value="<?= $this->lang->line('warning_rme') ?>">
+<input type="hidden" id="warning_rim" value="<?= $this->lang->line('warning_rim') ?>">
+<input type="hidden" id="txt_view_all" value="<?= $this->lang->line('txt_view_all') ?>">
 <div class="modal fade" id="md_admin_exam">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">

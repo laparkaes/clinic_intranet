@@ -11,12 +11,8 @@ class Sale extends CI_Controller {
 		date_default_timezone_set('America/Lima');
 		$this->lang->load("system", "spanish");
 		$this->lang->load("sale", "spanish");
-		$this->load->model('product_model','product');
-		$this->load->model('appointment_model','appointment');
-		$this->load->model('surgery_model','surgery');
 		$this->load->model('status_model','status');
-		$this->load->model('account_model','account');
-		$this->load->model('specialty_model','specialty');
+		$this->load->model('general_model','general');
 		$this->nav_menu = "sale";
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 		$this->sunat_resolution = "0180050001138";

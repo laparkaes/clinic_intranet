@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title><?= $title ?></title>
+    <title><?= $this->lang->line('lg_title') ?></title>
     <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url() ?>resources/images/favicon.png">
 	<link href="<?= base_url() ?>resources/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.css" rel="stylesheet">
     <link href="<?= base_url() ?>resources/css/style.css" rel="stylesheet">
@@ -33,7 +33,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="mb-1">
-												<strong><?= $this->lang->line('lb_password') ?></strong>
+												<strong><?= $this->lang->line('lb_password_actual') ?></strong>
 											</label>
                                             <input type="password" class="form-control" name="password">
 											<div class="sys_msg" id="lg_pass_msg"></div>

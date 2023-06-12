@@ -9,7 +9,6 @@ class Config extends CI_Controller {
 		$this->lang->load("system", "spanish");
 		$this->lang->load("config", "spanish");
 		$this->lang->load("log", "spanish");
-		$this->load->model('account_model','account');
 		$this->load->model('general_model','general');
 		$this->nav_menu = "config";
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();

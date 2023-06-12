@@ -8,11 +8,7 @@ class Doctor extends CI_Controller {
 		date_default_timezone_set('America/Lima');
 		$this->lang->load("doctor", "spanish");
 		$this->lang->load("system", "spanish");
-		$this->load->model('specialty_model','specialty');
-		$this->load->model('role_model','role');
-		$this->load->model('account_model','account');
-		$this->load->model('appointment_model','appointment');
-		$this->load->model('status_model','status');
+		$this->load->model('general_model','general');
 		$this->nav_menu = "doctor";
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 	}
@@ -44,7 +40,7 @@ class Doctor extends CI_Controller {
 		foreach($doctors as $item) $item->person = $this->general->id("person", $item->person_id);
 		
 		$specialties_arr = array();
-		$specialties = $this->specialty->all();
+		$specialties = $this->general->all("specialty", "name", "asc");
 		foreach($specialties as $item) $specialties_arr[$item->id] = $item->name;
 		
 		$status = array();
@@ -83,7 +79,7 @@ class Doctor extends CI_Controller {
 		else $account = $this->general->structure("account");
 		
 		//set doctor data
-		$doctor->specialty = $this->specialty->id($doctor->specialty_id)->name;
+		$doctor->specialty = $this->general->id("specialty", $doctor->specialty_id)->name;
 		$doctor->status = $this->general->id("status", $doctor->status_id);
 		if (!strcmp("enabled", $doctor->status->code)){
 			$doctor->status->dom_id = "btn_deactivate";
@@ -124,11 +120,11 @@ class Doctor extends CI_Controller {
 		foreach($patients as $item) $patient_arr[$item->id] = $item->name;
 		
 		$status_arr = array();
-		$status = $this->status->all();
+		$status = $this->general->all("status", "id", "asc");
 		foreach($status as $item) $status_arr[$item->id] = $item;
 		
 		$specialties_arr = array();
-		$specialties = $this->specialty->all();
+		$specialties = $this->general->all("specialty", "name", "asc");
 		foreach($specialties as $item) $specialties_arr[$item->id] = $item->name;
 		
 		$rooms_arr = array();
@@ -212,12 +208,12 @@ class Doctor extends CI_Controller {
 					if ($doctor){
 						/* account handle */
 						unset($a["confirm"]);
-						$a["role_id"] = $this->role->name("doctor")->id;
+						$a["role_id"] = $this->general->filter("role", ["name" => "doctor"])[0]->id;
 						$a["person_id"] = $person->id;
 						$a["password"] = password_hash($a["password"], PASSWORD_BCRYPT);
 						$a["active"] = true;
 						$a["registed_at"] = date('Y-m-d H:i:s', time());
-						if ($this->account->insert($a)){
+						if ($this->general->insert("account", $a)){
 							$this->utility_lib->add_log("doctor_register", $person->name);
 							
 							$type = "success";
@@ -326,30 +322,4 @@ class Doctor extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
-	
-	/* function generate($num){
-		$this->load->library('my_func');
-		
-		$now = date('Y-m-d H:i:s', time());
-		$status_id = $this->general->filter("status", array("code" => "enabled"))[0]->id;
-		$specialties = $this->specialty->all();
-		$char_alf = "ABCDEFGHIJKLMN";
-		$char_num = "1234567890";
-		
-		$doc_arr = [];
-		$person_ids = $this->general->only("person", "id", null, null, null, $num, 40);
-		foreach($person_ids as $item){
-			//print_r($item);
-			$doc_arr[] = [
-				"status_id" => $status_id,
-				"person_id" => $item->id,
-				"specialty_id" => $specialties[array_rand($specialties)]->id,
-				"license" => $this->my_func->randomString($char_alf, 3).$this->my_func->randomString($char_num, 7),
-				"updated_at" => $now,
-				"registed_at" => $now,
-			];
-		}
-		
-		$this->general->insert_multi("doctor", $doc_arr);
-	} */
 }

@@ -12,11 +12,15 @@ $lang['e_doctor_exists'] = 'Médico registrado.';
 
 /* account */
 $lang['e_account_exists'] = 'Usuario registrado.';
+$lang['e_account_no_exists'] = 'Usuario no existe.';
 $lang['e_enter_email_format'] = 'Ingrese un correo electrónico.';
 $lang['e_enter_account'] = 'Ingrese usuario.';
 $lang['e_password_confirm'] = 'Repita contraseña correctamente.';
 $lang['e_password_length'] = 'Ingrese mínimo 6 letras.';
+$lang['e_password_wrong'] = 'Contraseña incorrecta.';
 $lang['e_enter_password'] = 'Ingrese contraseña.';
+$lang['e_enter_password_new'] = 'Ingrese nueva contraseña.';
+$lang['e_enter_password_diff'] = 'Nueva contraseña debe ser diferente al actual.';
 
 /* schedule */
 $lang['e_select_date'] = 'Elija una fecha.';

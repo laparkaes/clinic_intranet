@@ -14,8 +14,8 @@ class Utility_lib{
 	
 	public function __construct(){
 		$this->CI = &get_instance();
-		$this->CI->lang->load("system", "spanish");
-		$this->CI->load->model('general_model','general');
+		//$this->CI->lang->load("system", "spanish");
+		//$this->CI->load->model('general_model','general');
 	}
 	
 	public function age_calculator($birthday, $need_number = false){

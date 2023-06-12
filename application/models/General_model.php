@@ -163,6 +163,13 @@ class General_model extends CI_Model{
 		return $result->patient_qty;
 	}
 	
+	function status($code){
+		$this->db->where("code", $code);
+		$query = $this->db->get("status");
+		$result = $query->result();
+		if ($result) return $result[0]; else return null;
+	}
+	
 	function insert($tablename, $data){
 		$this->db->insert($tablename, $data);
 		return $this->db->insert_id();

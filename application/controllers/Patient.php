@@ -8,13 +8,7 @@ class Patient extends CI_Controller {
 		date_default_timezone_set('America/Lima');
 		$this->lang->load("patient", "spanish");
 		$this->lang->load("system", "spanish");
-		$this->load->model('role_model','role');
-		$this->load->model('appointment_model','appointment');
-		$this->load->model('account_model','account');
-		$this->load->model('patient_file_model','patient_file');
-		$this->load->model('specialty_model','specialty');
-		$this->load->model('status_model','status');
-		$this->load->model('patient_file_model','patient_file');
+		$this->load->model('general_model','general');
 		$this->nav_menu = "patient";
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 	}
@@ -82,7 +76,7 @@ class Patient extends CI_Controller {
 		foreach($specialties as $item) $specialty_arr[$item->id] = $item->name;
 		
 		$status_arr = [];
-		$status = $this->status->all();
+		$status = $this->general->all("status", "id", "asc");
 		foreach($status as $item) $status_arr[$item->id] = $item;
 		
 		$currencies_arr = [];
@@ -222,7 +216,7 @@ class Patient extends CI_Controller {
 							"registed_at" => date('Y-m-d H:i:s', time())
 						];
 						
-						if ($this->patient_file->insert($patient_file)){
+						if ($this->general->insert("patient_file", $patient_file)){
 							$this->utility_lib->add_log("file_upload", $patient->name." - ".$title);
 							
 							$type = "success";
@@ -244,7 +238,7 @@ class Patient extends CI_Controller {
 			$patient_file = $this->general->id("patient_file", $this->input->post("id"));
 			
 			//change "active" field of DB without removing uploaded file
-			if ($this->patient_file->update($patient_file->id, ["active" => false])){
+			if ($this->general->update("patient_file", $patient_file->id, ["active" => false])){
 				$person = $this->general->id("person", $patient_file->patient_id);
 				$this->utility_lib->add_log("file_delete", $person->name." - ".$patient_file->title);
 				

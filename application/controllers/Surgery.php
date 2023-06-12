@@ -10,11 +10,14 @@ class Surgery extends CI_Controller {
 		date_default_timezone_set('America/Lima');
 		$this->lang->load("surgery", "spanish");
 		$this->lang->load("system", "spanish");
-		$this->load->model('surgery_model','surgery');
 		$this->load->model('status_model','status');
 		$this->load->model('general_model','general');
 		$this->nav_menu = "surgery";
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
+		
+		/*
+		$this->general->status("finished");
+		*/
 	}
 	
 	public function index(){
@@ -259,9 +262,9 @@ class Surgery extends CI_Controller {
 		$status = false; $type = "error"; $msg = null;
 		
 		if ($this->utility_lib->check_access("surgery", "update")){
-			$surgery = $this->surgery->id($this->input->post("id"));
+			$surgery = $this->general->id("surgery", $this->input->post("id"));
 			if ($surgery){
-				if ($this->surgery->update($surgery->id, array("status_id" => $this->status->code("canceled")->id))){
+				if ($this->general->update("surgery", $surgery->id, array("status_id" => $this->status->code("canceled")->id))){
 					$person = $this->general->id("person", $surgery->patient_id);
 					$this->utility_lib->add_log("surgery_cancel", $person->name);
 					
@@ -319,7 +322,8 @@ class Surgery extends CI_Controller {
 						"schedule_to" => date("Y-m-d H:i:s", strtotime("+".($data["duration"]-1)." minutes", strtotime($schedule_from)))
 					];
 					
-					if ($this->surgery->update($app["id"], $app)){
+					if ($this->general->update("surgery", $app["id"], $app)){
+					if ($this->general->update("surgery", $app["id"], $app)){
 						$person = $this->general->id("person", $surgery->patient_id);
 						$this->utility_lib->add_log("surgery_reschedule", $person->name);
 						
@@ -337,7 +341,7 @@ class Surgery extends CI_Controller {
 	public function report($id){
 		if (!$this->utility_lib->check_access("surgery", "report")) redirect("/errors/no_permission");
 		
-		$surgery = $this->surgery->id($id);
+		$surgery = $this->general->id("surgery", $id);
 		if (!$surgery) redirect("/surgery");
 		
 		$doctor = $this->general->id("person", $surgery->doctor_id);
