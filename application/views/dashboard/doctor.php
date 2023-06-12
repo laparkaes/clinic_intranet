@@ -1,9 +1,51 @@
-<div class="col-md-12">
-	<h3 class="mb-3"><?= ucfirst(strftime("%A, %d de %B de %Y", time())) ?></h3>
+<div class="col-md-4">
+	<div class="widget-stat card">
+		<div class="card-body p-0">
+			<div class="media ai-icon">
+				<span class="bgl-primary text-white rounded-left" style="border-radius: 0;">
+					<i class="fas fa-notes-medical"></i>
+				</span>
+				<div class="media-body text-center">
+					<p class="mb-1"><?= $this->lang->line('lb_appointments') ?></p>
+					<h4 class="mb-0"><?= number_format($appointment_qty) ?></h4>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="col-md-4">
+	<div class="widget-stat card">
+		<div class="card-body p-0">
+			<div class="media ai-icon">
+				<span class="bgl-secondary text-secondary rounded-left" style="border-radius: 0;">
+					<i class="fas fa-file-medical-alt"></i>
+				</span>
+				<div class="media-body text-center">
+					<p class="mb-1"><?= $this->lang->line('lb_surgeries') ?></p>
+					<h4 class="mb-0"><?= number_format($surgery_qty) ?></h4>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="col-md-4">
+	<div class="widget-stat card">
+		<div class="card-body p-0">
+			<div class="media ai-icon">
+				<span class="bgl-info text-info rounded-left" style="border-radius: 0;">
+					<i class="fas fa-user-injured"></i>
+				</span>
+				<div class="media-body text-center">
+					<p class="mb-1"><?= $this->lang->line('lb_patients') ?></p>
+					<h4 class="mb-0"><?= number_format($patient_qty) ?></h4>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <div class="col-md-6">
 	<div class="card">
-		<div class="card-header pb-0 border-0">
+		<div class="card-header">
 			<h4 class="card-title"><?= $this->lang->line('title_appointments') ?></h4>
 		</div>
 		<div class="card-body">
@@ -34,7 +76,7 @@
 </div>
 <div class="col-md-6">
 	<div class="card">
-		<div class="card-header pb-0 border-0">
+		<div class="card-header">
 			<h4 class="card-title"><?= $this->lang->line('title_surgeries') ?></h4>
 		</div>
 		<div class="card-body">

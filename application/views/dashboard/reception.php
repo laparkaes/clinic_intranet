@@ -1,27 +1,21 @@
 <div class="col-md-12">
-	<h3 class="mb-3"><?= ucfirst(strftime("%A, %d de %B de %Y", time())) ?></h3>
-</div>
-<div class="col-md-12">
 	<div class="card">
-		<div class="card-header pb-0 border-0">
-			<h4 class="card-title"><?= $this->lang->line('title_generate') ?></h4>
-		</div>
 		<div class="card-body">
 			<div class="row">
 				<div class="col-md-4">
-					<a type="button" class="btn btn-primary btn-block d-flex justify-content-between align-items-center text-white py-3 mb-3" href="<?= base_url() ?>appointment?a=add">
+					<a type="button" class="btn btn-primary btn-block d-flex justify-content-between align-items-center text-white py-3 my-1" href="<?= base_url() ?>appointment?a=add">
 						<i class="fas fa-notes-medical fa-2x fa-fw mr-3"></i>
 						<span class="fs-20"><?= $this->lang->line('title_appointment') ?></span>
 					</a>
 				</div>
 				<div class="col-md-4">
-					<a type="button" class="btn btn-primary btn-block d-flex justify-content-between align-items-center text-white py-3 mb-3" href="<?= base_url() ?>surgery?a=add">
+					<a type="button" class="btn btn-primary btn-block d-flex justify-content-between align-items-center text-white py-3 my-1" href="<?= base_url() ?>surgery?a=add">
 						<i class="fas fa-file-medical-alt fa-2x fa-fw mr-3"></i>
 						<span class="fs-20"><?= $this->lang->line('title_surgery') ?></span>
 					</a>
 				</div>
 				<div class="col-md-4">
-					<a type="button" class="btn btn-primary btn-block d-flex justify-content-between align-items-center text-white py-3 mb-3" href="<?= base_url() ?>sale?a=add">
+					<a type="button" class="btn btn-primary btn-block d-flex justify-content-between align-items-center text-white py-3 my-1" href="<?= base_url() ?>sale?a=add">
 						<i class="fas fa-shopping-basket fa-2x fa-fw mr-3"></i>
 						<span class="fs-20"><?= $this->lang->line('title_sale') ?></span>
 					</a>
@@ -32,7 +26,7 @@
 </div>
 <div class="col-md-6">
 	<div class="card">
-		<div class="card-header pb-0 border-0">
+		<div class="card-header">
 			<h4 class="card-title"><?= $this->lang->line('title_appointments') ?></h4>
 		</div>
 		<div class="card-body">
@@ -59,7 +53,7 @@
 </div>
 <div class="col-md-6">
 	<div class="card">
-		<div class="card-header pb-0 border-0">
+		<div class="card-header">
 			<h4 class="card-title"><?= $this->lang->line('title_surgeries') ?></h4>
 		</div>
 		<div class="card-body">

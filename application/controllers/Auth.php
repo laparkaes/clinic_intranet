@@ -58,6 +58,7 @@ class Auth extends CI_Controller {
 			//set session datas here
 			$session_data = array(
 				"aid" => $account->id,
+				"pid" => $account->person_id,
 				"name" => $this->general->id("person", $account->person_id)->name,
 				"role" => $role,
 				"logged_in" => true

@@ -46,6 +46,10 @@
                             </div>
                         </div>
                         <ul class="navbar-nav header-right">
+							<li class="nav-item">
+								<?php setlocale(LC_TIME, 'spanish.utf8'); ?>
+								<?= ucfirst(strftime("%A, %d de %B de %Y", time())) ?>
+                            </li>
                             <li class="nav-item dropdown header-profile">
                                 <a class="nav-link" href="#" role="button" data-toggle="dropdown">
                                     <img src="<?= base_url() ?>resources/images/user.png" width="20" alt=""/>

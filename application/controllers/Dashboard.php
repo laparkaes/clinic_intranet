@@ -25,7 +25,7 @@ class Dashboard extends CI_Controller {
 		
 		$data = array(
 			"init_js" => "dashboard/".$role_name.".js",
-			"title" => $this->lang->line('dashboard')." - ".$this->lang->line($role_name),
+			"title" => $this->lang->line('dashboard'),
 			"main" => "dashboard/".$role_name,
 		);
 		
@@ -71,13 +71,11 @@ class Dashboard extends CI_Controller {
 	}
 	
 	private function set_doctor_datas($data){
-		$account = $this->general->id("account", $this->session->userdata("aid"));
-		
 		//set monthly resume
 		$from = date('Y-m-d 00:00:00');
 		$to = date('Y-m-d 23:59:59');
 		
-		$filter = ["schedule_from >=" => $from, "schedule_from <=" => $to, "doctor_id" => $account->person_id];
+		$filter = ["schedule_from >=" => $from, "schedule_from <=" => $to, "doctor_id" => $this->session->userdata("pid")];
 		
 		$apps = $this->general->filter("appointment", $filter, null, null, "schedule_from", "asc");
 		foreach($apps as $item){
@@ -97,8 +95,14 @@ class Dashboard extends CI_Controller {
 			$item->status = $this->general->id("status", $item->status_id);
 		}
 		
+		$s_finished = $this->general->filter("status", ["code" => "finished"])[0];
+		$filter = ["doctor_id" => $this->session->userdata("pid"), "status_id" => $s_finished->id];
+		
 		$data["apps"] = $apps;
 		$data["surs"] = $surs;
+		$data["appointment_qty"] = $this->general->counter("appointment", $filter);
+		$data["surgery_qty"] = $this->general->counter("surgery", $filter);
+		$data["patient_qty"] = $this->general->get_patient_qty($this->session->userdata("pid"), $s_finished->id);
 		
 		return $data;
 	}
@@ -139,15 +143,15 @@ class Dashboard extends CI_Controller {
 		$from = date('Y-m-d 00:00:00');
 		$to = date('Y-m-d 23:59:59');
 		$s_finished = $this->general->filter("status", ["code" => "finished"])[0];
-		$s_reserved = $this->general->filter("status", ["code" => "reserved"])[0];
+		$s_confirmed = $this->general->filter("status", ["code" => "confirmed"])[0];
 		
 		$filter_f = ["schedule_from >=" => $from, "schedule_from <=" => $to, "status_id" => $s_finished->id];
-		$filter_r = ["schedule_from >=" => $from, "schedule_from <=" => $to, "status_id" => $s_reserved->id];
+		$filter_c = ["schedule_from >=" => $from, "schedule_from <=" => $to, "status_id" => $s_confirmed->id];
 		
 		$data["app_attended"] = $this->general->counter("appointment", $filter_f);
-		$data["app_reserved"] = $this->general->counter("appointment", $filter_r);
+		$data["app_reserved"] = $this->general->counter("appointment", $filter_c);
 		$data["sur_attended"] = $this->general->counter("surgery", $filter_f);
-		$data["sur_reserved"] = $this->general->counter("surgery", $filter_r);
+		$data["sur_reserved"] = $this->general->counter("surgery", $filter_c);
 		
 		$sales = $this->general->all("sale", "updated_at", "desc", 10);
 		foreach($sales as $item){

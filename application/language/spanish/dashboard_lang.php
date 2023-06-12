@@ -3,7 +3,7 @@
 $lang['dashboard'] = 'Principal';
 
 //master
-$lang['title_resume_of'] = 'Resumen de';
+$lang['title_monthly_resume'] = 'Resumen del Mes';
 $lang['tab_monthly_income'] = 'Ingresos Mensuales';
 $lang['tab_appointment_surgery'] = 'Consultas y Cirugías';
 $lang['tab_sale_type'] = 'Tipo de Venta';
@@ -15,9 +15,9 @@ $lang['txt_total'] = 'Total';
 $lang['title_today_progress'] = 'Progreso de Hoy';
 
 //admin
-$lang['lb_attended_appointments'] = 'Consultas Atendidas';
-$lang['lb_attended_surgeries'] = 'Cirugías Atendidas';
-$lang['txt_reserved_today'] = 'reservas por atender';
+$lang['lb_appointments'] = 'Consultas';
+$lang['lb_surgeries'] = 'Cirugías';
+$lang['txt_more_today'] = 'más para hoy';
 $lang['title_sales'] = 'Ventas';
 $lang['msg_need_send_sunat'] = 'Requiere enviar a Sunat.';
 $lang['msg_no_sales'] = 'No hay ventas registradas.';
@@ -35,15 +35,8 @@ $lang['title_generate'] = 'Generar';
 $lang['title_appointment'] = 'Consulta';
 $lang['title_surgery'] = 'Cirugía';
 $lang['title_sale'] = 'Venta';
-$lang['msg_no_appointment'] = 'No hay consultas registradas para la fecha.';
-$lang['msg_no_surgery'] = 'No hay cirugías registradas para la fecha.';
+$lang['msg_no_appointment'] = 'No hay consultas para hoy.';
+$lang['msg_no_surgery'] = 'No hay cirugías para hoy.';
 
 //doctor
-$lang['cl_today'] = 'Hoy';
-$lang['cl_month'] = 'Mes';
-$lang['cl_week'] = 'Semana';
-$lang['cl_day'] = 'Día';
-$lang['cl_list'] = 'Lista';
-$lang['cl_allday'] = 'Todo el día';
-$lang['ev_appointment'] = 'Consulta';
-$lang['ev_surgery'] = 'Cirugía';
+$lang['lb_patients'] = 'Pacientes';

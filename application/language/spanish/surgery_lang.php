@@ -76,3 +76,4 @@ $lang['hd_room'] = 'Sala';
 $lang['title_doctor_agenda'] = 'Agenda del Médico';
 $lang['title_room_availability'] = 'Disponibilidad de Sala de Cirugía';
 $lang['hd_itinerary'] = 'Itinerario';
+$lang['msg_no_surgeries'] = 'No existe cirugías registradas.';

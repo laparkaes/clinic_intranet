@@ -149,6 +149,20 @@ class General_model extends CI_Model{
 		return $result;
 	}
 	
+	function get_patient_qty($doctor_id, $status_id){
+		$this->db->select('COUNT(DISTINCT appointment.patient_id) as patient_qty');
+		$this->db->from('appointment');
+		$this->db->join('surgery', 'appointment.patient_id = surgery.patient_id', 'left');
+		$this->db->where('appointment.doctor_id', $doctor_id);
+		$this->db->where('appointment.status_id', $status_id);
+		$this->db->or_where('surgery.doctor_id', $doctor_id);
+		$this->db->where('surgery.status_id', $status_id);
+
+		$query = $this->db->get();
+		$result = $query->row();
+		return $result->patient_qty;
+	}
+	
 	function insert($tablename, $data){
 		$this->db->insert($tablename, $data);
 		return $this->db->insert_id();

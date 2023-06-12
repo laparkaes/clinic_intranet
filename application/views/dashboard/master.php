@@ -1,5 +1,5 @@
 <div class="col-12">
-	<h3 class="mb-3"><?= ucfirst(strftime("%B de %Y", time())) ?></h3>
+	<h3 class="mb-3"><?= $this->lang->line('title_monthly_resume') ?></h3>
 </div>
 <div class="col-md-4">
 	<div class="widget-stat card">

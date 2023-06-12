@@ -35,6 +35,7 @@ class Surgery extends CI_Controller {
 			$f_w["schedule_to <="] = $f_url["date"]." 23:59:59";
 		}
 		
+		if ($this->session->userdata('role')->name === "doctor") $f_w["doctor_id"] = $this->session->userdata('pid');
 		$surgeries = $this->general->filter("surgery", $f_w, null, null, "schedule_from", "desc", 25, 25*($f_url["page"]-1));
 		foreach($surgeries as $item){
 			$item->patient = $this->general->id("person", $item->patient_id)->name;

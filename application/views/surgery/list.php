@@ -80,7 +80,7 @@
 						</div>
 					</div>
 					<?php }else{ ?>
-					<h5 class="text-danger mt-3"><?= $this->lang->line('msg_no_appointments') ?></h5>
+					<h5 class="text-danger mt-3"><?= $this->lang->line('msg_no_surgeries') ?></h5>
 					<?php } ?>
 				</div>
 			</div>
