@@ -69,6 +69,8 @@ class Config extends CI_Controller {
 		$image_categories = $this->general->all("image_category", "name", "asc");
 		foreach($image_categories as $item) $image_category_arr[$item->id] = $item->name;
 		
+		$sys_conf = $this->general->id("system", 1);
+		
 		$data = array(
 			"role_access" => $role_access,
 			"roles_arr" => $roles_arr,
@@ -86,7 +88,7 @@ class Config extends CI_Controller {
 			"departments" => $this->general->all("address_department", "name", "asc"),
 			"provinces" => $this->general->all("address_province", "name", "asc"),
 			"districts" => $this->general->all("address_district", "name", "asc"),
-			"company" => $this->general->filter("company", ["is_owner" => true], null, null, "updated_at", "desc")[0],
+			"company" => $this->general->id("company", $sys_conf->company_id),
 			"title" => $this->lang->line('setting'),
 			"main" => "config/index",
 			"init_js" => "config/index.js"
@@ -128,12 +130,10 @@ class Config extends CI_Controller {
 			$msgs = $this->my_val->config_company($msgs, "uc_", $data);
 			
 			if (!$msgs){
-				$data["is_owner"] = true;
 				$data["updated_at"] = date("Y-m-d H:i:s", time());
 				
 				$com_id = null;
 				$company_rec = $this->general->filter("company", ["tax_id" => $data["tax_id"]]);
-				$this->general->update("company", null, ["is_owner" => false]);
 				if ($company_rec){
 					$com_id = $company_rec[0]->id;
 					$this->general->update("company", $com_id, $data);
@@ -414,6 +414,101 @@ class Config extends CI_Controller {
 				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line("error_occurred");
 		}else $msg = $this->lang->line('error_no_permission');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
+	}
+	
+	public function system_init(){
+		$this->load->library('my_val');
+		if ($this->my_val->system_init()) redirect("/auth");
+		//return true if systen init is completed
+		
+		$sys_conf = $this->general->id("system", 1);
+		if (!$sys_conf) $sys_conf = $this->general->structure("system");
+		
+		//company data set
+		if ($sys_conf->company_id) $sys_conf->company = $this->general->id("company", $sys_conf->company_id);
+		else $sys_conf->company = $this->general->structure("company");
+		
+		//account data set
+		if ($sys_conf->account_id) $sys_conf->account = $this->general->id("account", $sys_conf->account_id);
+		else $sys_conf->account = $this->general->structure("account");
+		
+		$data = [
+			"sys_conf" => $sys_conf,
+			"departments" => $this->general->all("address_department", "name", "asc"),
+			"provinces" => $this->general->all("address_province", "name", "asc"),
+			"districts" => $this->general->all("address_district", "name", "asc"),
+			"title" => $this->lang->line('system_init'),
+		];
+		
+		$this->load->view("config/system_init", $data);
+	}
+	
+	public function company_init(){
+		$type = "error"; $msgs = []; $msg = null;
+		$data = $this->input->post();
+		
+		$this->load->library('my_val');
+		$msgs = $this->my_val->config_company($msgs, "com_", $data);
+		if (!$msgs){
+			$company = $this->general->filter("company", ["tax_id" => $data["tax_id"]]);
+			if ($company){
+				$com_id = $company[0]->id;
+				$this->general->update("company", $com_id, $data);
+			}else $com_id = $this->general->insert("company", $data);
+			
+			$sys_conf = $this->general->id("system", 1);
+			if (!$sys_conf) $this->general->insert("system", ["id" => 1]);
+			
+			if ($this->general->update("system", 1, ["company_id" => $com_id])){
+				$type = "success";
+				$msg = $this->lang->line('success_cup');
+			}else $msg = $this->lang->line('error_internal');
+		}else $msg = $this->lang->line("error_occurred");
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
+	}
+	
+	public function account_init(){
+		$type = "error"; $msgs = []; $msg = null;
+		$data = $this->input->post();
+		
+		$this->load->library('my_val');
+		$msgs = $this->my_val->account($msgs, "acc_", $data);
+		
+		if (!$msgs){
+			//create system person data
+			$person = $this->general->filter("person", ["doc_type_id" => 1, "name" => "Sistema"]);
+			if ($person) $person_id = $person[0]->id;
+			else{
+				$person_data = ["doc_type_id" => 1, "name" => "Sistema", "registed_at" => date('Y-m-d H:i:s', time())];
+				$person_id = $this->general->insert("person", $person_data);
+			}
+			
+			if ($person_id){
+				$acc_data = [
+					"role_id" => 1,
+					"person_id" => $person_id,
+					"email" => $data["email"],
+					"password" => password_hash($data["password"], PASSWORD_BCRYPT),
+					"registed_at" => date('Y-m-d H:i:s', time()),
+				];
+				
+				$acc_id = $this->general->insert("account", $acc_data);
+				if ($acc_id){
+					$sys_conf = $this->general->id("system", 1);
+					if (!$sys_conf) $this->general->insert("system", ["id" => 1]);
+					
+					if ($this->general->update("system", 1, ["account_id" => $acc_id])){
+						$type = "success";
+						$msg = $this->lang->line('success_rac');
+					}else $msg = $this->lang->line('error_internal');
+				}else $msg = $this->lang->line('error_internal');
+			}else $msg = $this->lang->line('error_internal');
+		}else $msg = $this->lang->line("error_occurred");
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);

@@ -211,8 +211,12 @@ class Utility_lib{
 	public function get_visible_nav_menus(){
 		$access_ids = [];
 		
-		$role_access = $this->CI->general->filter("role_access", ["role_id" => $this->CI->session->userdata('role')->id]);
-		foreach($role_access as $item) $access_ids[] = $item->access_id;
+		if ($this->CI->session->userdata('role')) $role_id = $this->CI->session->userdata('role')->id;
+		else $role_id = -1;
+		
+		$role_access = $this->CI->general->filter("role_access", ["role_id" => $role_id]);
+		if ($role_access){ foreach($role_access as $item) $access_ids[] = $item->access_id; }
+		else $access_ids = [-1];
 		
 		$nav_menus = [];
 		$access = $this->CI->general->filter("access", ["description" => "index"], null, [["field" => "id", "values" => $access_ids]]);

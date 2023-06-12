@@ -57,33 +57,35 @@ class Ajax_f extends CI_Controller {
 		$data = $this->input->post();
 		
 		if (array_key_exists('tax_id', $data)){
-			$company_rec = $this->general->filter("company", ["tax_id" => $data["tax_id"]], null, null, "updated_at", "desc");
-			if ($company_rec) $company = $company_rec[0];
-			
-			$ud = $this->utility_lib->utildatos_ruc($data["tax_id"]);
-			if ($ud->status){
-				$company->tax_id = $ud->data->ruc;
-				$company->name = $ud->data->razon_social;
-				$company->address = $ud->data->direccion;
-				$company->ubigeo = $ud->data->ubigeo;
-				$company->urbanization = $ud->data->codigo_zona." ".$ud->data->tipo_zona;
+			if ($data["tax_id"]){
+				$company_rec = $this->general->filter("company", ["tax_id" => $data["tax_id"]], null, null, "updated_at", "desc");
+				if ($company_rec) $company = $company_rec[0];
 				
-				$district = $this->general->filter("address_district", ["ubigeo" => $company->ubigeo]);
-				if ($district){
-					$district = $district[0];
-					$province = $this->general->id("address_province", $district->province_id);
-					$department = $this->general->id("address_department", $province->department_id);
+				$ud = $this->utility_lib->utildatos_ruc($data["tax_id"]);
+				if ($ud->status){
+					$company->tax_id = $ud->data->ruc;
+					$company->name = $ud->data->razon_social;
+					$company->address = $ud->data->direccion;
+					$company->ubigeo = $ud->data->ubigeo;
+					$company->urbanization = $ud->data->codigo_zona." ".$ud->data->tipo_zona;
 					
-					$company->district_id = $district->id;
-					$company->province_id = $province->id;
-					$company->department_id = $department->id;
+					$district = $this->general->filter("address_district", ["ubigeo" => $company->ubigeo]);
+					if ($district){
+						$district = $district[0];
+						$province = $this->general->id("address_province", $district->province_id);
+						$department = $this->general->id("address_department", $province->department_id);
+						
+						$company->district_id = $district->id;
+						$company->province_id = $province->id;
+						$company->department_id = $department->id;
+					}
 				}
-			}
-			
-			if ($company->tax_id){
-				$type = "success";
-				$msg = $this->lang->line('success_data_loaded');
-			}else $msg = $this->lang->line('error_insert_manually');
+				
+				if ($company->tax_id){
+					$type = "success";
+					$msg = $this->lang->line('success_data_loaded');
+				}else $msg = $this->lang->line('error_insert_manually');
+			}else $msg = $this->lang->line('error_ruc');
 		}else $msg = $this->lang->line('error_ruc');
 		
 		header('Content-Type: application/json');

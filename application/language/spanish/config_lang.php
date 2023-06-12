@@ -1,4 +1,5 @@
 <?php
+$lang['system_init'] = 'Configuración Inicial';
 $lang['setting'] = 'Configuración';
 
 //messages
@@ -29,6 +30,7 @@ $lang['success_rem'] = 'Medicina ha sido registrada.';//success_register_medicin
 $lang['success_dem'] = 'Medicina de examen ha sido eliminada.';//success_delete_exam_medicine
 $lang['success_dim'] = 'Imagen ha sido eliminada.';//success_delete_image
 $lang['success_rim'] = 'Imagen ha sido registrada.';//success_register_medicine
+$lang['success_rac'] = 'Usuario ha sido registrado.';//success_register_account
 $lang['warning_rpr'] = '¿Desea eliminar perfil elegido?';//warning_remove_profile
 $lang['warning_rme'] = '¿Desea eliminar medicina elegida?';//warning_remove_medicine
 $lang['warning_rim'] = '¿Desea eliminar imagen elegida?';//warning_remove_image
@@ -140,3 +142,7 @@ $lang['th_action'] = 'Acción';
 $lang['th_detail'] = 'Detalle';
 $lang['th_time'] = 'Hora';
 $lang['th_account'] = 'Usuario';
+
+//init
+$lang['lb_account'] = 'Usuario';
+$lang['lb_password_confirm'] = 'Confirmación de Contraseña';

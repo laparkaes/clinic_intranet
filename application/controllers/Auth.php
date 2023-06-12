@@ -21,15 +21,15 @@ class Auth extends CI_Controller {
 	
 	public function index(){
 		if ($this->session->userdata('logged_in')) redirect("/dashboard");
+		else{
+			$this->load->library('my_val');
+			if (!$this->my_val->system_init()) redirect("config/system_init");
+			//return true if systen init is completed
+		}
 		
-		if ($this->general->filter("account", array("role_id" => $this->role->name("master")->id))) $has_master = true;
-		else $has_master = false;
-		
-		$data = array(
+		$data = [
 			"title" => $this->lang->line('lg_title'),
-			"doc_types" => $this->general->all("doc_type", "id", "asc"),
-			"has_master" => $has_master
-		);
+		];
 		$this->load->view('auth/index', $data);
 	}
 	
@@ -68,73 +68,6 @@ class Auth extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => $status, "msgs" => $msgs));
-	}
-	
-	public function forgot_pass(){
-		$status = false; $msgs = array(); $msg = null;
-		$email = $this->input->post("email");
-		
-		if ($email){
-			$account = $this->account->email($email);
-			if ($account){
-				if ($this->account->update($account->id, array("reset_request" => true))){
-					$status = true;
-					$msg = $this->lang->line('success_prr');
-				}else $msgs = $this->set_msg($msgs, "gm_result_msg", "error", "error_internal");
-			}else $msgs = $this->set_msg($msgs, "fg_email_msg", "error", "error_une");
-		}else $msgs = $this->set_msg($msgs, "fg_email_msg", "error", "error_use");
-		
-		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "msgs" => $msgs, "msg" => $msg));
-	}
-	
-	public function generate_master(){
-		$status = false; $type = "error"; $msgs = array(); $msg = null;
-		
-		$p = $this->input->post("p");//person
-		$a = $this->input->post("a");//account
-		
-		//person validation
-		if (!$p["doc_number"]) $msgs = $this->set_msg($msgs, "gm_doc_msg", "error", "error_edn");
-		if (!$p["name"]) $msgs = $this->set_msg($msgs, "gm_name_msg", "error", "error_nae");
-		
-		//account validation
-		if ($a["email"]){
-			if (filter_var($a["email"], FILTER_VALIDATE_EMAIL)){
-				if ($this->account->email($a["email"])) $msgs = $this->set_msg($msgs, "gm_email_msg", "error", "error_usr");
-			}else $msgs = $this->set_msg($msgs, "gm_email_msg", "error", "error_ufo");
-		}else $msgs = $this->set_msg($msgs, "gm_email_msg", "error", "error_use");
-		if (strlen($a["password"]) < 6) $msgs = $this->set_msg($msgs, "gm_pass_msg", "error", "error_pal");
-		if (strcmp($a["password"], $a["confirm"])) $msgs = $this->set_msg($msgs, "gm_confirm_msg", "error", "error_par");
-		
-		if ($msgs) $msg = $this->lang->line('error_occurred');
-		else{
-			$p_aux = $p; unset($p_aux["name"]);
-			$person_aux = $this->general->filter("person", $p_aux);
-			if ($person_aux) $person_id = $person_aux[0]->id;
-			else $person_id = $this->general->insert("person", $p);
-			
-			if ($person_id){
-				unset($a["confirm"]);
-				$a["person_id"] = $person_id;
-				$a["password"] = password_hash($a["password"], PASSWORD_BCRYPT);
-				$a["registed_at"] = date('Y-m-d H:i:s', time());
-				$account_id = $this->general->insert("account", $a);
-				if ($account_id){
-					$role_id = $this->role->name("master")->id;
-					if ($this->general->update("account", $account_id, ["role_id" => $role_id])){
-						$status = true;
-						$type = "success";
-						$msg = $this->lang->line('success_mac');
-					}else $msg = $this->lang->line('error_ari');
-				}else $msg = $this->lang->line('error_age');
-				
-				if (!$status) $this->general->delete("account", array("id" => $account_id));
-			}else $msg = $this->lang->line('error_pin');
-		}
-		
-		header('Content-Type: application/json');
-		echo json_encode(array("status" => $status, "msgs" => $msgs, "msg" => $msg));
 	}
 	
 	public function logout(){

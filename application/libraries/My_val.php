@@ -421,4 +421,14 @@ class My_val{
 			
 		return $msgs;
 	}
+	
+	public function system_init(){
+		$res = true;
+		$sys_cfg = $this->CI->general->id("system", 1);
+		if ($sys_cfg){
+			foreach($sys_cfg as $key => $value) if (!$value) $res = false;
+		}else $res = false;
+		
+		return $res;
+	}
 }
