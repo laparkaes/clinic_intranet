@@ -1,1 +1,0 @@
-INSERT INTO `log_code` (`id`, `code`) VALUES (NULL, 'image_delete'), (NULL, 'image_register');
