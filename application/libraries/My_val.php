@@ -360,7 +360,10 @@ class My_val{
 		return ["msg" => $msg, "products" => $products];
 	}
 	
-	public function voucher($msgs, $prefix, $voucher_type, $client){
+	public function voucher($msgs, $prefix, $data){
+		$voucher_type = $this->CI->general->id("voucher_type", $data["voucher_type_id"]);
+		$client = $data["cli"];
+		
 		$doc_type = $this->CI->general->filter("doc_type", ["id" => $client["doc_type_id"]])[0];
 		if ($doc_type->description !== "Sin Documento"){
 			if (!$client["name"]) $msgs = $this->set_msg($msgs, $prefix."name_msg", "error", "e_enter_name");

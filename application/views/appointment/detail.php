@@ -2,6 +2,7 @@
 	<div class="card">
 		<div class="card-header">
 			<h4 class="mb-0"><?= $doctor->data->specialty ?></h4>
+			<?php if ($actions){ ?>
 			<div role="group">
 				<i class="far fa-bars text-primary pointer" data-toggle="dropdown"></i>
 				<div class="dropdown-menu dropdown-menu-right">
@@ -20,9 +21,14 @@
 					<?php } ?>
 				</div>
 			</div>
+			<?php } ?>
 		</div>
 		<div class="card-body">
 			<div class="row" id="app_info">
+				<div class="col-md-12 mb-3">
+					<h5 class="mb-1"><?= $this->lang->line('lb_doctor') ?></h5>
+					<div><?= $doctor->name ?></div>
+				</div>
 				<?php if ($appointment->detail){ ?>
 				<div class="col-md-12 mb-3">
 					<h5 class="mb-1"><?= $this->lang->line('lb_detail') ?></h5>
@@ -30,22 +36,18 @@
 				</div>
 				<?php } ?>
 				<div class="col-md-3 mb-3">
-					<h5 class="mb-1"><?= $this->lang->line('lb_doctor') ?></h5>
-					<div><?= $doctor->name ?></div>
+					<h5 class="mb-1"><?= $this->lang->line('lb_status') ?></h5>
+					<div class="text-<?= $appointment->status->color ?>"><?= $this->lang->line($appointment->status->code) ?></div>
 				</div>
 				<div class="col-md-3 mb-3">
 					<h5 class="mb-1"><?= $this->lang->line('lb_date') ?></h5>
 					<div><?= date("Y-m-d", strtotime($appointment->schedule_from)) ?></div>
 				</div>
-				<div class="col-md-3 mb-3">
+				<div class="col-md-6 mb-3">
 					<h5 class="mb-1"><?= $this->lang->line('lb_hour') ?></h5>
 					<div><?= date("h:i A", strtotime($appointment->schedule_from)) ?></div>
 				</div>
-				<div class="col-md-3 mb-3">
-					<h5 class="mb-1"><?= $this->lang->line('lb_status') ?></h5>
-					<div class="text-<?= $appointment->status->color ?>"><?= $this->lang->line($appointment->status->code) ?></div>
-				</div>
-				<div class="col-md-3 mb-3">
+				<div class="col-md-12 mb-3">
 					<h5 class="mb-1"><?= $this->lang->line('lb_patient') ?></h5>
 					<div><?= $patient->name ?></div>
 				</div>
@@ -53,15 +55,15 @@
 					<h5 class="mb-1"><?= $this->lang->line('lb_history_number') ?></h5>
 					<div><?= $patient->doc_number ?></div>
 				</div>
-				<div class="col-md-2 mb-3">
+				<div class="col-md-3 mb-3">
 					<h5 class="mb-1"><?= $this->lang->line('lb_sex') ?></h5>
 					<div><?= $patient->sex ?></div>
 				</div>
-				<div class="col-md-2 mb-3">
+				<div class="col-md-3 mb-3">
 					<h5 class="mb-1"><?= $this->lang->line('lb_age') ?></h5>
 					<div><?= $patient->age ?></div>
 				</div>
-				<div class="col-md-2 mb-3">
+				<div class="col-md-3 mb-3">
 					<h5 class="mb-1"><?= $this->lang->line('lb_blood_type') ?></h5>
 					<div><?= $patient->blood_type ?></div>
 				</div>

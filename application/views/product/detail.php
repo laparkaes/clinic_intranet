@@ -53,42 +53,42 @@
 								<img src="<?= base_url().$img_path ?>" class="mb-3" style="width: 100%;"/>
 							</div>
 							<div class="col-md-8">
-								<div class="form-row">
-									<div class="form-group col-md-12">
-										<label><?= $this->lang->line('p_category') ?></label>
-										<input type="text" class="form-control bw" value="<?= $product->category ?>" readonly="">
+								<div class="row">
+									<div class="col-md-12 mb-3">
+										<h5 class="mb-1"><?= $this->lang->line('p_category') ?></h5>
+										<div><?= $product->category ?></div>
 									</div>
-									<div class="form-group col-md-4">
-										<label><?= $this->lang->line('p_code') ?></label>
-										<input type="text" class="form-control bw" value="<?= $product->code ?>" readonly="">
+									<div class="col-md-4 mb-3">
+										<h5 class="mb-1"><?= $this->lang->line('p_code') ?></h5>
+										<div><?= $product->code ?></div>
 									</div>
-									<div class="form-group col-md-4">
-										<label><?= $this->lang->line('p_type') ?></label>
-										<input type="text" class="form-control bw" value="<?= $product->type ?>" readonly="">
+									<div class="col-md-4 mb-3">
+										<h5 class="mb-1"><?= $this->lang->line('p_type') ?></h5>
+										<div><?= $product->type ?></div>
 									</div>
-									<div class="form-group col-md-4">
-										<label><?= $this->lang->line('p_stock') ?></label>
-										<input type="text" class="form-control bw" value="<?= number_format($product->stock) ?>" readonly="">
+									<div class="col-md-4 mb-3">
+										<h5 class="mb-1"><?= $this->lang->line('p_stock') ?></h5>
+										<div><?= $product->stock ?></div>
 									</div>
-									<div class="form-group col-md-4">
-										<label><?= $this->lang->line('p_price') ?></label>
-										<input type="text" class="form-control bw" value="<?= $product->currency." ".number_format($product->price, 2) ?>" readonly="">
+									<div class="col-md-4 mb-3">
+										<h5 class="mb-1"><?= $this->lang->line('p_price') ?></h5>
+										<div><?= $product->currency." ".number_format($product->price, 2) ?></div>
 									</div>
-									<div class="form-group col-md-4">
-										<label>Valor</label>
-										<input type="text" class="form-control bw" value="<?= $product->currency." ".number_format($product->value, 2) ?>" readonly="">
+									<div class="col-md-4 mb-3">
+										<h5 class="mb-1"><?= $this->lang->line('p_value') ?></h5>
+										<div><?= $product->currency." ".number_format($product->value, 2) ?></div>
 									</div>
-									<div class="form-group col-md-4">
-										<label>IGV</label>
-										<input type="text" class="form-control bw" value="<?= $product->currency." ".number_format($product->vat, 2) ?>" readonly="">
+									<div class="col-md-4 mb-3">
+										<h5 class="mb-1"><?= $this->lang->line('p_vat') ?></h5>
+										<div><?= $product->currency." ".number_format($product->vat, 2) ?></div>
 									</div>
-									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('p_last_updated') ?></label>
-										<input type="text" class="form-control bw" value="<?= $product->updated_at ?>" readonly="">
+									<div class="col-md-6 mb-3">
+										<h5 class="mb-1"><?= $this->lang->line('p_last_updated') ?></h5>
+										<div><?= $product->updated_at ?></div>
 									</div>
-									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('p_register_date') ?></label>
-										<input type="text" class="form-control bw" value="<?= $product->registed_at ?>" readonly="">
+									<div class="col-md-6 mb-3">
+										<h5 class="mb-1"><?= $this->lang->line('p_register_date') ?></h5>
+										<div><?= $product->registed_at ?></div>
 									</div>
 								</div>
 							</div>

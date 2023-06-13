@@ -86,39 +86,41 @@
 				<div class="tab-content">
 					<div class="tab-pane fade show active" id="tab_data" role="tabpanel">
 						<div class="row">
-							<div class="col-md-3 mb-4">
-								<p class="mb-2"><?= $this->lang->line('label_date') ?></p>
-								<h4 class="text-black"><?= $sale->registed_at ?></h4>
+							<div class="col-md-6 mb-3">
+								<h5 class="mb-1"><?= $this->lang->line('label_client') ?></h5>
+								<div><?= $client->name ?></div>
 							</div>
-							<div class="col-md-3 mb-4">
+							<div class="col-md-3 mb-3">
 								<?php if ($client->doc_number) $doc_val = $client->doc_type." ".$client->doc_number;
 								else $doc_val = ""; ?>
-								<p class="mb-2"><?= $this->lang->line('label_document') ?></p>
-								<h4 class="text-black"><?= $doc_val ?></h4>
+								<h5 class="mb-1"><?= $this->lang->line('label_document') ?></h5>
+								<div><?= $doc_val ?></div>
 							</div>
-							<div class="col-md-6 mb-4">
-								<p class="mb-2"><?= $this->lang->line('label_client') ?></p>
-								<h4 class="text-black"><?= $client->name ?></h4>
+							<div class="col-md-3 mb-3">
+								<h5 class="mb-1"><?= $this->lang->line('label_status') ?></h5>
+								<div class="text-<?= $sale->status->color ?>"><?= $this->lang->line($sale->status->code) ?></div>
 							</div>
-							<div class="col-md-3 mb-4">
-								<p class="mb-2"><?= $this->lang->line('label_status') ?></p>
-								<h4 class="text-<?= $sale->status->color ?>"><?= $this->lang->line($sale->status->code) ?></h4>
+							<div class="col-md-3 mb-3">
+								<h5 class="mb-1"><?= $this->lang->line('label_total') ?></h5>
+								<div><?= $sale->currency." ".number_format($sale->total, 2) ?></div>
 							</div>
-							<div class="col-md-3 mb-4">
-								<p class="mb-2"><?= $this->lang->line('label_total') ?></p>
-								<h4 class="text-black"><?= $sale->currency." ".number_format($sale->total, 2) ?></h4>
+							<div class="col-md-3 mb-3">
+								<h5 class="mb-1"><?= $this->lang->line('label_balance') ?></h5>
+								<div><?= $sale->currency." ".number_format($sale->balance, 2) ?></div>
 							</div>
-							<div class="col-md-3 mb-4">
-								<p class="mb-2"><?= $this->lang->line('label_balance') ?></p>
-								<h4 class="text-black"><?= $sale->currency." ".number_format($sale->balance, 2) ?></h4>
+							<div class="col-md-3 mb-3">
+								<h5 class="mb-1"><?= $this->lang->line('label_last_update') ?></h5>
+								<div><?= $sale->updated_at ?></div>
 							</div>
-							<div class="col-md-3 mb-4">
-								<p class="mb-2"><?= $this->lang->line('label_last_update') ?></p>
-								<h4 class="text-black"><?= $sale->updated_at ?></h4>
+							<div class="col-md-3 mb-3">
+								<h5 class="mb-1"><?= $this->lang->line('label_date') ?></h5>
+								<div><?= $sale->registed_at ?></div>
 							</div>
 							<div class="col-md-12">
-								<p class="mb-2"><?= $this->lang->line('label_sunat') ?></p>
-								<h4 class="text-<?= $voucher->color ?> mb-0"><?= $voucher->sunat_msg ?></h4>
+								<h5 class="mb-1"><?= $this->lang->line('label_sunat') ?></h5>
+								<div>
+									<i class="fas fa-circle text-<?= $voucher->color ?> mr-1"></i> <?= $voucher->sunat_msg ?>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -272,15 +274,6 @@
 				<form action="#" id="form_make_voucher">
 					<input type="hidden" name="sale_id" value="<?= $sale->id ?>">
 					<div class="form-row">
-						<div class="form-group col-md-12">
-							<label><?= $this->lang->line('label_type') ?></label>
-							<select class="form-control" name="voucher_type_id">
-								<?php foreach($voucher_types as $item){ ?>
-								<option value="<?= $item->id ?>"><?= $item->description ?></option>
-								<?php } ?>
-							</select>
-							<div class="sys_msg" id="mv_voucher_type_msg"></div>
-						</div>
 						<div class="form-group col-md-6">
 							<label><?= $this->lang->line('label_document') ?></label>
 							<select class="form-control" id="mv_doc_type" name="cli[doc_type_id]">
@@ -303,10 +296,19 @@
 							</div>
 							<div class="sys_msg" id="mv_doc_number_msg"></div>
 						</div>
-						<div class="form-group col-md-12 mb-0">
+						<div class="form-group col-md-12">
 							<label><?= $this->lang->line('label_client') ?></label>
 							<input type="text" class="form-control" id="mv_name" name="cli[name]" value="<?= $client->name ?>">
 							<div class="sys_msg" id="mv_name_msg"></div>
+						</div>
+						<div class="form-group col-md-12 mb-0">
+							<label><?= $this->lang->line('label_voucher') ?></label>
+							<select class="form-control" name="voucher_type_id">
+								<?php foreach($voucher_types as $item){ ?>
+								<option value="<?= $item->id ?>"><?= $item->description ?></option>
+								<?php } ?>
+							</select>
+							<div class="sys_msg" id="mv_voucher_type_msg"></div>
 						</div>
 					</div>
 				</form>

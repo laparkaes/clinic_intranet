@@ -85,6 +85,7 @@ class Sale extends CI_Controller {
 			"sale_type" => $this->general->all("sale_type", "description", "asc"),
 			"doc_types" => $this->general->all("doc_type", "sunat_code", "asc"),
 			"payment_methods" => $this->general->all("payment_method", "description", "asc"),
+			"sale_types" => $this->general->all("sale_type", "sunat_serie", "asc"),
 			"sales" => $sales,
 			"title" => $this->lang->line('sales'),
 			"main" => "sale/list",
@@ -102,6 +103,7 @@ class Sale extends CI_Controller {
 			$client = $this->input->post("client");
 			$payment = $this->input->post("payment");
 			$currency = $this->input->post("currency");
+			$sale_type_id = $this->input->post("sale_type_id");
 			$sale_id = null;
 			
 			//calient validation
@@ -123,15 +125,12 @@ class Sale extends CI_Controller {
 					}
 					
 					//set sale data
-					$products = $res["products"];
-					$prod_type = $this->general->id("product_type", $this->general->id("product", $products[0]->product_id)->type_id);
-					$sale_type = $this->general->filter("sale_type", ["description" => $prod_type->description])[0];
 					$currency = $this->general->filter("currency", ["description" => $currency])[0];
 					
 					//basic sale data
 					$now = date('Y-m-d H:i:s', time());
 					$sale_data = [
-						"sale_type_id" => $sale_type->id,
+						"sale_type_id" => $sale_type_id,
 						"currency_id" => $currency->id,
 						"client_id" => $client_id,
 						"updated_at" => $now,
@@ -141,6 +140,7 @@ class Sale extends CI_Controller {
 					//insert products
 					$total = 0;
 					$sale_id = $this->general->insert("sale", $sale_data);
+					$products = $res["products"];
 					foreach($products as $item){
 						$item->sale_id = $sale_id;
 						$this->general->insert("sale_product", $item);
@@ -534,23 +534,48 @@ class Sale extends CI_Controller {
 		$type = "error"; $msg = null; $msgs = [];
 		
 		if ($this->utility_lib->check_access("sale", "admin_voucher")){
-			$sale = $this->general->id("sale", $this->input->post("sale_id"));
-			$voucher_type = $this->general->id("voucher_type", $this->input->post("voucher_type_id"));
-			$client = $this->input->post("cli");
+			$data = $this->input->post();
 			
 			$this->load->library('my_val');
-			$msgs = $this->my_val->voucher($msgs, "mv_", $voucher_type, $client);
+			$msgs = $this->my_val->voucher($msgs, "mv_", $data);
 			
 			if (!$msgs){
-				if (!$this->general->filter("voucher", ["sale_id" => $sale->id])){
+				if (!$this->general->filter("voucher", ["sale_id" => $data["sale_id"]])){
+					$sale = $this->general->id("sale", $data["sale_id"]);
 					if (!$sale->balance){
-						if (!strcmp("Factura", $voucher_type->description)){
-							$f = $client; unset($f["name"]);
+						/* client record
+						1. "Sin documento (sunat_code != 0)" => $client_id = null;
+						2. read client record from DB
+						4. exists? => update client name and assign $client_id
+						3. no exists? => insert and assign $client_id
+						*/
+						$client = $this->input->post("cli");
+						$doc_type = $this->general->id("doc_type", $client["doc_type_id"]);
+						if ($doc_type->sunat_code){
+							$f = ["doc_type_id" => $client["doc_type_id"], "doc_number" => $client["doc_number"]];
 							$person = $this->general->filter("person", $f);
-							if ($person) $client_id = $person[0]->id;
-							else $client_id = $this->general->insert("person", $client);
-						}else $client_id = $sale->client_id;
+							if ($person){
+								$person = $person[0];
+								$this->general->update("person", $person->id, ["name" => $client["name"]]);
+								$client_id = $person->id;
+							}else $client_id = $this->general->insert("person", $client);
+						}else $client_id = null;
 						
+						
+						/////////////////////////////////////////////
+						
+						
+						echo $client_id;
+						print_r($sale);
+					}else $msg = $this->lang->line('error_sba');
+				}else $this->lang->line('error_voe');
+			}else $msg = $this->lang->line('error_occurred');
+			/*
+			
+			
+			$voucher_type = $this->general->id("voucher_type", $this->input->post("voucher_type_id"));
+			
+			
 						$voucher_id = $this->create_voucher($sale, $voucher_type->id, $client_id);
 						if ($voucher_id){
 							//make sunat process
@@ -563,9 +588,10 @@ class Sale extends CI_Controller {
 							$type = "success";
 							$msg = str_replace("#type#", $voucher_type->description, $this->lang->line('success_gvo')).'<br/><br/><span class="text-'.$color.'">Sunat <i class="fas fa-'.$ic.'"></i></span><br/>'.$sunat_result["sunat_msg"];
 						}
-					}else $msg = $this->lang->line('error_sba');
-				}else $this->lang->line('error_voe');
-			}else $msg = $this->lang->line('error_occurred');
+					
+				
+			
+			*/
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -583,7 +609,7 @@ class Sale extends CI_Controller {
 			$client->doc_type = $this->general->filter("doc_type", ["sunat_code" => 0])[0];
 		}
 		
-		$company = $this->general->id("company", 1);
+		$company = $this->general->id("company", $this->general->id("system", 1)->company_id);
 		$company->department = $this->general->id("address_department", $company->department_id)->name;
 		$company->province = $this->general->id("address_province", $company->province_id)->name;
 		$company->district = $this->general->id("address_district", $company->district_id)->name;

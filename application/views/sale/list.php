@@ -169,6 +169,14 @@
 								<input type="hidden" id="payment_balance" name="payment[balance]">
 								<h5><?= $this->lang->line('title_operation') ?></h5>
 								<div class="form-row">
+									<div class="form-group col-md-12">
+										<label><?= $this->lang->line('label_sale_type') ?></label>
+										<select class="form-control" name="sale_type_id">
+											<?php foreach($sale_types as $item){ ?>
+											<option value="<?= $item->id ?>"><?= $item->sunat_serie." - ".$item->description ?></option>
+											<?php } ?>
+										</select>
+									</div>
 									<div class="form-group col-md-6">
 										<label><?= $this->lang->line('label_payment_method') ?></label>
 										<select class="form-control" name="payment[payment_method_id]">

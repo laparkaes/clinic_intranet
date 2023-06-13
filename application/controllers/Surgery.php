@@ -118,10 +118,16 @@ class Surgery extends CI_Controller {
 				array_push($actions, "report");
 				break;
 		}
+		//sale item
+		$sale_prod = $this->general->filter("sale_product", ["surgery_id" => $surgery->id]);
+		if ($sale_prod){
+			$sale_prod = $sale_prod[0];
+			$surgery->product = $this->general->id("product", $sale_prod->product_id)->description;
+		}else $surgery->product = "";
 		
-		$room = $this->general->id("surgery_room", $surgery->room_id);
-		if ($room) $surgery->detail = $room->name; else $surgery->detail = "";
+		$surgery->room = $this->general->id("surgery_room", $surgery->room_id)->name;
 		
+		$surgery->detail = null;
 		$surgery_sale = $this->general->filter("sale_product", ["surgery_id" => $surgery->id]);
 		if ($surgery_sale){
 			$product = $this->general->id("product", $surgery_sale[0]->product_id);
