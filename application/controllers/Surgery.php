@@ -318,7 +318,6 @@ class Surgery extends CI_Controller {
 					];
 					
 					if ($this->general->update("surgery", $app["id"], $app)){
-					if ($this->general->update("surgery", $app["id"], $app)){
 						$person = $this->general->id("person", $surgery->patient_id);
 						$this->utility_lib->add_log("surgery_reschedule", $person->name);
 						

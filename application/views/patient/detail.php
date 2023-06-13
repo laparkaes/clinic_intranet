@@ -342,42 +342,41 @@
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane fade active show" id="information" role="tabpanel">
-						<div class="form-row">
-							<div class="form-group col-md-5">
-								<label><?= $this->lang->line('lb_name') ?></label>
-								<input type="text" class="form-control bw" value="<?= $person->name ?>" readonly>
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<h5 class="mb-1"><?= $this->lang->line('lb_name') ?></h5>
+								<div><?= $person->name ?></div>
 							</div>
-							<div class="form-group col-md-3">
-								<label><?= $this->lang->line('lb_document') ?></label>
-								<input type="text" class="form-control bw" value="<?= $person->doc_type." ".$person->doc_number ?>" readonly>
+							<div class="col-md-6 mb-3">
+								<h5 class="mb-1"><?= $this->lang->line('lb_document') ?></h5>
+								<div><?= $person->doc_type." ".$person->doc_number ?></div>
 							</div>
-							<div class="form-group col-md-4">
-								<label><?= $this->lang->line('lb_email') ?></label>
-								<input type="text" class="form-control bw" value="<?= $person->email ?>" readonly>
+							<div class="col-md-6 mb-3">
+								<h5 class="mb-1"><?= $this->lang->line('lb_email') ?></h5>
+								<div><?= $person->email ?></div>
 							</div>
-							<div class="form-group col-md-3">
-								<label><?= $this->lang->line('lb_tel') ?></label>
-								<input type="text" class="form-control bw" value="<?= $person->tel ?>" readonly>
+							<div class="col-md-4 mb-3">
+								<h5 class="mb-1"><?= $this->lang->line('lb_tel') ?></h5>
+								<div><?= $person->tel ?></div>
 							</div>
-							<div class="form-group col-md-9">
-								<label><?= $this->lang->line('lb_address') ?></label>
-								<input type="text" class="form-control bw" value="<?= $person->address ?>" readonly>
+							<div class="col-md-4 mb-3">
+								<h5 class="mb-1"><?= $this->lang->line('lb_birthday') ?></h5>
+								<div>
+									<?= $person->birthday ?>
+									<?php if ($person->age) echo " (".$person->age.")" ?>
+								</div>
 							</div>
-							<div class="form-group col-md-3">
-								<label><?= $this->lang->line('lb_birthday') ?></label>
-								<input type="text" class="form-control bw" value="<?= $person->birthday ?>" readonly>
+							<div class="col-md-4 mb-3">
+								<h5 class="mb-1"><?= $this->lang->line('lb_sex') ?></h5>
+								<div><?= $person->sex ?></div>
 							</div>
-							<div class="form-group col-md-3">
-								<label><?= $this->lang->line('lb_age') ?></label>
-								<input type="text" class="form-control bw" value="<?= $person->age ?>" readonly>
+							<div class="col-md-4 mb-3">
+								<h5 class="mb-1"><?= $this->lang->line('lb_blood_type') ?></h5>
+								<div><?= $person->blood_type ?></div>
 							</div>
-							<div class="form-group col-md-3">
-								<label><?= $this->lang->line('lb_sex') ?></label>
-								<input type="text" class="form-control bw" value="<?= $person->sex ?>" readonly>
-							</div>
-							<div class="form-group col-md-3">
-								<label><?= $this->lang->line('lb_blood_type') ?></label>
-								<input type="text" class="form-control bw" value="<?= $person->blood_type ?>" readonly>
+							<div class="col-md-12 mb-3">
+								<h5 class="mb-1"><?= $this->lang->line('lb_address') ?></h5>
+								<div><?= $person->address ?></div>
 							</div>
 						</div>
 					</div>
@@ -612,30 +611,25 @@
 									<input type="hidden" name="doc_type_id" value="<?= $person->doc_type_id ?>" readonly>
 									<input type="hidden" name="doc_number" value="<?= $person->doc_number ?>" readonly>
 									<div class="form-row">
-										<div class="form-group col-md-5">
+										<div class="form-group col-md-6">
 											<label><?= $this->lang->line('lb_name') ?></label>
 											<input type="text" class="form-control bg-light" value="<?= $person->name ?>" readonly>
 											<div class="sys_msg" id="pu_name_msg"></div>
 										</div>
-										<div class="form-group col-md-3">
+										<div class="form-group col-md-6">
 											<label><?= $this->lang->line('lb_document') ?></label>
 											<input type="text" class="form-control bg-light" value="<?= $person->doc_type." ".$person->doc_number ?>" readonly>
 											<div class="sys_msg" id="pu_doc_msg"></div>
 										</div>
-										<div class="form-group col-md-4">
+										<div class="form-group col-md-6">
 											<label><?= $this->lang->line('lb_email') ?></label>
 											<input type="text" class="form-control" name="email" value="<?= $person->email ?>">
 											<div class="sys_msg" id="pu_email_msg"></div>
 										</div>
-										<div class="form-group col-md-3">
+										<div class="form-group col-md-6">
 											<label><?= $this->lang->line('lb_tel') ?></label>
 											<input type="text" class="form-control" name="tel" value="<?= $person->tel ?>">
 											<div class="sys_msg" id="pu_tel_msg"></div>
-										</div>
-										<div class="form-group col-md-9">
-											<label><?= $this->lang->line('lb_address') ?></label>
-											<input type="text" class="form-control" name="address" value="<?= $person->address ?>">
-											<div class="sys_msg" id="pu_address_msg"></div>
 										</div>
 										<div class="form-group col-md-4">
 											<label><?= $this->lang->line('lb_birthday') ?></label>
@@ -663,6 +657,11 @@
 												<?php } ?>
 											</select>
 											<div class="sys_msg" id="pu_blood_type_msg"></div>
+										</div>
+										<div class="form-group col-md-12">
+											<label><?= $this->lang->line('lb_address') ?></label>
+											<input type="text" class="form-control" name="address" value="<?= $person->address ?>">
+											<div class="sys_msg" id="pu_address_msg"></div>
 										</div>
 									</div>
 									<button type="submit" class="btn btn-primary mt-3">
