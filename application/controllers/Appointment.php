@@ -41,7 +41,7 @@ class Appointment extends CI_Controller {
 			$item->specialty = $this->general->id("specialty", $item->specialty_id)->name;
 		}
 		
-		$aux_f = ["status_id" => $this->general->filter("status", ["code" => "enabled"])[0]->id];
+		$aux_f = ["status_id" => $this->general->status("enabled")->id];
 		$specialties = $this->general->all("specialty", "name", "asc");
 		foreach($specialties as $s){
 			$aux_f["specialty_id"] = $s->id;
@@ -110,7 +110,7 @@ class Appointment extends CI_Controller {
 				$anamnesis->address = $patient->address;
 				if ($patient->birthday){
 					$anamnesis->birthday = $patient->birthday;
-					$anamnesis->age = $this->utility_lib->age_calculator($patient->birthday, false);
+					$anamnesis->age = $this->my_func->age_calculator($patient->birthday, false);
 				}
 			}
 		}
@@ -207,7 +207,7 @@ class Appointment extends CI_Controller {
 		$patient = $this->general->id("person", $appointment->patient_id);
 		if ($patient){
 			$patient->doc_type = $this->general->id("doc_type", $patient->doc_type_id)->description;
-			if ($patient->birthday) $patient->age = $this->utility_lib->age_calculator($patient->birthday, true);
+			if ($patient->birthday) $patient->age = $this->my_func->age_calculator($patient->birthday, true);
 			else $patient->age = null;
 			if ($patient->sex_id) $patient->sex = $this->general->id("sex", $patient->sex_id)->description;
 			else $patient->sex = null;
@@ -220,7 +220,7 @@ class Appointment extends CI_Controller {
 		$specialties_rec = $this->general->all("specialty");
 		foreach($specialties_rec as $item) $specialties[$item->id] = $item->name;
 		
-		$s_finished = $this->general->filter("status", ["code" => "finished"])[0];
+		$s_finished = $this->general->status("finished");
 		$filter = array("patient_id" => $patient->id, "status_id" => $s_finished->id);
 		
 		$surgery_histories = $this->general->filter("surgery", $filter);
@@ -340,7 +340,7 @@ class Appointment extends CI_Controller {
 				
 				$app["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
 				$app["schedule_to"] = date("Y-m-d H:i:s", strtotime("+14 minutes", strtotime($app["schedule_from"])));
-				$app["status_id"] = $this->general->filter("status", ["code" => "reserved"])[0]->id;
+				$app["status_id"] = $this->general->status("reserved")->id;
 				$app["registed_at"] = $now;
 				$appointment_id = $this->general->insert("appointment", $app);
 				if ($appointment_id){
@@ -363,7 +363,7 @@ class Appointment extends CI_Controller {
 		if ($this->utility_lib->check_access("appointment", "update")){
 			$appointment = $this->general->id("appointment", $this->input->post("id"));
 			if ($appointment){
-				$s_cancel = $this->general->filter("status", ["code" => "canceled"])[0];
+				$s_cancel = $this->general->status("canceled");
 				if ($this->general->update("appointment", $appointment->id, ["status_id" => $s_cancel->id])){
 					$person = $this->general->id("person", $appointment->patient_id);
 					$this->utility_lib->add_log("appointment_cancel", $person->name);
@@ -384,7 +384,7 @@ class Appointment extends CI_Controller {
 		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){
 			$appointment = $this->general->id("appointment", $this->input->post("id"));
 			if ($appointment){
-				$s_finished = $this->general->filter("status", ["code" => "finished"])[0];
+				$s_finished = $this->general->status("finished");
 				if ($this->general->update("appointment", $appointment->id, ["status_id" => $s_finished->id])){
 					$person = $this->general->id("person", $appointment->patient_id);
 					$this->utility_lib->add_log("appointment_finish", $person->name);
@@ -1036,7 +1036,7 @@ class Appointment extends CI_Controller {
 		$patient = $this->general->id("person", $appointment->patient_id);
 		if ($patient){
 			$patient->doc_type = $this->general->id("doc_type", $patient->doc_type_id)->description;
-			if ($patient->birthday) $patient->age = $this->utility_lib->age_calculator($patient->birthday, true);
+			if ($patient->birthday) $patient->age = $this->my_func->age_calculator($patient->birthday, true);
 			else $patient->birthday = $patient->age = null;	
 		}else $patient = $this->general->structure("person");
 		

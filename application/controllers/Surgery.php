@@ -10,14 +10,9 @@ class Surgery extends CI_Controller {
 		date_default_timezone_set('America/Lima');
 		$this->lang->load("surgery", "spanish");
 		$this->lang->load("system", "spanish");
-		$this->load->model('status_model','status');
 		$this->load->model('general_model','general');
 		$this->nav_menu = "surgery";
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
-		
-		/*
-		$this->general->status("finished");
-		*/
 	}
 	
 	public function index(){
@@ -152,7 +147,7 @@ class Surgery extends CI_Controller {
 		$patient = $this->general->id("person", $surgery->patient_id);
 		if ($patient){
 			$patient->doc_type = $this->general->id("doc_type", $patient->doc_type_id)->description;
-			if ($patient->birthday) $patient->age = $this->utility_lib->age_calculator($patient->birthday, true);
+			if ($patient->birthday) $patient->age = $this->my_func->age_calculator($patient->birthday, true);
 			else $patient->age = null;
 			
 			if ($patient->sex_id) $patient->sex = $this->general->id("sex", $patient->sex_id)->description;
@@ -168,7 +163,7 @@ class Surgery extends CI_Controller {
 		$specialties_rec = $this->general->all("specialty");
 		foreach($specialties_rec as $item) $specialties[$item->id] = $item->name;
 		
-		$filter = array("patient_id" => $patient->id, "status_id" => $this->status->code("finished")->id);
+		$filter = array("patient_id" => $patient->id, "status_id" => $this->general->status("finished")->id);
 		
 		$surgery_histories = $this->general->filter("surgery", $filter);
 		foreach($surgery_histories as $item){
@@ -241,7 +236,7 @@ class Surgery extends CI_Controller {
 				
 				$sur["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
 				$sur["schedule_to"] = date("Y-m-d H:i:s", strtotime("+".($sch["duration"]-1)." minutes", strtotime($sur["schedule_from"])));
-				$sur["status_id"] = $this->status->code("reserved")->id;
+				$sur["status_id"] = $this->general->status("reserved")->id;
 				$sur["registed_at"] = $now;
 				$surgery_id = $this->general->insert("surgery", $sur);
 				if ($surgery_id){
@@ -264,7 +259,7 @@ class Surgery extends CI_Controller {
 		if ($this->utility_lib->check_access("surgery", "update")){
 			$surgery = $this->general->id("surgery", $this->input->post("id"));
 			if ($surgery){
-				if ($this->general->update("surgery", $surgery->id, array("status_id" => $this->status->code("canceled")->id))){
+				if ($this->general->update("surgery", $surgery->id, array("status_id" => $this->general->status("canceled")->id))){
 					$person = $this->general->id("person", $surgery->patient_id);
 					$this->utility_lib->add_log("surgery_cancel", $person->name);
 					
@@ -287,7 +282,7 @@ class Surgery extends CI_Controller {
 			$surgery = $this->general->id("surgery", $data["id"]);
 			
 			if ($data["result"]){
-				$data["status_id"] = $this->status->code("finished")->id;
+				$data["status_id"] = $this->general->status("finished")->id;
 				if ($this->general->update("surgery", $data["id"], $data)){
 					$person = $this->general->id("person", $surgery->patient_id);
 					$this->utility_lib->add_log("surgery_finish", $person->name);
@@ -360,7 +355,7 @@ class Surgery extends CI_Controller {
 		$patient = $this->general->id("person", $surgery->patient_id);
 		if ($patient){
 			$patient->doc_type = $this->general->id("doc_type", $patient->doc_type_id)->description;
-			if ($patient->birthday) $patient->age = $this->utility_lib->age_calculator($patient->birthday, true);
+			if ($patient->birthday) $patient->age = $this->my_func->age_calculator($patient->birthday, true);
 			else $patient->birthday = $patient->age = null;	
 		}else $patient = $this->general->structure("person");
 		
@@ -412,7 +407,7 @@ class Surgery extends CI_Controller {
 			$room = $this->general->id("surgery_room", $room_id);
 			$run = $date; $date_end = $next;
 			
-			$status_ids = array($this->status->code("reserved")->id, $this->status->code("confirmed")->id);
+			$status_ids = array($this->general->status("reserved")->id, $this->general->status("confirmed")->id);
 			$filter_in = array();
 			array_push($filter_in, ["field" => "status_id", "values" => $status_ids]);
 			

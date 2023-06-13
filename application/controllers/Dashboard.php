@@ -92,7 +92,7 @@ class Dashboard extends CI_Controller {
 			$item->status = $this->general->id("status", $item->status_id);
 		}
 		
-		$s_finished = $this->general->filter("status", ["code" => "finished"])[0];
+		$s_finished = $this->general->status("finished");
 		$filter = ["doctor_id" => $this->session->userdata("pid"), "status_id" => $s_finished->id];
 		
 		$patient_arr = [];
@@ -145,8 +145,8 @@ class Dashboard extends CI_Controller {
 		//set monthly resume
 		$from = date('Y-m-d 00:00:00');
 		$to = date('Y-m-d 23:59:59');
-		$s_finished = $this->general->filter("status", ["code" => "finished"])[0];
-		$s_confirmed = $this->general->filter("status", ["code" => "confirmed"])[0];
+		$s_finished = $this->general->status("finished");
+		$s_confirmed = $this->general->status("confirmed");
 		
 		$filter_f = ["schedule_from >=" => $from, "schedule_from <=" => $to, "status_id" => $s_finished->id];
 		$filter_c = ["schedule_from >=" => $from, "schedule_from <=" => $to, "status_id" => $s_confirmed->id];
@@ -184,9 +184,9 @@ class Dashboard extends CI_Controller {
 		//set monthly resume
 		$from = date('Y-m-01 00:00:00');
 		$to = date('Y-m-t 23:59:59');
-		$status_finished = $this->general->filter("status", ["code" => "finished"])[0];
-		$filter_1 = ["schedule_from >=" => $from, "schedule_from <=" => $to, "status_id" => $status_finished->id];
-		$filter_2 = ["updated_at >=" => $from, "updated_at <=" => $to, "status_id" => $status_finished->id];
+		$s_finished = $this->general->status("finished");
+		$filter_1 = ["schedule_from >=" => $from, "schedule_from <=" => $to, "status_id" => $s_finished->id];
+		$filter_2 = ["updated_at >=" => $from, "updated_at <=" => $to, "status_id" => $s_finished->id];
 		$data["appointment_qty"] = $this->general->counter("appointment", $filter_1);
 		$data["surgery_qty"] = $this->general->counter("surgery", $filter_1);
 		$data["sale_qty"] = $this->general->counter("sale", $filter_2);

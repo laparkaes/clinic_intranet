@@ -10,21 +10,12 @@ use Greenter\Model\Sale\SaleDetail;
 use Greenter\Model\Sale\Legend;
 use Greenter\Report\HtmlReport;
 
+
+
 class Utility_lib{
 	
 	public function __construct(){
 		$this->CI = &get_instance();
-		//$this->CI->lang->load("system", "spanish");
-		//$this->CI->load->model('general_model','general');
-	}
-	
-	public function age_calculator($birthday, $need_number = false){
-		$date1 = date_create($birthday);
-		$date2 = date_create(date("Y-m-d"));
-		$diff = date_diff($date1, $date2);
-		
-		if ($need_number) return $diff->y;
-		else return $diff->y."A ".$diff->m."M";
 	}
 	
 	public function cancel_voucher_sunat($voucher_data){

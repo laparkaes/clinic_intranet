@@ -52,7 +52,7 @@ class Patient extends CI_Controller {
 		
 		$person = $this->general->id("person", $id);
 		$person->doc_type = $this->general->id("doc_type", $person->doc_type_id)->short;
-		if ($person->birthday) $person->age = $this->utility_lib->age_calculator($person->birthday);
+		if ($person->birthday) $person->age = $this->my_func->age_calculator($person->birthday);
 		else $person->age = null;
 		if ($person->sex_id) $person->sex = $this->general->id("sex", $person->sex_id)->description;
 		else $person->sex = null;

@@ -1,9 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-use Dompdf\Dompdf;
-use Luecano\NumeroALetras\NumeroALetras;
-
 class Sale extends CI_Controller {
 
 	public function __construct(){
@@ -11,7 +8,6 @@ class Sale extends CI_Controller {
 		date_default_timezone_set('America/Lima');
 		$this->lang->load("system", "spanish");
 		$this->lang->load("sale", "spanish");
-		$this->load->model('status_model','status');
 		$this->load->model('general_model','general');
 		$this->nav_menu = "sale";
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
@@ -26,10 +22,10 @@ class Sale extends CI_Controller {
 		
 		$sale = $this->general->id("sale", $sale_id);
 		$sale_data = array("paid" => $total_paid, "balance" => $sale->total - $total_paid);
-		$cancel_id = $this->general->filter("status", ["code" => "canceled"])[0]->id;
+		$cancel_id = $this->general->status("canceled")->id;
 		if ($sale->status_id != $cancel_id){
-			if ($sale_data["balance"]) $sale_data["status_id"] = $this->status->code("in_progress")->id;
-			else $sale_data["status_id"] = $this->status->code("finished")->id;
+			if ($sale_data["balance"]) $sale_data["status_id"] = $this->general->status("in_progress")->id;
+			else $sale_data["status_id"] = $this->general->status("finished")->id;
 		}
 		
 		$this->general->update("sale", $sale->id, $sale_data);
@@ -74,9 +70,9 @@ class Sale extends CI_Controller {
 		}
 		
 		$status = [
-			$this->general->filter("status", ["code" => "in_progress"])[0],
-			$this->general->filter("status", ["code" => "finished"])[0],
-			$this->general->filter("status", ["code" => "canceled"])[0],
+			$this->general->status("in_progress"),
+			$this->general->status("finished"),
+			$this->general->status("canceled"),
 		];
 		
 		$data = array(
@@ -162,8 +158,8 @@ class Sale extends CI_Controller {
 					$payment["registed_at"] = $now;
 					$this->general->insert("payment", $payment);
 					
-					if ($total == $payment["received"]) $status = $this->general->filter("status", ["code" => "finished"])[0];
-					else $status = $this->general->filter("status", ["code" => "in_progress"])[0];
+					if ($total == $payment["received"]) $status = $this->general->status("finished");
+					else $status = $this->general->status("in_progress");
 					
 					$vat = $total * 0.18;
 					$amount = $total - $vat;
@@ -281,7 +277,7 @@ class Sale extends CI_Controller {
 		}
 		
 		$data = array(
-			"canceled_id" => $this->status->code("canceled")->id,
+			"canceled_id" => $this->general->status("canceled")->id,
 			"appo_qty" => $appo_qty,
 			"surg_qty" => $surg_qty,
 			"sale" => $sale,
@@ -310,7 +306,7 @@ class Sale extends CI_Controller {
 		}
 		
 		if ($patient_ids){
-			$w = ["status_id" => $this->status->code("reserved")->id];
+			$w = ["status_id" => $this->general->status("reserved")->id];
 			$w_in = [["field" => "patient_id", "values" => $patient_ids]];
 			
 			$attns = $this->general->filter($data["attn"], $w, null, $w_in, "schedule_from", "asc");
@@ -344,8 +340,8 @@ class Sale extends CI_Controller {
 		if ($this->utility_lib->check_access("sale", "register")){
 			$data = $this->input->post();
 			if ($this->general->update("sale_product", $data["id"], [$data["field"]."_id" => $data["attn_id"]])){
-				$status_confirm_id = $this->general->filter("status", ["code" => "confirmed"])[0]->id;
-				$this->general->update($data["field"], $data["attn_id"], ["status_id" => $status_confirm_id]);
+				$s_confirmed = $this->general->status("confirmed");
+				$this->general->update($data["field"], $data["attn_id"], ["status_id" => $s_confirmed->id]);
 				
 				$type = "success";
 				if ("appointment" === $data["field"]) $msg = $this->lang->line('success_apa');
@@ -362,11 +358,12 @@ class Sale extends CI_Controller {
 		
 		if ($this->utility_lib->check_access("sale", "register")){
 			$sale_prod = $this->general->id("sale_product", $this->input->post("id"));
-			$status_reserved_id = $this->general->filter("status", ["code" => "reserved"])[0]->id;
+			$data = ["status_id" => $this->general->status("reserved")->id];
+			
 			if ($this->general->update("sale_product", $sale_prod->id, ["appointment_id" => null, "surgery_id" => null])){
 				//reset appointment or surgery to reserved status
-				if ($sale_prod->appointment_id) $this->general->update("appointment", $sale_prod->appointment_id, ["status_id" => $status_reserved_id]);
-				elseif ($sale_prod->surgery_id) $this->general->update("surgery", $sale_prod->surgery_id, ["status_id" => $status_reserved_id]);
+				if ($sale_prod->appointment_id) $this->general->update("appointment", $sale_prod->appointment_id, $data);
+				if ($sale_prod->surgery_id) $this->general->update("surgery", $sale_prod->surgery_id, $data);
 				
 				$type = "success";
 				$msg = $this->lang->line('success_siu');
@@ -433,8 +430,8 @@ class Sale extends CI_Controller {
 			$sale = $this->general->id("sale", $this->input->post("id"));
 			
 			//sale status validation => no canceled sale
-			$status_canceled_id = $this->general->filter("status", ["code" => "canceled"])[0]->id;
-			$status_reserved_id = $this->general->filter("status", ["code" => "reserved"])[0]->id;
+			$status_canceled_id = $this->general->status("canceled")->id;
+			$status_reserved_id = $this->general->status("reserved")->id;
 			if ($sale->status_id != $status_canceled_id){
 				$products = $this->general->filter("sale_product", ["sale_id" => $sale->id]);
 				foreach($products as $item){
@@ -494,7 +491,7 @@ class Sale extends CI_Controller {
 		$payments = $this->general->filter("payment", $filter);
 		
 		$voucher_data = array(
-			"status_id" => $this->status->code("confirmed")->id,
+			"status_id" => $this->general->status("confirmed")->id,
 			"type" => $voucher_type->description,
 			"code" => $voucher_type->sunat_code,
 			"letter" => substr($voucher_type->description, 0, 1),
@@ -504,11 +501,6 @@ class Sale extends CI_Controller {
 		$last_voucher = $this->general->filter("voucher", $voucher_data, null, null, "correlative", "desc", 1, 0);
 		if ($last_voucher) $voucher_data["correlative"] = $last_voucher[0]->correlative + 1;
 		else $voucher_data["correlative"] = 1;
-		
-		switch($currency->sunat_code){
-			case "USD": $formatter_currency = "DÓLARES"; break;
-			default: $formatter_currency = "SOLES";//PEN
-		}
 		
 		if (count($payments) == 1){
 			$payment_method = $this->general->id("payment_method", $payments[0]->payment_method_id);
@@ -520,7 +512,6 @@ class Sale extends CI_Controller {
 			$voucher_data["change"] = 0;
 		}
 		
-		$formatter = new NumeroALetras();
 		$voucher_data["client_id"] = $client_id;
 		$voucher_data["payment_method"] = $payment_method->description;
 		$voucher_data["currency"] = $currency->description;
@@ -528,7 +519,7 @@ class Sale extends CI_Controller {
 		$voucher_data["total"] = $sale->total;
 		$voucher_data["amount"] = $sale->amount;
 		$voucher_data["vat"] = $sale->vat;
-		$voucher_data["legend"] = $formatter->toInvoice($sale->total, 2, $formatter_currency);
+		$voucher_data["legend"] = $this->my_func->get_numletter($sale->total, $currency->sunat_code);
 		$voucher_data["hash"] = substr(password_hash(implode("", $voucher_data), PASSWORD_BCRYPT), -28, 28);
 		$voucher_data["registed_at"] = date('Y-m-d H:i:s', time());
 		$voucher_data["sale_id"] = $sale->id;
@@ -537,43 +528,6 @@ class Sale extends CI_Controller {
 		if ($voucher_id) $this->utility_lib->add_log("voucher_register", $this->lang->line('sale')." #".$sale->id." (".$voucher_type->description.")");
 		
 		return $voucher_id;
-	}
-	
-	private function make_pdf($html, $filename){
-		// instantiate and use the dompdf class
-		$dompdf = new Dompdf();
-
-		// (Optional) Setup the paper size and orientation
-		//$dompdf->setPaper('A4', 'portrait');//vertical [0.0, 0.0, 595.28, 841.89]
-		//$dompdf->setPaper('A4', 'landscape');//horizontal
-		$dompdf->setPaper(array(0,0,240,600));
-		
-		$GLOBALS['bodyHeight'] = 0;
-		$dompdf->setCallbacks(
-			array(
-				'myCallbacks' => array(
-				'event' => 'end_frame', 'f' => function ($infos) {
-					$frame = $infos->get_frame();
-					if (!strcmp("body", $frame->get_node()->nodeName))
-						$GLOBALS['bodyHeight'] += $frame->get_padding_box()['h'];
-				})
-			)
-		);
-		
-		$dompdf->loadHtml($html);
-		$dompdf->render();
-		unset($dompdf);
-		
-		$dompdf = new Dompdf();
-		$dompdf->set_paper(array(0,0,240,$GLOBALS['bodyHeight']+20));
-
-		// Render the HTML as PDF
-		$dompdf->loadHtml($html);
-		$dompdf->render();
-		
-		// Output the generated PDF to Browser
-		if ($dompdf) $dompdf->stream($filename, array("Attachment" => false));
-		else echo "Error";
 	}
 	
 	public function make_voucher(){
@@ -667,11 +621,11 @@ class Sale extends CI_Controller {
 			
 			$data["qr"] = base64_encode(file_get_contents($this->ciqrcode->generate($qr_params)));
 			$data["title"] = $invoice->getSerie()." - ".str_pad($invoice->getCorrelativo(), 6, '0', STR_PAD_LEFT);
-			$data["logo"] = base64_encode(file_get_contents(FCPATH."/resources/images/logo.png"));
+			//$data["logo"] = base64_encode(file_get_contents(FCPATH."/resources/images/logo.png"));
 			$data["invoice"] = $invoice;
 			
 			//echo $this->load->view("voucher/invoice", $data, true);
-			$this->make_pdf($this->load->view("voucher/invoice", $data, true), $data["title"]);
+			$this->my_func->make_pdf($this->load->view("voucher/invoice", $data, true), $data["title"]);
 		}else echo $this->lang->line('error_no_permission');
 	}
 	
@@ -714,11 +668,11 @@ class Sale extends CI_Controller {
 				"payments" => $payments,
 				"products" => $products,
 				"title" => $title,
-				"logo" => base64_encode(file_get_contents(FCPATH."/resources/images/logo.png")),
+				//"logo" => base64_encode(file_get_contents(FCPATH."/resources/images/logo.png")),
 			];
 			
 			//echo $this->load->view("voucher/ticket", $data, true);
-			$this->make_pdf($this->load->view("voucher/ticket", $data, true), $title);
+			$this->my_func->make_pdf($this->load->view("voucher/ticket", $data, true), $title);
 		}else echo $this->lang->line('error_no_permission');
 	}
 }
