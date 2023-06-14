@@ -561,11 +561,13 @@ class Sale extends CI_Controller {
 							}else $client_id = $this->general->insert("person", $client);
 						}else $client_id = null;
 						
-						
+						$voucher = $this->general->structure("voucher");
+						unset($voucher->id);
+						print_r($voucher);
 						/////////////////////////////////////////////
 						
 						
-						echo $client_id;
+						
 						print_r($sale);
 					}else $msg = $this->lang->line('error_sba');
 				}else $this->lang->line('error_voe');
