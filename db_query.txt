@@ -1,1 +1,0 @@
-INSERT INTO `status` (`id`, `code`, `color`) VALUES ('8', 'accepted', 'success'), ('9', 'rejected', 'danger');
