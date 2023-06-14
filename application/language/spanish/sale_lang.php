@@ -31,6 +31,7 @@ $lang['warning_csa'] = '¿Desea cancelar venta?';//warning_cancel_sale
 $lang['warning_mvo'] = '¿Desea generar comprobante de venta?';//warning_make_voucher
 $lang['warning_mti'] = '¿Desea generar ticket de pagos?';//warning_make_ticket
 $lang['warning_siu'] = '¿Desea desasignar atención médica?';//warning_sale_item_unassign
+$lang['warning_svs'] = '¿Desea enviar comprobante a Sunat?';//warning_send_voucher_sunat
 $lang['success_isa'] = 'Venta ha sido agregada con éxito.';//success_insert_sale
 $lang['success_csa'] = 'Venta ha sido cancelada con éxito.';//success_cancel_sale
 $lang['success_ipa'] = 'Pago ha sido registrado con éxito.';//success_insert_payment
@@ -39,6 +40,7 @@ $lang['success_gvo'] = '#type# ha sido generada con éxito.';//success_generate_
 $lang['success_sas'] = 'Cirugía ha sido asignado al producto de venta.';//success_surgery_assigned
 $lang['success_apa'] = 'Consulta ha sido asignado al producto de venta.';//success_appointment_assigned
 $lang['success_siu'] = 'El ítem del producto ha sido desasignado de la atención médica.';//success_sale_item_unassign
+$lang['success_svs'] = 'Comprobante ha sido enviado a Sunat correctamente.';//success_send_voucher_sunat
 
 //list(index)
 $lang['btn_close'] = 'Cerrar';
@@ -172,3 +174,4 @@ $lang['title_assign_appointment'] = 'Asignar Consulta';
 $lang['title_assign_surgery'] = 'Asignar Cirugía';
 $lang['hd_reservations'] = 'Reservaciones';
 $lang['btn_add_payment'] = 'Agregar Pago';
+$lang['btn_send'] = 'Enviar';

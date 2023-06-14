@@ -121,6 +121,13 @@
 								<div>
 									<i class="fas fa-circle text-<?= $voucher->color ?> mr-1"></i> <?= $voucher->sunat_msg ?>
 								</div>
+								<?php if (!$voucher->sunat_sent){ ?>
+								<div class="mt-1">
+									<button type="button" class="btn btn-primary" id="btn_send_sunat" value="<?= $voucher->id ?>">
+										<?= $this->lang->line('btn_send') ?>
+									</button>
+								</div>
+								<?php } ?>
 							</div>
 						</div>
 					</div>
@@ -496,4 +503,5 @@
 <input type="hidden" id="warning_mvo" value="<?= $this->lang->line('warning_mvo') ?>">
 <input type="hidden" id="warning_mti" value="<?= $this->lang->line('warning_mti') ?>">
 <input type="hidden" id="warning_siu" value="<?= $this->lang->line('warning_siu') ?>">
+<input type="hidden" id="warning_svs" value="<?= $this->lang->line('warning_svs') ?>">
 <input type="hidden" id="btn_select_lang" value="<?= $this->lang->line('btn_select') ?>">

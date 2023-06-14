@@ -46,6 +46,8 @@ $lang['canceled'] = 'Cancelado';
 $lang['in_progress'] = 'En Progreso';
 $lang['enabled'] = 'Activado';
 $lang['disabled'] = 'Desactivado';
+$lang['accepted'] = 'Aceptado';
+$lang['rejected'] = 'Rechazado';
 
 //header
 $lang['hd_password'] = 'Contraseña';

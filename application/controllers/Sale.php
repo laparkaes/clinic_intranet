@@ -268,8 +268,11 @@ class Sale extends CI_Controller {
 		usort($products, function($a, $b) { return strcmp($a->product->description, $b->product->description); });
 		
 		$voucher = $this->general->filter("voucher", $filter);
-		if ($voucher) $voucher = $voucher[0];
-		else $voucher = $this->general->structure("voucher");
+		if ($voucher){
+			$voucher = $voucher[0];
+			$voucher->type = $this->general->id("voucher_type", $voucher->voucher_type_id)->description;
+		}else $voucher = $this->general->structure("voucher");
+		
 		if ($voucher->sunat_sent) $voucher->color = "success";
 		else {
 			$voucher->color = "danger";
@@ -483,53 +486,6 @@ class Sale extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 	
-	private function create_voucher($sale, $voucher_type_id, $client_id){
-		$filter = array("sale_id" => $sale->id);
-		
-		$voucher_type = $this->general->id("voucher_type", $voucher_type_id);
-		$currency = $this->general->id("currency", $sale->currency_id);
-		$payments = $this->general->filter("payment", $filter);
-		
-		$voucher_data = array(
-			"status_id" => $this->general->status("confirmed")->id,
-			"type" => $voucher_type->description,
-			"code" => $voucher_type->sunat_code,
-			"letter" => substr($voucher_type->description, 0, 1),
-			"serie" => $this->general->id("sale_type", $sale->sale_type_id)->sunat_serie
-		);
-		
-		$last_voucher = $this->general->filter("voucher", $voucher_data, null, null, "correlative", "desc", 1, 0);
-		if ($last_voucher) $voucher_data["correlative"] = $last_voucher[0]->correlative + 1;
-		else $voucher_data["correlative"] = 1;
-		
-		if (count($payments) == 1){
-			$payment_method = $this->general->id("payment_method", $payments[0]->payment_method_id);
-			$voucher_data["received"] = $payments[0]->received;
-			$voucher_data["change"] = $payments[0]->change;
-		}else{
-			$payment_method = $this->general->filter("payment_method", ["description" => "Efectivo"])[0];//Efectivo
-			$voucher_data["received"] = $sale->total;
-			$voucher_data["change"] = 0;
-		}
-		
-		$voucher_data["client_id"] = $client_id;
-		$voucher_data["payment_method"] = $payment_method->description;
-		$voucher_data["currency"] = $currency->description;
-		$voucher_data["currency_code"] = $currency->sunat_code;
-		$voucher_data["total"] = $sale->total;
-		$voucher_data["amount"] = $sale->amount;
-		$voucher_data["vat"] = $sale->vat;
-		$voucher_data["legend"] = $this->my_func->get_numletter($sale->total, $currency->sunat_code);
-		$voucher_data["hash"] = substr(password_hash(implode("", $voucher_data), PASSWORD_BCRYPT), -28, 28);
-		$voucher_data["registed_at"] = date('Y-m-d H:i:s', time());
-		$voucher_data["sale_id"] = $sale->id;
-		
-		$voucher_id = $this->general->insert("voucher", $voucher_data);
-		if ($voucher_id) $this->utility_lib->add_log("voucher_register", $this->lang->line('sale')." #".$sale->id." (".$voucher_type->description.")");
-		
-		return $voucher_id;
-	}
-	
 	public function make_voucher(){
 		$type = "error"; $msg = null; $msgs = [];
 		
@@ -543,11 +499,45 @@ class Sale extends CI_Controller {
 				if (!$this->general->filter("voucher", ["sale_id" => $data["sale_id"]])){
 					$sale = $this->general->id("sale", $data["sale_id"]);
 					if (!$sale->balance){
-						/* voucher structure */
-						$voucher = $this->general->structure("voucher");
-						unset($voucher->id);
+						$currency = $this->general->id("currency", $sale->currency_id);
 						
+						/* voucher structure */
+						$voucher = $this->general->structure("voucher"); unset($voucher->id);
+						$voucher_type = $this->general->id("voucher_type", $this->input->post("voucher_type_id"));
+						
+						$voucher->voucher_type_id = $voucher_type->id;
 						$voucher->sale_id = $sale->id;
+						$voucher->sale_type_id = $sale->sale_type_id;
+						$voucher->status_id = $this->general->status("in_progress")->id;
+						$voucher->legend = $this->my_func->get_numletter($sale->total, $currency->sunat_code);
+						$voucher->hash = substr(password_hash(date("Ymdhims"), PASSWORD_BCRYPT), -28, 28);
+						$voucher->registed_at = date('Y-m-d H:i:s', time());
+						
+						/* correlative
+						1. search last same voucher_type and sale_type voucher
+						2. record exists => actual correlative is +1
+						3. record no exists => actual correlative is $sale_type->start
+						*/
+						$f = ["voucher_type_id" => $voucher->voucher_type_id, "sale_type_id" => $voucher->sale_type_id];
+						$last_voucher = $this->general->filter("voucher", $f);
+						if ($last_voucher) $voucher->correlative = $last_voucher[0]->correlative + 1;
+						else $voucher->correlative = $this->general->id("sale_type", $voucher->sale_type_id)->start;
+						
+						/* payment method
+						1. load all payment
+						2. one payment => same voucher payment
+						3. two or more payments => efectivo
+						*/
+						$payments = $this->general->filter("payment", ["sale_id" => $sale->id]);
+						if (count($payments) == 1){
+							$voucher->payment_method_id = $payments[0]->payment_method_id;
+							$voucher->received = $payments[0]->received;
+						}else{
+							$f = ["description" => "Efectivo"];
+							$voucher->payment_method_id = $this->general->filter("payment_method", $f)[0]->id;
+							$voucher->received = $sale->total;
+						}
+						$voucher->change = $sale->total - $voucher->received;
 						
 						/* client record
 						1. "Sin documento (sunat_code != 0)" => $client_id = null;
@@ -567,45 +557,78 @@ class Sale extends CI_Controller {
 							}else $voucher->client_id = $this->general->insert("person", $client);
 						}else $voucher->client_id = null;
 						
-						print_r($voucher);
-						/////////////////////////////////////////////
+						if (!$sale->client_id) $this->general->update("sale", $sale->id, ["client_id" => $voucher->client_id]);
 						
-						
-						
-						print_r($sale);
-					}else $msg = $this->lang->line('error_sba');
-				}else $this->lang->line('error_voe');
-			}else $msg = $this->lang->line('error_occurred');
-			/*
-			
-			
-			$voucher_type = $this->general->id("voucher_type", $this->input->post("voucher_type_id"));
-			
-			
-						$voucher_id = $this->create_voucher($sale, $voucher_type->id, $client_id);
+						$voucher_id = $this->general->insert("voucher", $voucher);
 						if ($voucher_id){
-							//make sunat process
-							$sunat_result = $this->utility_lib->send_sunat($this->set_voucher_data($voucher_id));
-							$this->general->update("voucher", $voucher_id, $sunat_result);
+							$this->utility_lib->add_log("voucher_register", $this->lang->line('sale')." #".$sale->id." (".$voucher_type->description.")");
 							
-							if ($sunat_result["sunat_sent"]){ $color = "success"; $ic = "check"; } 
+							/* send to sunat
+							1. load greenter_lib
+							2. use function send_sunat with voucher_id
+							3. update sunat result of voucher
+							4. set msg
+							*/
+							
+							//$res = $this->greenter_lib->send_sunat($voucher_id);
+							$res = ["sunat_sent" => false, "sunat_msg" => "Sunat no chambea."];
+							$this->general->update("voucher", $voucher_id, $res);
+							
+							if ($res["sunat_sent"]){ $color = "success"; $ic = "check"; } 
 							else{ $color = "danger"; $ic = "times"; }
 							
 							$type = "success";
-							$msg = str_replace("#type#", $voucher_type->description, $this->lang->line('success_gvo')).'<br/><br/><span class="text-'.$color.'">Sunat <i class="fas fa-'.$ic.'"></i></span><br/>'.$sunat_result["sunat_msg"];
-						}
-					
-				
-			
-			*/
+							$msg = str_replace("#type#", $voucher_type->description, $this->lang->line('success_gvo')).'<br/><br/><span class="text-'.$color.'">Sunat <i class="fas fa-'.$ic.'"></i></span><br/>'.$res["sunat_msg"];
+						}else $msg = $msg = $this->lang->line('error_internal');
+					}else $msg = $this->lang->line('error_sba');
+				}else $this->lang->line('error_voe');
+			}else $msg = $this->lang->line('error_occurred');
 		}else $msg = $this->lang->line('error_no_permission');
 		
-		//header('Content-Type: application/json');
-		//echo json_encode(["type" => $type, "msg" => $msg, "msgs" => $msgs]);
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg, "msgs" => $msgs]);
+	}
+	
+	public function send_sunat(){
+		$id = $this->input->post("id");
+		//$res = $this->greenter_lib->send_sunat($id);
+		$res = ["sunat_sent" => false, "sunat_msg" => "Sunat no chambea."];
+		$this->general->update("voucher", $id, $res);
+		
+		if ($res["sunat_sent"]){
+			$type = "success"; 
+			$msg = $this->lang->line('success_svs');
+		}else{
+			$type = "error"; 
+			$msg = $res["sunat_msg"];
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 	
 	private function set_voucher_data($id){
 		$voucher = $this->general->id("voucher", $id);
+		
+		$voucher_type = $this->general->id("voucher_type", $voucher->voucher_type_id);
+		$voucher->type = $voucher_type->description;
+		$voucher->code = $voucher_type->sunat_code;
+		$voucher->letter = $voucher_type->description[0];
+		
+		$sale = $this->general->id("sale", $voucher->sale_id);
+		$voucher->amount = $sale->amount;
+		$voucher->vat = $sale->vat;
+		$voucher->total = $sale->total;
+		
+		$sale_type = $this->general->id("sale_type", $sale->sale_type_id);
+		$voucher->serie = $sale_type->sunat_serie;
+		
+		$currency = $this->general->id("currency", $sale->currency_id);
+		$voucher->currency = $currency->description;
+		$voucher->currency_code = $currency->sunat_code;
+		
+		$payment_method = $this->general->id("payment_method", $voucher->payment_method_id);
+		$voucher->payment_method = $payment_method->description;
 		
 		if ($voucher->client_id){
 			$client = $this->general->id("person", $voucher->client_id);
@@ -636,7 +659,9 @@ class Sale extends CI_Controller {
 	public function voucher($id){
 		if ($this->utility_lib->check_access("sale", "admin_voucher")){
 			$data = $this->set_voucher_data($id);
-			$invoice = $this->utility_lib->make_invoice_greenter($data);
+			
+			$this->load->library('greenter_lib');
+			$invoice = $this->greenter_lib->get_invoice($data);
 			
 			//QR Code => RUC|TIPO DE DOCUMENTO|SERIE|NUMERO|MTO TOTAL IGV|MTO TOTAL DEL COMPROBANTE|FECHA DE EMISION|TIPO DE DOCUMENTO ADQUIRENTE|NUMERO DE DOCUMENTO ADQUIRENTE
 			$qr_data = [
@@ -672,7 +697,7 @@ class Sale extends CI_Controller {
 				$client->doc_type = $this->general->id("doc_type", $client->doc_type_id);	
 			}else $client = $this->general->structure("person");
 			
-			$company = $this->general->id("company", 1);
+			$company = $this->general->id("company", $this->general->id("system", 1)->company_id);
 			$company->department = $this->general->id("address_department", $company->department_id)->name;
 			$company->province = $this->general->id("address_province", $company->province_id)->name;
 			$company->district = $this->general->id("address_district", $company->district_id)->name;

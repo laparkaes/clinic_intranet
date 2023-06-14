@@ -65,7 +65,6 @@ function cancel_sale(dom){
 
 function make_voucher(dom){
 	ajax_form_warning(dom, "sale/make_voucher", $("#warning_mvo").val()).done(function(res) {
-		alert(res);
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
@@ -128,6 +127,12 @@ function unassign_reservation(prod_id){
 	});
 }
 
+function send_sunat(id){
+	ajax_simple_warning({id: id}, "sale/send_sunat", $("#warning_svs").val()).done(function(res) {
+		swal_redirection(res.type, res.msg, window.location.href);
+	});
+}
+
 $(document).ready(function() {
 	//asign medical attention
 	$(".btn_select_product").on('click',(function(e) { $("#rs_selected_product").val($(this).val()); }));
@@ -141,6 +146,7 @@ $(document).ready(function() {
 	$("#mv_doc_type").on('change',(function(e) {control_doc_number();}));
 	$("#mv_doc_number").keyup(function() {control_client_name(true);});
 	$("#btn_search_person_mv").on('click',(function(e) {search_person_mv();}));
+	$("#btn_send_sunat").on('click',(function(e) {send_sunat($(this).val());}));
 	
 	//sale
 	$("#btn_cancel_sale").on('click',(function(e) {cancel_sale(this);}));
