@@ -65,6 +65,7 @@ function cancel_sale(dom){
 
 function make_voucher(dom){
 	ajax_form_warning(dom, "sale/make_voucher", $("#warning_mvo").val()).done(function(res) {
+		alert(res);
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, window.location.href);
 	});

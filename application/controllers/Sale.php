@@ -543,6 +543,12 @@ class Sale extends CI_Controller {
 				if (!$this->general->filter("voucher", ["sale_id" => $data["sale_id"]])){
 					$sale = $this->general->id("sale", $data["sale_id"]);
 					if (!$sale->balance){
+						/* voucher structure */
+						$voucher = $this->general->structure("voucher");
+						unset($voucher->id);
+						
+						$voucher->sale_id = $sale->id;
+						
 						/* client record
 						1. "Sin documento (sunat_code != 0)" => $client_id = null;
 						2. read client record from DB
@@ -557,12 +563,10 @@ class Sale extends CI_Controller {
 							if ($person){
 								$person = $person[0];
 								$this->general->update("person", $person->id, ["name" => $client["name"]]);
-								$client_id = $person->id;
-							}else $client_id = $this->general->insert("person", $client);
-						}else $client_id = null;
+								$voucher->client_id = $person->id;
+							}else $voucher->client_id = $this->general->insert("person", $client);
+						}else $voucher->client_id = null;
 						
-						$voucher = $this->general->structure("voucher");
-						unset($voucher->id);
 						print_r($voucher);
 						/////////////////////////////////////////////
 						
@@ -596,8 +600,8 @@ class Sale extends CI_Controller {
 			*/
 		}else $msg = $this->lang->line('error_no_permission');
 		
-		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg, "msgs" => $msgs]);
+		//header('Content-Type: application/json');
+		//echo json_encode(["type" => $type, "msg" => $msg, "msgs" => $msgs]);
 	}
 	
 	private function set_voucher_data($id){
