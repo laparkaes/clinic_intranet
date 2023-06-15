@@ -570,12 +570,19 @@ class Sale extends CI_Controller {
 							4. set msg
 							*/
 							
-							//$res = $this->greenter_lib->send_sunat($voucher_id);
-							$res = ["sunat_sent" => false, "sunat_msg" => "Sunat no chambea."];
-							$this->general->update("voucher", $voucher_id, $res);
+							$this->load->library('greenter_lib');
+							$res = $this->greenter_lib->send_sunat($this->set_voucher_data($voucher_id));
+							if ($res["sunat_sent"]){
+								$color = "success";
+								$ic = "check";
+								$res["status_id"] = $this->general->status("accepted")->id;
+							}else{
+								$color = "danger";
+								$ic = "times";
+								$res["status_id"] = $this->general->status("rejected")->id;
+							}
 							
-							if ($res["sunat_sent"]){ $color = "success"; $ic = "check"; } 
-							else{ $color = "danger"; $ic = "times"; }
+							$this->general->update("voucher", $voucher_id, $res);
 							
 							$type = "success";
 							$msg = str_replace("#type#", $voucher_type->description, $this->lang->line('success_gvo')).'<br/><br/><span class="text-'.$color.'">Sunat <i class="fas fa-'.$ic.'"></i></span><br/>'.$res["sunat_msg"];
@@ -591,17 +598,20 @@ class Sale extends CI_Controller {
 	
 	public function send_sunat(){
 		$id = $this->input->post("id");
-		//$res = $this->greenter_lib->send_sunat($id);
-		$res = ["sunat_sent" => false, "sunat_msg" => "Sunat no chambea."];
-		$this->general->update("voucher", $id, $res);
 		
+		$this->load->library('greenter_lib');
+		$res = $this->greenter_lib->send_sunat($this->set_voucher_data($id));
 		if ($res["sunat_sent"]){
 			$type = "success"; 
-			$msg = $this->lang->line('success_svs');
+			$msg = $res["sunat_msg"];
+			$res["status_id"] = $this->general->status("accepted")->id;
 		}else{
 			$type = "error"; 
 			$msg = $res["sunat_msg"];
+			$res["status_id"] = $this->general->status("rejected")->id;
 		}
+		
+		$this->general->update("voucher", $id, $res);
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);
@@ -661,7 +671,7 @@ class Sale extends CI_Controller {
 			$data = $this->set_voucher_data($id);
 			
 			$this->load->library('greenter_lib');
-			$invoice = $this->greenter_lib->get_invoice($data);
+			$invoice = $this->greenter_lib->set_invoice($data);
 			
 			//QR Code => RUC|TIPO DE DOCUMENTO|SERIE|NUMERO|MTO TOTAL IGV|MTO TOTAL DEL COMPROBANTE|FECHA DE EMISION|TIPO DE DOCUMENTO ADQUIRENTE|NUMERO DE DOCUMENTO ADQUIRENTE
 			$qr_data = [

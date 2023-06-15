@@ -40,7 +40,6 @@ $lang['success_gvo'] = '#type# ha sido generada con éxito.';//success_generate_
 $lang['success_sas'] = 'Cirugía ha sido asignado al producto de venta.';//success_surgery_assigned
 $lang['success_apa'] = 'Consulta ha sido asignado al producto de venta.';//success_appointment_assigned
 $lang['success_siu'] = 'El ítem del producto ha sido desasignado de la atención médica.';//success_sale_item_unassign
-$lang['success_svs'] = 'Comprobante ha sido enviado a Sunat correctamente.';//success_send_voucher_sunat
 
 //list(index)
 $lang['btn_close'] = 'Cerrar';

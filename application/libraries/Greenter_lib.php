@@ -9,15 +9,21 @@ use Greenter\Model\Sale\Invoice;
 use Greenter\Model\Sale\SaleDetail;
 use Greenter\Model\Sale\Legend;
 use Greenter\Report\HtmlReport;
+use Greenter\Ws\Services\SunatEndpoints;
+use Greenter\See;
 
 class Greenter_lib{
 	
 	public function __construct(){
 		$this->CI = &get_instance();
+		$this->ruc = '20000000001';
+		$this->user = 'MODDATOS';
+		$this->pass = 'moddatos';
+		$this->cert_path = FCPATH.'uploaded\sunat\certificate.pem';
 	}
 	
 	public function cancel_voucher_sunat($voucher_data){
-		$invoice = $this->make_invoice_greenter($voucher_data);
+		$invoice = $this->set_invoice($voucher_data);
 		/*
 		1. cancel voucher to sunat
 		2. set response parameter
@@ -28,17 +34,21 @@ class Greenter_lib{
 	}
 	
 	public function send_sunat($voucher_data){
-		$invoice = $this->make_invoice_greenter($voucher_data);
+		$invoice = $this->set_invoice($voucher_data);
 		/*
 		1. send voucher to sunat
 		2. set response parameter
 		*/
+		$see = new See();
+		$see->setCertificate(file_get_contents($this->cert_path));
+		$see->setService(SunatEndpoints::FE_BETA);
+		$see->setClaveSOL($this->ruc, $this->user, $this->pass);
 		
-		//return array("sunat_sent" => false, "sunat_msg" => "ocurrio error de comunicacion con sunat.");
-		return array("sunat_sent" => true, "sunat_msg" => "Factura electronica recibida.");
+		return ["sunat_sent" => false, "sunat_msg" => "Sunat no chambea."];
+		//return ["sunat_sent" => true, "sunat_msg" => "Comprobante aceptado."];
 	}
 	
-	public function get_invoice($voucher_data){
+	public function set_invoice($voucher_data){
 		$vo = $voucher_data["voucher"];
 		$cl = $voucher_data["client"];
 		$co = $voucher_data["company"];
