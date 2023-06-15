@@ -121,7 +121,7 @@
 								<div>
 									<i class="fas fa-circle text-<?= $voucher->color ?> mr-1"></i> <?= $voucher->sunat_msg ?>
 								</div>
-								<?php if (!$voucher->sunat_sent){ ?>
+								<?php if (($voucher->id) and (!$voucher->sunat_sent)){ ?>
 								<div class="mt-1">
 									<button type="button" class="btn btn-primary" id="btn_send_sunat" value="<?= $voucher->id ?>">
 										<?= $this->lang->line('btn_send') ?>

@@ -36,7 +36,6 @@ $lang['success_isa'] = 'Venta ha sido agregada con éxito.';//success_insert_sal
 $lang['success_csa'] = 'Venta ha sido cancelada con éxito.';//success_cancel_sale
 $lang['success_ipa'] = 'Pago ha sido registrado con éxito.';//success_insert_payment
 $lang['success_dpa'] = 'Pago ha sido eliminado con éxito.';//success_delete_payment
-$lang['success_gvo'] = '#type# ha sido generada con éxito.';//success_generate_voucher
 $lang['success_sas'] = 'Cirugía ha sido asignado al producto de venta.';//success_surgery_assigned
 $lang['success_apa'] = 'Consulta ha sido asignado al producto de venta.';//success_appointment_assigned
 $lang['success_siu'] = 'El ítem del producto ha sido desasignado de la atención médica.';//success_sale_item_unassign

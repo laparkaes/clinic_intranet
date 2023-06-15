@@ -161,8 +161,9 @@ class Sale extends CI_Controller {
 					if ($total == $payment["received"]) $status = $this->general->status("finished");
 					else $status = $this->general->status("in_progress");
 					
-					$vat = $total * 0.18;
-					$amount = $total - $vat;
+					$amount = round($total / 1.18, 2);
+					$vat = round($total - $amount, 2);
+					
 					$sale_data = [
 						"status_id" => $status->id,
 						"total" => $total,
@@ -573,20 +574,17 @@ class Sale extends CI_Controller {
 							$this->load->library('greenter_lib');
 							$res = $this->greenter_lib->send_sunat($this->set_voucher_data($voucher_id));
 							if ($res["sunat_sent"]){
-								$color = "success";
-								$ic = "check";
+								$type = "success"; 
+								$msg = $res["sunat_msg"];
+								if ($res["sunat_notes"]) $msg = $msg."<div class='mt-3'><h5 class='text-left'>Notas:</h5><div class='text-left'>".str_replace('&&&', '<br/>', $res["sunat_notes"])."</div></div>";
 								$res["status_id"] = $this->general->status("accepted")->id;
 							}else{
-								$color = "danger";
-								$ic = "times";
+								$msg = $res["sunat_msg"];
 								$res["status_id"] = $this->general->status("rejected")->id;
 							}
 							
 							$this->general->update("voucher", $voucher_id, $res);
-							
-							$type = "success";
-							$msg = str_replace("#type#", $voucher_type->description, $this->lang->line('success_gvo')).'<br/><br/><span class="text-'.$color.'">Sunat <i class="fas fa-'.$ic.'"></i></span><br/>'.$res["sunat_msg"];
-						}else $msg = $msg = $this->lang->line('error_internal');
+						}else $msg = $this->lang->line('error_internal');
 					}else $msg = $this->lang->line('error_sba');
 				}else $this->lang->line('error_voe');
 			}else $msg = $this->lang->line('error_occurred');
@@ -604,6 +602,7 @@ class Sale extends CI_Controller {
 		if ($res["sunat_sent"]){
 			$type = "success"; 
 			$msg = $res["sunat_msg"];
+			if ($res["sunat_notes"]) $msg = $msg."<div class='mt-3'><h5>Notas:</h5><div>".str_replace('&&&', '<br/>', $res["sunat_notes"])."</div></div>";
 			$res["status_id"] = $this->general->status("accepted")->id;
 		}else{
 			$type = "error"; 
@@ -657,7 +656,7 @@ class Sale extends CI_Controller {
 		foreach($products as $item){
 			$item->unit_price = $item->price - $item->discount;
 			$item->value = round($item->unit_price/1.18, 2);
-			$item->vat = $item->unit_price - $item->value;
+			$item->vat = round($item->unit_price - $item->value, 2);
 			$item->data = $this->general->id("product", $item->product_id);
 			$item->type = $this->general->id("product_type", $item->data->type_id);
 			//if ($item->option_id) $item->data->description = $item->data->description." ".$this->general->id("product_option", $item->option_id)->description;

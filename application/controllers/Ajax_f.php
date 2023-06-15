@@ -65,7 +65,7 @@ class Ajax_f extends CI_Controller {
 				if ($ud->status){
 					$company->tax_id = $ud->data->ruc;
 					$company->name = $ud->data->razon_social;
-					$company->address = $ud->data->direccion;
+					$company->address = trim($ud->data->direccion);
 					$company->ubigeo = $ud->data->ubigeo;
 					$company->urbanization = $ud->data->codigo_zona." ".$ud->data->tipo_zona;
 					
