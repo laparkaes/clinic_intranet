@@ -121,13 +121,20 @@
 								<div>
 									<i class="fas fa-circle text-<?= $voucher->color ?> mr-1"></i> <?= $voucher->sunat_msg ?>
 								</div>
-								<?php if (($voucher->id) and (!$voucher->sunat_sent)){ ?>
+								<?php if ((($voucher->id) and (!$voucher->sunat_sent)) or ($voucher->sunat_notes)){ ?>
 								<div class="mt-1">
 									<button type="button" class="btn btn-primary" id="btn_send_sunat" value="<?= $voucher->id ?>">
 										<?= $this->lang->line('btn_send') ?>
 									</button>
 								</div>
-								<?php } ?>
+								<?php } if ($voucher->sunat_notes){ ?>
+								<h5 class="mt-3">Notes</h5>
+								<?php $voucher->sunat_notes = explode("&&&", $voucher->sunat_notes); 
+								foreach($voucher->sunat_notes as $item){ ?>
+								<div class="mt-1">
+									<?= $item ?>
+								</div>
+								<?php }} ?>
 							</div>
 						</div>
 					</div>

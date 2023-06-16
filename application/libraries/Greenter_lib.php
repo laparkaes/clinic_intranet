@@ -37,7 +37,7 @@ class Greenter_lib{
 		$cl = $voucher_data["client"];
 		$co = $voucher_data["company"];
 		$pr = $voucher_data["products"];
-	
+
 		//Cliente
 		$client = (new Client())
 			->setTipoDoc($cl->doc_type->sunat_code)

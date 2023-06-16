@@ -520,7 +520,7 @@ class Sale extends CI_Controller {
 						3. record no exists => actual correlative is $sale_type->start
 						*/
 						$f = ["voucher_type_id" => $voucher->voucher_type_id, "sale_type_id" => $voucher->sale_type_id];
-						$last_voucher = $this->general->filter("voucher", $f);
+						$last_voucher = $this->general->filter("voucher", $f, null, null, "correlative", "desc");
 						if ($last_voucher) $voucher->correlative = $last_voucher[0]->correlative + 1;
 						else $voucher->correlative = $this->general->id("sale_type", $voucher->sale_type_id)->start;
 						
@@ -602,7 +602,7 @@ class Sale extends CI_Controller {
 		if ($res["sunat_sent"]){
 			$type = "success"; 
 			$msg = $res["sunat_msg"];
-			if ($res["sunat_notes"]) $msg = $msg."<div class='mt-3'><h5>Notas:</h5><div>".str_replace('&&&', '<br/>', $res["sunat_notes"])."</div></div>";
+			if ($res["sunat_notes"]) $msg = $msg."<div class='text-left mt-3'><h5>Notas:</h5><div>".str_replace('&&&', '<br/>', $res["sunat_notes"])."</div></div>";
 			$res["status_id"] = $this->general->status("accepted")->id;
 		}else{
 			$type = "error"; 
@@ -645,6 +645,8 @@ class Sale extends CI_Controller {
 		}else{
 			$client = $this->general->structure("person");
 			$client->doc_type = $this->general->filter("doc_type", ["sunat_code" => 0])[0];
+			$client->doc_number = 0;
+			$client->name = "000";
 		}
 		
 		$company = $this->general->id("company", $this->general->id("system", 1)->company_id);
