@@ -116,25 +116,49 @@
 								<h5 class="mb-1"><?= $this->lang->line('label_date') ?></h5>
 								<div><?= $sale->registed_at ?></div>
 							</div>
-							<div class="col-md-12">
-								<h5 class="mb-1"><?= $this->lang->line('label_sunat') ?></h5>
-								<div>
-									<i class="fas fa-circle text-<?= $voucher->color ?> mr-1"></i> <?= $voucher->sunat_msg ?>
-								</div>
-								<?php if ((($voucher->id) and (!$voucher->sunat_sent)) or ($voucher->sunat_notes)){ ?>
-								<div class="mt-1">
-									<button type="button" class="btn btn-primary" id="btn_send_sunat" value="<?= $voucher->id ?>">
-										<?= $this->lang->line('btn_send') ?>
+						</div>
+						<hr>
+						<div class="row">
+							<div class="col-md-12 mb-3  d-flex justify-content-between">
+								<h4 class="mr-5 mb-0"><?= $this->lang->line('label_sunat') ?></h4>
+								<div class="text-right">
+									<?php
+									//activate Sunat buttons
+									$btn_send_a = $btn_void = $btn_client = "disabled";
+									if ((($voucher->id) and (!$voucher->sunat_sent)) or ($voucher->sunat_notes)) $btn_send_a = "";
+									if ($voucher->id) $btn_void = "";
+									if ($voucher->sunat_notes) $btn_client = "";
+									?>
+									<button type="button" class="btn btn-primary btn-xs mb-1" id="btn_send_sunat" value="<?= $voucher->id ?>" <?= $btn_send_a ?>>
+										<?= $this->lang->line('btn_send_again') ?>
+									</button>
+									<button type="button" class="btn btn-info btn-xs mb-1" id="btn_client_sunat" value="<?= $voucher->id ?>" <?= $btn_client ?>>
+										<?= $this->lang->line('btn_update_client') ?>
+									</button>
+									<button type="button" class="btn btn-danger btn-xs mb-1" id="btn_void_sunat" value="<?= $voucher->id ?>" <?= $btn_void ?>>
+										<?= $this->lang->line('btn_void')." ".$voucher->type ?>
 									</button>
 								</div>
-								<?php } if ($voucher->sunat_notes){ ?>
-								<h5 class="mt-3">Notes</h5>
-								<?php $voucher->sunat_notes = explode("&&&", $voucher->sunat_notes); 
-								foreach($voucher->sunat_notes as $item){ ?>
-								<div class="mt-1">
-									<?= $item ?>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3 mb-3">
+								<h5 class="mb-1"><?= $this->lang->line('label_status') ?></h5>
+								<div class="text-<?= $voucher->status->color ?>"><?= $this->lang->line($voucher->status->code) ?></div>
+							</div>
+							<div class="col-md-9 mb-3">
+								<h5 class="mb-1"><?= $this->lang->line('lb_messages') ?></h5>
+								<div><?= $voucher->sunat_msg ?></div>
+								<?php if ($voucher->sunat_notes){ ?>
+								<div class="mt-2">
+									<?php $voucher->sunat_notes = explode("&&&", $voucher->sunat_notes); 
+									foreach($voucher->sunat_notes as $item){ ?>
+									<div class="mt-1">
+										> <?= $item ?>
+									</div>
+									<?php } ?>
 								</div>
-								<?php }} ?>
+								<?php } ?>
 							</div>
 						</div>
 					</div>

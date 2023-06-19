@@ -274,8 +274,11 @@ class Sale extends CI_Controller {
 			$voucher->type = $this->general->id("voucher_type", $voucher->voucher_type_id)->description;
 		}else $voucher = $this->general->structure("voucher");
 		
+		if ($voucher->status_id) $voucher->status = $this->general->id("status", $voucher->status_id);
+		else $voucher->status = $this->general->structure("status");
+		
 		if ($voucher->sunat_sent) $voucher->color = "success";
-		else {
+		else{
 			$voucher->color = "danger";
 			if ($voucher->sunat_sent == null) $voucher->sunat_msg = $this->lang->line('msg_no_voucher');
 		}
@@ -520,7 +523,7 @@ class Sale extends CI_Controller {
 						3. record no exists => actual correlative is $sale_type->start
 						*/
 						$f = ["voucher_type_id" => $voucher->voucher_type_id, "sale_type_id" => $voucher->sale_type_id];
-						$last_voucher = $this->general->filter("voucher", $f, null, null, "correlative", "desc");
+						$last_voucher = $this->general->filter("voucher", $f, null, null, "correlative", "desc", 1, 0);
 						if ($last_voucher) $voucher->correlative = $last_voucher[0]->correlative + 1;
 						else $voucher->correlative = $this->general->id("sale_type", $voucher->sale_type_id)->start;
 						
