@@ -48,6 +48,7 @@ $lang['enabled'] = 'Activado';
 $lang['disabled'] = 'Desactivado';
 $lang['accepted'] = 'Aceptado';
 $lang['rejected'] = 'Rechazado';
+$lang['pending'] = 'Pendiente';
 
 //header
 $lang['hd_password'] = 'Contraseña';

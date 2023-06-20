@@ -133,6 +133,13 @@ function send_sunat(id){
 	});
 }
 
+function void_voucher(dom){
+	ajax_form_warning(dom, "sale/void_voucher", $("#warning_vvo").val()).done(function(res) {
+		alert(res);
+		swal_redirection(res.type, res.msg, window.location.href);
+	});
+}
+
 $(document).ready(function() {
 	//asign medical attention
 	$(".btn_select_product").on('click',(function(e) { $("#rs_selected_product").val($(this).val()); }));
@@ -142,11 +149,15 @@ $(document).ready(function() {
 	
 	//voucher
 	$("#form_make_voucher").submit(function(e) {e.preventDefault(); make_voucher(this);});
+	$("#form_void_voucher").submit(function(e) {e.preventDefault(); void_voucher(this);});
 	$("#btn_make_voucher").on('click',(function(e) {$("#form_make_voucher").submit();}));
+	$("#btn_void_voucher").on('click',(function(e) {$("#form_void_voucher").submit();}));
 	$("#mv_doc_type").on('change',(function(e) {control_doc_number();}));
 	$("#mv_doc_number").keyup(function() {control_client_name(true);});
 	$("#btn_search_person_mv").on('click',(function(e) {search_person_mv();}));
 	$("#btn_send_sunat").on('click',(function(e) {send_sunat($(this).val());}));
+	
+	
 	
 	//sale
 	$("#btn_cancel_sale").on('click',(function(e) {cancel_sale(this);}));

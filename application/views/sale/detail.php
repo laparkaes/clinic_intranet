@@ -127,7 +127,7 @@
 										<?= $this->lang->line('btn_send_again') ?>
 									</button>
 									<?php } if ($voucher->id){ ?>
-									<button type="button" class="btn btn-danger btn-xs mb-1" id="btn_void_sunat" value="<?= $voucher->id ?>">
+									<button type="button" class="btn btn-danger btn-xs mb-1" value="<?= $voucher->id ?>" data-toggle="modal" data-target=".md_void_voucher">
 										<?= $this->lang->line('btn_void')." ".$voucher->type ?>
 									</button>
 									<?php } ?>
@@ -292,7 +292,40 @@
 		</div>
 	</div>
 </div>
-<?php if (!$voucher->sale_id){ ?>
+<?php if ($sale->voucher_id){ ?>
+<div class="modal fade md_void_voucher" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title"><?= $this->lang->line('title_void_voucher') ?></h5>
+				<button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+			</div>
+			<div class="modal-body">
+				<form action="#" id="form_void_voucher">
+					<input type="hidden" name="id" value="<?= $sale->voucher_id ?>">
+					<div class="form-row">
+						<div class="form-group col-md-12 mb-0">
+							<label><?= $this->lang->line('label_reason') ?></label>
+							<input type="text" class="form-control" name="reason">
+							<div class="sys_msg" id="mv_voucher_type_msg"></div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger light" data-dismiss="modal">
+					<?= $this->lang->line('btn_close') ?>
+				</button>
+				<?php if (!$sale->balance){ ?>
+				<button type="button" class="btn btn-primary" id="btn_void_voucher">
+					<?= $this->lang->line('btn_void') ?>
+				</button>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+</div>
+<?php }else{ ?>
 <div class="modal fade md_voucher" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -530,4 +563,5 @@
 <input type="hidden" id="warning_mti" value="<?= $this->lang->line('warning_mti') ?>">
 <input type="hidden" id="warning_siu" value="<?= $this->lang->line('warning_siu') ?>">
 <input type="hidden" id="warning_svs" value="<?= $this->lang->line('warning_svs') ?>">
+<input type="hidden" id="warning_vvo" value="<?= $this->lang->line('warning_vvo') ?>">
 <input type="hidden" id="btn_select_lang" value="<?= $this->lang->line('btn_select') ?>">

@@ -57,15 +57,19 @@ class Sale extends CI_Controller {
 			$item->status = $this->general->id("status", $item->status_id);
 			$item->status->lang = $this->lang->line($item->status->code);
 			
-			$voucher = $this->general->filter("voucher", ["sale_id" => $item->id]);
-			if ($voucher){
-				$item->voucher = $voucher[0];
+			if ($item->voucher_id){
+				$item->voucher = $this->general->id("voucher", $item->voucher_id);
 				if ($item->voucher->sunat_sent) $item->voucher->color = "success";
 				else $item->voucher->color = "danger";
 			}else{
 				$item->voucher = $this->general->structure("voucher");
-				$item->voucher->color = "warning";
-				$item->voucher->sunat_msg = $this->lang->line('msg_need_send_sunat');
+				if ($item->status->code === "canceled"){
+					$item->voucher->color = "success";
+					$item->voucher->sunat_msg = $this->lang->line('msg_canceled_sale');
+				}else{
+					$item->voucher->color = "warning";
+					$item->voucher->sunat_msg = $this->lang->line('msg_need_send_sunat');
+				}
 			}
 		}
 		
@@ -219,7 +223,7 @@ class Sale extends CI_Controller {
 			$client->doc_type = $this->general->id("doc_type", $client->doc_type_id)->short;
 		}else{
 			$client = $this->general->structure("person");
-			$client->doc_type = null;
+			$client->doc_type = "";
 		}
 		
 		$filter = ["sale_id" => $sale->id];
@@ -268,19 +272,22 @@ class Sale extends CI_Controller {
 		}
 		usort($products, function($a, $b) { return strcmp($a->product->description, $b->product->description); });
 		
-		$voucher = $this->general->filter("voucher", $filter);
-		if ($voucher){
-			$voucher = $voucher[0];
-			$voucher->type = $this->general->id("voucher_type", $voucher->voucher_type_id)->description;
-		}else $voucher = $this->general->structure("voucher");
+		if ($sale->voucher_id) $voucher = $this->general->id("voucher", $sale->voucher_id);
+		else $voucher = $this->general->structure("voucher");
 		
 		if ($voucher->voucher_type_id) $voucher->type = $this->general->id("voucher_type", $voucher->voucher_type_id)->description;
 		else $voucher->type = "";
 		
 		if ($voucher->status_id) $voucher->status = $this->general->id("status", $voucher->status_id);
-		else $voucher->status = $this->general->structure("status");
+		else{
+			if ($sale->status->code !== "canceled") $voucher->status = $this->general->status("pending");
+			else $voucher->status = $this->general->status("finished");
+		}
 		
-		if ($voucher->sunat_sent === null) $voucher->sunat_msg = $this->lang->line('msg_no_voucher');
+		if ($voucher->sunat_sent === null){
+			if ($sale->status->code !== "canceled") $voucher->sunat_msg = $this->lang->line('msg_no_voucher');
+			else $voucher->sunat_msg = $this->lang->line('msg_canceled_sale');
+		}
 		
 		$data = array(
 			"canceled_id" => $this->general->status("canceled")->id,
@@ -564,6 +571,7 @@ class Sale extends CI_Controller {
 						
 						$voucher_id = $this->general->insert("voucher", $voucher);
 						if ($voucher_id){
+							$this->general->update("sale", $sale->id, ["voucher_id" => $voucher_id]);
 							$this->utility_lib->add_log("voucher_register", $this->lang->line('sale')." #".$sale->id." (".$voucher_type->description.")");
 							
 							/* send to sunat
@@ -604,7 +612,7 @@ class Sale extends CI_Controller {
 		if ($res["sunat_sent"]){
 			$type = "success"; 
 			$msg = $res["sunat_msg"];
-			if ($res["sunat_notes"]) $msg = $msg."<div class='text-left mt-3'><h5>Notas:</h5><div>".str_replace('&&&', '<br/>', $res["sunat_notes"])."</div></div>";
+			if ($res["sunat_notes"]) $msg = $msg."<div class='text-left mt-3'><div>".str_replace('&&&', '<br/>', $res["sunat_notes"])."</div></div>";
 			$res["status_id"] = $this->general->status("accepted")->id;
 		}else{
 			$type = "error"; 
@@ -667,6 +675,11 @@ class Sale extends CI_Controller {
 		}
 		
 		return ["voucher" => $voucher, "client" => $client, "company" => $company, "products" => $products];
+	}
+	
+	public function void_voucher(){
+		$data = $this->input->post();
+		print_r($data);
 	}
 	
 	public function voucher($id){
