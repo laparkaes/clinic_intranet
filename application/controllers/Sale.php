@@ -274,14 +274,13 @@ class Sale extends CI_Controller {
 			$voucher->type = $this->general->id("voucher_type", $voucher->voucher_type_id)->description;
 		}else $voucher = $this->general->structure("voucher");
 		
+		if ($voucher->voucher_type_id) $voucher->type = $this->general->id("voucher_type", $voucher->voucher_type_id)->description;
+		else $voucher->type = "";
+		
 		if ($voucher->status_id) $voucher->status = $this->general->id("status", $voucher->status_id);
 		else $voucher->status = $this->general->structure("status");
 		
-		if ($voucher->sunat_sent) $voucher->color = "success";
-		else{
-			$voucher->color = "danger";
-			if ($voucher->sunat_sent == null) $voucher->sunat_msg = $this->lang->line('msg_no_voucher');
-		}
+		if ($voucher->sunat_sent === null) $voucher->sunat_msg = $this->lang->line('msg_no_voucher');
 		
 		$data = array(
 			"canceled_id" => $this->general->status("canceled")->id,
