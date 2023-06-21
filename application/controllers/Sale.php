@@ -506,8 +506,8 @@ class Sale extends CI_Controller {
 			$msgs = $this->my_val->voucher($msgs, "mv_", $data);
 			
 			if (!$msgs){
-				if (!$this->general->filter("voucher", ["sale_id" => $data["sale_id"]])){
-					$sale = $this->general->id("sale", $data["sale_id"]);
+				$sale = $this->general->id("sale", $data["sale_id"]);
+				if (!$this->general->id("voucher", $sale->voucher_id)){
 					if (!$sale->balance){
 						$currency = $this->general->id("currency", $sale->currency_id);
 						
@@ -680,6 +680,11 @@ class Sale extends CI_Controller {
 	public function void_voucher(){
 		$data = $this->input->post();
 		print_r($data);
+		
+		/*
+		$this->load->library('my_val');
+		$msgs = $this->my_val->voucher($msgs, "mv_", $data);
+		*/
 	}
 	
 	public function voucher($id){

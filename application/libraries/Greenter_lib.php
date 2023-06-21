@@ -11,6 +11,7 @@ use Greenter\Model\Sale\Legend;
 use Greenter\Report\HtmlReport;
 use Greenter\Ws\Services\SunatEndpoints;
 use Greenter\See;
+use Greenter\Parser\ParserFactory;
 
 class Greenter_lib{
 	
@@ -19,8 +20,11 @@ class Greenter_lib{
 		$this->ruc = '20000000001';
 		$this->user = 'MODDATOS';
 		$this->pass = 'moddatos';
-		$this->cert_path = FCPATH."uploaded\sunat\certificate.pem";
-		$this->sunat_path = FCPATH.'uploaded\sunat\files\\';
+		$this->cert_path = FCPATH."uploaded/sunat/cert.pem";
+		
+		$upload_dir = FCPATH."uploaded/sunat/file/".date("Ymd");
+		if(!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+		$this->sunat_path = $upload_dir."/";
 	}
 	
 	private function set_see(){
