@@ -22,7 +22,7 @@ class Greenter_lib{
 		$this->pass = 'moddatos';
 		$this->cert_path = FCPATH."uploaded/sunat/cert.pem";
 		
-		$upload_dir = FCPATH."uploaded/sunat/file/".date("Ymd");
+		$upload_dir = $_SERVER['DOCUMENT_ROOT']."/cloud/sunat/".date("Ymd");
 		if(!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
 		$this->sunat_path = $upload_dir."/";
 	}
