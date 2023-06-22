@@ -10,6 +10,8 @@ use Greenter\Model\Sale\SaleDetail;
 use Greenter\Model\Sale\Legend;
 use Greenter\Model\Voided\Voided;
 use Greenter\Model\Voided\VoidedDetail;
+use Greenter\Model\Summary\Summary;
+use Greenter\Model\Summary\SummaryDetail;
 use Greenter\Report\HtmlReport;
 use Greenter\Ws\Services\SunatEndpoints;
 use Greenter\See;
@@ -153,26 +155,71 @@ class Greenter_lib{
 	}
 	
 	private function set_invoice_void($voucher_data, $reason){
-		$company = $this->set_company($voucher_data["company"]);
+		$vo = $voucher_data["voucher"];
 		
-		$detail1 = new VoidedDetail();
-		$detail1->setTipoDoc('01') // Factura
-			->setSerie('F001')
-			->setCorrelativo('1')
-			->setDesMotivoBaja('ERROR EN CÁLCULOS'); // Motivo por el cual se da de baja.
-
-		$detail2 = new VoidedDetail();
-		$detail2->setTipoDoc('07') // Nota de Crédito
-			->setSerie('FC01')
-			->setCorrelativo('2')
-			->setDesMotivoBaja('ERROR DE RUC');
-
+		$company = $this->set_company($voucher_data["company"]);
+		/*
+    [id] => 4
+    [voucher_type_id] => 1
+    [sale_id] => 98
+    [sale_type_id] => 1
+    [payment_method_id] => 2
+    [client_id] => 129
+    [status_id] => 8
+    [sunat_sent] => 1
+    [sunat_msg] => La Boleta numero B001-2, ha sido aceptada
+    [sunat_notes] => 
+    [] => 2
+    [received] => 3740
+    [change] => 0
+    [legend] => TRES MIL SETECIENTOS CUARENTA CON 00/100 SOLES
+    [hash] => 2EwKa8ZdCXmXL5ZIT6Ccuozr.CUG
+    [registed_at] => 2023-06-21 01:30:18
+    [type] => Boleta
+    [code] => 03
+    [letter] => B
+    [amount] => 3169.49
+    [vat] => 570.51
+    [total] => 3740
+    [serie] => 001
+    [currency] => S/
+    [currency_code] => PEN
+    [payment_method] => Tarjeta
+		*/
+		
+		/* 
+		$detail = new VoidedDetail();
+		$detail->setTipoDoc($vo->code) // Factura
+			->setSerie($vo->letter.$vo->serie)
+			->setCorrelativo($vo->correlative)
+			->setDesMotivoBaja($reason); // Motivo por el cual se da de baja.
+			
 		$invoice_void = new Voided();
 		$invoice_void->setCorrelativo('00001') // Correlativo, necesario para diferenciar c. de baja de en un mismo día.
-			->setFecGeneracion(new \DateTime('2020-08-01')) // Fecha de emisión de los comprobantes a dar de baja
-			->setFecComunicacion(new \DateTime('2020-08-02')) // Fecha de envio de la C. de baja
+			->setFecGeneracion(new \DateTime(date("Y-m-d", strtotime($vo->registed_at)))) // Fecha de emisión de los comprobantes a dar de baja
+			->setFecComunicacion(new \DateTime(date("Y-m-d"))) // Fecha de envio de la C. de baja
 			->setCompany($company)
-			->setDetails([$detail1, $detail2]);
+			->setDetails([$detail]);
+		*/
+
+		/* */
+		$detail = new SummaryDetail();
+		$detail->setTipoDoc($vo->code) // Boleta
+			->setSerieNro($vo->letter.$vo->serie."-".$vo->correlative)
+			->setEstado('3') // Anulación
+			->setClienteTipo('1') // Tipo de documento
+			->setClienteNro('00000000') // Numero de documento
+			->setTotal($vo->total)
+			->setMtoOperGravadas($vo->amount)
+			->setMtoIGV($vo->vat);
+
+		$invoice_void = new Summary();
+		$invoice_void->setFecGeneracion(new \DateTime(date("Y-m-d", strtotime($vo->registed_at)))) // Fecha de emisión de las boletas.
+			->setFecResumen(new \DateTime(date("Y-m-d"))) // Fecha de envío del resumen diario.
+			->setCorrelativo('001') // Correlativo, necesario para diferenciar de otros Resumen diario del mismo día.
+			->setCompany($company)
+			->setDetails([$detail]);
+		
 
 		return $invoice_void;
 	}
