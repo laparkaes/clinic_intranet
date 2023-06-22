@@ -8,10 +8,11 @@ use Greenter\Model\Sale\FormaPagos\FormaPagoContado;
 use Greenter\Model\Sale\Invoice;
 use Greenter\Model\Sale\SaleDetail;
 use Greenter\Model\Sale\Legend;
+use Greenter\Model\Voided\Voided;
+use Greenter\Model\Voided\VoidedDetail;
 use Greenter\Report\HtmlReport;
 use Greenter\Ws\Services\SunatEndpoints;
 use Greenter\See;
-use Greenter\Parser\ParserFactory;
 
 class Greenter_lib{
 	
@@ -21,10 +22,6 @@ class Greenter_lib{
 		$this->user = 'MODDATOS';
 		$this->pass = 'moddatos';
 		$this->cert_path = FCPATH."uploaded/sunat/cert.pem";
-		
-		$upload_dir = $_SERVER['DOCUMENT_ROOT']."/cloud/sunat/".date("Ymd");
-		if(!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
-		$this->sunat_path = $upload_dir."/";
 	}
 	
 	private function set_see(){
@@ -36,19 +33,16 @@ class Greenter_lib{
 		return $see;
 	}
 	
-	public function set_invoice($voucher_data){
-		$vo = $voucher_data["voucher"];
-		$cl = $voucher_data["client"];
-		$co = $voucher_data["company"];
-		$pr = $voucher_data["products"];
-
-		//Cliente
+	private function set_client($cl){
 		$client = (new Client())
 			->setTipoDoc($cl->doc_type->sunat_code)
 			->setNumDoc($cl->doc_number)
 			->setRznSocial($cl->name);
 		
-		//Emisor
+		return $client;
+	}
+	
+	private function set_company($co){
 		$address = (new Address())
 			->setUbigueo($co->ubigeo)
 			->setDepartamento($co->department)
@@ -63,6 +57,19 @@ class Greenter_lib{
 			->setRazonSocial($co->name)
 			->setNombreComercial($co->name)
 			->setAddress($address);
+			
+		return $company;
+	}
+	
+	public function set_invoice($voucher_data){
+		$vo = $voucher_data["voucher"];
+		$pr = $voucher_data["products"];
+
+		//Cliente
+		$client = $this->set_company($voucher_data["client"]);
+		
+		//Emisor
+		$company = $this->set_company($voucher_data["company"]);
 
 		// Venta
 		$invoice = (new Invoice())
@@ -111,19 +118,17 @@ class Greenter_lib{
 	
 	public function send_sunat($voucher_data){
 		$sunat_sent = false; $sunat_msg = $sunat_notes = null;
-		$invoice = $this->set_invoice($voucher_data);
-		//$invoice = $this->invoice_sample();
-		
-		/*
-		1. send voucher to sunat
-		2. set response parameter
-		*/
 		
 		$see = $this->set_see();
+		$invoice = $this->set_invoice($voucher_data);
 		$result = $see->send($invoice);
 
+		$upload_dir = $_SERVER['DOCUMENT_ROOT']."/archivos/sunat/".date("Ymd");
+		if(!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+		$upload_dir = $upload_dir."/";
+
 		// Guardar XML firmado digitalmente.
-		file_put_contents($this->sunat_path.$invoice->getName().'.xml', $see->getFactory()->getLastXml());
+		file_put_contents($upload_dir.$invoice->getName().'.xml', $see->getFactory()->getLastXml());
 
 		// Verificamos que la conexión con SUNAT fue exitosa.
 		if ($result->isSuccess()){
@@ -142,13 +147,71 @@ class Greenter_lib{
 		}
 
 		// Guardamos el CDR
-		file_put_contents($this->sunat_path.'R-'.$invoice->getName().'.zip', $result->getCdrZip());
+		file_put_contents($upload_dir.'R-'.$invoice->getName().'.zip', $result->getCdrZip());
 		
 		return ["sunat_sent" => $sunat_sent, "sunat_msg" => $sunat_msg, "sunat_notes" => $sunat_notes];
 	}
 	
-	public function cancel_voucher_sunat($voucher_data){
-		$invoice = $this->set_invoice($voucher_data);
+	private function set_invoice_void($voucher_data, $reason){
+		$company = $this->set_company($voucher_data["company"]);
+		
+		$detail1 = new VoidedDetail();
+		$detail1->setTipoDoc('01') // Factura
+			->setSerie('F001')
+			->setCorrelativo('1')
+			->setDesMotivoBaja('ERROR EN CÁLCULOS'); // Motivo por el cual se da de baja.
+
+		$detail2 = new VoidedDetail();
+		$detail2->setTipoDoc('07') // Nota de Crédito
+			->setSerie('FC01')
+			->setCorrelativo('2')
+			->setDesMotivoBaja('ERROR DE RUC');
+
+		$invoice_void = new Voided();
+		$invoice_void->setCorrelativo('00001') // Correlativo, necesario para diferenciar c. de baja de en un mismo día.
+			->setFecGeneracion(new \DateTime('2020-08-01')) // Fecha de emisión de los comprobantes a dar de baja
+			->setFecComunicacion(new \DateTime('2020-08-02')) // Fecha de envio de la C. de baja
+			->setCompany($company)
+			->setDetails([$detail1, $detail2]);
+
+		return $invoice_void;
+	}
+	
+	public function void_sunat($voucher_data, $data){
+		
+		
+		$see = $this->set_see();
+		$invoice_void = $this->set_invoice_void($voucher_data, $data["reason"]);
+		$result = $see->send($invoice_void);
+		
+		$upload_dir = $_SERVER['DOCUMENT_ROOT']."/archivos/sunat/".date("Ymd")."/anulados";
+		if(!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+		$upload_dir = $upload_dir."/";
+		
+		// Guardar XML
+		file_put_contents($upload_dir.$invoice_void->getName().'.xml', $see->getFactory()->getLastXml());
+
+		if (!$result->isSuccess()) {
+			// Si hubo error al conectarse al servicio de SUNAT.
+			var_dump($result->getError());
+			exit();
+		}
+
+		$ticket = $result->getTicket();
+		echo 'Ticket : '.$ticket.PHP_EOL;
+
+		$statusResult = $see->getStatus($ticket);
+		if (!$statusResult->isSuccess()) {
+			// Si hubo error al conectarse al servicio de SUNAT.
+			var_dump($statusResult->getError());
+			return;
+		}
+
+		echo $statusResult->getCdrResponse()->getDescription();
+		// Guardar CDR
+		file_put_contents($upload_dir.'R-'.$invoice_void->getName().'.zip', $statusResult->getCdrZip());
+		
+		//
 		/*
 		1. cancel voucher to sunat
 		2. set response parameter

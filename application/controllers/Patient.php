@@ -192,7 +192,7 @@ class Patient extends CI_Controller {
 			if (!$msgs){
 				$patient = $this->general->id("person", $this->input->post("patient_id"));
 				if ($patient){
-					$upload_dir = "uploaded/patient_files/".$patient->doc_type_id."_".$patient->doc_number;
+					$upload_dir = $_SERVER['DOCUMENT_ROOT']."/archivos/pacientes/".str_replace(" ", "_", $patient->name)."_".$patient->doc_number;
 					if(!is_dir($upload_dir)){mkdir($upload_dir, 0777, true);}
 					$upload_dir = $upload_dir."/";
 					
@@ -202,7 +202,7 @@ class Patient extends CI_Controller {
 						'allowed_types' => '*',
 						'max_size' => 0,
 						'overwrite' => false,
-						'file_name' => date("YmdHis")
+						'file_name' => str_replace(" ", "_", $title)."_".date("Ymd_His")
 					];
 					
 					$this->upload->initialize($config_upload);

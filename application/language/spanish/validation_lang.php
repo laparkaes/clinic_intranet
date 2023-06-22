@@ -104,3 +104,6 @@ $lang['e_duplate_medicine_name'] = 'Nombre de medicina existe.';
 $lang['e_select_category'] = 'Elija una categoría.';
 $lang['e_enter_image_name'] = 'Ingrese nombre de imagen.';
 $lang['e_duplate_image_name'] = 'Nombre de imagen existe.';
+
+/* voucher */
+$lang['e_enter_reason'] = 'Ingrese motivo.';

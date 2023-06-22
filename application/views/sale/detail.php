@@ -307,7 +307,7 @@
 						<div class="form-group col-md-12 mb-0">
 							<label><?= $this->lang->line('label_reason') ?></label>
 							<input type="text" class="form-control" name="reason">
-							<div class="sys_msg" id="mv_voucher_type_msg"></div>
+							<div class="sys_msg" id="vv_reason_msg"></div>
 						</div>
 					</div>
 				</form>

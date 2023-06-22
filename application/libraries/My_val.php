@@ -474,4 +474,10 @@ class My_val{
 		
 		return $msgs;
 	}
+	
+	public function void_voucher($msgs, $prefix, $data){
+		if (!$data["reason"]) $msgs = $this->set_msg($msgs, $prefix."reason_msg", "error", "e_enter_reason");
+		
+		return $msgs;
+	}
 }

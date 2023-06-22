@@ -135,7 +135,7 @@ function send_sunat(id){
 
 function void_voucher(dom){
 	ajax_form_warning(dom, "sale/void_voucher", $("#warning_vvo").val()).done(function(res) {
-		alert(res);
+		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }

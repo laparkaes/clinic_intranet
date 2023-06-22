@@ -678,13 +678,37 @@ class Sale extends CI_Controller {
 	}
 	
 	public function void_voucher(){
-		$data = $this->input->post();
-		print_r($data);
+		$type = "error"; $msg = null; $msgs = [];
 		
-		/*
-		$this->load->library('my_val');
-		$msgs = $this->my_val->voucher($msgs, "mv_", $data);
-		*/
+		if ($this->utility_lib->check_access("sale", "admin_voucher")){
+			$data = $this->input->post();
+			
+			$this->load->library('my_val');
+			$msgs = $this->my_val->void_voucher($msgs, "vv_", $data);	
+			if (!$msgs){
+				$this->load->library('greenter_lib');
+				$res = $this->greenter_lib->void_sunat($this->set_voucher_data($data["id"]), $data);
+				
+				//print_r($res);
+				/*
+				if ($res["sunat_sent"]){
+					$type = "success"; 
+					$msg = $res["sunat_msg"];
+					if ($res["sunat_notes"]) $msg = $msg."<div class='text-left mt-3'><div>".str_replace('&&&', '<br/>', $res["sunat_notes"])."</div></div>";
+					$res["status_id"] = $this->general->status("accepted")->id;
+				}else{
+					$type = "error"; 
+					$msg = $res["sunat_msg"];
+					$res["status_id"] = $this->general->status("rejected")->id;
+				}
+				
+				$this->general->update("voucher", $id, $res);
+				*/
+			}else $msg = $this->lang->line('error_occurred');
+		}else $msg = $this->lang->line('error_no_permission');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
 	}
 	
 	public function voucher($id){
