@@ -686,24 +686,50 @@ class Sale extends CI_Controller {
 			$this->load->library('my_val');
 			$msgs = $this->my_val->void_voucher($msgs, "vv_", $data);	
 			if (!$msgs){
+				/*
+				1. set sunat resume correlative
+				2. create sunat resume record
+				3. send to sunat
+				4. update sunat resume record
+				5. success 
+				   => update sunat data to voucher
+				   => remove voucher_id from sale => not valid voucher for sale record
+				   fail
+				   => set message
+				*/
+				
+				$f = ["registed_at >=" => date("Y-m-d 00:00:00")];
+				$last_resume = $this->general->filter("sunat_resume", $f, null, null, "registed_at", "desc");
+				if ($last_resume) $data["r_correlative"] = $last_resume[0]->correlative + 1;
+				else $data["r_correlative"] = 1;
+				
+				$r_data = [
+					"correlative" => $data["r_correlative"],
+					"registed_at" => date('Y-m-d H:i:s', time())
+				];
+				$resume_id = $this->general->insert("sunat_resume", $r_data);
+				
 				$this->load->library('greenter_lib');
 				$res = $this->greenter_lib->void_sunat($this->set_voucher_data($data["id"]), $data);
+				$this->general->update("sunat_resume", $resume_id, $res);
 				
-				//print_r($res);
-				/*
-				if ($res["sunat_sent"]){
-					$type = "success"; 
-					$msg = $res["sunat_msg"];
-					if ($res["sunat_notes"]) $msg = $msg."<div class='text-left mt-3'><div>".str_replace('&&&', '<br/>', $res["sunat_notes"])."</div></div>";
-					$res["status_id"] = $this->general->status("accepted")->id;
-				}else{
-					$type = "error"; 
-					$msg = $res["sunat_msg"];
-					$res["status_id"] = $this->general->status("rejected")->id;
-				}
-				
-				$this->general->update("voucher", $id, $res);
-				*/
+				if ($res["is_success"]){
+					$voucher = $this->general->id("voucher", $data["id"]);
+					
+					$v_data = [
+						"status_id" => $this->general->status("canceled")->id,
+						"sunat_sent" => null,
+						"sunat_msg" => null,
+						"sunat_notes" => null,
+						"sunat_resume_id" => $resume_id,
+					];
+					if ($this->general->update("voucher", $voucher->id, $v_data)){
+						$this->general->update("sale", $voucher->sale_id, ["voucher_id" => null]);
+						
+						$type = "success";
+						$msg = $res["message"];
+					}else $msg = $this->lang->line("error_internal");
+				}else $msg = $this->lang->line('error_try_again')."<br/>".$res["message"];
 			}else $msg = $this->lang->line('error_occurred');
 		}else $msg = $this->lang->line('error_no_permission');
 		

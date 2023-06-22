@@ -29,6 +29,7 @@ $lang['error_no_result'] = 'No hay resultado de búsqueda. Ingrese los datos man
 $lang['error_select_doctor'] = 'Elija un médico.';
 $lang['error_select_date'] = 'Elija una fecha.';
 $lang['error_no_permission'] = 'Usted no cuenta con permiso suficiente para realizar esta operación.';
+$lang['error_try_again'] = 'Intente de nuevo.';
 
 //roles
 $lang['master'] = 'Maestro';

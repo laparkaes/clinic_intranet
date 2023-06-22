@@ -68,7 +68,7 @@ class Greenter_lib{
 		$pr = $voucher_data["products"];
 
 		//Cliente
-		$client = $this->set_company($voucher_data["client"]);
+		$client = $this->set_client($voucher_data["client"]);
 		
 		//Emisor
 		$company = $this->set_company($voucher_data["company"]);
@@ -125,13 +125,6 @@ class Greenter_lib{
 		$invoice = $this->set_invoice($voucher_data);
 		$result = $see->send($invoice);
 
-		$upload_dir = $_SERVER['DOCUMENT_ROOT']."/archivos/sunat/".date("Ymd");
-		if(!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
-		$upload_dir = $upload_dir."/";
-
-		// Guardar XML firmado digitalmente.
-		file_put_contents($upload_dir.$invoice->getName().'.xml', $see->getFactory()->getLastXml());
-
 		// Verificamos que la conexión con SUNAT fue exitosa.
 		if ($result->isSuccess()){
 			$sunat_sent = true;
@@ -148,123 +141,118 @@ class Greenter_lib{
 			//exit();
 		}
 
+
+		$upload_dir = $_SERVER['DOCUMENT_ROOT']."/archivos/sunat/".date("Ym");
+		if(!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+		$upload_dir = $upload_dir."/";
+
+		// Guardar XML firmado digitalmente.
+		file_put_contents($upload_dir.$invoice->getName().'.xml', $see->getFactory()->getLastXml());
+		
 		// Guardamos el CDR
 		file_put_contents($upload_dir.'R-'.$invoice->getName().'.zip', $result->getCdrZip());
 		
 		return ["sunat_sent" => $sunat_sent, "sunat_msg" => $sunat_msg, "sunat_notes" => $sunat_notes];
 	}
 	
-	private function set_invoice_void($voucher_data, $reason){
+	private function set_invoice_void($voucher_data, $data){
 		$vo = $voucher_data["voucher"];
 		
 		$company = $this->set_company($voucher_data["company"]);
-		/*
-    [id] => 4
-    [voucher_type_id] => 1
-    [sale_id] => 98
-    [sale_type_id] => 1
-    [payment_method_id] => 2
-    [client_id] => 129
-    [status_id] => 8
-    [sunat_sent] => 1
-    [sunat_msg] => La Boleta numero B001-2, ha sido aceptada
-    [sunat_notes] => 
-    [] => 2
-    [received] => 3740
-    [change] => 0
-    [legend] => TRES MIL SETECIENTOS CUARENTA CON 00/100 SOLES
-    [hash] => 2EwKa8ZdCXmXL5ZIT6Ccuozr.CUG
-    [registed_at] => 2023-06-21 01:30:18
-    [type] => Boleta
-    [code] => 03
-    [letter] => B
-    [amount] => 3169.49
-    [vat] => 570.51
-    [total] => 3740
-    [serie] => 001
-    [currency] => S/
-    [currency_code] => PEN
-    [payment_method] => Tarjeta
-		*/
 		
-		/* 
-		$detail = new VoidedDetail();
-		$detail->setTipoDoc($vo->code) // Factura
-			->setSerie($vo->letter.$vo->serie)
-			->setCorrelativo($vo->correlative)
-			->setDesMotivoBaja($reason); // Motivo por el cual se da de baja.
+		if ($vo->letter === "B"){ // Es boleta
+			$cl = $voucher_data["client"];
 			
-		$invoice_void = new Voided();
-		$invoice_void->setCorrelativo('00001') // Correlativo, necesario para diferenciar c. de baja de en un mismo día.
-			->setFecGeneracion(new \DateTime(date("Y-m-d", strtotime($vo->registed_at)))) // Fecha de emisión de los comprobantes a dar de baja
-			->setFecComunicacion(new \DateTime(date("Y-m-d"))) // Fecha de envio de la C. de baja
-			->setCompany($company)
-			->setDetails([$detail]);
-		*/
+			$detail = new SummaryDetail();
+			$detail->setTipoDoc($vo->code) // Boleta
+				->setSerieNro($vo->letter.$vo->serie."-".$vo->correlative)
+				->setEstado('3') // Anulación
+				->setClienteTipo($cl->doc_type->sunat_code) // Tipo de documento
+				->setClienteNro($cl->doc_number) // Numero de documento
+				->setTotal($vo->total)
+				->setMtoOperGravadas($vo->amount)
+				->setMtoIGV($vo->vat);
 
-		/* */
-		$detail = new SummaryDetail();
-		$detail->setTipoDoc($vo->code) // Boleta
-			->setSerieNro($vo->letter.$vo->serie."-".$vo->correlative)
-			->setEstado('3') // Anulación
-			->setClienteTipo('1') // Tipo de documento
-			->setClienteNro('00000000') // Numero de documento
-			->setTotal($vo->total)
-			->setMtoOperGravadas($vo->amount)
-			->setMtoIGV($vo->vat);
-
-		$invoice_void = new Summary();
-		$invoice_void->setFecGeneracion(new \DateTime(date("Y-m-d", strtotime($vo->registed_at)))) // Fecha de emisión de las boletas.
-			->setFecResumen(new \DateTime(date("Y-m-d"))) // Fecha de envío del resumen diario.
-			->setCorrelativo('001') // Correlativo, necesario para diferenciar de otros Resumen diario del mismo día.
-			->setCompany($company)
-			->setDetails([$detail]);
+			$invoice_void = new Summary();
+			$invoice_void->setFecGeneracion(new \DateTime(date("Y-m-d", strtotime($vo->registed_at)))) // Fecha de emisión de las boletas.
+				->setFecResumen(new \DateTime(date("Y-m-d"))) // Fecha de envío del resumen diario.
+				->setCorrelativo($data["r_correlative"]) // Correlativo, necesario para diferenciar de otros Resumen diario del mismo día.
+				->setCompany($company)
+				->setDetails([$detail]);
+		}elseif ($vo->letter === "F"){ // Es factura
+			$detail = new VoidedDetail();
+			$detail->setTipoDoc($vo->code) // Factura
+				->setSerie($vo->letter.$vo->serie)
+				->setCorrelativo($vo->correlative)
+				->setDesMotivoBaja($data["reason"]); // Motivo por el cual se da de baja.
+				
+			$invoice_void = new Voided();
+			$invoice_void->setCorrelativo($data["r_correlative"]) // Correlativo, necesario para diferenciar c. de baja de en un mismo día.
+				->setFecGeneracion(new \DateTime(date("Y-m-d", strtotime($vo->registed_at)))) // Fecha de emisión de los comprobantes a dar de baja
+				->setFecComunicacion(new \DateTime(date("Y-m-d"))) // Fecha de envio de la C. de baja
+				->setCompany($company)
+				->setDetails([$detail]);
+		}else $invoice_void = null; // Ninguno
 		
-
 		return $invoice_void;
+		
+		/* voucher detail
+		[id] => 4
+		[voucher_type_id] => 1
+		[sale_id] => 98
+		[sale_type_id] => 1
+		[payment_method_id] => 2
+		[client_id] => 129
+		[status_id] => 8
+		[sunat_sent] => 1
+		[sunat_msg] => La Boleta numero B001-2, ha sido aceptada
+		[sunat_notes] => 
+		[] => 2
+		[received] => 3740
+		[change] => 0
+		[legend] => TRES MIL SETECIENTOS CUARENTA CON 00/100 SOLES
+		[hash] => 2EwKa8ZdCXmXL5ZIT6Ccuozr.CUG
+		[registed_at] => 2023-06-21 01:30:18
+		[type] => Boleta
+		[code] => 03
+		[letter] => B
+		[amount] => 3169.49
+		[vat] => 570.51
+		[total] => 3740
+		[serie] => 001
+		[currency] => S/
+		[currency_code] => PEN
+		[payment_method] => Tarjeta
+		*/
 	}
 	
 	public function void_sunat($voucher_data, $data){
-		
+		$is_success = false; $message = $ticket = null;
 		
 		$see = $this->set_see();
-		$invoice_void = $this->set_invoice_void($voucher_data, $data["reason"]);
-		$result = $see->send($invoice_void);
+		$invoice_void = $this->set_invoice_void($voucher_data, $data);
+		if ($invoice_void){
+			$result = $see->send($invoice_void);
+			if ($result->isSuccess()){
+				$ticket = $result->getTicket();
+				$statusResult = $see->getStatus($ticket);
+				if ($statusResult->isSuccess()) {
+					$is_success = true;
+					$message = $statusResult->getCdrResponse()->getDescription();
+				}else $message = $statusResult->getError()->getCode()." - ".$statusResult->getError()->getMessage();
+			}else $message = $result->getError()->getCode()." - ".$result->getError()->getMessage();
+		}
 		
-		$upload_dir = $_SERVER['DOCUMENT_ROOT']."/archivos/sunat/".date("Ymd")."/anulados";
+		$upload_dir = $_SERVER['DOCUMENT_ROOT']."/archivos/sunat/".date("Ym")."/anulados";
 		if(!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
 		$upload_dir = $upload_dir."/";
 		
 		// Guardar XML
 		file_put_contents($upload_dir.$invoice_void->getName().'.xml', $see->getFactory()->getLastXml());
 
-		if (!$result->isSuccess()) {
-			// Si hubo error al conectarse al servicio de SUNAT.
-			var_dump($result->getError());
-			exit();
-		}
-
-		$ticket = $result->getTicket();
-		echo 'Ticket : '.$ticket.PHP_EOL;
-
-		$statusResult = $see->getStatus($ticket);
-		if (!$statusResult->isSuccess()) {
-			// Si hubo error al conectarse al servicio de SUNAT.
-			var_dump($statusResult->getError());
-			return;
-		}
-
-		echo $statusResult->getCdrResponse()->getDescription();
 		// Guardar CDR
 		file_put_contents($upload_dir.'R-'.$invoice_void->getName().'.zip', $statusResult->getCdrZip());
 		
-		//
-		/*
-		1. cancel voucher to sunat
-		2. set response parameter
-		*/
-		
-		//return array("sunat_sent" => false, "sunat_msg" => "ocurrio error de comunicacion con sunat.");
-		return array("sunat_sent" => true, "sunat_msg" => "Factura electronica anulada.");
+		return ["ticket" => $ticket, "is_success" => $is_success, "message" => $message, "reason" => $data["reason"]];
 	}
 }
