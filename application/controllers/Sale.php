@@ -471,23 +471,6 @@ class Sale extends CI_Controller {
 						
 						$type = "success";
 						$msg = $this->lang->line("success_csa");
-						
-						$voucher = $this->general->filter("voucher", ["sale_id" => $sale->id]);
-						if ($voucher){
-							$voucher = $voucher[0];
-							
-							//update voucher status in DB
-							$this->general->update("voucher", $voucher->id, ["status_id" => $status_canceled_id]);
-							$this->utility_lib->add_log("voucher_cancel", $this->lang->line('sale')." #".$sale->id);
-							
-							//send cancel request to sunat
-							$sunat_result = $this->utility_lib->cancel_voucher_sunat($this->set_voucher_data($voucher->id));
-							$this->general->update("voucher", $voucher->id, $sunat_result);
-							if ($sunat_result["sunat_sent"]){$color = "success"; $ic = "check";}
-							else{$color = "danger"; $ic = "times";}
-							
-							$msg = $msg.'<br/><br/><span class="text-'.$color.'">Sunat <i class="fas fa-'.$ic.'"></i></span><br/>'.$sunat_result["sunat_msg"];
-						}
 					}else $msg = $this->lang->line("error_internal");
 				}else $msg = $this->lang->line('error_sac');
 			}else $msg = $this->lang->line('error_vex');
@@ -728,7 +711,7 @@ class Sale extends CI_Controller {
 						$this->general->update("sale", $voucher->sale_id, ["voucher_id" => null]);
 						
 						$type = "success";
-						$msg = $res["message"];
+						$msg = $res["message"]."<br/>".$this->lang->line("error_internal");
 					}else $msg = $this->lang->line("error_internal");
 				}else $msg = $this->lang->line('error_try_again')."<br/>".$res["message"];
 			}else $msg = $this->lang->line('error_occurred');

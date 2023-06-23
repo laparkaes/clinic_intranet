@@ -41,6 +41,7 @@ $lang['success_dpa'] = 'Pago ha sido eliminado con éxito.';//success_delete_pay
 $lang['success_sas'] = 'Cirugía ha sido asignado al producto de venta.';//success_surgery_assigned
 $lang['success_apa'] = 'Consulta ha sido asignado al producto de venta.';//success_appointment_assigned
 $lang['success_siu'] = 'El ítem del producto ha sido desasignado de la atención médica.';//success_sale_item_unassign
+$lang['success_vvo'] = 'Comprobante anulado.';//success_voucher_voided
 
 //list(index)
 $lang['btn_close'] = 'Cerrar';
