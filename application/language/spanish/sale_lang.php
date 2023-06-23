@@ -24,6 +24,7 @@ $lang['error_sio'] = 'Debe elegir una opción del producto.';//error_select_item
 $lang['error_psq'] = 'Debe ingresar cantidad menor que stock de opción.';//error_product_stock_qty
 $lang['error_nre'] = 'No hay reservacion con documento ingresado.';//error_no_reservation
 $lang['error_sac'] = 'Es una venta previamente cancelada.';//error_sale_already_cenceled
+$lang['error_vex'] = 'Existe un comprobante vinculado con esta venta.';//error_voucher_exists
 $lang['warning_asa'] = '¿Desea registrar la venta?';//warning_add_sale
 $lang['warning_apa'] = '¿Desea registrar pago?';//warning_add_payment
 $lang['warning_dpa'] = '¿Desea eliminar pago?';//warning_delete_payment

@@ -441,55 +441,56 @@ class Sale extends CI_Controller {
 		//permission validation
 		if ($this->utility_lib->check_access("sale", "cancel")){
 			$sale = $this->general->id("sale", $this->input->post("id"));
-			
-			//sale status validation => no canceled sale
-			$status_canceled_id = $this->general->status("canceled")->id;
-			$status_reserved_id = $this->general->status("reserved")->id;
-			if ($sale->status_id != $status_canceled_id){
-				$products = $this->general->filter("sale_product", ["sale_id" => $sale->id]);
-				foreach($products as $item){
-					//product stock update
-					$prod = $this->general->id("product", $item->product_id);
-					$prod_t = $this->general->id("product_type", $prod->type_id);
-					if ($prod_t->description === "Producto"){
-						$op = $this->general->id("product_option", $item->option_id);
-						$this->general->update("product_option", $item->option_id, ["stock" => ($op->stock + $item->qty)]);
+			if (!$sale->voucher_id){
+				//sale status validation => no canceled sale
+				$status_canceled_id = $this->general->status("canceled")->id;
+				$status_reserved_id = $this->general->status("reserved")->id;
+				if ($sale->status_id != $status_canceled_id){
+					$products = $this->general->filter("sale_product", ["sale_id" => $sale->id]);
+					foreach($products as $item){
+						//product stock update
+						$prod = $this->general->id("product", $item->product_id);
+						$prod_t = $this->general->id("product_type", $prod->type_id);
+						if ($prod_t->description === "Producto"){
+							$op = $this->general->id("product_option", $item->option_id);
+							$this->general->update("product_option", $item->option_id, ["stock" => ($op->stock + $item->qty)]);
+						}
+						
+						//appointment update
+						if ($item->appointment_id) $this->general->update("appointment", $item->appointment_id, ["status_id" => $status_reserved_id]);
+						
+						//surgery update
+						if ($item->surgery_id) $this->general->update("surgery", $item->surgery_id, ["status_id" => $status_reserved_id]);
+						
+						//unassign appointment & surgery from sale_product
+						$this->general->update("sale_product", $item->id, ["appointment_id" => null, "surgery_id" => null]);
 					}
 					
-					//appointment update
-					if ($item->appointment_id) $this->general->update("appointment", $item->appointment_id, ["status_id" => $status_reserved_id]);
-					
-					//surgery update
-					if ($item->surgery_id) $this->general->update("surgery", $item->surgery_id, ["status_id" => $status_reserved_id]);
-					
-					//unassign appointment & surgery from sale_product
-					$this->general->update("sale_product", $item->id, ["appointment_id" => null, "surgery_id" => null]);
-				}
-				
-				if ($this->general->update("sale", $sale->id, ["status_id" => $status_canceled_id])){
-					$this->utility_lib->add_log("sale_cancel", $this->lang->line('sale')." #".$sale->id);
-					
-					$type = "success";
-					$msg = $this->lang->line("success_csa");
-					
-					$voucher = $this->general->filter("voucher", ["sale_id" => $sale->id]);
-					if ($voucher){
-						$voucher = $voucher[0];
+					if ($this->general->update("sale", $sale->id, ["status_id" => $status_canceled_id])){
+						$this->utility_lib->add_log("sale_cancel", $this->lang->line('sale')." #".$sale->id);
 						
-						//update voucher status in DB
-						$this->general->update("voucher", $voucher->id, ["status_id" => $status_canceled_id]);
-						$this->utility_lib->add_log("voucher_cancel", $this->lang->line('sale')." #".$sale->id);
+						$type = "success";
+						$msg = $this->lang->line("success_csa");
 						
-						//send cancel request to sunat
-						$sunat_result = $this->utility_lib->cancel_voucher_sunat($this->set_voucher_data($voucher->id));
-						$this->general->update("voucher", $voucher->id, $sunat_result);
-						if ($sunat_result["sunat_sent"]){$color = "success"; $ic = "check";}
-						else{$color = "danger"; $ic = "times";}
-						
-						$msg = $msg.'<br/><br/><span class="text-'.$color.'">Sunat <i class="fas fa-'.$ic.'"></i></span><br/>'.$sunat_result["sunat_msg"];
-					}
-				}else $msg = $this->lang->line("error_internal");
-			}else $msg = $this->lang->line('error_sac');
+						$voucher = $this->general->filter("voucher", ["sale_id" => $sale->id]);
+						if ($voucher){
+							$voucher = $voucher[0];
+							
+							//update voucher status in DB
+							$this->general->update("voucher", $voucher->id, ["status_id" => $status_canceled_id]);
+							$this->utility_lib->add_log("voucher_cancel", $this->lang->line('sale')." #".$sale->id);
+							
+							//send cancel request to sunat
+							$sunat_result = $this->utility_lib->cancel_voucher_sunat($this->set_voucher_data($voucher->id));
+							$this->general->update("voucher", $voucher->id, $sunat_result);
+							if ($sunat_result["sunat_sent"]){$color = "success"; $ic = "check";}
+							else{$color = "danger"; $ic = "times";}
+							
+							$msg = $msg.'<br/><br/><span class="text-'.$color.'">Sunat <i class="fas fa-'.$ic.'"></i></span><br/>'.$sunat_result["sunat_msg"];
+						}
+					}else $msg = $this->lang->line("error_internal");
+				}else $msg = $this->lang->line('error_sac');
+			}else $msg = $this->lang->line('error_vex');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');

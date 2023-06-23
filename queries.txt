@@ -1,3 +1,0 @@
-ALTER TABLE `voucher` ADD `sunat_resume_id` INT NULL AFTER `sunat_notes`; 
-
-
