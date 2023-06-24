@@ -121,8 +121,7 @@ class Appointment extends CI_Controller {
 		if ($anamnesis->birthday) $anamnesis->birthday = date("Y-m-d", strtotime($anamnesis->birthday));
 		else $anamnesis->birthday = null;
 		
-		if ($anamnesis->civil_status_id)
-			$anamnesis->civil_status = $this->general->id("civil_status", $anamnesis->civil_status_id)->description;
+		if ($anamnesis->civil_status_id) $anamnesis->civil_status = $this->general->id("civil_status", $anamnesis->civil_status_id)->description;
 		else $anamnesis->civil_status = null;
 		
 		$anamnesis->patho_pre_illnesses = explode(",", $anamnesis->patho_pre_illnesses);
@@ -1050,9 +1049,8 @@ class Appointment extends CI_Controller {
 		];
 		
 		//$html = $this->load->view('appointment/report_1', $data, true);
-		$html = $this->load->view('appointment/report_2', $data, true);
-		
-		//echo $html;
+		//$html = $this->load->view('appointment/report_2', $data, true);
+		$html = $this->load->view('appointment/report_3', $data, true);
 		
 		// instantiate and use the dompdf class
 		$dompdf = new Dompdf();
@@ -1065,7 +1063,7 @@ class Appointment extends CI_Controller {
 		$dompdf->render();
 		
 		//Output the generated PDF to Browser
-		if ($dompdf) $dompdf->stream("Reporte", ["Attachment" => false]); else echo "Error";
-		//echo $html;
+		//if ($dompdf) $dompdf->stream("Reporte", ["Attachment" => false]); else echo "Error";
+		echo $html;
 	}
 }

@@ -77,8 +77,12 @@ function select_item(){
 					$("#sl_pr_options").append("<option value='" + JSON.stringify(value) + "'>" + value.description + " (" + value.stock + ")</option>");
 				});
 				$("#sl_pr_options").prop("disabled", false);
+				$("#sl_pr_quantity").prop("readonly", false);
 			});
-		}else $("#sl_pr_options").prop("disabled", true);
+		}else{
+			$("#sl_pr_options").prop("disabled", true);
+			$("#sl_pr_quantity").prop("readonly", true);
+		}
 	}
 }
 
@@ -183,10 +187,16 @@ function set_sl_pr_total(){
 	$(".payment_currency").html(cur);
 }
 
+function control_payment_info_form(){
+	if ($("#tb_product_list").find("tr").length > 0) $(".payment_info").removeClass("d-none");
+	else $(".payment_info").addClass("d-none");
+}
+
 function sl_product_delete(row_id){
 	$("#sl_pr_" + row_id).remove();
 	set_sl_pr_num();
 	set_sl_pr_total();
+	control_payment_info_form();
 }
 
 function sl_product_add(){
@@ -224,9 +234,10 @@ function sl_product_add(){
 	var prod = {product_id: item.id, option_id: opt_id, price: item.price, discount: discount, qty: qty};
 	var dom_str = '<tr id="sl_pr_' + item.id + '_' + opt_id + '"><td class="sl_pr_num"></td><td><div>' + item.description + '</div>';
 	if (opt_description != "") dom_str += '<small>' + opt_description + '</small>';
-	dom_str += '</td><td class="text-center">' + qty + '</td><td class="text-right">' + item.currency + ' ' + nf(price - discount) + '</td><td class="text-right">' + item.currency + ' ' + nf((price - discount) * qty) + '</td><td class="text-right"><textarea class="sl_pr_arr d-none" name="sl_pr[' + item.id + '_' + opt_id + ']">' + JSON.stringify(prod) + '</textarea><button type="button" class="btn btn-danger" id="btn_sl_pr_delete_' + item.id + '_' + opt_id + '" value="' + item.id + '_' + opt_id + '"><i class="fas fa-trash"></i></button></td></tr>';
+	dom_str += '</td><td class="text-right">' + qty + ' * ' + item.currency + ' ' + nf(price - discount) + '</td><td class="text-right">' + item.currency + ' ' + nf((price - discount) * qty) + '</td><td class="text-right"><textarea class="sl_pr_arr d-none" name="sl_pr[' + item.id + '_' + opt_id + ']">' + JSON.stringify(prod) + '</textarea><button type="button" class="btn btn-danger btn-xs" id="btn_sl_pr_delete_' + item.id + '_' + opt_id + '" value="' + item.id + '_' + opt_id + '"><i class="fas fa-trash"></i></button></td></tr>';
 	
 	$("#tb_product_list").append(dom_str);
+	control_payment_info_form();
 	
 	$("#sl_pr_items").val("");
 	reset_pr_sl_form();
@@ -252,7 +263,7 @@ $(document).ready(function() {
 	$("#form_add_sale").submit(function(e) {e.preventDefault(); add_sale(this);});
 	$("#btn_add_sale").on('click',(function(e) {$("#form_add_sale").submit();}));
 	
-	var params = get_params(); console.log(params);
+	var params = get_params();
 	if (params.a == "add") $("#btn_add").trigger("click");
 	
 	//new sale - select item
@@ -266,6 +277,7 @@ $(document).ready(function() {
 	
 	//new sale - payment data
 	control_doc_number();
+	control_payment_info_form();
 	$("#client_doc_type").on('change',(function(e) {control_doc_number();}));
 	$("#client_doc_number").keyup(function() {control_client_name(true);});
 	$("#btn_search_client").on('click',(function(e) {search_person_ns();}));

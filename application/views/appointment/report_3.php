@@ -2,32 +2,30 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<style>
-	html, body{padding: 1rem; font-size: 12px; font-family: 'poppins', sans-serif; line-height: 1.5; color: black;}
-	h2{margin:0; padding: 0;}
-	hr{border-top: 1px solid black; border-bottom: 0;}
-	table{width: 100%;}
-	table td{vertical-align: top; padding-top: 5px;}
-	table td:first-child{padding-left: 0;}
-	table td:last-child{padding-right: 0;}
-	pre{font-family: 'poppins', sans-serif; font-size: inherit; margin: 0;}
-	i{text-decoration: underline;}
-	.w-10{width: 10%;}
-	.w-20{width: 20%;}
-	.w-25{width: 25%;}
-	.w-30{width: 30%;}
-	.w-33{width: 33.33%;}
-	.w-50{width: 50%;}
-	.w-66{width: 66.66%;}
-	.w-75{width: 75%;}
-	.w-100{width: 100%;}
-	.p-0{padding: 0;}
+	html, body{padding: 1rem; font-size: 14px; font-family: 'poppins', sans-serif; line-height: 1.5; color: black;}
+	.title_1{font-size: 150%;}
+	.title_2{font-size: 135%;}
+	.title_3{font-size: 120%;}
 	.text-center{text-align: center;}
-	.text-uppercase{text-transform: uppercase;}
+	
+	table {border-collapse: collapse;}
+	.table {width: 100%; max-width: 100%; margin-bottom: 1rem; background-color: transparent; border-bottom: 1px solid #000;}
+
+	th {text-align: inherit; background-color: #ddd;}
+	.table td, .table th {padding: .75rem; vertical-align: top; border-top: 1px solid #000;}
+	.table thead th {vertical-align: bottom; border-bottom: 2px solid #000;}
+	
+	.table-5 td, .table-5 th {width: 20%;}
+	.table-4 td, .table-4 th {width: 25%;}
+	.table-3 td, .table-3 th {width: 33.33%;}
+	.table-2 td, .table-2 th {width: 50%;}
+
+	
 	</style>
 </head>
 <body>
 <?php 
-$bd = $appointment_datas["basic_data"]; 
+$bd = $appointment_datas["basic_data"];
 $an = $appointment_datas["anamnesis"];
 $ph = $appointment_datas["physical"];
 $di = $appointment_datas["diag_impression"];
@@ -37,32 +35,37 @@ $im = $appointment_datas["images"];
 $th = $appointment_datas["therapy"];
 $me = $appointment_datas["medicine"];
 ?>
-<div class="text-center text-uppercase"><strong><?= $this->lang->line('title_clinical_history') ?></strong></div>
+<div class="title_1 text-center">
+	<strong><?= $this->lang->line('title_clinical_history') ?></strong>
+</div>
 <br/>
-<br/>
-<table>
+<table class="table table-4 text-center">
 	<tr>
-		<td class="w-20"><i><?= $this->lang->line('lb_history_number') ?></i></td>
-		<td class="w-30">: <?= $patient->doc_number ?></td>
-		<td class="w-20"><i><?= $this->lang->line('lb_entry_mode') ?></i></td>
-		<td class="w-30">: <?= $bd->entry_mode ?></td>
+		<th><?= $this->lang->line('lb_date') ?></th>
+		<th><?= $this->lang->line('lb_history_number') ?></th>
+		<th><?= $this->lang->line('lb_entry_mode') ?></th>
+		<th><?= $this->lang->line('title_insurance') ?></th>
 	</tr>
 	<tr>
-		<td class="w-20"><i><?= $this->lang->line('lb_date') ?></i></td>
-		<td class="w-30">: <?= $bd->time." ".$bd->date ?></td>
-		<?php if (!strcmp("y", $bd->insurance)){ ?>
-		<td class="w-20"><i><?= $this->lang->line('title_insurance') ?></i></td>
-		<td class="w-30">: <?= $bd->insurance_name ?></td>
-		<?php } ?>
+		<td><?= $bd->entered_at ?></td>
+		<td><?= $patient->doc_number ?></td>
+		<td><?= $bd->entry_mode ?></td>
+		<td><?= $bd->insurance_name ?></td>
 	</tr>
 </table>
+<br/>
+
+
+
+
+<br/>
+<br/>
 <br/>
 <hr>
 <br/>
 <div class="text-uppercase"><strong>1. <?= $this->lang->line('title_anamnesis') ?></strong></div>
 <br/>
 <div class="text-uppercase">1) <?= $this->lang->line('title_personal_information') ?></div>
-<?php print_r($an); ?>
 <table>
 	<tr>
 		<td class="w-50" colspan="2"><i><?= $this->lang->line('lb_name') ?></i>: <?= $an->name ?></td>

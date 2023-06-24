@@ -191,7 +191,7 @@
 											<button type="button" class="btn btn-danger btn_unassign_reservation" value="<?= $item->id ?>">
 												<i class="fas fa-trash"></i>
 											</button>
-											<?php }else{ 
+											<?php }elseif ($sale->status->code === "finished"){ 
 											if ($item->type === $this->lang->line('txt_surgery')) $md = "surgery";
 											else $md = "appointment"; ?>
 											<button type="button" class="btn btn-primary btn_select_product" data-toggle="modal" data-target="#md_reservation_<?= $md ?>" value="<?= $item->id ?>">
@@ -408,7 +408,7 @@
 					<div class="form-group col-md-12">
 						<label><?= $this->lang->line('label_doc_number') ?></label>
 						<div class="input-group">
-							<input type="text" class="form-control" id="rs_appointment_doc_number">
+							<input type="text" class="form-control" id="rs_appointment_doc_number" value="<?= $client->doc_number ?>">
 							<div class="input-group-append">
 								<button class="btn btn-primary border-0" type="button" id="btn_search_appointment">
 									<i class="fas fa-search"></i>
@@ -451,7 +451,7 @@
 					<div class="form-group col-md-12">
 						<label><?= $this->lang->line('label_doc_number') ?></label>
 						<div class="input-group">
-							<input type="text" class="form-control" id="rs_surgery_doc_number">
+							<input type="text" class="form-control" id="rs_surgery_doc_number" value="<?= $client->doc_number ?>">
 							<div class="input-group-append">
 								<button class="btn btn-primary border-0" type="button" id="btn_search_surgery">
 									<i class="fas fa-search"></i>

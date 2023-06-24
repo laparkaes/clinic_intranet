@@ -194,35 +194,6 @@ class Greenter_lib{
 		}else $invoice_void = null; // Ninguno
 		
 		return $invoice_void;
-		
-		/* voucher detail
-		[id] => 4
-		[voucher_type_id] => 1
-		[sale_id] => 98
-		[sale_type_id] => 1
-		[payment_method_id] => 2
-		[client_id] => 129
-		[status_id] => 8
-		[sunat_sent] => 1
-		[sunat_msg] => La Boleta numero B001-2, ha sido aceptada
-		[sunat_notes] => 
-		[] => 2
-		[received] => 3740
-		[change] => 0
-		[legend] => TRES MIL SETECIENTOS CUARENTA CON 00/100 SOLES
-		[hash] => 2EwKa8ZdCXmXL5ZIT6Ccuozr.CUG
-		[registed_at] => 2023-06-21 01:30:18
-		[type] => Boleta
-		[code] => 03
-		[letter] => B
-		[amount] => 3169.49
-		[vat] => 570.51
-		[total] => 3740
-		[serie] => 001
-		[currency] => S/
-		[currency_code] => PEN
-		[payment_method] => Tarjeta
-		*/
 	}
 	
 	public function void_sunat($voucher_data, $data){

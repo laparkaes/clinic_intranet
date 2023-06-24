@@ -85,7 +85,6 @@ $lang['label_total_amount'] = 'Importe Total';
 $lang['label_remarks'] = 'Observaciones';
 $lang['label_way_to_pay'] = 'Forma de Pago';
 $lang['label_are_u'] = 'SON';
-$lang['tab_item_selection'] = 'Selección de Ítem';
 $lang['tab_payment_data'] = 'Datos del Pago';
 $lang['hd_date'] = 'Fecha';
 $lang['hd_type'] = 'Tipo';
@@ -118,6 +117,8 @@ $lang['btn_previous'] = 'Anterior';
 $lang['btn_register_sale'] = 'Registrar Venta';
 $lang['btn_search'] = 'Buscar';
 $lang['msg_need_send_sunat'] = 'Requiere enviar a Sunat.';
+$lang['txt_total'] = 'Total';
+$lang['title_new_sale'] = 'Nueva Venta';
 
 //detail
 $lang['tab_items'] = 'Ítems';
@@ -183,3 +184,4 @@ $lang['msg_canceled_sale'] = 'Venta anulada. No requiere ninguna comunicación c
 $lang['title_void_voucher'] = 'Anular comprobante';
 $lang['label_reason'] = 'Motivo';
 $lang['btn_void'] = 'Anular';
+$lang['hd_qty_up'] = 'Cant. * P/U';

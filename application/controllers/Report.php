@@ -631,10 +631,33 @@ class Report extends CI_Controller {
 		$row = 2;
 		$style_arr = ['alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT]];
 		
+		$currencies = [];
+		$currencies_rec = $this->general->all("currency");
+		foreach($currencies_rec as $item) $currencies[$item->id] = $item->description;
+		
+		$pay_methods = [];
+		$pay_method_rec = $this->general->all("payment_method");
+		foreach($pay_method_rec as $item) $pay_methods[$item->id] = $item->description;
+		
+		$sale_types = [];
+		$sale_types_rec = $this->general->all("sale_type");
+		foreach($sale_types_rec as $item) $sale_types[$item->id] = $item;
+		
+		$voucher_types = [];
+		$voucher_types_rec = $this->general->all("voucher_type");
+		foreach($voucher_types_rec as $item) $voucher_types[$item->id] = $item->description;
+		
 		$vouchers = $this->general->filter("voucher", $filter, null, null, "registed_at", "desc");
 		foreach($vouchers as $item){
 			if ($item->sunat_sent) $sunat_sent = "o"; else $sunat_sent = "x";
 			if ($item->client_id) $client = $people_arr[$item->client_id]; else $client = null;
+			
+			$item->type = $voucher_types[$item->voucher_type_id];
+			$item->letter = $item->type[0];
+			$item->serie = $sale_types[$item->sale_type_id]->sunat_serie;
+			
+			$sale = $this->general->id("sale", $item->sale_id);
+			if ($item->sunat_resume_id) $item->sunat_msg = $this->general->id("sunat_resume", $item->sunat_resume_id)->message;
 			
 			if (!$item->status_id) $this->general->update("voucher", $item->id, ["status_id" => 4]);
 			$sheet->setCellValue('A'.$row, $item->id);
@@ -644,11 +667,11 @@ class Report extends CI_Controller {
 			$sheet->setCellValue('E'.$row, $client);
 			$sheet->setCellValue('F'.$row, $item->type);
 			$sheet->setCellValue('G'.$row, $item->letter.$item->serie."-".$item->correlative);
-			$sheet->setCellValue('H'.$row, $item->payment_method);
-			$sheet->setCellValue('I'.$row, $item->currency_code.", ".$item->currency);
-			$sheet->setCellValue('J'.$row, number_format($item->total, 2));
-			$sheet->setCellValue('K'.$row, number_format($item->amount, 2));
-			$sheet->setCellValue('L'.$row, number_format($item->vat, 2));
+			$sheet->setCellValue('H'.$row, $pay_methods[$item->payment_method_id]);
+			$sheet->setCellValue('I'.$row, $currencies[$sale->currency_id]);
+			$sheet->setCellValue('J'.$row, number_format($sale->total, 2));
+			$sheet->setCellValue('K'.$row, number_format($sale->amount, 2));
+			$sheet->setCellValue('L'.$row, number_format($sale->vat, 2));
 			$sheet->setCellValue('M'.$row, number_format($item->received, 2));
 			$sheet->setCellValue('N'.$row, number_format($item->change, 2));
 			$sheet->setCellValue('O'.$row, $item->legend);
