@@ -48,6 +48,15 @@ function account_init(dom){
 }
 /* end account */
 
+/* start sale type */
+function add_sale_type(dom){
+	ajax_form(dom, "config/add_sale_type").done(function(res) {
+		//set_msg(res.msgs);
+		swal_redirection(res.type, res.msg, window.location.href);
+	});
+}
+/* end sale type */
+
 $(document).ready(function() {
 	//company
 	$("#btn_search_company").on('click',(function(e) {search_company();}));
@@ -55,4 +64,7 @@ $(document).ready(function() {
 	
 	//account
 	$("#form_account_init").submit(function(e) {e.preventDefault(); account_init(this);});
+	
+	//sale type
+	$("#form_add_sale_type").submit(function(e) {e.preventDefault(); add_sale_type(this);});
 });

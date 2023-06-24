@@ -159,6 +159,60 @@
 					</div>
 				</div>
 			</div>
+			<div class="row d-flex justify-content-center">
+				<div class="col-md-8">
+					<div class="card">
+						<div class="card-header">
+							<h4 class="mb-0">Tipo de Ventas</h4>
+							<?php if ($sys_conf->sale_type_finished){ ?>
+							<i class="fas fa-check text-success fa-lg"></i>
+							<?php }else{ ?>
+							<i class="fas fa-times text-danger fa-lg"></i>
+							<?php } ?>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table table-responsive-md mb-0">
+									<thead>
+										<tr>
+											<th style="width:80px;"><strong>Serie de<br/>Comprobante</strong></th>
+											<th><strong>Inicio de<br/>Correlativo</strong></th>
+											<th><strong>Descripcion<br/>de Tipo</strong></th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<form id="form_add_sale_type">
+											<tr>
+												<td><input type="text" class="form-control" name="sunat_serie"></td>
+												<td><input type="text" class="form-control" name="start"></td>
+												<td><input type="text" class="form-control" name="description"></td>
+												<td class="text-right">
+													<button type="submit" class="btn btn-primary">
+														<i class="fas fa-plus"></i>
+													</button>
+												</td>
+											</tr>
+										</form>
+										<?php foreach($sale_types as $item){ ?>
+										<tr>
+											<td><strong><?= $item->sunat_serie ?></strong></td>
+											<td><?= $item->start ?></td>
+											<td><?= $item->description ?></td>
+											<td class="text-right">
+												<button type="button" class="btn btn-danger" value="<?= $item->id ?>">
+													<i class="fas fa-trash"></i>
+												</button>
+											</td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
     </div>
 	<input type="hidden" id="base_url" value="<?= base_url() ?>">

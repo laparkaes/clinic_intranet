@@ -439,6 +439,7 @@ class Config extends CI_Controller {
 			"departments" => $this->general->all("address_department", "name", "asc"),
 			"provinces" => $this->general->all("address_province", "name", "asc"),
 			"districts" => $this->general->all("address_district", "name", "asc"),
+			"sale_types" => $this->general->all("sale_type", "sunat_serie", "asc"),
 			"title" => $this->lang->line('system_init'),
 		];
 		

@@ -1,8 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-use Dompdf\Dompdf;
-
 class Appointment extends CI_Controller {
 
 	public function __construct(){
@@ -138,8 +136,13 @@ class Appointment extends CI_Controller {
 		$diag_impression = $this->general->ids("diag_impression_detail", $diag_ids, "code");
 		
 		$result = $this->general->filter("appointment_result", ["appointment_id" => $appointment->id]);
-		if ($result) $result = $result[0];
-		else $result = $this->general->structure("appointment_result");
+		if ($result){
+			$result = $result[0];
+			$result->type = $this->general->id("diagnosis_type", $result->diagnosis_type_id)->description;
+		}else{
+			$result = $this->general->structure("appointment_result");
+			$result->type = "";
+		}
 		
 		$appointment_datas = array(
 			"basic_data" => $basic_data,
@@ -1048,22 +1051,10 @@ class Appointment extends CI_Controller {
 			"patient" => $patient
 		];
 		
-		//$html = $this->load->view('appointment/report_1', $data, true);
-		//$html = $this->load->view('appointment/report_2', $data, true);
-		$html = $this->load->view('appointment/report_3', $data, true);
+		$html = $this->load->view('appointment/report', $data, true);
+		$filename = str_replace(" ", "_", $patient->name)."_".$patient->doc_number."_".$appointment->id;
 		
-		// instantiate and use the dompdf class
-		$dompdf = new Dompdf();
-
-		// (Optional) Setup the paper size and orientation
-		$dompdf->setPaper('A4', 'portrait');//vertical [0.0, 0.0, 595.28, 841.89]
-
-		// Render the HTML as PDF
-		$dompdf->loadHtml($html);
-		$dompdf->render();
-		
-		//Output the generated PDF to Browser
-		//if ($dompdf) $dompdf->stream("Reporte", ["Attachment" => false]); else echo "Error";
-		echo $html;
+		$this->load->library('dompdf_lib');
+		$this->dompdf_lib->make_pdf_a4($html, $filename);
 	}
 }
