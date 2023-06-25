@@ -175,9 +175,9 @@
 								<table class="table table-responsive-md mb-0">
 									<thead>
 										<tr>
-											<th><strong>Descripcion<br/>de Tipo</strong></th>
-											<th><strong>Serie de<br/>Comprobante</strong></th>
-											<th><strong>Inicio de<br/>Correlativo</strong></th>
+											<th><strong>Descripcion</strong></th>
+											<th><strong>Serie</strong></th>
+											<th><strong>Inicio Correlativo</strong></th>
 											<th></th>
 										</tr>
 									</thead>

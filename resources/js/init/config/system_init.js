@@ -57,7 +57,7 @@ function add_sale_type(dom){
 }
 
 function remove_sale_type(id){
-	ajax_simple_warning({id:id}, "config/remove_sale_type").done(function(res) {
+	ajax_simple_warning({id:id}, "config/remove_sale_type", "Desea eliminar tipo de venta?").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }

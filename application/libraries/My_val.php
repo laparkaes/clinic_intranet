@@ -490,11 +490,16 @@ class My_val{
 		}else $msgs = $this->set_msg($msgs, $prefix."description_msg", "error", "e_enter_description");
 		
 		if ($data["sunat_serie"]){
-			if ($this->CI->general->filter("sale_type", ["sunat_serie" => $data["sunat_serie"]])) 
-				$msgs = $this->set_msg($msgs, $prefix."sunat_serie_msg", "error", "e_duplicate_sunat_serie");
+			if (!$this->CI->general->filter("sale_type", ["sunat_serie" => $data["sunat_serie"]])){
+				if (!preg_match('/^\d+$/', $data["sunat_serie"]))
+					$msgs = $this->set_msg($msgs, $prefix."sunat_serie_msg", "error", "e_numeric_sunat_serie");
+			}else $msgs = $this->set_msg($msgs, $prefix."sunat_serie_msg", "error", "e_duplicate_sunat_serie");
 		}else $msgs = $this->set_msg($msgs, $prefix."sunat_serie_msg", "error", "e_enter_sunat_serie");
 		
-		if (!$data["start"]) $msgs = $this->set_msg($msgs, $prefix."start_msg", "error", "e_enter_start");
+		if ($data["start"]){
+			if (!is_int($data["start"]))
+				$msgs = $this->set_msg($msgs, $prefix."start_msg", "error", "e_enter_number");
+		}else $msgs = $this->set_msg($msgs, $prefix."start_msg", "error", "e_enter_start");
 		
 		return $msgs;
 	}

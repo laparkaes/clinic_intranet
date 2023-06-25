@@ -533,6 +533,19 @@ class Config extends CI_Controller {
 	}
 	
 	public function remove_sale_type(){
-		echo $this->input->post("id");
+		$type = "error"; $msg = null;
+		$sale_type = $this->general->id("sale_type", $this->input->post("id"));
+		
+		if ($sale_type){
+			if (!$this->general->filter("sale", ["sale_type_id" => $sale_type->id])){
+				if ($this->general->delete("sale_type", ["id" => $sale_type->id])){
+					$type = "success";
+					$msg = $this->lang->line("success_dst");
+				}else $msg = $this->lang->line("error_internal");
+			}else $msg = $this->lang->line("error_stu");
+		}else $msg = $this->lang->line("error_stne");
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 }
