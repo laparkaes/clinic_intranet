@@ -51,7 +51,13 @@ function account_init(dom){
 /* start sale type */
 function add_sale_type(dom){
 	ajax_form(dom, "config/add_sale_type").done(function(res) {
-		//set_msg(res.msgs);
+		set_msg(res.msgs);
+		swal_redirection(res.type, res.msg, window.location.href);
+	});
+}
+
+function remove_sale_type(id){
+	ajax_simple_warning({id:id}, "config/remove_sale_type").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
@@ -67,4 +73,5 @@ $(document).ready(function() {
 	
 	//sale type
 	$("#form_add_sale_type").submit(function(e) {e.preventDefault(); add_sale_type(this);});
+	$(".btn_remove_sale_type").on('click',(function(e) {remove_sale_type($(this).val());}));
 });

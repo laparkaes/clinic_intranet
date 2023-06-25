@@ -107,3 +107,10 @@ $lang['e_duplate_image_name'] = 'Nombre de imagen existe.';
 
 /* voucher */
 $lang['e_enter_reason'] = 'Ingrese motivo.';
+
+/* sale type */
+$lang['e_enter_description'] = 'Ingrese descripción.';
+$lang['e_enter_sunat_serie'] = 'Ingrese serie de comprobante.';
+$lang['e_enter_start'] = 'Ingrese un número para inicio de correlativo.';
+$lang['e_duplicate_description'] = 'Descripción ingresada existe.';
+$lang['e_duplicate_sunat_serie'] = 'Serie ingresado existe.';

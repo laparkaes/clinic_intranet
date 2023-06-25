@@ -175,18 +175,27 @@
 								<table class="table table-responsive-md mb-0">
 									<thead>
 										<tr>
-											<th style="width:80px;"><strong>Serie de<br/>Comprobante</strong></th>
-											<th><strong>Inicio de<br/>Correlativo</strong></th>
 											<th><strong>Descripcion<br/>de Tipo</strong></th>
+											<th><strong>Serie de<br/>Comprobante</strong></th>
+											<th><strong>Inicio de<br/>Correlativo</strong></th>
 											<th></th>
 										</tr>
 									</thead>
 									<tbody>
 										<form id="form_add_sale_type">
 											<tr>
-												<td><input type="text" class="form-control" name="sunat_serie"></td>
-												<td><input type="text" class="form-control" name="start"></td>
-												<td><input type="text" class="form-control" name="description"></td>
+												<td>
+													<input type="text" class="form-control" name="description">
+													<div class="sys_msg" id="st_description_msg"></div>
+												</td>
+												<td>
+													<input type="text" class="form-control" name="sunat_serie">
+													<div class="sys_msg" id="st_sunat_serie_msg"></div>
+												</td>
+												<td>
+													<input type="text" class="form-control" name="start">
+													<div class="sys_msg" id="st_start_msg"></div>
+												</td>
 												<td class="text-right">
 													<button type="submit" class="btn btn-primary">
 														<i class="fas fa-plus"></i>
@@ -196,11 +205,11 @@
 										</form>
 										<?php foreach($sale_types as $item){ ?>
 										<tr>
-											<td><strong><?= $item->sunat_serie ?></strong></td>
-											<td><?= $item->start ?></td>
 											<td><?= $item->description ?></td>
+											<td><?= $item->sunat_serie ?></td>
+											<td><?= $item->start ?></td>
 											<td class="text-right">
-												<button type="button" class="btn btn-danger" value="<?= $item->id ?>">
+												<button type="button" class="btn btn-danger btn_remove_sale_type" value="<?= $item->id ?>">
 													<i class="fas fa-trash"></i>
 												</button>
 											</td>

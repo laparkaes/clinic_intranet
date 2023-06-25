@@ -513,4 +513,26 @@ class Config extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
 	}
+	
+	public function add_sale_type(){
+		$type = "error"; $msgs = []; $msg = null;
+		$data = $this->input->post();
+		
+		$this->load->library('my_val');
+		$msgs = $this->my_val->sale_type($msgs, "st_", $data);
+		
+		if (!$msgs){
+			if ($this->general->insert("sale_type", $data)){
+				$type = "success";
+				$msg = $this->lang->line('success_rst');
+			}else $msg = $this->lang->line('error_internal');
+		}else $msg = $this->lang->line("error_occurred");
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
+	}
+	
+	public function remove_sale_type(){
+		echo $this->input->post("id");
+	}
 }
