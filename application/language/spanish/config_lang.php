@@ -1,5 +1,5 @@
 <?php
-$lang['system_init'] = 'Configuración Inicial';
+$lang['system_init'] = 'Inicialización del Sistema';
 $lang['setting'] = 'Configuración';
 
 //messages
@@ -17,7 +17,8 @@ $lang['error_uex'] = 'No se pudo eliminar debido a que este examen ha sido asign
 $lang['error_nmr'] = 'Medicina es aplicada en alguna consulta del sistema.';//error_no_medicine_remove
 $lang['error_nir'] = 'Imagen es aplicada en alguna consulta del sistema.';//error_no_image_remove
 $lang['error_stne'] = 'Tipo de venta no existe.';//error_sale_type_no_exists
-$lang['error_stu'] = 'Tipo de venta no existe.';//error_sale_type_using
+$lang['error_stu'] = 'Tipo de venta es usado en alguna venta registrada.';//error_sale_type_using
+$lang['error_sinf'] = 'Inicialización del sistema no finalizada. Revise nuevamente.';//error_system_init_no_finished
 $lang['success_cup'] = 'Empresa ha sido actualizada.';//success_company_update
 $lang['success_rsv'] = 'Nuevo valor ha sido registrado.';//success_register_sl_value
 $lang['success_dsv'] = 'Nuevo valor ha sido eliminado.';//success_delete_sl_value
@@ -35,10 +36,14 @@ $lang['success_rim'] = 'Imagen ha sido registrada.';//success_register_medicine
 $lang['success_rac'] = 'Usuario ha sido registrado.';//success_register_account
 $lang['success_rst'] = 'Tipo de venta ha sido registrado.';//success_register_sale_type
 $lang['success_dst'] = 'Tipo de venta ha sido eliminado.';//success_delete_sale_type
+$lang['success_inf'] = 'Inicialización finalizada.';//success_init_finish
+$lang['success_fst'] = 'Configuración de tipo de venta ha sido finalizada.';//success_finish_sale_type
 $lang['warning_rpr'] = '¿Desea eliminar perfil elegido?';//warning_remove_profile
 $lang['warning_rme'] = '¿Desea eliminar medicina elegida?';//warning_remove_medicine
 $lang['warning_rim'] = '¿Desea eliminar imagen elegida?';//warning_remove_image
-
+$lang['warning_rst'] = '¿Desea eliminar tipo de venta?';//warning_remove_sale_type
+$lang['warning_fst'] = '¿Desea finalizar configuracion de tipo de ventas?';//warning_finish_sale_type
+$lang['warning_fsi'] = '¿Desea finalizar inicialización del sistema?';//warning_finish_system_inicialization
 
 //component
 $lang['btn_load_more'] = 'Cargar más';
@@ -151,3 +156,9 @@ $lang['th_account'] = 'Usuario';
 //init
 $lang['lb_account'] = 'Usuario';
 $lang['lb_password_confirm'] = 'Confirmación de Contraseña';
+$lang['title_master_account'] = 'Usuario maestro';
+$lang['title_sale_type'] = 'Tipo de venta';
+$lang['th_description'] = 'Descripción';
+$lang['th_serie'] = 'Serie';
+$lang['th_correlative_start'] = 'Inicio Correlativo';
+$lang['btn_end_init'] = 'Finalizar Inicialización';

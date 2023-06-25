@@ -1,8 +1,10 @@
-<div class="col-sm-12 d-flex justify-content-between align-items-center pb-3">
+<div class="col-md-12">
 	<div class="welcome-text d-md-none d-block">
-		<h4 class="text-primary mb-0"><?= $this->lang->line('doctors') ?></h4>
+		<h4 class="text-primary mb-3"><?= $this->lang->line('doctors') ?></h4>
 	</div>
-	<div class="btn-group">
+</div>
+<div class="col-sm-6">
+	<div class="btn-group mb-3">
 		<button type="button" class="btn btn-primary control_bl" id="btn_list" value="bl_list">
 			<i class="fas fa-list mr-2"></i><?= $this->lang->line('btn_list') ?>
 		</button>
@@ -11,28 +13,34 @@
 		</button>
 	</div>
 </div>
+<div class="col-sm-6">
+	<form>
+		<div class="form-row">
+			<input type="hidden" value="1" name="page">
+			<div class="form-group col-sm-4">
+				<select class="form-control" id="sl_type" name="specialty">
+					<option value=""><?= $this->lang->line('sl_specialty') ?></option>
+					<?php foreach($specialties as $item){
+						if ($item->id == $f_url["specialty"]) $s = "selected"; else $s = ""; ?>
+					<option value="<?= $item->id ?>" <?= $s ?>><?= $item->name ?></option>
+					<?php } ?>
+				</select>
+			</div>
+			<div class="form-group col-sm-6">
+				<input type="text" class="form-control" id="inp_name" name="name" placeholder="<?= $this->lang->line('lb_search_by_name') ?>" value="<?= $f_url["name"] ?>">
+			</div>
+			<div class="form-group col-sm-2">
+				<button type="submit" class="btn btn-primary btn-block">
+					<i class="far fa-search"></i>
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
 <div class="col-md-12">
 	<div class="card">
 		<div class="card-body">
 			<div class="row bl_content" id="bl_list">
-				<div class="col-md-12 d-md-flex justify-content-end">
-					<form class="form-inline">
-						<input type="hidden" value="1" name="page">
-						<label class="sr-only" for="sl_type"><?= $this->lang->line('sl_specialty') ?></label>
-						<select class="form-control mb-2 mr-sm-2" id="sl_type" name="specialty" style="max-width: 150px;">
-							<option value=""><?= $this->lang->line('sl_specialty') ?></option>
-							<?php foreach($specialties as $item){
-								if ($item->id == $f_url["specialty"]) $s = "selected"; else $s = ""; ?>
-							<option value="<?= $item->id ?>" <?= $s ?>><?= $item->name ?></option>
-							<?php } ?>
-						</select>
-						<label class="sr-only" for="inp_name"><?= $this->lang->line('lb_name') ?></label>
-						<input type="text" class="form-control mb-2 mr-sm-2" id="inp_name" name="name" placeholder="<?= $this->lang->line('lb_search_by_name') ?>" value="<?= $f_url["name"] ?>">
-						<button type="submit" class="btn btn-primary mb-2">
-							<i class="far fa-search"></i>
-						</button>
-					</form>
-				</div>
 				<div class="col-md-12">
 					<?php if ($doctors){ ?>
 					<div class="table-responsive">
@@ -56,11 +64,11 @@
 									<td style="max-width: 150px;"><?= $specialties_arr[$item->specialty_id] ?></td>
 									<td><?= $item->person->name ?></td>
 									<td><?= $item->person->tel ?></td>
-									<td><span class="badge light badge-<?= $status[$item->status_id]->color ?>"><?= $status[$item->status_id]->text ?></span></td>
+									<td><span class="text-<?= $status[$item->status_id]->color ?>"><?= $status[$item->status_id]->text ?></span></td>
 									<td class="text-right">
 										<a href="<?= base_url() ?>doctor/detail/<?= $item->id ?>">
-											<button type="button" class="btn btn-primary light sharp border-0">
-												<i class="far fa-search"></i>
+											<button type="button" class="btn btn-info light sharp">
+												<i class="fas fa-arrow-alt-right"></i>
 											</button>
 										</a>
 									</td>

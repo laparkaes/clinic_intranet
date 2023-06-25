@@ -435,6 +435,16 @@ class My_val{
 		return $res;
 	}
 	
+	public function system_init_finish(){
+		$res = true;
+		$sys_cfg = $this->CI->general->id("system", 1);
+		if ($sys_cfg){
+			foreach($sys_cfg as $key => $value) if ($key !== "is_finished") if (!$value) $res = false;
+		}else $res = false;
+		//if ($key !== "is_finished") 
+		return $res;
+	}
+	
 	public function login($msgs, $prefix, $data){
 		$account = $this->CI->general->filter("account", ["email" => $data["email"]]);
 		
@@ -497,8 +507,7 @@ class My_val{
 		}else $msgs = $this->set_msg($msgs, $prefix."sunat_serie_msg", "error", "e_enter_sunat_serie");
 		
 		if ($data["start"]){
-			if (!is_int($data["start"]))
-				$msgs = $this->set_msg($msgs, $prefix."start_msg", "error", "e_enter_number");
+			if (!is_numeric($data["start"])) $msgs = $this->set_msg($msgs, $prefix."start_msg", "error", "e_enter_number");
 		}else $msgs = $this->set_msg($msgs, $prefix."start_msg", "error", "e_enter_start");
 		
 		return $msgs;

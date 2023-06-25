@@ -49,19 +49,51 @@ function account_init(dom){
 /* end account */
 
 /* start sale type */
+function set_sale_types(sale_types){
+	$(".row_sale_type").remove();
+	$.each(sale_types, function(index, item) {
+		$("#tbody_sale_types").append('<tr class="row_sale_type"><td>' + item.description + '</td><td>' + item.sunat_serie + '</td><td>' + item.start + '</td><td class="text-right"><button type="button" class="btn btn-danger light btn_remove_sale_type" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+	});
+	
+	$(".btn_remove_sale_type").on('click',(function(e) {remove_sale_type($(this).val());}));
+	
+}
+
 function add_sale_type(dom){
 	ajax_form(dom, "config/add_sale_type").done(function(res) {
 		set_msg(res.msgs);
-		swal_redirection(res.type, res.msg, window.location.href);
+		swal(res.type, res.msg);
+		if (res.type == "success"){
+			dom.reset();
+			$("#btn_finish_sale_type").removeClass("d-none");
+			set_sale_types(res.sale_types);
+		}
+		
 	});
 }
 
 function remove_sale_type(id){
-	ajax_simple_warning({id:id}, "config/remove_sale_type", "Desea eliminar tipo de venta?").done(function(res) {
+	ajax_simple_warning({id:id}, "config/remove_sale_type", $("#warning_rst").val()).done(function(res) {
+		swal(res.type, res.msg);
+		if (res.type == "success"){
+			$("#btn_finish_sale_type").removeClass("d-none");
+			set_sale_types(res.sale_types);
+		}
+	});
+}
+
+function finish_sale_type(){
+	ajax_simple_warning({}, "config/finish_sale_type", $("#warning_fst").val()).done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 /* end sale type */
+
+function finish_init(){
+	ajax_simple_warning({}, "config/finish_init", $("#warning_fsi").val()).done(function(res) {
+		swal_redirection(res.type, res.msg, window.location.href);
+	});
+}
 
 $(document).ready(function() {
 	//company
@@ -74,4 +106,8 @@ $(document).ready(function() {
 	//sale type
 	$("#form_add_sale_type").submit(function(e) {e.preventDefault(); add_sale_type(this);});
 	$(".btn_remove_sale_type").on('click',(function(e) {remove_sale_type($(this).val());}));
+	$("#btn_finish_sale_type").on('click',(function(e) {finish_sale_type();}));
+	
+	//general
+	$("#btn_finish").on('click',(function(e) {finish_init();}));
 });

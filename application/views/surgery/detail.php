@@ -257,7 +257,11 @@
 		</div>
 	</div>
 </div>
-<?php if ($surgery->status->code === "confirmed"){ ?>
+<?php if ($surgery->status->code === "reserved"){ ?>
+<div class="col-md-12">
+	<h3 class="text-center text-danger mb-5"><?= $this->lang->line('msg_no_confirmed') ?></h3>
+</div>
+<?php }elseif ($surgery->status->code === "confirmed"){ ?>
 <div class="col-md-12">
 	<div class="card">
 		<div class="card-header">

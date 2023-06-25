@@ -12,7 +12,7 @@
 					</button>
 					<?php } if (in_array("cancel", $actions)){ ?>
 					<button type="button" class="dropdown-item text-danger" id="btn_cancel" value="<?= $appointment->id ?>">
-						<?= $this->lang->line('btn_cancel_appointment') ?>
+						<?= $this->lang->line('btn_cancel') ?>
 					</button>
 					<?php } if (in_array("report", $actions)){ ?>
 					<a class="dropdown-item text-success" href="<?= base_url() ?>appointment/report/<?= $appointment->id ?>" target="_blank">
@@ -226,7 +226,7 @@
 <?php if ($appointment->status->code === "reserved"){ ?>
 <div class="col-md-12">
 	<h3 class="text-center text-danger mb-5"><?= $this->lang->line('msg_no_confirmed') ?></h3>
-</div>	
+</div>
 <?php } elseif ($appointment->status->code === "confirmed") $this->load->view('appointment/detail_'.$this->session->userdata("role")->name); elseif ($appointment->status->code === "finished") $this->load->view('appointment/detail_finished'); ?>
 <div class="modal fade md_weekly_doctor_agenda" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-lg">

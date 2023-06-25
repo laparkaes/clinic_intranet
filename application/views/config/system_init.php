@@ -16,14 +16,18 @@
         <div class="container h-100 py-3">
 			<div class="row d-flex justify-content-center">
 				<div class="col-md-8">
-					<h3 class="mb-3">Inicializacion del Sistema</h3>
+					<div class="card">
+						<div class="card-body">
+							<h3 class="text-center mb-0"><?= $this->lang->line('system_init') ?></h3>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="row d-flex justify-content-center">
 				<div class="col-md-8">
 					<div class="card">
 						<div class="card-header">
-							<h4 class="mb-0">Empresa</h4>
+							<h4 class="mb-0"><?= $this->lang->line('title_company') ?></h4>
 							<?php if ($sys_conf->company_id){ ?>
 							<i class="fas fa-check text-success fa-lg"></i>
 							<?php }else{ ?>
@@ -125,7 +129,7 @@
 				<div class="col-md-8">
 					<div class="card">
 						<div class="card-header">
-							<h4 class="mb-0">Usuario Maestro</h4>
+							<h4 class="mb-0"><?= $this->lang->line('title_master_account') ?></h4>
 							<?php if ($sys_conf->account_id){ ?>
 							<i class="fas fa-check text-success fa-lg"></i>
 							<?php }else{ ?>
@@ -163,7 +167,7 @@
 				<div class="col-md-8">
 					<div class="card">
 						<div class="card-header">
-							<h4 class="mb-0">Tipo de Ventas</h4>
+							<h4 class="mb-0"><?= $this->lang->line('title_sale_type') ?></h4>
 							<?php if ($sys_conf->sale_type_finished){ ?>
 							<i class="fas fa-check text-success fa-lg"></i>
 							<?php }else{ ?>
@@ -175,13 +179,18 @@
 								<table class="table table-responsive-md mb-0">
 									<thead>
 										<tr>
-											<th><strong>Descripcion</strong></th>
-											<th><strong>Serie</strong></th>
-											<th><strong>Inicio Correlativo</strong></th>
-											<th></th>
+											<th><strong><?= $this->lang->line('th_description') ?></strong></th>
+											<th><strong><?= $this->lang->line('th_serie') ?></strong></th>
+											<th><strong><?= $this->lang->line('th_serie') ?></strong></th>
+											<th>
+												<?php if ($sys_conf->sale_type_finished) $d = "d-none"; else $d = ""; ?>
+												<button type="button" class="btn btn-primary <?= $d ?>" id="btn_finish_sale_type">
+													<?= $this->lang->line('btn_finish') ?>
+												</button>
+											</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody id="tbody_sale_types">
 										<form id="form_add_sale_type">
 											<tr>
 												<td>
@@ -197,19 +206,19 @@
 													<div class="sys_msg" id="st_start_msg"></div>
 												</td>
 												<td class="text-right">
-													<button type="submit" class="btn btn-primary">
+													<button type="submit" class="btn btn-success light">
 														<i class="fas fa-plus"></i>
 													</button>
 												</td>
 											</tr>
 										</form>
 										<?php foreach($sale_types as $item){ ?>
-										<tr>
+										<tr class="row_sale_type">
 											<td><?= $item->description ?></td>
 											<td><?= $item->sunat_serie ?></td>
 											<td><?= $item->start ?></td>
 											<td class="text-right">
-												<button type="button" class="btn btn-danger btn_remove_sale_type" value="<?= $item->id ?>">
+												<button type="button" class="btn btn-danger light btn_remove_sale_type" value="<?= $item->id ?>">
 													<i class="fas fa-trash"></i>
 												</button>
 											</td>
@@ -222,6 +231,17 @@
 					</div>
 				</div>
 			</div>
+			<div class="row d-flex justify-content-center">
+				<div class="col-md-8">
+					<div class="card">
+						<div class="card-body">
+							<button type="button" class="btn btn-primary btn-lg btn-block" id="btn_finish">
+								<?= $this->lang->line('btn_end_init') ?>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
     </div>
 	<input type="hidden" id="base_url" value="<?= base_url() ?>">
@@ -230,7 +250,10 @@
 	<input type="hidden" id="alert_warning_title" value="<?= $this->lang->line('alert_warning_title') ?>">
 	<input type="hidden" id="alert_confirm_btn" value="<?= $this->lang->line('alert_confirm_btn') ?>">
 	<input type="hidden" id="alert_cancel_btn" value="<?= $this->lang->line('alert_cancel_btn') ?>">
-    <script src="<?= base_url() ?>resources/vendor/global/global.min.js"></script>
+	<input type="hidden" id="warning_rst" value="<?= $this->lang->line('warning_rst') ?>">
+	<input type="hidden" id="warning_fst" value="<?= $this->lang->line('warning_fst') ?>">
+	<input type="hidden" id="warning_fsi" value="<?= $this->lang->line('warning_fsi') ?>">
+	<script src="<?= base_url() ?>resources/vendor/global/global.min.js"></script>
 	<script src="<?= base_url() ?>resources/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.js"></script>
     <script src="<?= base_url() ?>resources/js/custom.min.js"></script>
 	<script src="<?= base_url() ?>resources/js/deznav-init.js"></script>

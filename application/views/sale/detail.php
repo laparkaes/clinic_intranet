@@ -191,7 +191,7 @@
 											<button type="button" class="btn btn-danger btn_unassign_reservation" value="<?= $item->id ?>">
 												<i class="fas fa-trash"></i>
 											</button>
-											<?php }elseif ($sale->status->code === "finished"){ 
+											<?php }else{ 
 											if ($item->type === $this->lang->line('txt_surgery')) $md = "surgery";
 											else $md = "appointment"; ?>
 											<button type="button" class="btn btn-primary btn_select_product" data-toggle="modal" data-target="#md_reservation_<?= $md ?>" value="<?= $item->id ?>">
@@ -535,9 +535,9 @@
 							<label><?= $this->lang->line('label_balance') ?></label>
 							<div class="input-group input-warning-o">
 								<div class="input-group-prepend">
-									<span class="input-group-text bg-light"><?= $sale->currency ?></span>
+									<span class="input-group-text" style="background-color: #eee;"><?= $sale->currency ?></span>
 								</div>
-								<input type="text" class="form-control bg-light text-right" id="payment_balance_v" value="0.00" readonly>
+								<input type="text" class="form-control text-right" id="payment_balance_v" value="0.00" readonly>
 							</div>
 							<div class="sys_msg" id="pay_balance_msg"></div>
 						</div>
