@@ -569,10 +569,13 @@ class Config extends CI_Controller {
 		$sys_conf = $this->general->id("system", 1);
 		if (!$sys_conf) $this->general->insert("system", ["id" => 1]);
 		
-		if ($this->general->update("system", 1, ["sale_type_finished" => true])){
-			$type = "success";
-			$msg = $this->lang->line("success_fst");
-		}else $msg = $this->lang->line("error_internal");
+		if ($this->general->all("sale_type")){
+			if ($this->general->update("system", 1, ["sale_type_finished" => true])){
+				$type = "success";
+				$msg = $this->lang->line("success_fst");
+			}else $msg = $this->lang->line("error_internal");
+		}else $msg = $this->lang->line("error_stlo");
+		
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);

@@ -621,13 +621,3 @@ $me = $appointment_datas["medicine"];
 		</div>
 	</div>
 </div>
-<div class="col-md-12">
-	<div class="card">
-		<div class="card-header">
-			<h4 class="mb-0"><?= $this->lang->line('title_sick_leave') ?></h4>
-		</div>
-		<div class="card-body">
-			<div class="text-danger">Por desarrollar</div>
-		</div>
-	</div>
-</div>

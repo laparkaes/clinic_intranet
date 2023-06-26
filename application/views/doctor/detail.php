@@ -52,16 +52,16 @@
 					<form action="#" id="app_register_form">
 						<h5 class="mb-3"><?= $this->lang->line('title_attention') ?></h5>
 						<div class="form-row">
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-12">
 								<label><?= $this->lang->line('lb_specialty') ?></label>
 								<input type="hidden" value="<?= $doctor->specialty_id ?>" name="app[specialty_id]" readonly>
-								<input type="text" class="form-control bg-light" value="<?= $doctor->specialty ?>" readonly>
+								<input type="text" class="form-control" value="<?= $doctor->specialty ?>" readonly>
 								<div class="sys_msg" id="aa_specialty_msg"></div>
 							</div>
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-12">
 								<label><?= $this->lang->line('lb_doctor') ?></label>
 								<input type="hidden" value="<?= $person->id ?>" id="aa_doctor_id" name="app[doctor_id]" readonly>
-								<input type="text" class="form-control bg-light" value="<?= $person->name ?>" readonly>
+								<input type="text" class="form-control" value="<?= $person->name ?>" readonly>
 								<div class="sys_msg" id="aa_doctor_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
@@ -157,13 +157,13 @@
 					<form action="#" id="sur_register_form">
 						<h5 class="mb-3"><?= $this->lang->line('title_attention') ?></h5>
 						<div class="form-row">
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-12">
 								<label><?= $this->lang->line('lb_specialty') ?></label>
 								<input type="hidden" value="<?= $doctor->specialty_id ?>" name="sur[specialty_id]" readonly>
 								<input type="text" class="form-control" value="<?= $doctor->specialty ?>" readonly>
 								<div class="sys_msg" id="sur_specialty_msg"></div>
 							</div>
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-12">
 								<label><?= $this->lang->line('lb_doctor') ?></label>
 								<input type="hidden" value="<?= $person->id ?>" id="sur_doctor_id" name="sur[doctor_id]" readonly>
 								<input type="text" class="form-control" value="<?= $person->name ?>" readonly>

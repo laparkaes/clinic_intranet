@@ -1,10 +1,10 @@
-<div class="col-sm-12 pb-md-0 pb-3">
+<div class="col-md-12">
 	<div class="welcome-text d-md-none d-block">
-		<h4 class="text-primary mb-0"><?= $this->lang->line('products') ?></h4>
+		<h4 class="text-primary mb-3"><?= $this->lang->line('products') ?></h4>
 	</div>
 </div>
-<div class="col-sm-12 pb-3">
-	<div class="btn-group">
+<div class="col-sm-5">
+	<div class="btn-group mb-3">
 		<button type="button" class="btn btn-primary control_bl" id="btn_list" value="bl_list">
 			<i class="fas fa-list mr-2"></i><?= $this->lang->line('btn_list') ?>
 		</button>
@@ -16,35 +16,43 @@
 		</button>
 	</div>
 </div>
+<div class="col-sm-7">
+	<form>
+		<div class="form-row">
+			<input type="hidden" value="1" name="page">
+			<div class="form-group col-sm-3">
+				<select class="form-control" id="sl_type" name="type">
+					<option value=""><?= $this->lang->line('sl_type') ?></option>
+					<?php foreach($prod_types as $item){
+						if ($item->id == $f_url["type"]) $s = "selected"; else $s = ""; ?>
+					<option value="<?= $item->id ?>" <?= $s ?>><?= $item->description ?></option>
+					<?php } ?>
+				</select>
+			</div>
+			<div class="form-group col-sm-3">
+				<select class="form-control" id="sl_category" name="category">
+					<option value=""><?= $this->lang->line('sl_category') ?></option>
+					<?php foreach($categories as $item){
+						if ($item->id == $f_url["category"]) $s = "selected"; else $s = ""; ?>
+					<option value="<?= $item->id ?>" <?= $s ?>><?= $item->name ?></option>
+					<?php } ?>
+				</select>
+			</div>
+			<div class="form-group col-sm-4">
+				<input type="text" class="form-control" id="inp_keyword" name="keyword" placeholder="<?= $this->lang->line('inp_search') ?>" value="<?= $f_url["keyword"] ?>">
+			</div>
+			<div class="form-group col-sm-2">
+				<button type="submit" class="btn btn-primary btn-block">
+					<i class="far fa-search"></i>
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
 <div class="col-md-12">
 	<div class="card">
 		<div class="card-body">
 			<div class="row bl_content" id="bl_list">
-				<div class="col-md-12 d-md-flex justify-content-end">
-					<form class="form-inline">
-						<input type="hidden" value="1" name="page">
-						<label class="sr-only" for="sl_type"><?= $this->lang->line('sl_type') ?></label>
-						<select class="form-control mb-2 mr-sm-2" id="sl_type" name="type" style="max-width: 150px;">
-							<option value=""><?= $this->lang->line('sl_type') ?></option>
-							<?php foreach($prod_types as $item){
-								if ($item->id == $f_url["type"]) $s = "selected"; else $s = ""; ?>
-							<option value="<?= $item->id ?>" <?= $s ?>><?= $item->description ?></option>
-							<?php } ?>
-						</select>
-						<label class="sr-only" for="sl_type"><?= $this->lang->line('sl_category') ?></label>
-						<select class="form-control mb-2 mr-sm-2" id="sl_category" name="category" style="max-width: 150px;">
-							<option value=""><?= $this->lang->line('sl_category') ?></option>
-							<?php foreach($categories as $item){
-								if ($item->id == $f_url["category"]) $s = "selected"; else $s = ""; ?>
-							<option value="<?= $item->id ?>" <?= $s ?>><?= $item->name ?></option>
-							<?php } ?>
-						</select>
-						<label class="sr-only" for="inp_keyword"><?= $this->lang->line('lb_keyword') ?></label>
-						<input type="text" class="form-control mb-2 mr-sm-2" id="inp_keyword" name="keyword" placeholder="<?= $this->lang->line('inp_search_keyword') ?>" value="<?= $f_url["keyword"] ?>">
-						<button type="submit" class="btn btn-primary mb-2">
-							<i class="far fa-search"></i>
-						</button>
-					</form>
 				</div>
 				<div class="col-md-12">
 					<?php if ($products){ ?>
@@ -89,8 +97,8 @@
 									</td>
 									<td class="text-right">
 										<a href="<?= base_url() ?>product/detail/<?= $item->id ?>">
-											<button type="button" class="btn btn-primary light sharp border-0">
-												<i class="fas fa-search"></i>
+											<button type="button" class="btn btn-info light sharp">
+												<i class="fas fa-arrow-alt-right"></i>
 											</button>
 										</a>
 									</td>

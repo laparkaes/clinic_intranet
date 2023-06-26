@@ -50,3 +50,28 @@ textarea{resize: none;}
 }
 
 summary:hover{color: #1a172f;}
+
+/* sweet alert */
+.swal2-styled.swal2-confirm{
+	border: 1px solid transparent;
+	line-height: 1.5;
+	border-radius: 0.75rem;
+	font-weight: 500;
+	padding: 0.625rem 1rem;
+	font-size: 0.813rem;
+	background-color: #1a8d5f;
+	border-color: #1a8d5f;
+	color: #fff;
+}
+
+.swal2-styled.swal2-cancel{
+	border: 1px solid transparent;
+	line-height: 1.5;
+	border-radius: 0.75rem;
+	font-weight: 500;
+	padding: 0.625rem 1rem;
+	font-size: 0.813rem;
+	background-color: #fee6ea;
+	border-color: #fee6ea;
+	color: #f72b50;
+}

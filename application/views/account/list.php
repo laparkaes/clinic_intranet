@@ -1,8 +1,10 @@
-<div class="col-sm-12 d-flex justify-content-between align-items-center pb-3">
+<div class="col-md-12">
 	<div class="welcome-text d-md-none d-block">
-		<h4 class="text-primary mb-0"><?= $this->lang->line('accounts') ?></h4>
+		<h4 class="text-primary mb-3"><?= $this->lang->line('accounts') ?></h4>
 	</div>
-	<div class="btn-group">
+</div>
+<div class="col-sm-6">
+	<div class="btn-group mb-3">
 		<button type="button" class="btn btn-primary control_bl" id="btn_list" value="bl_list">
 			<i class="fas fa-list mr-2"></i><?= $this->lang->line('btn_list') ?>
 		</button>
@@ -11,28 +13,34 @@
 		</button>
 	</div>
 </div>
+<div class="col-sm-6">
+	<form>
+		<div class="form-row">
+			<input type="hidden" value="1" name="page">
+			<div class="form-group col-sm-4">
+				<select class="form-control" id="sl_role_id" name="role_id">
+					<option value=""><?= $this->lang->line('sl_role') ?></option>
+					<?php foreach($roles as $item){
+						if ($item->id == $f_url["role_id"]) $s = "selected"; else $s = ""; ?>
+					<option value="<?= $item->id ?>" <?= $s ?>><?= $this->lang->line($item->name) ?></option>
+					<?php } ?>
+				</select>
+			</div>
+			<div class="form-group col-sm-6">
+				<input type="text" class="form-control" id="inp_person_name" name="person_name" placeholder="<?= $this->lang->line('txt_person_name') ?>" value="<?= $f_url["person_name"] ?>">
+			</div>
+			<div class="form-group col-sm-2">
+				<button type="submit" class="btn btn-primary btn-block">
+					<i class="far fa-search"></i>
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
 <div class="col-md-12">
 	<div class="card">
 		<div class="card-body">
 			<div class="row bl_content" id="bl_list">
-				<div class="col-md-12 d-md-flex justify-content-end">
-					<form class="form-inline">
-						<input type="hidden" value="1" name="page">
-						<label class="sr-only" for="sl_role_id"><?= $this->lang->line('sl_role') ?></label>
-						<select class="form-control mb-2 mr-sm-2" id="sl_role_id" name="role_id" style="max-width: 150px;">
-							<option value=""><?= $this->lang->line('sl_role') ?></option>
-							<?php foreach($roles as $item){
-								if ($item->id == $f_url["role_id"]) $s = "selected"; else $s = ""; ?>
-							<option value="<?= $item->id ?>" <?= $s ?>><?= $this->lang->line($item->name) ?></option>
-							<?php } ?>
-						</select>
-						<label class="sr-only" for="inp_person_name"><?= $this->lang->line('lb_keyword') ?></label>
-						<input type="text" class="form-control mb-2 mr-sm-2" id="inp_person_name" name="person_name" placeholder="<?= $this->lang->line('txt_person_name') ?>" value="<?= $f_url["person_name"] ?>">
-						<button type="submit" class="btn btn-primary mb-2">
-							<i class="far fa-search"></i>
-						</button>
-					</form>
-				</div>
 				<div class="col-md-12">
 					<?php if ($accounts){ ?>
 					<div class="table-responsive">

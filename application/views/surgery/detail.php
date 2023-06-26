@@ -237,7 +237,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php $file_path = base_url()."uploaded/patient_files/".$patient->doc_type_id."_".$patient->doc_number."/";
+					<?php $file_path = "/archivos/pacientes/".str_replace(" ", "_", $patient->name)."_".$patient->doc_number."/";
 					foreach($patient_files as $item){ ?>
 					<tr>
 						<td class="pl-0"><?= date("d.m.Y<\b\\r>H:i:s", strtotime($item->registed_at)) ?></td>
@@ -261,7 +261,7 @@
 <div class="col-md-12">
 	<h3 class="text-center text-danger mb-5"><?= $this->lang->line('msg_no_confirmed') ?></h3>
 </div>
-<?php }elseif ($surgery->status->code === "confirmed"){ ?>
+<?php }else{ ?>
 <div class="col-md-12">
 	<div class="card">
 		<div class="card-header">

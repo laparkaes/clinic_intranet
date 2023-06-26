@@ -17,6 +17,7 @@ $lang['error_uex'] = 'No se pudo eliminar debido a que este examen ha sido asign
 $lang['error_nmr'] = 'Medicina es aplicada en alguna consulta del sistema.';//error_no_medicine_remove
 $lang['error_nir'] = 'Imagen es aplicada en alguna consulta del sistema.';//error_no_image_remove
 $lang['error_stne'] = 'Tipo de venta no existe.';//error_sale_type_no_exists
+$lang['error_stlo'] = 'Al menos debe registrar un tipo de venta.';//error_sale_type_at_least_one
 $lang['error_stu'] = 'Tipo de venta es usado en alguna venta registrada.';//error_sale_type_using
 $lang['error_sinf'] = 'Inicialización del sistema no finalizada. Revise nuevamente.';//error_system_init_no_finished
 $lang['success_cup'] = 'Empresa ha sido actualizada.';//success_company_update

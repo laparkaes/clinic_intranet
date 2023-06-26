@@ -133,20 +133,20 @@
 							<span class="nav-text ml-2"><?= $this->lang->line('nav_sales') ?></span>
 						</a>
 					</li>
-					<?php } if (in_array("report", $this->nav_menus)){
-						if (!strcmp("report", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
-					<li class="<?= $ac ?>">
-						<a class="ai-icon" href="<?= base_url() ?>report" aria-expanded="false">
-							<i class="fas fa-book fa-fw p-0"></i>
-							<span class="nav-text ml-2"><?= $this->lang->line('nav_reports') ?></span>
-						</a>
-					</li>
 					<?php } if (in_array("account", $this->nav_menus)){
 						if (!strcmp("account", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
 					<li class="<?= $ac ?>">
 						<a class="ai-icon" href="<?= base_url() ?>account" aria-expanded="false">
 							<i class="fas fa-users-cog fa-fw p-0"></i>
 							<span class="nav-text ml-2"><?= $this->lang->line('nav_accounts') ?></span>
+						</a>
+					</li>
+					<?php } if (in_array("report", $this->nav_menus)){
+						if (!strcmp("report", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
+					<li class="<?= $ac ?>">
+						<a class="ai-icon" href="<?= base_url() ?>report" aria-expanded="false">
+							<i class="fas fa-book fa-fw p-0"></i>
+							<span class="nav-text ml-2"><?= $this->lang->line('nav_reports') ?></span>
 						</a>
 					</li>
 					<?php } if (in_array("config", $this->nav_menus)){

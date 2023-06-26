@@ -1178,22 +1178,12 @@ $me = $appointment_datas["medicine"];
 		</div>
 	</div>
 </div>
-<div class="col-md-12 process process_attention d-none">
-	<div class="card">
-		<div class="card-header">
-			<h4 class="mb-0"><?= $this->lang->line('title_sick_leave') ?></h4>
-		</div>
-		<div class="card-body">
-			<div class="text-danger">Por desarrollar</div>
-		</div>
-	</div>
-</div>
 <?php if ($appointment->is_editable){ ?>
 <div class="col-md-12 process process_attention d-none">
 	<div class="card">
 		<div class="card-body">
 			<div class="text-center">
-				<button type="button" class="btn btn-primary btn-lg" id="btn_finish" value="<?= $appointment->id ?>">
+				<button type="button" class="btn btn-primary btn-lg btn-block" id="btn_finish" value="<?= $appointment->id ?>">
 					<?= $this->lang->line('btn_finish_appointment') ?>
 				</button>
 			</div>

@@ -109,5 +109,5 @@ $lang['p_description'] = 'Descripción';
 $lang['p_remark'] = 'Observación';
 $lang['sl_type'] = 'Tipo';
 $lang['sl_category'] = 'Categoría';
-$lang['inp_search_keyword'] = 'Palabra de Búsqueda';
+$lang['inp_search'] = 'Búsqueda';
 $lang['msg_no_products'] = 'No existe productos registrados o cumplan con datos de búsqueda.';

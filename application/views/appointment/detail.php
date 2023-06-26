@@ -203,7 +203,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php $file_path = base_url()."uploaded/patient_files/".$patient->doc_type_id."_".$patient->doc_number."/";
+					<?php $file_path = "/archivos/pacientes/".str_replace(" ", "_", $patient->name)."_".$patient->doc_number."/";
 					foreach($patient_files as $item){ ?>
 					<tr>
 						<td class="pl-0"><?= date("Y-m-d<\b\\r>h:i:s", strtotime($item->registed_at)) ?></td>

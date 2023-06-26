@@ -13,6 +13,7 @@
 		</div>
 	</div>
 </div>
+<?php if ($person->doc_number){ ?>
 <div class="col-md-12">
 	<div class="row d-flex justify-content-center">
 		<div class="col-md-4">
@@ -35,6 +36,7 @@
 		</div>
 	</div>
 </div>
+<?php } ?>
 <div class="col-md-12 bl_simple d-none" id="bl_ga">
 	<div class="card">
 		<div class="card-header border-0 pb-0">
@@ -110,12 +112,12 @@
 								<input type="hidden" name="pt[doc_type_id]" value="<?= $person->doc_type_id ?>">
 								<input type="hidden" name="pt[doc_number]" value="<?= $person->doc_number ?>">
 								<label><?= $this->lang->line('lb_document') ?></label>
-								<input type="text" class="form-control bg-light" value="<?= $person->doc_type." ".$person->doc_number ?>" readonly>
+								<input type="text" class="form-control" value="<?= $person->doc_type." ".$person->doc_number ?>" readonly>
 								<div class="sys_msg" id="pt_doc_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
 								<label><?= $this->lang->line('lb_name') ?></label>
-								<input type="text" class="form-control bg-light" name="pt[name]" value="<?= $person->name ?>" readonly>
+								<input type="text" class="form-control" name="pt[name]" value="<?= $person->name ?>" readonly>
 								<div class="sys_msg" id="pt_name_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
@@ -239,12 +241,12 @@
 								<input type="hidden" name="pt[doc_type_id]" value="<?= $person->doc_type_id ?>">
 								<input type="hidden" name="pt[doc_number]" value="<?= $person->doc_number ?>">
 								<label><?= $this->lang->line('lb_document') ?></label>
-								<input type="text" class="form-control bg-light" value="<?= $person->doc_type." ".$person->doc_number ?>" readonly>
+								<input type="text" class="form-control" value="<?= $person->doc_type." ".$person->doc_number ?>" readonly>
 								<div class="sys_msg" id="pt_doc_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
 								<label><?= $this->lang->line('lb_name') ?></label>
-								<input type="text" class="form-control bg-light" name="pt[name]" value="<?= $person->name ?>" readonly>
+								<input type="text" class="form-control" name="pt[name]" value="<?= $person->name ?>" readonly>
 								<div class="sys_msg" id="pt_name_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
@@ -580,7 +582,7 @@
 												<td><?= $item->title ?></td>
 												<td><?= explode(".", $item->filename)[1] ?></td>
 												<td class="text-right pr-0">
-													<a href="<?= base_url() ?>uploaded/patient_files/<?= $folder ?>/<?= $item->filename ?>" target="_blank">
+													<a href="<?= $file_path.$item->filename ?>" target="_blank">
 														<button type="button" class="btn btn-primary light sharp border-0">
 															<i class="far fa-search"></i>
 														</button>
@@ -613,12 +615,12 @@
 									<div class="form-row">
 										<div class="form-group col-md-6">
 											<label><?= $this->lang->line('lb_name') ?></label>
-											<input type="text" class="form-control bg-light" value="<?= $person->name ?>" readonly>
+											<input type="text" class="form-control" value="<?= $person->name ?>" readonly>
 											<div class="sys_msg" id="pu_name_msg"></div>
 										</div>
 										<div class="form-group col-md-6">
 											<label><?= $this->lang->line('lb_document') ?></label>
-											<input type="text" class="form-control bg-light" value="<?= $person->doc_type." ".$person->doc_number ?>" readonly>
+											<input type="text" class="form-control" value="<?= $person->doc_type." ".$person->doc_number ?>" readonly>
 											<div class="sys_msg" id="pu_doc_msg"></div>
 										</div>
 										<div class="form-group col-md-6">

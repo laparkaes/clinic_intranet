@@ -92,6 +92,8 @@ class Patient extends CI_Controller {
 		array_push($duration_ops, ["value" => 60, "txt" => "1 ".$this->lang->line('op_hour')]);
 		for($i = 2; $i <= 12; $i++) $duration_ops[] = ["value" => 60 * $i, "txt" => $i." ".$this->lang->line('op_hours')];
 		
+		$file_path = "/archivos/pacientes/".str_replace(" ", "_", $person->name)."_".$person->doc_number."/";
+		
 		$data = [
 			"person" => $person,
 			"appointments" => $appointments,
@@ -105,6 +107,7 @@ class Patient extends CI_Controller {
 			"specialty_arr" => $specialty_arr,
 			"status_arr" => $status_arr,
 			"currencies_arr" => $currencies_arr,
+			"file_path" => $file_path,
 			"sales" => $this->general->filter("sale", ["client_id" => $person->id]),
 			"sex_ops" => $this->general->all("sex", "description", "asc"),
 			"blood_type_ops" => $this->general->all("blood_type", "description", "asc"),

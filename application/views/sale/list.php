@@ -1,8 +1,10 @@
-<div class="col-sm-12 d-flex justify-content-between align-items-center pb-3">
+<div class="col-md-12">
 	<div class="welcome-text d-md-none d-block">
-		<h4 class="text-primary mb-0"><?= $this->lang->line('sales') ?></h4>
+		<h4 class="text-primary mb-3"><?= $this->lang->line('sales') ?></h4>
 	</div>
-	<div class="btn-group">
+</div>
+<div class="col-sm-6">
+	<div class="btn-group mb-3">
 		<button type="button" class="btn btn-primary control_bl" id="btn_list" value="bl_list">
 			<i class="fas fa-list mr-2"></i><?= $this->lang->line('btn_list') ?>
 		</button>
@@ -11,27 +13,33 @@
 		</button>
 	</div>
 </div>
+<div class="col-sm-6">
+	<form>
+		<div class="form-row">
+			<input type="hidden" value="1" name="page">
+			<div class="form-group col-sm-4">
+				<select class="form-control" id="sl_status" name="status">
+					<option value=""><?= $this->lang->line('lb_status') ?></option>
+					<?php foreach($status as $item){ if ($item->id == $f_url["status"]) $s = "selected"; else $s = ""; ?>
+					<option value="<?= $item->id ?>" <?= $s ?>><?= $this->lang->line($item->code) ?></option>
+					<?php } ?>
+				</select>
+			</div>
+			<div class="form-group col-sm-6">
+				<input type="text" class="form-control date_picker_all bw" id="inp_date" name="date" placeholder="<?= $this->lang->line('lb_date') ?>" value="<?= $f_url["date"] ?>">
+			</div>
+			<div class="form-group col-sm-2">
+				<button type="submit" class="btn btn-primary btn-block">
+					<i class="far fa-search"></i>
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
 <div class="col-md-12">
 	<div class="card">
 		<div class="card-body">
 			<div class="row bl_content" id="bl_list">
-				<div class="col-md-12 d-md-flex justify-content-end">
-					<form class="form-inline">
-						<input type="hidden" value="1" name="page">
-						<label class="sr-only" for="sl_status"><?= $this->lang->line('lb_status') ?></label>
-						<select class="form-control mb-2 mr-sm-2" id="sl_status" name="status" style="max-width: 150px;">
-							<option value=""><?= $this->lang->line('lb_status') ?></option>
-							<?php foreach($status as $item){ if ($item->id == $f_url["status"]) $s = "selected"; else $s = ""; ?>
-							<option value="<?= $item->id ?>" <?= $s ?>><?= $this->lang->line($item->code) ?></option>
-							<?php } ?>
-						</select>
-						<label class="sr-only" for="inp_date"><?= $this->lang->line('lb_date') ?></label>
-						<input type="text" class="form-control date_picker_all bw mb-2 mr-sm-2" id="inp_date" name="date" placeholder="<?= $this->lang->line('lb_date') ?>" value="<?= $f_url["date"] ?>">
-						<button type="submit" class="btn btn-primary mb-2">
-							<i class="far fa-search"></i>
-						</button>
-					</form>
-				</div>
 				<div class="col-md-12">
 					<?php if ($sales){ ?>
 					<div class="table-responsive">
@@ -61,7 +69,7 @@
 										<?php if ($item->balance) echo $cur." ".number_format($item->balance, 2); else echo "-"; ?>
 									</td>
 									<td>
-										<span class="badge light badge-<?= $item->status->color ?>">
+										<span class="text-<?= $item->status->color ?>">
 											<?= $item->status->lang ?>
 										</span>
 									</td>
@@ -72,8 +80,8 @@
 									</td>
 									<td class="text-right">
 										<a href="<?= base_url() ?>sale/detail/<?= $item->id ?>">
-											<button type="button" class="btn btn-primary light sharp border-0">
-												<i class="fas fa-search"></i>
+											<button type="button" class="btn btn-info light sharp">
+												<i class="fas fa-arrow-alt-right"></i>
 											</button>
 										</a>
 									</td>
