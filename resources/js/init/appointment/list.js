@@ -1,5 +1,17 @@
-function load_doctor_schedule_appointment(){
+function load_doctor_schedule_appointment1(){
 	load_doctor_schedule($("#aa_doctor").val(), $("#aa_date").val(), "aa_schedule");
+	
+	
+	
+}
+
+function load_doctor_schedule_appointment(){
+	$("#aa_schedule").html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
+	load_doctor_schedule_n($("#aa_doctor").val(), $("#aa_date").val()).done(function(res) {
+		$("#aa_schedule").html(res);
+		$("#aa_schedule .sch_cell").on('click',(function(e) {set_time_dom("#aa_hour", "#aa_min", this);}));
+		set_time_sl("aa", "#aa_schedule");
+	});
 }
 
 function set_doctor_sl(dom){
@@ -50,4 +62,5 @@ $(document).ready(function() {
 	$("#pt_doc_number").keyup(function() {reset_person();});
 	$("#btn_search_pt").on('click',(function(e) {search_person_pt();}));
 	$("#ic_doctor_schedule_w").on('click',(function(e) {load_doctor_schedule_weekly($("#aa_doctor").val(), null, "bl_weekly_schedule");}));
+	$("#aa_hour, #aa_min").change(function() {set_time_sl("aa", "#aa_schedule");});
 });

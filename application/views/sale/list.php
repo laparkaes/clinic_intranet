@@ -49,8 +49,7 @@
 									<th><strong>#</strong></th>
 									<th><strong><?= $this->lang->line('hd_date') ?></strong></th>
 									<th><strong><?= $this->lang->line('hd_client') ?></strong></th>
-									<th><strong><?= $this->lang->line('hd_total') ?></strong></th>
-									<th><strong><?= $this->lang->line('hd_balance') ?></strong></th>
+									<th class="text-nowrap"><strong><?= $this->lang->line('hd_total') ?> (<?= $this->lang->line('hd_balance') ?>)</strong></th>
 									<th><strong><?= $this->lang->line('hd_status') ?></strong></th>
 									<th><strong><?= $this->lang->line('hd_sunat') ?></strong></th>
 									<th></th>
@@ -60,23 +59,17 @@
 								<?php foreach($sales as $i => $item){ $cur = $item->currency->description; ?>
 								<tr>
 									<td><strong><?= number_format(($f_url["page"] - 1) * 25 + 1 + $i) ?></strong></td>
-									<td><?= $item->registed_at ?></td>
+									<td><?= str_replace(" ", "<br/>", $item->registed_at) ?></td>
 									<td>
 										<?php if ($item->client) echo $item->client->name; else echo "-"; ?>
 									</td>
-									<td><?= $cur." ".number_format($item->total, 2) ?></td>
-									<td>
-										<?php if ($item->balance) echo $cur." ".number_format($item->balance, 2); else echo "-"; ?>
+									<td class="text-nowrap">
+										<?= $cur." ".number_format($item->total, 2) ?>
+										<?php if ($item->balance) echo "<br/><small>(".$cur." ".number_format($item->balance, 2).")</small>"; ?>
 									</td>
+									<td class="text-nowrap text-<?= $item->status->color ?>"><?= $item->status->lang ?></td>
 									<td>
-										<span class="text-<?= $item->status->color ?>">
-											<?= $item->status->lang ?>
-										</span>
-									</td>
-									<td>
-										<?php if ($item->voucher){ ?>
 										<i class="fas fa-circle text-<?= $item->voucher->color ?>" title="<?= $item->voucher->sunat_msg ?>"></i>
-										<?php } ?>
 									</td>
 									<td class="text-right">
 										<a href="<?= base_url() ?>sale/detail/<?= $item->id ?>">
@@ -121,10 +114,11 @@
 										<tr>
 											<th><strong>#</strong></th>
 											<th><strong><?= $this->lang->line('hd_item') ?></strong></th>
-											<th class="text-right"><strong><?= $this->lang->line('hd_qty_up') ?></strong></th>
-											<th class="text-right"><strong><?= $this->lang->line('hd_subtotal') ?></strong></th>
+											<th><strong><?= $this->lang->line('hd_unit_price_short') ?></strong></th>
+											<th><strong><?= $this->lang->line('hd_qty') ?></strong></th>
+											<th><strong><?= $this->lang->line('hd_subtotal') ?></strong></th>
 											<th class="text-right">
-												<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#sl_product_modal">
+												<button type="button" class="btn btn-info light sharp" data-toggle="modal" data-target="#sl_product_modal">
 													<i class="fas fa-plus"></i>
 												</button>
 											</th>

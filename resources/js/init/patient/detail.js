@@ -30,11 +30,21 @@ function update(dom){
 }
 
 function aa_load_doctor_schedule(){
-	load_doctor_schedule($("#aa_doctor").val(), $("#aa_date").val(), "aa_schedule_list");
+	$("#aa_schedule_list").html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
+	load_doctor_schedule_n($("#aa_doctor").val(), $("#aa_date").val()).done(function(res) {
+		$("#aa_schedule_list").html(res);
+		$("#aa_schedule_list .sch_cell").on('click',(function(e) {set_time_dom("#aa_hour", "#aa_min", this);}));
+		set_time_sl("aa", "#aa_schedule_list");
+	});
 }
 
 function sur_load_doctor_schedule(){
-	load_doctor_schedule($("#sur_doctor").val(), $("#sur_date").val(), "sur_schedule_list");
+	$("#sur_schedule_list").html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
+	load_doctor_schedule_n($("#sur_doctor").val(), $("#sur_date").val()).done(function(res) {
+		$("#sur_schedule_list").html(res);
+		$("#sur_schedule_list .sch_cell").on('click',(function(e) {set_time_dom("#sur_hour", "#sur_min", this);}));
+		set_time_sl("sur", "#sur_schedule_list");
+	});
 }
 
 function aa_set_doctor_sl(dom){
@@ -80,12 +90,14 @@ $(document).ready(function() {
 	$("#add_appointment_form").submit(function(e) {e.preventDefault(); register_appointment(this);});
 	$("#aa_specialty").change(function() {aa_set_doctor_sl(this);});
 	$("#aa_specialty, #aa_doctor, #aa_date").change(function() {aa_load_doctor_schedule();});
+	$("#aa_hour, #aa_min").change(function() {set_time_sl("aa", "#aa_schedule_list");});
 	
 	//add surgery
 	sur_load_doctor_schedule();
 	$("#sur_register_form").submit(function(e) {e.preventDefault(); register_surgery(this);});
 	$("#sur_specialty").change(function() {sur_set_doctor_sl(this);});
 	$("#sur_specialty, #sur_doctor, #sur_date").change(function() {sur_load_doctor_schedule();});
+	$("#sur_hour, #sur_min").change(function() {set_time_sl("sur", "#sur_schedule_list");});
 	
 	//update patient
 	$("#form_update").submit(function(e) {e.preventDefault(); update(this);});

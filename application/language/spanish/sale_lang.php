@@ -22,7 +22,7 @@ $lang['error_ssi'] = 'Debe elegir un ítem de cirugía para proceder con la vent
 $lang['error_sit'] = 'Debe elegir un ítem.';//error_select_item
 $lang['error_sio'] = 'Debe elegir una opción del producto.';//error_select_item_option
 $lang['error_psq'] = 'Debe ingresar cantidad menor que stock de opción.';//error_product_stock_qty
-$lang['error_nre'] = 'No hay reservacion con documento ingresado.';//error_no_reservation
+$lang['error_nre'] = 'No hay reservación con documento ingresado. Genere una reserva con datos de cliente para continuar.';//error_no_reservation
 $lang['error_sac'] = 'Es una venta previamente cancelada.';//error_sale_already_cenceled
 $lang['error_vex'] = 'Existe un comprobante vinculado con esta venta.';//error_voucher_exists
 $lang['warning_asa'] = '¿Desea registrar la venta?';//warning_add_sale
@@ -119,6 +119,8 @@ $lang['btn_search'] = 'Buscar';
 $lang['msg_need_send_sunat'] = 'Requiere enviar a Sunat.';
 $lang['txt_total'] = 'Total';
 $lang['title_new_sale'] = 'Nueva Venta';
+$lang['hd_unit_price_short'] = 'Cant. * P/U';
+$lang['hd_qty_up'] = 'Cant. * P/U';
 
 //detail
 $lang['tab_items'] = 'Ítems';
@@ -184,4 +186,3 @@ $lang['msg_canceled_sale'] = 'Venta anulada. No requiere ninguna comunicación c
 $lang['title_void_voucher'] = 'Anular comprobante';
 $lang['label_reason'] = 'Motivo';
 $lang['btn_void'] = 'Anular';
-$lang['hd_qty_up'] = 'Cant. * P/U';

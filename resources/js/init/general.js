@@ -197,6 +197,41 @@ function load_doctor_schedule(doctor_id, date, dom_id){
 	});
 }
 
+function set_time_sl(prefix, list_id){
+	let hh = $("#" + prefix + "_hour").val();
+	let mm = $("#" + prefix + "_min").val();
+	
+	if ((hh != "") && (mm != "")){
+		$(list_id + " .sch_cell").html("");
+		$(list_id + " #" + hh + mm + ".sch_cell").html('<i class="fas fa-check text-info"></i>');
+	}
+}
+
+function set_time_dom(id_hour, id_min, dom){//used when select a cell in doctor schedule
+	let val = $(dom).attr("id");
+	let lastIndex = val.length - 2;
+	
+	$(id_hour).val(val.substring(0, lastIndex));
+	$(id_min).val(val.substring(lastIndex));
+	
+	$(".sch_cell").html("");
+	$(dom).html('<i class="fas fa-check text-info"></i>');
+}
+
+function load_doctor_schedule_n(doctor_id, date){//new function
+	var deferred = $.Deferred();
+	$.ajax({
+		url: $("#base_url").val() + "ajax_f/load_doctor_schedule",
+		type: "POST",
+		data: {doctor_id: doctor_id, date: date},
+		success:function(res){
+			deferred.resolve(res);
+		}
+	});
+	
+	return deferred.promise();
+}
+
 function load_doctor_schedule_weekly(doctor_id, date, dom_id){
 	$("#" + dom_id).html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
 	$.ajax({

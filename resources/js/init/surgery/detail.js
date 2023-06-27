@@ -19,7 +19,13 @@ function reschedule_surgery(dom){
 }
 
 function load_doctor_schedule_surgery(){
-	load_doctor_schedule($("#rs_doctor").val(), $("#rs_date").val(), "rp_schedule");
+	$("#rp_schedule").html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
+	load_doctor_schedule_n($("#rs_doctor").val(), $("#rs_date").val()).done(function(res) {
+		$("#rp_schedule").html(res);
+		$("#rp_schedule .sch_cell").on('click',(function(e) {set_time_dom("#rs_hour", "#rs_min", this);}));
+		set_time_sl("rs", "#rp_schedule");
+	});
+	
 }
 
 function control_reschedule_form(){
@@ -42,6 +48,7 @@ $(document).ready(function() {
 	//reschedule
 	$("#form_reschedule").submit(function(e) {e.preventDefault(); reschedule_surgery(this);});
 	$(".doc_schedule").change(function() {load_doctor_schedule_surgery();});
+	$("#rs_hour, #rs_min").change(function() {set_time_sl("rs", "#rp_schedule");});
 	
 	//finish surgery
 	$("#form_result").submit(function(e) {e.preventDefault(); finish_surgery(this);});

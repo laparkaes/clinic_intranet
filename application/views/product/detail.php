@@ -130,11 +130,11 @@
 										<tr class="row_op_info" id="row_op_info_<?= $item->id ?>">
 											<td><?= $item->description ?></td>
 											<td><?= number_format($item->stock) ?></td>
-											<td class="text-right" style="min-width: 100px;">
-												<button class="btn btn-primary shadow btn-xs sharp mr-1 op_edit" value="<?= $item->id ?>">
+											<td class="text-right text-nowrap">
+												<button class="btn btn-info light sharp op_edit" value="<?= $item->id ?>">
 													<i class="fa fa-pencil"></i>
 												</button>
-												<button class="btn btn-danger shadow btn-xs sharp op_delete" value="<?= $item->id ?>">
+												<button class="btn btn-danger light sharp op_delete" value="<?= $item->id ?>">
 													<i class="fa fa-trash"></i>
 												</button>
 											</td>
@@ -145,11 +145,11 @@
 												<input type="hidden" name="product_id" value="<?= $item->product_id ?>">
 												<td><input type="text" class="form-control" name="description" value="<?= $item->description ?>"></td>
 												<td><input type="text" class="form-control" name="stock" value="<?= $item->stock ?>" style="width: 80px;"></td>
-												<td class="text-right" style="min-width: 100px;">
-													<button class="btn btn-primary shadow btn-xs sharp mr-1" type="submit">
+												<td class="text-right text-nowrap">
+													<button class="btn btn-info light sharp" type="submit">
 														<i class="fa fa-check"></i>
 													</button>
-													<button class="btn btn-danger shadow btn-xs sharp op_cancel_edit" type="button">
+													<button class="btn btn-danger light sharp op_cancel_edit" type="button">
 														<i class="fa fa-times"></i>
 													</button>
 												</td>
@@ -239,7 +239,7 @@
 							<div class="form-group col-md-12 pt-3 mb-0">
 								<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_save') ?></button>
 								<?php if ($product->provider_id){ ?>
-								<button type="button" class="btn tp-btn btn-danger" id="btn_clean_provider">
+								<button type="button" class="btn btn-danger light" id="btn_clean_provider">
 									<?= $this->lang->line('btn_clean') ?>
 								</button>
 								<?php } ?>
@@ -294,7 +294,7 @@
 								</div>
 								<div class="form-group col-md-12 pt-3 mb-0">
 									<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_update') ?></button>
-									<button type="button" class="btn tp-btn btn-danger btn_delete" value="<?= $product->id ?>">
+									<button type="button" class="btn btn-danger light btn_delete" value="<?= $product->id ?>">
 										<?= $this->lang->line('btn_delete') ?>
 									</button>	
 								</div>

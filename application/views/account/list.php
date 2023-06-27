@@ -62,10 +62,10 @@
 									<td><?= $item->email ?></td>
 									<td><?= $item->person ?></td>
 									<td class="text-right">
-										<button type="button" class="btn btn-info shadow btn-xs sharp btn_reset_password" value="<?= $item->id ?>">
+										<button type="button" class="btn btn-info light sharp btn_reset_password" value="<?= $item->id ?>">
 											<i class="fas fa-key"></i>
 										</button>
-										<button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_account" value="<?= $item->id ?>">
+										<button type="button" class="btn btn-danger light sharp btn_remove_account" value="<?= $item->id ?>">
 											<i class="fas fa-trash"></i>
 										</button>
 									</td>

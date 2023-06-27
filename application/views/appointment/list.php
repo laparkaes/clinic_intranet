@@ -174,7 +174,7 @@
 										</button>
 									</div>
 								</div>
-								<div class="sys_msg" id="aa_pt_doc_msg"></div>
+								<div class="sys_msg" id="aa_pt_doc_number_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
 								<label><?= $this->lang->line('lb_name') ?></label>

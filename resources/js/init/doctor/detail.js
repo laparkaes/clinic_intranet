@@ -67,11 +67,21 @@ function search_person_sur(){
 }
 
 function aa_load_doctor_schedule(){
-	load_doctor_schedule($("#aa_doctor_id").val(), $("#aa_date").val(), "aa_schedule");
+	$("#aa_schedule").html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
+	load_doctor_schedule_n($("#aa_doctor_id").val(), $("#aa_date").val()).done(function(res) {
+		$("#aa_schedule").html(res);
+		$("#aa_schedule .sch_cell").on('click',(function(e) {set_time_dom("#aa_hour", "#aa_min", this);}));
+		set_time_sl("aa", "#aa_schedule");
+	});
 }
 
 function sur_load_doctor_schedule(){
-	load_doctor_schedule($("#sur_doctor_id").val(), $("#sur_date").val(), "sur_schedule_list");
+	$("#sur_schedule_list").html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
+	load_doctor_schedule_n($("#sur_doctor_id").val(), $("#sur_date").val()).done(function(res) {
+		$("#sur_schedule_list").html(res);
+		$("#sur_schedule_list .sch_cell").on('click',(function(e) {set_time_dom("#sur_hour", "#sur_min", this);}));
+		set_time_sl("sur", "#sur_schedule_list");
+	});
 }
 
 function app_register(dom){
@@ -113,6 +123,7 @@ $(document).ready(function() {
 	$("#btn_aa_search_pt").on('click',(function(e) {search_person_aa();}));
 	$("#aa_pt_doc_type_id").on('change',(function(e) {reset_person("aa_pt_");}));
 	$("#aa_pt_doc_number").keyup(function() {reset_person("aa_pt_");});
+	$("#aa_hour, #aa_min").change(function() {set_time_sl("aa", "#aa_schedule");});
 	
 	//surgery generate
 	sur_load_doctor_schedule();
@@ -121,4 +132,5 @@ $(document).ready(function() {
 	$("#btn_sur_search_pt").on('click',(function(e) {search_person_sur();}));
 	$("#sur_pt_doc_type_id").on('change',(function(e) {reset_person("sur_pt_");}));
 	$("#sur_pt_doc_number").keyup(function() {reset_person("sur_pt_");});
+	$("#sur_hour, #sur_min").change(function() {set_time_sl("sur", "#sur_schedule_list");});
 });

@@ -161,7 +161,13 @@ function set_bmi(dom){
 }
 
 function load_doctor_schedule_appointment(){
-	load_doctor_schedule($("#ra_doctor").val(), $("#ra_date").val(), "rp_schedule");
+	$("#rp_schedule").html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
+	load_doctor_schedule_n($("#ra_doctor").val(), $("#ra_date").val()).done(function(res) {
+		$("#rp_schedule").html(res);
+		$("#rp_schedule .sch_cell").on('click',(function(e) {set_time_dom("#ra_hour", "#ra_min", this);}));
+		set_time_sl("ra", "#rp_schedule");
+	});
+	
 }
 
 function control_reschedule_form(){
@@ -274,6 +280,7 @@ $(document).ready(function() {
 	//reschedule
 	$("#reschedule_form").submit(function(e) {e.preventDefault(); reschedule_appointment(this);});
 	$(".doc_schedule").change(function() {load_doctor_schedule_appointment();});
+	$("#ra_hour, #ra_min").change(function() {set_time_sl("ra", "#rp_schedule");});
 	
 	//information
 	$("#form_basic_data").submit(function(e) {e.preventDefault(); save_form("basic_data", this);});

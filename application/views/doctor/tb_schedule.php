@@ -15,9 +15,9 @@
 		if ($i < 12) $a = "am"; else $a = "pm";
 		if ($i > 12) $h = $i-12; else $h = $i; ?>
 		<tr>
-			<td class="text-left"><?= $h." ".$a ?></td>
+			<td class="text-left text-nowrap"><?= $h." ".$a ?></td>
 			<?php foreach($mins as $m){ if (in_array($i.$m, $cells)) $bg = "bg-success"; else $bg = ""; ?>
-			<td id="<?= $i.$m ?>" class="<?= $bg ?>"></td>
+			<td id="<?= $i.$m ?>" class="sch_cell <?= $bg ?>"></td>
 			<?php } ?>
 		</tr>
 		<?php } ?>

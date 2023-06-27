@@ -157,8 +157,6 @@ $(document).ready(function() {
 	$("#btn_search_person_mv").on('click',(function(e) {search_person_mv();}));
 	$("#btn_send_sunat").on('click',(function(e) {send_sunat($(this).val());}));
 	
-	
-	
 	//sale
 	$("#btn_cancel_sale").on('click',(function(e) {cancel_sale(this);}));
 	

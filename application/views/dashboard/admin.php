@@ -1,12 +1,12 @@
 <div class="col-md-6">
 	<div class="widget-stat card">
 		<div class="card-body p-4">
-			<h4 class="card-title"><?= $this->lang->line('lb_appointments') ?></h4>
-			<h3><?= number_format($app_attended) ?></h3>
+			<h4 class="card-title text-info"><?= $this->lang->line('lb_appointments') ?></h4>
+			<h3 class="text-info"><?= number_format($app_attended) ?></h3>
 			<div class="progress mb-2">
 				<?php if (($app_attended + $app_reserved) > 0) $w = ($app_attended)/($app_attended + $app_reserved);
 				else $w = 100; ?>
-				<div class="progress-bar progress-animated bg-primary" style="width: <?= $w ?>%"></div>
+				<div class="progress-bar progress-animated bg-info" style="width: <?= $w ?>%"></div>
 			</div>
 			<div class="text-right"><?= number_format($app_reserved)." ".$this->lang->line('txt_more_today') ?></div>
 		</div>
@@ -41,7 +41,6 @@
 							<th><strong><?= $this->lang->line('hd_date') ?></strong></th>
 							<th><strong><?= $this->lang->line('hd_client') ?></strong></th>
 							<th><strong><?= $this->lang->line('hd_total') ?></strong></th>
-							<th><strong><?= $this->lang->line('hd_balance') ?></strong></th>
 							<th><strong><?= $this->lang->line('hd_status') ?></strong></th>
 							<th><strong><?= $this->lang->line('hd_sunat') ?></strong></th>
 							<th></th>
@@ -55,10 +54,7 @@
 							<td>
 								<?php if ($item->client) echo $item->client->name; else echo "-"; ?>
 							</td>
-							<td><?= $cur." ".number_format($item->total, 2) ?></td>
-							<td>
-								<?php if ($item->balance) echo $cur." ".number_format($item->balance, 2); else echo "-"; ?>
-							</td>
+							<td class="text-nowrap"><?= $cur." ".number_format($item->total, 2) ?></td>
 							<td>
 								<span class="badge light badge-<?= $item->status->color ?>">
 									<?= $item->status->lang ?>

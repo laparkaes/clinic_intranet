@@ -53,7 +53,6 @@
 	<div class="card">
 		<div class="card-body">
 			<div class="row bl_content" id="bl_list">
-				</div>
 				<div class="col-md-12">
 					<?php if ($products){ ?>
 					<div class="table-responsive">
@@ -147,7 +146,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr class="bg-light">
+										<tr class="">
 											<form action="#" id="form_add_category">
 												<td colspan="3">
 													<input type="text" class="form-control" name="name" placeholder="<?= $this->lang->line('txt_category_name') ?>">
@@ -169,10 +168,10 @@
 													<div class="input-group">
 														<input type="text" class="form-control" name="name" value="<?= $c->name ?>">
 														<div class="input-group-append">
-															<button class="btn btn-primary border-0" type="submit">
+															<button class="btn btn-success border-0" type="submit">
 																<i class="far fa-check"></i>
 															</button>
-															<button class="btn btn-danger border-0 btn_cancel_edit_ct" type="button">
+															<button class="btn btn-danger light border-0 btn_cancel_edit_ct" type="button">
 																<i class="far fa-times"></i>
 															</button>
 														</div>
@@ -182,7 +181,7 @@
 											<td><?= number_format($c->prod_qty) ?></td>
 											<td class="text-right">
 												<div class="dropdown">
-													<button type="button" class="btn btn-primary light sharp border-0" data-toggle="dropdown">
+													<button type="button" class="btn btn-info light sharp border-0" data-toggle="dropdown">
 														<i class="far fa-ellipsis-h"></i>
 													</button>
 													<div class="dropdown-menu">
@@ -243,6 +242,16 @@
 						</div>
 						<div class="col-md-8">
 							<form action="#" class="form-row" id="form_register_product">
+								<div class="form-group col-md-12">
+									<label><?= $this->lang->line('p_category') ?></label>
+									<select class="form-control sl_category" name="category_id">
+										<option value="">-</option>
+										<?php foreach($categories as $item){ ?>
+										<option value="<?= $item->id ?>"><?= $item->name ?></option>
+										<?php } ?>
+									</select>
+									<div class="sys_msg" id="ap_category_msg"></div>
+								</div>
 								<div class="form-group col-md-6">
 									<label><?= $this->lang->line('p_type') ?></label>
 									<select class="form-control" name="type_id">
@@ -273,16 +282,6 @@
 										<input type="text" class="form-control" name="price">
 									</div>
 									<div class="sys_msg" id="ap_price_msg"></div>
-								</div>
-								<div class="form-group col-md-12">
-									<label><?= $this->lang->line('p_category') ?></label>
-									<select class="form-control sl_category" name="category_id">
-										<option value="">-</option>
-										<?php foreach($categories as $item){ ?>
-										<option value="<?= $item->id ?>"><?= $item->name ?></option>
-										<?php } ?>
-									</select>
-									<div class="sys_msg" id="ap_category_msg"></div>
 								</div>
 								<div class="form-group col-md-12">
 									<label><?= $this->lang->line('p_name') ?></label>

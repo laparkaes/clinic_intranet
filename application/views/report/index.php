@@ -34,7 +34,9 @@
 							<div class="sys_msg" id="gr_to_msg"></div>
 						</div>
 						<div class="form-group col-md-12 pt-3">
-							<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_generate') ?></button>
+							<button type="submit" class="btn btn-primary">
+								<?= $this->lang->line('btn_generate') ?>
+							</button>
 						</div>
 					</form>
 				</div>

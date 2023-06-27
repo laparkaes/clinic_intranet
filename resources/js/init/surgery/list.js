@@ -1,5 +1,10 @@
 function load_doctor_schedule_surgery(){
-	load_doctor_schedule($("#sur_doctor").val(), $("#sur_date").val(), "sur_schedule_list");
+	$("#sur_schedule_list").html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
+	load_doctor_schedule_n($("#sur_doctor").val(), $("#sur_date").val()).done(function(res) {
+		$("#sur_schedule_list").html(res);
+		$("#sur_schedule_list .sch_cell").on('click',(function(e) {set_time_dom("#sur_hour", "#sur_min", this);}));
+		set_time_sl("sur", "#sur_schedule_list");
+	});
 }
 
 function set_doctor_sl(dom){
@@ -51,4 +56,5 @@ $(document).ready(function() {
 	$("#btn_search_pt").on('click',(function(e) {search_person_pt();}));
 	$("#ic_doctor_schedule_w").on('click',(function(e) {load_doctor_schedule_weekly($("#sur_doctor").val(), null, "bl_weekly_schedule");}));
 	$("#ic_room_availability_w").on('click',(function(e) {load_room_availability($("#sur_room_id").val(), null, "bl_room_availability");}));
+	$("#sur_hour, #sur_min").change(function() {set_time_sl("sur", "#sur_schedule_list");});
 });

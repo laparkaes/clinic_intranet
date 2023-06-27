@@ -155,7 +155,7 @@
 							</div>
 							<div class="form-group col-md-12 pt-3">
 								<button type="sumit" class="btn btn-primary"><?= $this->lang->line('btn_reschedule') ?></button>
-								<button type="button" class="btn tp-btn btn-danger" id="btn_reschedule_cancel"><?= $this->lang->line('btn_cancel') ?></button>
+								<button type="button" class="btn btn-danger light" id="btn_reschedule_cancel"><?= $this->lang->line('btn_cancel') ?></button>
 							</div>
 						</div>
 					</form>
