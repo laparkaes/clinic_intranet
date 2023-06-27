@@ -412,13 +412,14 @@ class Surgery extends CI_Controller {
 			$room = $this->general->id("surgery_room", $room_id);
 			$run = $date; $date_end = $next;
 			
-			$status_ids = array($this->general->status("reserved")->id, $this->general->status("confirmed")->id);
-			$filter_in = array();
-			array_push($filter_in, ["field" => "status_id", "values" => $status_ids]);
-			
+			$s_confirmed_id = $this->general->status("confirmed")->id;
 			while(strtotime($run) < strtotime($date_end)){
-				$filter = ["room_id" => $room->id, "schedule_from >=" => $run." 00:00:00", "schedule_to <=" => $run." 23:59:59"];
-				$surgeries = $this->general->filter("surgery", $filter, null, $filter_in);
+				$filter = [
+					"room_id" => $room->id, 
+					"status_id" => $s_confirmed_id, 
+					"schedule_from >=" => $run." 00:00:00", 
+					"schedule_to <=" => $run." 23:59:59"];
+				$surgeries = $this->general->filter("surgery", $filter);
 				
 				$min_range = array([0, 15], [15, 30], [30, 45], [45, 60]);
 				$aux = array();

@@ -7,9 +7,6 @@ class Ajax_f extends CI_Controller {
 		parent::__construct();
 		date_default_timezone_set('America/Lima');
 		$this->lang->load("system", "spanish");
-		$this->load->model('appointment_model','appointment');
-		$this->load->model('surgery_model','surgery');
-		$this->load->model('status_model','status');
 		$this->load->model('general_model','general');
 	}
 	
@@ -93,10 +90,15 @@ class Ajax_f extends CI_Controller {
 	}
 	
 	private function set_doctor_schedule_cell($doctor_id, $date){
-		$cells = array();
-		$status_ids = array($this->status->code("reserved")->id, $this->status->code("confirmed")->id);
-		$appointments = $this->appointment->doctor($doctor_id, $date, $status_ids);
-		$surgeries = $this->surgery->doctor($doctor_id, $date, $status_ids);
+		$cells = [];
+		$f = [
+			"status_id" => $this->general->status("confirmed")->id, 
+			"doctor_id" => $doctor_id,
+			"schedule_from >=" => date("Y-m-d 00:00:00", strtotime($date)),
+			"schedule_from <=" => date("Y-m-d 23:23:59", strtotime($date)),
+		];
+		$appointments = $this->general->filter("appointment", $f);
+		$surgeries = $this->general->filter("surgery", $f);
 		
 		$min_range = array([0, 15], [15, 30], [30, 45], [45, 60]);
 		$aux = array();

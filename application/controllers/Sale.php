@@ -711,7 +711,7 @@ class Sale extends CI_Controller {
 						$this->general->update("sale", $voucher->sale_id, ["voucher_id" => null]);
 						
 						$type = "success";
-						$msg = $res["message"]."<br/>".$this->lang->line("error_internal");
+						$msg = $res["message"];
 					}else $msg = $this->lang->line("error_internal");
 				}else $msg = $this->lang->line('error_try_again')."<br/>".$res["message"];
 			}else $msg = $this->lang->line('error_occurred');

@@ -164,15 +164,19 @@ class Dashboard extends CI_Controller {
 			$item->status = $this->general->id("status", $item->status_id);
 			$item->status->lang = $this->lang->line($item->status->code);
 			
-			$voucher = $this->general->filter("voucher", ["sale_id" => $item->id]);
-			if ($voucher){
-				$item->voucher = $voucher[0];
+			if ($item->voucher_id){
+				$item->voucher = $this->general->id("voucher", $item->voucher_id);
 				if ($item->voucher->sunat_sent) $item->voucher->color = "success";
 				else $item->voucher->color = "danger";
 			}else{
 				$item->voucher = $this->general->structure("voucher");
-				$item->voucher->color = "warning";
-				$item->voucher->sunat_msg = $this->lang->line('msg_need_send_sunat');
+				if ($item->status->code === "canceled"){
+					$item->voucher->color = "success";
+					$item->voucher->sunat_msg = $this->lang->line('msg_canceled_sale');
+				}else{
+					$item->voucher->color = "warning";
+					$item->voucher->sunat_msg = $this->lang->line('msg_need_send_sunat');
+				}
 			}
 		}
 		

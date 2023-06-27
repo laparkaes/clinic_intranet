@@ -96,7 +96,7 @@ class My_val{
 			$app["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
 			$app["schedule_to"] = date("Y-m-d H:i:s", strtotime("+14 minutes", strtotime($app["schedule_from"])));
 			$status_ids = [
-				$this->CI->general->filter("status", ["code" => "reserved"])[0]->id,
+				//$this->CI->general->filter("status", ["code" => "reserved"])[0]->id,
 				$this->CI->general->filter("status", ["code" => "confirmed"])[0]->id
 			];
 			
@@ -206,7 +206,7 @@ class My_val{
 			$sur["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
 			$sur["schedule_to"] = date("Y-m-d H:i:s", strtotime("+".($sch["duration"]-1)." minutes", strtotime($sur["schedule_from"])));
 			$status_ids = [
-				$this->CI->general->filter("status", ["code" => "reserved"])[0]->id,
+				//$this->CI->general->filter("status", ["code" => "reserved"])[0]->id,
 				$this->CI->general->filter("status", ["code" => "confirmed"])[0]->id
 			];
 			
