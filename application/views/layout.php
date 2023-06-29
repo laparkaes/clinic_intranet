@@ -81,7 +81,7 @@
 						if (!strcmp("dashboard", $this->nav_menu)) $ac = "mm-active"; else $ac = ""; ?>
                     <li class="<?= $ac ?>">
 						<a class="ai-icon" href="<?= base_url() ?>dashboard" aria-expanded="false">
-							<i class="fas fa-home fa-fw"></i>
+							<i class="fas fa-home fa-fw p-0"></i>
 							<span class="nav-text ml-2"><?= $this->lang->line('nav_dashboard') ?></span>
 						</a>
                     </li>

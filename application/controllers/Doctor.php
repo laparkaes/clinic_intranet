@@ -81,15 +81,6 @@ class Doctor extends CI_Controller {
 		//set doctor data
 		$doctor->specialty = $this->general->id("specialty", $doctor->specialty_id)->name;
 		$doctor->status = $this->general->id("status", $doctor->status_id);
-		if (!strcmp("enabled", $doctor->status->code)){
-			$doctor->status->dom_id = "btn_deactivate";
-			$doctor->status->btn_color = "danger";
-			$doctor->status->btn_txt = $this->lang->line('btn_deactivate_doctor');
-		}else{
-			$doctor->status->dom_id = "btn_activate";
-			$doctor->status->btn_color = "success";
-			$doctor->status->btn_txt = $this->lang->line('btn_activate_doctor');
-		}
 		
 		//set personal data
 		$person->doc_type = $this->general->id("doc_type", $person->doc_type_id)->short;
@@ -300,23 +291,68 @@ class Doctor extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg, "msgs" => $msgs]);
 	}
 	
+	public function aux(){
+		$status = $this->general->status("confirmed");
+		
+		$type = $this->general->filter("schedule_type", ["description" => "appointment"])[0];
+		$apps = $this->general->filter("appointment", ["status_id" => $status->id]);
+		foreach($apps as $item){
+			$data = [
+				"doctor_id" => $item->doctor_id,
+				"type_id" => $type->id,
+				"record_id" => $item->id,
+				"start" => $item->schedule_from,
+				"end" => $item->schedule_to,
+				"registed_at" => $item->registed_at,
+			];
+			$this->general->insert("schedule", $data);
+		}
+		
+		$type = $this->general->filter("schedule_type", ["description" => "surgery"])[0];
+		$apps = $this->general->filter("surgery", ["status_id" => $status->id]);
+		foreach($apps as $item){
+			$data = [
+				"doctor_id" => $item->doctor_id,
+				"type_id" => $type->id,
+				"record_id" => $item->id,
+				"start" => $item->schedule_from,
+				"end" => $item->schedule_to,
+				"registed_at" => $item->registed_at,
+			];
+			$this->general->insert("schedule", $data);
+		}
+	}
+	
 	public function activation_control(){
 		$type = "error"; $msg = null;
 		if ($this->utility_lib->check_access("doctor", "update")){
 			$id = $this->input->post("id");
 			$active = filter_var($this->input->post("active"), FILTER_VALIDATE_BOOLEAN);
-			if ($active) $code = "enabled"; else $code = "disabled";
-			
-			$data = array("id" => $id, "status_id" => $this->general->filter("status", array("code" => $code))[0]->id);
-			if ($this->general->update("doctor", $data["id"], $data)){
-				$doctor = $this->general->id("doctor", $id);
-				$person = $this->general->id("person", $doctor->person_id);
-				$this->utility_lib->add_log("doctor_".$code, $person->name);
+			if ($active) $code = "enabled";
+			else{
+				$code = "disabled";
+				$f = [
+					"doctor_id" => $this->general->id("doctor", $id)->person_id,
+					"schedule_from >=" => date('Y-m-d H:i:s', time()),
+					"status_id" => $this->general->status("confirmed")->id
+				];
 				
-				$type = "success";
-				if ($active) $msg = $this->lang->line('success_ado');
-				else $msg = $this->lang->line('success_ddo');
-			}else $msg = $this->lang->line('error_internal');
+				if ($this->general->filter("appointment", $f)) $msg = $this->lang->line('error_dac');
+				elseif ($this->general->filter("surgery", $f)) $msg = $this->lang->line('error_dsc');
+			}
+			
+			if (!$msg){
+				$data = array("id" => $id, "status_id" => $this->general->status($code)->id);
+				if ($this->general->update("doctor", $data["id"], $data)){
+					$doctor = $this->general->id("doctor", $id);
+					$person = $this->general->id("person", $doctor->person_id);
+					$this->utility_lib->add_log("doctor_".$code, $person->name);
+					
+					$type = "success";
+					if ($active) $msg = $this->lang->line('success_ado');
+					else $msg = $this->lang->line('success_ddo');
+				}else $msg = $this->lang->line('error_internal');
+			}
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');

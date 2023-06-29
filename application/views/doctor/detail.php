@@ -2,7 +2,7 @@
 	<div class="row page-titles mx-0">
 		<div class="col-sm-6 p-md-0">
 			<div class="welcome-text">
-				<h4><?= $person->name ?></h4>
+				<h3><?= $person->name ?></h3>
 			</div>
 		</div>
 		<div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
@@ -33,18 +33,27 @@
 				<div class="fs-16 mt-2 pt-2 border-top border-white"><?= $this->lang->line('btn_weekly_agenda') ?></div>
 			</button>
 		</div>
+		<?php if ($doctor->status->code === "enabled"){ ?>
 		<div class="col-md-3">
-			<button class="btn btn-outline-<?= $doctor->status->btn_color ?> w-100 mb-3" id="<?= $doctor->status->dom_id ?>" value="<?= $doctor->id ?>">
+			<button class="btn btn-outline-danger w-100 mb-3" id="btn_deactivate" value="<?= $doctor->id ?>">
 				<div><i class="fal fa-power-off fa-5x fa-fw"></i></div>
-				<div class="fs-16 mt-2 pt-2 border-top border-<?= $doctor->status->btn_color ?>"><?= $doctor->status->btn_txt ?></div>
+				<div class="fs-16 mt-2 pt-2 border-top border-danger"><?= $this->lang->line('btn_deactivate_doctor') ?></div>
 			</button>
 		</div>
+		<?php }else{ ?>
+		<div class="col-md-3">
+			<button class="btn btn-outline-success w-100 mb-3" id="btn_activate" value="<?= $doctor->id ?>">
+				<div><i class="fal fa-power-off fa-5x fa-fw"></i></div>
+				<div class="fs-16 mt-2 pt-2 border-top border-success"><?= $this->lang->line('btn_activate_doctor') ?></div>
+			</button>
+		</div>
+		<?php } ?>
 	</div>
 </div>
 <div class="col-md-12 bl_simple d-none" id="bl_ga">
 	<div class="card">
-		<div class="card-header border-0 pb-0">
-			<h4><?= $this->lang->line('title_generate_appointment') ?></h4>
+		<div class="card-header">
+			<h4 class="mb-0"><?= $this->lang->line('title_generate_appointment') ?></h4>
 		</div>
 		<div class="card-body">
 			<div class="row">
@@ -152,8 +161,8 @@
 </div>
 <div class="col-md-12 bl_simple d-none" id="bl_gs">
 	<div class="card">
-		<div class="card-header border-0 pb-0">
-			<h4><?= $this->lang->line('title_generate_surgery') ?></h4>
+		<div class="card-header">
+			<h4 class="mb-0"><?= $this->lang->line('title_generate_surgery') ?></h4>
 		</div>
 		<div class="card-body">
 			<div class="row">
@@ -284,8 +293,8 @@
 </div>
 <div class="col-md-12 bl_simple d-none" id="bl_bs">
 	<div class="card">
-		<div class="card-header border-0 pb-0">
-			<h4><?= $this->lang->line('title_weekly_agenda') ?></h4>
+		<div class="card-header">
+			<h4 class="mb-0"><?= $this->lang->line('title_weekly_agenda') ?></h4>
 		</div>
 		<div class="card-body">
 			<div class="row">
@@ -296,8 +305,8 @@
 </div>
 <div class="col-md-12">
 	<div class="card">
-		<div class="card-header border-0 pb-0">
-			<h4><?= $this->lang->line('title_records') ?></h4>
+		<div class="card-header">
+			<h4 class="mb-0"><?= $this->lang->line('title_records') ?></h4>
 		</div>
 		<div class="card-body" style="min-height: 500px;">
 			<!-- Nav tabs -->

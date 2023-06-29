@@ -42,7 +42,7 @@ class Surgery extends CI_Controller {
 			$item->room = $this->general->id("surgery_room", $item->room_id)->name;
 		}
 		
-		$aux_f = ["status_id" => $this->general->filter("status", ["code" => "enabled"])[0]->id];
+		$aux_f = ["status_id" => $this->general->status("enabled")->id];
 		$specialties = $this->general->all("specialty", "name", "asc");
 		foreach($specialties as $s){
 			$aux_f["specialty_id"] = $s->id;

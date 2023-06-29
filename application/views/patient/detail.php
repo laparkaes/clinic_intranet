@@ -2,7 +2,7 @@
 	<div class="row page-titles mx-0">
 		<div class="col-sm-6 p-md-0">
 			<div class="welcome-text">
-				<h4><?= $person->name ?></h4>
+				<h3><?= $person->name ?></h3>
 			</div>
 		</div>
 		<div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
@@ -39,8 +39,8 @@
 <?php } ?>
 <div class="col-md-12 bl_simple d-none" id="bl_ga">
 	<div class="card">
-		<div class="card-header border-0 pb-0">
-			<h4><?= $this->lang->line('title_generate_appointment') ?></h4>
+		<div class="card-header">
+			<h4 class="mb-0"><?= $this->lang->line('title_generate_appointment') ?></h4>
 		</div>
 		<div class="card-body">
 			<div class="row">
@@ -65,9 +65,9 @@
 								</label>
 								<select class="form-control" id="aa_doctor" name="app[doctor_id]">
 									<option value="">--</option>
-									<?php foreach($doctors as $item){ ?>
+									<?php foreach($doctors as $item){ if ($item->status_id == $s_enabled->id){ ?>
 									<option class="spe spe_<?= $item->specialty_id ?> d-none" value="<?= $item->person_id ?>"><?= $item->name ?></option>
-									<?php } ?>
+									<?php }} ?>
 								</select>
 								<div class="sys_msg" id="aa_doctor_msg"></div>
 							</div>
@@ -145,8 +145,8 @@
 </div>
 <div class="col-md-12 bl_simple d-none" id="bl_gs">
 	<div class="card">
-		<div class="card-header border-0 pb-0">
-			<h4><?= $this->lang->line('title_generate_surgery') ?></h4>
+		<div class="card-header">
+			<h4 class="mb-0"><?= $this->lang->line('title_generate_surgery') ?></h4>
 		</div>
 		<div class="card-body">
 			<div class="row">
@@ -171,9 +171,9 @@
 								</label>
 								<select class="form-control" id="sur_doctor" name="sur[doctor_id]">
 									<option value="">--</option>
-									<?php foreach($doctors as $item){ ?>
+									<?php foreach($doctors as $item){ if ($item->status_id == $s_enabled->id){ ?>
 									<option class="spe spe_<?= $item->specialty_id ?> d-none" value="<?= $item->person_id ?>"><?= $item->name ?></option>
-									<?php } ?>
+									<?php }} ?>
 								</select>
 								<div class="sys_msg" id="sur_doctor_msg"></div>
 							</div>
@@ -274,8 +274,8 @@
 </div>
 <div class="col-md-12 bl_simple d-none" id="bl_af">
 	<div class="card">
-		<div class="card-header border-0 pb-0">
-			<h4><?= $this->lang->line('title_add_file') ?></h4>
+		<div class="card-header">
+			<h4 class="mb-0"><?= $this->lang->line('title_add_file') ?></h4>
 		</div>
 		<div class="card-body">
 			<form action="#" class="form-row" id="form_upload_patient_file">
@@ -304,8 +304,8 @@
 </div>
 <div class="col-md-12">
 	<div class="card">
-		<div class="card-header border-0 pb-0">
-			<h4><?= $this->lang->line('title_records') ?></h4>
+		<div class="card-header">
+			<h4 class="mb-0"><?= $this->lang->line('title_records') ?></h4>
 		</div>
 		<div class="card-body" style="min-height: 500px;">
 			<!-- Nav tabs -->

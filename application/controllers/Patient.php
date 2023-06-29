@@ -103,6 +103,7 @@ class Patient extends CI_Controller {
 			"doctors" => $doctors,
 			"rooms" => $rooms,
 			"rooms_arr" => $rooms_arr,
+			"s_enabled" => $this->general->status("enabled"),
 			"doctors_arr" => $doctors_arr,
 			"specialty_arr" => $specialty_arr,
 			"status_arr" => $status_arr,
