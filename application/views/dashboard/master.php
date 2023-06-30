@@ -1,6 +1,34 @@
 <div class="col-12">
 	<h3 class="mb-3"><?= $this->lang->line('title_monthly_resume') ?></h3>
 </div>
+<div class="col-md-7">
+	<div class="card">
+		<div class="card-header pb-0 border-0">
+			<h4 class="mb-0"><?= $this->lang->line('tab_monthly_income') ?></h4>
+			<div class="btn-group">
+				<?php $cl = ""; foreach($currencies as $item){ ?>
+				<button type="button" class="btn btn<?= $cl ?>-primary btn-xs btn_load_income_chart" value="<?= $item->id ?>">
+					<?= $item->description ?>
+				</button>
+				<?php $cl = "-outline";} ?>
+			</div>
+		</div>
+		<div class="card-body p-0" id="chart_monthly_income"></div>
+	</div>
+</div>
+<div class="col-md-5">
+	<div class="card">
+		<div class="card-header">
+			<h4 class="mb-0"><?= $this->lang->line('tab_monthly_income') ?></h4>
+		</div>
+		<div class="card-body">
+			saaaaaaaaaa
+		</div>
+	</div>
+</div>
+
+
+
 <div class="col-md-4">
 	<div class="widget-stat card">
 		<div class="card-body p-0">

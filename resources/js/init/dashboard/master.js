@@ -2,56 +2,51 @@ function nf(num){//number format
 	return parseFloat(num).toLocaleString('es-US', {maximumFractionDigits: 2, minimumFractionDigits: 2});
 }
 
-function set_chart_monthly_income(data){
-	var options = {
-		series: data.series,
-		chart: {height: 300, type: 'area', zoom: {enabled: false}},
-		stroke: {curve: 'smooth'},
-		fill: {opacity: 0.3},
-		dataLabels: {enabled: false},
-        legend: {
-			tooltipHoverFormatter: function(val, opts) {
-				var value = opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex];
-				if (value == null) value = 0;
-				return val + ' <strong>' + nf(value) + '</strong>'
-			}
-        },
-		yaxis: {show: false},
-		xaxis: {categories: data.xaxis},
-		tooltip: {
-			y: {
-				formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
-					if (value == null) value = 0;
-					return nf(value)
-				}
-			}
-		}
-	};
+function load_income_chart(dom){
+	$(".btn_load_income_chart").removeClass("btn-primary").addClass("btn-outline-primary");
+	$(dom).removeClass("btn-outline-primary").addClass("btn-primary");
 	
-	var chart = new ApexCharts(document.querySelector("#chart_monthly_income"), options);
-	chart.render();
-}
-
-function load_income_chart(currency_id){
-	ajax_simple({currency_id: currency_id}, "dashboard/load_income_chart").done(function(res) {
+	ajax_simple({currency_id: $(dom).val()}, "dashboard/load_income_chart").done(function(res) {
 		var options = {
 			series: res.series,
-			chart: {height: 300, type: 'line', stacked: false, toolbar: {show: false}, zoom: {enabled: false}},
+			chart: {height: 300, type: 'bar', stacked: true, toolbar: {show: false}, zoom: {enabled: false}},
 			dataLabels: {enabled: false},
-			stroke: {curve: 'smooth', width: [4, 1, 1]},
+			//stroke: {curve: 'smooth', width: [1, 1, 1]},
 			xaxis: {categories: res.xaxis},
-			yaxis: {show: false},
-			// topRight, topLeft, bottomRight, bottomLeft
-			tooltip: {fixed: {enabled: true, position: 'topLeft', offsetY: 30, offsetX: 60}},
-			legend: {horizontalAlign: 'center'},
-			tooltip: {
-				y: {
-					formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
-						if (value == null) value = 0;
-						return nf(value)
+			//yaxis: {show: false},
+			yaxis: {
+				labels: {
+					formatter: function (value) {
+						if (value >= 1000000) return (value / 1000000) + 'm';
+						else if (value >= 1000) return (value / 1000) + 'k';
+						else return value;
 					}
 				}
-			}
+			},
+			// topRight, topLeft, bottomRight, bottomLeft
+			tooltip: {
+				fixed: {enabled: true, position: 'topLeft', offsetY: 30, offsetX: 60},
+				shared: true,
+				intersect: false,
+				custom: function({ series, seriesIndex, dataPointIndex, w }) {
+					let currentTotal = 0;
+					let content = "";
+					let currency = $(dom).text().trim();
+					
+					var i = 0;
+					series.forEach((s) => {
+						currentTotal += s[dataPointIndex];
+						content += '<tr><td class="text-left px-2" style="color: ' + w.globals.fill.colors[i] + '"><b>' + w.globals.seriesNames[i] + '</b></td><td class="px-2"></td><td class="text-right px-2">' + currency + " " + nf(s[dataPointIndex]) + '</td></tr>';
+						
+						i++;
+					});
+					
+					content += '<tr><td class="text-left px-2 pt-1"><b>Total</b></td><td class="px-2 pt-1"></td><td class="text-right px-2 pt-1"><b>' + currency + " " + nf(currentTotal) + '</b></td></tr>';
+					
+					return '<div class="p-1"><table>' + content + '</table></div>';
+				}
+			},
+			legend: {horizontalAlign: 'center'},
 		};
 
 		var chart = new ApexCharts(document.querySelector("#chart_monthly_income"), options);
@@ -64,6 +59,6 @@ $(document).ready(function() {
 		$(".btn_load_income_chart").first().click();
 	}, 1000);
 	
-	$(".btn_load_income_chart").on('click',(function(e) {load_income_chart($(this).val());}));
+	$(".btn_load_income_chart").on('click',(function(e) {load_income_chart(this);}));
 	
 });

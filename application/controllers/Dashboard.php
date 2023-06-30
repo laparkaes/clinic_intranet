@@ -215,26 +215,19 @@ class Dashboard extends CI_Controller {
 		$filter = ["currency_id" => $currency->id];
 		$start = date("Y-m-01", time());
 		
-		//total amount
-		$total = ["name" => $this->lang->line('txt_total'), "type" => "line", "data" => []];
 		for($i = 5; $i >= 0; $i--){
 			//xaxis
 			$actual = date("Y-m-01", strtotime("-".$i." months", strtotime($start)));
-			$filter["updated_at >="] = date('Y-m-01 00:00:00', strtotime($actual));
-			$filter["updated_at <="] = date('Y-m-t 23:59:59', strtotime($actual));
-			$total["data"][] = round($this->general->sum("sale", "total", $filter)->total, 2);
-			
 			$aux = DateTime::createFromFormat("Y-m-d", $actual)->getTimestamp();
 			$month = substr(ucfirst(strftime("%B", $aux)), 0, 3);
 			if (strftime("%m", $aux) == 1) $month = $month." ".strftime("%Y", $aux);
 			
 			$xaxis[] = $month;
 		}
-		$series[] = $total;
 		
 		$sale_types = $this->general->all("sale_type");
 		foreach($sale_types as $item){
-			$chart_data = ["name" => $item->description, "type" => "column", "data" => []];
+			$chart_data = ["name" => $item->description, "data" => []];
 			for($i = 5; $i >= 0; $i--){
 				//xaxis
 				$actual = date("Y-m-01", strtotime("-".$i." months", strtotime($start)));

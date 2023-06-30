@@ -291,38 +291,6 @@ class Doctor extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg, "msgs" => $msgs]);
 	}
 	
-	public function aux(){
-		$status = $this->general->status("confirmed");
-		
-		$type = $this->general->filter("schedule_type", ["description" => "appointment"])[0];
-		$apps = $this->general->filter("appointment", ["status_id" => $status->id]);
-		foreach($apps as $item){
-			$data = [
-				"doctor_id" => $item->doctor_id,
-				"type_id" => $type->id,
-				"record_id" => $item->id,
-				"start" => $item->schedule_from,
-				"end" => $item->schedule_to,
-				"registed_at" => $item->registed_at,
-			];
-			$this->general->insert("schedule", $data);
-		}
-		
-		$type = $this->general->filter("schedule_type", ["description" => "surgery"])[0];
-		$apps = $this->general->filter("surgery", ["status_id" => $status->id]);
-		foreach($apps as $item){
-			$data = [
-				"doctor_id" => $item->doctor_id,
-				"type_id" => $type->id,
-				"record_id" => $item->id,
-				"start" => $item->schedule_from,
-				"end" => $item->schedule_to,
-				"registed_at" => $item->registed_at,
-			];
-			$this->general->insert("schedule", $data);
-		}
-	}
-	
 	public function activation_control(){
 		$type = "error"; $msg = null;
 		if ($this->utility_lib->check_access("doctor", "update")){
