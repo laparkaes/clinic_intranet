@@ -37,36 +37,61 @@ class Dashboard extends CI_Controller {
 	}
 	
 	private function set_nurse_datas($data){
-		//set monthly resume
-		$from = date('Y-m-d 00:00:00');
-		$to = date('Y-m-d 23:59:59');
+		//set profile
+		$account = $this->general->id("account", $this->session->userdata('aid'));
+		$data["profile"] = [
+			"email" => $account->email,
+			"name" => $this->general->id("person", $account->person_id)->name,
+			"role" => $this->lang->line($this->general->id("role", $account->role_id)->name),
+		];
 		
-		$filter = ["schedule_from >=" => $from, "schedule_from <=" => $to];
+		//set schedules
+		$filter = [
+			"status_id" => $this->general->status("confirmed")->id,
+			"schedule_from >=" => date('Y-m-d 00:00:00'), 
+			"schedule_from <=" => date('Y-m-d 23:59:59'),
+		];
 		
-		$apps = $this->general->filter("appointment", $filter, null, null, "schedule_from", "asc");
-		foreach($apps as $item){
-			$item->from = date("h:i a", strtotime($item->schedule_from));
-			$item->specialty = $this->general->id("specialty", $item->specialty_id)->name;
-			$item->doctor = $this->general->id("person", $item->doctor_id)->name;
-			$item->patient = $this->general->id("person", $item->patient_id)->name;
-			$item->status = $this->general->id("status", $item->status_id);
-		}
+		$schedules = [];
+		$apps = $this->general->filter("appointment", $filter);
+		foreach($apps as $item) $schedules[] = ["from" => $item->schedule_from, "type" => "appointment", "patient_id" => $item->patient_id, "id" => $item->id];
 		
-		$surs = $this->general->filter("surgery", $filter, null, null, "schedule_from", "asc");
-		foreach($surs as $item){
-			$item->from = date("h:i a", strtotime($item->schedule_from));
-			$item->specialty = $this->general->id("specialty", $item->specialty_id)->name;
-			$item->doctor = $this->general->id("person", $item->doctor_id)->name;
-			$item->patient = $this->general->id("person", $item->patient_id)->name;
-			$item->status = $this->general->id("status", $item->status_id);
-		}
+		$surs = $this->general->filter("surgery", $filter);
+		foreach($surs as $item) $schedules[] = ["from" => $item->schedule_from, "type" => "surgery", "patient_id" => $item->patient_id, "id" => $item->id];
 		
-		$data["apps"] = $apps;
-		$data["surs"] = $surs;
+		usort($schedules, function($a, $b) { return ($a["from"] > $b["from"]); });
+		foreach($schedules as $i => $item) $schedules[$i]["patient"] = $this->general->id("person", $item["patient_id"])->name;
+		
+		$data["schedules"] = $schedules;
 		
 		return $data;
 	}
-	
+	/*
+	public function set_app_sur_today(){
+		$s_confirmed_id = $this->general->status("confirmed")->id;
+		$today = date("Y-m-d");
+		
+		$app = $this->general->all("appointment", "schedule_from", "asc", 200);
+		foreach($app as $item){
+			$data = [
+				"status_id" => $s_confirmed_id,
+				"schedule_from" => $today." ".explode(" ", $item->schedule_from)[1],
+				"schedule_to" => $today." ".explode(" ", $item->schedule_to)[1],
+			];
+			$this->general->update("appointment", $item->id, $data);
+		}
+		
+		$sur = $this->general->all("surgery", "schedule_from", "asc", 200);
+		foreach($sur as $item){
+			$data = [
+				"status_id" => $s_confirmed_id,
+				"schedule_from" => $today." ".explode(" ", $item->schedule_from)[1],
+				"schedule_to" => $today." ".explode(" ", $item->schedule_to)[1],
+			];
+			$this->general->update("appointment", $item->id, $data);
+		}
+	}
+	*/
 	private function set_doctor_datas($data){
 		//set monthly resume
 		$from = date('Y-m-01 00:00:00');
@@ -98,9 +123,12 @@ class Dashboard extends CI_Controller {
 		array_unique($patient_arr);
 		
 		$account = $this->general->id("account", $this->session->userdata('aid'));
+		$doctor = $this->general->filter("doctor", ["person_id" => $account->person_id], null, null, "registed_at", "desc")[0];
 		$data["profile"] = [
 			"email" => $account->email,
 			"name" => $this->general->id("person", $account->person_id)->name,
+			"license" => $doctor->license,
+			"specialty" => $this->general->id("specialty", $doctor->specialty_id)->name,
 			"role" => $this->lang->line($this->general->id("role", $account->role_id)->name),
 			"appointment_qty" => $this->general->counter("appointment", $filter),
 			"surgery_qty" => $this->general->counter("surgery", $filter),
@@ -128,32 +156,32 @@ class Dashboard extends CI_Controller {
 	}
 	
 	private function set_reception_datas($data){
-		//set monthly resume
-		$from = date('Y-m-d 00:00:00');
-		$to = date('Y-m-d 23:59:59');
+		//set profile
+		$account = $this->general->id("account", $this->session->userdata('aid'));
+		$data["profile"] = [
+			"email" => $account->email,
+			"name" => $this->general->id("person", $account->person_id)->name,
+			"role" => $this->lang->line($this->general->id("role", $account->role_id)->name),
+		];
 		
-		$filter = ["schedule_from >=" => $from, "schedule_from <=" => $to];
+		//set schedules
+		$filter = [
+			"status_id" => $this->general->status("confirmed")->id,
+			"schedule_from >=" => date('Y-m-d 00:00:00'), 
+			"schedule_from <=" => date('Y-m-d 23:59:59'),
+		];
 		
-		$apps = $this->general->filter("appointment", $filter, null, null, "schedule_from", "asc");
-		foreach($apps as $item){
-			$item->from = date("h:i a", strtotime($item->schedule_from));
-			$item->specialty = $this->general->id("specialty", $item->specialty_id)->name;
-			$item->doctor = $this->general->id("person", $item->doctor_id)->name;
-			$item->patient = $this->general->id("person", $item->patient_id)->name;
-			$item->status = $this->general->id("status", $item->status_id);
-		}
+		$schedules = [];
+		$apps = $this->general->filter("appointment", $filter);
+		foreach($apps as $item) $schedules[] = ["from" => $item->schedule_from, "type" => "appointment", "patient_id" => $item->patient_id, "id" => $item->id];
 		
-		$surs = $this->general->filter("surgery", $filter, null, null, "schedule_from", "asc");
-		foreach($surs as $item){
-			$item->from = date("h:i a", strtotime($item->schedule_from));
-			$item->specialty = $this->general->id("specialty", $item->specialty_id)->name;
-			$item->doctor = $this->general->id("person", $item->doctor_id)->name;
-			$item->patient = $this->general->id("person", $item->patient_id)->name;
-			$item->status = $this->general->id("status", $item->status_id);
-		}
+		$surs = $this->general->filter("surgery", $filter);
+		foreach($surs as $item) $schedules[] = ["from" => $item->schedule_from, "type" => "surgery", "patient_id" => $item->patient_id, "id" => $item->id];
 		
-		$data["apps"] = $apps;
-		$data["surs"] = $surs;
+		usort($schedules, function($a, $b) { return ($a["from"] > $b["from"]); });
+		foreach($schedules as $i => $item) $schedules[$i]["patient"] = $this->general->id("person", $item["patient_id"])->name;
+		
+		$data["schedules"] = $schedules;
 		
 		return $data;
 	}

@@ -127,6 +127,7 @@ class Surgery extends CI_Controller {
 		
 		$surgery->room = $this->general->id("surgery_room", $surgery->room_id)->name;
 		
+		$surgery->specialty = $this->general->id("specialty", $surgery->specialty_id)->name;
 		$surgery->detail = null;
 		$surgery_sale = $this->general->filter("sale_product", ["surgery_id" => $surgery->id]);
 		if ($surgery_sale){
@@ -140,14 +141,11 @@ class Surgery extends CI_Controller {
 		$doctor = $this->general->id("person", $surgery->doctor_id);
 		if ($doctor){
 			$data = $this->general->filter("doctor", array("person_id" => $doctor->id));
-			if ($data){
-				$doctor->data = $data[0];
-				$doctor->data->specialty = $this->general->id("specialty", $doctor->data->specialty_id)->name;
-			}
+			if ($data) $doctor->data = $data[0];
+			else $doctor->data = $this->general->structure("doctor");
 		}else{
 			$doctor = $this->general->structure("person");
 			$doctor->data = $this->general->structure("doctor");
-			$doctor->data->specialty = "";
 		}
 		
 		$patient = $this->general->id("person", $surgery->patient_id);

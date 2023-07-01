@@ -183,6 +183,7 @@ class Appointment extends CI_Controller {
 			case "canceled": $appointment->status->color = "danger"; $appointment->is_editable = false; break;
 		}
 		
+		$appointment->specialty = $this->general->id("specialty", $appointment->specialty_id)->name;
 		$appointment->detail = null;
 		$appointment_sale = $this->general->filter("sale_product", ["appointment_id" => $appointment->id]);
 		if ($appointment_sale){
@@ -196,14 +197,11 @@ class Appointment extends CI_Controller {
 		$doctor = $this->general->id("person", $appointment->doctor_id);
 		if ($doctor){
 			$data = $this->general->filter("doctor", ["person_id" => $doctor->id]);
-			if ($data){
-				$doctor->data = $data[0];
-				$doctor->data->specialty = $this->general->id("specialty", $doctor->data->specialty_id)->name;
-			}
+			if ($data) $doctor->data = $data[0];
+			else $doctor->data = $this->general->structure("doctor");
 		}else{
 			$doctor = $this->general->structure("person");
 			$doctor->data = $this->general->structure("doctor");
-			$doctor->data->specialty = "";
 		}
 		
 		$patient = $this->general->id("person", $appointment->patient_id);

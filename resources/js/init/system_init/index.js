@@ -32,7 +32,7 @@ function search_company(){
 }
 
 function company_init(dom){
-	ajax_form(dom, "config/company_init").done(function(res) {
+	ajax_form(dom, "system_init/company").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
@@ -41,7 +41,7 @@ function company_init(dom){
 
 /* start account */
 function account_init(dom){
-	ajax_form(dom, "config/account_init").done(function(res) {
+	ajax_form(dom, "system_init/account").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
@@ -56,11 +56,10 @@ function set_sale_types(sale_types){
 	});
 	
 	$(".btn_remove_sale_type").on('click',(function(e) {remove_sale_type($(this).val());}));
-	
 }
 
 function add_sale_type(dom){
-	ajax_form(dom, "config/add_sale_type").done(function(res) {
+	ajax_form(dom, "system_init/add_sale_type").done(function(res) {
 		set_msg(res.msgs);
 		swal(res.type, res.msg);
 		if (res.type == "success"){
@@ -73,7 +72,7 @@ function add_sale_type(dom){
 }
 
 function remove_sale_type(id){
-	ajax_simple_warning({id:id}, "config/remove_sale_type", $("#warning_rst").val()).done(function(res) {
+	ajax_simple_warning({id:id}, "system_init/remove_sale_type", $("#warning_rst").val()).done(function(res) {
 		swal(res.type, res.msg);
 		if (res.type == "success"){
 			$("#btn_finish_sale_type").removeClass("d-none");
@@ -83,14 +82,14 @@ function remove_sale_type(id){
 }
 
 function finish_sale_type(){
-	ajax_simple_warning({}, "config/finish_sale_type", $("#warning_fst").val()).done(function(res) {
+	ajax_simple_warning({}, "system_init/finish_sale_type", $("#warning_fst").val()).done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 /* end sale type */
 
 function finish_init(){
-	ajax_simple_warning({}, "config/finish_init", $("#warning_fsi").val()).done(function(res) {
+	ajax_simple_warning({}, "system_init/finish_init", $("#warning_fsi").val()).done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }

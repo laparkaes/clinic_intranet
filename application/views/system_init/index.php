@@ -258,6 +258,6 @@
     <script src="<?= base_url() ?>resources/js/custom.min.js"></script>
 	<script src="<?= base_url() ?>resources/js/deznav-init.js"></script>
 	<script src="<?= base_url() ?>resources/js/init/general.js"></script>
-	<script src="<?= base_url() ?>resources/js/init/config/system_init.js"></script>
+	<script src="<?= base_url() ?>resources/js/init/system_init/index.js"></script>
 </body>
 </html>

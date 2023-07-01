@@ -1,7 +1,7 @@
 <div class="col-md-12">
 	<div class="card">
 		<div class="card-header">
-			<h4 class="mb-0"><?= $doctor->data->specialty ?></h4>
+			<h4 class="mb-0"><?= $appointment->specialty ?></h4>
 			<?php if ($actions){ ?>
 			<div role="group">
 				<i class="far fa-bars text-primary pointer" data-toggle="dropdown"></i>

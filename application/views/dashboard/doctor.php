@@ -42,7 +42,7 @@
 </div>
 <div class="col-md-7 mb-4">
 	<h4><?= $this->lang->line('title_today') ?></h4>
-	<div class="card mb-0" style="max-height: 400px; overflow-y: auto;">
+	<div class="card mb-0" style="max-height: 450px; overflow-y: auto;">
 		<div class="card-body">
 			<?php if ($schedules){ ?>
 			<div class="table-responsive">
@@ -57,7 +57,7 @@
 					<tbody>
 						<?php foreach($schedules as $item){ ?>
 						<tr>
-							<td class="text-left"><?= date("h:i a", strtotime($item["from"])) ?></td>
+							<td class="text-left text-nowrap"><?= date("h:i a", strtotime($item["from"])) ?></td>
 							<td>
 								<div><?= $this->lang->line("txt_".$item["type"]) ?></div>
 								<small class="text-muted"><?= $item["patient"] ?></small>
@@ -83,11 +83,13 @@
 <div class="col-md-5 mb-4">
 	<h4><?= $this->lang->line('title_profile') ?></h4>
 	<div class="card">
-		<div class="card-body text-center d-flex align-items-center justify-content-center">
+		<div class="card-body text-center d-flex align-items-top justify-content-center">
 			<div>
 				<div class="mb-3"><i class="fas fa-user-md fa-7x"></i></div>
 				<h4 class="text-black mb-3"><?= $profile["name"] ?></h4>
 				<div><?= $profile["role"] ?></div>
+				<div><?= $profile["specialty"] ?></div>
+				<div><?= $profile["license"] ?></div>
 				<div><?= $profile["email"] ?></div>
 			</div>
 		</div>
@@ -109,9 +111,3 @@
 		</div>
 	</div>
 </div>
-<input type="hidden" id="cl_today" value="<?= $this->lang->line('cl_today') ?>">
-<input type="hidden" id="cl_month" value="<?= $this->lang->line('cl_month') ?>">
-<input type="hidden" id="cl_week" value="<?= $this->lang->line('cl_week') ?>">
-<input type="hidden" id="cl_day" value="<?= $this->lang->line('cl_day') ?>">
-<input type="hidden" id="cl_list" value="<?= $this->lang->line('cl_list') ?>">
-<input type="hidden" id="cl_allday" value="<?= $this->lang->line('cl_allday') ?>">
