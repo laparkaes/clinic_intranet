@@ -68,6 +68,8 @@ class Dashboard extends CI_Controller {
 	}
 	
 	private function set_doctor_datas($data){
+		
+		
 		//set monthly resume
 		$from = date('Y-m-d 00:00:00');
 		$to = date('Y-m-d 23:59:59');
@@ -107,6 +109,28 @@ class Dashboard extends CI_Controller {
 		$data["patient_qty"] = count($patient_arr);
 		//$this->general->get_patient_qty($this->session->userdata("pid"), $s_finished->id);
 		
+		
+		//set profile
+		$account = $this->general->id("account", $this->session->userdata('aid'));
+		$data["profile"] = [
+			"email" => $account->email,
+			"name" => $this->general->id("person", $account->person_id)->name,
+			"role" => $this->lang->line($this->general->id("role", $account->role_id)->name),
+			"doctor_qty" => number_format($this->general->counter("doctor", [])),
+			"patient_qty" => number_format($this->general->counter("person", [])),
+			"account_qty" => number_format($this->general->counter("account", [])),
+		];
+		
+		//set monthly resume
+		$from = date('Y-m-01 00:00:00');
+		$to = date('Y-m-t 23:59:59');
+		$s_finished = $this->general->status("finished");
+		$filter_1 = ["schedule_from >=" => $from, "schedule_from <=" => $to, "status_id" => $s_finished->id];
+		$filter_2 = ["updated_at >=" => $from, "updated_at <=" => $to, "status_id" => $s_finished->id];
+		$data["appointment_qty"] = $this->general->counter("appointment", $filter_1);
+		$data["surgery_qty"] = $this->general->counter("surgery", $filter_1);
+		$data["sale_qty"] = $this->general->counter("sale", $filter_2);
+		
 		return $data;
 	}
 	
@@ -142,49 +166,17 @@ class Dashboard extends CI_Controller {
 	}
 	
 	private function set_admin_datas($data){
-		//set monthly resume
-		$from = date('Y-m-d 00:00:00');
-		$to = date('Y-m-d 23:59:59');
-		$s_finished = $this->general->status("finished");
-		$s_confirmed = $this->general->status("confirmed");
+		//set profile
+		$account = $this->general->id("account", $this->session->userdata('aid'));
+		$data["profile"] = [
+			"email" => $account->email,
+			"name" => $this->general->id("person", $account->person_id)->name,
+			"role" => $this->lang->line($this->general->id("role", $account->role_id)->name),
+			"doctor_qty" => number_format($this->general->counter("doctor", [])),
+			"patient_qty" => number_format($this->general->counter("person", [])),
+			"account_qty" => number_format($this->general->counter("account", [])),
+		];
 		
-		$filter_f = ["schedule_from >=" => $from, "schedule_from <=" => $to, "status_id" => $s_finished->id];
-		$filter_c = ["schedule_from >=" => $from, "schedule_from <=" => $to, "status_id" => $s_confirmed->id];
-		
-		$data["app_attended"] = $this->general->counter("appointment", $filter_f);
-		$data["app_reserved"] = $this->general->counter("appointment", $filter_c);
-		$data["sur_attended"] = $this->general->counter("surgery", $filter_f);
-		$data["sur_reserved"] = $this->general->counter("surgery", $filter_c);
-		
-		$sales = $this->general->all("sale", "updated_at", "desc", 10);
-		foreach($sales as $item){
-			$item->sale_type = $this->general->id("sale_type", $item->sale_type_id);
-			$item->currency = $this->general->id("currency", $item->currency_id);
-			$item->client = $this->general->id("person", $item->client_id);
-			$item->status = $this->general->id("status", $item->status_id);
-			$item->status->lang = $this->lang->line($item->status->code);
-			
-			if ($item->voucher_id){
-				$item->voucher = $this->general->id("voucher", $item->voucher_id);
-				if ($item->voucher->sunat_sent) $item->voucher->color = "success";
-				else $item->voucher->color = "danger";
-			}else{
-				$item->voucher = $this->general->structure("voucher");
-				if ($item->status->code === "canceled"){
-					$item->voucher->color = "success";
-					$item->voucher->sunat_msg = $this->lang->line('msg_canceled_sale');
-				}else{
-					$item->voucher->color = "warning";
-					$item->voucher->sunat_msg = $this->lang->line('msg_need_send_sunat');
-				}
-			}
-		}
-		
-		$data["sales"] = $sales;
-		return $data;
-	}
-	
-	private function set_master_datas($data){
 		//set monthly resume
 		$from = date('Y-m-01 00:00:00');
 		$to = date('Y-m-t 23:59:59');
@@ -195,6 +187,7 @@ class Dashboard extends CI_Controller {
 		$data["surgery_qty"] = $this->general->counter("surgery", $filter_1);
 		$data["sale_qty"] = $this->general->counter("sale", $filter_2);
 		
+		//set currency for chart
 		$filter["updated_at >="] = date('Y-m-01 00:00:00', strtotime(date("Y-m-d", strtotime("-5 months"))));
 		$filter["updated_at <="] = date('Y-m-t 23:59:59', strtotime(date("Y-m-d")));
 		$currencies = $this->general->all("currency", "id", "asc");
@@ -202,8 +195,78 @@ class Dashboard extends CI_Controller {
 			$filter["currency_id"] = $item->id;
 			if (!$this->general->sum("sale", "total", $filter)->total) unset($currencies[$i]);
 		}
-		
 		$data["currencies"] = $currencies;
+		
+		//set sales without voucher
+		$cur_arr = [];
+		$cur = $this->general->all("currency");
+		foreach($cur as $item) $cur_arr[$item->id] = $item->description;
+		
+		$sales = $this->general->filter("sale", ["voucher_id" => null, "balance" => 0], null, null, "registed_at", "desc", 10, 0);
+		foreach($sales as $item) $item->currency = $cur_arr[$item->currency_id];
+		$data["sales"] = $sales;
+		
+		//set voucher with sunat error
+		$vou_arr = [];
+		$vou = $this->general->all("voucher_type");
+		foreach($vou as $item) $vou_arr[$item->id] = $item->description;
+		
+		$vouchers = $this->general->filter("voucher", ["sunat_sent !=" => 1, "sunat_resume_id" => null], null, null, "registed_at", "desc", 10, 0);
+		foreach($vouchers as $item) $item->voucher_type = $vou_arr[$item->voucher_type_id];
+		$data["vouchers"] = $vouchers;
+		
+		return $data;
+	}
+	
+	private function set_master_datas($data){
+		//set profile
+		$account = $this->general->id("account", $this->session->userdata('aid'));
+		$data["profile"] = [
+			"email" => $account->email,
+			"name" => $this->general->id("person", $account->person_id)->name,
+			"role" => $this->lang->line($this->general->id("role", $account->role_id)->name),
+			"doctor_qty" => number_format($this->general->counter("doctor", [])),
+			"patient_qty" => number_format($this->general->counter("person", [])),
+			"account_qty" => number_format($this->general->counter("account", [])),
+		];
+		
+		//set monthly resume
+		$from = date('Y-m-01 00:00:00');
+		$to = date('Y-m-t 23:59:59');
+		$s_finished = $this->general->status("finished");
+		$filter_1 = ["schedule_from >=" => $from, "schedule_from <=" => $to, "status_id" => $s_finished->id];
+		$filter_2 = ["updated_at >=" => $from, "updated_at <=" => $to, "status_id" => $s_finished->id];
+		$data["appointment_qty"] = $this->general->counter("appointment", $filter_1);
+		$data["surgery_qty"] = $this->general->counter("surgery", $filter_1);
+		$data["sale_qty"] = $this->general->counter("sale", $filter_2);
+		
+		//set currency for chart
+		$filter["updated_at >="] = date('Y-m-01 00:00:00', strtotime(date("Y-m-d", strtotime("-5 months"))));
+		$filter["updated_at <="] = date('Y-m-t 23:59:59', strtotime(date("Y-m-d")));
+		$currencies = $this->general->all("currency", "id", "asc");
+		foreach($currencies as $i => $item){
+			$filter["currency_id"] = $item->id;
+			if (!$this->general->sum("sale", "total", $filter)->total) unset($currencies[$i]);
+		}
+		$data["currencies"] = $currencies;
+		
+		//set sales without voucher
+		$cur_arr = [];
+		$cur = $this->general->all("currency");
+		foreach($cur as $item) $cur_arr[$item->id] = $item->description;
+		
+		$sales = $this->general->filter("sale", ["voucher_id" => null, "balance" => 0], null, null, "registed_at", "desc", 10, 0);
+		foreach($sales as $item) $item->currency = $cur_arr[$item->currency_id];
+		$data["sales"] = $sales;
+		
+		//set voucher with sunat error
+		$vou_arr = [];
+		$vou = $this->general->all("voucher_type");
+		foreach($vou as $item) $vou_arr[$item->id] = $item->description;
+		
+		$vouchers = $this->general->filter("voucher", ["sunat_sent !=" => 1, "sunat_resume_id" => null], null, null, "registed_at", "desc", 10, 0);
+		foreach($vouchers as $item) $item->voucher_type = $vou_arr[$item->voucher_type_id];
+		$data["vouchers"] = $vouchers;
 		
 		return $data;
 	}

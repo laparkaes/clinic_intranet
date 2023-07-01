@@ -6,16 +6,16 @@ $lang['dashboard'] = 'Principal';
 $lang['title_monthly_income'] = 'Ingresos Mensuales';
 $lang['title_profile'] = 'Perfil';
 $lang['title_monthly_resume'] = 'Resumen del Mes';
-
-
-$lang['tab_appointment_surgery'] = 'Consultas y Cirugías';
-$lang['tab_sale_type'] = 'Tipo de Venta';
-$lang['tab_best_seller'] = 'Mas Vendidos';
+$lang['title_sales_no_voucher'] = 'Ventas sin Comprobante';
+$lang['title_vouchers_no_sunat'] = 'Comprobantes no enviados a Sunat';
 $lang['lb_appointments'] = 'Consultas';
 $lang['lb_surgeries'] = 'Cirugías';
 $lang['lb_sales'] = 'Ventas';
-$lang['txt_total'] = 'Total';
-$lang['title_today_progress'] = 'Progreso de Hoy';
+$lang['th_type'] = 'Tipo';
+$lang['th_amount'] = 'Monto';
+$lang['th_date'] = 'Fecha';
+$lang['msg_sale_declare'] = 'Todas las ventas han sido declaradas.';
+$lang['msg_voucher_sent'] = 'Todos los comprobantes han sido enviados.';
 
 //admin
 $lang['lb_appointments'] = 'Consultas';

@@ -54,38 +54,10 @@ function load_income_chart(dom){
 	});
 }
 
-function load_resume_charts(){
-	 $("#ch_rs_appointments").sparkline([10, 15, 26, 27, 28, 31, 34, 40, 41, 44, 49, 64, 68, 69, 72], {
-		type: "bar",
-		height: "54",
-		barWidth: "5",
-		barSpacing: "1",
-		barColor: "#5fe1ad"
-	});
-	
-	$("#ch_rs_surgeries").sparkline([10, 15, 26, 27, 28, 31, 34, 40, 41, 44, 49, 64, 68, 69, 72], {
-		type: "bar",
-		height: "54",
-		barWidth: "5",
-		barSpacing: "1",
-		barColor: "#AC4CBC"
-	});
-	
-	$("#ch_rs_sales").sparkline([10, 15, 26, 27, 28, 31, 34, 40, 41, 44, 49, 64, 68, 69, 72], {
-		type: "bar",
-		height: "54",
-		barWidth: "5",
-		barSpacing: "1",
-		barColor: "#3A82EF"
-	});
-}
-
 $(document).ready(function() {
 	setTimeout(function(){
 		$(".btn_load_income_chart").first().click();
-		load_resume_charts();
 	}, 1000);
 	
 	$(".btn_load_income_chart").on('click',(function(e) {load_income_chart(this);}));
-	
 });

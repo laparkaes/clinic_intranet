@@ -197,7 +197,6 @@
 	<script src="<?= base_url() ?>resources/vendor/datatables/js/jquery.dataTables.min.js"></script>
     <script src="<?= base_url() ?>resources/vendor/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
 	<script src="<?= base_url() ?>resources/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-	<script src="<?= base_url() ?>resources/vendor/jquery-sparkline/jquery.sparkline.min.js"></script>
     <script src="<?= base_url() ?>resources/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.js"></script>
 	<script src="<?= base_url() ?>resources/vendor_/jquery-ui-1.13.2/jquery-ui.min.js"></script>
 	<?php if ($init_js){ ?><script src="<?= base_url() ?>resources/js/init/<?= $init_js ?>"></script><?php } ?>
