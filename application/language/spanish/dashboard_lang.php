@@ -11,6 +11,9 @@ $lang['title_vouchers_no_sunat'] = 'Comprobantes no enviados a Sunat';
 $lang['lb_appointments'] = 'Consultas';
 $lang['lb_surgeries'] = 'Cirugías';
 $lang['lb_sales'] = 'Ventas';
+$lang['lb_doctors'] = 'Médicos';
+$lang['lb_patients'] = 'Pacientes';
+$lang['lb_accounts'] = 'Usuarios';
 $lang['th_type'] = 'Tipo';
 $lang['th_amount'] = 'Monto';
 $lang['th_date'] = 'Fecha';
@@ -42,4 +45,9 @@ $lang['msg_no_appointment'] = 'No hay consultas para hoy.';
 $lang['msg_no_surgery'] = 'No hay cirugías para hoy.';
 
 //doctor
+$lang['title_today'] = 'Hoy';
 $lang['lb_patients'] = 'Pacientes';
+$lang['th_time'] = 'Hora';
+$lang['th_type'] = 'Tipo';
+$lang['txt_appointment'] = 'Consulta';
+$lang['msg_no_pending'] = 'No hay pendientes.';

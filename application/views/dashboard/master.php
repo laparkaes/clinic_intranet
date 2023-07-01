@@ -1,4 +1,3 @@
-
 <div class="col-md-12">
 	<h4><?= $this->lang->line('title_monthly_resume') ?></h4>
 </div>
@@ -64,22 +63,22 @@
 				<div class="mb-3"><i class="fas fa-users-crown fa-7x"></i></div>
 				<h4 class="text-black mb-3"><?= $profile["name"] ?></h4>
 				<div><?= $profile["role"] ?></div>
-				<div>(<?= $profile["email"] ?>)</div>
+				<div><?= $profile["email"] ?></div>
 			</div>
 		</div>
 		<div class="card-footer p-0 text-center">
 			<div class="row">
 				<div class="col-4 py-3 pr-0 border-right">
 					<h3 class="mb-1 text-primary"><?= $profile["doctor_qty"] ?></h3>
-					<span>Medicos</span>
+					<span><?= $this->lang->line('lb_doctors') ?></span>
 				</div>
 				<div class="col-4 py-3 border-right">
 					<h3 class="mb-1 text-primary"><?= $profile["patient_qty"] ?></h3>
-					<span>Pacientes</span>
+					<span><?= $this->lang->line('lb_patients') ?></span>
 				</div>
 				<div class="col-4 py-3 pl-0">
 					<h3 class="mb-1 text-primary"><?= $profile["account_qty"] ?></h3>
-					<span>Usuarios</span>
+					<span><?= $this->lang->line('lb_accounts') ?></span>
 				</div>
 			</div>
 		</div>
@@ -91,7 +90,7 @@
 		<div class="card-body">
 			<?php if ($sales){ ?>
 			<div class="table-responsive">
-				<table class="table text-center bg-info-hover tr-rounded">
+				<table class="table text-center bg-info-hover tr-rounded mb-0">
 					<thead>
 						<tr>
 							<th class="text-left"><?= $this->lang->line('th_amount') ?></th>
@@ -128,7 +127,7 @@
 		<div class="card-body">
 			<?php if ($vouchers){ ?>
 			<div class="table-responsive">
-				<table class="table text-center bg-info-hover tr-rounded">
+				<table class="table text-center bg-info-hover tr-rounded mb-0">
 					<thead>
 						<tr>
 							<th class="text-left"><?= $this->lang->line('th_type') ?></th>

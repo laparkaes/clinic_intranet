@@ -77,7 +77,7 @@ $me = $appointment_datas["medicine"];
 									</div>
 									<div class="form-group col-md-3">
 										<label><?= $this->lang->line('lb_birthday') ?></label>
-										<input type="text" class="form-control date_picker" name="birthday" value="<?= $an->birthday ?>">
+										<input type="text" class="form-control date_picker_all" name="birthday" value="<?= $an->birthday ?>">
 										<div class="sys_msg" id="an_birthday_msg"></div>
 									</div>
 									<div class="form-group col-md-3">

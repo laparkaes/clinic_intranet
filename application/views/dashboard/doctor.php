@@ -41,18 +41,43 @@
 	</div>
 </div>
 <div class="col-md-7 mb-4">
-	<h4><?= $this->lang->line('title_monthly_income') ?></h4>
-	<div class="card">
-		<div class="card-header pb-0 border-0">
-			<div class="btn-group">
-				<?php $cl = ""; foreach($currencies as $item){ ?>
-				<button type="button" class="btn btn<?= $cl ?>-primary btn-xs btn_load_income_chart" value="<?= $item->id ?>">
-					<?= $item->description ?>
-				</button>
-				<?php $cl = "-outline";} ?>
+	<h4><?= $this->lang->line('title_today') ?></h4>
+	<div class="card mb-0" style="max-height: 400px; overflow-y: auto;">
+		<div class="card-body">
+			<?php if ($schedules){ ?>
+			<div class="table-responsive">
+				<table class="table text-center bg-info-hover tr-rounded mb-0">
+					<thead>
+						<tr>
+							<th class="text-left"><?= $this->lang->line('th_time') ?></th>
+							<th class="text-center"><?= $this->lang->line('th_type') ?></th>
+							<th class="text-right"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach($schedules as $item){ ?>
+						<tr>
+							<td class="text-left"><?= date("h:i a", strtotime($item["from"])) ?></td>
+							<td>
+								<div><?= $this->lang->line("txt_".$item["type"]) ?></div>
+								<small class="text-muted"><?= $item["patient"] ?></small>
+							</td>
+							<td class="text-right">
+								<a href="/intranet/<?= $item["type"] ?>/detail/<?= $item["id"] ?>">
+									<button type="button" class="btn btn-info light sharp">
+										<i class="fas fa-arrow-alt-right"></i>
+									</button>
+								</a>
+							</td>
+						</tr>
+						<?php } ?>
+					</tbody>
+				</table>
 			</div>
+			<?php }else{ ?>
+			<div class="text-success"><?= $this->lang->line('msg_no_pending') ?></div>
+			<?php } ?>
 		</div>
-		<div class="card-body p-0" id="chart_monthly_income"></div>
 	</div>
 </div>
 <div class="col-md-5 mb-4">
@@ -63,98 +88,24 @@
 				<div class="mb-3"><i class="fas fa-user-md fa-7x"></i></div>
 				<h4 class="text-black mb-3"><?= $profile["name"] ?></h4>
 				<div><?= $profile["role"] ?></div>
-				<div>(<?= $profile["email"] ?>)</div>
+				<div><?= $profile["email"] ?></div>
 			</div>
 		</div>
 		<div class="card-footer p-0 text-center">
 			<div class="row">
 				<div class="col-4 py-3 pr-0 border-right">
-					<h3 class="mb-1 text-primary"><?= $profile["doctor_qty"] ?></h3>
-					<span>Medicos</span>
+					<h3 class="mb-1 text-primary"><?= $profile["appointment_qty"] ?></h3>
+					<span><?= $this->lang->line('lb_appointments') ?></span>
 				</div>
 				<div class="col-4 py-3 border-right">
-					<h3 class="mb-1 text-primary"><?= $profile["patient_qty"] ?></h3>
-					<span>Pacientes</span>
+					<h3 class="mb-1 text-primary"><?= $profile["surgery_qty"] ?></h3>
+					<span><?= $this->lang->line('lb_surgeries') ?></span>
 				</div>
 				<div class="col-4 py-3 pl-0">
-					<h3 class="mb-1 text-primary"><?= $profile["account_qty"] ?></h3>
-					<span>Usuarios</span>
+					<h3 class="mb-1 text-primary"><?= $profile["patient_qty"] ?></h3>
+					<span><?= $this->lang->line('lb_patients') ?></span>
 				</div>
 			</div>
-		</div>
-	</div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="col-md-6">
-	<div class="card">
-		<div class="card-header">
-			<h4 class="card-title"><?= $this->lang->line('title_appointments') ?></h4>
-		</div>
-		<div class="card-body">
-			<?php if ($apps){ ?>
-			<div class="basic-list-group">
-				<div class="list-group">
-					<?php foreach($apps as $item){ ?>
-					<div class="list-group-item list-group-item-action flex-column align-items-start">
-						<div class="d-flex justify-content-between w-100">
-							<h5 class="text-<?= $item->status->color ?>"><?= $item->from ?></h5>
-							<a href="<?= base_url() ?>appointment/detail/<?= $item->id ?>">
-								<button type="button" class="btn btn-primary btn-xs light sharp border-0">
-									<i class="far fa-search"></i>
-								</button>
-							</a>
-						</div>
-						<p class="mb-1"><?= $item->patient ?></p>
-						<small><?= $item->doctor ?><br/><?= $item->specialty ?></small>
-					</div>
-					<?php } ?>
-				</div>
-			</div>
-			<?php }else{ ?>
-			<span class="text-muted"><?= $this->lang->line('msg_no_appointment') ?></span>
-			<?php } ?>
-		</div>
-	</div>
-</div>
-<div class="col-md-6">
-	<div class="card">
-		<div class="card-header">
-			<h4 class="card-title"><?= $this->lang->line('title_surgeries') ?></h4>
-		</div>
-		<div class="card-body">
-			<?php if ($surs){ ?>
-			<div class="basic-list-group">
-				<div class="list-group">
-					<?php foreach($surs as $item){ ?>
-					<div class="list-group-item list-group-item-action flex-column align-items-start">
-						<div class="d-flex justify-content-between w-100">
-							<h5 class="text-<?= $item->status->color ?>"><?= $item->from ?></h5>
-							<a href="<?= base_url() ?>surgery/detail/<?= $item->id ?>">
-								<button type="button" class="btn btn-primary btn-xs light sharp border-0">
-									<i class="far fa-search"></i>
-								</button>
-							</a>
-						</div>
-						<p class="mb-1"><?= $item->patient ?></p>
-						<small><?= $item->doctor ?><br/><?= $item->specialty ?></small>
-					</div>
-					<?php } ?>
-				</div>
-			</div>
-			<?php }else{ ?>
-			<span class="text-muted"><?= $this->lang->line('msg_no_surgery') ?></span>
-			<?php } ?>
 		</div>
 	</div>
 </div>
