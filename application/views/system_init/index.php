@@ -116,8 +116,16 @@
 										<input type="text" class="form-control" id="com_ubigeo" value="<?= $sys_conf->company->ubigeo ?>" name="ubigeo">
 										<div class="sys_msg" id="com_ubigeo_msg"></div>
 									</div>
-									<div class="form-group col-md-12 pt-3">
-										<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_save') ?></button>
+									<div class="form-group col-md-12 mb-0 pt-3">
+										<?php if ($sys_conf->company_id){ ?>
+										<button type="button" class="btn btn-danger light" id="btn_remove_company">
+											<?= $this->lang->line('btn_remove') ?>
+										</button>
+										<?php }else{ ?>
+										<button type="submit" class="btn btn-primary">
+											<?= $this->lang->line('btn_save') ?>
+										</button>
+										<?php } ?>
 									</div>
 								</div>
 							</form>
@@ -138,24 +146,130 @@
 						</div>
 						<div class="card-body">
 							<form id="form_account_init">
-								<div class="form-row">
-									<div class="form-group col-md-12">
-										<label><?= $this->lang->line('lb_account') ?></label>
-										<input type="email" class="form-control" value="<?= $sys_conf->account->email ?>" name="email">
-										<div class="sys_msg" id="acc_email_msg"></div>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-row">
+											<div class="form-group col-md-12">
+												<label><?= $this->lang->line('lb_account') ?></label>
+												<input type="email" class="form-control" value="<?= $sys_conf->account->email ?>" name="a[email]">
+												<div class="sys_msg" id="acc_email_msg"></div>
+											</div>
+											<div class="form-group col-md-6">
+												<label><?= $this->lang->line('lb_password') ?></label>
+												<input type="password" class="form-control" name="a[password]">
+												<div class="sys_msg" id="acc_password_msg"></div>
+											</div>
+											<div class="form-group col-md-6">
+												<label><?= $this->lang->line('lb_confirm') ?></label>
+												<input type="password" class="form-control" name="a[confirm]">
+												<div class="sys_msg" id="acc_confirm_msg"></div>
+											</div>
+										</div>
 									</div>
-									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_password') ?></label>
-										<input type="password" class="form-control" name="password">
-										<div class="sys_msg" id="acc_password_msg"></div>
+									<div class="col-md-6">
+										<?php $p = $sys_conf->account->person; ?>
+										<div class="form-row">
+											<div class="form-group col-md-6">
+												<label><?= $this->lang->line('lb_document') ?></label>
+												<select class="form-control" id="pe_doc_type_id" name="p[doc_type_id]">
+													<?php foreach($doc_types as $d){ if ($d->sunat_code){ 
+													if ($p->doc_type_id == $d->id) $s = "selected"; else $s = ""; ?>
+													<option value="<?= $d->id ?>" <?= $s ?>><?= $d->description ?></option>
+													<?php }} ?>
+												</select>
+												<div class="sys_msg" id="pe_doc_type_msg"></div>
+											</div>
+											<div class="form-group col-md-6">
+												<label class="d-md-block d-none">&nbsp;</label>
+												<div class="input-group">
+													<input type="text" class="form-control" id="pe_doc_number" name="p[doc_number]" placeholder="<?= $this->lang->line('lb_number') ?>" value="<?= $p->doc_number ?>">
+													<div class="input-group-append">
+														<button class="btn btn-primary border-0" type="button" id="btn_search_person">
+															<i class="fas fa-search"></i>
+														</button>
+													</div>
+												</div>
+												<div class="sys_msg" id="pe_doc_number_msg"></div>
+											</div>
+											<div class="form-group col-md-12">
+												<label><?= $this->lang->line('lb_name') ?></label>
+												<input type="text" class="form-control" id="pe_name" name="p[name]" value="<?= $p->name ?>">
+												<div class="sys_msg" id="pe_name_msg"></div>
+											</div>
+										</div>
 									</div>
-									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_password_confirm') ?></label>
-										<input type="password" class="form-control" name="confirm">
-										<div class="sys_msg" id="acc_confirm_msg"></div>
+									<div class="col-md-12">
+										<div class="form-row">
+											<div class="form-group col-md-12 pt-3 mb-0">
+												<?php if ($sys_conf->account_id){ ?>
+												<button type="button" class="btn btn-danger light" id="btn_remove_account">
+													<?= $this->lang->line('btn_remove') ?>
+												</button>
+												<?php }else{ ?>
+												<button type="submit" class="btn btn-primary">
+													<?= $this->lang->line('btn_save') ?>
+												</button>
+												<?php } ?>
+											</div>
+										</div>
 									</div>
-									<div class="form-group col-md-12 pt-3">
-										<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_save') ?></button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row d-flex justify-content-center">
+				<div class="col-md-8">
+					<div class="card">
+						<div class="card-header">
+							<h4 class="mb-0"><?= $this->lang->line('title_sunat_access') ?></h4>
+							<?php if ($sys_conf->sunat_access){ ?>
+							<i class="fas fa-check text-success fa-lg"></i>
+							<?php }else{ ?>
+							<i class="fas fa-times text-danger fa-lg"></i>
+							<?php } ?>
+						</div>
+						<div class="card-body">
+							<form id="form_sunat_access_init">
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-row">
+											<div class="form-group col-md-12">
+												<label><?= $this->lang->line('lb_certificate') ?></label>
+												<input type="file" class="form-control" name="sunat_certificate">
+												<div class="sys_msg" id="sunat_certificate_msg"></div>
+											</div>
+											<div class="form-group col-md-4">
+												<label><?= $this->lang->line('lb_ruc') ?></label>
+												<input type="text" class="form-control" value="<?= $sys_conf->sunat_ruc ?>" name="sunat_ruc">
+												<div class="sys_msg" id="sunat_ruc_msg"></div>
+											</div>
+											<div class="form-group col-md-4">
+												<label><?= $this->lang->line('lb_username') ?></label>
+												<input type="text" class="form-control" value="<?= $sys_conf->sunat_username ?>" name="sunat_username">
+												<div class="sys_msg" id="sunat_username_msg"></div>
+											</div>
+											<div class="form-group col-md-4">
+												<label><?= $this->lang->line('lb_password') ?></label>
+												<input type="text" class="form-control" value="<?= $sys_conf->sunat_password ?>" name="sunat_password">
+												<div class="sys_msg" id="sunat_password_msg"></div>
+											</div>
+											<div class="form-group col-md-12 pt-3 mb-0">
+												<?php if ($sys_conf->sunat_certificate){ ?>
+												<button type="button" class="btn btn-info" id="btn_test_sunat">
+													<?= $this->lang->line('btn_test_access') ?>
+												</button>
+												<button type="button" class="btn btn-danger light" id="btn_remove_sunat">
+													<?= $this->lang->line('btn_remove') ?>
+												</button>
+												<?php }else{ ?>
+												<button type="submit" class="btn btn-primary">
+													<?= $this->lang->line('btn_save') ?>
+												</button>
+												<?php } ?>
+											</div>
+										</div>
 									</div>
 								</div>
 							</form>
@@ -250,6 +364,8 @@
 	<input type="hidden" id="alert_warning_title" value="<?= $this->lang->line('alert_warning_title') ?>">
 	<input type="hidden" id="alert_confirm_btn" value="<?= $this->lang->line('alert_confirm_btn') ?>">
 	<input type="hidden" id="alert_cancel_btn" value="<?= $this->lang->line('alert_cancel_btn') ?>">
+	<input type="hidden" id="warning_rco" value="<?= $this->lang->line('warning_rco') ?>">
+	<input type="hidden" id="warning_rac" value="<?= $this->lang->line('warning_rac') ?>">
 	<input type="hidden" id="warning_rst" value="<?= $this->lang->line('warning_rst') ?>">
 	<input type="hidden" id="warning_fst" value="<?= $this->lang->line('warning_fst') ?>">
 	<input type="hidden" id="warning_fsi" value="<?= $this->lang->line('warning_fsi') ?>">

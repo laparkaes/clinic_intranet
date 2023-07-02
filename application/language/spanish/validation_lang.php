@@ -115,3 +115,8 @@ $lang['e_enter_start'] = 'Ingrese un número para inicio de correlativo.';
 $lang['e_duplicate_description'] = 'Descripción ingresada existe.';
 $lang['e_duplicate_sunat_serie'] = 'Serie ingresado existe.';
 $lang['e_numeric_sunat_serie'] = 'Serie debe ser formado con 3 números.';
+
+/* sunat */
+$lang['e_select_cert'] = 'Ingrese certificado.';
+$lang['e_enter_ruc_sunat'] = 'Ingrese RUC.';
+$lang['e_enter_username'] = 'Ingrese usuario.';

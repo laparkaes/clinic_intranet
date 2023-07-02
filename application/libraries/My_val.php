@@ -16,10 +16,12 @@ class My_val{
 	}
 	
 	public function person($msgs, $prefix, $data){
-		if (!$data["name"]) $msgs = $this->set_msg($msgs, $prefix."name_msg", "error", "e_enter_name");
-		if (!$data["tel"]) $msgs = $this->set_msg($msgs, $prefix."tel_msg", "error", "e_enter_tel");
 		if (!$data["doc_type_id"]) $msgs = $this->set_msg($msgs, $prefix."doc_type_msg", "error", "e_select_doc_type");
 		if (!$data["doc_number"]) $msgs = $this->set_msg($msgs, $prefix."doc_number_msg", "error", "e_enter_doc_number");
+		if (!$data["name"]) $msgs = $this->set_msg($msgs, $prefix."name_msg", "error", "e_enter_name");
+		if (array_key_exists("tel", $data))
+			if (!$data["tel"]) 
+				$msgs = $this->set_msg($msgs, $prefix."tel_msg", "error", "e_enter_tel");
 		if (array_key_exists("email", $data))
 			if ($data["email"]) 
 				if (!filter_var($data["email"], FILTER_VALIDATE_EMAIL))
@@ -492,8 +494,6 @@ class My_val{
 	}
 	
 	public function sale_type($msgs, $prefix, $data){
-		$msg = null;
-		
 		if ($data["description"]){
 			if ($this->CI->general->filter("sale_type", ["description" => $data["description"]])) 
 				$msgs = $this->set_msg($msgs, $prefix."description_msg", "error", "e_duplicate_description");
@@ -509,6 +509,15 @@ class My_val{
 		if ($data["start"]){
 			if (!is_numeric($data["start"])) $msgs = $this->set_msg($msgs, $prefix."start_msg", "error", "e_enter_number");
 		}else $msgs = $this->set_msg($msgs, $prefix."start_msg", "error", "e_enter_start");
+		
+		return $msgs;
+	}
+	
+	public function sunat($msgs, $prefix, $data){
+		if (!$data["sunat_certificate"]) $msgs = $this->set_msg($msgs, $prefix."certificate_msg", "error", "e_select_cert");
+		if (!$data["sunat_ruc"]) $msgs = $this->set_msg($msgs, $prefix."ruc_msg", "error", "e_enter_ruc_sunat");
+		if (!$data["sunat_username"]) $msgs = $this->set_msg($msgs, $prefix."username_msg", "error", "e_enter_username");
+		if (!$data["sunat_password"]) $msgs = $this->set_msg($msgs, $prefix."password_msg", "error", "e_enter_password");
 		
 		return $msgs;
 	}

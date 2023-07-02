@@ -24,14 +24,20 @@ class System_init extends CI_Controller {
 		else $sys_conf->company = $this->general->structure("company");
 		
 		//account data set
-		if ($sys_conf->account_id) $sys_conf->account = $this->general->id("account", $sys_conf->account_id);
-		else $sys_conf->account = $this->general->structure("account");
+		if ($sys_conf->account_id){
+			$sys_conf->account = $this->general->id("account", $sys_conf->account_id);
+			$sys_conf->account->person = $this->general->id("person", $sys_conf->account->person_id);
+		}else{
+			$sys_conf->account = $this->general->structure("account");
+			$sys_conf->account->person = $this->general->structure("person");
+		}
 		
 		$data = [
 			"sys_conf" => $sys_conf,
 			"departments" => $this->general->all("address_department", "name", "asc"),
 			"provinces" => $this->general->all("address_province", "name", "asc"),
 			"districts" => $this->general->all("address_district", "name", "asc"),
+			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"sale_types" => $this->general->all("sale_type", "sunat_serie", "asc"),
 			"title" => $this->lang->line('system_init'),
 		];
@@ -57,7 +63,7 @@ class System_init extends CI_Controller {
 			
 			if ($this->general->update("system", 1, ["company_id" => $com_id])){
 				$type = "success";
-				$msg = $this->lang->line('success_cup');
+				$msg = $this->lang->line('success_cre');
 			}else $msg = $this->lang->line('error_internal');
 		}else $msg = $this->lang->line("error_occurred");
 		
@@ -65,32 +71,46 @@ class System_init extends CI_Controller {
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
 	}
 	
+	public function remove_company(){
+		$type = "error"; $msg = null;
+		
+		$sys_conf = $this->general->id("system", 1);
+		if ($this->general->update("system", $sys_conf->id, ["is_finished" => false, "company_id" => null])){
+			$type = "success";
+			$msg = $this->lang->line('success_cde');
+		}else $msg = $this->lang->line('error_internal');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
+	}
+	
 	public function account(){
 		$type = "error"; $msgs = []; $msg = null;
-		$data = $this->input->post();
+		$a_data = $this->input->post("a");
+		$p_data = $this->input->post("p");
 		
 		$this->load->library('my_val');
-		$msgs = $this->my_val->account($msgs, "acc_", $data);
+		$msgs = $this->my_val->account($msgs, "acc_", $a_data);
+		$msgs = $this->my_val->person($msgs, "pe_", $p_data);
 		
 		if (!$msgs){
 			//create system person data
-			$person = $this->general->filter("person", ["doc_type_id" => 1, "name" => "Sistema"]);
+			$person = $this->general->filter("person", $p_data);
 			if ($person) $person_id = $person[0]->id;
 			else{
-				$person_data = ["doc_type_id" => 1, "name" => "Sistema", "registed_at" => date('Y-m-d H:i:s', time())];
-				$person_id = $this->general->insert("person", $person_data);
+				$p_data["registed_at"] = date('Y-m-d H:i:s', time());
+				$person_id = $this->general->insert("person", $p_data);
 			}
 			
 			if ($person_id){
-				$acc_data = [
-					"role_id" => 1,
-					"person_id" => $person_id,
-					"email" => $data["email"],
-					"password" => password_hash($data["password"], PASSWORD_BCRYPT),
-					"registed_at" => date('Y-m-d H:i:s', time()),
-				];
+				unset($a_data["confirm"]);
+				$a_data["role_id"] = 1;
+				$a_data["person_id"] = $person_id;
+				$a_data["email"] = $a_data["email"];
+				$a_data["password"] = password_hash($a_data["password"], PASSWORD_BCRYPT);
+				$a_data["registed_at"] = date('Y-m-d H:i:s', time());
 				
-				$acc_id = $this->general->insert("account", $acc_data);
+				$acc_id = $this->general->insert("account", $a_data);
 				if ($acc_id){
 					$sys_conf = $this->general->id("system", 1);
 					if (!$sys_conf) $this->general->insert("system", ["id" => 1]);
@@ -101,6 +121,43 @@ class System_init extends CI_Controller {
 					}else $msg = $this->lang->line('error_internal');
 				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line('error_internal');
+		}else $msg = $this->lang->line("error_occurred");
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
+	}
+	
+	public function remove_account(){
+		$type = "error"; $msg = null;
+		
+		$sys_conf = $this->general->id("system", 1);
+		if ($this->general->update("system", $sys_conf->id, ["is_finished" => false, "account_id" => null])){
+			$this->general->delete("account", ["id" => $sys_conf->account_id]);
+			
+			$type = "success";
+			$msg = $this->lang->line('success_ade');
+		}else $msg = $this->lang->line('error_internal');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
+	}
+	
+	public function sunat_access(){
+		$type = "error"; $msgs = []; $msg = null;
+		$data = $this->input->post();
+		$data["sunat_certificate"] = $_FILES['sunat_certificate']['name'];
+		
+		$this->load->library('my_val');
+		$msgs = $this->my_val->sunat($msgs, "sunat_", $data);
+		
+		if (!$msgs){
+			$sys_conf = $this->general->id("system", 1);
+			if (!$sys_conf) $this->general->insert("system", ["id" => 1]);
+			
+			if ($this->general->update("system", 1, $data)){
+				$type = "success";
+				$msg = $this->lang->line('success_rsd');
+			}else $msg = $this->lang->line("error_internal");
 		}else $msg = $this->lang->line("error_occurred");
 		
 		header('Content-Type: application/json');

@@ -31,6 +31,12 @@ function search_company(){
 	});
 }
 
+function remove_company(){
+	ajax_simple_warning({}, "system_init/remove_company", $("#warning_rco").val()).done(function(res) {
+		swal_redirection(res.type, res.msg, window.location.href);
+	});
+}
+
 function company_init(dom){
 	ajax_form(dom, "system_init/company").done(function(res) {
 		set_msg(res.msgs);
@@ -46,7 +52,31 @@ function account_init(dom){
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
+
+function search_person(){
+	var data = {doc_type_id: $("#pe_doc_type_id").val(), doc_number: $("#pe_doc_number").val()};
+	ajax_simple(data, "ajax_f/search_person").done(function(res) {
+		swal(res.type, res.msg);
+		if (res.type == "success") $("#pe_name").val(res.person.name);
+		else reset_person();
+	});
+}
+
+function remove_account(){
+	ajax_simple_warning({}, "system_init/remove_account", $("#warning_rac").val()).done(function(res) {
+		swal_redirection(res.type, res.msg, window.location.href);
+	});
+}
 /* end account */
+
+/* start sunat access */
+function sunat_access_init(dom){
+	ajax_form(dom, "system_init/sunat_access").done(function(res) {
+		set_msg(res.msgs);
+		swal_redirection(res.type, res.msg, window.location.href);
+	});
+}
+/* end sunat access */
 
 /* start sale type */
 function set_sale_types(sale_types){
@@ -96,11 +126,18 @@ function finish_init(){
 
 $(document).ready(function() {
 	//company
-	$("#btn_search_company").on('click',(function(e) {search_company();}));
 	$("#form_company_init").submit(function(e) {e.preventDefault(); company_init(this);});
+	$("#btn_search_company").on('click',(function(e) {search_company();}));
+	$("#btn_remove_company").on('click',(function(e) {remove_company();}));
 	
 	//account
 	$("#form_account_init").submit(function(e) {e.preventDefault(); account_init(this);});
+	$("#btn_search_person").on('click',(function(e) {search_person();}));
+	$("#btn_remove_account").on('click',(function(e) {remove_account();}));
+	
+	//sunat
+	$("#form_sunat_access_init").submit(function(e) {e.preventDefault(); sunat_access_init(this);});
+	
 	
 	//sale type
 	$("#form_add_sale_type").submit(function(e) {e.preventDefault(); add_sale_type(this);});
