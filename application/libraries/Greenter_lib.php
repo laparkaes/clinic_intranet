@@ -18,13 +18,12 @@ use Greenter\See;
 
 class Greenter_lib{
 	
-	public function __construct(){
+	public function __construct($is_production = false){
 		$this->CI = &get_instance();
 		
-		$is_production = false;
 		if ($is_production){
 			$sys_conf = $this->general->id("system", 1);
-			$this->ruc = $sys_conf->;
+			$this->ruc = $this->general->id("company", $sys_conf->company_id)->ruc;
 			$this->user = $sys_conf->sunat_username;
 			$this->pass = $sys_conf->sunat_password	;
 			$this->cert_path = FCPATH."uploaded/sunat/".$sys_conf->sunat_certificate;	
@@ -236,5 +235,12 @@ class Greenter_lib{
 		}
 		
 		return ["ticket" => $ticket, "is_success" => $is_success, "message" => $message, "reason" => $data["reason"]];
+	}
+	
+	public function auth_test(){
+		$see = $this->set_see();
+		
+		
+		return "desarrollo";
 	}
 }

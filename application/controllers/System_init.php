@@ -206,7 +206,8 @@ class System_init extends CI_Controller {
 	public function test_sunat(){
 		$type = "error"; $msg = null;
 		
-		$msg = "hola!";
+		$this->load->library('greenter_lib');
+		$msg = $this->greenter_lib->auth_test();
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);

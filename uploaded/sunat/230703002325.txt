@@ -1,0 +1,13 @@
+!noclip coach
+!give autoshotgun
+!give grenade_launcher
+!give katana
+!god ellis
+!z_spawn tank 10
+!z_spawn charger 10
+!respawn ellis
+!give defibrillator
+!barrel 50
+!kill 
+!infinite_ammo
+!warp bill
