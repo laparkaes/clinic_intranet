@@ -506,16 +506,19 @@ class My_val{
 			}else $msgs = $this->set_msg($msgs, $prefix."sunat_serie_msg", "error", "e_duplicate_sunat_serie");
 		}else $msgs = $this->set_msg($msgs, $prefix."sunat_serie_msg", "error", "e_enter_sunat_serie");
 		
-		if ($data["start"]){
-			if (!is_numeric($data["start"])) $msgs = $this->set_msg($msgs, $prefix."start_msg", "error", "e_enter_number");
-		}else $msgs = $this->set_msg($msgs, $prefix."start_msg", "error", "e_enter_start");
+		if ($data["start_factura"]){
+			if (!is_numeric($data["start_factura"])) $msgs = $this->set_msg($msgs, $prefix."start_factura_msg", "error", "e_enter_number");
+		}else $msgs = $this->set_msg($msgs, $prefix."start_factura_msg", "error", "e_enter_start");
+		
+		if ($data["start_boleta"]){
+			if (!is_numeric($data["start_boleta"])) $msgs = $this->set_msg($msgs, $prefix."start_boleta_msg", "error", "e_enter_number");
+		}else $msgs = $this->set_msg($msgs, $prefix."start_boleta_msg", "error", "e_enter_start");
 		
 		return $msgs;
 	}
 	
 	public function sunat($msgs, $prefix, $data){
 		if (!$data["sunat_certificate"]) $msgs = $this->set_msg($msgs, $prefix."certificate_msg", "error", "e_select_cert");
-		if (!$data["sunat_ruc"]) $msgs = $this->set_msg($msgs, $prefix."ruc_msg", "error", "e_enter_ruc_sunat");
 		if (!$data["sunat_username"]) $msgs = $this->set_msg($msgs, $prefix."username_msg", "error", "e_enter_username");
 		if (!$data["sunat_password"]) $msgs = $this->set_msg($msgs, $prefix."password_msg", "error", "e_enter_password");
 		

@@ -118,5 +118,4 @@ $lang['e_numeric_sunat_serie'] = 'Serie debe ser formado con 3 números.';
 
 /* sunat */
 $lang['e_select_cert'] = 'Ingrese certificado.';
-$lang['e_enter_ruc_sunat'] = 'Ingrese RUC.';
 $lang['e_enter_username'] = 'Ingrese usuario.';

@@ -20,16 +20,28 @@ class Greenter_lib{
 	
 	public function __construct(){
 		$this->CI = &get_instance();
-		$this->ruc = '20000000001';
-		$this->user = 'MODDATOS';
-		$this->pass = 'moddatos';
-		$this->cert_path = FCPATH."uploaded/sunat/cert.pem";
+		
+		$is_production = false;
+		if ($is_production){
+			$sys_conf = $this->general->id("system", 1);
+			$this->ruc = $sys_conf->;
+			$this->user = $sys_conf->sunat_username;
+			$this->pass = $sys_conf->sunat_password	;
+			$this->cert_path = FCPATH."uploaded/sunat/".$sys_conf->sunat_certificate;	
+			$this->service_link = SunatEndpoints::FE_PRODUCCION;
+		}else{
+			$this->ruc = '20000000001';
+			$this->user = 'MODDATOS';
+			$this->pass = 'moddatos';
+			$this->cert_path = FCPATH."uploaded/sunat/cert.pem";
+			$this->service_link = SunatEndpoints::FE_BETA;
+		}
 	}
 	
 	private function set_see(){
 		$see = new See();
 		$see->setCertificate(file_get_contents($this->cert_path));
-		$see->setService(SunatEndpoints::FE_BETA);
+		$see->setService($this->service_link);
 		$see->setClaveSOL($this->ruc, $this->user, $this->pass);
 		
 		return $see;

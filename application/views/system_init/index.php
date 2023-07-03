@@ -137,6 +137,69 @@
 				<div class="col-md-8">
 					<div class="card">
 						<div class="card-header">
+							<h4 class="mb-0"><?= $this->lang->line('title_sunat_access') ?></h4>
+							<?php if ($sys_conf->sunat_access){ ?>
+							<i class="fas fa-check text-success fa-lg"></i>
+							<?php }else{ ?>
+							<i class="fas fa-times text-danger fa-lg"></i>
+							<?php } ?>
+						</div>
+						<div class="card-body">
+							<form id="form_sunat_access_init">
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-row">
+											<div class="form-group col-md-12">
+												<div>
+													<label><?= $this->lang->line('lb_certificate') ?> (*.pem)</label>
+													<?php if ($sys_conf->sunat_certificate){ ?>
+													<i class="fas fa-check text-success ml-1"></i>
+													<?php } ?>
+												</div>
+												<input type="file" class="form-control" name="sunat_certificate">
+												<div class="sys_msg" id="sunat_certificate_msg"></div>
+											</div>
+											<div class="form-group col-md-4">
+												<label><?= $this->lang->line('lb_ruc') ?></label>
+												<input type="text" class="form-control" value="<?= $sys_conf->company->tax_id ?>" readonly>
+												<div class="sys_msg" id="sunat_ruc_msg"></div>
+											</div>
+											<div class="form-group col-md-4">
+												<label><?= $this->lang->line('lb_username') ?></label>
+												<input type="text" class="form-control" value="<?= $sys_conf->sunat_username ?>" name="sunat_username">
+												<div class="sys_msg" id="sunat_username_msg"></div>
+											</div>
+											<div class="form-group col-md-4">
+												<label><?= $this->lang->line('lb_password') ?></label>
+												<input type="text" class="form-control" value="<?= $sys_conf->sunat_password ?>" name="sunat_password">
+												<div class="sys_msg" id="sunat_password_msg"></div>
+											</div>
+											<div class="form-group col-md-12 pt-3 mb-0">
+												<?php if ($sys_conf->sunat_certificate){ ?>
+												<button type="button" class="btn btn-info" id="btn_test_sunat">
+													<?= $this->lang->line('btn_test_access') ?>
+												</button>
+												<button type="button" class="btn btn-danger light" id="btn_remove_sunat">
+													<?= $this->lang->line('btn_remove') ?>
+												</button>
+												<?php }else{ ?>
+												<button type="submit" class="btn btn-primary">
+													<?= $this->lang->line('btn_save') ?>
+												</button>
+												<?php } ?>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row d-flex justify-content-center">
+				<div class="col-md-8">
+					<div class="card">
+						<div class="card-header">
 							<h4 class="mb-0"><?= $this->lang->line('title_master_account') ?></h4>
 							<?php if ($sys_conf->account_id){ ?>
 							<i class="fas fa-check text-success fa-lg"></i>
@@ -223,64 +286,6 @@
 				<div class="col-md-8">
 					<div class="card">
 						<div class="card-header">
-							<h4 class="mb-0"><?= $this->lang->line('title_sunat_access') ?></h4>
-							<?php if ($sys_conf->sunat_access){ ?>
-							<i class="fas fa-check text-success fa-lg"></i>
-							<?php }else{ ?>
-							<i class="fas fa-times text-danger fa-lg"></i>
-							<?php } ?>
-						</div>
-						<div class="card-body">
-							<form id="form_sunat_access_init">
-								<div class="row">
-									<div class="col-md-12">
-										<div class="form-row">
-											<div class="form-group col-md-12">
-												<label><?= $this->lang->line('lb_certificate') ?></label>
-												<input type="file" class="form-control" name="sunat_certificate">
-												<div class="sys_msg" id="sunat_certificate_msg"></div>
-											</div>
-											<div class="form-group col-md-4">
-												<label><?= $this->lang->line('lb_ruc') ?></label>
-												<input type="text" class="form-control" value="<?= $sys_conf->sunat_ruc ?>" name="sunat_ruc">
-												<div class="sys_msg" id="sunat_ruc_msg"></div>
-											</div>
-											<div class="form-group col-md-4">
-												<label><?= $this->lang->line('lb_username') ?></label>
-												<input type="text" class="form-control" value="<?= $sys_conf->sunat_username ?>" name="sunat_username">
-												<div class="sys_msg" id="sunat_username_msg"></div>
-											</div>
-											<div class="form-group col-md-4">
-												<label><?= $this->lang->line('lb_password') ?></label>
-												<input type="text" class="form-control" value="<?= $sys_conf->sunat_password ?>" name="sunat_password">
-												<div class="sys_msg" id="sunat_password_msg"></div>
-											</div>
-											<div class="form-group col-md-12 pt-3 mb-0">
-												<?php if ($sys_conf->sunat_certificate){ ?>
-												<button type="button" class="btn btn-info" id="btn_test_sunat">
-													<?= $this->lang->line('btn_test_access') ?>
-												</button>
-												<button type="button" class="btn btn-danger light" id="btn_remove_sunat">
-													<?= $this->lang->line('btn_remove') ?>
-												</button>
-												<?php }else{ ?>
-												<button type="submit" class="btn btn-primary">
-													<?= $this->lang->line('btn_save') ?>
-												</button>
-												<?php } ?>
-											</div>
-										</div>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row d-flex justify-content-center">
-				<div class="col-md-8">
-					<div class="card">
-						<div class="card-header">
 							<h4 class="mb-0"><?= $this->lang->line('title_sale_type') ?></h4>
 							<?php if ($sys_conf->sale_type_finished){ ?>
 							<i class="fas fa-check text-success fa-lg"></i>
@@ -295,7 +300,8 @@
 										<tr>
 											<th><strong><?= $this->lang->line('th_description') ?></strong></th>
 											<th><strong><?= $this->lang->line('th_serie') ?></strong></th>
-											<th><strong><?= $this->lang->line('th_serie') ?></strong></th>
+											<th><strong><?= $this->lang->line('th_correlative_factura') ?></strong></th>
+											<th><strong><?= $this->lang->line('th_correlative_boleta') ?></strong></th>
 											<th>
 												<?php if ($sys_conf->sale_type_finished) $d = "d-none"; else $d = ""; ?>
 												<button type="button" class="btn btn-primary <?= $d ?>" id="btn_finish_sale_type">
@@ -316,8 +322,12 @@
 													<div class="sys_msg" id="st_sunat_serie_msg"></div>
 												</td>
 												<td>
-													<input type="text" class="form-control" name="start">
-													<div class="sys_msg" id="st_start_msg"></div>
+													<input type="text" class="form-control" name="start_factura">
+													<div class="sys_msg" id="st_start_factura_msg"></div>
+												</td>
+												<td>
+													<input type="text" class="form-control" name="start_boleta">
+													<div class="sys_msg" id="st_start_boleta_msg"></div>
 												</td>
 												<td class="text-right">
 													<button type="submit" class="btn btn-success light">
@@ -330,7 +340,8 @@
 										<tr class="row_sale_type">
 											<td><?= $item->description ?></td>
 											<td><?= $item->sunat_serie ?></td>
-											<td><?= $item->start ?></td>
+											<td><?= $item->start_factura ?></td>
+											<td><?= $item->start_boleta ?></td>
 											<td class="text-right">
 												<button type="button" class="btn btn-danger light btn_remove_sale_type" value="<?= $item->id ?>">
 													<i class="fas fa-trash"></i>
@@ -366,6 +377,7 @@
 	<input type="hidden" id="alert_cancel_btn" value="<?= $this->lang->line('alert_cancel_btn') ?>">
 	<input type="hidden" id="warning_rco" value="<?= $this->lang->line('warning_rco') ?>">
 	<input type="hidden" id="warning_rac" value="<?= $this->lang->line('warning_rac') ?>">
+	<input type="hidden" id="warning_rsd" value="<?= $this->lang->line('warning_rsd') ?>">
 	<input type="hidden" id="warning_rst" value="<?= $this->lang->line('warning_rst') ?>">
 	<input type="hidden" id="warning_fst" value="<?= $this->lang->line('warning_fst') ?>">
 	<input type="hidden" id="warning_fsi" value="<?= $this->lang->line('warning_fsi') ?>">

@@ -142,7 +142,7 @@ class System_init extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 	
-	public function sunat_access(){
+	public function sunat(){
 		$type = "error"; $msgs = []; $msg = null;
 		$data = $this->input->post();
 		$data["sunat_certificate"] = $_FILES['sunat_certificate']['name'];
@@ -154,14 +154,62 @@ class System_init extends CI_Controller {
 			$sys_conf = $this->general->id("system", 1);
 			if (!$sys_conf) $this->general->insert("system", ["id" => 1]);
 			
-			if ($this->general->update("system", 1, $data)){
-				$type = "success";
-				$msg = $this->lang->line('success_rsd');
-			}else $msg = $this->lang->line("error_internal");
+			$upload_dir = "uploaded/sunat";
+			if(!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+			$upload_dir = $upload_dir."/";
+			
+			$this->load->library('upload');
+			$config_upload = [
+				'upload_path' => $upload_dir,
+				'allowed_types' => '*',
+				'max_size' => 0,
+				'overwrite' => true,
+				'file_name' => date("ymdHis")
+			];
+			
+			$this->upload->initialize($config_upload);
+			if ($this->upload->do_upload("sunat_certificate")){
+				$result = $this->upload->data();
+				$data["sunat_certificate"] = $result["file_name"];
+				
+				if ($this->general->update("system", 1, $data)){
+					$type = "success";
+					$msg = $this->lang->line('success_rsd');
+				}else $msg = $this->lang->line("error_internal");
+			}else $msg = $this->upload->display_errors("<span>","</span>");
 		}else $msg = $this->lang->line("error_occurred");
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
+	}
+	
+	public function remove_sunat(){
+		$type = "error"; $msg = null;
+		
+		$data = [
+			"is_finished" => false,
+			"sunat_access" => null,
+			"sunat_certificate" => null,
+			"sunat_username" => null,
+			"sunat_password" => null,
+		];
+		$sys_conf = $this->general->id("system", 1);
+		if ($this->general->update("system", $sys_conf->id, $data)){
+			$type = "success";
+			$msg = $this->lang->line('success_sdd');
+		}else $msg = $this->lang->line('error_internal');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
+	}
+	
+	public function test_sunat(){
+		$type = "error"; $msg = null;
+		
+		$msg = "hola!";
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 	
 	public function add_sale_type(){

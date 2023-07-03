@@ -515,7 +515,14 @@ class Sale extends CI_Controller {
 						$f = ["voucher_type_id" => $voucher->voucher_type_id, "sale_type_id" => $voucher->sale_type_id];
 						$last_voucher = $this->general->filter("voucher", $f, null, null, "correlative", "desc", 1, 0);
 						if ($last_voucher) $voucher->correlative = $last_voucher[0]->correlative + 1;
-						else $voucher->correlative = $this->general->id("sale_type", $voucher->sale_type_id)->start;
+						else{
+							$sale_type = $this->general->id("sale_type", $voucher->sale_type_id);
+							switch($voucher_type->description){
+								case "Boleta": $voucher->correlative = $sale_type->start_boleta; break;
+								case "Factura": $voucher->correlative = $sale_type->start_factura; break;
+								default: $voucher->correlative = 1; break;
+							}
+						}
 						
 						/* payment method
 						1. load all payment
