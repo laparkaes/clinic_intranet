@@ -15,7 +15,7 @@ class Config extends CI_Controller {
 	}
 	
 	public function index(){
-		if (!$this->session->userdata('logged_in')) redirect(base_url());
+		if (!$this->session->userdata('logged_in')) redirect("/");
 		if (!$this->utility_lib->check_access("config", "index")) redirect("/errors/no_permission");
 		
 		$modules = ["dashboard", "doctor", "patient", "appointment", "surgery", "product", "sale", "report", "account", "config"];
@@ -148,6 +148,21 @@ class Config extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
+	}
+
+	public function system_init(){
+		$type = "error"; $msg = null;
+		
+		if ($this->session->userdata('role')->name === "master"){
+			$this->general->update("system", 1, ["is_finished" => false]);
+			$this->session->sess_destroy();
+			
+			$type = "success";
+			$msg = $this->lang->line("success_sin");
+		}else $msg = $this->lang->line("error_no_permission");
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 
 	public function register_profile(){

@@ -11,7 +11,8 @@ $lang['success_cde'] = 'Empresa ha sido eliminada.';//success_company_deleted
 $lang['success_rac'] = 'Usuario ha sido registrado.';//success_register_account
 $lang['success_ade'] = 'Usuario ha sido eliminado.';//success_account_deleted
 $lang['success_rsd'] = 'Datos de Sunat han sido registrados.';//success_register_sunat_data
-$lang['success_sdd'] = 'Datos de Sunat han sido registrados.';//success_sunat_data_deleted
+$lang['success_sdd'] = 'Datos de Sunat han sido eliminados.';//success_sunat_data_deleted
+$lang['success_sao'] = 'El certificado de Sunat ha sido validado para acceder. La validación de la Clave SOL se realizará cuando el sistema esté en producción.';//success_sunat_access_ok
 $lang['success_rst'] = 'Tipo de venta ha sido registrado.';//success_register_sale_type
 $lang['success_dst'] = 'Tipo de venta ha sido eliminado.';//success_delete_sale_type
 $lang['success_inf'] = 'Inicialización finalizada.';//success_init_finish
@@ -50,7 +51,6 @@ $lang['lb_ruc'] = 'RUC';
 $lang['lb_username'] = 'Usuario';
 $lang['lb_password'] = 'Contraseña';
 $lang['btn_test_access'] = 'Probar Acceso';
-
 
 //sale type
 $lang['title_sale_type'] = 'Tipo de venta';

@@ -151,12 +151,12 @@
 										<div class="form-row">
 											<div class="form-group col-md-12">
 												<div>
-													<label><?= $this->lang->line('lb_certificate') ?> (*.pem)</label>
+													<label><?= $this->lang->line('lb_certificate') ?> (*.pem) / <?= $sys_conf->sunat_certificate ?></label>
 													<?php if ($sys_conf->sunat_certificate){ ?>
 													<i class="fas fa-check text-success ml-1"></i>
 													<?php } ?>
 												</div>
-												<input type="file" class="form-control" name="sunat_certificate">
+												<input type="file" class="form-control" name="sunat_certificate" accept=".pem">
 												<div class="sys_msg" id="sunat_certificate_msg"></div>
 											</div>
 											<div class="form-group col-md-4">

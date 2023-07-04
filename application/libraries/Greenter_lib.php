@@ -20,21 +20,19 @@ class Greenter_lib{
 	
 	public function __construct($is_production = false){
 		$this->CI = &get_instance();
+
+		$sys_conf = $this->CI->general->id("system", 1);
+		$this->ruc = $this->CI->general->id("company", $sys_conf->company_id)->tax_id;
+		$this->user = $sys_conf->sunat_username;
+		$this->pass = $sys_conf->sunat_password	;
+		$this->cert_path = FCPATH."uploaded/sunat/".$sys_conf->sunat_certificate;
+
+		if ($is_production) $this->service_link = SunatEndpoints::FE_PRODUCCION;
+		else $this->service_link = SunatEndpoints::FE_BETA;
 		
-		if ($is_production){
-			$sys_conf = $this->general->id("system", 1);
-			$this->ruc = $this->general->id("company", $sys_conf->company_id)->ruc;
-			$this->user = $sys_conf->sunat_username;
-			$this->pass = $sys_conf->sunat_password	;
-			$this->cert_path = FCPATH."uploaded/sunat/".$sys_conf->sunat_certificate;	
-			$this->service_link = SunatEndpoints::FE_PRODUCCION;
-		}else{
-			$this->ruc = '20000000001';
-			$this->user = 'MODDATOS';
-			$this->pass = 'moddatos';
-			$this->cert_path = FCPATH."uploaded/sunat/cert.pem";
-			$this->service_link = SunatEndpoints::FE_BETA;
-		}
+		
+		//$this->ruc = '20000000001'; $this->user = 'MODDATOS'; $this->pass = 'moddatos'; $this->cert_path = FCPATH."uploaded/sunat/cert.pem";
+		
 	}
 	
 	private function set_see(){
@@ -238,9 +236,74 @@ class Greenter_lib{
 	}
 	
 	public function auth_test(){
+		$msg = null;
+		
+		// Company
+		$sys_conf = $this->CI->general->id("system", 1);
+		$co = $this->CI->general->id("company", $sys_conf->company_id);
+		$co->department = $this->CI->general->id("address_department", $co->department_id)->name;
+		$co->province = $this->CI->general->id("address_province", $co->province_id)->name;
+		$co->district = $this->CI->general->id("address_district", $co->district_id)->name;
+		$company = $this->set_company($co);
+		
+		// Cliente
+		$client = new Client();
+		$client->setTipoDoc('1')
+			->setNumDoc('20203030')
+			->setRznSocial('PERSON 1');
+
+		// Venta
+		$invoice = new Invoice();
+		$invoice
+			->setUblVersion('2.1')
+			->setTipoOperacion('0101')
+			->setTipoDoc('03')
+			->setSerie('B001')
+			->setCorrelativo('1')
+			->setFechaEmision(new DateTime())
+			->setTipoMoneda('PEN')
+			->setCompany($company)
+			->setClient($client)
+			->setMtoOperGravadas(100)
+			->setMtoIGV(18)
+			->setTotalImpuestos(18)
+			->setValorVenta(100)
+			->setSubTotal(118)
+			->setMtoImpVenta(118)
+			;
+
+		$item1 = new SaleDetail();
+		$item1->setCodProducto('C023')
+			->setUnidad('NIU')
+			->setCantidad(2)
+			->setDescripcion('PROD 1')
+			->setMtoBaseIgv(100)
+			->setPorcentajeIgv(18)
+			->setIgv(18)
+			->setTipAfeIgv('10')
+			->setTotalImpuestos(18)
+			->setMtoValorVenta(100)
+			->setMtoValorUnitario(50)
+			->setMtoPrecioUnitario(59);
+
+		$legend = new Legend();
+		$legend->setCode('1000')
+			->setValue('SON CIENTO DIECIOCHO CON 00/100 SOLES');
+
+		$invoice->setDetails([$item1])->setLegends([$legend]);
+		
 		$see = $this->set_see();
+		$see->setService(SunatEndpoints::FE_BETA);
+		//$see->setService(SunatEndpoints::FE_PRODUCCION);
 		
+		try{
+			ini_set('display_errors', 0);
+			$result = $see->send($invoice);
+			ini_set('display_errors', 1);
+			
+			if (!$result->isSuccess()) $msg = $result->getError()->getMessage();
+		}catch (Exception $e){ $msg = "Problema de certificado.<br/><br/>".$e->getMessage(); }
 		
-		return "desarrollo";
+		return $msg;
 	}
 }

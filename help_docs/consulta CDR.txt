@@ -1,0 +1,40 @@
+require 'vendor/autoload.php';
+
+use Greenter\Ws\Services\SunatEndpoints;
+use Greenter\See;
+
+// Replace with your credentials
+$see = new See();
+$see->setService(SunatEndpoints::SEE_CONSULTA_CDR);
+$see->setCredentials('20000000001MODDATOS', 'moddatos');
+
+// Replace with the document you want to query CDR for
+$documentType = '01'; // Invoice
+$documentSeries = 'F001';
+$documentNumber = '123';
+
+try {
+    $response = $see->getStatusCdr($documentType, $documentSeries, $documentNumber);
+    
+    $cdrResponse = $response->getCdrResponse();
+    if ($cdrResponse !== null) {
+        // CDR status
+        echo 'Estado CDR: ' . $cdrResponse->getCode() . PHP_EOL;
+        echo 'Mensaje: ' . $cdrResponse->getDescription() . PHP_EOL;
+        echo 'Hash CDR: ' . $cdrResponse->getValue() . PHP_EOL;
+        echo 'Fecha de Recepción: ' . $cdrResponse->getIssueDate() . PHP_EOL;
+        
+        // CDR Notes (if any)
+        $notes = $cdrResponse->getNotes();
+        if (!empty($notes)) {
+            echo 'Notas:' . PHP_EOL;
+            foreach ($notes as $note) {
+                echo ' - ' . $note->getValue() . PHP_EOL;
+            }
+        }
+    } else {
+        echo 'CDR no encontrado para el documento.' . PHP_EOL;
+    }
+} catch (Exception $e) {
+    echo 'Error: ' . $e->getMessage() . PHP_EOL;
+}

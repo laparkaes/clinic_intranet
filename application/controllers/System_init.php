@@ -208,6 +208,12 @@ class System_init extends CI_Controller {
 		
 		$this->load->library('greenter_lib');
 		$msg = $this->greenter_lib->auth_test();
+		if (!$msg){//auth success
+			$this->general->update("system", 1, ["is_finished" => false, "sunat_access" => true]);
+		
+			$type = "success";
+			$msg = $this->lang->line('success_sao');
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);
@@ -245,11 +251,11 @@ class System_init extends CI_Controller {
 		$sys_conf = $this->general->id("system", 1);
 		if (!$sys_conf) $this->general->insert("system", ["id" => 1]);
 		
-		$this->general->update("system", 1, ["sale_type_finished" => false]);
-		
 		if ($sale_type){
 			if (!$this->general->filter("sale", ["sale_type_id" => $sale_type->id])){
 				if ($this->general->delete("sale_type", ["id" => $sale_type->id])){
+					$this->general->update("system", 1, ["sale_type_finished" => false]);
+					
 					$type = "success";
 					$msg = $this->lang->line("success_dst");
 				}else $msg = $this->lang->line("error_internal");
@@ -279,8 +285,6 @@ class System_init extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
-	
-	
 	
 	public function finish_init(){
 		$type = "error"; $msg = null;

@@ -129,7 +129,12 @@
 										<div class="sys_msg" id="uc_ubigeo_msg"></div>
 									</div>
 									<div class="form-group col-md-12 pt-3">
-										<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_save') ?></button>
+										<button type="submit" class="btn btn-primary">
+											<?= $this->lang->line('btn_save') ?>
+										</button>
+										<button type="button" class="btn btn-danger light" id="btn_init_system">
+											<?= $this->lang->line('btn_init_system') ?>
+										</button>
 									</div>
 								</div>
 							</div>
@@ -440,6 +445,7 @@
 <input type="hidden" id="warning_rpr" value="<?= $this->lang->line('warning_rpr') ?>">
 <input type="hidden" id="warning_rme" value="<?= $this->lang->line('warning_rme') ?>">
 <input type="hidden" id="warning_rim" value="<?= $this->lang->line('warning_rim') ?>">
+<input type="hidden" id="warning_sin" value="<?= $this->lang->line('warning_sin') ?>">
 <input type="hidden" id="txt_view_all" value="<?= $this->lang->line('txt_view_all') ?>">
 <div class="modal fade" id="md_admin_exam">
 	<div class="modal-dialog" role="document">

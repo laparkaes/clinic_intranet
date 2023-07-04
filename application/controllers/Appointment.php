@@ -14,7 +14,7 @@ class Appointment extends CI_Controller {
 	}
 	
 	public function index(){
-		if (!$this->session->userdata('logged_in')) redirect(base_url());
+		if (!$this->session->userdata('logged_in')) redirect('/');
 		if (!$this->utility_lib->check_access("appointment", "index")) redirect("/errors/no_permission");
 		
 		$f_url = [
@@ -160,7 +160,7 @@ class Appointment extends CI_Controller {
 	}
 	
 	public function detail($id){
-		if (!$this->session->userdata('logged_in')) redirect(base_url());
+		if (!$this->session->userdata('logged_in')) redirect('/');
 		if (!$this->utility_lib->check_access("appointment", "detail")) redirect("/errors/no_permission");
 		
 		$appointment = $this->general->id("appointment", $id);

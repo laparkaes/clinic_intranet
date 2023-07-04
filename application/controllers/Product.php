@@ -15,7 +15,7 @@ class Product extends CI_Controller {
 	}
 	
 	public function index(){
-		if (!$this->session->userdata('logged_in')) redirect(base_url());
+		if (!$this->session->userdata('logged_in')) redirect('/');
 		if (!$this->utility_lib->check_access("product", "index")) redirect("/errors/no_permission");
 		
 		$f_url = [
@@ -209,7 +209,7 @@ class Product extends CI_Controller {
 	}
 	
 	public function detail($product_id){
-		if (!$this->session->userdata('logged_in')) redirect(base_url());
+		if (!$this->session->userdata('logged_in')) redirect('/');
 		if (!$this->utility_lib->check_access("product", "detail")) redirect("/errors/no_permission");
 		
 		$this->update_stock($product_id);

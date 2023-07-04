@@ -17,7 +17,7 @@ class Report extends CI_Controller {
 	}
 	
 	public function index(){
-		if (!$this->session->userdata('logged_in')) redirect(base_url());
+		if (!$this->session->userdata('logged_in')) redirect('/');
 		if (!$this->utility_lib->check_access("report", "index")) redirect("/errors/no_permission");
 		
 		$data = array(

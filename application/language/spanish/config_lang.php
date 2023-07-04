@@ -29,10 +29,12 @@ $lang['success_rem'] = 'Medicina ha sido registrada.';//success_register_medicin
 $lang['success_dem'] = 'Medicina de examen ha sido eliminada.';//success_delete_exam_medicine
 $lang['success_dim'] = 'Imagen ha sido eliminada.';//success_delete_image
 $lang['success_rim'] = 'Imagen ha sido registrada.';//success_register_medicine
+$lang['success_sin'] = 'Su sesión ha sido finalizada y se le redirigirá para la inicialización del sistema.';//success_system_init
 $lang['success_rac'] = 'Usuario ha sido registrado.';//success_register_account
 $lang['warning_rpr'] = '¿Desea eliminar perfil elegido?';//warning_remove_profile
 $lang['warning_rme'] = '¿Desea eliminar medicina elegida?';//warning_remove_medicine
 $lang['warning_rim'] = '¿Desea eliminar imagen elegida?';//warning_remove_image
+$lang['warning_sin'] = 'Su sesión finalizará para acceder a la configuración del sistema. ¿Desea continuar?';//warning_system_init
 
 //component
 $lang['btn_load_more'] = 'Cargar más';
@@ -132,6 +134,7 @@ $lang['lb_resolution'] = 'Resolución';
 $lang['lb_digital_certificate'] = 'Certificado Digital';
 $lang['lb_password_SOL'] = 'Clave SOL';
 $lang['lb_password'] = 'Contraseña';
+$lang['btn_init_system'] = 'Inicialización del Sistema';
 
 //log
 $lang['title_log'] = 'Historial';

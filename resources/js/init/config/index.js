@@ -58,6 +58,12 @@ function update_company_data(dom){
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
+
+function init_system(){
+	ajax_simple_warning({}, "config/system_init", $("#warning_sin").val()).done(function(res) {
+		swal_redirection(res.type, res.msg, $("#base_url").val() + "system_init");
+	});
+}
 /* end company */
 
 /* start profile */
@@ -280,6 +286,7 @@ $(document).ready(function() {
 	$("#btn_search_company").on('click',(function(e) {search_company();}));
 	$("#uc_department_id").change(function() {control_province($(this).val());});
 	$("#uc_province_id").change(function() {control_district($(this).val());});
+	$("#btn_init_system").on('click',(function(e) {init_system();}));
 	
 	//profile
 	$("#form_register_profile").submit(function(e) {e.preventDefault(); register_profile(this);});
