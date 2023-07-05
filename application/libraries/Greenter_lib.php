@@ -18,7 +18,7 @@ use Greenter\See;
 
 class Greenter_lib{
 	
-	public function __construct($is_production = false){
+	public function __construct(){
 		$this->CI = &get_instance();
 
 		$sys_conf = $this->CI->general->id("system", 1);
@@ -27,6 +27,7 @@ class Greenter_lib{
 		$this->pass = $sys_conf->sunat_password	;
 		$this->cert_path = FCPATH."uploaded/sunat/".$sys_conf->sunat_certificate;
 
+		$is_production = false;
 		if ($is_production) $this->service_link = SunatEndpoints::FE_PRODUCCION;
 		else $this->service_link = SunatEndpoints::FE_BETA;
 		

@@ -440,10 +440,11 @@ class My_val{
 	public function system_init_finish(){
 		$res = true;
 		$sys_cfg = $this->CI->general->id("system", 1);
+		
 		if ($sys_cfg){
 			foreach($sys_cfg as $key => $value) if ($key !== "is_finished") if (!$value) $res = false;
 		}else $res = false;
-		//if ($key !== "is_finished") 
+		
 		return $res;
 	}
 	

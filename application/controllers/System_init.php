@@ -299,6 +299,14 @@ class System_init extends CI_Controller {
 		
 		if ($is_finished){
 			if ($this->general->update("system", 1, ["is_finished" => true])){
+				//master account role_access insert to DB
+				$data = [];
+				$master = $this->general->filter("role", ["name" => "master"])[0];
+				$access = $this->general->all("access");
+				foreach($access as $item) $data[] = ["role_id" => $master->id, "access_id" => $item->id];
+				
+				$this->general->insert_multi("role_access", $data);
+				
 				$type = "success";
 				$msg = $this->lang->line("success_inf");
 			}else $msg = $this->lang->line("error_internal");
