@@ -143,6 +143,7 @@ class Report extends CI_Controller {
 		$person_ids = [];
 		$person_ids_only = $this->general->only("doctor", "person_id");
 		foreach($person_ids_only as $item) $person_ids[] = $item->person_id;
+		if (!$person_ids) $person_ids = [-1];
 		
 		$people_arr = [];
 		$people = $this->general->filter("person", null, null, [["field" => "id", "values" => $person_ids]]);
@@ -294,6 +295,7 @@ class Report extends CI_Controller {
 		
 		$doctor_ids = $this->general->only("appointment", "doctor_id", $filter);
 		foreach($doctor_ids as $item) $person_ids[] = $item->doctor_id;
+		if (!$person_ids) $person_ids = [-1];
 		
 		$people_arr = [];
 		$people = $this->general->filter("person", null, null, [["field" => "id", "values" => $person_ids]]);
@@ -359,6 +361,7 @@ class Report extends CI_Controller {
 		
 		$doctor_ids = $this->general->only("surgery", "doctor_id", $filter);
 		foreach($doctor_ids as $item) $person_ids[] = $item->doctor_id;
+		if (!$person_ids) $person_ids = [-1];
 		
 		$people_arr = [];
 		$people = $this->general->filter("person", null, null, [["field" => "id", "values" => $person_ids]]);
@@ -510,6 +513,7 @@ class Report extends CI_Controller {
 		$person_ids = [];
 		$client_ids = $this->general->only("sale", "client_id", $filter);
 		foreach($client_ids as $item) $person_ids[] = $item->client_id;
+		if (!$person_ids) $person_ids = [-1];
 		
 		$people_arr = [];
 		$people = $this->general->filter("person", null, null, [["field" => "id", "values" => $person_ids]]);
@@ -598,6 +602,7 @@ class Report extends CI_Controller {
 		$person_ids = [];
 		$client_ids = $this->general->only("voucher", "client_id", $filter);
 		foreach($client_ids as $item) $person_ids[] = $item->client_id;
+		if (!$person_ids) $person_ids = [-1];
 		
 		$people_arr = [];
 		$people = $this->general->filter("person", null, null, [["field" => "id", "values" => $person_ids]]);
@@ -740,7 +745,6 @@ class Report extends CI_Controller {
 			$this->lang->line('hd_id'),
 			$this->lang->line('hd_registed_at'),
 			$this->lang->line('hd_last_access'),
-			$this->lang->line('hd_enable'),
 			$this->lang->line('hd_role'),
 			$this->lang->line('hd_name'),
 			$this->lang->line('hd_email'),
@@ -762,12 +766,10 @@ class Report extends CI_Controller {
 		foreach($accounts as $item){
 			$person = $this->general->id("person", $item->person_id);
 			if ($person) $person_name = $person->name; else $person_name = "";
-			if ($item->active) $enabled = "o"; else $enabled = "x";
 			
 			$sheet->setCellValue('A'.$row, $item->id);
 			$sheet->setCellValue('B'.$row, $item->registed_at);
 			$sheet->setCellValue('C'.$row, $item->logged_at);
-			$sheet->setCellValue('D'.$row, $enabled);
 			$sheet->setCellValue('E'.$row, $this->lang->line($role_arr[$item->role_id]));
 			$sheet->setCellValue('F'.$row, $person_name);
 			$sheet->setCellValue('G'.$row, $item->email);

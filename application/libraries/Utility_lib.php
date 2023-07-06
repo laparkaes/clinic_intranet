@@ -27,7 +27,7 @@ class Utility_lib{
 	
 	public function utildatos_dni($dni){
 		$curl = curl_init();
-		
+		/*
 		curl_setopt_array($curl, array(
 			CURLOPT_URL => 'https://utildatos.com/api/dni',
 			CURLOPT_RETURNTRANSFER => true,
@@ -37,15 +37,25 @@ class Utility_lib{
 			CURLOPT_FOLLOWLOCATION => false,
 			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 			CURLOPT_CUSTOMREQUEST => 'POST',
-			CURLOPT_POSTFIELDS => array('dni' => '{'.$dni.'}'),
-			CURLOPT_HTTPHEADER => array(
-				'Authorization: Bearer {5e973b619e195eed0aea209fcf27e5}'
-			),
+			CURLOPT_POSTFIELDS => ['dni' => $dni],
+			CURLOPT_HTTPHEADER => ['Authorization: Bearer {5e973b619e195eed0aea209fcf27e5}']
+		));
+		*/
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => 'https://utildatos.com/bussines/get-random-dni',
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => '',
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => false,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => 'POST',
+			CURLOPT_POSTFIELDS => ['dni' => $dni],
 		));
 
 		$response = json_decode(curl_exec($curl));
 		curl_close($curl);
-		echo $dni; print_r($response);
+		
 		$res = new stdClass;
 		$res->status = false;
 		$res->data = null;
@@ -61,7 +71,7 @@ class Utility_lib{
 	
 	public function utildatos_ruc($ruc){
 		$curl = curl_init();
-
+		/*
 		curl_setopt_array($curl, [
 			CURLOPT_URL => 'https://utildatos.com/api/sunat-reducido',
 			CURLOPT_RETURNTRANSFER => true,
@@ -73,6 +83,18 @@ class Utility_lib{
 			CURLOPT_CUSTOMREQUEST => 'POST',
 			CURLOPT_POSTFIELDS => ['ruc' => $ruc],
 			CURLOPT_HTTPHEADER => ['Authorization: Bearer {5e973b619e195eed0aea209fcf27e5}']
+		]);
+		*/
+		curl_setopt_array($curl, [
+			CURLOPT_URL => 'https://utildatos.com/bussines/get-sunat-reducido',
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => '',
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => false,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => 'POST',
+			CURLOPT_POSTFIELDS => ['ruc' => $ruc],
 		]);
 
 		$response = json_decode(curl_exec($curl));
