@@ -58,6 +58,7 @@ class Appointment extends CI_Controller {
 		$status_ids = $this->general->only("appointment", "status_id");
 		foreach($status_ids as $item) $status_aux[] = $item->status_id;
 		
+		if (!$status_aux) $status_aux = [-1];
 		$f_status = [["field" => "id", "values" => $status_aux]];
 		
 		$status_arr = [];
