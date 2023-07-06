@@ -27,7 +27,7 @@ class Utility_lib{
 	
 	public function utildatos_dni($dni){
 		$curl = curl_init();
-
+		
 		curl_setopt_array($curl, array(
 			CURLOPT_URL => 'https://utildatos.com/api/dni',
 			CURLOPT_RETURNTRANSFER => true,
@@ -37,13 +37,15 @@ class Utility_lib{
 			CURLOPT_FOLLOWLOCATION => false,
 			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 			CURLOPT_CUSTOMREQUEST => 'POST',
-			CURLOPT_POSTFIELDS => array('dni' => $dni),
-			CURLOPT_HTTPHEADER => array('Authorization: Bearer {3a0d55aad08e889e277a8585e6d24e}'),
+			CURLOPT_POSTFIELDS => array('dni' => '{'.$dni.'}'),
+			CURLOPT_HTTPHEADER => array(
+				'Authorization: Bearer {5e973b619e195eed0aea209fcf27e5}'
+			),
 		));
 
 		$response = json_decode(curl_exec($curl));
 		curl_close($curl);
-		
+		echo $dni; print_r($response);
 		$res = new stdClass;
 		$res->status = false;
 		$res->data = null;
@@ -70,7 +72,7 @@ class Utility_lib{
 			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 			CURLOPT_CUSTOMREQUEST => 'POST',
 			CURLOPT_POSTFIELDS => ['ruc' => $ruc],
-			CURLOPT_HTTPHEADER => ['Authorization: Bearer {3a0d55aad08e889e277a8585e6d24e}']
+			CURLOPT_HTTPHEADER => ['Authorization: Bearer {5e973b619e195eed0aea209fcf27e5}']
 		]);
 
 		$response = json_decode(curl_exec($curl));

@@ -17558,7 +17558,7 @@ CREATE TABLE `patient_file` (
   `id` int(11) NOT NULL,
   `patient_id` int(11) NOT NULL,
   `title` varchar(150) NOT NULL,
-  `filename` varchar(30) NOT NULL,
+  `filename` varchar(100) NOT NULL,
   `active` tinyint(1) NOT NULL,
   `registed_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

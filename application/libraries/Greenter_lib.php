@@ -137,7 +137,7 @@ class Greenter_lib{
 
 		// Verificamos que la conexión con SUNAT fue exitosa.
 		if ($result->isSuccess()){
-			$upload_dir = $_SERVER['DOCUMENT_ROOT']."/archivos/sunat/".date("Ym");
+			$upload_dir = "uploaded/sunat/".date("Ym");
 			if(!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
 			$upload_dir = $upload_dir."/";
 

@@ -575,8 +575,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<?php $folder = $person->doc_type_id."_".$person->doc_number;
-											foreach($patient_files as $item){ ?>
+											<?php $file_path = base_url()."uploaded/pacientes/".str_replace(" ", "_", $person->name)."_".$person->doc_number."/"; foreach($patient_files as $item){ ?>
 											<tr>
 												<td class="text-left pl-0"><?= $item->registed_at ?></td>
 												<td><?= $item->title ?></td>
