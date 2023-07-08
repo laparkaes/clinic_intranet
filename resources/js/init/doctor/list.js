@@ -1,4 +1,10 @@
 function register_doctor(dom){
+	//birthday merge
+	let d = $("#p_birthday_d").val();
+	let m = $("#p_birthday_m").val();
+	let y = $("#p_birthday_y").val();
+	if (d != "" && m != "" && y != "") $("#p_birthday").val(y + "-" + m + "-" + d); else $("#p_birthday").val("");
+	
 	$("#register_form .sys_msg").html("");
 	ajax_form(dom, "doctor/register").done(function(res) {
 		set_msg(res.msgs);
@@ -14,12 +20,15 @@ function search_person_dn(){
 			$("#dn_name").attr("readonly", true);
 			$("#dn_name").val(res.person.name);
 			$("#dn_tel").val(res.person.tel);
-		}else reset_person();
+		}else{
+			reset_person();
+			$("#dn_name").attr("readonly", false);
+		}
 	});
 }
 
 function reset_person(){
-	$("#dn_name").attr("readonly", false);
+	$("#dn_name").attr("readonly", true);
 	$("#dn_name").val("");
 	$("#dn_tel").val("");
 }

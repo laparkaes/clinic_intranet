@@ -3,15 +3,11 @@ $lang['doctor'] = 'Médico';
 $lang['doctors'] = 'Médicos';
 
 //messages
-$lang['error_rpd'] = 'Ocurrió error al registrar datos personales. Intente nuevamente.';//error_register_personal_data
-$lang['error_rdd'] = 'Ocurrió error al registrar datos del médico. Intente nuevamente.';//error_register_doctor_data
-$lang['error_rac'] = 'Ocurrió error al registrar usuario. Intente nuevamente.';//error_register_account
 $lang['error_upd'] = 'Ocurrió error al actualizar datos personales. Intente nuevamente.';//error_update_personal_data
 $lang['error_udd'] = 'Ocurrió error al actualizar datos del médico. Intente nuevamente.';//error_update_doctor_data
 $lang['error_uac'] = 'Ocurrió error al actualizar usuario. Intente nuevamente.';//error_update_account
 $lang['error_dac'] = 'Médico tiene consulta confirmada. Debe antender sus pendientes para desactivar.';//error_doctor_appointment_confirmed
 $lang['error_dsc'] = 'Médico tiene cirugía confirmada. Debe antender sus pendientes para desactivar.';//error_doctor_surgery_confirmed
-$lang['success_rdo'] = 'Médico ha sido registrado.';//success_register_doctor
 $lang['success_upd'] = 'Datos personales han sido actualizados.';//success_update_personal_data
 $lang['success_upr'] = 'Profesión ha sido actualizada.';//success_update_profession
 $lang['success_uae'] = 'Correo electrónico ha sido actualizada.';//success_update_account_email
@@ -25,6 +21,9 @@ $lang['warning_uae'] = '¿Desea actualizar correo electrónico del médico?';//w
 $lang['warning_uap'] = '¿Desea actualizar contraseña del médico?';//warning_update_account_password
 $lang['warning_ddo'] = '¿Está seguro de desactivar médico?';//warning_deactivate_doctor
 $lang['warning_ado'] = '¿Está seguro de activar médico?';//warning_activate_doctor
+
+//success messages
+$lang['s_register_doctor'] = 'Médico ha sido registrado.';
 
 //components
 $lang['btn_generate_appointment'] = 'Generar Consulta';
@@ -121,3 +120,4 @@ $lang['title_room_availability'] = 'Disponibilidad de Sala de Cirugía';
 $lang['sl_specialty'] = 'Especialidad';
 $lang['lb_search_by_name'] = 'Buscar por nombre';
 $lang['msg_no_doctors'] = 'No existe médicos registrados o cumplan con datos de búsqueda.';
+$lang['title_doctor_info'] = 'Datos del Médico';

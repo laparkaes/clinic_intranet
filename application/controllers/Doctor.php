@@ -75,8 +75,7 @@ class Doctor extends CI_Controller {
 		$doctor = $this->general->id("doctor", $id);
 		$person = $this->general->id("person", $doctor->person_id);
 		$account = $this->general->filter("account", ["person_id" => $person->id], null, null, "registed_at", "desc");
-		if ($account) $account = $account[0];
-		else $account = $this->general->structure("account");
+		if ($account) $account = $account[0]; else $account = $this->general->structure("account");
 		
 		//set doctor data
 		$doctor->specialty = $this->general->id("specialty", $doctor->specialty_id)->name;
@@ -87,8 +86,10 @@ class Doctor extends CI_Controller {
 		if ($person->birthday){
 			$person->age = $this->my_func->age_calculator($person->birthday);
 			$person->birthday = date("Y-m-d", strtotime($person->birthday));
-		}
-		else{
+			$person->birthday_y = date("Y", strtotime($person->birthday));
+			$person->birthday_m = date("m", strtotime($person->birthday));
+			$person->birthday_d = date("d", strtotime($person->birthday));
+		}else{
 			$person->age = null;
 			$person->birthday = null;
 		}
@@ -154,15 +155,12 @@ class Doctor extends CI_Controller {
 	public function register(){
 		$type = "error"; $msgs = []; $msg = null; $move_to = null;
 		if ($this->utility_lib->check_access("doctor", "register")){
-			$a = $this->input->post("account");
 			$d = $this->input->post("doctor");
 			$p = $this->input->post("personal");
-			$p["email"] = $a["email"];
 			
 			$this->load->library('my_val');
 			$msgs = $this->my_val->person($msgs, "dn_", $p);
 			$msgs = $this->my_val->doctor($msgs, "dn_", $d);
-			$msgs = $this->my_val->account($msgs, "dn_", $a);
 			
 			if (!$msgs){
 				/* person handle */
@@ -179,40 +177,38 @@ class Doctor extends CI_Controller {
 					$this->utility_lib->add_log("person_register", $p["name"]);
 				}
 				
-				if ($person){
-					/* doctor handle */
-					$doctor = $this->general->filter("doctor", ["person_id" => $person->id]);
-					if ($doctor){
-						$doctor = $doctor[0];
-						$d["updated_at"] = date('Y-m-d H:i:s', time());
-						$this->general->update("doctor", $doctor->id, $d);
-						$this->utility_lib->add_log("doctor_update", $person->name);	
-					}else{
-						$d["person_id"] = $person->id;
-						$d["status_id"] = $this->general->filter("status", array("code" => "enabled"))[0]->id;
-						$d["updated_at"] = $d["registed_at"] = date('Y-m-d H:i:s', time());
-						$doctor_id = $this->general->insert("doctor", $d);
-						$doctor = $this->general->id("doctor", $doctor_id);
-						$this->utility_lib->add_log("doctor_register", $person->name);
-					}
+				/* doctor handle */
+				$doctor = $this->general->filter("doctor", ["person_id" => $person->id]);
+				if ($doctor){
+					$doctor = $doctor[0];
+					$d["updated_at"] = date('Y-m-d H:i:s', time());
+					$this->general->update("doctor", $doctor->id, $d);
+					$this->utility_lib->add_log("doctor_update", $person->name);	
+				}else{
+					$d["person_id"] = $person->id;
+					$d["status_id"] = $this->general->status("enabled")->id;
+					$d["updated_at"] = $d["registed_at"] = date('Y-m-d H:i:s', time());
+					$doctor_id = $this->general->insert("doctor", $d);
+					$doctor = $this->general->id("doctor", $doctor_id);
+					$this->utility_lib->add_log("doctor_register", $person->name);
+				}
+				
+				/* account register if email entered */
+				if ($p["email"]){
+					$a = [
+						"role_id" => $this->general->filter("role", ["name" => "doctor"])[0]->id,
+						"person_id" => $person->id,
+						"email" => $p["email"],
+						"password" => password_hash($p["doc_number"], PASSWORD_BCRYPT),
+						"registed_at" => date('Y-m-d H:i:s', time()),
+					];
+					$this->general->insert("account", $a);
+				}
+				$this->utility_lib->add_log("doctor_register", $person->name);
 					
-					if ($doctor){
-						/* account handle */
-						unset($a["confirm"]);
-						$a["role_id"] = $this->general->filter("role", ["name" => "doctor"])[0]->id;
-						$a["person_id"] = $person->id;
-						$a["password"] = password_hash($a["password"], PASSWORD_BCRYPT);
-						$a["active"] = true;
-						$a["registed_at"] = date('Y-m-d H:i:s', time());
-						if ($this->general->insert("account", $a)){
-							$this->utility_lib->add_log("doctor_register", $person->name);
-							
-							$type = "success";
-							$move_to = base_url()."doctor/detail/".$doctor->id;
-							$msg = $this->lang->line('success_rdo');
-						}else $msgs = $this->my_val->set_msg($msgs, "dn_result_msg", "error", "error_rac");
-					}else $msgs = $this->my_val->set_msg($msgs, "dn_result_msg", "error", "error_rdd");
-				}else $msgs = $this->my_val->set_msg($msgs, "dn_result_msg", "error", "error_rpd");
+				$type = "success";
+				$move_to = base_url()."doctor/detail/".$doctor->id;
+				$msg = $this->lang->line('s_register_doctor');
 			}else $msg = $this->lang->line('error_occurred');
 		}else $msg = $this->lang->line('error_no_permission');
 		

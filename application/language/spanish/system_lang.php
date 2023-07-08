@@ -80,6 +80,9 @@ $lang['frequency_D'] = 'D';
 $lang['frequency_W'] = 'S';
 $lang['frequency_M'] = 'M';
 $lang['frequency_Y'] = 'A';
+$lang['date_d'] = 'Día';
+$lang['date_m'] = 'Mes';
+$lang['date_y'] = 'Año';
 
 //button
 $lang['btn_close'] = 'Cerrar';
