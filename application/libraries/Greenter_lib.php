@@ -217,7 +217,7 @@ class Greenter_lib{
 				$ticket = $result->getTicket();
 				$statusResult = $see->getStatus($ticket);
 				if ($statusResult->isSuccess()) {
-					$upload_dir = $_SERVER['DOCUMENT_ROOT']."/archivos/sunat/".date("Ym")."/anulados";
+					$upload_dir = "uploaded/sunat/".date("Ym")."/anulados";
 					if(!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
 					$upload_dir = $upload_dir."/";
 					
