@@ -8,7 +8,7 @@ $lang['error_udd'] = 'Ocurrió error al actualizar datos del médico. Intente nu
 $lang['error_uac'] = 'Ocurrió error al actualizar usuario. Intente nuevamente.';//error_update_account
 $lang['error_dac'] = 'Médico tiene consulta confirmada. Debe antender sus pendientes para desactivar.';//error_doctor_appointment_confirmed
 $lang['error_dsc'] = 'Médico tiene cirugía confirmada. Debe antender sus pendientes para desactivar.';//error_doctor_surgery_confirmed
-$lang['success_upd'] = 'Datos personales han sido actualizados.';//success_update_personal_data
+
 $lang['success_upr'] = 'Profesión ha sido actualizada.';//success_update_profession
 $lang['success_uae'] = 'Correo electrónico ha sido actualizada.';//success_update_account_email
 $lang['success_uep'] = 'Contraseña ha sido actualizada.';//success_update_email_password
@@ -24,6 +24,7 @@ $lang['warning_ado'] = '¿Está seguro de activar médico?';//warning_activate_d
 
 //success messages
 $lang['s_register_doctor'] = 'Médico ha sido registrado.';
+$lang['s_update_doctor'] = 'Médico ha sido actualizado.';
 
 //components
 $lang['btn_generate_appointment'] = 'Generar Consulta';
@@ -104,8 +105,8 @@ $lang['title_weekly_agenda'] = 'Agenda Semanal';
 $lang['title_records'] = 'Registros';
 $lang['txt_activated'] = 'Activado';
 $lang['txt_deactivated'] = 'Desactivado';
-$lang['msg_no_appointment_data'] = 'No hay información de consulta.';
-$lang['msg_no_surgery_data'] = 'No hay información de cirugía.';
+$lang['msg_no_appointment'] = 'Médico aún no cuenta con consulta';
+$lang['msg_no_surgery'] = 'Médico aún no cuenta con cirugía.';
 $lang['th_type'] = 'Tipo';
 $lang['th_start'] = 'Inicio';
 $lang['th_end'] = 'Fin';

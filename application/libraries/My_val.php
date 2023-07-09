@@ -16,29 +16,23 @@ class My_val{
 	}
 	
 	public function person($msgs, $prefix, $data){
-		if (!$data["doc_type_id"]) $msgs = $this->set_msg($msgs, $prefix."doc_type_msg", "error", "e_select_doc_type");
-		if (!$data["doc_number"]) $msgs = $this->set_msg($msgs, $prefix."doc_number_msg", "error", "e_enter_doc_number");
-		if (!$data["name"]) $msgs = $this->set_msg($msgs, $prefix."name_msg", "error", "e_enter_name");
+		if (!$data["doc_type_id"]) $msgs = $this->set_msg($msgs, $prefix."doc_type_msg", "error", "e_required_field");
+		if (!$data["doc_number"]) $msgs = $this->set_msg($msgs, $prefix."doc_number_msg", "error", "e_required_field");
+		if (!$data["name"]) $msgs = $this->set_msg($msgs, $prefix."name_msg", "error", "e_required_field");
 		if (array_key_exists("tel", $data))
-			if (!$data["tel"]) 
-				$msgs = $this->set_msg($msgs, $prefix."tel_msg", "error", "e_enter_tel");
+			if (!$data["tel"]) $msgs = $this->set_msg($msgs, $prefix."tel_msg", "error", "e_required_field");
 		if (array_key_exists("email", $data))
 			if ($data["email"]) 
 				if (!filter_var($data["email"], FILTER_VALIDATE_EMAIL))
-					$msgs = $this->set_msg($msgs, $prefix."email_msg", "error", "e_enter_email_format");
+					$msgs = $this->set_msg($msgs, $prefix."email_msg", "error", "e_email_format");
 		/* optionals: $p["birthday"], $p["sex"], $p["blood_type"], $p["address"] */
 		
 		return $msgs;
 	}
 	
-	public function doctor($msgs, $prefix, $data){
-		if ($data["specialty_id"] and $data["license"]){
-			if ($this->CI->general->filter("doctor", $data)) 
-				$msgs = $this->set_msg($msgs, $prefix."license_msg", "error", "e_doctor_exists");
-		}else{
-			if (!$data["specialty_id"]) $msgs = $this->set_msg($msgs, $prefix."specialty_msg", "error", "e_select_specialty");
-			if (!$data["license"]) $msgs = $this->set_msg($msgs, $prefix."license_msg", "error", "e_enter_license");
-		}
+	public function doctor($msgs, $prefix, $data, $dup = true){
+		if (!$data["specialty_id"]) $msgs = $this->set_msg($msgs, $prefix."specialty_msg", "error", "e_required_field");
+		if (!$data["license"]) $msgs = $this->set_msg($msgs, $prefix."license_msg", "error", "e_required_field");
 		
 		return $msgs;
 	}
@@ -449,7 +443,7 @@ class My_val{
 	}
 	
 	public function login($msgs, $prefix, $data){
-		$account = $this->CI->general->filter("account", ["email" => $data["email"]]);
+		$account = $this->CI->general->filter("account", ["email" => $data["email"], "is_valid" => true]);
 		
 		if ($account){
 			$account = $account[0];

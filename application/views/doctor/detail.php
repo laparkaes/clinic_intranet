@@ -327,64 +327,133 @@
 							<i class="far fa-file-medical-alt mr-3"></i><span><?= $this->lang->line('tab_surgeries') ?></span>
 						</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#edit">
-							<i class="far fa-edit mr-3"></i><span><?= $this->lang->line('tab_edit') ?></span>
-						</a>
-					</li>
 				</ul>
 				<div class="tab-content">	
 					<div class="tab-pane fade active show" id="information" role="tabpanel">
-						<div class="row">
-							<div class="col-md-6 mb-3">
-								<h5 class="mb-1"><?= $this->lang->line('lb_name') ?></h5>
-								<div><?= $person->name ?></div>
+						<form id="form_update_info">
+							<input type="hidden" name="p[id]" value="<?= $person->id ?>">
+							<input type="hidden" name="d[id]" value="<?= $doctor->id ?>">
+							<div class="form-row mb-3">
+								<div class="form-group col-md-3">
+									<label><?= $this->lang->line('lb_document') ?></label>
+									<select class="form-control" id="du_doc_type_id" name="p[doc_type_id]" disabled>
+										<?php foreach($doc_types as $d){ if ($d->sunat_code){ 
+										if ($person->doc_type_id == $d->id) $s = "selected"; else $s = ""; ?>
+										<option value="<?= $d->id ?>" <?= $s ?>><?= $d->description ?></option>
+										<?php }} ?>
+									</select>
+									<div class="sys_msg" id="du_doc_type_msg"></div>
+								</div>
+								<div class="form-group col-md-3">
+									<label class="d-md-block d-none">&nbsp;</label>
+									<input type="text" class="form-control" id="du_doc_number" name="p[doc_number]" placeholder="<?= $this->lang->line('lb_number') ?>" value="<?= $person->doc_number ?>" readonly>
+									<div class="sys_msg" id="du_doc_number_msg"></div>
+								</div>
+								<div class="form-group col-md-6">
+									<label><?= $this->lang->line('lb_name') ?></label>
+									<input type="text" class="form-control" id="du_name" name="p[name]" value="<?= $person->name ?>" readonly>
+									<div class="sys_msg" id="du_name_msg"></div>
+								</div>
+								<div class="form-group col-md-3">
+									<label><?= $this->lang->line('lb_tel') ?></label>
+									<input type="text" class="form-control" id="du_tel" name="p[tel]" value="<?= $person->tel ?>" readonly>
+									<div class="sys_msg" id="du_tel_msg"></div>
+								</div>
+								<div class="form-group col-md-3">
+									<?php
+									if ($person->birthday){
+										$aux = strtotime($person->birthday);
+										$b = date("Y-m-d", $aux);
+										$d = (int)date("d", $aux); $m = (int)date("m", $aux); $y = (int)date("Y", $aux);	
+									}else $b = $d = $m = $y = null;
+									?>
+									<label><?= $this->lang->line('lb_birthday') ?></label>
+									<input type="hidden" id="p_birthday" name="p[birthday]" value="<?= $b ?>" readonly>
+									<div class="input-group">
+										<select class="form-control" id="p_birthday_d" disabled>
+											<option value="" selected=""><?= $this->lang->line('date_d') ?></option>
+											<?php for($i = 1; $i <= 31; $i++){
+											if ($i == $d) $s = "selected"; else $s = ""; ?>
+											<option value="<?= $i ?>" <?= $s ?>><?= $i ?></option>
+											<?php } ?>
+										</select>
+										<select class="form-control" id="p_birthday_m" disabled>
+											<option value="" selected=""><?= $this->lang->line('date_m') ?></option>
+											<?php for($i = 1; $i <= 12; $i++){
+											if ($i == $m) $s = "selected"; else $s = ""; ?>
+											<option value="<?= $i ?>" <?= $s ?>><?= $i ?></option>
+											<?php } ?>
+										</select>
+										<?php $now = date('Y'); ?>
+										<select class="form-control" id="p_birthday_y" disabled>
+											<option value="" selected=""><?= $this->lang->line('date_y') ?></option>
+											<?php for($i = 0; $i <= 130; $i++){ $aux = $now - $i;
+											if ($aux == $y) $s = "selected"; else $s = ""; ?>
+											<option value="<?= $aux ?>" <?= $s ?>><?= $aux ?></option>
+											<?php } ?>
+										</select>
+									</div>
+									<div class="sys_msg" id="du_birthday_msg"></div>
+								</div>
+								<div class="form-group col-md-3">
+									<label><?= $this->lang->line('lb_sex') ?></label>
+									<select class="form-control" name="p[sex_id]" disabled>
+										<option value="" selected="">--</option>
+										<?php foreach($sex_ops as $item){ 
+										if ($person->sex_id == $item->id) $s = "selected"; else $s = ""; ?>
+										<option value="<?= $item->id ?>" <?= $s ?>><?= $item->description ?></option>
+										<?php } ?>
+									</select>
+									<div class="sys_msg" id="du_sex_msg"></div>
+								</div>
+								<div class="form-group col-md-3">
+									<label><?= $this->lang->line('lb_blood_type') ?></label>
+									<select class="form-control" name="p[blood_type_id]" disabled>
+										<option value="" selected="">--</option>
+										<?php foreach($blood_type_ops as $item){ 
+										if ($person->blood_type_id == $item->id) $s = "selected"; else $s = ""; ?>
+										<option value="<?= $item->id ?>" <?= $s ?>><?= $item->description ?></option>
+										<?php } ?>
+									</select>
+									<div class="sys_msg" id="du_blood_type_msg"></div>
+								</div>
+								<div class="form-group col-md-6">
+									<label><?= $this->lang->line('lb_email') ?></label>
+									<input type="email" class="form-control" name="p[email]" placeholder="email@example.com" value="<?= $person->email ?>" readonly>
+									<div class="sys_msg" id="du_email_msg"></div>
+								</div>
+								<div class="form-group col-md-3">
+									<label><?= $this->lang->line('lb_specialty') ?></label>
+									<select class="form-control" name="d[specialty_id]" disabled>
+										<option value="" selected><?= $this->lang->line('text_select') ?>...</option>
+										<?php foreach($specialties as $item){ 
+										if ($doctor->specialty_id == $item->id) $s = "selected"; else $s = ""; ?>
+										<option value="<?= $item->id ?>" <?= $s ?>><?= $item->name ?></option>
+										<?php } ?>
+									</select>
+									<div class="sys_msg" id="du_specialty_msg"></div>
+								</div>
+								<div class="form-group col-md-3">
+									<label><?= $this->lang->line('lb_license_number') ?></label>
+									<input type="text" class="form-control" name="d[license]" value="<?= $doctor->license ?>" readonly>
+									<div class="sys_msg" id="du_license_msg"></div>
+								</div>
+								<div class="form-group col-md-12">
+									<label><?= $this->lang->line('lb_address') ?></label>
+									<input type="text" class="form-control" name="p[address]" value="<?= $person->address ?>" readonly>
+									<div class="sys_msg" id="du_address_msg"></div>
+								</div>
 							</div>
-							<div class="col-md-3 mb-3">
-								<h5 class="mb-1"><?= $this->lang->line('lb_specialty') ?></h5>
-								<div><?= $doctor->specialty ?></div>
-							</div>
-							<div class="col-md-3 mb-3">
-								<h5 class="mb-1"><?= $this->lang->line('lb_license') ?></h5>
-								<div><?= $doctor->license ?></div>
-							</div>
-							<div class="col-md-3 mb-3">
-								<h5 class="mb-1"><?= $this->lang->line('lb_status') ?></h5>
-								<div class="text-<?= $doctor->status->color ?>"><?= $this->lang->line($doctor->status->code) ?></div>
-							</div>
-							<div class="col-md-3 mb-3">
-								<h5 class="mb-1"><?= $this->lang->line('lb_tel') ?></h5>
-								<div><?= $person->tel ?></div>
-							</div>
-							<div class="col-md-3 mb-3">
-								<h5 class="mb-1"><?= $this->lang->line('lb_email') ?></h5>
-								<div><?= $account->email ?></div>
-							</div>
-							<div class="col-md-3 mb-3">
-								<h5 class="mb-1"><?= $this->lang->line('lb_document') ?></h5>
-								<div><?= $person->doc_type." ".$person->doc_number ?></div>
-							</div>
-							<div class="col-md-3 mb-3">
-								<h5 class="mb-1"><?= $this->lang->line('lb_birthday') ?></h5>
-								<div><?= $person->birthday ?></div>
-							</div>
-							<div class="col-md-3 mb-3">
-								<h5 class="mb-1"><?= $this->lang->line('lb_age') ?></h5>
-								<div><?= $person->age ?></div>
-							</div>
-							<div class="col-md-3 mb-3">
-								<h5 class="mb-1"><?= $this->lang->line('lb_sex') ?></h5>
-								<div><?= $person->sex ?></div>
-							</div>
-							<div class="col-md-3 mb-3">
-								<h5 class="mb-1"><?= $this->lang->line('lb_blood_type') ?></h5>
-								<div><?= $person->blood_type ?></div>
-							</div>
-							<div class="col-md-12 mb-3">
-								<h5 class="mb-1"><?= $this->lang->line('lb_address') ?></h5>
-								<div><?= $person->address ?></div>
-							</div>
-						</div>
+							<button type="button" class="btn btn-primary" id="btn_update_info">
+								<?= $this->lang->line('btn_update') ?>
+							</button>
+							<button type="submit" class="btn btn-primary d-none" id="btn_update_confirm" disabled>
+								<?= $this->lang->line('btn_confirm') ?>
+							</button>
+							<button type="button" class="btn btn-danger light d-none" id="btn_update_cancel" disabled>
+								<?= $this->lang->line('btn_cancel') ?>
+							</button>
+						</form>
 					</div>
 					<div class="tab-pane fade" id="appointments" role="tabpanel">
 						<div class="row">
@@ -436,7 +505,7 @@
 							</div>
 							<?php }else{ ?>
 							<div class="col-md-12">
-								<div class="text-danger"><?= $this->lang->line('msg_no_appointment_data') ?></div>
+								<?= $this->lang->line('msg_no_appointment') ?>
 							</div>
 							<?php } ?>
 						</div>
@@ -491,119 +560,9 @@
 							</div>
 							<?php }else{ ?>
 							<div class="col-md-12">
-								<div class="text-danger"><?= $this->lang->line('msg_no_surgery_data') ?></div>
+								<?= $this->lang->line('msg_no_surgery') ?>
 							</div>
 							<?php } ?>
-						</div>
-					</div>
-					<div class="tab-pane fade" id="edit" role="tabpanel">
-						<div class="row">
-							<div class="col-md-12">
-								<form action="#" id="form_update_personal_data">
-									<input type="hidden" name="id" value="<?= $person->id ?>">
-									<h5 class="mb-3"><?= $this->lang->line('title_personal_info') ?></h5>
-									<div class="form-row">
-										<div class="form-group col-md-4">
-											<label><?= $this->lang->line('lb_name') ?></label>
-											<input type="text" class="form-control" value="<?= $person->name ?>" readonly>
-											<div class="sys_msg" id="pd_name_msg"></div>
-										</div>
-										<div class="form-group col-md-4">
-											<label><?= $this->lang->line('lb_document') ?></label>
-											<input type="text" class="form-control" value="<?= $person->doc_type." ".$person->doc_number ?>" readonly>
-											<div class="sys_msg" id="pd_doc_msg"></div>
-										</div>
-										<div class="form-group col-md-4">
-											<label><?= $this->lang->line('lb_birthday') ?></label>
-											<input type="text" class="form-control bw date_picker_all" name="birthday" value="<?= $person->birthday ?>" readonly>
-											<div class="sys_msg" id="pd_birthday_msg"></div>
-										</div>
-										<div class="form-group col-md-4">
-											<label><?= $this->lang->line('lb_tel') ?></label>
-											<input type="text" class="form-control" name="tel" value="<?= $person->tel ?>">
-											<div class="sys_msg" id="pd_tel_msg"></div>
-										</div>
-										<div class="form-group col-md-4">
-											<label><?= $this->lang->line('lb_sex') ?></label>
-											<select class="form-control" name="sex_id" id="de_p_sex">
-												<option value="">--</option>
-												<?php foreach($sex_ops as $item){
-												if ($item->id == $person->sex_id) $s = "selected"; else $s = ""; ?>
-												<option value="<?= $item->id ?>" <?= $s ?>><?= $item->description ?></option>
-												<?php } ?>
-											</select>
-											<div class="sys_msg" id="pd_sex_msg"></div>
-										</div>
-										<div class="form-group col-md-4">
-											<label><?= $this->lang->line('lb_blood_type') ?></label>
-											<select class="form-control" name="blood_type_id" id="de_p_blood_type">
-												<option value="">--</option>
-												<?php foreach($blood_type_ops as $item){
-												if ($item->id == $person->blood_type_id) $s = "selected"; else $s = ""; ?>
-												<option value="<?= $item->id ?>" <?= $s ?>><?= $item->description ?></option>
-												<?php } ?>
-											</select>
-											<div class="sys_msg" id="pd_blood_type_msg"></div>
-										</div>
-										<div class="form-group col-md-12">
-											<label><?= $this->lang->line('lb_address') ?></label>
-											<input type="text" class="form-control" name="address" value="<?= $person->address ?>">
-											<div class="sys_msg" id="pd_address_msg"></div>
-										</div>
-									</div>
-									<button type="submit" class="btn btn-primary mt-3">
-										<?= $this->lang->line('btn_update') ?>
-									</button>
-								</form>
-							</div>
-						</div>
-						<hr class="my-4">
-						<div class="row">
-							<div class="col-md-12">
-								<form action="#" id="form_update_profession">
-									<input type="hidden" name="id" value="<?= $doctor->id ?>">
-									<h5 class="mb-3"><?= $this->lang->line('title_profession') ?></h5>
-									<div class="form-row">
-										<div class="form-group col-md-6">
-											<label><?= $this->lang->line('lb_specialty') ?></label>
-											<select class="form-control" name="specialty_id">
-												<option value="">--</option>
-												<?php foreach($specialties as $item){ if ($doctor->specialty_id == $item->id) $s = "selected"; else $s = ""; ?>
-												<option value="<?= $item->id ?>" <?= $s ?>><?= $item->name ?></option>
-												<?php } ?>
-											</select>
-											<div class="sys_msg" id="pr_specialty_msg"></div>
-										</div>
-										<div class="form-group col-md-6">
-											<label><?= $this->lang->line('lb_license_number') ?></label>
-											<input type="text" class="form-control" name="license" value="<?= $doctor->license ?>">
-											<div class="sys_msg" id="pr_license_msg"></div>
-										</div>
-									</div>
-									<button type="submit" class="btn btn-primary mt-3">
-										<?= $this->lang->line('btn_update') ?>
-									</button>
-								</form>
-							</div>
-						</div>
-						<hr class="my-4">
-						<div class="row">
-							<div class="col-md-12">
-								<form action="#" id="form_update_account_email">
-									<input type="hidden" name="id" value="<?= $account->id ?>">
-									<h5 class="mb-3"><?= $this->lang->line('title_account') ?></h5>
-									<div class="form-row">
-										<div class="form-group col-md-12">
-											<label><?= $this->lang->line('lb_email') ?></label>
-											<input type="text" class="form-control" name="email" value="<?= $account->email ?>">
-											<div class="sys_msg" id="ae_email_msg"></div>
-										</div>
-									</div>
-									<button type="submit" class="btn btn-primary mt-3">
-										<?= $this->lang->line('btn_update') ?>
-									</button>
-								</form>
-							</div>
 						</div>
 					</div>
 				</div>

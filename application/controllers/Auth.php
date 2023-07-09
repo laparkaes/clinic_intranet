@@ -30,7 +30,7 @@ class Auth extends CI_Controller {
 		$msgs = $this->my_val->login($msgs, "lg_", $data);
 		
 		if (!$msgs){
-			$account = $this->general->filter("account", ["email" => $data["email"]])[0];
+			$account = $this->general->filter("account", ["email" => $data["email"], "is_valid" => true])[0];
 			$this->general->update("account", $account->id, ["logged_at" => date('Y-m-d H:i:s', time())]);
 			
 			$person = $this->general->id("person", $account->person_id);

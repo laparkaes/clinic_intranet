@@ -1,8 +1,43 @@
-function update_personal_data(dom){
-	$("#form_update_personal_data .sys_msg").html("");
-	ajax_form(dom, "doctor/update_personal_data").done(function(res) {
+function enable_update_form(){
+	$("#form_update_info input").prop("readonly", false);
+	$("#form_update_info select").prop("disabled", false);
+	$("#form_update_info button").prop("disabled", false);
+	
+	$("#du_doc_type_id").prop("disabled", true);
+	$("#du_doc_number").prop("readonly", true);
+	$("#du_name").prop("readonly", true);
+	
+	$("#btn_update_info").addClass("d-none").prop("disabled", true);
+	$("#btn_update_confirm").removeClass("d-none").prop("disabled", false);
+	$("#btn_update_cancel").removeClass("d-none").prop("disabled", false);
+}
+
+function disable_update_form(){
+	$("#form_update_info input").prop("readonly", true);
+	$("#form_update_info select").prop("disabled", true);
+	$("#form_update_info button").prop("disabled", true);
+	
+	$("#btn_update_info").removeClass("d-none").prop("disabled", false);
+	$("#btn_update_confirm").addClass("d-none").prop("disabled", true);
+	$("#btn_update_cancel").addClass("d-none").prop("disabled", true);
+}
+
+function update_info(dom){
+	//birthday merge
+	let d = $("#p_birthday_d").val();
+	let m = $("#p_birthday_m").val();
+	let y = $("#p_birthday_y").val();
+	if (d != "" && m != "" && y != "") $("#p_birthday").val(y + "-" + m + "-" + d); else $("#p_birthday").val("");
+	
+	//doc_type_id field
+	$("#du_doc_type_id").prop("disabled", false);
+	
+	$("#form_update_info .sys_msg").html("");
+	ajax_form(dom, "doctor/update_info").done(function(res) {
 		set_msg(res.msgs);
-		swal_redirection(res.type, res.msg, window.location.href);
+		swal(res.type, res.msg);
+		if (res.type == "success") disable_update_form();
+		//swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
@@ -108,9 +143,14 @@ $(document).ready(function() {
 	set_datatable("surgery_list", 10, false);
 	
 	//doctor update
-	$("#form_update_personal_data").submit(function(e) {e.preventDefault(); update_personal_data(this);});
+	$("#form_update_info").submit(function(e) {e.preventDefault(); update_info(this);});
 	$("#form_update_profession").submit(function(e) {e.preventDefault(); update_profession(this);});
 	$("#form_update_account_email").submit(function(e) {e.preventDefault(); update_account_email(this);});
+	$("#btn_update_info").on('click',(function(e) {enable_update_form();}));
+	$("#btn_update_cancel").on('click',(function(e) {
+		disable_update_form();
+		document.getElementById("form_update_info").reset();
+	}));
 	
 	//doctor activation
 	$("#btn_deactivate").on('click',(function(e) {activation_control(this, false);}));

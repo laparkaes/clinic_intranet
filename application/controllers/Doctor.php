@@ -83,16 +83,8 @@ class Doctor extends CI_Controller {
 		
 		//set personal data
 		$person->doc_type = $this->general->id("doc_type", $person->doc_type_id)->short;
-		if ($person->birthday){
-			$person->age = $this->my_func->age_calculator($person->birthday);
-			$person->birthday = date("Y-m-d", strtotime($person->birthday));
-			$person->birthday_y = date("Y", strtotime($person->birthday));
-			$person->birthday_m = date("m", strtotime($person->birthday));
-			$person->birthday_d = date("d", strtotime($person->birthday));
-		}else{
-			$person->age = null;
-			$person->birthday = null;
-		}
+		if ($person->birthday) $person->birthday = date("Y-m-d", strtotime($person->birthday));
+		else $person->birthday = null;
 		if ($person->sex_id) $person->sex = $this->general->id("sex", $person->sex_id)->description;
 		else $person->sex = null;
 		if ($person->blood_type_id) $person->blood_type = $this->general->id("blood_type", $person->blood_type_id)->description;
@@ -195,14 +187,16 @@ class Doctor extends CI_Controller {
 				
 				/* account register if email entered */
 				if ($p["email"]){
-					$a = [
-						"role_id" => $this->general->filter("role", ["name" => "doctor"])[0]->id,
-						"person_id" => $person->id,
-						"email" => $p["email"],
-						"password" => password_hash($p["doc_number"], PASSWORD_BCRYPT),
-						"registed_at" => date('Y-m-d H:i:s', time()),
-					];
-					$this->general->insert("account", $a);
+					if (!$this->general->filter("account", ["email" => $p["email"], "is_valid" => true])){
+						$a = [
+							"role_id" => $this->general->filter("role", ["name" => "doctor"])[0]->id,
+							"person_id" => $person->id,
+							"email" => $p["email"],
+							"password" => password_hash($p["doc_number"], PASSWORD_BCRYPT),
+							"registed_at" => date('Y-m-d H:i:s', time()),
+						];
+						$this->general->insert("account", $a);
+					}
 				}
 				$this->utility_lib->add_log("doctor_register", $person->name);
 					
@@ -216,24 +210,43 @@ class Doctor extends CI_Controller {
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to]);
 	}
 	
-	public function update_personal_data(){
+	public function update_info(){
 		$type = "error"; $msgs = []; $msg = null;
 		if ($this->utility_lib->check_access("doctor", "update")){
-			$data = $this->input->post();
+			$p = $this->input->post("p");
+			$d = $this->input->post("d");
 			
-			//all datas are optional => no validation
-			if (!$data["tel"]) $data["tel"] = null;
-			if (!$data["address"]) $data["address"] = null;
-			if (!$data["birthday"]) $data["birthday"] = null;
-			if (!$data["sex_id"]) $data["sex_id"] = null;
-			if (!$data["blood_type_id"]) $data["blood_type_id"] = null;
-			if ($this->general->update("person", $data["id"], $data)){
-				$person = $this->general->id("person", $data["id"]);
-				$this->utility_lib->add_log("person_update", $person->name);
+			$this->load->library('my_val');
+			$msgs = $this->my_val->person($msgs, "du_", $p);
+			$msgs = $this->my_val->doctor($msgs, "du_", $d, false);
+			
+			if (!$msgs){
+				foreach($d as $i => $item) if (!$item) $d[$i] = null;
+				$this->general->update("doctor", $d["id"], $d);
+				
+				foreach($p as $i => $item) if (!$item) $p[$i] = null;
+				$this->general->update("person", $p["id"], $p);
+				
+				if ($p["email"]){
+					if (!$this->general->filter("account", ["email" => $p["email"], "is_valid" => true])){
+						$r_doctor_id = $this->general->filter("role", ["name" => "doctor"])[0]->id;
+						$this->general->update_f("account", ["person_id" => $p["id"], "role_id" => $r_doctor_id], ["is_valid" => false]);
+						
+						$a = [
+							"role_id" => $r_doctor_id,
+							"person_id" => $p["id"],
+							"email" => $p["email"],
+							"password" => password_hash($p["doc_number"], PASSWORD_BCRYPT),
+							"registed_at" => date('Y-m-d H:i:s', time()),
+						];
+						$this->general->insert("account", $a);
+					}
+				}
+				$this->utility_lib->add_log("doctor_update", $p["name"]);
 				
 				$type = "success"; 
-				$msg = $this->lang->line('success_upd');
-			}else $msg = $this->lang->line('error_internal');
+				$msg = $this->lang->line('s_update_doctor');
+			}else $msg = $this->lang->line('error_occurred');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');

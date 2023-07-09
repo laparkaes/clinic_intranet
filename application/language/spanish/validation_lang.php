@@ -1,4 +1,8 @@
 <?php
+$lang['e_required_field'] = 'Campo requerido';
+$lang['e_email_format'] = 'Debe ser un correo electrónico';
+
+
 /* person */
 $lang['e_enter_name'] = 'Ingrese nombre.';
 $lang['e_enter_tel'] = 'Ingrese teléfono/celular.';
@@ -8,12 +12,10 @@ $lang['e_enter_doc_number'] = 'Ingrese número de documento.';
 /* doctor */
 $lang['e_select_specialty'] = 'Elija una especialidad.';
 $lang['e_enter_license'] = 'Ingrese número de licencia.';
-$lang['e_doctor_exists'] = 'Médico registrado.';
 
 /* account */
 $lang['e_account_exists'] = 'Usuario registrado.';
 $lang['e_account_no_exists'] = 'Usuario no existe.';
-$lang['e_enter_email_format'] = 'Ingrese un correo electrónico.';
 $lang['e_enter_account'] = 'Ingrese usuario.';
 $lang['e_password_confirm'] = 'Repita contraseña correctamente.';
 $lang['e_password_length'] = 'Ingrese mínimo 6 letras.';

@@ -38,7 +38,7 @@ $(document).ready(function() {
 	$(".control_bl").on('click',(function(e) {control_bl(this);}));
 	
 	//register
-	$("#register_form").submit(function(e) {e.preventDefault(); register_doctor(this);});
+	$("#form_register").submit(function(e) {e.preventDefault(); register_doctor(this);});
 	$("#btn_search_person_dn").on('click',(function(e) {search_person_dn();}));
 	$("#dn_doc_type_id").on('change',(function(e) {reset_person();}));
 	$("#dn_doc_number").keyup(function() {reset_person();});

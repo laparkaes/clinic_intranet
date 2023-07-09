@@ -34,6 +34,7 @@ class Account extends CI_Controller {
 			$f_in[] = ["field" => "person_id", "values" => $values];
 		}
 		
+		$f_w["is_valid"] = true;
 		$accounts = $this->general->filter("account", $f_w, $f_l, $f_in, "email", "asc", 25, 25*($f_url["page"]-1));
 		foreach($accounts as $item){
 			$item->role = $this->lang->line($this->general->id("role", $item->role_id)->name);

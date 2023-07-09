@@ -92,8 +92,8 @@
 			</div>
 			<div class="row bl_content d-none" id="bl_add">
 				<div class="col-md-12">
-					<form id="register_form">
-						<h5><?= $this->lang->line('title_doctor_info') ?></h5>
+					<form id="form_register">
+						<h4><?= $this->lang->line('title_doctor_info') ?></h4>
 						<div class="form-row mb-3">
 							<div class="form-group col-md-3">
 								<label><?= $this->lang->line('lb_document') ?></label>
