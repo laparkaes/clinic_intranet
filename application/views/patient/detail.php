@@ -344,28 +344,28 @@
 							<div class="form-row mb-3">
 								<div class="form-group col-md-3">
 									<label><?= $this->lang->line('lb_document') ?></label>
-									<select class="form-control" id="pn_doc_type_id" name="doc_type_id" disabled>
+									<select class="form-control" id="pu_doc_type_id" name="doc_type_id" disabled>
 										<?php foreach($doc_types as $d){ if ($d->sunat_code){ 
 										if ($person->doc_type_id == $d->id) $s = "selected"; else $s = ""; ?>
 										<option value="<?= $d->id ?>" <?= $s ?>><?= $d->description ?></option>
 										<?php }} ?>
 									</select>
-									<div class="sys_msg" id="pn_doc_type_msg"></div>
+									<div class="sys_msg" id="pu_doc_type_msg"></div>
 								</div>
 								<div class="form-group col-md-3">
 									<label class="d-md-block d-none">&nbsp;</label>
-									<input type="text" class="form-control" id="pn_doc_number" name="doc_number" placeholder="<?= $this->lang->line('lb_number') ?>" value="<?= $person->doc_number ?>" readonly>
-									<div class="sys_msg" id="pn_doc_number_msg"></div>
+									<input type="text" class="form-control" id="pu_doc_number" name="doc_number" placeholder="<?= $this->lang->line('lb_number') ?>" value="<?= $person->doc_number ?>" readonly>
+									<div class="sys_msg" id="pu_doc_number_msg"></div>
 								</div>
 								<div class="form-group col-md-6">
 									<label><?= $this->lang->line('lb_name') ?></label>
-									<input type="text" class="form-control" id="pn_name" name="name" value="<?= $person->name ?>" readonly>
-									<div class="sys_msg" id="pn_name_msg"></div>
+									<input type="text" class="form-control" id="pu_name" name="name" value="<?= $person->name ?>" readonly>
+									<div class="sys_msg" id="pu_name_msg"></div>
 								</div>
 								<div class="form-group col-md-3">
 									<label><?= $this->lang->line('lb_tel') ?></label>
-									<input type="text" class="form-control" id="pn_tel" name="tel" value="<?= $person->tel ?>" readonly>
-									<div class="sys_msg" id="pn_tel_msg"></div>
+									<input type="text" class="form-control" id="pu_tel" name="tel" value="<?= $person->tel ?>" readonly>
+									<div class="sys_msg" id="pu_tel_msg"></div>
 								</div>
 								<div class="form-group col-md-3">
 									<?php
@@ -412,7 +412,7 @@
 										<option value="<?= $item->id ?>" <?= $s ?>><?= $item->description ?></option>
 										<?php } ?>
 									</select>
-									<div class="sys_msg" id="pn_sex_msg"></div>
+									<div class="sys_msg" id="pu_sex_msg"></div>
 								</div>
 								<div class="form-group col-md-3">
 									<label><?= $this->lang->line('lb_blood_type') ?></label>
@@ -423,17 +423,17 @@
 										<option value="<?= $item->id ?>" <?= $s ?>><?= $item->description ?></option>
 										<?php } ?>
 									</select>
-									<div class="sys_msg" id="pn_blood_type_msg"></div>
+									<div class="sys_msg" id="pu_blood_type_msg"></div>
 								</div>
 								<div class="form-group col-md-4">
 									<label><?= $this->lang->line('lb_email') ?></label>
 									<input type="email" class="form-control" name="email" placeholder="email@example.com" value="<?= $person->email ?>" readonly>
-									<div class="sys_msg" id="pn_email_msg"></div>
+									<div class="sys_msg" id="pu_email_msg"></div>
 								</div>
 								<div class="form-group col-md-8">
 									<label><?= $this->lang->line('lb_address') ?></label>
 									<input type="text" class="form-control" name="address" value="<?= $person->address ?>" readonly>
-									<div class="sys_msg" id="pn_address_msg"></div>
+									<div class="sys_msg" id="pu_address_msg"></div>
 								</div>
 							</div>
 							<button type="button" class="btn btn-primary" id="btn_update_info">
