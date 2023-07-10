@@ -41,22 +41,6 @@ function update_info(dom){
 	});
 }
 
-function update_profession(dom){
-	$("#form_update_profession .sys_msg").html("");
-	ajax_form(dom, "doctor/update_profession").done(function(res) {
-		set_msg(res.msgs);
-		swal_redirection(res.type, res.msg, window.location.href);
-	});
-}
-
-function update_account_email(dom){
-	$("#form_update_account_email .sys_msg").html("");
-	ajax_form(dom, "doctor/update_account_email").done(function(res) {
-		set_msg(res.msgs);
-		swal_redirection(res.type, res.msg, window.location.href);
-	});
-}
-
 function activation_control(dom, active){
 	var msg;
 	
@@ -144,8 +128,6 @@ $(document).ready(function() {
 	
 	//doctor update
 	$("#form_update_info").submit(function(e) {e.preventDefault(); update_info(this);});
-	$("#form_update_profession").submit(function(e) {e.preventDefault(); update_profession(this);});
-	$("#form_update_account_email").submit(function(e) {e.preventDefault(); update_account_email(this);});
 	$("#btn_update_info").on('click',(function(e) {enable_update_form();}));
 	$("#btn_update_cancel").on('click',(function(e) {
 		disable_update_form();

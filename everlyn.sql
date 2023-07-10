@@ -3,13 +3,13 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-07-05 23:13
+-- 생성 시간: 23-07-10 21:37
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-SET time_zone = "-05:00";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -17852,7 +17852,8 @@ INSERT INTO `product` (`id`, `category_id`, `type_id`, `currency_id`, `provider_
 (131, 5, 1, 1, NULL, 'PRO000025', 'Rodilleras abiertas', '', 0, 35, 29.66, 5.34, 1, '2023-01-25 05:00:00', '2023-01-25 05:00:00'),
 (132, 5, 1, 1, NULL, 'PRO000026', 'Talonera de silicona', '', 0, 40, 33.9, 6.1, 1, '2023-01-25 05:00:00', '2023-01-25 05:00:00'),
 (133, 5, 1, 1, NULL, 'PRO000027', 'Tobillera con estabilizador', '', 0, 40, 33.9, 6.1, 1, '2023-01-25 05:00:00', '2023-01-25 05:00:00'),
-(134, 5, 1, 1, NULL, 'PRO000028', 'Tobillera corta', '', 0, 35, 29.66, 5.34, 1, '2023-01-25 05:00:00', '2023-01-25 05:00:00');
+(134, 5, 1, 1, NULL, 'PRO000028', 'Tobillera corta', '', 0, 35, 29.66, 5.34, 1, '2023-01-25 05:00:00', '2023-01-25 05:00:00'),
+(153, 33, 1, 1, NULL, '00028732', 'producto venta usado', '20230706140020.jpeg', 99, 13000, 11017, 1983.05, 1, '2023-07-06 19:00:20', '2023-07-06 19:00:20');
 
 -- --------------------------------------------------------
 
@@ -17889,6 +17890,13 @@ CREATE TABLE `product_image` (
   `filename` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- 테이블의 덤프 데이터 `product_image`
+--
+
+INSERT INTO `product_image` (`id`, `product_id`, `filename`) VALUES
+(1, 153, '20230706140020.jpeg');
+
 -- --------------------------------------------------------
 
 --
@@ -17901,6 +17909,13 @@ CREATE TABLE `product_option` (
   `description` varchar(100) NOT NULL,
   `stock` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `product_option`
+--
+
+INSERT INTO `product_option` (`id`, `product_id`, `description`, `stock`) VALUES
+(1, 153, 'Skid loader', 99);
 
 -- --------------------------------------------------------
 
@@ -17981,6 +17996,56 @@ CREATE TABLE `role_access` (
   `role_id` int(11) NOT NULL,
   `access_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `role_access`
+--
+
+INSERT INTO `role_access` (`id`, `role_id`, `access_id`) VALUES
+(1, 1, 112),
+(2, 1, 43),
+(3, 1, 42),
+(4, 1, 41),
+(5, 1, 40),
+(6, 1, 39),
+(7, 1, 38),
+(8, 1, 37),
+(9, 1, 36),
+(10, 1, 35),
+(11, 1, 34),
+(12, 1, 33),
+(13, 1, 32),
+(14, 1, 31),
+(15, 1, 30),
+(16, 1, 29),
+(17, 1, 28),
+(18, 1, 27),
+(19, 1, 26),
+(20, 1, 25),
+(21, 1, 24),
+(22, 1, 23),
+(23, 1, 22),
+(24, 1, 21),
+(25, 1, 20),
+(26, 1, 19),
+(27, 1, 18),
+(28, 1, 17),
+(29, 1, 16),
+(30, 1, 15),
+(31, 1, 14),
+(32, 1, 13),
+(33, 1, 12),
+(34, 1, 11),
+(35, 1, 10),
+(36, 1, 9),
+(37, 1, 8),
+(38, 1, 7),
+(39, 1, 6),
+(40, 1, 5),
+(41, 1, 4),
+(42, 1, 3),
+(43, 1, 2),
+(44, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -18196,6 +18261,13 @@ CREATE TABLE `system` (
   `sunat_password` varchar(50) DEFAULT NULL,
   `sale_type_finished` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `system`
+--
+
+INSERT INTO `system` (`id`, `is_finished`, `company_id`, `account_id`, `sunat_access`, `sunat_certificate`, `sunat_username`, `sunat_password`, `sale_type_finished`) VALUES
+(1, 1, 1, 1, 1, '230705182448.pem', 'MODDATOS', 'moddatos', 1);
 
 -- --------------------------------------------------------
 
@@ -18867,7 +18939,7 @@ ALTER TABLE `physical_therapy`
 -- 테이블의 AUTO_INCREMENT `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=153;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=154;
 
 --
 -- 테이블의 AUTO_INCREMENT `product_category`
@@ -18879,13 +18951,13 @@ ALTER TABLE `product_category`
 -- 테이블의 AUTO_INCREMENT `product_image`
 --
 ALTER TABLE `product_image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- 테이블의 AUTO_INCREMENT `product_option`
 --
 ALTER TABLE `product_option`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- 테이블의 AUTO_INCREMENT `product_type`
@@ -18909,7 +18981,7 @@ ALTER TABLE `role`
 -- 테이블의 AUTO_INCREMENT `role_access`
 --
 ALTER TABLE `role_access`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- 테이블의 AUTO_INCREMENT `sale`
@@ -18969,7 +19041,7 @@ ALTER TABLE `surgery_room`
 -- 테이블의 AUTO_INCREMENT `system`
 --
 ALTER TABLE `system`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- 테이블의 AUTO_INCREMENT `voucher`

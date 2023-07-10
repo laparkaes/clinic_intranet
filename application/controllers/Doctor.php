@@ -244,53 +244,6 @@ class Doctor extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg, "msgs" => $msgs]);
 	}
 	
-	public function update_profession(){
-		$type = "error"; $msgs = []; $msg = null;
-		if ($this->utility_lib->check_access("doctor", "update")){
-			$data = $this->input->post();
-			
-			$this->load->library('my_val');
-			$msgs = $this->my_val->doctor($msgs, "pr_", $data);
-			
-			if (!$msgs){
-				if ($this->general->update("doctor", $data["id"], $data)){
-					$doctor = $this->general->id("doctor", $data["id"]);
-					$person = $this->general->id("person", $doctor->person_id);
-					$this->utility_lib->add_log("doctor_update", $person->name);
-					
-					$type = "success"; 
-					$msg = $this->lang->line('success_upr');
-				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_occurred');
-		}else $msg = $this->lang->line('error_no_permission');
-		
-		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg, "msgs" => $msgs]);
-	}
-	
-	public function update_account_email(){
-		$type = "error"; $msgs = array(); $msg = null;
-		if ($this->utility_lib->check_access("doctor", "update")){
-			$data = $this->input->post();
-			
-			$this->load->library('my_val');
-			$msgs = $this->my_val->email($msgs, "ae_", $data);
-			
-			if (!$msgs){
-				if ($this->general->update("account", $data["id"], $data)){
-					$account = $this->general->id("account", $data["id"]);
-					$this->utility_lib->add_log("account_update", $account->email);
-					
-					$type = "success"; 
-					$msg = $this->lang->line('success_uae');
-				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_occurred');
-		}else $msg = $this->lang->line('error_no_permission');
-		
-		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg, "msgs" => $msgs]);
-	}
-	
 	public function activation_control(){
 		$type = "error"; $msg = null;
 		if ($this->utility_lib->check_access("doctor", "update")){

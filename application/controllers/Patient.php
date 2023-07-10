@@ -66,7 +66,7 @@ class Patient extends CI_Controller {
 		$doctors_arr = [];
 		$doctors = $this->general->all("doctor");
 		foreach($doctors as $d){
-			$d->name = $this->general->id("person", $d->person_id)->name;
+			$d->name = $this->general->id("person", $d->person_id)->name;;
 			$doctors_arr[$d->person_id] = $d;
 		}
 		usort($doctors, function($a, $b) {return strcmp(strtoupper($a->name), strtoupper($b->name));});
