@@ -81,15 +81,6 @@ class Doctor extends CI_Controller {
 		$doctor->specialty = $this->general->id("specialty", $doctor->specialty_id)->name;
 		$doctor->status = $this->general->id("status", $doctor->status_id);
 		
-		//set personal data
-		$person->doc_type = $this->general->id("doc_type", $person->doc_type_id)->short;
-		if ($person->birthday) $person->birthday = date("Y-m-d", strtotime($person->birthday));
-		else $person->birthday = null;
-		if ($person->sex_id) $person->sex = $this->general->id("sex", $person->sex_id)->description;
-		else $person->sex = null;
-		if ($person->blood_type_id) $person->blood_type = $this->general->id("blood_type", $person->blood_type_id)->description;
-		else $person->blood_type = null;
-		
 		//load other data
 		$patient_ids = array();
 		$appointments = $this->general->filter("appointment", ["doctor_id" => $person->id], null, null, "schedule_from", "desc");

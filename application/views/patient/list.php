@@ -81,81 +81,98 @@
 			</div>
 			<div class="row bl_content d-none" id="bl_add">
 				<div class="col-md-12">
-					<form class="form-row" id="register_form" action="#">
-						<div class="col-md-12">
-							<h4 class="mb-3"><?= $this->lang->line('title_patient_register') ?></h4>
-							<div class="form-row">
-								<div class="form-group col-md-3">
-									<label><?= $this->lang->line('lb_document') ?></label>
-									<select class="form-control" id="pn_doc_type_id" name="doc_type_id">
-										<?php foreach($doc_types as $d){ if ($d->sunat_code){ ?>
-										<option value="<?= $d->id ?>"><?= $d->description ?></option>
-										<?php }} ?>
-									</select>
-									<div class="sys_msg" id="pn_doc_type_msg"></div>
-								</div>
-								<div class="form-group col-md-3">
-									<label class="d-md-block d-none">&nbsp;</label>
-									<div class="input-group">
-										<input type="text" class="form-control" id="pn_doc_number" name="doc_number" placeholder="<?= $this->lang->line('lb_number') ?>">
-										<div class="input-group-append">
-											<button class="btn btn-primary border-0" type="button" id="btn_search_person_pn">
-												<i class="fas fa-search"></i>
-											</button>
-										</div>
+					<form id="form_register">
+						<h4><?= $this->lang->line('title_patient_info') ?></h4>
+						<div class="form-row mb-3">
+							<div class="form-group col-md-3">
+								<label><?= $this->lang->line('lb_document') ?></label>
+								<select class="form-control" id="pn_doc_type_id" name="doc_type_id">
+									<?php foreach($doc_types as $d){ if ($d->sunat_code){ ?>
+									<option value="<?= $d->id ?>"><?= $d->description ?></option>
+									<?php }} ?>
+								</select>
+								<div class="sys_msg" id="pn_doc_type_msg"></div>
+							</div>
+							<div class="form-group col-md-3">
+								<label class="d-md-block d-none">&nbsp;</label>
+								<div class="input-group">
+									<input type="text" class="form-control" id="pn_doc_number" name="doc_number" placeholder="<?= $this->lang->line('lb_number') ?>">
+									<div class="input-group-append">
+										<button class="btn btn-primary border-0" type="button" id="btn_search_person_pn">
+											<i class="fas fa-search"></i>
+										</button>
 									</div>
-									<div class="sys_msg" id="pn_doc_number_msg"></div>
 								</div>
-								<div class="form-group col-md-4">
-									<label><?= $this->lang->line('lb_name') ?></label>
-									<input type="text" class="form-control" id="pn_name" name="name">
-									<div class="sys_msg" id="pn_name_msg"></div>
-								</div>
-								<div class="form-group col-md-2">
-									<label><?= $this->lang->line('lb_tel') ?></label>
-									<input type="text" class="form-control" id="pn_tel" name="tel">
-									<div class="sys_msg" id="pn_tel_msg"></div>
-								</div>
-								<div class="form-group col-md-6">
-									<label><?= $this->lang->line('lb_email') ?></label>
-									<input type="email" class="form-control" name="email" placeholder="email@example.com">
-									<div class="sys_msg" id="pn_email_msg"></div>
-								</div>
-								<div class="form-group col-md-2">
-									<label><?= $this->lang->line('lb_birthday') ?></label>
-									<input type="text" class="form-control bw date_picker_all" name="birthday" readonly="">
-									<div class="sys_msg" id="pn_birthday_msg"></div>
-								</div>
-								<div class="form-group col-md-2">
-									<label><?= $this->lang->line('lb_sex') ?></label>
-									<select class="form-control" name="sex_id">
-										<option value="" selected="">--</option>
-										<?php foreach($sex_ops as $item){ ?>
-										<option value="<?= $item->id ?>"><?= $item->description ?></option>
+								<div class="sys_msg" id="pn_doc_number_msg"></div>
+							</div>
+							<div class="form-group col-md-6">
+								<label><?= $this->lang->line('lb_name') ?></label>
+								<input type="text" class="form-control" id="pn_name" name="name" readonly>
+								<div class="sys_msg" id="pn_name_msg"></div>
+							</div>
+							<div class="form-group col-md-3">
+								<label><?= $this->lang->line('lb_tel') ?></label>
+								<input type="text" class="form-control" id="pn_tel" name="tel">
+								<div class="sys_msg" id="pn_tel_msg"></div>
+							</div>
+							<div class="form-group col-md-3">
+								<label><?= $this->lang->line('lb_birthday') ?></label>
+								<input type="hidden" id="p_birthday" name="birthday" readonly="">
+								<div class="input-group">
+									<select class="form-control" id="p_birthday_d">
+										<option value="" selected=""><?= $this->lang->line('date_d') ?></option>
+										<?php for($i = 1; $i <= 31; $i++){ ?>
+										<option value="<?= $i ?>"><?= $i ?></option>
 										<?php } ?>
 									</select>
-									<div class="sys_msg" id="pn_sex_msg"></div>
-								</div>
-								<div class="form-group col-md-2">
-									<label><?= $this->lang->line('lb_blood_type') ?></label>
-									<select class="form-control" name="blood_type_id">
-										<option value="" selected="">--</option>
-										<?php foreach($blood_type_ops as $item){ ?>
-										<option value="<?= $item->id ?>"><?= $item->description ?></option>
+									<select class="form-control" id="p_birthday_m">
+										<option value="" selected=""><?= $this->lang->line('date_m') ?></option>
+										<?php for($i = 1; $i <= 12; $i++){ ?>
+										<option value="<?= $i ?>"><?= $i ?></option>
 										<?php } ?>
 									</select>
-									<div class="sys_msg" id="pn_blood_type_msg"></div>
+									<?php $now = date('Y'); ?>
+									<select class="form-control" id="p_birthday_y">
+										<option value="" selected=""><?= $this->lang->line('date_y') ?></option>
+										<?php for($i = 0; $i <= 130; $i++){ ?>
+										<option value="<?= $now - $i ?>"><?= $now - $i ?></option>
+										<?php } ?>
+									</select>
 								</div>
-								<div class="form-group col-md-12">
-									<label><?= $this->lang->line('lb_address') ?></label>
-									<input type="text" class="form-control" name="address">
-									<div class="sys_msg" id="pn_address_msg"></div>
-								</div>
+								<div class="sys_msg" id="pn_birthday_msg"></div>
+							</div>
+							<div class="form-group col-md-3">
+								<label><?= $this->lang->line('lb_sex') ?></label>
+								<select class="form-control" name="sex_id">
+									<option value="" selected="">--</option>
+									<?php foreach($sex_ops as $item){ ?>
+									<option value="<?= $item->id ?>"><?= $item->description ?></option>
+									<?php } ?>
+								</select>
+								<div class="sys_msg" id="pn_sex_msg"></div>
+							</div>
+							<div class="form-group col-md-3">
+								<label><?= $this->lang->line('lb_blood_type') ?></label>
+								<select class="form-control" name="blood_type_id">
+									<option value="" selected="">--</option>
+									<?php foreach($blood_type_ops as $item){ ?>
+									<option value="<?= $item->id ?>"><?= $item->description ?></option>
+									<?php } ?>
+								</select>
+								<div class="sys_msg" id="pn_blood_type_msg"></div>
+							</div>
+							<div class="form-group col-md-4">
+								<label><?= $this->lang->line('lb_email') ?></label>
+								<input type="email" class="form-control" name="email" placeholder="email@example.com">
+								<div class="sys_msg" id="pn_email_msg"></div>
+							</div>
+							<div class="form-group col-md-8">
+								<label><?= $this->lang->line('lb_address') ?></label>
+								<input type="text" class="form-control" name="address">
+								<div class="sys_msg" id="pn_address_msg"></div>
 							</div>
 						</div>
-						<div class="col-md-12 pt-3">
-							<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
-						</div>
+						<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
 					</form>
 				</div>
 			</div>

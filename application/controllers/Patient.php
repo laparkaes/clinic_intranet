@@ -71,9 +71,15 @@ class Patient extends CI_Controller {
 		}
 		usort($doctors, function($a, $b) {return strcmp(strtoupper($a->name), strtoupper($b->name));});
 		
+		$s_enabled = $this->general->status("enabled");
+		$f_aux = ["status_id" => $s_enabled->id];
 		$specialty_arr = [];
 		$specialties = $this->general->all("specialty", "name", "asc");
-		foreach($specialties as $item) $specialty_arr[$item->id] = $item->name;
+		foreach($specialties as $item){
+			$f_aux["specialty_id"] = $item->id;
+			$item->dr_qty = $this->general->counter("doctor", $f_aux);
+			$specialty_arr[$item->id] = $item->name;
+		}
 		
 		$status_arr = [];
 		$status = $this->general->all("status", "id", "asc");
@@ -101,11 +107,12 @@ class Patient extends CI_Controller {
 			"doctors" => $doctors,
 			"rooms" => $rooms,
 			"rooms_arr" => $rooms_arr,
-			"s_enabled" => $this->general->status("enabled"),
+			"s_enabled" => $s_enabled,
 			"doctors_arr" => $doctors_arr,
 			"specialty_arr" => $specialty_arr,
 			"status_arr" => $status_arr,
 			"currencies_arr" => $currencies_arr,
+			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"sales" => $this->general->filter("sale", ["client_id" => $person->id]),
 			"sex_ops" => $this->general->all("sex", "description", "asc"),
 			"blood_type_ops" => $this->general->all("blood_type", "description", "asc"),
@@ -152,7 +159,7 @@ class Patient extends CI_Controller {
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to]);
 	}
 	
-	public function update(){
+	public function update_info(){
 		$type = "error"; $msgs = []; $msg = null;
 		if ($this->utility_lib->check_access("patient", "update")){
 			$data = $this->input->post();
@@ -161,20 +168,12 @@ class Patient extends CI_Controller {
 			$msgs = $this->my_val->person($msgs, "pu_", $data);
 			
 			if (!$msgs){
-				if (!$data["tel"]) $data["tel"] = null;
-				if (!$data["email"]) $data["email"] = null;
-				if (!$data["address"]) $data["address"] = null;
-				if (!$data["birthday"]) $data["birthday"] = null;
-				if (!$data["sex_id"]) $data["sex_id"] = null;
-				if (!$data["blood_type_id"]) $data["blood_type_id"] = null;
+				foreach($data as $i => $item) if (!$item) $data[$i] = null;
+				$this->general->update("person", $data["id"], $data);
+				$this->utility_lib->add_log("person_update", $data["name"]);
 				
-				if ($this->general->update("person", $data["id"], $data)){
-					$person = $this->general->id("person", $data["id"]);
-					$this->utility_lib->add_log("person_update", $person->name);
-					
-					$type = "success"; 
-					$msg = $this->lang->line('success_upd');
-				}else $msg = $this->lang->line('error_internal');
+				$type = "success"; 
+				$msg = $this->lang->line('s_update_info');
 			}else $msg = $this->lang->line('error_occurred');
 		}else $msg = $this->lang->line('error_no_permission');
 		

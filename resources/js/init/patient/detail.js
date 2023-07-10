@@ -13,22 +13,6 @@ function upload_patient_file(dom){
 	});
 }
 
-function update_patient(dom){
-	$("#update_form .sys_msg").html("");
-	ajax_form(dom, "patient/update").done(function(res) {
-		set_msg(res.msgs);
-		swal_redirection(res.type, res.msg, window.location.href);
-	});
-}
-
-function update(dom){
-	$("#form_update .sys_msg").html("");
-	ajax_form(dom, "patient/update").done(function(res) {
-		set_msg(res.msgs);
-		swal_redirection(res.type, res.msg, window.location.href);
-	});
-}
-
 function aa_load_doctor_schedule(){
 	$("#aa_schedule_list").html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
 	load_doctor_schedule_n($("#aa_doctor").val(), $("#aa_date").val()).done(function(res) {
@@ -75,6 +59,49 @@ function register_surgery(dom){
 	});
 }
 
+function enable_update_form(){
+	$("#form_update_info input").prop("readonly", false);
+	$("#form_update_info select").prop("disabled", false);
+	$("#form_update_info button").prop("disabled", false);
+	
+	$("#pu_doc_type_id").prop("disabled", true);
+	$("#pu_doc_number").prop("readonly", true);
+	$("#pu_name").prop("readonly", true);
+	
+	$("#btn_update_info").addClass("d-none").prop("disabled", true);
+	$("#btn_update_confirm").removeClass("d-none").prop("disabled", false);
+	$("#btn_update_cancel").removeClass("d-none").prop("disabled", false);
+}
+
+function disable_update_form(){
+	$("#form_update_info input").prop("readonly", true);
+	$("#form_update_info select").prop("disabled", true);
+	$("#form_update_info button").prop("disabled", true);
+	
+	$("#btn_update_info").removeClass("d-none").prop("disabled", false);
+	$("#btn_update_confirm").addClass("d-none").prop("disabled", true);
+	$("#btn_update_cancel").addClass("d-none").prop("disabled", true);
+}
+
+function update_info(dom){
+	//birthday merge
+	let d = $("#p_birthday_d").val();
+	let m = $("#p_birthday_m").val();
+	let y = $("#p_birthday_y").val();
+	if (d != "" && m != "" && y != "") $("#p_birthday").val(y + "-" + m + "-" + d); else $("#p_birthday").val("");
+	
+	//doc_type_id field
+	$("#pu_doc_type_id").prop("disabled", false);
+	
+	$("#form_update_info .sys_msg").html("");
+	ajax_form(dom, "patient/update_info").done(function(res) {
+		set_msg(res.msgs);
+		swal(res.type, res.msg);
+		if (res.type == "success") disable_update_form();
+		//swal_redirection(res.type, res.msg, window.location.href);
+	});
+}
+
 $(document).ready(function() {
 	$(".control_bl_simple").on('click',(function(e) {control_bl_simple(this);}));
 	$("#ic_doctor_schedule_w_aa").on('click',(function(e) {load_doctor_schedule_weekly($("#aa_doctor").val(), null, "bl_weekly_schedule");}));
@@ -84,6 +111,14 @@ $(document).ready(function() {
 	set_datatable("surgery_list", 10, false);
 	set_datatable("file_list", 10, false);
 	set_datatable("sale_list", 10, false);
+	
+	//update information
+	$("#form_update_info").submit(function(e) {e.preventDefault(); update_info(this);});
+	$("#btn_update_info").on('click',(function(e) {enable_update_form();}));
+	$("#btn_update_cancel").on('click',(function(e) {
+		disable_update_form();
+		document.getElementById("form_update_info").reset();
+	}));
 	
 	//add appointment
 	aa_load_doctor_schedule();
@@ -98,9 +133,6 @@ $(document).ready(function() {
 	$("#sur_specialty").change(function() {sur_set_doctor_sl(this);});
 	$("#sur_specialty, #sur_doctor, #sur_date").change(function() {sur_load_doctor_schedule();});
 	$("#sur_hour, #sur_min").change(function() {set_time_sl("sur", "#sur_schedule_list");});
-	
-	//update patient
-	$("#form_update").submit(function(e) {e.preventDefault(); update(this);});
 	
 	//admin patient file
 	$("#form_upload_patient_file").submit(function(e) {e.preventDefault(); upload_patient_file(this);});

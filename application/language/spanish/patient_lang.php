@@ -14,10 +14,12 @@ $lang['success_rpa'] = 'Paciente ha sido registrado.';//success_register_doctor
 $lang['success_cao'] = 'Usuario ha sido registrado.';//success_create_account
 $lang['success_ufi'] = 'Archivo ha sido cargado.';//success_upload_file
 $lang['success_dfi'] = 'Archivo ha sido eliminado.';//success_delete_file
-$lang['success_upd'] = 'Datos personales han sido actualizados.';//success_update_personal_data
 $lang['success_upa'] = 'Los datos del paciente han sido actualizados.';
 $lang['success_uae'] = 'Correo electrónico ha sido actualizada.';//success_update_account_email
 $lang['success_uep'] = 'Contraseña ha sido actualizada.';//success_update_email_password
+
+//success messages
+$lang['s_update_info'] = 'Paciente ha sido actualizado.';
 
 //components
 $lang['hd_name'] = 'Nombre';
@@ -59,7 +61,7 @@ $lang['lb_doctor_agenda'] = 'Agenda del Médico';
 $lang['lb_remark'] = 'Observación';
 $lang['lb_optional'] = 'Opcional';
 $lang['txt_remark'] = 'Síntomas, Notas del paciente, etc.';
-$lang['title_patient_register'] = 'Registro del Paciente';
+$lang['title_patient_info'] = 'Datos del Paciente';
 $lang['title_personal_info'] = 'Datos Personales';
 $lang['title_access_data'] = 'Datos del Accesso';
 $lang['title_password_change'] = 'Cambio de Contraseña';
@@ -95,10 +97,10 @@ $lang['title_file'] = 'Archivo';
 $lang['title_create_account'] = 'Crear Usuario';
 $lang['title_account'] = 'Usuario';
 $lang['msg_select_file'] = 'Elegir un archivo';
-$lang['msg_no_file_data'] = 'No hay archivos registrados.';
-$lang['msg_no_appointment_data'] = 'No hay información de consulta.';
-$lang['msg_no_surgery_data'] = 'No hay información de cirugía.';
-$lang['msg_no_sale_data'] = 'No hay información de venta.';
+$lang['msg_no_appointment'] = 'Paciente no cuenta con consulta.';
+$lang['msg_no_surgery'] = 'Paciente no cuenta con cirugía.';
+$lang['msg_no_sale'] = 'Paciente no cuenta con venta.';
+$lang['msg_no_file'] = 'Paciente no cuenta con archivo.';
 $lang['btn_generate_appointment'] = 'Generar Consulta';
 $lang['btn_generate_surgery'] = 'Generar Cirugía';
 $lang['btn_add_file'] = 'Agregar Archivo';
