@@ -18,7 +18,7 @@
 		<div class="form-row">
 			<input type="hidden" value="1" name="page">
 			<div class="form-group col-sm-10">
-				<input type="text" class="form-control" id="inp_search" name="keyword" placeholder="<?= $this->lang->line('lb_search') ?>" value="<?= $f_url["keyword"] ?>">
+				<input type="text" class="form-control" id="inp_search" name="keyword" placeholder="<?= $this->lang->line('w_search') ?>" value="<?= $f_url["keyword"] ?>">
 			</div>
 			<div class="form-group col-sm-2">
 				<button type="submit" class="btn btn-primary btn-block">
@@ -39,10 +39,10 @@
 							<thead>
 								<tr>
 									<th><strong>#</strong></th>
-									<th><strong><?= $this->lang->line('hd_document') ?></strong></th>
-									<th><strong><?= $this->lang->line('hd_name') ?></strong></th>
-									<th><strong><?= $this->lang->line('hd_tel') ?></strong></th>
-									<th><strong><?= $this->lang->line('hd_email') ?></strong></th>
+									<th><strong><?= $this->lang->line('w_document') ?></strong></th>
+									<th><strong><?= $this->lang->line('w_name') ?></strong></th>
+									<th><strong><?= $this->lang->line('w_tel') ?></strong></th>
+									<th><strong><?= $this->lang->line('w_email') ?></strong></th>
 									<th></th>
 								</tr>
 							</thead>
@@ -75,17 +75,17 @@
 						</div>
 					</div>
 					<?php }else{ ?>
-					<h5 class="text-danger mt-3"><?= $this->lang->line('msg_no_patients') ?></h5>
+					<h5 class="text-danger mt-3"><?= $this->lang->line('t_no_patients') ?></h5>
 					<?php } ?>
 				</div>
 			</div>
 			<div class="row bl_content d-none" id="bl_add">
 				<div class="col-md-12">
 					<form id="form_register">
-						<h4><?= $this->lang->line('title_patient_info') ?></h4>
+						<h4><?= $this->lang->line('w_patient_info') ?></h4>
 						<div class="form-row mb-3">
 							<div class="form-group col-md-3">
-								<label><?= $this->lang->line('lb_document') ?></label>
+								<label><?= $this->lang->line('w_document') ?></label>
 								<select class="form-control" id="pn_doc_type_id" name="doc_type_id">
 									<?php foreach($doc_types as $d){ if ($d->sunat_code){ ?>
 									<option value="<?= $d->id ?>"><?= $d->description ?></option>
@@ -96,7 +96,7 @@
 							<div class="form-group col-md-3">
 								<label class="d-md-block d-none">&nbsp;</label>
 								<div class="input-group">
-									<input type="text" class="form-control" id="pn_doc_number" name="doc_number" placeholder="<?= $this->lang->line('lb_number') ?>">
+									<input type="text" class="form-control" id="pn_doc_number" name="doc_number" placeholder="<?= $this->lang->line('w_number') ?>">
 									<div class="input-group-append">
 										<button class="btn btn-primary border-0" type="button" id="btn_search_person_pn">
 											<i class="fas fa-search"></i>
@@ -106,17 +106,17 @@
 								<div class="sys_msg" id="pn_doc_number_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
-								<label><?= $this->lang->line('lb_name') ?></label>
+								<label><?= $this->lang->line('w_name') ?></label>
 								<input type="text" class="form-control" id="pn_name" name="name" readonly>
 								<div class="sys_msg" id="pn_name_msg"></div>
 							</div>
 							<div class="form-group col-md-3">
-								<label><?= $this->lang->line('lb_tel') ?></label>
+								<label><?= $this->lang->line('w_tel') ?></label>
 								<input type="text" class="form-control" id="pn_tel" name="tel">
 								<div class="sys_msg" id="pn_tel_msg"></div>
 							</div>
 							<div class="form-group col-md-3">
-								<label><?= $this->lang->line('lb_birthday') ?></label>
+								<label><?= $this->lang->line('w_birthday') ?></label>
 								<input type="hidden" id="p_birthday" name="birthday" readonly="">
 								<div class="input-group">
 									<select class="form-control" id="p_birthday_d">
@@ -142,7 +142,7 @@
 								<div class="sys_msg" id="pn_birthday_msg"></div>
 							</div>
 							<div class="form-group col-md-3">
-								<label><?= $this->lang->line('lb_sex') ?></label>
+								<label><?= $this->lang->line('w_sex') ?></label>
 								<select class="form-control" name="sex_id">
 									<option value="" selected="">--</option>
 									<?php foreach($sex_ops as $item){ ?>
@@ -152,7 +152,7 @@
 								<div class="sys_msg" id="pn_sex_msg"></div>
 							</div>
 							<div class="form-group col-md-3">
-								<label><?= $this->lang->line('lb_blood_type') ?></label>
+								<label><?= $this->lang->line('w_blood_type') ?></label>
 								<select class="form-control" name="blood_type_id">
 									<option value="" selected="">--</option>
 									<?php foreach($blood_type_ops as $item){ ?>
@@ -162,12 +162,12 @@
 								<div class="sys_msg" id="pn_blood_type_msg"></div>
 							</div>
 							<div class="form-group col-md-4">
-								<label><?= $this->lang->line('lb_email') ?></label>
+								<label><?= $this->lang->line('w_email') ?></label>
 								<input type="email" class="form-control" name="email" placeholder="email@example.com">
 								<div class="sys_msg" id="pn_email_msg"></div>
 							</div>
 							<div class="form-group col-md-8">
-								<label><?= $this->lang->line('lb_address') ?></label>
+								<label><?= $this->lang->line('w_address') ?></label>
 								<input type="text" class="form-control" name="address">
 								<div class="sys_msg" id="pn_address_msg"></div>
 							</div>

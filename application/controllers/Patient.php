@@ -94,9 +94,9 @@ class Patient extends CI_Controller {
 		foreach($rooms as $item) $rooms_arr[$item->id] = $item->name;
 		
 		$duration_ops = [];
-		array_push($duration_ops, ["value" => 30, "txt" => "30 ".$this->lang->line('op_minutes')]);
-		array_push($duration_ops, ["value" => 60, "txt" => "1 ".$this->lang->line('op_hour')]);
-		for($i = 2; $i <= 12; $i++) $duration_ops[] = ["value" => 60 * $i, "txt" => $i." ".$this->lang->line('op_hours')];
+		array_push($duration_ops, ["value" => 30, "txt" => "30 ".$this->lang->line('w_minutes')]);
+		array_push($duration_ops, ["value" => 60, "txt" => "1 ".$this->lang->line('w_hour')]);
+		for($i = 2; $i <= 12; $i++) $duration_ops[] = ["value" => 60 * $i, "txt" => $i." ".$this->lang->line('w_hours')];
 		
 		$data = [
 			"person" => $person,
@@ -150,7 +150,7 @@ class Patient extends CI_Controller {
 				if ($person_id){
 					$type = "success";
 					$move_to = base_url()."patient/detail/".$person_id;
-					$msg = $this->lang->line('success_rpa');
+					$msg = $this->lang->line('s_register');
 				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line('error_occurred');
 		}else $msg = $this->lang->line('error_no_permission');
@@ -220,7 +220,7 @@ class Patient extends CI_Controller {
 							$this->utility_lib->add_log("file_upload", $patient->name." - ".$title);
 							
 							$type = "success";
-							$msg = $this->lang->line('success_ufi');
+							$msg = $this->lang->line('s_upload_file');
 						}else $msgs = $this->my_val->set_msg($msgs, "pf_result_msg", "error", "error_internal");
 					}else $msgs[] = ["dom_id" => "pf_result_msg", "type" => "error", "msg" => $this->upload->display_errors("<span>","</span>")];
 				}else $msgs = $this->my_val->set_msg($msgs, "pf_result_msg", "error", "error_internal_refresh");
@@ -243,7 +243,7 @@ class Patient extends CI_Controller {
 				$this->utility_lib->add_log("file_delete", $person->name." - ".$patient_file->title);
 				
 				$type = "success";
-				$msg = $this->lang->line('success_dfi');
+				$msg = $this->lang->line('s_delete_file');
 			}else $msg = $this->lang->line('error_internal');
 		}else $msg = $this->lang->line('error_no_permission');
 		
