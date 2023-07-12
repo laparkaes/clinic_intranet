@@ -20,14 +20,14 @@
 			<div class="form-group col-sm-4">
 				<select class="form-control" id="sl_type" name="specialty">
 					<option value=""><?= $this->lang->line('w_specialty') ?></option>
-					<?php foreach($specialties as $item){ if ($item->doctor_qty){
+					<?php foreach($specialties as $item){
 						if ($item->id == $f_url["specialty"]) $s = "selected"; else $s = ""; ?>
 					<option value="<?= $item->id ?>" <?= $s ?>><?= $item->name ?></option>
-					<?php }} ?>
+					<?php } ?>
 				</select>
 			</div>
 			<div class="form-group col-sm-6">
-				<input type="text" class="form-control" id="inp_name" name="name" placeholder="<?= $this->lang->line('t_search_by_name') ?>" value="<?= $f_url["name"] ?>">
+				<input type="text" class="form-control" id="inp_name" name="name" placeholder="<?= $this->lang->line('w_search_by_name') ?>" value="<?= $f_url["name"] ?>">
 			</div>
 			<div class="form-group col-sm-2">
 				<button type="submit" class="btn btn-primary btn-block">

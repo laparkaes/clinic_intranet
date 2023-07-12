@@ -39,18 +39,21 @@ class Doctor extends CI_Controller {
 		$doctors = $this->general->filter("doctor", $f_w, $f_l, $f_w_in, "registed_at", "desc", 25, 25*($f_url["page"]-1));
 		foreach($doctors as $item) $item->person = $this->general->id("person", $item->person_id);
 		
-		$specialties_arr = array();
+		$specialties_arr = [];
 		$specialties = $this->general->all("specialty", "name", "asc");
-		foreach($specialties as $item) $specialties_arr[$item->id] = $item->name;
+		foreach($specialties as $item){
+			$item->doctor_qty = $this->general->counter("doctor", ["specialty_id" => $item->id]);
+			$specialties_arr[$item->id] = $item->name;
+		}
 		
-		$status = array();
+		$status = [];
 		$status_rec = $this->general->all("status");
 		foreach($status_rec as $item){
 			$item->text = $this->lang->line($item->code);
 			$status[$item->id] = $item;
 		}
 		
-		$data = array(
+		$data = [
 			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("doctor", $f_w, $f_l, $f_w_in)),
 			"f_url" => $f_url,
 			"doc_types" => $this->general->all("doc_type", "sunat_code", "asc"),
@@ -63,7 +66,7 @@ class Doctor extends CI_Controller {
 			"title" => $this->lang->line('doctors'),
 			"main" => "doctor/list",
 			"init_js" => "doctor/list.js"
-		);
+		];
 		
 		$this->load->view('layout', $data);
 	}
@@ -82,36 +85,36 @@ class Doctor extends CI_Controller {
 		$doctor->status = $this->general->id("status", $doctor->status_id);
 		
 		//load other data
-		$patient_ids = array();
+		$patient_ids = [];
 		$appointments = $this->general->filter("appointment", ["doctor_id" => $person->id], null, null, "schedule_from", "desc");
-		foreach($appointments as $item) array_push($patient_ids, $item->patient_id);
+		foreach($appointments as $item) $patient_ids[] = $item->patient_id;
 		
 		$surgeries = $this->general->filter("surgery", ["doctor_id" => $person->id], null, null, "schedule_from", "desc");
-		foreach($surgeries as $item) array_push($patient_ids, $item->patient_id);
+		foreach($surgeries as $item) $patient_ids[] = $item->patient_id;
 		$patient_ids = array_unique($patient_ids);
 		
-		$patient_arr = array();
+		$patient_arr = [];
 		$patients = $this->general->ids("person", $patient_ids);
 		foreach($patients as $item) $patient_arr[$item->id] = $item->name;
 		
-		$status_arr = array();
+		$status_arr = [];
 		$status = $this->general->all("status", "id", "asc");
 		foreach($status as $item) $status_arr[$item->id] = $item;
 		
-		$specialties_arr = array();
+		$specialties_arr = [];
 		$specialties = $this->general->all("specialty", "name", "asc");
 		foreach($specialties as $item) $specialties_arr[$item->id] = $item->name;
 		
-		$rooms_arr = array();
+		$rooms_arr = [];
 		$rooms = $this->general->all("surgery_room", "name", "asc");
 		foreach($rooms as $item) $rooms_arr[$item->id] = $item->name;
 		
-		$duration_ops = array();
-		array_push($duration_ops, ["value" => 30, "txt" => "30 ".$this->lang->line('op_minutes')]);
-		array_push($duration_ops, ["value" => 60, "txt" => "1 ".$this->lang->line('op_hour')]);
-		for($i = 2; $i <= 12; $i++) array_push($duration_ops, ["value" => 60 * $i, "txt" => $i." ".$this->lang->line('op_hours')]);
+		$duration_ops = [];
+		$duration_ops[] = ["value" => 30, "txt" => "30 ".$this->lang->line('w_minutes')];
+		$duration_ops[] = ["value" => 60, "txt" => "1 ".$this->lang->line('w_hour')];
+		for($i = 2; $i <= 12; $i++) $duration_ops[] = ["value" => 60 * $i, "txt" => $i." ".$this->lang->line('w_hours')];
 		
-		$data = array(
+		$data = [
 			"doctor" => $doctor,
 			"person" => $person,
 			"account" => $account,
@@ -131,7 +134,7 @@ class Doctor extends CI_Controller {
 			"title" => $this->lang->line('doctor'),
 			"main" => "doctor/detail",
 			"init_js" => "doctor/detail.js"
-		);
+		];
 		$this->load->view('layout', $data);
 	}
 	
@@ -258,20 +261,20 @@ class Doctor extends CI_Controller {
 					"status_id" => $this->general->status("confirmed")->id
 				];
 				
-				if ($this->general->filter("appointment", $f)) $msg = $this->lang->line('error_dac');
-				elseif ($this->general->filter("surgery", $f)) $msg = $this->lang->line('error_dsc');
+				if ($this->general->filter("appointment", $f)) $msg = $this->lang->line('e_app_confirmed');
+				elseif ($this->general->filter("surgery", $f)) $msg = $this->lang->line('e_sur_confirmed');
 			}
 			
 			if (!$msg){
-				$data = array("id" => $id, "status_id" => $this->general->status($code)->id);
+				$data = ["id" => $id, "status_id" => $this->general->status($code)->id];
 				if ($this->general->update("doctor", $data["id"], $data)){
 					$doctor = $this->general->id("doctor", $id);
 					$person = $this->general->id("person", $doctor->person_id);
 					$this->utility_lib->add_log("doctor_".$code, $person->name);
 					
 					$type = "success";
-					if ($active) $msg = $this->lang->line('success_ado');
-					else $msg = $this->lang->line('success_ddo');
+					if ($active) $msg = $this->lang->line('s_enable_doctor');
+					else $msg = $this->lang->line('s_disable_doctor');
 				}else $msg = $this->lang->line('error_internal');
 			}
 		}else $msg = $this->lang->line('error_no_permission');
