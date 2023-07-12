@@ -42,7 +42,6 @@
 									<th><strong><?= $this->lang->line('w_document') ?></strong></th>
 									<th><strong><?= $this->lang->line('w_name') ?></strong></th>
 									<th><strong><?= $this->lang->line('w_tel') ?></strong></th>
-									<th><strong><?= $this->lang->line('w_email') ?></strong></th>
 									<th></th>
 								</tr>
 							</thead>
@@ -53,7 +52,6 @@
 									<td><?= $doc_types_arr[$item->doc_type_id]." ".$item->doc_number ?></td>
 									<td><?= $item->name ?></td>
 									<td><?= $item->tel ?></td>
-									<td><?= $item->email ?></td>
 									<td class="text-right">
 										<a href="<?= base_url() ?>patient/detail/<?= $item->id ?>">
 											<button type="button" class="btn btn-info light sharp">

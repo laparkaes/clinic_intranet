@@ -49,7 +49,6 @@
 								<tr>
 									<th><strong>#</strong></th>
 									<th><strong><?= $this->lang->line('w_license') ?></strong></th>
-									<th><strong><?= $this->lang->line('w_specialty') ?></strong></th>
 									<th><strong><?= $this->lang->line('w_name') ?></strong></th>
 									<th><strong><?= $this->lang->line('w_tel') ?></strong></th>
 									<th><strong><?= $this->lang->line('w_status') ?></strong></th>
@@ -61,8 +60,10 @@
 								<tr>
 									<td><strong><?= number_format(($f_url["page"] - 1) * 25 + 1 + $i) ?></strong></td>
 									<td><?= $item->license ?></td>
-									<td style="max-width: 150px;"><?= $specialties_arr[$item->specialty_id] ?></td>
-									<td><?= $item->person->name ?></td>
+									<td>
+										<?= $item->person->name ?><br/>
+										<?= $specialties_arr[$item->specialty_id] ?>
+									</td>
 									<td><?= $item->person->tel ?></td>
 									<td><span class="text-<?= $status[$item->status_id]->color ?>"><?= $status[$item->status_id]->text ?></span></td>
 									<td class="text-right">

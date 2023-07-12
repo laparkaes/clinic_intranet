@@ -349,7 +349,7 @@ class Appointment extends CI_Controller {
 					
 					$type = "success";
 					$move_to = base_url()."appointment/detail/".$appointment_id;
-					$msg = $this->lang->line('success_rap');
+					$msg = $this->lang->line('s_app_register');
 				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line('error_occurred');
 		}else $msg = $this->lang->line('error_no_permission');
@@ -370,7 +370,7 @@ class Appointment extends CI_Controller {
 					$this->utility_lib->add_log("appointment_cancel", $person->name);
 					
 					$type = "success";
-					$msg = $this->lang->line('success_cap');
+					$msg = $this->lang->line('s_app_cancel');
 				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line('error_nap');
 		}else $msg = $this->lang->line('error_no_permission');
@@ -391,7 +391,7 @@ class Appointment extends CI_Controller {
 					$this->utility_lib->add_log("appointment_finish", $person->name);
 					
 					$type = "success";
-					$msg = $this->lang->line('success_fap');
+					$msg = $this->lang->line('s_app_finish');
 				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line('error_nap');
 		}else $msg = $this->lang->line('error_no_permission');
@@ -424,7 +424,7 @@ class Appointment extends CI_Controller {
 						$this->utility_lib->add_log("appointment_reschedule", $person->name);
 						
 						$type = "success";
-						$msg = $this->lang->line('success_rsp');
+						$msg = $this->lang->line('s_app_reschedule');
 					}else $msg = $this->lang->line('error_internal');
 				}else $msg = $this->lang->line('error_occurred');
 			}else $msg = $this->lang->line('error_internal_refresh');
@@ -468,7 +468,7 @@ class Appointment extends CI_Controller {
 						unset($data["time"]);
 						
 						$type = "success";
-						$msg = $this->save_data($data, "appointment_basic_data", "success_sbd");
+						$msg = $this->save_data($data, "appointment_basic_data", "s_basic_data");
 					}else $msg = $this->lang->line('error_anc');
 				}else $msg = $this->lang->line('error_internal_refresh');
 			}else $msg = $this->lang->line('error_occurred');
@@ -491,7 +491,7 @@ class Appointment extends CI_Controller {
 					
 				if (!strcmp("confirmed", $appointment->status->code)){
 					$type = "success";
-					$msg = $this->save_data($data, "appointment_anamnesis", "success_spi");
+					$msg = $this->save_data($data, "appointment_anamnesis", "s_personal_info");
 				}else $msg = $this->lang->line('error_anc');
 			}else $msg = $this->lang->line('error_internal_refresh');
 		}else $msg = $this->lang->line('error_no_permission');
@@ -512,7 +512,7 @@ class Appointment extends CI_Controller {
 				$appointment->status = $this->general->id("status", $appointment->status_id);
 				if (!strcmp("confirmed", $appointment->status->code)){
 					$type = "success";
-					$msg = $this->save_data($data, "appointment_physical", "success_str");
+					$msg = $this->save_data($data, "appointment_physical", "s_triage");
 				}else $msg = $this->lang->line('error_anc');
 			}else $msg = $this->lang->line('error_internal_refresh');
 		}else $msg = $this->lang->line('error_no_permission');
@@ -537,7 +537,7 @@ class Appointment extends CI_Controller {
 					else $data["patho_pre_illnesses"] = null;
 					
 					$type = "success";
-					$msg = $this->save_data($data, "appointment_anamnesis", "success_san");
+					$msg = $this->save_data($data, "appointment_anamnesis", "s_anamnesis");
 				}else $msg = $this->lang->line('error_anc');
 			}else $msg = $this->lang->line('error_internal_refresh');
 		}else $msg = $this->lang->line('error_no_permission');
@@ -558,7 +558,7 @@ class Appointment extends CI_Controller {
 				$appointment->status = $this->general->id("status", $appointment->status_id);
 				if (!strcmp("confirmed", $appointment->status->code)){
 					$type = "success";
-					$msg = $this->save_data($data, "appointment_physical", "success_spe");
+					$msg = $this->save_data($data, "appointment_physical", "s_physical_exam");
 				}else $msg = $this->lang->line('error_anc');
 			}else $msg = $this->lang->line('error_internal_refresh');
 		}else $msg = $this->lang->line('error_no_permission');
@@ -584,7 +584,7 @@ class Appointment extends CI_Controller {
 	}
 	
 	public function add_diag(){
-		$type = "success"; $msg = $this->lang->line('success_adi'); $diags = [];
+		$type = "success"; $msg = $this->lang->line('s_diag_add'); $diags = [];
 		
 		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){			
 			$data = $this->input->post();
@@ -618,7 +618,7 @@ class Appointment extends CI_Controller {
 	}
 	
 	public function delete_diag(){
-		$type = "success"; $msg = $this->lang->line('success_ddi'); $diags = [];
+		$type = "success"; $msg = $this->lang->line('s_diag_remove'); $diags = [];
 		
 		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){			
 			$data = $this->input->post();
@@ -661,7 +661,7 @@ class Appointment extends CI_Controller {
 				$appointment->status = $this->general->id("status", $appointment->status_id);
 				if (!strcmp("confirmed", $appointment->status->code)){
 					$type = "success";
-					$msg = $this->save_data($data, "appointment_result", "success_sre");
+					$msg = $this->save_data($data, "appointment_result", "s_result");
 				}else $msg = $this->lang->line('error_anc');
 			}else $msg = $this->lang->line('error_internal_refresh');
 		}else $msg = $this->lang->line('error_no_permission');
@@ -698,7 +698,7 @@ class Appointment extends CI_Controller {
 			if (!$this->general->filter("appointment_image", $data)){
 				if ($this->general->insert("appointment_image", $data)){
 					$type = "success";
-					$msg = $this->lang->line('success_aim');
+					$msg = $this->lang->line('s_image_add');
 				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line('error_dim');
 		}else $msg = $this->lang->line('error_no_permission');
@@ -715,7 +715,7 @@ class Appointment extends CI_Controller {
 			
 			if ($this->general->delete("appointment_image", $data)){
 				$type = "success";
-				$msg = $this->lang->line('success_rim');
+				$msg = $this->lang->line('s_image_remove');
 			}else $msg = $this->lang->line('error_internal');
 		}else $msg = $this->lang->line('error_no_permission');
 		
@@ -761,7 +761,7 @@ class Appointment extends CI_Controller {
 				if (!$this->general->filter("appointment_examination", $data)){
 					if ($this->general->insert("appointment_examination", $data)){
 						$type = "success";
-						$msg = $this->lang->line('success_apr');
+						$msg = $this->lang->line('s_profile_add');
 					}else $msg = $this->lang->line('error_internal');
 				}else $msg = $this->lang->line('error_dpr');
 			}else $msg = $this->lang->line('error_spr');
@@ -783,7 +783,7 @@ class Appointment extends CI_Controller {
 			
 			if ($this->general->delete("appointment_examination", $data)){
 				$type = "success";
-				$msg = $this->lang->line('success_rex');
+				$msg = $this->lang->line('s_profile_remove');
 			}else $msg = $this->lang->line('error_internal');
 		}else $msg = $this->lang->line('error_no_permission');
 		
@@ -821,7 +821,7 @@ class Appointment extends CI_Controller {
 					if (!$is_include){
 						if ($this->general->insert($tb_name, $data)){
 							$type = "success";
-							$msg = $this->lang->line('success_aex');
+							$msg = $this->lang->line('s_exam_add');
 						}else $msg = $this->lang->line('error_internal');	
 					}else $msg = str_replace("&profile&", $profile->name, $this->lang->line('error_pie'));
 				}else $msg = $this->lang->line('error_dex');
@@ -844,7 +844,7 @@ class Appointment extends CI_Controller {
 			
 			if ($this->general->delete("appointment_examination", $data)){
 				$type = "success";
-				$msg = $this->lang->line('success_rex');
+				$msg = $this->lang->line('s_exam_remove');
 			}else $msg = $this->lang->line('error_internal');
 		}else $msg = $this->lang->line('error_no_permission');
 		
@@ -901,7 +901,7 @@ class Appointment extends CI_Controller {
 				elseif (!$this->general->insert("appointment_therapy", $data))
 					$msg = $this->lang->line('error_internal');
 				else{
-					$msg = $this->lang->line('success_ath');
+					$msg = $this->lang->line('s_therapy_add');
 					$type = "success";
 				}
 			}else $msg = $this->lang->line('error_occurred');
@@ -927,7 +927,7 @@ class Appointment extends CI_Controller {
 			}else{
 				if (!$this->general->delete("appointment_therapy", $data)) $msg = $this->lang->line('error_internal');
 				else{
-					$msg = $this->lang->line('success_rth');
+					$msg = $this->lang->line('s_therapy_remove');
 					$type = "success";
 				}
 			}
@@ -977,7 +977,7 @@ class Appointment extends CI_Controller {
 				elseif (!$this->general->insert("appointment_medicine", $data))
 					$msg = $this->lang->line('error_internal');
 				else{
-					$msg = $this->lang->line('success_ame');
+					$msg = $this->lang->line('s_medicine_add');
 					$type = "success";
 				}
 			}else $msg = $this->lang->line('error_occurred');
@@ -1003,7 +1003,7 @@ class Appointment extends CI_Controller {
 			}else{
 				if (!$this->general->delete("appointment_medicine", $data)) $msg = $this->lang->line('error_internal');
 				else{
-					$msg = $this->lang->line('success_rme');
+					$msg = $this->lang->line('s_medicine_remove');
 					$type = "success";
 				}
 			}
