@@ -22,7 +22,7 @@ function set_doctor_sl(dom){
 
 function register_appointment(dom){
 	$("#register_form .sys_msg").html("");
-	ajax_form_warning(dom, "appointment/register", $("#warning_rap").val()).done(function(res) {
+	ajax_form_warning(dom, "appointment/register", $("#w_appointment_register").val()).done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, res.move_to);
 	});

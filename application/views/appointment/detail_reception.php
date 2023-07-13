@@ -12,16 +12,16 @@ $me = $appointment_datas["medicine"];
 <div class="col-md-12">
 	<div class="card">
 		<div class="card-header">
-			<h4 class="mb-0"><?= $this->lang->line('title_basic_data') ?></h4>
+			<h4 class="mb-0"><?= $this->lang->line('w_basic_data') ?></h4>
 		</div>
 		<div class="card-body">
 			<form action="#" class="row" id="form_basic_data">
 				<input type="hidden" name="appointment_id" value="<?= $appointment->id ?>">
 				<div class="col-md-6">
-					<h5><?= $this->lang->line('title_entry') ?></h5>
+					<h5><?= $this->lang->line('w_entry') ?></h5>
 					<div class="form-row">
 						<div class="form-group col-md-12">
-							<label><?= $this->lang->line('lb_entry_mode') ?></label>
+							<label><?= $this->lang->line('w_entry_mode') ?></label>
 							<select class="form-control" name="entry_mode_id">
 								<option value="">--</option>
 								<?php $entry_mode = $options["entry_mode"]; foreach($entry_mode as $item){ 
@@ -32,32 +32,32 @@ $me = $appointment_datas["medicine"];
 							<div class="sys_msg" id="bd_entry_mode_msg"></div>
 						</div>
 						<div class="form-group col-md-6">
-							<label><?= $this->lang->line('lb_date') ?></label>
+							<label><?= $this->lang->line('w_date') ?></label>
 							<input type="text" class="form-control date_picker" value="<?= $bd->date ?>" name="date">
 							<div class="sys_msg" id="bd_date_msg"></div>
 						</div>
 						<div class="form-group col-md-6">
-							<label><?= $this->lang->line('lb_hour') ?></label>
+							<label><?= $this->lang->line('w_hour') ?></label>
 							<input type="text" class="form-control time_picker" value="<?= $bd->time ?>" name="time">
 							<div class="sys_msg" id="bd_time_msg"></div>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-6">
-					<h5><?= $this->lang->line('title_insurance') ?></h5>
+					<h5><?= $this->lang->line('w_insurance') ?></h5>
 					<div class="form-row">
 						<div class="form-group col-md-12">
-							<label><?= $this->lang->line('lb_insured') ?></label>
+							<label><?= $this->lang->line('w_insured') ?></label>
 							<select class="form-control" name="insurance">
 								<?php if ($bd->insurance) $s = "selected"; else $s = ""; ?>
-								<option value="1" <?= $s ?>><?= $this->lang->line('txt_yes') ?></option>
+								<option value="1" <?= $s ?>><?= $this->lang->line('w_yes') ?></option>
 								<?php if (!$bd->insurance) $s = "selected"; else $s = ""; ?>
-								<option value="" <?= $s ?>><?= $this->lang->line('txt_no') ?></option>
+								<option value="" <?= $s ?>><?= $this->lang->line('w_no') ?></option>
 							</select>
 							<div class="sys_msg" id="bd_insurance_msg"></div>
 						</div>
 						<div class="form-group col-md-12">
-							<label><?= $this->lang->line('lb_insurance_name') ?></label>
+							<label><?= $this->lang->line('w_insurance_name') ?></label>
 							<input type="text" class="form-control" name="insurance_name" value="<?= $bd->insurance_name ?>">
 							<div class="sys_msg" id="bd_insurance_name_msg"></div>
 						</div>
@@ -76,23 +76,23 @@ $me = $appointment_datas["medicine"];
 <div class="col-md-12">
 	<div class="card">
 		<div class="card-header">
-			<h4 class="mb-0"><?= $this->lang->line('title_personal_information') ?></h4>
+			<h4 class="mb-0"><?= $this->lang->line('w_personal_information') ?></h4>
 		</div>
 		<div class="card-body">
 			<form action="#" class="form-row" id="form_personal_information">
 				<input type="hidden" name="appointment_id" value="<?= $appointment->id ?>">
 				<div class="form-group col-md-6">
-					<label><?= $this->lang->line('lb_name') ?></label>
+					<label><?= $this->lang->line('w_name') ?></label>
 					<input type="text" class="form-control" name="name" value="<?= $an->name ?>" readonly>
 					<div class="sys_msg" id="pi_name_msg"></div>
 				</div>
 				<div class="form-group col-md-3">
-					<label><?= $this->lang->line('lb_age') ?></label>
+					<label><?= $this->lang->line('w_age') ?></label>
 					<input type="text" class="form-control" name="age" value="<?= $an->age ?>">
 					<div class="sys_msg" id="pi_age_msg"></div>
 				</div>
 				<div class="form-group col-md-3">
-					<label><?= $this->lang->line('lb_sex') ?></label>
+					<label><?= $this->lang->line('w_sex') ?></label>
 					<select class="form-control" name="sex_id">
 						<option value="">--</option>
 						<?php foreach($sex_ops as $item){
@@ -103,47 +103,47 @@ $me = $appointment_datas["medicine"];
 					<div class="sys_msg" id="pi_sex_msg"></div>
 				</div>
 				<div class="form-group col-md-6">
-					<label><?= $this->lang->line('lb_address') ?></label>
+					<label><?= $this->lang->line('w_address') ?></label>
 					<input type="text" class="form-control" name="address" value="<?= $an->address ?>">
 					<div class="sys_msg" id="pi_address_msg"></div>
 				</div>
 				<div class="form-group col-md-3">
-					<label><?= $this->lang->line('lb_birthplace') ?></label>
+					<label><?= $this->lang->line('w_birthplace') ?></label>
 					<input type="text" class="form-control" name="birthplace" value="<?= $an->birthplace ?>">
 					<div class="sys_msg" id="pi_birthplace_msg"></div>
 				</div>
 				<div class="form-group col-md-3">
-					<label><?= $this->lang->line('lb_birthday') ?></label>
+					<label><?= $this->lang->line('w_birthday') ?></label>
 					<input type="text" class="form-control date_picker_all" name="birthday" value="<?= $an->birthday ?>">
 					<div class="sys_msg" id="pi_birthday_msg"></div>
 				</div>
 				<div class="form-group col-md-3">
-					<label><?= $this->lang->line('lb_telephone') ?></label>
+					<label><?= $this->lang->line('w_telephone') ?></label>
 					<input type="text" class="form-control" name="tel" value="<?= $an->tel ?>">
 					<div class="sys_msg" id="pi_tel_msg"></div>
 				</div>
 				<div class="form-group col-md-3">
-					<label><?= $this->lang->line('lb_responsible') ?></label>
+					<label><?= $this->lang->line('w_responsible') ?></label>
 					<input type="text" class="form-control" name="responsible" value="<?= $an->responsible ?>">
 					<div class="sys_msg" id="pi_responsible_msg"></div>
 				</div>
 				<div class="form-group col-md-3">
-					<label><?= $this->lang->line('lb_place_of_origin') ?></label>
+					<label><?= $this->lang->line('w_place_of_origin') ?></label>
 					<input type="text" class="form-control" name="provenance_place" value="<?= $an->provenance_place ?>">
 					<div class="sys_msg" id="pi_provenance_place_msg"></div>
 				</div>
 				<div class="form-group col-md-3">
-					<label><?= $this->lang->line('lb_last_trips') ?></label>
+					<label><?= $this->lang->line('w_last_trips') ?></label>
 					<input type="text" class="form-control" name="last_trips" value="<?= $an->last_trips ?>">
 					<div class="sys_msg" id="pi_last_trips_msg"></div>
 				</div>
 				<div class="form-group col-md-3">
-					<label><?= $this->lang->line('lb_race') ?></label>
+					<label><?= $this->lang->line('w_race') ?></label>
 					<input type="text" class="form-control" name="race" value="<?= $an->race ?>">
 					<div class="sys_msg" id="pi_race_msg"></div>
 				</div>
 				<div class="form-group col-md-3">
-					<label><?= $this->lang->line('lb_marital_status') ?></label>
+					<label><?= $this->lang->line('w_marital_status') ?></label>
 					<select class="form-control" name="civil_status_id">
 						<option value="" selected="">--</option>
 						<?php $civil_status = $options["civil_status"]; foreach($civil_status as $item){
@@ -154,12 +154,12 @@ $me = $appointment_datas["medicine"];
 					<div class="sys_msg" id="pi_civil_status_msg"></div>
 				</div>
 				<div class="form-group col-md-3">
-					<label><?= $this->lang->line('lb_occupation') ?></label>
+					<label><?= $this->lang->line('w_occupation') ?></label>
 					<input type="text" class="form-control" name="occupation" value="<?= $an->occupation ?>">
 					<div class="sys_msg" id="pi_occupation_msg"></div>
 				</div>
 				<div class="form-group col-md-3">
-					<label><?= $this->lang->line('lb_religion') ?></label>
+					<label><?= $this->lang->line('w_religion') ?></label>
 					<input type="text" class="form-control" name="religion" value="<?= $an->religion ?>">
 					<div class="sys_msg" id="pi_religion_msg"></div>
 				</div>

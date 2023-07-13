@@ -85,20 +85,20 @@ $lang['date_m'] = 'Mes';
 $lang['date_y'] = 'Año';
 
 //button
-$lang['btn_close'] = 'Cerrar';
 $lang['btn_add'] = 'Agregar';
-$lang['btn_save'] = 'Guardar';
 $lang['btn_cancel'] = 'Cancelar';
+$lang['btn_close'] = 'Cerrar';
 $lang['btn_confirm'] = 'Confirmar';
 $lang['btn_finish'] = 'Finalizar';
+$lang['btn_list'] = 'Lista';
 $lang['btn_new'] = 'Nuevo';
 $lang['btn_register'] = 'Registrar';
-$lang['btn_update'] = 'Actualizar';
-$lang['btn_view'] = 'Ver';
+$lang['btn_remove'] = 'Eliminar';
+$lang['btn_save'] = 'Guardar';
 $lang['btn_search'] = 'Buscar';
 $lang['btn_select'] = 'Elegir';
-$lang['btn_list'] = 'Lista';
-$lang['btn_remove'] = 'Eliminar';
+$lang['btn_update'] = 'Actualizar';
+$lang['btn_view'] = 'Ver';
 
 //text
 $lang['txt_detail'] = 'Detalle';

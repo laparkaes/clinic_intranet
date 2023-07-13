@@ -43,14 +43,14 @@ $th = $appointment_datas["therapy"];
 $me = $appointment_datas["medicine"];
 ?>
 <div class="title_1 text-center">
-	<strong><?= $this->lang->line('title_clinical_history') ?></strong>
+	<strong><?= $this->lang->line('w_clinical_history') ?></strong>
 </div>
 <table class="table table-4 text-center mt-4">
 	<tr>
-		<th><?= $this->lang->line('lb_date') ?></th>
-		<th><?= $this->lang->line('lb_history_number') ?></th>
-		<th><?= $this->lang->line('lb_entry_mode') ?></th>
-		<th><?= $this->lang->line('title_insurance') ?></th>
+		<th><?= $this->lang->line('w_date') ?></th>
+		<th><?= $this->lang->line('w_history_number') ?></th>
+		<th><?= $this->lang->line('w_entry_mode') ?></th>
+		<th><?= $this->lang->line('w_insurance') ?></th>
 	</tr>
 	<tr>
 		<td><?= $bd->entered_at ?></td>
@@ -60,16 +60,16 @@ $me = $appointment_datas["medicine"];
 	</tr>
 </table>
 <div class="title_2 mt-4">
-	<strong>1. <?= $this->lang->line('title_anamnesis') ?></strong>
+	<strong>1. <?= $this->lang->line('w_anamnesis') ?></strong>
 </div>
 <div class="title_3 mt-2">
-	<strong>1) <?= $this->lang->line('title_personal_information') ?></strong>
+	<strong>1) <?= $this->lang->line('w_personal_information') ?></strong>
 </div>
 <table class="table table-4 text-center mt-1">
 	<tr>
-		<th colspan="2"><?= $this->lang->line('lb_name') ?></th>
-		<th><?= $this->lang->line('lb_age') ?></th>
-		<th><?= $this->lang->line('lb_sex') ?></th>
+		<th colspan="2"><?= $this->lang->line('w_name') ?></th>
+		<th><?= $this->lang->line('w_age') ?></th>
+		<th><?= $this->lang->line('w_sex') ?></th>
 	</tr>
 	<tr>
 		<td colspan="2"><?= $an->name ?></td>
@@ -77,9 +77,9 @@ $me = $appointment_datas["medicine"];
 		<td><?= $an->sex ?></td>
 	</tr>
 	<tr>
-		<th colspan="2"><?= $this->lang->line('lb_address') ?></th>
-		<th><?= $this->lang->line('lb_birth_place') ?></th>
-		<th><?= $this->lang->line('lb_birth_day') ?></th>
+		<th colspan="2"><?= $this->lang->line('w_address') ?></th>
+		<th><?= $this->lang->line('w_birth_place') ?></th>
+		<th><?= $this->lang->line('w_birth_day') ?></th>
 	</tr>
 	<tr>
 		<td colspan="2"><?= $an->address ?></td>
@@ -87,10 +87,10 @@ $me = $appointment_datas["medicine"];
 		<td><?= $an->birthday ?></td>
 	</tr>
 	<tr>
-		<th><?= $this->lang->line('lb_tel') ?></th>
-		<th><?= $this->lang->line('lb_responsible') ?></th>
-		<th><?= $this->lang->line('lb_place_of_origin') ?></th>
-		<th><?= $this->lang->line('lb_last_trips') ?></th>
+		<th><?= $this->lang->line('w_tel') ?></th>
+		<th><?= $this->lang->line('w_responsible') ?></th>
+		<th><?= $this->lang->line('w_place_of_origin') ?></th>
+		<th><?= $this->lang->line('w_last_trips') ?></th>
 	</tr>
 	<tr>
 		<td><?= $an->tel ?></td>
@@ -99,10 +99,10 @@ $me = $appointment_datas["medicine"];
 		<td><?= $an->last_trips ?></td>
 	</tr>
 	<tr>
-		<th><?= $this->lang->line('lb_race') ?></th>
-		<th><?= $this->lang->line('lb_marital_status') ?></th>
-		<th><?= $this->lang->line('lb_occupation') ?></th>
-		<th><?= $this->lang->line('lb_religion') ?></th>
+		<th><?= $this->lang->line('w_race') ?></th>
+		<th><?= $this->lang->line('w_marital_status') ?></th>
+		<th><?= $this->lang->line('w_occupation') ?></th>
+		<th><?= $this->lang->line('w_religion') ?></th>
 	</tr>
 	<tr>
 		<td><?= $an->race ?></td>
@@ -112,13 +112,13 @@ $me = $appointment_datas["medicine"];
 	</tr>
 </table>
 <div class="title_3 mt-3">
-	<strong>2) <?= $this->lang->line('title_current_illness') ?></strong>
+	<strong>2) <?= $this->lang->line('w_current_illness') ?></strong>
 </div>
 <table class="table table-3 table-glue text-center mt-1">
 	<tr>
-		<th><?= $this->lang->line('lb_illness_time') ?></th>
-		<th><?= $this->lang->line('lb_start') ?></th>
-		<th><?= $this->lang->line('lb_grade') ?></th>
+		<th><?= $this->lang->line('w_illness_time') ?></th>
+		<th><?= $this->lang->line('w_start') ?></th>
+		<th><?= $this->lang->line('w_grade') ?></th>
 	</tr>
 	<tr>
 		<td><?= $an->illness_time ?></td>
@@ -128,8 +128,8 @@ $me = $appointment_datas["medicine"];
 </table>
 <table class="table table-2 text-center">
 	<tr>
-		<th><?= $this->lang->line('lb_main_symptoms') ?></th>
-		<th><?= $this->lang->line('lb_story') ?></th>
+		<th><?= $this->lang->line('w_main_symptoms') ?></th>
+		<th><?= $this->lang->line('w_story') ?></th>
 	</tr>
 	<tr>
 		<td class="text-left pre-line"><?= $an->illness_main_symptoms ?></td>
@@ -137,14 +137,14 @@ $me = $appointment_datas["medicine"];
 	</tr>
 </table>
 <div class="title_3 mt-3">
-	<strong>3) <?= $this->lang->line('title_biological_functions') ?></strong>
+	<strong>3) <?= $this->lang->line('w_biological_functions') ?></strong>
 </div>
 <table class="table table-4 text-center mt-1">
 	<tr>
-		<th><?= $this->lang->line('lb_appetite') ?></th>
-		<th><?= $this->lang->line('lb_urine') ?></th>
-		<th><?= $this->lang->line('lb_thirst') ?></th>
-		<th><?= $this->lang->line('lb_bowel_movements') ?></th>
+		<th><?= $this->lang->line('w_appetite') ?></th>
+		<th><?= $this->lang->line('w_urine') ?></th>
+		<th><?= $this->lang->line('w_thirst') ?></th>
+		<th><?= $this->lang->line('w_bowel_movements') ?></th>
 	</tr>
 	<tr>
 		<td><?= $an->func_bio_appetite ?></td>
@@ -153,10 +153,10 @@ $me = $appointment_datas["medicine"];
 		<td><?= $an->func_bio_bowel_movements ?></td>
 	</tr>
 	<tr>
-		<th><?= $this->lang->line('lb_sweat') ?></th>
-		<th><?= $this->lang->line('lb_weight_') ?></th>
-		<th><?= $this->lang->line('lb_sleep') ?></th>
-		<th><?= $this->lang->line('lb_encouragement') ?></th>
+		<th><?= $this->lang->line('w_sweat') ?></th>
+		<th><?= $this->lang->line('w_weight_') ?></th>
+		<th><?= $this->lang->line('w_sleep') ?></th>
+		<th><?= $this->lang->line('w_encouragement') ?></th>
 	</tr>
 	<tr>
 		<td><?= $an->func_bio_sweat ?></td>
@@ -166,36 +166,36 @@ $me = $appointment_datas["medicine"];
 	</tr>
 </table>
 <div class="title_3 mt-3">
-	<strong>4) <?= $this->lang->line('title_personal_background') ?></strong>
+	<strong>4) <?= $this->lang->line('w_personal_background') ?></strong>
 </div>
 <table class="table table-2 text-center mt-1">
 	<tr>
-		<th colspan="2" class="text-left">a. <?= $this->lang->line('title_pathological') ?></th>
+		<th colspan="2" class="text-left">a. <?= $this->lang->line('w_pathological') ?></th>
 	</tr>
 	<tr>
-		<th colspan="2"><?= $this->lang->line('lb_previous_illnesses') ?></th>
+		<th colspan="2"><?= $this->lang->line('w_previous_illnesses') ?></th>
 	</tr>
 	<tr>
 		<td colspan="2"><?= $an->patho_pre_illnesses_txt ?></td>
 	</tr>
 	<tr>
-		<th><?= $this->lang->line('lb_previous_hospitalizations') ?></th>
-		<th><?= $this->lang->line('lb_previous_surgeries') ?></th>
+		<th><?= $this->lang->line('w_previous_hospitalizations') ?></th>
+		<th><?= $this->lang->line('w_previous_surgeries') ?></th>
 	</tr>
 	<tr>
 		<td class="pre-line"><?= $an->patho_pre_hospitalization ?></td>
 		<td class="pre-line"><?= $an->patho_pre_surgery ?></td>
 	</tr>
 	<tr>
-		<th><?= $this->lang->line('lb_ram') ?></th>
-		<th><?= $this->lang->line('lb_transfusions') ?></th>
+		<th><?= $this->lang->line('w_ram') ?></th>
+		<th><?= $this->lang->line('w_transfusions') ?></th>
 	</tr>
 	<tr>
 		<td><?= $an->patho_ram ?></td>
 		<td><?= $an->patho_transfusion ?></td>
 	</tr>
 	<tr>
-		<th colspan="2"><?= $this->lang->line('lb_prior_medication') ?></th>
+		<th colspan="2"><?= $this->lang->line('w_prior_medication') ?></th>
 	</tr>
 	<tr>
 		<td colspan="2"><?= $an->patho_pre_medication ?></td>
@@ -203,13 +203,13 @@ $me = $appointment_datas["medicine"];
 </table>
 <table class="table table-4 text-center mt-1">
 	<tr>
-		<th colspan="4" class="text-left">b. <?= $this->lang->line('title_gynecological') ?></th>
+		<th colspan="4" class="text-left">b. <?= $this->lang->line('w_gynecological') ?></th>
 	</tr>
 	<tr>
-		<th><?= $this->lang->line('lb_fur') ?></th>
-		<th><?= $this->lang->line('lb_g') ?></th>
-		<th><?= $this->lang->line('lb_p') ?></th>
-		<th><?= $this->lang->line('lb_mac') ?></th>
+		<th><?= $this->lang->line('w_fur') ?></th>
+		<th><?= $this->lang->line('w_g') ?></th>
+		<th><?= $this->lang->line('w_p') ?></th>
+		<th><?= $this->lang->line('w_mac') ?></th>
 	</tr>
 	<tr>
 		<td><?= $an->gyne_fur ?></td>
@@ -220,24 +220,24 @@ $me = $appointment_datas["medicine"];
 </table>
 <table class="table table-2 text-center mt-1">
 	<tr>
-		<th colspan="2" class="text-left">c. <?= $this->lang->line('title_family_background') ?></th>
+		<th colspan="2" class="text-left">c. <?= $this->lang->line('w_family_background') ?></th>
 	</tr>
 	<tr>
 		<td colspan="2" class="text-left pre-line"><?= $an->family_history ?></td>
 	</tr>
 </table>
 <div class="title_2 mt-4">
-	<strong>2. <?= $this->lang->line('title_physical_exam') ?></strong>
+	<strong>2. <?= $this->lang->line('w_physical_exam') ?></strong>
 </div>
 <div class="title_3 mt-3">
-	<strong>1) <?= $this->lang->line('title_vital_functions') ?></strong>
+	<strong>1) <?= $this->lang->line('w_vital_functions') ?></strong>
 </div>
 <table class="table table-4 text-center mt-1">
 	<tr>
-		<th><?= $this->lang->line('lb_pa') ?></th>
-		<th><?= $this->lang->line('lb_fc') ?></th>
-		<th><?= $this->lang->line('lb_fr') ?></th>
-		<th><?= $this->lang->line('lb_temperature') ?></th>
+		<th><?= $this->lang->line('w_pa') ?></th>
+		<th><?= $this->lang->line('w_fc') ?></th>
+		<th><?= $this->lang->line('w_fr') ?></th>
+		<th><?= $this->lang->line('w_temperature') ?></th>
 	</tr>
 	<tr>
 		<td><?= $ph->v_pa ?></td>
@@ -246,10 +246,10 @@ $me = $appointment_datas["medicine"];
 		<td><?= $ph->v_temperature ?></td>
 	</tr>
 	<tr>
-		<th><?= $this->lang->line('lb_weight') ?></th>
-		<th><?= $this->lang->line('lb_height') ?></th>
-		<th><?= $this->lang->line('lb_bmi') ?></th>
-		<th><?= $this->lang->line('lb_class') ?></th>
+		<th><?= $this->lang->line('w_weight') ?></th>
+		<th><?= $this->lang->line('w_height') ?></th>
+		<th><?= $this->lang->line('w_bmi') ?></th>
+		<th><?= $this->lang->line('w_class') ?></th>
 	</tr>
 	<tr>
 		<td><?= $ph->v_weight ?></td>
@@ -259,12 +259,12 @@ $me = $appointment_datas["medicine"];
 	</tr>
 </table>
 <div class="title_3 mt-3">
-	<strong>2) <?= $this->lang->line('title_general_exam') ?></strong>
+	<strong>2) <?= $this->lang->line('w_general_exam') ?></strong>
 </div>
 <table class="table table-2 table-glue text-center mt-1">
 	<tr>
-		<th><?= $this->lang->line('lb_appearance') ?></th>
-		<th><?= $this->lang->line('lb_skin') ?></th>
+		<th><?= $this->lang->line('w_appearance') ?></th>
+		<th><?= $this->lang->line('w_skin') ?></th>
 	</tr>
 	<tr>
 		<td class="text-left pre-line"><?= $ph->g_appearance ?></td>
@@ -273,9 +273,9 @@ $me = $appointment_datas["medicine"];
 </table>
 <table class="table table-3 text-center">
 	<tr>
-		<th><?= $this->lang->line('lb_tcsc') ?></th>
-		<th><?= $this->lang->line('lb_soma') ?></th>
-		<th><?= $this->lang->line('lb_lymphatic') ?></th>
+		<th><?= $this->lang->line('w_tcsc') ?></th>
+		<th><?= $this->lang->line('w_soma') ?></th>
+		<th><?= $this->lang->line('w_lymphatic') ?></th>
 	</tr>
 	<tr>
 		<td class="text-left pre-line"><?= $ph->g_tcsc ?></td>
@@ -284,14 +284,14 @@ $me = $appointment_datas["medicine"];
 	</tr>
 </table>
 <div class="title_3 mt-3">
-	<strong>3) <?= $this->lang->line('title_regional_examination') ?></strong>
+	<strong>3) <?= $this->lang->line('w_regional_examination') ?></strong>
 </div>
 <table class="table table-4 text-center mt-1">
 	<tr>
-		<th><?= $this->lang->line('lb_head') ?></th>
-		<th><?= $this->lang->line('lb_neck') ?></th>
-		<th><?= $this->lang->line('lb_breasts') ?></th>
-		<th><?= $this->lang->line('lb_chest_and_lungs') ?></th>
+		<th><?= $this->lang->line('w_head') ?></th>
+		<th><?= $this->lang->line('w_neck') ?></th>
+		<th><?= $this->lang->line('w_breasts') ?></th>
+		<th><?= $this->lang->line('w_chest_and_lungs') ?></th>
 	</tr>
 	<tr>
 		<td class="text-left pre-line"><?= $ph->r_head ?></td>
@@ -300,10 +300,10 @@ $me = $appointment_datas["medicine"];
 		<td class="text-left pre-line"><?= $ph->r_thorax_lungs ?></td>
 	</tr>
 	<tr>
-		<th><?= $this->lang->line('lb_cardiovascular') ?></th>
-		<th><?= $this->lang->line('lb_abdomen') ?></th>
-		<th><?= $this->lang->line('lb_genitourinary') ?></th>
-		<th><?= $this->lang->line('lb_neurological') ?></th>
+		<th><?= $this->lang->line('w_cardiovascular') ?></th>
+		<th><?= $this->lang->line('w_abdomen') ?></th>
+		<th><?= $this->lang->line('w_genitourinary') ?></th>
+		<th><?= $this->lang->line('w_neurological') ?></th>
 	</tr>
 	<tr>
 		<td class="text-left pre-line"><?= $ph->r_cardiovascular ?></td>
@@ -313,13 +313,13 @@ $me = $appointment_datas["medicine"];
 	</tr>
 </table>
 <div class="title_2 mt-4">
-	<strong>3. <?= $this->lang->line('title_diagnostic_impression') ?></strong>
+	<strong>3. <?= $this->lang->line('w_diagnostic_impression') ?></strong>
 </div>
 <table class="table text-center mt-1">
 	<tr>
 		<th>#</th>
-		<th><?= $this->lang->line('th_cie10') ?></th>
-		<th><?= $this->lang->line('th_description') ?></th>
+		<th><?= $this->lang->line('w_cie10') ?></th>
+		<th><?= $this->lang->line('w_description') ?></th>
 	</tr>
 	<?php foreach($di as $i => $d){ ?>
 	<tr>
@@ -330,13 +330,13 @@ $me = $appointment_datas["medicine"];
 	<?php } ?>
 </table>
 <div class="title_2 mt-4">
-	<strong>4. <?= $this->lang->line('title_result') ?></strong>
+	<strong>4. <?= $this->lang->line('w_result') ?></strong>
 </div>
 <table class="table table-3 text-center mt-1">
 	<tr>
-		<th><?= $this->lang->line('lb_diagnosis') ?> [<?= $re->type ?>]</th>
-		<th><?= $this->lang->line('lb_workplan') ?></th>
-		<th><?= $this->lang->line('lb_treatment') ?></th>
+		<th><?= $this->lang->line('w_diagnosis') ?> [<?= $re->type ?>]</th>
+		<th><?= $this->lang->line('w_workplan') ?></th>
+		<th><?= $this->lang->line('w_treatment') ?></th>
 	</tr>
 	<tr>
 		<td class="text-left pre-line"><?= $re->diagnosis ?></td>
@@ -345,17 +345,17 @@ $me = $appointment_datas["medicine"];
 	</tr>
 </table>
 <div class="title_2 mt-4">
-	<strong>5. <?= $this->lang->line('title_auxiliary_exam') ?></strong>
+	<strong>5. <?= $this->lang->line('w_auxiliary_exam') ?></strong>
 </div>
 <div class="title_3 mt-3">
-	<strong>1) <?= $this->lang->line('title_laboratory') ?></strong>
+	<strong>1) <?= $this->lang->line('w_laboratory') ?></strong>
 </div>
 <table class="table text-center mt-1">
 	<tr>
 		<th>#</th>
-		<th><?= $this->lang->line('th_type') ?></th>
-		<th><?= $this->lang->line('th_profile') ?></th>
-		<th style="width: 60%;"><?= $this->lang->line('th_exams') ?></th>
+		<th><?= $this->lang->line('w_type') ?></th>
+		<th><?= $this->lang->line('w_profile') ?></th>
+		<th style="width: 60%;"><?= $this->lang->line('w_exams') ?></th>
 	</tr>
 	<?php foreach($ex_profiles as $i => $ep){ ?>
 	<tr>
@@ -374,13 +374,13 @@ $me = $appointment_datas["medicine"];
 	<?php } ?>
 </table>
 <div class="title_3 mt-3">
-	<strong>2) <?= $this->lang->line('title_image') ?></strong>
+	<strong>2) <?= $this->lang->line('w_image') ?></strong>
 </div>
 <table class="table text-center mt-1">
 	<tr>
 		<th>#</th>
-		<th><?= $this->lang->line('th_category') ?></th>
-		<th style="width: 60%;"><?= $this->lang->line('th_image') ?></th>
+		<th><?= $this->lang->line('w_category') ?></th>
+		<th style="width: 60%;"><?= $this->lang->line('w_image') ?></th>
 	</tr>
 	<?php foreach($im as $i => $item){ ?>
 	<tr>
@@ -391,16 +391,16 @@ $me = $appointment_datas["medicine"];
 	<?php } ?>
 </table>
 <div class="title_2 mt-4">
-	<strong>6. <?= $this->lang->line('title_treatment') ?></strong>
+	<strong>6. <?= $this->lang->line('w_treatment') ?></strong>
 </div>
 <div class="title_3 mt-3">
-	<strong>1) <?= $this->lang->line('title_medicine') ?></strong>
+	<strong>1) <?= $this->lang->line('w_medicine') ?></strong>
 </div>
 <table class="table text-center mt-1">
 	<tr>
 		<th>#</th>
-		<th><?= $this->lang->line('th_medicine') ?></th>
-		<th style="width: 60%;"><?= $this->lang->line('th_detail') ?></th>
+		<th><?= $this->lang->line('w_medicine') ?></th>
+		<th style="width: 60%;"><?= $this->lang->line('w_detail') ?></th>
 	</tr>
 	<?php foreach($me as $i => $m){ ?>
 	<tr>
@@ -411,13 +411,13 @@ $me = $appointment_datas["medicine"];
 	<?php } ?>
 </table>
 <div class="title_3 mt-3">
-	<strong>2) <?= $this->lang->line('title_physical_therapy') ?></strong>
+	<strong>2) <?= $this->lang->line('w_physical_therapy') ?></strong>
 </div>
 <table class="table text-center mt-1">
 	<tr>
 		<th>#</th>
-		<th><?= $this->lang->line('th_therapy') ?></th>
-		<th style="width: 60%;"><?= $this->lang->line('th_detail') ?></th>
+		<th><?= $this->lang->line('w_therapy') ?></th>
+		<th style="width: 60%;"><?= $this->lang->line('w_detail') ?></th>
 	</tr>
 	<?php foreach($th as $i => $t){ ?>
 	<tr>

@@ -12,7 +12,7 @@ $me = $appointment_datas["medicine"];
 <div class="col-md-12">
 	<div class="card">
 		<div class="card-header">
-			<h4 class="mb-0"><?= $this->lang->line('title_anamnesis') ?></h4>
+			<h4 class="mb-0"><?= $this->lang->line('w_anamnesis') ?></h4>
 		</div>
 		<div class="card-body">
 			<form action="#" class="row" id="form_anamnesis">
@@ -22,22 +22,22 @@ $me = $appointment_datas["medicine"];
 						<ul class="nav nav-tabs mb-4">
 							<li class="nav-item">
 								<a href="#anamnesis-1" class="nav-link active" data-toggle="tab">
-									<?= $this->lang->line('title_personal_information') ?>
+									<?= $this->lang->line('w_personal_information') ?>
 								</a>
 							</li>
 							<li class="nav-item">
 								<a href="#anamnesis-2" class="nav-link" data-toggle="tab">
-									<?= $this->lang->line('title_current_illness') ?>
+									<?= $this->lang->line('w_current_illness') ?>
 								</a>
 							</li>
 							<li class="nav-item">
 								<a href="#anamnesis-3" class="nav-link" data-toggle="tab">
-									<?= $this->lang->line('title_biological_functions') ?>
+									<?= $this->lang->line('w_biological_functions') ?>
 								</a>
 							</li>
 							<li class="nav-item">
 								<a href="#anamnesis-4" class="nav-link" data-toggle="tab">
-									<?= $this->lang->line('title_personal_background') ?>
+									<?= $this->lang->line('w_personal_background') ?>
 								</a>
 							</li>
 						</ul>
@@ -45,17 +45,17 @@ $me = $appointment_datas["medicine"];
 							<div id="anamnesis-1" class="tab-pane active">
 								<div class="form-row">
 									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_name') ?></label>
+										<label><?= $this->lang->line('w_name') ?></label>
 										<input type="text" class="form-control" name="name" value="<?= $an->name ?>" readonly>
 										<div class="sys_msg" id="an_name_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_age') ?></label>
+										<label><?= $this->lang->line('w_age') ?></label>
 										<input type="text" class="form-control" name="age" value="<?= $an->age ?>">
 										<div class="sys_msg" id="an_age_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_sex') ?></label>
+										<label><?= $this->lang->line('w_sex') ?></label>
 										<select class="form-control" name="sex_id">
 											<option value="">--</option>
 											<?php foreach($sex_ops as $item){
@@ -66,47 +66,47 @@ $me = $appointment_datas["medicine"];
 										<div class="sys_msg" id="an_sex_msg"></div>
 									</div>
 									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_address') ?></label>
+										<label><?= $this->lang->line('w_address') ?></label>
 										<input type="text" class="form-control" name="address" value="<?= $an->address ?>">
 										<div class="sys_msg" id="an_address_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_birthplace') ?></label>
+										<label><?= $this->lang->line('w_birthplace') ?></label>
 										<input type="text" class="form-control" name="birthplace" value="<?= $an->birthplace ?>">
 										<div class="sys_msg" id="an_birthplace_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_birthday') ?></label>
+										<label><?= $this->lang->line('w_birthday') ?></label>
 										<input type="text" class="form-control date_picker_all" name="birthday" value="<?= $an->birthday ?>">
 										<div class="sys_msg" id="an_birthday_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_telephone') ?></label>
+										<label><?= $this->lang->line('w_telephone') ?></label>
 										<input type="text" class="form-control" name="tel" value="<?= $an->tel ?>">
 										<div class="sys_msg" id="an_tel_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_responsible') ?></label>
+										<label><?= $this->lang->line('w_responsible') ?></label>
 										<input type="text" class="form-control" name="responsible" value="<?= $an->responsible ?>">
 										<div class="sys_msg" id="an_responsible_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_place_of_origin') ?></label>
+										<label><?= $this->lang->line('w_place_of_origin') ?></label>
 										<input type="text" class="form-control" name="provenance_place" value="<?= $an->provenance_place ?>">
 										<div class="sys_msg" id="an_provenance_place_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_last_trips') ?></label>
+										<label><?= $this->lang->line('w_last_trips') ?></label>
 										<input type="text" class="form-control" name="last_trips" value="<?= $an->last_trips ?>">
 										<div class="sys_msg" id="an_last_trips_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_race') ?></label>
+										<label><?= $this->lang->line('w_race') ?></label>
 										<input type="text" class="form-control" name="race" value="<?= $an->race ?>">
 										<div class="sys_msg" id="an_race_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_marital_status') ?></label>
+										<label><?= $this->lang->line('w_marital_status') ?></label>
 										<select class="form-control" name="civil_status_id">
 											<option value="" selected="">--</option>
 											<?php $civil_status = $options["civil_status"]; foreach($civil_status as $item){
@@ -117,12 +117,12 @@ $me = $appointment_datas["medicine"];
 										<div class="sys_msg" id="an_civil_status_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_occupation') ?></label>
+										<label><?= $this->lang->line('w_occupation') ?></label>
 										<input type="text" class="form-control" name="occupation" value="<?= $an->occupation ?>">
 										<div class="sys_msg" id="an_occupation_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_religion') ?></label>
+										<label><?= $this->lang->line('w_religion') ?></label>
 										<input type="text" class="form-control" name="religion" value="<?= $an->religion ?>">
 										<div class="sys_msg" id="an_religion_msg"></div>
 									</div>
@@ -131,27 +131,27 @@ $me = $appointment_datas["medicine"];
 							<div id="anamnesis-2" class="tab-pane">
 								<div class="form-row">
 									<div class="form-group col-md-4">
-										<label><?= $this->lang->line('lb_illness_time') ?></label>
+										<label><?= $this->lang->line('w_illness_time') ?></label>
 										<input type="text" class="form-control" name="illness_time" value="<?= $an->illness_time ?>">
 										<div class="sys_msg" id="an_illness_time_msg"></div>
 									</div>
 									<div class="form-group col-md-4">
-										<label><?= $this->lang->line('lb_start') ?></label>
+										<label><?= $this->lang->line('w_start') ?></label>
 										<input type="text" class="form-control" name="illness_start" value="<?= $an->illness_start ?>">
 										<div class="sys_msg" id="an_illness_start_msg"></div>
 									</div>
 									<div class="form-group col-md-4">
-										<label><?= $this->lang->line('lb_grade') ?></label>
+										<label><?= $this->lang->line('w_grade') ?></label>
 										<input type="text" class="form-control" name="illness_course" value="<?= $an->illness_course ?>">
 										<div class="sys_msg" id="an_illness_course_msg"></div>
 									</div>
 									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_main_symptoms') ?></label>
+										<label><?= $this->lang->line('w_main_symptoms') ?></label>
 										<textarea class="form-control" rows="5" name="illness_main_symptoms"><?= $an->illness_main_symptoms ?></textarea>
 										<div class="sys_msg" id="an_illness_main_symptoms_msg"></div>
 									</div>
 									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_story') ?></label>
+										<label><?= $this->lang->line('w_story') ?></label>
 										<textarea class="form-control" rows="5" name="illness_story"><?= $an->illness_story ?></textarea>
 										<div class="sys_msg" id="an_illness_story_msg"></div>
 									</div>
@@ -160,52 +160,52 @@ $me = $appointment_datas["medicine"];
 							<div id="anamnesis-3" class="tab-pane">
 								<div class="form-row">
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_appetite') ?></label>
+										<label><?= $this->lang->line('w_appetite') ?></label>
 										<input type="text" class="form-control" name="func_bio_appetite" value="<?= $an->func_bio_appetite ?>">
 										<div class="sys_msg" id="an_func_bio_appetite_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_urine') ?></label>
+										<label><?= $this->lang->line('w_urine') ?></label>
 										<input type="text" class="form-control" name="func_bio_urine" value="<?= $an->func_bio_urine ?>">
 										<div class="sys_msg" id="an_func_bio_urine_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_thirst') ?></label>
+										<label><?= $this->lang->line('w_thirst') ?></label>
 										<input type="text" class="form-control" name="func_bio_thirst" value="<?= $an->func_bio_thirst ?>">
 										<div class="sys_msg" id="an_func_bio_thirst_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_bowel_movements') ?></label>
+										<label><?= $this->lang->line('w_bowel_movements') ?></label>
 										<input type="text" class="form-control" name="func_bio_bowel_movements" value="<?= $an->illness_course ?>">
 										<div class="sys_msg" id="an_func_bio_bowel_movements_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_sweat') ?></label>
+										<label><?= $this->lang->line('w_sweat') ?></label>
 										<input type="text" class="form-control" name="func_bio_sweat" value="<?= $an->func_bio_sweat ?>">
 										<div class="sys_msg" id="an_func_bio_sweat_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_weight_') ?></label>
+										<label><?= $this->lang->line('w_weight_') ?></label>
 										<input type="text" class="form-control" name="func_bio_weight" value="<?= $an->func_bio_weight ?>">
 										<div class="sys_msg" id="an_func_bio_weight_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_sleep') ?></label>
+										<label><?= $this->lang->line('w_sleep') ?></label>
 										<input type="text" class="form-control" name="func_bio_sleep" value="<?= $an->func_bio_sleep ?>">
 										<div class="sys_msg" id="an_func_bio_sleep_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_encouragement') ?></label>
+										<label><?= $this->lang->line('w_encouragement') ?></label>
 										<input type="text" class="form-control" name="func_bio_encouragement" value="<?= $an->func_bio_encouragement ?>">
 										<div class="sys_msg" id="an_func_bio_encouragement_msg"></div>
 									</div>
 								</div>
 							</div>
 							<div id="anamnesis-4" class="tab-pane">
-								<h5><?= $this->lang->line('title_pathological') ?></h5>
+								<h5><?= $this->lang->line('w_pathological') ?></h5>
 								<div class="form-row">
 									<div class="form-group col-md-12">
-										<label><?= $this->lang->line('lb_previous_illnesses') ?></label>
+										<label><?= $this->lang->line('w_previous_illnesses') ?></label>
 										<div class="form-row">
 											<?php foreach($pre_illnesses as $item){ if (in_array($item["value"], $an->patho_pre_illnesses)) $checked = "checked"; else $checked = "";?>
 											<div class="form-group col-md-3">
@@ -216,61 +216,61 @@ $me = $appointment_datas["medicine"];
 											</div>
 											<?php } ?>
 											<div class="form-group col-md-12">
-												<input type="text" class="form-control" name="patho_pre_illnesses_other" id="other_pre_illnesses" placeholder="<?= $this->lang->line('msg_other_illness') ?>" value="<?= $an->patho_pre_illnesses_other ?>">
+												<input type="text" class="form-control" name="patho_pre_illnesses_other" id="other_pre_illnesses" placeholder="<?= $this->lang->line('t_other_illness') ?>" value="<?= $an->patho_pre_illnesses_other ?>">
 												<div class="sys_msg" id="an_patho_pre_illnesses_msg"></div>
 											</div>
 										</div>
 									</div>
 									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_previous_hospitalizations') ?></label>
+										<label><?= $this->lang->line('w_previous_hospitalizations') ?></label>
 										<textarea class="form-control" rows="3" name="patho_pre_hospitalization"><?= $an->patho_pre_hospitalization ?></textarea>
 										<div class="sys_msg" id="an_patho_pre_hospitalization_msg"></div>
 									</div>
 									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_previous_surgeries') ?></label>
+										<label><?= $this->lang->line('w_previous_surgeries') ?></label>
 										<textarea class="form-control" rows="3" name="patho_pre_surgery"><?= $an->patho_pre_surgery ?></textarea>
 										<div class="sys_msg" id="an_patho_pre_surgery_msg"></div>
 									</div>
 									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_ram') ?></label>
+										<label><?= $this->lang->line('w_ram') ?></label>
 										<input type="text" class="form-control" name="patho_ram" value="<?= $an->patho_ram ?>">
 										<div class="sys_msg" id="an_patho_ram_msg"></div>
 									</div>
 									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_transfusions') ?></label>
+										<label><?= $this->lang->line('w_transfusions') ?></label>
 										<input type="text" class="form-control" name="patho_transfusion" value="<?= $an->patho_transfusion ?>">
 										<div class="sys_msg" id="an_patho_transfusion_msg"></div>
 									</div>
 									<div class="form-group col-md-12">
-										<label><?= $this->lang->line('lb_prior_medication') ?></label>
+										<label><?= $this->lang->line('w_prior_medication') ?></label>
 										<input type="text" class="form-control" name="patho_pre_medication" value="<?= $an->patho_pre_medication ?>">
 										<div class="sys_msg" id="an_patho_pre_medication_msg"></div>
 									</div>
 								</div>
-								<h5 class="mt-3"><?= $this->lang->line('title_gynecological') ?></h5>
+								<h5 class="mt-3"><?= $this->lang->line('w_gynecological') ?></h5>
 								<div class="form-row">
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_fur') ?></label>
+										<label><?= $this->lang->line('w_fur') ?></label>
 										<input type="text" class="form-control" name="gyne_fur" value="<?= $an->gyne_fur ?>">
 										<div class="sys_msg" id="an_gyne_fur_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_g') ?></label>
+										<label><?= $this->lang->line('w_g') ?></label>
 										<input type="text" class="form-control" name="gyne_g" value="<?= $an->gyne_g ?>">
 										<div class="sys_msg" id="an_gyne_g_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_p') ?></label>
+										<label><?= $this->lang->line('w_p') ?></label>
 										<input type="text" class="form-control" name="gyne_p" value="<?= $an->gyne_p ?>">
 										<div class="sys_msg" id="an_gyne_p_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_mac') ?></label>
+										<label><?= $this->lang->line('w_mac') ?></label>
 										<input type="text" class="form-control" name="gyne_mac" value="<?= $an->gyne_mac ?>">
 										<div class="sys_msg" id="an_gyne_mac_msg"></div>
 									</div>
 								</div>
-								<h5 class="mt-3"><?= $this->lang->line('title_family_background') ?></h5>
+								<h5 class="mt-3"><?= $this->lang->line('w_family_background') ?></h5>
 								<div class="form-row">
 									<div class="form-group col-md-12">
 										<textarea class="form-control" rows="3" name="family_history"><?= $an->family_history ?></textarea>
@@ -294,7 +294,7 @@ $me = $appointment_datas["medicine"];
 <div class="col-md-12">
 	<div class="card">
 		<div class="card-header">
-			<h4 class="mb-0"><?= $this->lang->line('title_physical_exam') ?></h4>
+			<h4 class="mb-0"><?= $this->lang->line('w_physical_exam') ?></h4>
 		</div>
 		<div class="card-body">
 			<form action="#" id="form_physical_exam" class="row">
@@ -304,17 +304,17 @@ $me = $appointment_datas["medicine"];
 						<ul class="nav nav-tabs mb-4">
 							<li class="nav-item">
 								<a href="#physical_exam-1" class="nav-link active" data-toggle="tab">
-									<?= $this->lang->line('title_vital_functions') ?>
+									<?= $this->lang->line('w_vital_functions') ?>
 								</a>
 							</li>
 							<li class="nav-item">
 								<a href="#physical_exam-2" class="nav-link" data-toggle="tab">
-									<?= $this->lang->line('title_general_exam') ?>
+									<?= $this->lang->line('w_general_exam') ?>
 								</a>
 							</li>
 							<li class="nav-item">
 								<a href="#physical_exam-3" class="nav-link" data-toggle="tab">
-									<?= $this->lang->line('title_regional_examination') ?>
+									<?= $this->lang->line('w_regional_examination') ?>
 								</a>
 							</li>
 						</ul>
@@ -322,42 +322,42 @@ $me = $appointment_datas["medicine"];
 							<div id="physical_exam-1" class="tab-pane active">
 								<div class="form-row">
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_pa') ?></label>
+										<label><?= $this->lang->line('w_pa') ?></label>
 										<input type="text" class="form-control" name="v_pa" value="<?= $ph->v_pa ?>">
 										<div class="sys_msg" id="pe_v_pa_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_fc') ?></label>
+										<label><?= $this->lang->line('w_fc') ?></label>
 										<input type="text" class="form-control" name="v_fc" value="<?= $ph->v_fc ?>">
 										<div class="sys_msg" id="pe_v_fc_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_fr') ?></label>
+										<label><?= $this->lang->line('w_fr') ?></label>
 										<input type="text" class="form-control" name="v_fr" value="<?= $ph->v_fr ?>">
 										<div class="sys_msg" id="pe_v_fr_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_temperature') ?></label>
+										<label><?= $this->lang->line('w_temperature') ?></label>
 										<input type="text" class="form-control" name="v_temperature" value="<?= $ph->v_temperature ?>">
 										<div class="sys_msg" id="pe_v_temperature_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_weight') ?></label>
+										<label><?= $this->lang->line('w_weight') ?></label>
 										<input type="text" class="form-control set_bmi" name="v_weight" value="<?= $ph->v_weight ?>">
 										<div class="sys_msg" id="pe_v_weight_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_height') ?></label>
+										<label><?= $this->lang->line('w_height') ?></label>
 										<input type="text" class="form-control set_bmi" name="v_height" value="<?= $ph->v_height ?>">
 										<div class="sys_msg" id="pe_v_height_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_bmi') ?></label>
+										<label><?= $this->lang->line('w_bmi') ?></label>
 										<input type="text" class="form-control" name="v_imc" value="<?= $ph->v_imc ?>" readonly>
 										<div class="sys_msg" id="pe_v_imc_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_bmi_class') ?></label>
+										<label><?= $this->lang->line('w_bmi_class') ?></label>
 										<input type="text" class="form-control" name="v_imc_class" value="<?= $ph->v_imc_class ?>" readonly>
 										<div class="sys_msg" id="pe_v_imc_class"></div>
 									</div>
@@ -366,27 +366,27 @@ $me = $appointment_datas["medicine"];
 							<div id="physical_exam-2" class="tab-pane">
 								<div class="form-row">
 									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_appearance') ?></label>
+										<label><?= $this->lang->line('w_appearance') ?></label>
 										<textarea class="form-control" rows="3" name="g_appearance"><?= $ph->g_appearance ?></textarea>
 										<div class="sys_msg" id="pe_g_appearance_msg"></div>
 									</div>
 									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_skin') ?></label>
+										<label><?= $this->lang->line('w_skin') ?></label>
 										<textarea class="form-control" rows="3" name="g_skin"><?= $ph->g_skin ?></textarea>
 										<div class="sys_msg" id="pe_g_skin_msg"></div>
 									</div>
 									<div class="form-group col-md-4">
-										<label><?= $this->lang->line('lb_tcsc') ?></label>
+										<label><?= $this->lang->line('w_tcsc') ?></label>
 										<textarea class="form-control" rows="3" name="g_tcsc"><?= $ph->g_tcsc ?></textarea>
 										<div class="sys_msg" id="pe_g_tcsc_msg"></div>
 									</div>
 									<div class="form-group col-md-4">
-										<label><?= $this->lang->line('lb_soma') ?></label>
+										<label><?= $this->lang->line('w_soma') ?></label>
 										<textarea class="form-control" rows="3" name="g_soma"><?= $ph->g_soma ?></textarea>
 										<div class="sys_msg" id="pe_g_soma_msg"></div>
 									</div>
 									<div class="form-group col-md-4">
-										<label><?= $this->lang->line('lb_lymphatic') ?></label>
+										<label><?= $this->lang->line('w_lymphatic') ?></label>
 										<textarea class="form-control" rows="3" name="g_lymphatic"><?= $ph->g_lymphatic ?></textarea>
 										<div class="sys_msg" id="pe_g_lymphatic_msg"></div>
 									</div>
@@ -395,42 +395,42 @@ $me = $appointment_datas["medicine"];
 							<div id="physical_exam-3" class="tab-pane">
 								<div class="form-row">
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_head') ?></label>
+										<label><?= $this->lang->line('w_head') ?></label>
 										<textarea class="form-control" rows="3" name="r_head"><?= $ph->r_head ?></textarea>
 										<div class="sys_msg" id="pe_r_head_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_neck') ?></label>
+										<label><?= $this->lang->line('w_neck') ?></label>
 										<textarea class="form-control" rows="3" name="r_neck"><?= $ph->r_neck ?></textarea>
 										<div class="sys_msg" id="pe_r_neck_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_breasts') ?></label>
+										<label><?= $this->lang->line('w_breasts') ?></label>
 										<textarea class="form-control" rows="3" name="r_breasts"><?= $ph->r_breasts ?></textarea>
 										<div class="sys_msg" id="pe_r_breasts_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_chest_and_lungs') ?></label>
+										<label><?= $this->lang->line('w_chest_and_lungs') ?></label>
 										<textarea class="form-control" rows="3" name="r_thorax_lungs"><?= $ph->r_thorax_lungs ?></textarea>
 										<div class="sys_msg" id="pe_r_thorax_lungs_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_cardiovascular') ?></label>
+										<label><?= $this->lang->line('w_cardiovascular') ?></label>
 										<textarea class="form-control" rows="3" name="r_cardiovascular"><?= $ph->r_cardiovascular ?></textarea>
 										<div class="sys_msg" id="pe_r_cardiovascular_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_abdomen') ?></label>
+										<label><?= $this->lang->line('w_abdomen') ?></label>
 										<textarea class="form-control" rows="3" name="r_abdomen"><?= $ph->r_abdomen ?></textarea>
 										<div class="sys_msg" id="pe_r_abdomen_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_genitourinary') ?></label>
+										<label><?= $this->lang->line('w_genitourinary') ?></label>
 										<textarea class="form-control" rows="3" name="r_genitourinary"><?= $ph->r_genitourinary ?></textarea>
 										<div class="sys_msg" id="pe_r_genitourinary_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_neurological') ?></label>
+										<label><?= $this->lang->line('w_neurological') ?></label>
 										<textarea class="form-control" rows="3" name="r_neurologic"><?= $ph->r_neurologic ?></textarea>
 										<div class="sys_msg" id="pe_r_neurologic_msg"></div>
 									</div>
@@ -452,7 +452,7 @@ $me = $appointment_datas["medicine"];
 <div class="col-md-12">
 	<div class="card">
 		<div class="card-header">
-			<h4 class="mb-0"><?= $this->lang->line('title_diagnostic_impression') ?></h4>
+			<h4 class="mb-0"><?= $this->lang->line('w_diagnostic_impression') ?></h4>
 		</div>
 		<div class="card-body">
 			<div class="row">
@@ -460,7 +460,7 @@ $me = $appointment_datas["medicine"];
 				<div class="col-md-6">
 					<form action="#" class="form-row" id="form_search_diag">
 						<div class="form-group col-md-12">
-							<h5><?= $this->lang->line('lb_search') ?></h5>
+							<h5><?= $this->lang->line('w_search') ?></h5>
 							<div class="input-group">
 								<input type="text" class="form-control" name="filter">
 								<div class="input-group-append">
@@ -469,7 +469,7 @@ $me = $appointment_datas["medicine"];
 									</button>
 								</div>
 							</div>
-							<div class="sys_msg" id="di_diagnosis_msg"><span class="text-info"><?= $this->lang->line('txt_enter_filter') ?></span></div>
+							<div class="sys_msg" id="di_diagnosis_msg"><span class="text-info"><?= $this->lang->line('t_enter_filter') ?></span></div>
 						</div>	
 					</form>	
 					<div class="ap_content_list_high">
@@ -481,7 +481,7 @@ $me = $appointment_datas["medicine"];
 				<?php }else $next_col = 12; ?>
 				<div class="col-md-<?= $next_col ?>">
 					<?php if ($appointment->is_editable){ ?>
-					<h5><?= $this->lang->line('title_selected_diag') ?></h5>
+					<h5><?= $this->lang->line('w_selected_diag') ?></h5>
 					<?php } ?>
 					<table class="table table-xs no_border_tb mb-0">
 						<tbody id="selected_diags">
@@ -506,13 +506,13 @@ $me = $appointment_datas["medicine"];
 <div class="col-md-12">
 	<div class="card">
 		<div class="card-header">
-			<h4 class="mb-0"><?= $this->lang->line('title_result') ?></h4>
+			<h4 class="mb-0"><?= $this->lang->line('w_result') ?></h4>
 		</div>
 		<div class="card-body">
 			<form action="#" class="form-row" id="form_result">
 				<input type="hidden" name="appointment_id" value="<?= $appointment->id ?>">
 				<div class="form-group col-md-12">
-					<label><?= $this->lang->line('lb_diagnosis_type') ?></label>
+					<label><?= $this->lang->line('w_diagnosis_type') ?></label>
 					<div class="form-control d-flex align-items-center">
 						<?php $diagnosis_type = $options["diagnosis_type"];
 						foreach($diagnosis_type as $i => $item){ 
@@ -525,15 +525,15 @@ $me = $appointment_datas["medicine"];
 					</div>
 				</div>
 				<div class="form-group col-md-4">
-					<label><?= $this->lang->line('lb_diagnosis') ?></label>
+					<label><?= $this->lang->line('w_diagnosis') ?></label>
 					<textarea class="form-control" rows="3" name="diagnosis"><?= $re->diagnosis ?></textarea>
 				</div>
 				<div class="form-group col-md-4">
-					<label><?= $this->lang->line('lb_workplan') ?></label>
+					<label><?= $this->lang->line('w_workplan') ?></label>
 					<textarea class="form-control" rows="3" name="plan"><?= $re->plan ?></textarea>
 				</div>
 				<div class="form-group col-md-4">
-					<label><?= $this->lang->line('lb_treatment') ?></label>
+					<label><?= $this->lang->line('w_treatment') ?></label>
 					<textarea class="form-control" rows="3" name="treatment"><?= $re->treatment ?></textarea>
 				</div>
 				<?php if ($appointment->is_editable){ ?>
@@ -549,19 +549,19 @@ $me = $appointment_datas["medicine"];
 <div class="col-md-12">
 	<div class="card">
 		<div class="card-header">
-			<h4 class="mb-0"><?= $this->lang->line('title_auxiliary_exam') ?></h4>
+			<h4 class="mb-0"><?= $this->lang->line('w_auxiliary_exam') ?></h4>
 		</div>
 		<div class="card-body">
 			<div class="default-tab">
 				<ul class="nav nav-tabs mb-4">
 					<li class="nav-item">
 						<a href="#auxiliary_exams_lab" class="nav-link active" data-toggle="tab">
-							<?= $this->lang->line('title_laboratory') ?>
+							<?= $this->lang->line('w_laboratory') ?>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a href="#auxiliary_exams_img" class="nav-link" data-toggle="tab">
-							<?= $this->lang->line('title_image') ?>
+							<?= $this->lang->line('w_image') ?>
 						</a>
 					</li>
 				</ul>
@@ -572,7 +572,7 @@ $me = $appointment_datas["medicine"];
 							<div class="col-md-6">
 								<div class="form-row">
 									<div class="form-group col-md-12">
-										<label><?= $this->lang->line('lb_profile') ?></label>
+										<label><?= $this->lang->line('w_profile') ?></label>
 										<div class="input-group">
 											<select class="form-control" id="sl_profile_exam">
 												<option value="">--</option>
@@ -592,16 +592,16 @@ $me = $appointment_datas["medicine"];
 							<div class="col-md-6">
 								<div class="form-row">
 									<div class="form-group col-md-4">
-										<label><?= $this->lang->line('lb_category') ?></label>
+										<label><?= $this->lang->line('w_category') ?></label>
 										<select class="form-control" id="sl_exam_category">
-											<option value=""><?= $this->lang->line('txt_all') ?></option>
+											<option value=""><?= $this->lang->line('w_all') ?></option>
 											<?php foreach($exam_categories as $item){ ?>
 											<option value="<?= $item->id ?>"><?= $item->name ?></option>
 											<?php } ?>
 										</select>
 									</div>
 									<div class="form-group col-md-8">
-										<label><?= $this->lang->line('lb_exam') ?></label>
+										<label><?= $this->lang->line('w_exam') ?></label>
 										<div class="input-group">
 											<select class="form-control" id="sl_exam">
 												<option value="">--</option>
@@ -625,9 +625,9 @@ $me = $appointment_datas["medicine"];
 								<table class="table table-responsive-md">
 									<thead>
 										<tr>
-											<th><strong><?= $this->lang->line('th_type') ?></strong></th>
-											<th class="w-30"><strong><?= $this->lang->line('th_profile') ?></strong></th>
-											<th><strong><?= $this->lang->line('th_exams') ?></strong></th>
+											<th><strong><?= $this->lang->line('w_type') ?></strong></th>
+											<th class="w-30"><strong><?= $this->lang->line('w_profile') ?></strong></th>
+											<th><strong><?= $this->lang->line('w_exams') ?></strong></th>
 											<?php if ($appointment->is_editable){ ?><th></th><?php } ?>
 										</tr>
 									</thead>
@@ -670,7 +670,7 @@ $me = $appointment_datas["medicine"];
 							<div class="col-md-12">
 								<div class="form-row">
 									<div class="form-group col-md-2">
-										<label><?= $this->lang->line('lb_category') ?></label>
+										<label><?= $this->lang->line('w_category') ?></label>
 										<select class="form-control" id="sl_aux_img_category">
 											<option value="">--</option>
 											<?php foreach($aux_image_categories as $item){ ?>
@@ -679,7 +679,7 @@ $me = $appointment_datas["medicine"];
 										</select>
 									</div>
 									<div class="form-group col-md-6">
-										<label><?= $this->lang->line('lb_image') ?></label>
+										<label><?= $this->lang->line('w_image') ?></label>
 										<select class="form-control" id="sl_aux_img">
 											<option value="">--</option>
 											<?php foreach($aux_images as $item){ ?>
@@ -701,8 +701,8 @@ $me = $appointment_datas["medicine"];
 								<table class="table table-responsive-md">
 									<thead>
 										<tr>
-											<th><strong><?= $this->lang->line('th_category') ?></strong></th>
-											<th><strong><?= $this->lang->line('th_image') ?></strong></th>
+											<th><strong><?= $this->lang->line('w_category') ?></strong></th>
+											<th><strong><?= $this->lang->line('w_image') ?></strong></th>
 											<?php if ($appointment->is_editable){ ?><th></th><?php } ?>
 										</tr>
 									</thead>
@@ -733,19 +733,19 @@ $me = $appointment_datas["medicine"];
 <div class="col-md-12">
 	<div class="card">
 		<div class="card-header">
-			<h4 class="mb-0"><?= $this->lang->line('title_treatment') ?></h4>
+			<h4 class="mb-0"><?= $this->lang->line('w_treatment') ?></h4>
 		</div>
 		<div class="card-body">
 			<div class="default-tab">
 				<ul class="nav nav-tabs mb-4">
 					<li class="nav-item">
 						<a href="#treatments-1" class="nav-link active" data-toggle="tab">
-							<?= $this->lang->line('title_medicine') ?>
+							<?= $this->lang->line('w_medicine') ?>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a href="#treatments-2" class="nav-link" data-toggle="tab">
-							<?= $this->lang->line('title_physical_therapy') ?>
+							<?= $this->lang->line('w_physical_therapy') ?>
 						</a>
 					</li>
 				</ul>
@@ -754,12 +754,12 @@ $me = $appointment_datas["medicine"];
 						<div class="row">
 							<?php if ($appointment->is_editable){ $next_col = 6; ?>
 							<div class="col-md-6">
-								<h5><?= $this->lang->line('title_add_medicine') ?></h5>
+								<h5><?= $this->lang->line('w_add_medicine') ?></h5>
 								<form action="#" id="form_add_medicine">
 									<input type="hidden" name="appointment_id" value="<?= $appointment->id ?>">
 									<div class="form-row">
 										<div class="form-group col-md-12">
-											<label><?= $this->lang->line('lb_medicine') ?></label>
+											<label><?= $this->lang->line('w_medicine') ?></label>
 											<select class="form-control" name="medicine_id">
 												<option value="">--</option>
 												<?php foreach($medicines as $item){ ?>
@@ -769,12 +769,12 @@ $me = $appointment_datas["medicine"];
 											<div class="sys_msg" id="md_medicine_msg"></div>
 										</div>
 										<div class="form-group col-md-6">
-											<label><?= $this->lang->line('lb_quantity') ?></label>
+											<label><?= $this->lang->line('w_quantity') ?></label>
 											<input type="number" class="form-control" name="quantity" value="1">
 											<div class="sys_msg" id="md_quantity_msg"></div>
 										</div>
 										<div class="form-group col-md-6">
-											<label><?= $this->lang->line('lb_dose') ?></label>
+											<label><?= $this->lang->line('w_dose') ?></label>
 											<select class="form-control" name="dose_id">
 												<option value="">--</option>
 												<?php $medicine_dose = $options["medicine_dose"];
@@ -785,7 +785,7 @@ $me = $appointment_datas["medicine"];
 											<div class="sys_msg" id="md_quantity_msg"></div>
 										</div>
 										<div class="form-group col-md-4">
-											<label><?= $this->lang->line('lb_application_way') ?></label>
+											<label><?= $this->lang->line('w_application_way') ?></label>
 											<select class="form-control" name="application_way_id">
 												<option value="">--</option>
 												<?php $application_way = $options["medicine_application_way"];
@@ -796,7 +796,7 @@ $me = $appointment_datas["medicine"];
 											<div class="sys_msg" id="md_via_application_msg"></div>
 										</div>
 										<div class="form-group col-md-4">
-											<label><?= $this->lang->line('lb_frequency') ?></label>
+											<label><?= $this->lang->line('w_frequency') ?></label>
 											<select class="form-control" name="frequency_id">
 												<option value="">--</option>
 												<?php $medicine_frequency = $options["medicine_frequency"];
@@ -807,7 +807,7 @@ $me = $appointment_datas["medicine"];
 											<div class="sys_msg" id="md_frequency_msg"></div>
 										</div>
 										<div class="form-group col-md-4">
-											<label><?= $this->lang->line('lb_duration') ?></label>
+											<label><?= $this->lang->line('w_duration') ?></label>
 											<select class="form-control" name="duration_id">
 												<option value="">--</option>
 												<?php $medicine_duration = $options["medicine_duration"];
@@ -829,7 +829,7 @@ $me = $appointment_datas["medicine"];
 							<?php }else $next_col = 12; ?>
 							<div class="col-md-<?= $next_col ?>">
 								<?php if ($appointment->is_editable){ ?>
-								<h5 class="mb-3"><?= $this->lang->line('title_selected_medicines') ?></h5>
+								<h5 class="mb-3"><?= $this->lang->line('w_selected_medicines') ?></h5>
 								<?php } ?>
 								<table class="table no_border_tb mb-0">
 									<tbody id="selected_medicines">
@@ -857,12 +857,12 @@ $me = $appointment_datas["medicine"];
 						<div class="row">
 							<?php if ($appointment->is_editable){ $next_col = 6; ?>
 							<div class="col-md-6">
-								<h5><?= $this->lang->line('title_add_therapy') ?></h5>
+								<h5><?= $this->lang->line('w_add_therapy') ?></h5>
 								<form action="#" id="form_add_therapy">
 									<input type="hidden" name="appointment_id" value="<?= $appointment->id ?>">
 									<div class="form-row">
 										<div class="form-group col-md-12">
-											<label><?= $this->lang->line('lb_therapy') ?></label>
+											<label><?= $this->lang->line('w_therapy') ?></label>
 											<select class="form-control" name="physical_therapy_id">
 												<option value="">--</option>
 												<?php foreach($physical_therapies as $item){ ?>
@@ -872,19 +872,19 @@ $me = $appointment_datas["medicine"];
 											<div class="sys_msg" id="at_physical_therapy_msg"></div>
 										</div>
 										<div class="form-group col-md-6">
-											<label><?= $this->lang->line('lb_session') ?></label>
+											<label><?= $this->lang->line('w_session') ?></label>
 											<input type="number" class="form-control" name="session" value="1" min="1">
 											<div class="sys_msg" id="at_session_msg"></div>
 										</div>
 										<div class="form-group col-md-6">
-											<label><?= $this->lang->line('txt_one_session_each') ?></label>
+											<label><?= $this->lang->line('w_one_session_each') ?></label>
 											<div class="input-group input-normal-o">
 												<input type="number" class="form-control" name="frequency" value="1" min="1">
 												<select class="form-control" name="frequency_unit">
-													<option value="D"><?= $this->lang->line('txt_day') ?></option>
-													<option value="W"><?= $this->lang->line('txt_week') ?></option>
-													<option value="M"><?= $this->lang->line('txt_month') ?></option>
-													<option value="Y"><?= $this->lang->line('txt_year') ?></option>
+													<option value="D"><?= $this->lang->line('w_day') ?></option>
+													<option value="W"><?= $this->lang->line('w_week') ?></option>
+													<option value="M"><?= $this->lang->line('w_month') ?></option>
+													<option value="Y"><?= $this->lang->line('w_year') ?></option>
 												</select>
 											</div>
 											<div class="sys_msg" id="at_frequency_msg"></div>
@@ -901,7 +901,7 @@ $me = $appointment_datas["medicine"];
 							<?php }else $next_col = 12; ?>
 							<div class="col-md-<?= $next_col ?>">
 								<?php if ($appointment->is_editable){ ?>
-								<h5 class="mb-3"><?= $this->lang->line('title_selected_therapies') ?></h5>
+								<h5 class="mb-3"><?= $this->lang->line('w_selected_therapies') ?></h5>
 								<?php } ?>
 								<table class="table no_border_tb mb-0">
 									<tbody id="selected_therapies">

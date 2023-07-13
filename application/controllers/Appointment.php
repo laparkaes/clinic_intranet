@@ -246,14 +246,14 @@ class Appointment extends CI_Controller {
 		
 		//setting patho_pre_illnesses
 		$pre_illnesses = [];
-		array_push($pre_illnesses, array("id" => "patho_asma", "value" => $this->lang->line("lb_asthma")));
-		array_push($pre_illnesses, array("id" => "patho_hta", "value" => $this->lang->line("lb_aht")));
-		array_push($pre_illnesses, array("id" => "patho_dm", "value" => $this->lang->line("lb_dm")));
-		array_push($pre_illnesses, array("id" => "patho_f_tifoidea", "value" => $this->lang->line("lb_f_typhoid")));
-		array_push($pre_illnesses, array("id" => "patho_f_malta", "value" => $this->lang->line("lb_f_malta")));
-		array_push($pre_illnesses, array("id" => "patho_tbc", "value" => $this->lang->line("lb_tbc")));
-		array_push($pre_illnesses, array("id" => "patho_contacto_tbc", "value" => $this->lang->line("lb_contact_tbc")));
-		array_push($pre_illnesses, array("id" => "patho_etu", "value" => $this->lang->line("lb_etu")));
+		array_push($pre_illnesses, array("id" => "patho_asma", "value" => $this->lang->line("w_asthma")));
+		array_push($pre_illnesses, array("id" => "patho_hta", "value" => $this->lang->line("w_aht")));
+		array_push($pre_illnesses, array("id" => "patho_dm", "value" => $this->lang->line("w_dm")));
+		array_push($pre_illnesses, array("id" => "patho_f_tifoidea", "value" => $this->lang->line("w_f_typhoid")));
+		array_push($pre_illnesses, array("id" => "patho_f_malta", "value" => $this->lang->line("w_f_malta")));
+		array_push($pre_illnesses, array("id" => "patho_tbc", "value" => $this->lang->line("w_tbc")));
+		array_push($pre_illnesses, array("id" => "patho_contacto_tbc", "value" => $this->lang->line("w_contact_tbc")));
+		array_push($pre_illnesses, array("id" => "patho_etu", "value" => $this->lang->line("w_etu")));
 		
 		//examination records
 		$examinations_list = [];
@@ -372,7 +372,7 @@ class Appointment extends CI_Controller {
 					$type = "success";
 					$msg = $this->lang->line('s_app_cancel');
 				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_nap');
+			}else $msg = $this->lang->line('e_no_app_record');
 		}else $msg = $this->lang->line('error_no_permission');
 				
 		header('Content-Type: application/json');
@@ -393,7 +393,7 @@ class Appointment extends CI_Controller {
 					$type = "success";
 					$msg = $this->lang->line('s_app_finish');
 				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_nap');
+			}else $msg = $this->lang->line('e_no_app_record');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -469,7 +469,7 @@ class Appointment extends CI_Controller {
 						
 						$type = "success";
 						$msg = $this->save_data($data, "appointment_basic_data", "s_basic_data");
-					}else $msg = $this->lang->line('error_anc');
+					}else $msg = $this->lang->line('e_app_unconfirmed');
 				}else $msg = $this->lang->line('error_internal_refresh');
 			}else $msg = $this->lang->line('error_occurred');
 		}else $msg = $this->lang->line('error_no_permission');
@@ -492,7 +492,7 @@ class Appointment extends CI_Controller {
 				if (!strcmp("confirmed", $appointment->status->code)){
 					$type = "success";
 					$msg = $this->save_data($data, "appointment_anamnesis", "s_personal_info");
-				}else $msg = $this->lang->line('error_anc');
+				}else $msg = $this->lang->line('e_app_unconfirmed');
 			}else $msg = $this->lang->line('error_internal_refresh');
 		}else $msg = $this->lang->line('error_no_permission');
 		
@@ -513,7 +513,7 @@ class Appointment extends CI_Controller {
 				if (!strcmp("confirmed", $appointment->status->code)){
 					$type = "success";
 					$msg = $this->save_data($data, "appointment_physical", "s_triage");
-				}else $msg = $this->lang->line('error_anc');
+				}else $msg = $this->lang->line('e_app_unconfirmed');
 			}else $msg = $this->lang->line('error_internal_refresh');
 		}else $msg = $this->lang->line('error_no_permission');
 		
@@ -538,7 +538,7 @@ class Appointment extends CI_Controller {
 					
 					$type = "success";
 					$msg = $this->save_data($data, "appointment_anamnesis", "s_anamnesis");
-				}else $msg = $this->lang->line('error_anc');
+				}else $msg = $this->lang->line('e_app_unconfirmed');
 			}else $msg = $this->lang->line('error_internal_refresh');
 		}else $msg = $this->lang->line('error_no_permission');
 		
@@ -559,7 +559,7 @@ class Appointment extends CI_Controller {
 				if (!strcmp("confirmed", $appointment->status->code)){
 					$type = "success";
 					$msg = $this->save_data($data, "appointment_physical", "s_physical_exam");
-				}else $msg = $this->lang->line('error_anc');
+				}else $msg = $this->lang->line('e_app_unconfirmed');
 			}else $msg = $this->lang->line('error_internal_refresh');
 		}else $msg = $this->lang->line('error_no_permission');
 		
@@ -577,7 +577,7 @@ class Appointment extends CI_Controller {
 			$qty = number_format(count($diags))." ".$this->lang->line('txt_results');
 			
 			$type = "success"; 
-		}else $msgs = $this->my_val->set_msg($msgs, "di_diagnosis_msg", "error", "error_fbl");
+		}else $msgs = $this->my_val->set_msg($msgs, "di_diagnosis_msg", "error", "e_filter_blank");
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "diags" => $diags, "qty" => $qty]);
@@ -662,7 +662,7 @@ class Appointment extends CI_Controller {
 				if (!strcmp("confirmed", $appointment->status->code)){
 					$type = "success";
 					$msg = $this->save_data($data, "appointment_result", "s_result");
-				}else $msg = $this->lang->line('error_anc');
+				}else $msg = $this->lang->line('e_app_unconfirmed');
 			}else $msg = $this->lang->line('error_internal_refresh');
 		}else $msg = $this->lang->line('error_no_permission');
 		
@@ -700,7 +700,7 @@ class Appointment extends CI_Controller {
 					$type = "success";
 					$msg = $this->lang->line('s_image_add');
 				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_dim');
+			}else $msg = $this->lang->line('e_duplicated_image');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -763,8 +763,8 @@ class Appointment extends CI_Controller {
 						$type = "success";
 						$msg = $this->lang->line('s_profile_add');
 					}else $msg = $this->lang->line('error_internal');
-				}else $msg = $this->lang->line('error_dpr');
-			}else $msg = $this->lang->line('error_spr');
+				}else $msg = $this->lang->line('e_duplicated_profile');
+			}else $msg = $this->lang->line('e_select_profile');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		$result = $this->set_profiles_exams($data["appointment_id"]);
@@ -823,9 +823,9 @@ class Appointment extends CI_Controller {
 							$type = "success";
 							$msg = $this->lang->line('s_exam_add');
 						}else $msg = $this->lang->line('error_internal');	
-					}else $msg = str_replace("&profile&", $profile->name, $this->lang->line('error_pie'));
-				}else $msg = $this->lang->line('error_dex');
-			}else $msg = $this->lang->line('error_sex');
+					}else $msg = str_replace("&profile&", $profile->name, $this->lang->line('e_profile_includes_exam'));
+				}else $msg = $this->lang->line('e_duplicated_exam');
+			}else $msg = $this->lang->line('e_select_exam');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		$result = $this->set_profiles_exams($data["appointment_id"]);
@@ -944,7 +944,7 @@ class Appointment extends CI_Controller {
 		foreach($medicines as $item){
 			$sub_txt_arr = [];
 			
-			if ($item->quantity > 1) $sub_txt_arr[] = number_format($item->quantity)." ".$this->lang->line('txt_units');
+			if ($item->quantity > 1) $sub_txt_arr[] = number_format($item->quantity)." ".$this->lang->line('w_units');
 			else $sub_txt_arr[] = number_format($item->quantity)." ".$this->lang->line('txt_unit');
 			
 			if ($item->dose_id) $sub_txt_arr[] = $this->general->id("medicine_dose", $item->dose_id)->description;
