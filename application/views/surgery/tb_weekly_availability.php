@@ -6,7 +6,7 @@
 				<i class="fas fa-chevron-double-left"></i>
 			</button>
 			<button type="button" class="btn btn-primary btn_room_schedule_w" value="<?= date("Y-m-d") ?>">
-				<?= $this->lang->line('txt_today') ?>
+				<?= $this->lang->line('w_today') ?>
 			</button>
 			<button type="button" class="btn btn-primary btn_room_schedule_w" value="<?= $next ?>">
 				<i class="fas fa-chevron-double-right"></i>
@@ -22,7 +22,7 @@
 			<thead>
 				<tr class="sticky-top bg-white">
 					<th class="align-middle">
-						<i class="fas fa-square text-success"></i> <?= $this->lang->line('txt_busy') ?>
+						<i class="fas fa-square text-success"></i> <?= $this->lang->line('w_busy') ?>
 					</th>
 					<?php foreach($dates as $i => $d){ ?>
 					<th style="width: 90px;"><strong><?= $d["hd"] ?></strong></th>

@@ -109,27 +109,34 @@
 						</div>
 						<div class="col-md-12">
 							<div class="table-responsive">
-								<table class="table table-responsive-md mb-0" id="tb_products">
+								<table class="table table-responsive-md mb-3" id="tb_products">
 									<thead>
 										<tr>
 											<th><strong>#</strong></th>
 											<th><strong><?= $this->lang->line('hd_item') ?></strong></th>
-											<th><strong><?= $this->lang->line('hd_unit_price_short') ?></strong></th>
 											<th><strong><?= $this->lang->line('hd_qty') ?></strong></th>
+											<th><strong><?= $this->lang->line('hd_unit_price_short') ?></strong></th>
 											<th><strong><?= $this->lang->line('hd_subtotal') ?></strong></th>
-											<th class="text-right">
-												<button type="button" class="btn btn-info light sharp" data-toggle="modal" data-target="#sl_product_modal">
-													<i class="fas fa-plus"></i>
-												</button>
-											</th>
+											<th></th>
 										</tr>
 									</thead>
 									<tbody id="tb_product_list"></tbody>
+									<tfoot>
+										<tr class="text-info">
+											<td colspan="4" class="text-center align-middle">
+												<strong><?= $this->lang->line('txt_total') ?></strong>
+											</td>
+											<td class="text-nowrap align-middle"><strong id="sl_pr_total_amount">0.00</strong></td>
+											<td class="text-right">
+												<button type="button" class="btn btn-info light sharp" data-toggle="modal" data-target="#sl_product_modal">
+													<i class="fas fa-plus"></i>
+												</button>
+											
+											</td>
+										</tr>
+									</tfoot>
 								</table>
 							</div>
-						</div>
-						<div class="col-md-12 text-info text-center border border-info rounded py-3 mb-3">
-							<?= $this->lang->line('txt_total') ?>: <strong id="sl_pr_total_amount" class="fs-24">0.00</strong>
 						</div>
 						<div class="col-md-6 payment_info d-none">
 							<div class="form-row">

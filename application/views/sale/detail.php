@@ -174,16 +174,25 @@
 									<?php foreach($products as $i => $item){ if($item->type){ ?>
 									<tr>
 										<td><?= $i + 1 ?></td>
-										<td><?= $item->type ?></td>
+										<td>
+											<div><?= $item->type ?></div>
+											<?php if ($item->path){ ?>
+											<div>
+												<a href="<?= $item->path ?>" target="_blank">
+													<i class="fas fa-search"></i>
+												</a>
+											</div>
+											<?php } ?>
+										</td>
 										<td>
 											<div><?= $item->product->description ?></div>
-											<div><small><?= $item->product->category ?></small></div>
+											<div><?= $item->product->category ?></div>
 										</td>
 										<td>
 											<?php if ($item->attention){ ?>
 											<div><?= $item->attention->schedule ?></div>
 											<div><?= $item->attention->patient ?></div>
-											<small><?= $item->attention->patient_doc ?></small>
+											<div><?= $item->attention->patient_doc ?></div>
 											<?php } ?>
 										</td>
 										<td class="text-right">

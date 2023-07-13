@@ -70,9 +70,9 @@ class Surgery extends CI_Controller {
 		foreach($rooms as $item) $rooms_arr[$item->id] = $item->name;
 		
 		$duration_ops = array();
-		array_push($duration_ops, ["value" => 30, "txt" => "30 ".$this->lang->line('op_minutes')]);
-		array_push($duration_ops, ["value" => 60, "txt" => "1 ".$this->lang->line('op_hour')]);
-		for($i = 2; $i <= 12; $i++) array_push($duration_ops, ["value" => 60 * $i, "txt" => $i." ".$this->lang->line('op_hours')]);
+		array_push($duration_ops, ["value" => 30, "txt" => "30 ".$this->lang->line('w_minutes')]);
+		array_push($duration_ops, ["value" => 60, "txt" => "1 ".$this->lang->line('w_hour')]);
+		for($i = 2; $i <= 12; $i++) array_push($duration_ops, ["value" => 60 * $i, "txt" => $i." ".$this->lang->line('w_hours')]);
 		
 		$data = array(
 			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("surgery", $f_w)),
@@ -191,9 +191,9 @@ class Surgery extends CI_Controller {
 		//end set history records
 		
 		$duration_ops = array();
-		array_push($duration_ops, ["value" => 30, "txt" => "30 ".$this->lang->line('op_minutes')]);
-		array_push($duration_ops, ["value" => 60, "txt" => "1 ".$this->lang->line('op_hour')]);
-		for($i = 2; $i <= 12; $i++) array_push($duration_ops, ["value" => 60 * $i, "txt" => $i." ".$this->lang->line('op_hours')]);
+		array_push($duration_ops, ["value" => 30, "txt" => "30 ".$this->lang->line('w_minutes')]);
+		array_push($duration_ops, ["value" => 60, "txt" => "1 ".$this->lang->line('w_hour')]);
+		for($i = 2; $i <= 12; $i++) array_push($duration_ops, ["value" => 60 * $i, "txt" => $i." ".$this->lang->line('w_hours')]);
 		
 		$data = array(
 			"actions" => $actions,
@@ -249,7 +249,7 @@ class Surgery extends CI_Controller {
 					
 					$type = "success";
 					$move_to = base_url()."surgery/detail/".$surgery_id;
-					$msg = $this->lang->line('success_ras');
+					$msg = $this->lang->line('s_surgery_register');
 				}else $msg = $this->lang->line('error_internal');	
 			}else $msg = $this->lang->line('error_occurred');
 		}else $msg = $this->lang->line('error_no_permission');
@@ -270,7 +270,7 @@ class Surgery extends CI_Controller {
 					
 					$status = true;
 					$type = "success";
-					$msg = $this->lang->line('success_csu');
+					$msg = $this->lang->line('s_surgery_cancel');
 				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line('error_nap');
 		}else $msg = $this->lang->line('error_no_permission');
@@ -293,9 +293,9 @@ class Surgery extends CI_Controller {
 					$this->utility_lib->add_log("surgery_finish", $person->name);
 					
 					$type = "success";
-					$msg = $this->lang->line('success_fsu');
+					$msg = $this->lang->line('s_surgery_finish');
 				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_sre');
+			}else $msg = $this->lang->line('e_enter_result');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -327,7 +327,7 @@ class Surgery extends CI_Controller {
 						$this->utility_lib->add_log("surgery_reschedule", $person->name);
 						
 						$type = "success";
-						$msg = $this->lang->line('success_rsu');
+						$msg = $this->lang->line('s_surgery_reschedule');
 					}else $msg = $this->lang->line('error_internal');
 				}else $msg = $this->lang->line('error_occurred');
 			}else $msg = $this->lang->line('error_internal_refresh');
@@ -340,6 +340,7 @@ class Surgery extends CI_Controller {
 	public function report($id){
 		if (!$this->utility_lib->check_access("surgery", "report")) redirect("/errors/no_permission");
 		
+		/*
 		$surgery = $this->general->id("surgery", $id);
 		if (!$surgery) redirect("/surgery");
 		
@@ -372,8 +373,7 @@ class Surgery extends CI_Controller {
 			"patient" => $patient
 		);
 		
-		//$html = $this->load->view('surgery/report_1', $data, true);
-		$html = $this->load->view('surgery/report_2', $data, true);
+		$html = $this->load->view('surgery/report', $data, true);
 		
 		//echo $html;
 		
@@ -390,6 +390,8 @@ class Surgery extends CI_Controller {
 		//Output the generated PDF to Browser
 		if ($dompdf) $dompdf->stream("Reporte", array("Attachment" => false)); else echo "Error";
 		//echo $html;
+		*/
+		echo "No data";
 	}
 	
 	function load_room_availability(){

@@ -15,7 +15,7 @@ function set_doctor_sl(dom){
 
 function register_surgery(dom){
 	$("#register_form .sys_msg").html("");
-	ajax_form_warning(dom, "surgery/register", $("#warning_rsp").val()).done(function(res) {
+	ajax_form_warning(dom, "surgery/register", $("#w_surgery_register").val()).done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, res.move_to);
 	});

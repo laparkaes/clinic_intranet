@@ -13,14 +13,14 @@ function add_image(dom){
 }
 
 function delete_image(dom){
-	ajax_simple_warning({id: $(dom).val()}, "product/delete_image", $("#warning_di").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "product/delete_image", $("#w_image_delete").val()).done(function(res) {
 		swal(res.type, res.msg);
 		if (res.type == "success") $("#img_" + res.id).remove();
 	});
 }
 
 function set_product_image(dom){
-	ajax_simple_warning({id: $(dom).val()}, "product/set_product_image", $("#warning_pri").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "product/set_product_image", $("#w_image_main").val()).done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
@@ -59,25 +59,25 @@ function edit_product(dom){
 }
 
 function delete_product(dom){
-	ajax_simple_warning({id: $(dom).val()}, "product/delete_product", $("#warning_dp").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "product/delete_product", $("#w_product_delete").val()).done(function(res) {
 		swal_redirection(res.type, res.msg, res.move_to);
 	});
 }
 
 function add_option(dom){
-	ajax_form_warning(dom, "product/add_option", $("#warning_aop").val()).done(function(res) {
+	ajax_form_warning(dom, "product/add_option", $("#w_option_add").val()).done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function edit_option(dom){
-	ajax_form_warning(dom, "product/edit_option", $("#warning_eop").val()).done(function(res) {
+	ajax_form_warning(dom, "product/edit_option", $("#w_option_edit").val()).done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function delete_option(dom){
-	ajax_simple_warning({id: $(dom).val()}, "product/delete_option", $("#warning_dop").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "product/delete_option", $("#w_option_delete").val()).done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }

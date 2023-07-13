@@ -1,18 +1,18 @@
 function cancel_surgery(dom){
-	ajax_simple_warning({id: $(dom).val()}, "surgery/cancel", $("#warning_sca").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "surgery/cancel", $("#w_surgery_cancel").val()).done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function finish_surgery(dom){
-	ajax_form_warning(dom, "surgery/finish", $("#warning_sfi").val()).done(function(res) {
+	ajax_form_warning(dom, "surgery/finish", $("#w_surgery_finish").val()).done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function reschedule_surgery(dom){
 	$("#reschedule_form .sys_msg").html("");
-	ajax_form_warning(dom, "surgery/reschedule", $("#warning_sre").val()).done(function(res) {
+	ajax_form_warning(dom, "surgery/reschedule", $("#w_surgery_reschedule").val()).done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, window.location.href);
 	});

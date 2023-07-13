@@ -176,12 +176,12 @@
 								</div>
 								<div class="sys_msg" id="aa_pt_doc_number_msg"></div>
 							</div>
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-8">
 								<label><?= $this->lang->line('w_name') ?></label>
-								<input type="text" class="form-control" id="aa_pt_name" name="pt[name]">
+								<input type="text" class="form-control" id="aa_pt_name" name="pt[name]" readonly>
 								<div class="sys_msg" id="aa_pt_name_msg"></div>
 							</div>
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-4">
 								<label><?= $this->lang->line('w_tel') ?></label>
 								<input type="text" class="form-control" id="aa_pt_tel" name="pt[tel]">
 								<div class="sys_msg" id="aa_pt_tel_msg"></div>

@@ -8,7 +8,7 @@
 		<div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item"><a href="<?= base_url() ?>product"><?= $this->lang->line('products') ?></a></li>
-				<li class="breadcrumb-item active"><a href="javascript:void(0)"><?= $this->lang->line('txt_detail') ?></a></li>
+				<li class="breadcrumb-item active"><a href="javascript:void(0)"><?= $this->lang->line('w_detail') ?></a></li>
 			</ol>
 		</div>
 	</div>
@@ -20,27 +20,27 @@
 				<ul class="nav nav-tabs mb-4" role="tablist">
 					<li class="nav-item">
 						<a class="nav-link active" data-toggle="tab" href="#information">
-							<i class="far fa-comment-alt mr-2"></i> <?= $this->lang->line('p_information') ?>
+							<i class="far fa-comment-alt mr-2"></i> <?= $this->lang->line('w_information') ?>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#option">
-							<i class="far fa-bars mr-2"></i> <?= $this->lang->line('p_options') ?>
+							<i class="far fa-bars mr-2"></i> <?= $this->lang->line('w_options') ?>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#image">
-							<i class="far fa-image mr-2"></i> <?= $this->lang->line('p_images') ?>
+							<i class="far fa-image mr-2"></i> <?= $this->lang->line('w_images') ?>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#provider">
-							<i class="far fa-building mr-2"></i> <?= $this->lang->line('p_provider') ?>
+							<i class="far fa-building mr-2"></i> <?= $this->lang->line('w_provider') ?>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#edit">
-							<i class="far fa-edit mr-2"></i> <?= $this->lang->line('op_edit') ?>
+							<i class="far fa-edit mr-2"></i> <?= $this->lang->line('w_edit') ?>
 						</a>
 					</li>
 				</ul>
@@ -55,39 +55,39 @@
 							<div class="col-md-8">
 								<div class="row">
 									<div class="col-md-12 mb-3">
-										<h5 class="mb-1"><?= $this->lang->line('p_category') ?></h5>
+										<h5 class="mb-1"><?= $this->lang->line('w_category') ?></h5>
 										<div><?= $product->category ?></div>
 									</div>
 									<div class="col-md-4 mb-3">
-										<h5 class="mb-1"><?= $this->lang->line('p_code') ?></h5>
+										<h5 class="mb-1"><?= $this->lang->line('w_code') ?></h5>
 										<div><?= $product->code ?></div>
 									</div>
 									<div class="col-md-4 mb-3">
-										<h5 class="mb-1"><?= $this->lang->line('p_type') ?></h5>
+										<h5 class="mb-1"><?= $this->lang->line('w_type') ?></h5>
 										<div><?= $product->type ?></div>
 									</div>
 									<div class="col-md-4 mb-3">
-										<h5 class="mb-1"><?= $this->lang->line('p_stock') ?></h5>
+										<h5 class="mb-1"><?= $this->lang->line('w_stock') ?></h5>
 										<div><?= $product->stock ?></div>
 									</div>
 									<div class="col-md-4 mb-3">
-										<h5 class="mb-1"><?= $this->lang->line('p_price') ?></h5>
+										<h5 class="mb-1"><?= $this->lang->line('w_price') ?></h5>
 										<div><?= $product->currency." ".number_format($product->price, 2) ?></div>
 									</div>
 									<div class="col-md-4 mb-3">
-										<h5 class="mb-1"><?= $this->lang->line('p_value') ?></h5>
+										<h5 class="mb-1"><?= $this->lang->line('w_value') ?></h5>
 										<div><?= $product->currency." ".number_format($product->value, 2) ?></div>
 									</div>
 									<div class="col-md-4 mb-3">
-										<h5 class="mb-1"><?= $this->lang->line('p_vat') ?></h5>
+										<h5 class="mb-1"><?= $this->lang->line('w_vat') ?></h5>
 										<div><?= $product->currency." ".number_format($product->vat, 2) ?></div>
 									</div>
 									<div class="col-md-6 mb-3">
-										<h5 class="mb-1"><?= $this->lang->line('p_last_updated') ?></h5>
+										<h5 class="mb-1"><?= $this->lang->line('w_last_updated') ?></h5>
 										<div><?= $product->updated_at ?></div>
 									</div>
 									<div class="col-md-6 mb-3">
-										<h5 class="mb-1"><?= $this->lang->line('p_register_date') ?></h5>
+										<h5 class="mb-1"><?= $this->lang->line('w_register_date') ?></h5>
 										<div><?= $product->registed_at ?></div>
 									</div>
 								</div>
@@ -100,12 +100,12 @@
 								<form class="form-row" id="form_add_option" action="#">
 									<input type="hidden" name="product_id" value="<?= $product->id ?>">
 									<div class="form-group col-md-8">
-										<label><?= $this->lang->line('p_description') ?></label>
+										<label><?= $this->lang->line('w_description') ?></label>
 										<input type="text" class="form-control" name="description">
 										<div class="sys_msg" id="aop_description_msg"></div>
 									</div>
 									<div class="form-group col-md-4">
-										<label><?= $this->lang->line('p_stock') ?></label>
+										<label><?= $this->lang->line('w_stock') ?></label>
 										<input type="text" class="form-control" name="stock">
 										<div class="sys_msg" id="aop_stock_msg"></div>
 									</div>
@@ -120,8 +120,8 @@
 								<table class="table mb-0">
 									<thead>
 										<tr>
-											<th class="pt-0"><strong><?= $this->lang->line('p_description') ?></strong></th>
-											<th class="pt-0"><strong><?= $this->lang->line('p_stock') ?></strong></th>
+											<th class="pt-0"><strong><?= $this->lang->line('w_description') ?></strong></th>
+											<th class="pt-0"><strong><?= $this->lang->line('w_stock') ?></strong></th>
 											<th class="pt-0"></th>
 										</tr>
 									</thead>
@@ -196,7 +196,7 @@
 						<form action="#" class="form-row" id="form_save_provider">
 							<input type="hidden" name="product_id" value="<?= $product->id ?>">
 							<div class="form-group col-md-4">
-								<label><?= $this->lang->line('p_ruc') ?></label>
+								<label><?= $this->lang->line('w_ruc') ?></label>
 								<div class="input-group">
 									<input type="text" class="form-control" id="prov_ruc" name="tax_id" value="<?= $provider->tax_id ?>">
 									<div class="input-group-append">
@@ -208,32 +208,32 @@
 								<div class="sys_msg" id="epv_ruc_msg"></div>
 							</div>
 							<div class="form-group col-md-4">
-								<label><?= $this->lang->line('p_company') ?></label>
+								<label><?= $this->lang->line('w_company') ?></label>
 								<input type="text" class="form-control" id="prov_name" name="name" value="<?= $provider->name ?>">
 								<div class="sys_msg" id="epv_company_msg"></div>
 							</div>
 							<div class="form-group col-md-4">
-								<label><?= $this->lang->line('p_web') ?></label>
+								<label><?= $this->lang->line('w_web') ?></label>
 								<input type="text" class="form-control" id="prov_web" name="web" value="<?= $provider->web ?>">
 							</div>
 							<div class="form-group col-md-4">
-								<label><?= $this->lang->line('p_person') ?></label>
+								<label><?= $this->lang->line('w_person') ?></label>
 								<input type="text" class="form-control" id="prov_person" name="person" value="<?= $provider->person ?>">
 							</div>
 							<div class="form-group col-md-4">
-								<label><?= $this->lang->line('p_tel') ?></label>
+								<label><?= $this->lang->line('w_tel') ?></label>
 								<input type="text" class="form-control" id="prov_tel" name="tel" value="<?= $provider->tel ?>">
 							</div>
 							<div class="form-group col-md-4">
-								<label><?= $this->lang->line('p_email') ?></label>
+								<label><?= $this->lang->line('w_email') ?></label>
 								<input type="text" class="form-control" id="prov_email" name="email" value="<?= $provider->email ?>">
 							</div>
 							<div class="form-group col-md-12">
-								<label><?= $this->lang->line('p_address') ?></label>
+								<label><?= $this->lang->line('w_address') ?></label>
 								<input type="text" class="form-control" id="prov_address" name="address" value="<?= $provider->address ?>">
 							</div>
 							<div class="form-group col-md-12">
-								<label><?= $this->lang->line('p_remark') ?></label>
+								<label><?= $this->lang->line('w_remark') ?></label>
 								<textarea class="form-control" id="prov_remark" rows="3" name="remark"><?= $provider->remark ?></textarea>
 							</div>
 							<div class="form-group col-md-12 pt-3 mb-0">
@@ -251,7 +251,7 @@
 							<input type="hidden" name="id" value="<?= $product->id ?>">
 							<div class="form-row">
 								<div class="form-group col-md-4">
-									<label><?= $this->lang->line('p_type') ?></label>
+									<label><?= $this->lang->line('w_type') ?></label>
 									<select class="form-control" name="type_id" id="ep_type">
 										<?php foreach($product_types as $item){
 											if (!strcmp($product->type_id, $item->id)) $selected = "selected"; else $selected = ""; ?>
@@ -260,12 +260,12 @@
 									</select>
 								</div>
 								<div class="form-group col-md-4">
-									<label><?= $this->lang->line('p_code') ?></label>
+									<label><?= $this->lang->line('w_code') ?></label>
 									<input type="text" class="form-control" name="code" value="<?= $product->code ?>">
 									<div class="sys_msg" id="ep_code_msg"></div>
 								</div>
 								<div class="form-group col-md-4">
-									<label><?= $this->lang->line('p_price') ?></label>
+									<label><?= $this->lang->line('w_price') ?></label>
 									<div class="input-group">
 										<select class="form-control w-10" name="currency_id" style="max-width: 70px;">
 											<?php foreach($currencies as $item){
@@ -278,7 +278,7 @@
 									<div class="sys_msg" id="ep_price_msg"></div>
 								</div>
 								<div class="form-group col-md-6">
-									<label><?= $this->lang->line('p_category') ?></label>
+									<label><?= $this->lang->line('w_category') ?></label>
 									<select class="form-control" name="category_id">
 										<?php foreach($categories as $item){
 											if ($product->category_id == $item->id) $selected = "selected"; else $selected = ""; ?>
@@ -288,14 +288,14 @@
 									<div class="sys_msg" id="ep_category_msg"></div>
 								</div>
 								<div class="form-group col-md-6">
-									<label><?= $this->lang->line('p_name') ?></label>
+									<label><?= $this->lang->line('w_name') ?></label>
 									<input type="text" class="form-control" name="description" value="<?= $product->description ?>">
 									<div class="sys_msg" id="ep_description_msg"></div>
 								</div>
 								<div class="form-group col-md-12 pt-3 mb-0">
 									<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_update') ?></button>
 									<button type="button" class="btn btn-danger light btn_delete" value="<?= $product->id ?>">
-										<?= $this->lang->line('btn_delete') ?>
+										<?= $this->lang->line('btn_remove') ?>
 									</button>	
 								</div>
 							</div>
@@ -307,10 +307,9 @@
 	</div>
 </div>
 <input type="hidden" id="product_id" value="<?= $product->id ?>">
-<input type="hidden" id="warning_di" value="<?= $this->lang->line('warning_di') ?>">
-<input type="hidden" id="warning_pri" value="<?= $this->lang->line('warning_pri') ?>">
-<input type="hidden" id="warning_spv" value="<?= $this->lang->line('warning_spv') ?>">
-<input type="hidden" id="warning_dp" value="<?= $this->lang->line('warning_dp') ?>">
-<input type="hidden" id="warning_aop" value="<?= $this->lang->line('warning_aop') ?>">
-<input type="hidden" id="warning_dop" value="<?= $this->lang->line('warning_dop') ?>">
-<input type="hidden" id="warning_eop" value="<?= $this->lang->line('warning_eop') ?>">
+<input type="hidden" id="w_image_delete" value="<?= $this->lang->line('w_image_delete') ?>">
+<input type="hidden" id="w_image_main" value="<?= $this->lang->line('w_image_main') ?>">
+<input type="hidden" id="w_product_delete" value="<?= $this->lang->line('w_product_delete') ?>">
+<input type="hidden" id="w_option_add" value="<?= $this->lang->line('w_option_add') ?>">
+<input type="hidden" id="w_option_delete" value="<?= $this->lang->line('w_option_delete') ?>">
+<input type="hidden" id="w_option_edit" value="<?= $this->lang->line('w_option_edit') ?>">

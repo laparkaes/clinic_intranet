@@ -185,14 +185,11 @@ class Appointment extends CI_Controller {
 		}
 		
 		$appointment->specialty = $this->general->id("specialty", $appointment->specialty_id)->name;
-		$appointment->detail = null;
+		$appointment->sale_id = $appointment->sale_prod = null;
 		$appointment_sale = $this->general->filter("sale_product", ["appointment_id" => $appointment->id]);
 		if ($appointment_sale){
-			$product = $this->general->id("product", $appointment_sale[0]->product_id);
-			$category = $this->general->id("product_category", $product->category_id)->name;
-			
-			$str = $category.", ".$product->description;
-			if (strpos($str, "Consulta") !== false) $appointment->detail = $str;
+			$appointment->sale_id = $appointment_sale[0]->sale_id;
+			$appointment->sale_prod = $this->general->id("product", $appointment_sale[0]->product_id)->description;
 		}
 		
 		$doctor = $this->general->id("person", $appointment->doctor_id);

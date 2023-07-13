@@ -19,14 +19,14 @@
 			<input type="hidden" value="1" name="page">
 			<div class="form-group col-sm-4">
 				<select class="form-control" id="sl_status" name="status">
-					<option value=""><?= $this->lang->line('lb_status') ?></option>
+					<option value=""><?= $this->lang->line('w_status') ?></option>
 					<?php foreach($status as $item){ if ($item->id == $f_url["status"]) $s = "selected"; else $s = ""; ?>
 					<option value="<?= $item->id ?>" <?= $s ?>><?= $this->lang->line($item->code) ?></option>
 					<?php } ?>
 				</select>
 			</div>
 			<div class="form-group col-sm-6">
-				<input type="text" class="form-control date_picker_all bw" id="inp_date" name="date" placeholder="<?= $this->lang->line('lb_date') ?>" value="<?= $f_url["date"] ?>">
+				<input type="text" class="form-control date_picker_all bw" id="inp_date" name="date" placeholder="<?= $this->lang->line('w_date') ?>" value="<?= $f_url["date"] ?>">
 			</div>
 			<div class="form-group col-sm-2">
 				<button type="submit" class="btn btn-primary btn-block">
@@ -47,11 +47,11 @@
 							<thead>
 								<tr>
 									<th><strong>#</strong></th>
-									<th><strong><?= $this->lang->line('hd_itinerary') ?></strong></th>
-									<th><strong><?= $this->lang->line('hd_room') ?></strong></th>
-									<th><strong><?= $this->lang->line('hd_specialty') ?></strong></th>
-									<th><strong><?= $this->lang->line('hd_doctor') ?> / <?= $this->lang->line('hd_patient') ?></strong></th>
-									<th><strong><?= $this->lang->line('hd_status') ?></strong></th>
+									<th><strong><?= $this->lang->line('w_itinerary') ?></strong></th>
+									<th><strong><?= $this->lang->line('w_room') ?></strong></th>
+									<th><strong><?= $this->lang->line('w_specialty') ?></strong></th>
+									<th><strong><?= $this->lang->line('w_doctor') ?> / <?= $this->lang->line('w_patient') ?></strong></th>
+									<th><strong><?= $this->lang->line('w_status') ?></strong></th>
 									<th></th>
 								</tr>
 							</thead>
@@ -88,17 +88,17 @@
 						</div>
 					</div>
 					<?php }else{ ?>
-					<h5 class="text-danger mt-3"><?= $this->lang->line('msg_no_surgeries') ?></h5>
+					<h5 class="text-danger mt-3"><?= $this->lang->line('t_no_surgeries') ?></h5>
 					<?php } ?>
 				</div>
 			</div>
 			<div class="row bl_content d-none" id="bl_add">
 				<div class="col-md-6 mb-3">
 					<form action="#" id="register_form">
-						<h5 class="mb-3"><?= $this->lang->line('title_attention') ?></h5>
+						<h5 class="mb-3"><?= $this->lang->line('w_attention') ?></h5>
 						<div class="form-row">
 							<div class="form-group col-md-6">
-								<label><?= $this->lang->line('lb_specialty') ?></label>
+								<label><?= $this->lang->line('w_specialty') ?></label>
 								<select class="form-control" id="sur_specialty" name="sur[specialty_id]">
 									<option value="">--</option>
 									<?php foreach($specialties as $item){ if ($item->doctor_qty){ ?>
@@ -109,7 +109,7 @@
 							</div>
 							<div class="form-group col-md-6">
 								<label>
-									<span class="mr-1"><?= $this->lang->line('lb_doctor') ?></span>
+									<span class="mr-1"><?= $this->lang->line('w_doctor') ?></span>
 									<span><i class="far fa-clock" id="ic_doctor_schedule_w" data-toggle="modal" data-target=".md_weekly_doctor_agenda"></i></span>
 								</label>
 								<select class="form-control" id="sur_doctor" name="sur[doctor_id]">
@@ -121,12 +121,12 @@
 								<div class="sys_msg" id="sur_doctor_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
-								<label><?= $this->lang->line('lb_date') ?></label>
+								<label><?= $this->lang->line('w_date') ?></label>
 								<input type="text" class="form-control bw date_picker" id="sur_date" name="sch[date]" value="<?= date('Y-m-d') ?>" readonly>
 								<div class="sys_msg" id="sur_date_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
-								<label><?= $this->lang->line('lb_time') ?></label>
+								<label><?= $this->lang->line('w_time') ?></label>
 								<div class="d-flex justify-content-between">
 									<select class="form-control text-center px-0" id="sur_hour" name="sch[hour]">
 										<option value="" selected>--</option>
@@ -155,7 +155,7 @@
 							</div>
 							<div class="form-group col-md-8">
 								<label>
-									<span class="mr-1"><?= $this->lang->line('lb_room') ?></span>
+									<span class="mr-1"><?= $this->lang->line('w_room') ?></span>
 									<span><i class="far fa-clock" id="ic_room_availability_w" data-toggle="modal" data-target=".md_weekly_room_availability"></i></span>
 								</label>
 								<select class="form-control" id="sur_room_id" name="sur[room_id]">
@@ -167,7 +167,7 @@
 								<div class="sys_msg" id="sur_room_msg"></div>
 							</div>
 							<div class="form-group col-md-4">
-								<label><?= $this->lang->line('lb_duration') ?></label>
+								<label><?= $this->lang->line('w_duration') ?></label>
 								<select class="form-control" name="sch[duration]">
 									<option value="">--</option>
 									<?php foreach($duration_ops as $op){ ?>
@@ -177,11 +177,11 @@
 								<div class="sys_msg" id="sur_duration_msg"></div>
 							</div>
 						</div>		
-						<h5 class="my-3"><?= $this->lang->line('title_patient') ?></h5>
+						<h5 class="my-3"><?= $this->lang->line('w_patient') ?></h5>
 						<input type="hidden" id="sur_pt_id" name="sur[patient_id]" value="">
 						<div class="form-row">
 							<div class="form-group col-md-6">
-								<label><?= $this->lang->line('lb_document') ?></label>
+								<label><?= $this->lang->line('w_document') ?></label>
 								<select class="form-control" id="sur_pt_doc_type_id" name="pt[doc_type_id]">
 									<?php foreach($doc_types as $item){ if ($item->sunat_code){ ?>
 									<option value="<?= $item->id ?>"><?= $item->description ?></option>
@@ -192,7 +192,7 @@
 							<div class="form-group col-md-6">
 								<label class="d-md-block d-none">&nbsp;</label>
 								<div class="input-group">
-									<input type="text" class="form-control" id="sur_pt_doc_number" name="pt[doc_number]" placeholder="<?= $this->lang->line('txt_number') ?>">
+									<input type="text" class="form-control" id="sur_pt_doc_number" name="pt[doc_number]" placeholder="<?= $this->lang->line('w_number') ?>">
 									<div class="input-group-append">
 										<button class="btn btn-primary border-0" type="button" id="btn_search_pt">
 											<i class="fas fa-search"></i>
@@ -202,18 +202,18 @@
 								<div class="sys_msg" id="sur_pt_doc_number_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
-								<label><?= $this->lang->line('lb_name') ?></label>
+								<label><?= $this->lang->line('w_name') ?></label>
 								<input type="text" class="form-control" id="sur_pt_name" name="pt[name]">
 								<div class="sys_msg" id="sur_pt_name_msg"></div>
 							</div>
 							<div class="form-group col-md-6">
-								<label><?= $this->lang->line('lb_tel') ?></label>
+								<label><?= $this->lang->line('w_tel') ?></label>
 								<input type="text" class="form-control" id="sur_pt_tel" name="pt[tel]">
 								<div class="sys_msg" id="sur_pt_tel_msg"></div>
 							</div>
 							<div class="form-group col-md-12">
-								<label><?= $this->lang->line('lb_remark') ?> (<?= $this->lang->line('lb_optional') ?>)</label>
-								<textarea class="form-control" rows="4" name="sur[remark]" placeholder="<?= $this->lang->line('txt_remark') ?>"></textarea>
+								<label><?= $this->lang->line('w_remark') ?> (<?= $this->lang->line('w_optional') ?>)</label>
+								<textarea class="form-control" rows="4" name="sur[remark]" placeholder="<?= $this->lang->line('t_remark') ?>"></textarea>
 							</div>
 							<div class="form-group col-md-12 pt-3">
 								<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
@@ -222,7 +222,7 @@
 					</form>
 				</div>
 				<div class="col-md-6 mb-3">
-					<h5 class="mb-3"><?= $this->lang->line('title_doctor_agenda') ?></h5>
+					<h5 class="mb-3"><?= $this->lang->line('w_doctor_agenda') ?></h5>
 					<div id="sur_schedule_list"></div>
 				</div>
 			</div>
@@ -233,7 +233,7 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header pb-0 border-0">
-				<h5 class="modal-title"><?= $this->lang->line('title_doctor_agenda') ?></h5>
+				<h5 class="modal-title"><?= $this->lang->line('w_doctor_agenda') ?></h5>
 				<button type="button" class="close" data-dismiss="modal"><span>&times;</span>
 				</button>
 			</div>
@@ -245,7 +245,7 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header pb-0 border-0">
-				<h5 class="modal-title"><?= $this->lang->line('title_room_availability') ?></h5>
+				<h5 class="modal-title"><?= $this->lang->line('w_room_availability') ?></h5>
 				<button type="button" class="close" data-dismiss="modal"><span>&times;</span>
 				</button>
 			</div>
@@ -254,5 +254,5 @@
 	</div>
 </div>
 <div class="d-none">
-	<input type="hidden" id="warning_rsp" value="<?= $this->lang->line('warning_rsp') ?>">
+	<input type="hidden" id="w_surgery_register" value="<?= $this->lang->line('w_surgery_register') ?>">
 </div>

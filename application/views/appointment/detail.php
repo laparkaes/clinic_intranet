@@ -29,10 +29,15 @@
 					<h5 class="mb-1"><?= $this->lang->line('w_doctor') ?></h5>
 					<div><?= $doctor->name ?></div>
 				</div>
-				<?php if ($appointment->detail){ ?>
+				<?php if ($appointment->sale_prod){ ?>
 				<div class="col-md-12 mb-3">
 					<h5 class="mb-1"><?= $this->lang->line('w_detail') ?></h5>
-					<div><?= $appointment->detail ?></div>
+					<div>
+						<span><?= $appointment->sale_prod ?></span>
+						<a href="<?= base_url() ?>sale/detail/<?= $appointment->sale_id ?>" target="_blank" class="ml-1">
+							<i class="fas fa-search"></i>
+						</a>
+					</div>
 				</div>
 				<?php } ?>
 				<div class="col-md-3 mb-3">

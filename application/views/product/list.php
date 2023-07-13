@@ -22,7 +22,7 @@
 			<input type="hidden" value="1" name="page">
 			<div class="form-group col-sm-3">
 				<select class="form-control" id="sl_type" name="type">
-					<option value=""><?= $this->lang->line('sl_type') ?></option>
+					<option value=""><?= $this->lang->line('w_type') ?></option>
 					<?php foreach($prod_types as $item){
 						if ($item->id == $f_url["type"]) $s = "selected"; else $s = ""; ?>
 					<option value="<?= $item->id ?>" <?= $s ?>><?= $item->description ?></option>
@@ -31,7 +31,7 @@
 			</div>
 			<div class="form-group col-sm-3">
 				<select class="form-control" id="sl_category" name="category">
-					<option value=""><?= $this->lang->line('sl_category') ?></option>
+					<option value=""><?= $this->lang->line('w_category') ?></option>
 					<?php foreach($categories as $item){
 						if ($item->id == $f_url["category"]) $s = "selected"; else $s = ""; ?>
 					<option value="<?= $item->id ?>" <?= $s ?>><?= $item->name ?></option>
@@ -39,7 +39,7 @@
 				</select>
 			</div>
 			<div class="form-group col-sm-4">
-				<input type="text" class="form-control" id="inp_keyword" name="keyword" placeholder="<?= $this->lang->line('inp_search') ?>" value="<?= $f_url["keyword"] ?>">
+				<input type="text" class="form-control" id="inp_keyword" name="keyword" placeholder="<?= $this->lang->line('w_search') ?>" value="<?= $f_url["keyword"] ?>">
 			</div>
 			<div class="form-group col-sm-2">
 				<button type="submit" class="btn btn-primary btn-block">
@@ -60,10 +60,10 @@
 							<thead>
 								<tr>
 									<th><strong>#</strong></th>
-									<th><strong><?= $this->lang->line('th_image') ?></strong></th>
-									<th><strong><?= $this->lang->line('th_product') ?></strong></th>
-									<th><strong><?= $this->lang->line('th_price') ?></strong></th>
-									<th><strong><?= $this->lang->line('th_stock') ?></strong></th>
+									<th><strong><?= $this->lang->line('w_image') ?></strong></th>
+									<th><strong><?= $this->lang->line('w_product') ?></strong></th>
+									<th><strong><?= $this->lang->line('w_price') ?></strong></th>
+									<th><strong><?= $this->lang->line('w_stock') ?></strong></th>
 									<th></th>
 								</tr>
 							</thead>
@@ -115,7 +115,7 @@
 						</div>
 					</div>
 					<?php }else{ ?>
-					<h5 class="text-danger mt-3"><?= $this->lang->line('msg_no_products') ?></h5>
+					<h5 class="text-danger mt-3"><?= $this->lang->line('t_no_products') ?></h5>
 					<?php } ?>
 				</div>
 			</div>
@@ -125,12 +125,12 @@
 						<ul class="nav nav-tabs mb-4" role="tablist">
 							<li class="nav-item">
 								<a class="nav-link active" data-toggle="tab" href="#list_ct">
-									<?= $this->lang->line('c_nav_category_list') ?>
+									<?= $this->lang->line('w_nav_category_list') ?>
 								</a>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" data-toggle="tab" href="#move_product_ct">
-									<?= $this->lang->line('c_nav_move') ?>
+									<?= $this->lang->line('w_nav_move') ?>
 								</a>
 							</li>
 						</ul>
@@ -140,8 +140,8 @@
 									<thead>
 										<tr>
 											<th style="width:50px;"><strong>#</strong></th>
-											<th><strong><?= $this->lang->line('th_category') ?></strong></th>
-											<th><strong><?= $this->lang->line('th_products') ?></strong></th>
+											<th><strong><?= $this->lang->line('w_category') ?></strong></th>
+											<th><strong><?= $this->lang->line('w_products') ?></strong></th>
 											<th></th>
 										</tr>
 									</thead>
@@ -149,7 +149,7 @@
 										<tr class="">
 											<form action="#" id="form_add_category">
 												<td colspan="3">
-													<input type="text" class="form-control" name="name" placeholder="<?= $this->lang->line('txt_category_name') ?>">
+													<input type="text" class="form-control" name="name" placeholder="<?= $this->lang->line('w_category_name') ?>">
 												</td>
 												<td class="text-right">
 													<button class="btn btn-primary sharp" type="submit">
@@ -186,10 +186,10 @@
 													</button>
 													<div class="dropdown-menu">
 														<button class="dropdown-item text-info btn_edit_ct" value="<?= $c->id ?>">
-															<i class="far fa-edit fa-fw"></i> <?= $this->lang->line('op_edit') ?>
+															<i class="far fa-edit fa-fw"></i> <?= $this->lang->line('w_edit') ?>
 														</button>
 														<button class="dropdown-item text-danger btn_delete_ct" value="<?= $c->id ?>">
-															<i class="far fa-trash fa-fw"></i> <?= $this->lang->line('op_delete') ?>
+															<i class="far fa-trash fa-fw"></i> <?= $this->lang->line('w_delete') ?>
 														</button>
 													</div>
 												</div>
@@ -243,7 +243,7 @@
 						<div class="col-md-8">
 							<form action="#" class="form-row" id="form_register_product">
 								<div class="form-group col-md-12">
-									<label><?= $this->lang->line('p_category') ?></label>
+									<label><?= $this->lang->line('w_category') ?></label>
 									<select class="form-control sl_category" name="category_id">
 										<option value="">-</option>
 										<?php foreach($categories as $item){ ?>
@@ -253,7 +253,7 @@
 									<div class="sys_msg" id="ap_category_msg"></div>
 								</div>
 								<div class="form-group col-md-6">
-									<label><?= $this->lang->line('p_type') ?></label>
+									<label><?= $this->lang->line('w_type') ?></label>
 									<select class="form-control" name="type_id">
 										<?php foreach($prod_types as $item){ ?>
 										<option value="<?= $item->id ?>"><?= $item->description ?></option>
@@ -262,17 +262,17 @@
 									<div class="sys_msg" id="ap_type_msg"></div>
 								</div>
 								<div class="form-group col-md-6">
-									<label><?= $this->lang->line('p_code') ?></label>
+									<label><?= $this->lang->line('w_code') ?></label>
 									<input type="text" class="form-control" name="code">
 									<div class="sys_msg" id="ap_code_msg"></div>
 								</div>
 								<div class="form-group col-md-6">
-									<label><?= $this->lang->line('p_image') ?> <small>(<?= $this->lang->line('p_optional') ?>)</small></label>
+									<label><?= $this->lang->line('w_image') ?> <small>(<?= $this->lang->line('w_optional') ?>)</small></label>
 									<input type="file" class="form-control" id="ap_image" name="image" accept="image/*">
 									<div class="sys_msg" id="ap_image_msg"></div>
 								</div>
 								<div class="form-group col-md-6">
-									<label><?= $this->lang->line('p_price') ?></label>
+									<label><?= $this->lang->line('w_price') ?></label>
 									<div class="input-group">
 										<select class="form-control w-10" name="currency_id" style="max-width: 70px;">
 											<?php foreach($currencies as $item){ ?>
@@ -284,7 +284,7 @@
 									<div class="sys_msg" id="ap_price_msg"></div>
 								</div>
 								<div class="form-group col-md-12">
-									<label><?= $this->lang->line('p_name') ?></label>
+									<label><?= $this->lang->line('w_name') ?></label>
 									<input type="text" class="form-control" name="description">
 									<div class="sys_msg" id="ap_description_msg"></div>
 								</div>
@@ -301,8 +301,8 @@
 		</div>
 	</div>
 </div>
-<input type="hidden" id="warning_ac" value="<?= $this->lang->line('warning_ac') ?>">
-<input type="hidden" id="warning_uc" value="<?= $this->lang->line('warning_uc') ?>">
-<input type="hidden" id="warning_dc" value="<?= $this->lang->line('warning_dc') ?>">
-<input type="hidden" id="warning_mc" value="<?= $this->lang->line('warning_mc') ?>">
-<input type="hidden" id="warning_rpr" value="<?= $this->lang->line('warning_rpr') ?>">
+<input type="hidden" id="w_category_add" value="<?= $this->lang->line('w_category_add') ?>">
+<input type="hidden" id="w_category_update" value="<?= $this->lang->line('w_category_update') ?>">
+<input type="hidden" id="w_category_delete" value="<?= $this->lang->line('w_category_delete') ?>">
+<input type="hidden" id="w_category_move" value="<?= $this->lang->line('w_category_move') ?>">
+<input type="hidden" id="w_product_register" value="<?= $this->lang->line('w_product_register') ?>">

@@ -1,80 +1,65 @@
 <?php
-
-//message
-$lang['error_sho'] = 'Elija hora.';//error_select_hour
-$lang['error_smi'] = 'Elija minuto.';//error_select_minute
-$lang['error_sre'] = 'Ingrese resultado.';//error_enter_result
-$lang['success_ras'] = 'Cirugía ha sido registrada.';//success_register_surgery
-$lang['success_fsu'] = 'Cirugía ha sido finalizada.';//success_finish_surgery
-$lang['success_rsu'] = 'Cirugía ha sido reprogramada.';//success_reschedule_surgery
-$lang['success_csu'] = 'Cirugía ha sido cancelada.';//success_cancel_surgery
-$lang['warning_sca'] = '¿Desea cancelar cirugía?';//warning_surgery_cancel
-$lang['warning_sre'] = '¿Desea reprogramar cirugía?';//warning_surgery_reschedule
-$lang['warning_sfi'] = '¿Desea finalizar cirugía?';//warning_surgery_finish
-$lang['warning_rsp'] = '¿Desea generar nueva cirugía?';//warning_register_surgery
-
 $lang['surgery'] = 'Cirugía';
 $lang['surgeries'] = 'Cirugías';
-$lang['hd_schedule'] = 'Horario';
-$lang['hd_place'] = 'Lugar';
-$lang['hd_specialty'] = 'Especialidad';
-$lang['hd_doctor'] = 'Médico';
-$lang['hd_patient'] = 'Paciente';
-$lang['hd_status'] = 'Estado';
-$lang['title_attention'] = 'Atención';
-$lang['lb_specialty'] = 'Especialidad';
-$lang['lb_doctor'] = 'Médico';
-$lang['lb_date'] = 'Fecha';
-$lang['lb_time'] = 'Hora';
-$lang['title_doctor_agenda'] = 'Agenda del Médico';
-$lang['title_patient'] = 'Paciente';
-$lang['lb_document'] = 'Documento';
-$lang['txt_number'] = 'Número';
-$lang['lb_name'] = 'Nombre';
-$lang['lb_tel'] = 'Teléfono';
-$lang['lb_remark'] = 'Observación';
-$lang['lb_optional'] = 'Opcional';
-$lang['txt_remark'] = 'Síntomas, Notas del paciente, etc.';
-$lang['lb_place'] = 'Lugar';
-$lang['lb_duration'] = 'Duración';
-$lang['op_minute'] = 'minuto';
-$lang['op_minutes'] = 'minutos';
-$lang['op_hour'] = 'hora';
-$lang['op_hours'] = 'horas';
-$lang['lb_hour'] = 'Hora';
-$lang['lb_status'] = 'Estado';
-$lang['lb_patient'] = 'Paciente';
-$lang['lb_history_number'] = '# de Historia';
-$lang['lb_sex'] = 'Sexo';
-$lang['lb_age'] = 'Edad';
-$lang['lb_blood_type'] = 'Tipo de Sangre';
-$lang['title_reschedule_surgery'] = 'Reprogramación de Cirugía';
-$lang['btn_surgery'] = 'Cirugía';
-$lang['title_clinical_histories'] = 'Historias Clínicas';
-$lang['th_date'] = 'Fecha';
-$lang['th_time'] = 'Hora';
-$lang['th_specialty'] = 'Especialidad';
-$lang['th_title'] = 'Título';
-$lang['title_files'] = 'Archivos';
-$lang['btn_save_finish_surgery'] = 'Guardar y Finalizar Cirugía';
-$lang['title_remark'] = 'Observación';
-$lang['txt_no_records'] = 'No hay registros.';
-$lang['title_result'] = 'Resultado';
-$lang['appointment'] = 'Consulta';
-$lang['th_schedule'] = 'Horario';
-$lang['th_type'] = 'Tipo';
+
+//message
+$lang['w_surgery_cancel'] = '¿Desea cancelar cirugía?';
+$lang['w_surgery_reschedule'] = '¿Desea reprogramar cirugía?';
+$lang['w_surgery_finish'] = '¿Desea finalizar cirugía?';
+$lang['w_surgery_register'] = '¿Desea generar nueva cirugía?';
+
+//error message
+$lang['e_enter_result'] = 'Ingrese resultado.';
+
+//success message
+$lang['s_surgery_register'] = 'Cirugía ha sido registrada.';
+$lang['s_surgery_finish'] = 'Cirugía ha sido finalizada.';
+$lang['s_surgery_reschedule'] = 'Cirugía ha sido reprogramada.';
+$lang['s_surgery_cancel'] = 'Cirugía ha sido cancelada.';
+
+//button
 $lang['btn_report'] = 'Reporte';
 $lang['btn_reschedule'] = 'Reprogramar';
-$lang['hd_specialty'] = 'Especialidad';
-$lang['th_start'] = 'Inicio';
-$lang['th_end'] = 'Fin';
-$lang['hd_date'] = 'Fecha';
-$lang['hd_time'] = 'Hora';
-$lang['lb_detail'] = 'Detalle';
-$lang['lb_room'] = 'Sala';
-$lang['hd_room'] = 'Sala';
-$lang['title_doctor_agenda'] = 'Agenda del Médico';
-$lang['title_room_availability'] = 'Disponibilidad de Sala de Cirugía';
-$lang['hd_itinerary'] = 'Itinerario';
-$lang['msg_no_surgeries'] = 'No existe cirugías registradas.';
-$lang['msg_no_confirmed'] = 'Cirugía aún no ha sido confirmada.';
+$lang['btn_finish_surgery'] = 'Finalizar Cirugía';
+
+//word
+$lang['w_age'] = 'Edad';
+$lang['w_attention'] = 'Atención';
+$lang['w_blood_type'] = 'Tipo de Sangre';
+$lang['w_clinical_histories'] = 'Historias Clínicas';
+$lang['w_date'] = 'Fecha';
+$lang['w_detail'] = 'Detalle';
+$lang['w_doctor'] = 'Médico';
+$lang['w_doctor_agenda'] = 'Agenda del Médico';
+$lang['w_document'] = 'Documento';
+$lang['w_duration'] = 'Duración';
+$lang['w_files'] = 'Archivos';
+$lang['w_history_number'] = '# de Historia';
+$lang['w_hour'] = 'Hora';
+$lang['w_hours'] = 'horas';
+$lang['w_itinerary'] = 'Itinerario';
+$lang['w_minute'] = 'minuto';
+$lang['w_minutes'] = 'minutos';
+$lang['w_name'] = 'Nombre';
+$lang['w_no_records'] = 'No hay registros.';
+$lang['w_number'] = 'Número';
+$lang['w_optional'] = 'Opcional';
+$lang['w_patient'] = 'Paciente';
+$lang['w_remark'] = 'Observación';
+$lang['w_reschedule_surgery'] = 'Reprogramación de Cirugía';
+$lang['w_result'] = 'Resultado';
+$lang['w_room'] = 'Sala';
+$lang['w_room_availability'] = 'Disponibilidad de Sala de Cirugía';
+$lang['w_schedule'] = 'Horario';
+$lang['w_sex'] = 'Sexo';
+$lang['w_specialty'] = 'Especialidad';
+$lang['w_status'] = 'Estado';
+$lang['w_tel'] = 'Teléfono';
+$lang['w_time'] = 'Hora';
+$lang['w_title'] = 'Título';
+$lang['w_type'] = 'Tipo';
+
+//text
+$lang['t_remark'] = 'Síntomas, Notas del paciente, etc.';
+$lang['t_no_surgeries'] = 'No existe cirugías registradas.';
+$lang['t_no_confirmed'] = 'Cirugía aún no ha sido confirmada.';

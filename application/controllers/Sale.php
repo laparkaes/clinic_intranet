@@ -242,9 +242,11 @@ class Sale extends CI_Controller {
 			
 			$item->type = null;
 			$item->attention = null;
+			$item->path = null;
 			if(strpos(strtoupper($item->product->description), strtoupper("consulta")) !== false){
 				$appo_qty++;
 				$item->type = $this->lang->line('txt_appointment');
+				if ($item->appointment_id) $item->path = base_url()."appointment/detail/".$item->appointment_id;
 				
 				if ($item->appointment_id){
 					$app = $this->general->id("appointment", $item->appointment_id);
@@ -258,6 +260,7 @@ class Sale extends CI_Controller {
 			}elseif(strpos(strtoupper($item->product->category), strtoupper("cirugía")) !== false){
 				$surg_qty++;
 				$item->type = $this->lang->line('txt_surgery');
+				if ($item->surgery_id) $item->path = base_url()."surgery/detail/".$item->surgery_id;
 				
 				if ($item->surgery_id){
 					$sur = $this->general->id("surgery", $item->surgery_id);

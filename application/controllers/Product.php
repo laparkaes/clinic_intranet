@@ -79,10 +79,10 @@ class Product extends CI_Controller {
 						$this->utility_lib->add_log("category_register", $name);
 						
 						$type = "success";
-						$msg = $this->lang->line('success_ac');
+						$msg = $this->lang->line('s_category_add');
 					}else $msg = $this->lang->line('error_internal');
-				}else $msg = $this->lang->line('error_ce');
-			}else $msg = $this->lang->line('error_cn');
+				}else $msg = $this->lang->line('e_category_exists');
+			}else $msg = $this->lang->line('e_category_name');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -102,10 +102,10 @@ class Product extends CI_Controller {
 						$this->utility_lib->add_log("category_update", $name);
 						
 						$type = "success";
-						$msg = $this->lang->line('success_uc');
+						$msg = $this->lang->line('s_category_update');
 					}else $msg = $this->lang->line('error_internal');
-				}else $msg = $this->lang->line('error_ce');
-			}else $msg = $this->lang->line('error_cn');
+				}else $msg = $this->lang->line('e_category_exists');
+			}else $msg = $this->lang->line('e_category_name');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -122,9 +122,9 @@ class Product extends CI_Controller {
 					$this->utility_lib->add_log("category_delete", $category->name);
 					
 					$type = "success";
-					$msg = $this->lang->line('success_dc');
+					$msg = $this->lang->line('s_category_delete');
 				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_dcp');
+			}else $msg = $this->lang->line('e_category_remove_products');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -148,7 +148,7 @@ class Product extends CI_Controller {
 					$this->utility_lib->add_log("category_move", $c_f->name." > ".$c_t->name);
 					
 					$type = "success";
-					$msg = $this->lang->line('success_mc');
+					$msg = $this->lang->line('s_category_move');
 				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line('error_occurred');
 		}else $msg = $this->lang->line('error_no_permission');
@@ -176,7 +176,7 @@ class Product extends CI_Controller {
 					$this->utility_lib->add_log("product_register", $datas["description"]);
 					
 					$type = "success";
-					$msg = $this->lang->line('success_ap');
+					$msg = $this->lang->line('s_product_add');
 					$move_to = base_url()."product/detail/".$product_id;
 					
 					if ($_FILES["image"]["name"]){
@@ -264,7 +264,7 @@ class Product extends CI_Controller {
 						$this->utility_lib->add_log("product_option_register", $product->description." > ".$data["description"]);
 						
 						$type = "success";
-						$msg = $this->lang->line('success_aop');
+						$msg = $this->lang->line('s_option_add');
 					}else $this->lang->line('error_internal');
 				}else $msg = $this->lang->line('error_occurred');
 			}else $msg = $this->lang->line('error_internal_refresh');
@@ -283,7 +283,7 @@ class Product extends CI_Controller {
 			$product = $this->general->id("product", $prod_op->product_id);
 			$this->utility_lib->add_log("product_option_delete", $product->description." > ".$prod_op->description);
 			
-			$msg = $this->lang->line('success_dop');
+			$msg = $this->lang->line('s_option_delete');
 			$status = true;
 			$type = "success";
 		}else{
@@ -308,7 +308,7 @@ class Product extends CI_Controller {
 			$this->utility_lib->add_log("product_option_update", $product->description." > ".$product_op->description);
 			
 			$type = "success";
-			$msg = $this->lang->line('success_eop');
+			$msg = $this->lang->line('s_option_update');
 		}else $msg = $this->lang->line('error_internal');
 		
 		header('Content-Type: application/json');
@@ -335,7 +335,7 @@ class Product extends CI_Controller {
 				$this->utility_lib->add_log("product_update", $data["description"]);
 				
 				$type = "success";
-				$msg = $this->lang->line('success_up');
+				$msg = $this->lang->line('s_product_update');
 			}else $msg = $this->lang->line('error_occurred');
 		}else $msg = $this->lang->line('error_no_permission');
 		
@@ -355,7 +355,7 @@ class Product extends CI_Controller {
 				
 				$move_to = base_url()."product";
 				$type = "success";
-				$msg = $this->lang->line('success_dp');
+				$msg = $this->lang->line('s_product_delete');
 			}else $msg = $this->lang->line('error_internal');
 		}else $msg = $this->lang->line('error_no_permission');
 		
@@ -370,7 +370,7 @@ class Product extends CI_Controller {
 			$datas = $this->input->post();
 			
 			if (!$datas["product_id"]) $msg = $this->lang->line('error_internal_refresh');
-			if (!$_FILES["image"]["name"]) $msg = $this->lang->line('error_sim');
+			if (!$_FILES["image"]["name"]) $msg = $this->lang->line('e_image_select');
 			
 			if (!$msg){
 				$upload_dir = "uploaded/products/".$datas["product_id"];
@@ -400,7 +400,7 @@ class Product extends CI_Controller {
 						$this->utility_lib->add_log("product_image_register", $product->description." > ".$datas["filename"]);
 						
 						$type = "success";
-						$msg = $this->lang->line('success_ai');
+						$msg = $this->lang->line('s_image_add');
 					}else $msg = $this->lang->line('error_internal');
 				}else $msg = $this->upload->display_errors("<span>","</span>");
 			}
@@ -425,10 +425,10 @@ class Product extends CI_Controller {
 						$this->utility_lib->add_log("product_image_delete", $product->description." > ".$image->filename);
 						
 						$type = "success";
-						$msg = $this->lang->line('success_di');
+						$msg = $this->lang->line('s_image_delete');
 					}else $msg = $this->lang->line('error_internal');
 				}else $msg = $this->lang->line('error_internal');	
-			}else $msg = $this->lang->line('error_dmi');
+			}else $msg = $this->lang->line('e_image_main_delete');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -447,7 +447,7 @@ class Product extends CI_Controller {
 				$this->utility_lib->add_log("product_set_main_image", $product->description." > ".$image->filename);
 				
 				$type = "success";
-				$msg = $this->lang->line('success_pri');
+				$msg = $this->lang->line('s_image_main');
 			}else $msg = $this->lang->line('error_internal');
 		}else $msg = $this->lang->line('error_no_permission');
 		
@@ -477,7 +477,7 @@ class Product extends CI_Controller {
 			$this->utility_lib->add_log("provider_save", $product->description." > ".$provider->name);
 			
 			$type = "success";
-			$msg = $this->lang->line('success_spv');
+			$msg = $this->lang->line('s_provider_save');
 		}else $msg = $this->lang->line('error_occurred');
 		
 		header('Content-Type: application/json');
@@ -495,7 +495,7 @@ class Product extends CI_Controller {
 				$this->utility_lib->add_log("provider_clean", $product->description);
 				
 				$type = "success";
-				$msg = $this->lang->line('success_cpv');
+				$msg = $this->lang->line('s_provider_clean');
 			}else $msg = $this->lang->line('error_internal');
 		}else $msg = $this->lang->line('error_no_permission');
 		
@@ -527,8 +527,7 @@ class Product extends CI_Controller {
 				];
 			}
 			$type = "success";
-		}
-		else $msg = $this->lang->line('error_npin');
+		}else $msg = $this->lang->line('e_category_no_product');
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "list" => $list]);
@@ -542,7 +541,7 @@ class Product extends CI_Controller {
 		
 		$list = $this->general->filter("product_option", $f_w, null, null, "id", "asc");
 		if (count($list)) $type = "success";
-		else $msg = $this->lang->line('error_wst');
+		else $msg = $this->lang->line('e_product_no_stock');
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "list" => $list]);
