@@ -60,7 +60,7 @@ function update_company_data(dom){
 }
 
 function init_system(){
-	ajax_simple_warning({}, "config/system_init", $("#warning_sin").val()).done(function(res) {
+	ajax_simple_warning({}, "config/system_init", $("#wm_system_init").val()).done(function(res) {
 		swal_redirection(res.type, res.msg, $("#base_url").val() + "system_init");
 	});
 }
@@ -83,7 +83,7 @@ function register_profile(dom){
 }
 
 function remove_profile(dom){
-	ajax_simple_warning({id: $(dom).val()}, "config/remove_profile", $("#warning_rpr").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "config/remove_profile", $("#wm_profile_remove").val()).done(function(res) {
 		swal(res.type, res.msg);
 		reset_profile_list();
 	});
@@ -137,7 +137,7 @@ function set_exam_cat(categories, exams){
 	if (categories.length > 0){
 		$(".ad_cat_rows").remove();
 		$("#ad_ex_category").html(""); $("#ad_ex_category").append('<option value="">--</option>');
-		$("#rp_category").html(""); $("#rp_category").append('<option value="">' + $("#txt_view_all").val() + '</option>');
+		$("#rp_category").html(""); $("#rp_category").append('<option value="">' + $("#w_view_all").val() + '</option>');
 		
 		$.each(categories, function(index, item) {
 			$("#ad_category_list").append('<tr class="ad_cat_rows"><td><strong>' + (index + 1) + '</strong></td><td>' + item.name + '</td><td class="text-right"><button type="button" class="btn light btn-danger btn_remove_exam_category" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
@@ -198,7 +198,7 @@ function reset_image_list(){
 }
 
 function remove_image(dom){
-	ajax_simple_warning({id: $(dom).val()}, "config/remove_image", $("#warning_rim").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "config/remove_image", $("#wm_image_remove").val()).done(function(res) {
 		swal(res.type, res.msg);
 		reset_image_list();
 	});
@@ -244,7 +244,7 @@ function register_medicine(dom){
 }
 
 function remove_medicine(dom){
-	ajax_simple_warning({id: $(dom).val()}, "config/remove_medicine", $("#warning_rme").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "config/remove_medicine", $("#wm_medicine_remove").val()).done(function(res) {
 		swal(res.type, res.msg);
 		reset_medicine_list();
 	});

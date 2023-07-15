@@ -307,9 +307,9 @@
 	</div>
 </div>
 <input type="hidden" id="product_id" value="<?= $product->id ?>">
-<input type="hidden" id="w_image_delete" value="<?= $this->lang->line('w_image_delete') ?>">
-<input type="hidden" id="w_image_main" value="<?= $this->lang->line('w_image_main') ?>">
-<input type="hidden" id="w_product_delete" value="<?= $this->lang->line('w_product_delete') ?>">
-<input type="hidden" id="w_option_add" value="<?= $this->lang->line('w_option_add') ?>">
-<input type="hidden" id="w_option_delete" value="<?= $this->lang->line('w_option_delete') ?>">
-<input type="hidden" id="w_option_edit" value="<?= $this->lang->line('w_option_edit') ?>">
+<input type="hidden" id="wm_image_delete" value="<?= $this->lang->line('wm_image_delete') ?>">
+<input type="hidden" id="wm_image_main" value="<?= $this->lang->line('wm_image_main') ?>">
+<input type="hidden" id="wm_product_delete" value="<?= $this->lang->line('wm_product_delete') ?>">
+<input type="hidden" id="wm_option_add" value="<?= $this->lang->line('wm_option_add') ?>">
+<input type="hidden" id="wm_option_delete" value="<?= $this->lang->line('wm_option_delete') ?>">
+<input type="hidden" id="wm_option_edit" value="<?= $this->lang->line('wm_option_edit') ?>">

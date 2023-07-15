@@ -2,13 +2,13 @@
 	<div class="row page-titles mx-0">
 		<div class="col-sm-6 p-md-0">
 			<div class="welcome-text">
-				<h4><?= $this->lang->line('title_sale_detail') ?></h4>
+				<h4><?= $this->lang->line('w_sale_detail') ?></h4>
 			</div>
 		</div>
 		<div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item"><a href="<?= base_url() ?>sale"><?= $this->lang->line('sales') ?></a></li>
-				<li class="breadcrumb-item active"><a href="javascript:void(0)"><?= $this->lang->line('txt_detail') ?></a></li>
+				<li class="breadcrumb-item active"><a href="javascript:void(0)"><?= $this->lang->line('w_detail') ?></a></li>
 			</ol>
 		</div>
 	</div>
@@ -64,22 +64,22 @@
 				<ul class="nav nav-tabs mb-4" role="tablist">
 					<li class="nav-item">
 						<a class="nav-link active" data-toggle="tab" href="#tab_data">
-							<i class="far fa-comment-alt fa-fw mr-3"></i><?= $this->lang->line("tab_data") ?>
+							<i class="far fa-comment-alt fa-fw mr-3"></i><?= $this->lang->line('w_data') ?>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#tab_medical">
-							<i class="far fa-notes-medical fa-fw mr-3"></i><?= $this->lang->line("tab_medical") ?>
+							<i class="far fa-notes-medical fa-fw mr-3"></i><?= $this->lang->line('w_medical') ?>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#tab_payments">
-							<i class="far fa-money-check fa-fw mr-3"></i><?= $this->lang->line("tab_payments") ?>
+							<i class="far fa-money-check fa-fw mr-3"></i><?= $this->lang->line('w_payments') ?>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#tab_items">
-							<i class="far fa-box fa-fw mr-3"></i><?= $this->lang->line("tab_items") ?>
+							<i class="far fa-box fa-fw mr-3"></i><?= $this->lang->line('w_items') ?>
 						</a>
 					</li>
 				</ul>
@@ -87,40 +87,40 @@
 					<div class="tab-pane fade show active" id="tab_data" role="tabpanel">
 						<div class="row">
 							<div class="col-md-6 mb-3">
-								<h5 class="mb-1"><?= $this->lang->line('label_client') ?></h5>
+								<h5 class="mb-1"><?= $this->lang->line('w_client') ?></h5>
 								<div><?= $client->name ?></div>
 							</div>
 							<div class="col-md-3 mb-3">
 								<?php if ($client->doc_number) $doc_val = $client->doc_type." ".$client->doc_number;
 								else $doc_val = ""; ?>
-								<h5 class="mb-1"><?= $this->lang->line('label_document') ?></h5>
+								<h5 class="mb-1"><?= $this->lang->line('w_document') ?></h5>
 								<div><?= $doc_val ?></div>
 							</div>
 							<div class="col-md-3 mb-3">
-								<h5 class="mb-1"><?= $this->lang->line('label_status') ?></h5>
+								<h5 class="mb-1"><?= $this->lang->line('w_status') ?></h5>
 								<div class="text-<?= $sale->status->color ?>"><?= $this->lang->line($sale->status->code) ?></div>
 							</div>
 							<div class="col-md-3 mb-3">
-								<h5 class="mb-1"><?= $this->lang->line('label_total') ?></h5>
+								<h5 class="mb-1"><?= $this->lang->line('w_total') ?></h5>
 								<div><?= $sale->currency." ".number_format($sale->total, 2) ?></div>
 							</div>
 							<div class="col-md-3 mb-3">
-								<h5 class="mb-1"><?= $this->lang->line('label_balance') ?></h5>
+								<h5 class="mb-1"><?= $this->lang->line('w_balance') ?></h5>
 								<div><?= $sale->currency." ".number_format($sale->balance, 2) ?></div>
 							</div>
 							<div class="col-md-3 mb-3">
-								<h5 class="mb-1"><?= $this->lang->line('label_last_update') ?></h5>
+								<h5 class="mb-1"><?= $this->lang->line('w_last_update') ?></h5>
 								<div><?= $sale->updated_at ?></div>
 							</div>
 							<div class="col-md-3 mb-3">
-								<h5 class="mb-1"><?= $this->lang->line('label_date') ?></h5>
+								<h5 class="mb-1"><?= $this->lang->line('w_date') ?></h5>
 								<div><?= $sale->registed_at ?></div>
 							</div>
 						</div>
 						<hr>
 						<div class="row">
 							<div class="col-md-12 mb-3  d-flex justify-content-between">
-								<h4 class="mr-5 mb-0"><?= $this->lang->line('label_sunat') ?></h4>
+								<h4 class="mr-5 mb-0"><?= $this->lang->line('w_sunat') ?></h4>
 								<div>
 									<?php if ((($voucher->id) and (!$voucher->sunat_sent)) or ($voucher->sunat_notes)){ ?>
 									<button type="button" class="btn btn-primary btn-xs mb-1" id="btn_send_sunat" value="<?= $voucher->id ?>">
@@ -136,7 +136,7 @@
 						</div>
 						<div class="row">
 							<div class="col-md-9 mb-3">
-								<h5 class="mb-1"><?= $this->lang->line('lb_messages') ?></h5>
+								<h5 class="mb-1"><?= $this->lang->line('w_messages') ?></h5>
 								<div><?= $voucher->sunat_msg ?></div>
 								<?php if ($voucher->sunat_notes){ ?>
 								<div class="mt-2">
@@ -150,7 +150,7 @@
 								<?php } ?>
 							</div>
 							<div class="col-md-3 mb-3">
-								<h5 class="mb-1"><?= $this->lang->line('label_status') ?></h5>
+								<h5 class="mb-1"><?= $this->lang->line('w_status') ?></h5>
 								<div class="text-<?= $voucher->status->color ?>">
 									<?= $this->lang->line($voucher->status->code) ?>
 								</div>
@@ -164,9 +164,9 @@
 								<thead>
 									<tr>
 										<th style="width: 70px;"><strong>#</strong></th>
-										<th><strong><?= $this->lang->line('hd_type') ?></strong></th>
-										<th><strong><?= $this->lang->line('hd_product') ?></strong></th>
-										<th><strong><?= $this->lang->line('hd_attention') ?></strong></th>
+										<th><strong><?= $this->lang->line('w_type') ?></strong></th>
+										<th><strong><?= $this->lang->line('w_product') ?></strong></th>
+										<th><strong><?= $this->lang->line('w_attention') ?></strong></th>
 										<th></th>
 									</tr>
 								</thead>
@@ -201,7 +201,7 @@
 												<i class="fas fa-trash"></i>
 											</button>
 											<?php }else{ 
-											if ($item->type === $this->lang->line('txt_surgery')) $md = "surgery";
+											if ($item->type === $this->lang->line('w_surgery')) $md = "surgery";
 											else $md = "appointment"; ?>
 											<button type="button" class="btn btn-primary btn_select_product" data-toggle="modal" data-target="#md_reservation_<?= $md ?>" value="<?= $item->id ?>">
 												<i class="fas fa-plus"></i>
@@ -214,7 +214,7 @@
 							</table>
 						</div>
 						<?php }else{ ?>
-						<h4><?= $this->lang->line('msg_no_medical_attention') ?></h4>
+						<span><?= $this->lang->line('t_no_medical') ?></span>
 						<?php } ?>
 					</div>
 					<div class="tab-pane fade" id="tab_payments" role="tabpanel">
@@ -223,11 +223,11 @@
 								<thead>
 									<tr>
 										<th style="width: 70px;"><strong>#</strong></th>
-										<th><strong><?= $this->lang->line('hd_date') ?></strong></th>
-										<th><strong><?= $this->lang->line('hd_form_of_payment') ?></strong></th>
-										<th><strong><?= $this->lang->line('hd_received') ?></strong></th>
-										<th><strong><?= $this->lang->line('hd_change') ?></strong></th>
-										<th><strong><?= $this->lang->line('hd_balance') ?></strong></th>
+										<th><strong><?= $this->lang->line('w_date') ?></strong></th>
+										<th><strong><?= $this->lang->line('w_form_of_payment') ?></strong></th>
+										<th><strong><?= $this->lang->line('w_received') ?></strong></th>
+										<th><strong><?= $this->lang->line('w_change') ?></strong></th>
+										<th><strong><?= $this->lang->line('w_balance') ?></strong></th>
 										<?php if (!$voucher->sale_id){ ?>
 										<th></th>
 										<?php } ?>
@@ -264,11 +264,11 @@
 								<thead>
 									<tr>
 										<th><strong>#</strong></th>
-										<th><strong><?= $this->lang->line('hd_product') ?></strong></th>
-										<th><strong><?= $this->lang->line('hd_unit_price_short') ?></strong></th>
-										<th><strong><?= $this->lang->line('hd_discount_short') ?></strong></th>
-										<th><strong><?= $this->lang->line('hd_qty') ?></strong></th>
-										<th class="text-right"><strong><?= $this->lang->line('hd_subtotal') ?></strong></th>
+										<th><strong><?= $this->lang->line('w_product') ?></strong></th>
+										<th><strong><?= $this->lang->line('w_unit_price_short') ?></strong></th>
+										<th><strong><?= $this->lang->line('w_discount_short') ?></strong></th>
+										<th><strong><?= $this->lang->line('w_qty') ?></strong></th>
+										<th class="text-right"><strong><?= $this->lang->line('w_subtotal') ?></strong></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -306,7 +306,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title"><?= $this->lang->line('title_void_voucher') ?></h5>
+				<h5 class="modal-title"><?= $this->lang->line('w_void_voucher') ?></h5>
 				<button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
 			</div>
 			<div class="modal-body">
@@ -314,7 +314,7 @@
 					<input type="hidden" name="id" value="<?= $sale->voucher_id ?>">
 					<div class="form-row">
 						<div class="form-group col-md-12 mb-0">
-							<label><?= $this->lang->line('label_reason') ?></label>
+							<label><?= $this->lang->line('w_reason') ?></label>
 							<input type="text" class="form-control" name="reason">
 							<div class="sys_msg" id="vv_reason_msg"></div>
 						</div>
@@ -339,18 +339,18 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title"><?= $this->lang->line('title_issuance_receipt') ?></h5>
+				<h5 class="modal-title"><?= $this->lang->line('w_issuance_receipt') ?></h5>
 				<button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
 			</div>
 			<div class="modal-body">
 				<?php if ($sale->balance){ ?>
-				<p class="text-danger mb-0"><?= $this->lang->line('txt_pending_payment').": ".$sale->currency." ".number_format($sale->balance, 2) ?></p>
+				<p class="text-danger mb-0"><?= $this->lang->line('w_pending_payment').": ".$sale->currency." ".number_format($sale->balance, 2) ?></p>
 				<?php }else{ ?>
 				<form action="#" id="form_make_voucher">
 					<input type="hidden" name="sale_id" value="<?= $sale->id ?>">
 					<div class="form-row">
 						<div class="form-group col-md-6">
-							<label><?= $this->lang->line('label_document') ?></label>
+							<label><?= $this->lang->line('w_document') ?></label>
 							<select class="form-control" id="mv_doc_type" name="cli[doc_type_id]">
 								<?php foreach($doc_types as $item){
 									if ($item->id == $client->doc_type_id) $s = "selected"; else $s= ""; ?>
@@ -372,12 +372,12 @@
 							<div class="sys_msg" id="mv_doc_number_msg"></div>
 						</div>
 						<div class="form-group col-md-12">
-							<label><?= $this->lang->line('label_client') ?></label>
+							<label><?= $this->lang->line('w_client') ?></label>
 							<input type="text" class="form-control" id="mv_name" name="cli[name]" value="<?= $client->name ?>">
 							<div class="sys_msg" id="mv_name_msg"></div>
 						</div>
 						<div class="form-group col-md-12 mb-0">
-							<label><?= $this->lang->line('label_voucher') ?></label>
+							<label><?= $this->lang->line('w_voucher') ?></label>
 							<select class="form-control" name="voucher_type_id">
 								<?php foreach($voucher_types as $item){ ?>
 								<option value="<?= $item->id ?>"><?= $item->description ?></option>
@@ -408,14 +408,14 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title"><?= $this->lang->line('title_assign_appointment') ?></h5>
+				<h5 class="modal-title"><?= $this->lang->line('w_assign_appointment') ?></h5>
 				<button type="button" class="close" data-dismiss="modal"><span>×</span>
 				</button>
 			</div>
 			<div class="modal-body">
 				<div class="form-row">
 					<div class="form-group col-md-12">
-						<label><?= $this->lang->line('label_doc_number') ?></label>
+						<label><?= $this->lang->line('w_doc_number') ?></label>
 						<div class="input-group">
 							<input type="text" class="form-control" id="rs_appointment_doc_number" value="<?= $client->doc_number ?>">
 							<div class="input-group-append">
@@ -430,7 +430,7 @@
 							<thead>
 								<tr>
 									<th><strong>#</strong></th>
-									<th><strong><?= $this->lang->line('hd_reservations') ?></strong></th>
+									<th><strong><?= $this->lang->line('w_reservations') ?></strong></th>
 									<th></th>
 								</tr>
 							</thead>
@@ -451,14 +451,14 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title"><?= $this->lang->line('title_assign_surgery') ?></h5>
+				<h5 class="modal-title"><?= $this->lang->line('w_assign_surgery') ?></h5>
 				<button type="button" class="close" data-dismiss="modal"><span>×</span>
 				</button>
 			</div>
 			<div class="modal-body">
 				<div class="form-row">
 					<div class="form-group col-md-12">
-						<label><?= $this->lang->line('label_doc_number') ?></label>
+						<label><?= $this->lang->line('w_doc_number') ?></label>
 						<div class="input-group">
 							<input type="text" class="form-control" id="rs_surgery_doc_number" value="<?= $client->doc_number ?>">
 							<div class="input-group-append">
@@ -473,7 +473,7 @@
 							<thead>
 								<tr>
 									<th><strong>#</strong></th>
-									<th><strong><?= $this->lang->line('hd_reservations') ?></strong></th>
+									<th><strong><?= $this->lang->line('w_reservations') ?></strong></th>
 									<th></th>
 								</tr>
 							</thead>
@@ -495,7 +495,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title"><?= $this->lang->line('title_new_payment') ?></h5>
+				<h5 class="modal-title"><?= $this->lang->line('w_new_payment') ?></h5>
 				<button type="button" class="close" data-dismiss="modal"><span>×</span>
 				</button>
 			</div>
@@ -508,11 +508,11 @@
 					<input type="hidden" id="payment_balance" name="balance" value="0">
 					<div class="form-row">
 						<div class="form-group col-md-12 d-flex justify-content-between text-primary">
-							<h3 class="text-primary"><?= $this->lang->line('label_amount_to_pay') ?></h3>
+							<h3 class="text-primary"><?= $this->lang->line('w_amount_to_pay') ?></h3>
 							<h3 class="text-primary"><?= $sale->currency." ".number_format($sale->balance, 2) ?></h3>
 						</div>
 						<div class="form-group col-md-6">
-							<label><?= $this->lang->line('label_payment_method') ?></label>
+							<label><?= $this->lang->line('w_payment_method') ?></label>
 							<select class="form-control" name="payment_method_id">
 								<?php foreach($payment_method as $item){ ?>
 								<option value="<?= $item->id ?>"><?= $item->description ?></option>
@@ -521,7 +521,7 @@
 							<div class="sys_msg" id="payment_method_msg"></div>
 						</div>
 						<div class="form-group col-md-6">
-							<label><?= $this->lang->line('label_received') ?></label>
+							<label><?= $this->lang->line('w_received') ?></label>
 							<div class="input-group input-normal-o">
 								<div class="input-group-prepend">
 									<span class="input-group-text"><?= $sale->currency ?></span>
@@ -531,7 +531,7 @@
 							<div class="sys_msg" id="pay_received_msg"></div>
 						</div>
 						<div class="form-group col-md-6">
-							<label><?= $this->lang->line('label_change') ?></label>
+							<label><?= $this->lang->line('w_change') ?></label>
 							<div class="input-group input-normal-o">
 								<div class="input-group-prepend">
 									<span class="input-group-text"><?= $sale->currency ?></span>
@@ -541,7 +541,7 @@
 							<div class="sys_msg" id="pay_change_msg"></div>
 						</div>
 						<div class="form-group col-md-6">
-							<label><?= $this->lang->line('label_balance') ?></label>
+							<label><?= $this->lang->line('w_balance') ?></label>
 							<div class="input-group input-warning-o">
 								<div class="input-group-prepend">
 									<span class="input-group-text" style="background-color: #eee;"><?= $sale->currency ?></span>
@@ -565,12 +565,11 @@
 	</div>
 </div>
 <?php } ?>
-<input type="hidden" id="warning_apa" value="<?= $this->lang->line('warning_apa') ?>">
-<input type="hidden" id="warning_dpa" value="<?= $this->lang->line('warning_dpa') ?>">
-<input type="hidden" id="warning_csa" value="<?= $this->lang->line('warning_csa') ?>">
-<input type="hidden" id="warning_mvo" value="<?= $this->lang->line('warning_mvo') ?>">
-<input type="hidden" id="warning_mti" value="<?= $this->lang->line('warning_mti') ?>">
-<input type="hidden" id="warning_siu" value="<?= $this->lang->line('warning_siu') ?>">
-<input type="hidden" id="warning_svs" value="<?= $this->lang->line('warning_svs') ?>">
-<input type="hidden" id="warning_vvo" value="<?= $this->lang->line('warning_vvo') ?>">
+<input type="hidden" id="wm_payment_add" value="<?= $this->lang->line('wm_payment_add') ?>">
+<input type="hidden" id="wm_payment_delete" value="<?= $this->lang->line('wm_payment_delete') ?>">
+<input type="hidden" id="wm_sale_cancel" value="<?= $this->lang->line('wm_sale_cancel') ?>">
+<input type="hidden" id="wm_voucher_make" value="<?= $this->lang->line('wm_voucher_make') ?>">
+<input type="hidden" id="wm_medical_unassign" value="<?= $this->lang->line('wm_medical_unassign') ?>">
+<input type="hidden" id="wm_voucher_sunat" value="<?= $this->lang->line('wm_voucher_sunat') ?>">
+<input type="hidden" id="wm_voucher_void" value="<?= $this->lang->line('wm_voucher_void') ?>">
 <input type="hidden" id="btn_select_lang" value="<?= $this->lang->line('btn_select') ?>">

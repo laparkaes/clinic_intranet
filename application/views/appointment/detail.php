@@ -253,7 +253,7 @@
 	<input type="hidden" id="bmi_class_obesity_1" value="<?= $this->lang->line('w_bmi_class_obesity_1') ?>">
 	<input type="hidden" id="bmi_class_obesity_2" value="<?= $this->lang->line('w_bmi_class_obesity_2') ?>">
 	<input type="hidden" id="bmi_class_obesity_3" value="<?= $this->lang->line('w_bmi_class_obesity_3') ?>">
-	<input type="hidden" id="w_appointment_reschedule" value="<?= $this->lang->line('w_appointment_reschedule') ?>">
-	<input type="hidden" id="w_appointment_cancel" value="<?= $this->lang->line('w_appointment_cancel') ?>">
-	<input type="hidden" id="w_appointment_finish" value="<?= $this->lang->line('w_appointment_finish') ?>">
+	<input type="hidden" id="wm_appointment_reschedule" value="<?= $this->lang->line('wm_appointment_reschedule') ?>">
+	<input type="hidden" id="wm_appointment_cancel" value="<?= $this->lang->line('wm_appointment_cancel') ?>">
+	<input type="hidden" id="wm_appointment_finish" value="<?= $this->lang->line('wm_appointment_finish') ?>">
 </div>

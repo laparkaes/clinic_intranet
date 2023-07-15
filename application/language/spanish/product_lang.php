@@ -2,7 +2,7 @@
 $lang['products'] = 'Productos';
 
 //success message
-$lang["s_category_add"] = "Categoría ha sido creada.";
+$lang["s_category_add"]	= "Categoría ha sido creada.";
 $lang["s_category_update"] = "Categoría ha sido actualizada.";
 $lang["s_category_delete"] = "Categoría ha sido eliminada.";
 $lang["s_category_move"] = "Productos han sido movidos a la categoría elegida.";
@@ -28,17 +28,17 @@ $lang["e_category_no_product"] = "No hay ningun producto de categoría elegida."
 $lang["e_product_no_stock"] = "Producto no cuenta con stock.";
 
 //warning message
-$lang["w_category_add"] = "¿Desea agregar nueva categoría?";
-$lang["w_category_delete"] = "¿Desea eliminar categoría?";
-$lang["w_category_move"] = "¿Desea mover todos los productos a otra categoría? Este cambio no es reversible.";
-$lang["w_category_update"] = "Los productos también modificará su categoría. ¿Desea actualizar categoría?";
-$lang["w_image_delete"] = "¿Desea eliminar imagen?";
-$lang["w_image_main"] = "¿Desea configurar como imagen de producto?";
-$lang["w_option_add"] = "¿Desea agregar nueva opción del producto?";
-$lang["w_option_delete"] = "¿Desea eliminar opción del producto?";
-$lang["w_option_edit"] = "¿Desea actualizar opción del producto?";
-$lang["w_product_delete"] = "¿Seguro de eliminar producto?";
-$lang["w_product_register"] = "¿Desea registrar nuevo producto?";
+$lang["wm_category_add"] = "¿Desea agregar nueva categoría?";
+$lang["wm_category_delete"] = "¿Desea eliminar categoría?";
+$lang["wm_category_move"] = "¿Desea mover todos los productos a otra categoría? Este cambio no es reversible.";
+$lang["wm_category_update"] = "Los productos también modificará su categoría. ¿Desea actualizar categoría?";
+$lang["wm_image_delete"] = "¿Desea eliminar imagen?";
+$lang["wm_image_main"] = "¿Desea configurar como imagen de producto?";
+$lang["wm_option_add"] = "¿Desea agregar nueva opción del producto?";
+$lang["wm_option_delete"] = "¿Desea eliminar opción del producto?";
+$lang["wm_option_edit"] = "¿Desea actualizar opción del producto?";
+$lang["wm_product_delete"] = "¿Seguro de eliminar producto?";
+$lang["wm_product_register"] = "¿Desea registrar nuevo producto?";
 
 //button
 $lang['btn_categories'] = 'Categorías';

@@ -89,7 +89,7 @@ function select_item(){
 function calculate_payment(e, type){
 	if ((e.which == 13) || (e.which == 0)){
 		var total = $("#sale_total").val();
-		if (total == ""){ swal("error", $("#error_prsl").val()); return; }
+		if (total == ""){ swal("error", $("#e_item_select_least").val()); return; }
 		else total = parseFloat(total);
 		
 		var received = parseFloat($("#payment_received_v").val().replace(/,/g, ""));
@@ -201,12 +201,12 @@ function sl_product_delete(row_id){
 
 function sl_product_add(){
 	var item = $("#sl_pr_items").val();
-	if (item == ""){ swal("error", $("#error_sit").val()); return; }
+	if (item == ""){ swal("error", $("#e_item_select").val()); return; }
 	else item = jQuery.parseJSON(item);
 	
 	var op_currency = $("#op_currency").val();
 	if (op_currency == "") $("#op_currency").val(item.currency);
-	else if (op_currency != item.currency){ swal("error", $("#error_prlc").val()); return; }
+	else if (op_currency != item.currency){ swal("error", $("#e_list_currency").val()); return; }
 	
 	var qty = parseInt($("#sl_pr_quantity").val().replace(/,/g, ""));
 	var discount = parseFloat($("#sl_pr_udiscount").val().replace(/,/g, ""));
@@ -215,16 +215,16 @@ function sl_product_add(){
 	var opt_description = "";
 	var opt = $("#sl_pr_options").val();
 	
-	if (opt == ""){ if (item.type == "Producto"){ swal("error", $("#error_sio").val()); return; } }
+	if (opt == ""){ if (item.type == "Producto"){ swal("error", $("#e_item_option").val()); return; } }
 	else{
 		opt = jQuery.parseJSON(opt);
 		opt_id = opt.id;
 		opt_description = opt.description;
 		
-		if (qty > opt.stock){ swal("error", $("#error_psq").val()); return; }
+		if (qty > opt.stock){ swal("error", $("#e_item_stock").val()); return; }
 	}
 	
-	if ($('#sl_pr_' + item.id + '_' + opt_id).length > 0) { swal("error", $("#error_prl").val()); return; }
+	if ($('#sl_pr_' + item.id + '_' + opt_id).length > 0) { swal("error", $("#e_list_duplicate").val()); return; }
 	
 	if (qty < 1) qty = 1;
 	if (discount < 0 ) discount = 0;
@@ -251,7 +251,7 @@ function sl_product_add(){
 
 function add_sale(dom){
 	$("#form_sale .sys_msg").html("");
-	ajax_form_warning(dom, "sale/add", $("#warning_asa").val()).done(function(res) {
+	ajax_form_warning(dom, "sale/add", $("#wm_sale_add").val()).done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, res.move_to);
 	});

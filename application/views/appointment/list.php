@@ -217,5 +217,5 @@
 	</div>
 </div>
 <div class="d-none">
-	<input type="hidden" id="w_appointment_register" value="<?= $this->lang->line('w_appointment_register') ?>">
+	<input type="hidden" id="wm_appointment_register" value="<?= $this->lang->line('wm_appointment_register') ?>">
 </div>

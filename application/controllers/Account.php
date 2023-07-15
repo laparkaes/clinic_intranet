@@ -85,9 +85,9 @@ class Account extends CI_Controller {
 						$this->utility_lib->add_log("account_register", $a["email"]);
 						
 						$type = "success";
-						$msg = $this->lang->line('success_rac');
+						$msg = $this->lang->line('s_account_register');
 					}else $msg = $this->lang->line('error_internal');	
-				}else $msg = $this->lang->line('error_pra');
+				}else $msg = $this->lang->line('e_account_exists');
 			}else $msg = $this->lang->line('error_occurred');
 		}else $msg = $this->lang->line('error_no_permission');
 		
@@ -107,9 +107,9 @@ class Account extends CI_Controller {
 						$this->utility_lib->add_log("account_delete", $account->email);
 						
 						$type = "success";
-						$msg = $this->lang->line('success_dac');
+						$msg = $this->lang->line('s_account_delete');
 					}else $msg = $this->lang->line('error_internal');
-				}else $msg = $this->lang->line('error_nrma');
+				}else $msg = $this->lang->line('e_master_account');
 			}else $msg = $this->lang->line('error_internal_refresh');
 		}else $msg = $this->lang->line('error_no_permission');
 		
@@ -129,7 +129,7 @@ class Account extends CI_Controller {
 				
 				if ($this->general->update("account", $account->id, ["password" => password_hash($pw, PASSWORD_BCRYPT)])){
 					$type = "success";
-					$msg = str_replace("&pw&", $pw, $this->lang->line('success_uap'));
+					$msg = str_replace("&pw&", $pw, $this->lang->line('s_password_update'));
 				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line('error_internal_refresh');
 		}else $msg = $this->lang->line('error_no_permission');

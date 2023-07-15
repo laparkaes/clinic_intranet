@@ -24,13 +24,13 @@ function register_account(dom){
 }
 
 function remove_account(dom){
-	ajax_simple_warning({id: $(dom).val()}, "account/remove", $("#warning_rac").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "account/remove", $("#wm_account_remove").val()).done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function reset_password(dom){
-	ajax_simple_warning({id: $(dom).val()}, "account/reset_password", $("#warning_rpa").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "account/reset_password", $("#wm_password_reset").val()).done(function(res) {
 		swal(res.type, res.msg);
 	});
 }

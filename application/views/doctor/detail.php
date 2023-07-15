@@ -590,6 +590,6 @@
 </div>
 <div class="d-none">
 	<input type="hidden" id="doctor_id" value="<?= $person->id ?>">
-	<input type="hidden" id="w_disable_doctor" value="<?= $this->lang->line('w_disable_doctor') ?>">
-	<input type="hidden" id="w_enable_doctor" value="<?= $this->lang->line('w_enable_doctor') ?>">
+	<input type="hidden" id="wm_disable_doctor" value="<?= $this->lang->line('wm_disable_doctor') ?>">
+	<input type="hidden" id="wm_enable_doctor" value="<?= $this->lang->line('wm_enable_doctor') ?>">
 </div>

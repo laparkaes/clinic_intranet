@@ -2,11 +2,11 @@
 $lang['surgery'] = 'Cirugía';
 $lang['surgeries'] = 'Cirugías';
 
-//message
-$lang['w_surgery_cancel'] = '¿Desea cancelar cirugía?';
-$lang['w_surgery_reschedule'] = '¿Desea reprogramar cirugía?';
-$lang['w_surgery_finish'] = '¿Desea finalizar cirugía?';
-$lang['w_surgery_register'] = '¿Desea generar nueva cirugía?';
+//warning message
+$lang['wm_surgery_cancel'] = '¿Desea cancelar cirugía?';
+$lang['wm_surgery_reschedule'] = '¿Desea reprogramar cirugía?';
+$lang['wm_surgery_finish'] = '¿Desea finalizar cirugía?';
+$lang['wm_surgery_register'] = '¿Desea generar nueva cirugía?';
 
 //error message
 $lang['e_enter_result'] = 'Ingrese resultado.';

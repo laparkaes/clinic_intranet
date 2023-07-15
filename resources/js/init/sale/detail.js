@@ -46,25 +46,25 @@ function calculate_payment(e, type){
 }
 
 function add_payment(dom){
-	ajax_form_warning(dom, "sale/add_payment", $("#warning_apa").val()).done(function(res) {
+	ajax_form_warning(dom, "sale/add_payment", $("#wm_payment_add").val()).done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function delete_payment(dom){
-	ajax_simple_warning({id: $(dom).val()}, "sale/delete_payment", $("#warning_dpa").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "sale/delete_payment", $("#wm_payment_delete").val()).done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function cancel_sale(dom){
-	ajax_simple_warning({id: $(dom).val()}, "sale/cancel_sale", $("#warning_csa").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "sale/cancel_sale", $("#wm_sale_cancel").val()).done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function make_voucher(dom){
-	ajax_form_warning(dom, "sale/make_voucher", $("#warning_mvo").val()).done(function(res) {
+	ajax_form_warning(dom, "sale/make_voucher", $("#wm_voucher_make").val()).done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
@@ -122,19 +122,19 @@ function search_reservations(attn){
 
 function unassign_reservation(prod_id){
 	var data = {id: prod_id};
-	ajax_simple_warning(data, "sale/unassign_reservation", $("#warning_siu").val()).done(function(res) {
+	ajax_simple_warning(data, "sale/unassign_reservation", $("#wm_medical_unassign").val()).done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function send_sunat(id){
-	ajax_simple_warning({id: id}, "sale/send_sunat", $("#warning_svs").val()).done(function(res) {
+	ajax_simple_warning({id: id}, "sale/send_sunat", $("#wm_voucher_sunat").val()).done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function void_voucher(dom){
-	ajax_form_warning(dom, "sale/void_voucher", $("#warning_vvo").val()).done(function(res) {
+	ajax_form_warning(dom, "sale/void_voucher", $("#wm_voucher_void").val()).done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, window.location.href);
 	});

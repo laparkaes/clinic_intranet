@@ -301,8 +301,8 @@
 		</div>
 	</div>
 </div>
-<input type="hidden" id="w_category_add" value="<?= $this->lang->line('w_category_add') ?>">
-<input type="hidden" id="w_category_update" value="<?= $this->lang->line('w_category_update') ?>">
-<input type="hidden" id="w_category_delete" value="<?= $this->lang->line('w_category_delete') ?>">
-<input type="hidden" id="w_category_move" value="<?= $this->lang->line('w_category_move') ?>">
-<input type="hidden" id="w_product_register" value="<?= $this->lang->line('w_product_register') ?>">
+<input type="hidden" id="wm_category_add" value="<?= $this->lang->line('wm_category_add') ?>">
+<input type="hidden" id="wm_category_update" value="<?= $this->lang->line('wm_category_update') ?>">
+<input type="hidden" id="wm_category_delete" value="<?= $this->lang->line('wm_category_delete') ?>">
+<input type="hidden" id="wm_category_move" value="<?= $this->lang->line('wm_category_move') ?>">
+<input type="hidden" id="wm_product_register" value="<?= $this->lang->line('wm_product_register') ?>">

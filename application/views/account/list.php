@@ -19,7 +19,7 @@
 			<input type="hidden" value="1" name="page">
 			<div class="form-group col-sm-4">
 				<select class="form-control" id="sl_role_id" name="role_id">
-					<option value=""><?= $this->lang->line('sl_role') ?></option>
+					<option value=""><?= $this->lang->line('w_role') ?></option>
 					<?php foreach($roles as $item){
 						if ($item->id == $f_url["role_id"]) $s = "selected"; else $s = ""; ?>
 					<option value="<?= $item->id ?>" <?= $s ?>><?= $this->lang->line($item->name) ?></option>
@@ -27,7 +27,7 @@
 				</select>
 			</div>
 			<div class="form-group col-sm-6">
-				<input type="text" class="form-control" id="inp_person_name" name="person_name" placeholder="<?= $this->lang->line('txt_person_name') ?>" value="<?= $f_url["person_name"] ?>">
+				<input type="text" class="form-control" id="inp_person_name" name="person_name" placeholder="<?= $this->lang->line('w_person_name') ?>" value="<?= $f_url["person_name"] ?>">
 			</div>
 			<div class="form-group col-sm-2">
 				<button type="submit" class="btn btn-primary btn-block">
@@ -48,9 +48,9 @@
 							<thead>
 								<tr>
 									<th><strong>#</strong></th>
-									<th><strong><?= $this->lang->line('hd_role') ?></strong></th>
-									<th><strong><?= $this->lang->line('hd_email') ?></strong></th>
-									<th><strong><?= $this->lang->line('hd_name') ?></strong></th>
+									<th><strong><?= $this->lang->line('w_role') ?></strong></th>
+									<th><strong><?= $this->lang->line('w_email') ?></strong></th>
+									<th><strong><?= $this->lang->line('w_name') ?></strong></th>
 									<th></th>
 								</tr>
 							</thead>
@@ -83,7 +83,7 @@
 						</div>
 					</div>
 					<?php }else{ ?>
-					<h5 class="text-danger mt-3"><?= $this->lang->line('msg_no_accounts') ?></h5>
+					<h5 class="text-danger mt-3"><?= $this->lang->line('t_no_accounts') ?></h5>
 					<?php } ?>
 				</div>
 			</div>
@@ -91,11 +91,11 @@
 				<div class="col-md-12">
 					<form class="form-row" id="form_register_account" action="#">
 						<div class="col-md-6 col-sm-12">
-							<h5><?= $this->lang->line('title_personal_info') ?></h5>
+							<h5><?= $this->lang->line('w_personal_info') ?></h5>
 							<div class="form-row">
 							
 								<div class="form-group col-md-6">
-									<label><?= $this->lang->line('lb_document') ?></label>
+									<label><?= $this->lang->line('w_document') ?></label>
 									<select class="form-control" id="ra_doc_type_id" name="p[doc_type_id]">
 										<?php foreach($doc_types as $d){ if ($d->sunat_code){ ?>
 										<option value="<?= $d->id ?>"><?= $d->description ?></option>
@@ -106,7 +106,7 @@
 								<div class="form-group col-md-6">
 									<label class="d-md-block d-none">&nbsp;</label>
 									<div class="input-group">
-										<input type="text" class="form-control" id="ra_doc_number" name="p[doc_number]" placeholder="<?= $this->lang->line('lb_number') ?>">
+										<input type="text" class="form-control" id="ra_doc_number" name="p[doc_number]" placeholder="<?= $this->lang->line('w_number') ?>">
 										<div class="input-group-append">
 											<button class="btn btn-primary border-0" type="button" id="btn_search_person_ra">
 												<i class="fas fa-search"></i>
@@ -116,22 +116,22 @@
 									<div class="sys_msg" id="ra_doc_number_msg"></div>
 								</div>
 								<div class="form-group col-md-8">
-									<label><?= $this->lang->line('lb_name') ?></label>
+									<label><?= $this->lang->line('w_name') ?></label>
 									<input type="text" class="form-control" id="ra_name" name="p[name]">
 									<div class="sys_msg" id="ra_name_msg"></div>
 								</div>
 								<div class="form-group col-md-4">
-									<label><?= $this->lang->line('lb_tel') ?></label>
+									<label><?= $this->lang->line('w_tel') ?></label>
 									<input type="text" class="form-control" id="ra_tel" name="p[tel]">
 									<div class="sys_msg" id="ra_tel_msg"></div>
 								</div>
 							</div>
 						</div>
 						<div class="col-md-6 col-sm-12">
-							<h5><?= $this->lang->line('title_account') ?></h5>
+							<h5><?= $this->lang->line('account') ?></h5>
 							<div class="form-row">
 								<div class="form-group col-md-4">
-									<label><?= $this->lang->line('lb_role') ?></label>
+									<label><?= $this->lang->line('w_role') ?></label>
 									<select class="form-control" name="a[role_id]">
 										<option value="" selected>--</option>
 										<?php foreach($roles as $item){ ?>
@@ -141,17 +141,17 @@
 									<div class="sys_msg" id="ra_role_msg"></div>
 								</div>
 								<div class="form-group col-md-8">
-									<label><?= $this->lang->line('lb_email') ?></label>
+									<label><?= $this->lang->line('w_email') ?></label>
 									<input type="email" class="form-control" id="ra_email" name="a[email]" placeholder="email@example.com">
 									<div class="sys_msg" id="ra_email_msg"></div>
 								</div>
 								<div class="form-group col-md-6">
-									<label><?= $this->lang->line('lb_password') ?></label>
+									<label><?= $this->lang->line('w_password') ?></label>
 									<input type="password" class="form-control" name="a[password]">
 									<div class="sys_msg" id="ra_password_msg"></div>
 								</div>
 								<div class="form-group col-md-6">
-									<label><?= $this->lang->line('lb_confirm') ?></label>
+									<label><?= $this->lang->line('w_confirm') ?></label>
 									<input type="password" class="form-control" name="a[confirm]">
 									<div class="sys_msg" id="ra_confirm_msg"></div>
 								</div>
@@ -167,5 +167,5 @@
 		</div>
 	</div>
 </div>
-<input type="hidden" id="warning_rac" value="<?= $this->lang->line('warning_rac') ?>">
-<input type="hidden" id="warning_rpa" value="<?= $this->lang->line('warning_rpa') ?>">
+<input type="hidden" id="wm_account_remove" value="<?= $this->lang->line('wm_account_remove') ?>">
+<input type="hidden" id="wm_password_reset" value="<?= $this->lang->line('wm_password_reset') ?>">

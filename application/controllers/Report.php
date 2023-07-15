@@ -158,20 +158,20 @@ class Report extends CI_Controller {
 		foreach($specialty as $item) $specialty_arr[$item->id] = $item->name;
 		
 		$headers = [
-			$this->lang->line('hd_id'),
-			$this->lang->line('hd_registed_at'),
-			$this->lang->line('hd_status'),
-			$this->lang->line('hd_specialty'),
-			$this->lang->line('hd_license'),
-			$this->lang->line('hd_name'),
-			$this->lang->line('hd_doc_type'),
-			$this->lang->line('hd_doc_number'),
-			$this->lang->line('hd_tel'),
-			$this->lang->line('hd_email'),
-			$this->lang->line('hd_address'),
-			$this->lang->line('hd_birthday'),
-			$this->lang->line('hd_sex'),
-			$this->lang->line('hd_blood_type')
+			$this->lang->line('w_id'),
+			$this->lang->line('w_registed_at'),
+			$this->lang->line('w_status'),
+			$this->lang->line('w_specialty'),
+			$this->lang->line('w_license'),
+			$this->lang->line('w_name'),
+			$this->lang->line('w_doc_type'),
+			$this->lang->line('w_doc_number'),
+			$this->lang->line('w_tel'),
+			$this->lang->line('w_email'),
+			$this->lang->line('w_address'),
+			$this->lang->line('w_birthday'),
+			$this->lang->line('w_sex'),
+			$this->lang->line('w_blood_type')
 		];
 		
 		$spreadsheet = new Spreadsheet();
@@ -228,17 +228,17 @@ class Report extends CI_Controller {
 		foreach($doc_type as $item) $doc_type_arr[$item->id] = $item->description;
 		
 		$headers = [
-			$this->lang->line('hd_id'),
-			$this->lang->line('hd_registed_at'),
-			$this->lang->line('hd_name'),
-			$this->lang->line('hd_doc_type'),
-			$this->lang->line('hd_doc_number'),
-			$this->lang->line('hd_tel'),
-			$this->lang->line('hd_email'),
-			$this->lang->line('hd_address'),
-			$this->lang->line('hd_birthday'),
-			$this->lang->line('hd_sex'),
-			$this->lang->line('hd_blood_type')
+			$this->lang->line('w_id'),
+			$this->lang->line('w_registed_at'),
+			$this->lang->line('w_name'),
+			$this->lang->line('w_doc_type'),
+			$this->lang->line('w_doc_number'),
+			$this->lang->line('w_tel'),
+			$this->lang->line('w_email'),
+			$this->lang->line('w_address'),
+			$this->lang->line('w_birthday'),
+			$this->lang->line('w_sex'),
+			$this->lang->line('w_blood_type')
 		];
 		
 		$spreadsheet = new Spreadsheet();
@@ -302,15 +302,15 @@ class Report extends CI_Controller {
 		foreach($people as $item) $people_arr[$item->id] = $item->name;
 		
 		$headers = [
-			$this->lang->line('hd_id'),
-			$this->lang->line('hd_registed_at'),
-			$this->lang->line('hd_status'),
-			$this->lang->line('hd_from'),
-			$this->lang->line('hd_to'),
-			$this->lang->line('hd_specialty'),
-			$this->lang->line('hd_doctor'),
-			$this->lang->line('hd_patient'),
-			$this->lang->line('hd_remark'),
+			$this->lang->line('w_id'),
+			$this->lang->line('w_registed_at'),
+			$this->lang->line('w_status'),
+			$this->lang->line('w_from'),
+			$this->lang->line('w_to'),
+			$this->lang->line('w_specialty'),
+			$this->lang->line('w_doctor'),
+			$this->lang->line('w_patient'),
+			$this->lang->line('w_remark'),
 		];
 		
 		$spreadsheet = new Spreadsheet();
@@ -368,17 +368,17 @@ class Report extends CI_Controller {
 		foreach($people as $item) $people_arr[$item->id] = $item->name;
 		
 		$headers = [
-			$this->lang->line('hd_id'),
-			$this->lang->line('hd_registed_at'),
-			$this->lang->line('hd_status'),
-			$this->lang->line('hd_room'),
-			$this->lang->line('hd_from'),
-			$this->lang->line('hd_to'),
-			$this->lang->line('hd_specialty'),
-			$this->lang->line('hd_doctor'),
-			$this->lang->line('hd_patient'),
-			$this->lang->line('hd_remark'),
-			$this->lang->line('hd_result'),
+			$this->lang->line('w_id'),
+			$this->lang->line('w_registed_at'),
+			$this->lang->line('w_status'),
+			$this->lang->line('w_room'),
+			$this->lang->line('w_from'),
+			$this->lang->line('w_to'),
+			$this->lang->line('w_specialty'),
+			$this->lang->line('w_doctor'),
+			$this->lang->line('w_patient'),
+			$this->lang->line('w_remark'),
+			$this->lang->line('w_result'),
 		];
 		
 		$spreadsheet = new Spreadsheet();
@@ -423,21 +423,21 @@ class Report extends CI_Controller {
 		foreach($currency as $item) $currency_arr[$item->id] = $item->description;
 		
 		$headers = [
-			$this->lang->line('hd_id'),
-			$this->lang->line('hd_registed_at'),
-			$this->lang->line('hd_last_update'),
-			$this->lang->line('hd_on_sale'),
-			$this->lang->line('hd_category'),
-			$this->lang->line('hd_type'),
-			$this->lang->line('hd_code'),
-			$this->lang->line('hd_description'),
-			$this->lang->line('hd_stock'),
-			$this->lang->line('hd_options_stock'),
-			$this->lang->line('hd_currency'),
-			$this->lang->line('hd_price'),
-			$this->lang->line('hd_value'),
-			$this->lang->line('hd_vat'),
-			$this->lang->line('hd_sold_qty'),
+			$this->lang->line('w_id'),
+			$this->lang->line('w_registed_at'),
+			$this->lang->line('w_last_update'),
+			$this->lang->line('w_on_sale'),
+			$this->lang->line('w_category'),
+			$this->lang->line('w_type'),
+			$this->lang->line('w_code'),
+			$this->lang->line('w_description'),
+			$this->lang->line('w_stock'),
+			$this->lang->line('w_options_stock'),
+			$this->lang->line('w_currency'),
+			$this->lang->line('w_price'),
+			$this->lang->line('w_value'),
+			$this->lang->line('w_vat'),
+			$this->lang->line('w_sold_qty'),
 		];
 		
 		$spreadsheet = new Spreadsheet();
@@ -520,20 +520,20 @@ class Report extends CI_Controller {
 		foreach($people as $item) $people_arr[$item->id] = $item->name;
 		
 		$headers = [
-			$this->lang->line('hd_id'),
-			$this->lang->line('hd_registed_at'),
-			$this->lang->line('hd_last_update'),
-			$this->lang->line('hd_status'),
-			$this->lang->line('hd_type'),
-			$this->lang->line('hd_client'),
-			$this->lang->line('hd_currency'),
-			$this->lang->line('hd_total'),
-			$this->lang->line('hd_amount'),
-			$this->lang->line('hd_vat'),
-			$this->lang->line('hd_paid'),
-			$this->lang->line('hd_balance'),
-			$this->lang->line('hd_detail_payment'),
-			$this->lang->line('hd_products')
+			$this->lang->line('w_id'),
+			$this->lang->line('w_registed_at'),
+			$this->lang->line('w_last_update'),
+			$this->lang->line('w_status'),
+			$this->lang->line('w_type'),
+			$this->lang->line('w_client'),
+			$this->lang->line('w_currency'),
+			$this->lang->line('w_total'),
+			$this->lang->line('w_amount'),
+			$this->lang->line('w_vat'),
+			$this->lang->line('w_paid'),
+			$this->lang->line('w_balance'),
+			$this->lang->line('w_detail_payment'),
+			$this->lang->line('w_products')
 		];
 		
 		$spreadsheet = new Spreadsheet();
@@ -609,24 +609,24 @@ class Report extends CI_Controller {
 		foreach($people as $item) $people_arr[$item->id] = $item->name;
 		
 		$headers = [
-			$this->lang->line('hd_id'),
-			$this->lang->line('hd_registed_at'),
-			$this->lang->line('hd_status'),
-			$this->lang->line('hd_sale_id'),
-			$this->lang->line('hd_client'),
-			$this->lang->line('hd_type'),
-			$this->lang->line('hd_number'),
-			$this->lang->line('hd_method'),
-			$this->lang->line('hd_currency'),
-			$this->lang->line('hd_total'),
-			$this->lang->line('hd_amount'),
-			$this->lang->line('hd_vat'),
-			$this->lang->line('hd_paid'),
-			$this->lang->line('hd_change'),
-			$this->lang->line('hd_leyend'),
-			$this->lang->line('hd_hash'),
-			$this->lang->line('hd_sunat_sent'),
-			$this->lang->line('hd_sunat_msg'),
+			$this->lang->line('w_id'),
+			$this->lang->line('w_registed_at'),
+			$this->lang->line('w_status'),
+			$this->lang->line('w_sale_id'),
+			$this->lang->line('w_client'),
+			$this->lang->line('w_type'),
+			$this->lang->line('w_number'),
+			$this->lang->line('w_method'),
+			$this->lang->line('w_currency'),
+			$this->lang->line('w_total'),
+			$this->lang->line('w_amount'),
+			$this->lang->line('w_vat'),
+			$this->lang->line('w_paid'),
+			$this->lang->line('w_change'),
+			$this->lang->line('w_leyend'),
+			$this->lang->line('w_hash'),
+			$this->lang->line('w_sunat_sent'),
+			$this->lang->line('w_sunat_msg'),
 		];
 		
 		$spreadsheet = new Spreadsheet();
@@ -703,11 +703,11 @@ class Report extends CI_Controller {
 		foreach($code as $item) $code_arr[$item->id] = $item->code;
 		
 		$headers = [
-			$this->lang->line('hd_id'),
-			$this->lang->line('hd_registed_at'),
-			$this->lang->line('hd_account'),
-			$this->lang->line('hd_activity'),
-			$this->lang->line('hd_detail'),
+			$this->lang->line('w_id'),
+			$this->lang->line('w_registed_at'),
+			$this->lang->line('w_account'),
+			$this->lang->line('w_activity'),
+			$this->lang->line('w_detail'),
 		];
 		
 		$spreadsheet = new Spreadsheet();
@@ -742,12 +742,12 @@ class Report extends CI_Controller {
 		foreach($role as $item) $role_arr[$item->id] = $item->name;
 		
 		$headers = [
-			$this->lang->line('hd_id'),
-			$this->lang->line('hd_registed_at'),
-			$this->lang->line('hd_last_access'),
-			$this->lang->line('hd_role'),
-			$this->lang->line('hd_name'),
-			$this->lang->line('hd_email'),
+			$this->lang->line('w_id'),
+			$this->lang->line('w_registed_at'),
+			$this->lang->line('w_last_access'),
+			$this->lang->line('w_role'),
+			$this->lang->line('w_name'),
+			$this->lang->line('w_email'),
 		];
 		
 		$spreadsheet = new Spreadsheet();

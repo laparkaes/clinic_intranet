@@ -65,10 +65,10 @@ class Sale extends CI_Controller {
 				$item->voucher = $this->general->structure("voucher");
 				if ($item->status->code === "canceled"){
 					$item->voucher->color = "success";
-					$item->voucher->sunat_msg = $this->lang->line('msg_canceled_sale');
+					$item->voucher->sunat_msg = $this->lang->line('t_canceled_sale');
 				}else{
 					$item->voucher->color = "warning";
-					$item->voucher->sunat_msg = $this->lang->line('msg_need_send_sunat');
+					$item->voucher->sunat_msg = $this->lang->line('t_need_send_sunat');
 				}
 			}
 		}
@@ -179,7 +179,7 @@ class Sale extends CI_Controller {
 					
 					if ($this->general->update("sale", $sale_id, $sale_data)){
 						$type = "success";
-						$msg = $this->lang->line('success_isa');
+						$msg = $this->lang->line('s_sale_add');
 						$move_to = base_url()."sale/detail/".$sale_id;
 					}
 				}
@@ -245,7 +245,7 @@ class Sale extends CI_Controller {
 			$item->path = null;
 			if(strpos(strtoupper($item->product->description), strtoupper("consulta")) !== false){
 				$appo_qty++;
-				$item->type = $this->lang->line('txt_appointment');
+				$item->type = $this->lang->line('w_appointment');
 				if ($item->appointment_id) $item->path = base_url()."appointment/detail/".$item->appointment_id;
 				
 				if ($item->appointment_id){
@@ -259,7 +259,7 @@ class Sale extends CI_Controller {
 				}
 			}elseif(strpos(strtoupper($item->product->category), strtoupper("cirugía")) !== false){
 				$surg_qty++;
-				$item->type = $this->lang->line('txt_surgery');
+				$item->type = $this->lang->line('w_surgery');
 				if ($item->surgery_id) $item->path = base_url()."surgery/detail/".$item->surgery_id;
 				
 				if ($item->surgery_id){
@@ -288,8 +288,8 @@ class Sale extends CI_Controller {
 		}
 		
 		if ($voucher->sunat_sent === null){
-			if ($sale->status->code !== "canceled") $voucher->sunat_msg = $this->lang->line('msg_no_voucher');
-			else $voucher->sunat_msg = $this->lang->line('msg_canceled_sale');
+			if ($sale->status->code !== "canceled") $voucher->sunat_msg = $this->lang->line('t_no_voucher');
+			else $voucher->sunat_msg = $this->lang->line('t_canceled_sale');
 		}
 		
 		$data = array(
@@ -343,7 +343,7 @@ class Sale extends CI_Controller {
 			$msg = null;
 		}else{
 			$type = "error";
-			$msg = $this->lang->line('error_nre');
+			$msg = $this->lang->line('e_no_reservation');
 		}
 		
 		header('Content-Type: application/json');
@@ -360,8 +360,8 @@ class Sale extends CI_Controller {
 				$this->general->update($data["field"], $data["attn_id"], ["status_id" => $s_confirmed->id]);
 				
 				$type = "success";
-				if ("appointment" === $data["field"]) $msg = $this->lang->line('success_apa');
-				else $msg = $this->lang->line('success_sas');
+				if ("appointment" === $data["field"]) $msg = $this->lang->line('s_appointment_assigned');
+				else $msg = $this->lang->line('s_surgery_assigned');
 			}else $msg = $this->lang->line('error_internal');
 		}else $msg = $this->lang->line('error_no_permission');
 		
@@ -382,7 +382,7 @@ class Sale extends CI_Controller {
 				if ($sale_prod->surgery_id) $this->general->update("surgery", $sale_prod->surgery_id, $data);
 				
 				$type = "success";
-				$msg = $this->lang->line('success_siu');
+				$msg = $this->lang->line('s_item_unassign');
 			}else $msg = $this->lang->line('error_internal');
 		}else $msg = $this->lang->line('error_no_permission');
 		
@@ -410,9 +410,9 @@ class Sale extends CI_Controller {
 					$this->utility_lib->add_log("payment_register", $this->lang->line('sale')." #".$sale->id);
 					
 					$type = "success";
-					$msg = $this->lang->line("success_ipa");
+					$msg = $this->lang->line("s_payment_add");
 				}else $msg = $this->lang->line("error_internal");
-			}else $msg = $this->lang->line("error_bup");
+			}else $msg = $this->lang->line("e_balance_update");
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -430,7 +430,7 @@ class Sale extends CI_Controller {
 				$this->utility_lib->add_log("payment_delete", $this->lang->line('sale')." #".$payment->sale_id);
 				
 				$type = "success";
-				$msg = $this->lang->line("success_dpa");
+				$msg = $this->lang->line("s_payment_delete");
 			}else $msg = $this->lang->line("error_internal");
 		}else $msg = $this->lang->line('error_no_permission');
 		
@@ -473,10 +473,10 @@ class Sale extends CI_Controller {
 						$this->utility_lib->add_log("sale_cancel", $this->lang->line('sale')." #".$sale->id);
 						
 						$type = "success";
-						$msg = $this->lang->line("success_csa");
+						$msg = $this->lang->line("s_sale_cancel");
 					}else $msg = $this->lang->line("error_internal");
-				}else $msg = $this->lang->line('error_sac');
-			}else $msg = $this->lang->line('error_vex');
+				}else $msg = $this->lang->line('e_sale_cenceled');
+			}else $msg = $this->lang->line('e_voucher_exists');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -589,8 +589,8 @@ class Sale extends CI_Controller {
 							
 							$this->general->update("voucher", $voucher_id, $res);
 						}else $msg = $this->lang->line('error_internal');
-					}else $msg = $this->lang->line('error_sba');
-				}else $this->lang->line('error_voe');
+					}else $msg = $this->lang->line('e_balance_pending');
+				}else $this->lang->line('e_voucher_exist');
 			}else $msg = $this->lang->line('error_occurred');
 		}else $msg = $this->lang->line('error_no_permission');
 		
@@ -721,7 +721,7 @@ class Sale extends CI_Controller {
 						$this->general->update("sale", $voucher->sale_id, ["voucher_id" => null]);
 						
 						$type = "success";
-						$msg = $res["message"];
+						$msg = $this->lang->line("s_voucher_voided")."<br/>".$res["message"];
 					}else $msg = $this->lang->line("error_internal");
 				}else $msg = $this->lang->line('error_try_again')."<br/>".$res["message"];
 			}else $msg = $this->lang->line('error_occurred');

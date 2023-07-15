@@ -1,5 +1,5 @@
 function delete_patient_file(dom){
-	ajax_simple_warning({id: $(dom).val()}, "patient/delete_file", $("#w_delete_file").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "patient/delete_file", $("#wm_delete_file").val()).done(function(res) {
 		//set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
@@ -45,7 +45,7 @@ function sur_set_doctor_sl(dom){
 
 function register_appointment(dom){
 	$("#add_appointment_form .sys_msg").html("");
-	ajax_form_warning(dom, "appointment/register", $("#w_register_app").val()).done(function(res) {
+	ajax_form_warning(dom, "appointment/register", $("#wm_register_app").val()).done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, res.move_to);
 	});
@@ -53,7 +53,7 @@ function register_appointment(dom){
 
 function register_surgery(dom){
 	$("#sur_register_form .sys_msg").html("");
-	ajax_form_warning(dom, "surgery/register", $("#w_register_sur").val()).done(function(res) {
+	ajax_form_warning(dom, "surgery/register", $("#wm_register_sur").val()).done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, res.move_to);
 	});

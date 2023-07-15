@@ -2,7 +2,7 @@
 	<div class="row page-titles mx-0">
 		<div class="col-sm-6 p-md-0">
 			<div class="welcome-text">
-				<h4><?= $this->lang->line("setting") ?></h4>
+				<h4><?= $this->lang->line('setting') ?></h4>
 			</div>
 		</div>
 	</div>
@@ -14,32 +14,32 @@
 				<ul class="nav nav-tabs">
 					<li class="nav-item">
 						<a class="nav-link active" data-toggle="tab" href="#bl_company_admin">
-							<i class="fal fa-building mr-3"></i><?= $this->lang->line("title_company") ?>
+							<i class="fal fa-building mr-3"></i><?= $this->lang->line('w_company') ?>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#bl_laboratory_admin">
-							<i class="fal fa-vial mr-3"></i><?= $this->lang->line("title_laboratory") ?>
+							<i class="fal fa-vial mr-3"></i><?= $this->lang->line('w_laboratory') ?>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#bl_image_admin">
-							<i class="fal fa-x-ray mr-3"></i><?= $this->lang->line("title_image") ?>
+							<i class="fal fa-x-ray mr-3"></i><?= $this->lang->line('w_image') ?>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#bl_medicine_admin">
-							<i class="fal fa-pills mr-3"></i><?= $this->lang->line("title_medicine") ?>
+							<i class="fal fa-pills mr-3"></i><?= $this->lang->line('w_medicine') ?>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#bl_access_admin">
-							<i class="fal fa-lock-alt mr-3"></i><?= $this->lang->line("title_access") ?>
+							<i class="fal fa-lock-alt mr-3"></i><?= $this->lang->line('w_access') ?>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#bl_history_admin">
-							<i class="fal fa-history mr-3"></i><?= $this->lang->line("title_log") ?>
+							<i class="fal fa-history mr-3"></i><?= $this->lang->line('w_log') ?>
 						</a>
 					</li>
 				</ul>
@@ -47,10 +47,10 @@
 					<div class="tab-pane fade show active" id="bl_company_admin">
 						<form action="#" id="form_update_company_data" class="row">
 							<div class="col-md-12">
-								<h5 class="text-primary mb-3"><?= $this->lang->line('title_company_data') ?></h5>
+								<h5 class="text-primary mb-3"><?= $this->lang->line('w_company_data') ?></h5>
 								<div class="form-row">
 									<div class="form-group col-md-4">
-										<label><?= $this->lang->line('lb_tax_id') ?></label>
+										<label><?= $this->lang->line('w_tax_id') ?></label>
 										<div class="input-group">
                                             <input type="text" class="form-control" id="uc_tax_id" value="<?= $company->tax_id ?>" name="tax_id">
                                             <div class="input-group-append">
@@ -62,31 +62,31 @@
 										<div class="sys_msg" id="uc_tax_id_msg"></div>
 									</div>
 									<div class="form-group col-md-8">
-										<label><?= $this->lang->line('lb_name') ?></label>
+										<label><?= $this->lang->line('w_name') ?></label>
 										<input type="text" class="form-control" id="uc_name" value="<?= $company->name ?>" name="name">
 										<div class="sys_msg" id="uc_name_msg"></div>
 									</div>
 									<div class="form-group col-md-8">
-										<label><?= $this->lang->line('lb_email') ?></label>
+										<label><?= $this->lang->line('w_email') ?></label>
 										<input type="text" class="form-control" id="uc_email" value="<?= $company->email ?>" name="email">
 										<div class="sys_msg" id="uc_email_msg"></div>
 									</div>
 									<div class="form-group col-md-4">
-										<label><?= $this->lang->line('lb_tel') ?></label>
+										<label><?= $this->lang->line('w_tel') ?></label>
 										<input type="text" class="form-control" id="uc_tel" value="<?= $company->tel ?>" name="tel">
 										<div class="sys_msg" id="uc_tel_msg"></div>
 									</div>
 									<div class="form-group col-md-8">
-										<label><?= $this->lang->line('lb_address') ?></label>
+										<label><?= $this->lang->line('w_address') ?></label>
 										<input type="text" class="form-control" id="uc_address" value="<?= $company->address ?>" name="address">
 										<div class="sys_msg" id="uc_address_msg"></div>
 									</div>
 									<div class="form-group col-md-4">
-										<label><?= $this->lang->line('lb_urbanization') ?></label>
+										<label><?= $this->lang->line('w_urbanization') ?></label>
 										<input type="text" class="form-control" id="uc_urbanization" value="<?= $company->urbanization ?>" name="urbanization">
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_department') ?></label>
+										<label><?= $this->lang->line('w_department') ?></label>
 										<select class="form-control" id="uc_department_id" name="department_id">
 											<option value="">-</option>
 											<?php foreach($departments as $item){
@@ -98,7 +98,7 @@
 										<div class="sys_msg" id="uc_department_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_province') ?></label>
+										<label><?= $this->lang->line('w_province') ?></label>
 										<select class="form-control" id="uc_province_id" name="province_id">
 											<option value="">-</option>
 											<?php foreach($provinces as $item){
@@ -111,7 +111,7 @@
 										<div class="sys_msg" id="uc_province_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_district') ?></label>
+										<label><?= $this->lang->line('w_district') ?></label>
 										<select class="form-control" id="uc_district_id" name="district_id">
 											<option value="">-</option>
 											<?php foreach($districts as $item){
@@ -124,7 +124,7 @@
 										<div class="sys_msg" id="uc_district_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_ubigeo') ?></label>
+										<label><?= $this->lang->line('w_ubigeo') ?></label>
 										<input type="text" class="form-control" id="uc_ubigeo" value="<?= $company->ubigeo ?>" name="ubigeo">
 										<div class="sys_msg" id="uc_ubigeo_msg"></div>
 									</div>
@@ -143,7 +143,7 @@
 					<div class="tab-pane fade" id="bl_laboratory_admin">
 						<div class="row">
 							<div class="col-md-12 d-flex justify-content-between">
-								<h5 class="text-primary"><?= $this->lang->line("title_laboratory_admin") ?></h5>
+								<h5 class="text-primary"><?= $this->lang->line('w_laboratory_admin') ?></h5>
 								<div class="btn-group">
 									<button type="button" class="btn control_bl_profile btn-primary" id="btn_list_profile" value="bl_profile_list">
 										<i class="fas fa-list"></i>
@@ -158,23 +158,23 @@
 							<div class="col-md-12 bl_profile d-none" id="bl_profile_add">
 								<form class="form-row" id="form_register_profile" action="#">
 									<div class="form-group col-md-12">
-										<label><?= $this->lang->line('lb_profile_name') ?></label>
+										<label><?= $this->lang->line('w_profile_name') ?></label>
 										<input type="text" class="form-control" name="name">
 										<div class="sys_msg" id="rp_name_msg"></div>
 									</div>
 									<div class="form-group col-md-12">
-										<label><?= $this->lang->line('lb_examinations') ?> <i class="fas fa-cog text-info" data-toggle="modal" data-target="#md_admin_exam"></i></label>
+										<label><?= $this->lang->line('w_examinations') ?> <i class="fas fa-cog text-info" data-toggle="modal" data-target="#md_admin_exam"></i></label>
 										<div class="row">
 											<div class="col-md-6">
 												<select class="form-control mb-3" id="rp_category">
-													<option value=""><?= $this->lang->line('txt_view_all') ?></option>
+													<option value=""><?= $this->lang->line('w_view_all') ?></option>
 													<?php foreach($exam_category as $ec){ ?>
 													<option value="<?= $ec->id ?>"><?= $ec->name ?></option>
 													<?php } ?>
 												</select>
 											</div>
 											<div class="col-md-6">
-												<input type="text" class="form-control mb-3" id="rp_filter" placeholder="<?= $this->lang->line('lb_filter') ?>">
+												<input type="text" class="form-control mb-3" id="rp_filter" placeholder="<?= $this->lang->line('w_filter') ?>">
 											</div>
 											<div class="col-md-12 sys_msg" id="rp_exams_msg"></div>
 										</div>
@@ -203,8 +203,8 @@
 										<thead>
 											<tr>
 												<th><strong>#</strong></th>
-												<th class="w-30"><strong><?= $this->lang->line('lb_profile') ?></strong></th>
-												<th><strong><?= $this->lang->line('lb_examinations') ?></strong></th>
+												<th class="w-30"><strong><?= $this->lang->line('w_profile') ?></strong></th>
+												<th><strong><?= $this->lang->line('w_examinations') ?></strong></th>
 												<th></th>
 											</tr>
 										</thead>
@@ -235,7 +235,7 @@
 					<div class="tab-pane fade" id="bl_image_admin">
 						<div class="row">
 							<div class="col-md-12 d-flex justify-content-between">
-								<h5 class="text-primary"><?= $this->lang->line("title_image_admin") ?></h5>
+								<h5 class="text-primary"><?= $this->lang->line('w_image_admin') ?></h5>
 								<div class="btn-group">
 									<button type="button" class="btn control_bl_image btn-primary" id="btn_list_image" value="bl_image_list">
 										<i class="fas fa-list"></i>
@@ -250,7 +250,7 @@
 							<div class="col-md-12 bl_image d-none" id="bl_image_add">
 								<form class="form-row" id="form_register_image" action="#">
 									<div class="form-group col-md-4">
-										<label><?= $this->lang->line('lb_category') ?></label>
+										<label><?= $this->lang->line('w_category') ?></label>
 										<select class="form-control" name="category_id">
 											<option value="">--</option>
 											<?php foreach($image_categories as $item){ ?>
@@ -260,7 +260,7 @@
 										<div class="sys_msg" id="ri_category_id_msg"></div>
 									</div>
 									<div class="form-group col-md-8">
-										<label><?= $this->lang->line('lb_name') ?></label>
+										<label><?= $this->lang->line('w_name') ?></label>
 										<input type="text" class="form-control" name="name">
 										<div class="sys_msg" id="ri_name_msg"></div>
 									</div>
@@ -275,8 +275,8 @@
 										<thead>
 											<tr>
 												<th><strong>#</strong></th>
-												<th><strong><?= $this->lang->line('th_category') ?></strong></th>
-												<th><strong><?= $this->lang->line('th_image') ?></strong></th>
+												<th><strong><?= $this->lang->line('w_category') ?></strong></th>
+												<th><strong><?= $this->lang->line('w_image') ?></strong></th>
 												<th></th>
 											</tr>
 										</thead>
@@ -307,7 +307,7 @@
 					<div class="tab-pane fade" id="bl_medicine_admin">
 						<div class="row">
 							<div class="col-md-12 d-flex justify-content-between">
-								<h5 class="text-primary"><?= $this->lang->line("title_medicine_admin") ?></h5>
+								<h5 class="text-primary"><?= $this->lang->line('w_medicine_admin') ?></h5>
 								<div class="btn-group">
 									<button type="button" class="btn control_bl_medicine btn-primary" id="btn_list_medicine" value="bl_medicine_list">
 										<i class="fas fa-list"></i>
@@ -322,7 +322,7 @@
 							<div class="col-md-12 bl_medicine d-none" id="bl_medicine_add">
 								<form class="form-row" id="form_register_medicine" action="#">
 									<div class="form-group col-md-12">
-										<label><?= $this->lang->line('lb_medicine') ?></label>
+										<label><?= $this->lang->line('w_medicine') ?></label>
 										<input type="text" class="form-control" name="name">
 										<div class="sys_msg" id="rm_name_msg"></div>
 									</div>
@@ -337,7 +337,7 @@
 										<thead>
 											<tr>
 												<th><strong>#</strong></th>
-												<th><strong><?= $this->lang->line('lb_medicine') ?></strong></th>
+												<th><strong><?= $this->lang->line('w_medicine') ?></strong></th>
 												<th></th>
 											</tr>
 										</thead>
@@ -367,7 +367,7 @@
 					<div class="tab-pane fade" id="bl_access_admin">
 						<div class="row">
 							<div class="col-md-12">
-								<h5 class="text-primary mb-3"><?= $this->lang->line('title_access_admin') ?></h5>
+								<h5 class="text-primary mb-3"><?= $this->lang->line('w_access_admin') ?></h5>
 							</div>
 							<div class="col-md-12">
 								<div class="table-responsive">
@@ -375,7 +375,9 @@
 										<tbody>
 											<?php $colspan = count($roles) + 1; foreach($access as $module => $a_list){ ?>
 											<tr class="bg-light">
-												<td class="text-left"><strong><?= $this->lang->line("module_".$module) ?></strong></td>
+												<td class="text-left">
+													<strong><?= $this->lang->line('wm_'.$module) ?></strong>
+												</td>
 												<?php foreach($roles as $item){ ?>
 												<td style="width: 105px;"><strong><?= $this->lang->line($item->name) ?></strong></td>
 												<?php } ?>
@@ -383,7 +385,7 @@
 											<?php foreach($a_list as $a){ ?>
 											<tr>
 												<td class="text-left pl-4">
-													<?= $this->lang->line('access_'.$a->description) ?>
+													<?= $this->lang->line('wa_'.$a->description) ?>
 												</td>
 												<?php foreach($roles as $r){ 
 												$value = $r->id."_".$a->id;
@@ -406,15 +408,15 @@
 					<div class="tab-pane fade" id="bl_history_admin">
 						<div class="row">
 							<div class="col-md-12">
-								<h5 class="text-primary mb-3"><?= $this->lang->line('title_system_log') ?></h5>
+								<h5 class="text-primary mb-3"><?= $this->lang->line('w_system_log') ?></h5>
 								<div class="table-responsive">
 									<table class="table display">
 										<thead>
 											<tr>
-												<th>#</th>
-												<th><?= $this->lang->line('th_account') ?></th>
-												<th><?= $this->lang->line('th_detail') ?></th>
-												<th><?= $this->lang->line('th_time') ?></th>
+												<th><strong>#</strong></th>
+												<th><strong><?= $this->lang->line('w_account') ?></strong></th>
+												<th><strong><?= $this->lang->line('w_detail') ?></strong></th>
+												<th><strong><?= $this->lang->line('w_time') ?></strong></th>
 											</tr>
 										</thead>
 										<tbody id="log_list">
@@ -442,16 +444,11 @@
 		</div>
 	</div>
 </div>
-<input type="hidden" id="warning_rpr" value="<?= $this->lang->line('warning_rpr') ?>">
-<input type="hidden" id="warning_rme" value="<?= $this->lang->line('warning_rme') ?>">
-<input type="hidden" id="warning_rim" value="<?= $this->lang->line('warning_rim') ?>">
-<input type="hidden" id="warning_sin" value="<?= $this->lang->line('warning_sin') ?>">
-<input type="hidden" id="txt_view_all" value="<?= $this->lang->line('txt_view_all') ?>">
 <div class="modal fade" id="md_admin_exam">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title"><?= $this->lang->line('lb_examination_admin') ?></h5>
+				<h5 class="modal-title"><?= $this->lang->line('w_examination_admin') ?></h5>
 				<button type="button" class="close" data-dismiss="modal"><span>&times;</span>
 				</button>
 			</div>
@@ -472,7 +469,7 @@
 									<thead>
 										<tr>
 											<th><strong>#</strong></th>
-											<th><strong><?= $this->lang->line("th_category") ?></strong></th>
+											<th><strong><?= $this->lang->line('w_category') ?></strong></th>
 											<th></th>
 										</tr>
 									</thead>
@@ -480,7 +477,7 @@
 										<tr>
 											<form id="form_add_exam_category">
 												<td colspan="2">
-													<input type="text" class="form-control" name="name" placeholder="<?= $this->lang->line("lb_category_name") ?>">
+													<input type="text" class="form-control" name="name" placeholder="<?= $this->lang->line('w_category_name') ?>">
 												</td>
 												<td class="text-right">
 													<button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i></button>
@@ -508,7 +505,7 @@
 									<thead>
 										<tr>
 											<th><strong>#</strong></th>
-											<th><strong><?= $this->lang->line("th_examination") ?></strong></th>
+											<th><strong><?= $this->lang->line('w_examination') ?></strong></th>
 											<th></th>
 										</tr>
 									</thead>
@@ -526,7 +523,7 @@
 															</select>
 														</div>
 														<div class="col-sm-7 mt-2 mt-sm-0">
-															<input type="text" class="form-control" name="name" placeholder="<?= $this->lang->line("lb_examination_name") ?>">
+															<input type="text" class="form-control" name="name" placeholder="<?= $this->lang->line('w_examination_name') ?>">
 														</div>
 													</div>
 												</td>
@@ -562,3 +559,8 @@
 		</div>
 	</div>
 </div>
+<input type="hidden" id="wm_profile_remove" value="<?= $this->lang->line('wm_profile_remove') ?>">
+<input type="hidden" id="wm_medicine_remove" value="<?= $this->lang->line('wm_medicine_remove') ?>">
+<input type="hidden" id="wm_image_remove" value="<?= $this->lang->line('wm_image_remove') ?>">
+<input type="hidden" id="wm_system_init" value="<?= $this->lang->line('wm_system_init') ?>">
+<input type="hidden" id="w_view_all" value="<?= $this->lang->line('w_view_all') ?>">

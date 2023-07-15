@@ -3,9 +3,9 @@
 $lang['patients'] = 'Pacientes';
 
 //warning message
-$lang['w_register_app'] = '¿Desea generar nueva consulta del paciente?';
-$lang['w_register_sur'] = '¿Desea generar nueva cirugía del paciente?';
-$lang['w_delete_file'] = '¿Está seguro de eliminar archivo?';
+$lang['wm_register_app'] = '¿Desea generar nueva consulta del paciente?';
+$lang['wm_register_sur'] = '¿Desea generar nueva cirugía del paciente?';
+$lang['wm_delete_file'] = '¿Está seguro de eliminar archivo?';
 
 //success message
 $lang['s_register'] = 'Paciente ha sido registrado.';

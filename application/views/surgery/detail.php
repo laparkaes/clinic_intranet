@@ -312,7 +312,7 @@
 </div>
 <div class="d-none">
 	<input type="hidden" id="surgery_id" value="<?= $surgery->id ?>">
-	<input type="hidden" id="w_surgery_reschedule" value="<?= $this->lang->line('w_surgery_reschedule') ?>">
-	<input type="hidden" id="w_surgery_finish" value="<?= $this->lang->line('w_surgery_finish') ?>">
-	<input type="hidden" id="w_surgery_cancel" value="<?= $this->lang->line('w_surgery_cancel') ?>">
+	<input type="hidden" id="wm_surgery_reschedule" value="<?= $this->lang->line('wm_surgery_reschedule') ?>">
+	<input type="hidden" id="wm_surgery_finish" value="<?= $this->lang->line('wm_surgery_finish') ?>">
+	<input type="hidden" id="wm_surgery_cancel" value="<?= $this->lang->line('wm_surgery_cancel') ?>">
 </div>

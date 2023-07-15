@@ -12,10 +12,10 @@
 		<div class="card-body">
 			<div class="row">
 				<div class="col-md-6">
-					<h5 class="text-primary mb-3"><?= $this->lang->line('title_detailed_report') ?></h5>
+					<h5 class="text-primary mb-3"><?= $this->lang->line('w_detailed_report') ?></h5>
 					<form class="form-row" id="form_generate_report" action="#">
 						<div class="form-group col-md-12">
-							<label><?= $this->lang->line('lb_type') ?></label>
+							<label><?= $this->lang->line('w_type') ?></label>
 							<select class="form-control" name="type_id">
 								<?php foreach($report_types as $item){ ?>
 								<option value="<?= $item->id ?>"><?= $item->name ?></option>
@@ -24,12 +24,12 @@
 							<div class="sys_msg" id="gr_type_msg"></div>
 						</div>
 						<div class="form-group col-md-6">
-							<label><?= $this->lang->line('lb_from') ?></label>
+							<label><?= $this->lang->line('w_from') ?></label>
 							<input type="text" class="form-control" id="gr_from" name="from" value="<?= date("Y-m-d", strtotime("-3 months")) ?>">
 							<div class="sys_msg" id="gr_from_msg"></div>
 						</div>
 						<div class="form-group col-md-6">
-							<label><?= $this->lang->line('lb_to') ?></label>
+							<label><?= $this->lang->line('w_to') ?></label>
 							<input type="text" class="form-control" id="gr_to" name="to" value="<?= date("Y-m-d") ?>">
 							<div class="sys_msg" id="gr_to_msg"></div>
 						</div>
@@ -42,7 +42,7 @@
 				</div>
 				<div class="col-md-6">
 					<img class="w-100" src="./resources/images/report_example.png">
-					<h5 class="text-center text-muted mt-3"><?= $this->lang->line('title_example') ?></h5>
+					<h5 class="text-center text-muted mt-3"><?= $this->lang->line('w_example') ?></h5>
 				</div>
 			</div>
 		</div>

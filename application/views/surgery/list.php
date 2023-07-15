@@ -254,5 +254,5 @@
 	</div>
 </div>
 <div class="d-none">
-	<input type="hidden" id="w_surgery_register" value="<?= $this->lang->line('w_surgery_register') ?>">
+	<input type="hidden" id="wm_surgery_register" value="<?= $this->lang->line('wm_surgery_register') ?>">
 </div>

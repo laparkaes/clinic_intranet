@@ -110,9 +110,9 @@ class Config extends CI_Controller {
 				if ($setting) $this->general->insert("role_access", $data);
 				else $this->general->delete("role_access", $data);
 				
-				$msg = $this->lang->line('success_aup');
+				$msg = $this->lang->line('s_access_updated');
 				$type = "success";
-			}else $msg = $this->lang->line('error_nmar');
+			}else $msg = $this->lang->line('e_access_master');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -141,7 +141,7 @@ class Config extends CI_Controller {
 				if ($com_id){
 					$this->utility_lib->add_log("company_update", null);
 					$type = "success";
-					$msg = $this->lang->line("success_cup");	
+					$msg = $this->lang->line("s_company_update");	
 				}else $msg = $this->lang->line("error_internal");
 			}else $msg = $this->lang->line("error_occurred");
 		}else $msg = $this->lang->line('error_no_permission');
@@ -158,7 +158,7 @@ class Config extends CI_Controller {
 			$this->session->sess_destroy();
 			
 			$type = "success";
-			$msg = $this->lang->line("success_sin");
+			$msg = $this->lang->line("s_system_init");
 		}else $msg = $this->lang->line("error_no_permission");
 		
 		header('Content-Type: application/json');
@@ -181,7 +181,7 @@ class Config extends CI_Controller {
 					$this->utility_lib->add_log("profile_register", $name);
 					
 					$type = "success";
-					$msg = $this->lang->line("success_rep");
+					$msg = $this->lang->line("s_exam_profile_register");
 				}else $msg = $this->lang->line("error_internal");
 			}else $msg = $this->lang->line("error_occurred");
 		}else $msg = $this->lang->line('error_no_permission');
@@ -200,9 +200,9 @@ class Config extends CI_Controller {
 					$this->utility_lib->add_log("profile_delete", $profile->name);
 					
 					$type = "success";
-					$msg = $this->lang->line('success_dep');
+					$msg = $this->lang->line('s_exam_profile_delete');
 				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_npr');
+			}else $msg = $this->lang->line('e_profile_used');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -251,10 +251,10 @@ class Config extends CI_Controller {
 				if (!$this->general->filter("examination_category", $data)){
 					if ($this->general->insert("examination_category", $data)){
 						$type = "success";
-						$msg = $this->lang->line('success_rec');
+						$msg = $this->lang->line('s_exam_category_register');
 					}else $msg = $this->lang->line('error_internal');
-				}else $msg = $this->lang->line('error_dcn');
-			}else $msg = $this->lang->line('error_eecn');
+				}else $msg = $this->lang->line('e_exam_category_duplicate');
+			}else $msg = $this->lang->line('e_exam_category_name');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -269,9 +269,9 @@ class Config extends CI_Controller {
 			if (!$this->general->filter("examination", ["category_id" => $id])){
 				if ($this->general->delete("examination_category", ["id" => $id])){
 					$type = "success";
-					$msg = $this->lang->line('success_dec');
+					$msg = $this->lang->line('s_exam_category_delete');
 				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_eic');
+			}else $msg = $this->lang->line('e_exam_category_used');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -288,11 +288,11 @@ class Config extends CI_Controller {
 					if (!$this->general->filter("examination", $data)){
 						if ($this->general->insert("examination", $data)){
 							$type = "success";
-							$msg = $this->lang->line('success_rex');
+							$msg = $this->lang->line('s_exam_register');
 						}else $msg = $this->lang->line('error_internal');
-					}else $msg = $this->lang->line('error_dex');
-				}else $msg = $this->lang->line('error_een');
-			}else $msg = $this->lang->line('error_sec');
+					}else $msg = $this->lang->line('e_exam_duplicate');
+				}else $msg = $this->lang->line('e_exam_name');
+			}else $msg = $this->lang->line('e_exam_category_select');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -307,9 +307,9 @@ class Config extends CI_Controller {
 			if (!$this->general->filter("appointment_examination", ["examination_id" => $id])){
 				if ($this->general->delete("examination", ["id" => $id])){
 					$type = "success";
-					$msg = $this->lang->line('success_dex');
+					$msg = $this->lang->line('s_exam_delete');
 				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_uex');
+			}else $msg = $this->lang->line('e_exam_used');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -330,7 +330,7 @@ class Config extends CI_Controller {
 					$this->utility_lib->add_log("medicine_register", $data["name"]);
 						
 					$type = "success";
-					$msg = $this->lang->line("success_rem");	
+					$msg = $this->lang->line("s_medicine_register");	
 				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line("error_occurred");
 		}else $msg = $this->lang->line('error_no_permission');
@@ -349,9 +349,9 @@ class Config extends CI_Controller {
 					$this->utility_lib->add_log("medicine_delete", $medicine->name);
 					
 					$type = "success";
-					$msg = $this->lang->line('success_dep');
+					$msg = $this->lang->line('s_medicine_delete');
 				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_nmr');
+			}else $msg = $this->lang->line('e_medicine_used');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -401,9 +401,9 @@ class Config extends CI_Controller {
 					$this->utility_lib->add_log("image_delete", $image->name);
 					
 					$type = "success";
-					$msg = $this->lang->line('success_dim');
+					$msg = $this->lang->line('s_image_delete');
 				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_nir');
+			}else $msg = $this->lang->line('e_image_used');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
@@ -424,7 +424,7 @@ class Config extends CI_Controller {
 					$this->utility_lib->add_log("image_register", $data["name"]);
 						
 					$type = "success";
-					$msg = $this->lang->line("success_rim");	
+					$msg = $this->lang->line("s_image_register");	
 				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line("error_occurred");
 		}else $msg = $this->lang->line('error_no_permission');

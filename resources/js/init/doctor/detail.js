@@ -44,8 +44,8 @@ function update_info(dom){
 function activation_control(dom, active){
 	var msg;
 	
-	if (active == true) msg = $("#w_enable_doctor").val();
-	else msg = $("#w_disable_doctor").val();
+	if (active == true) msg = $("#wm_enable_doctor").val();
+	else msg = $("#wm_disable_doctor").val();
 	
 	ajax_simple_warning({id: $(dom).val(), active: active}, "doctor/activation_control", msg).done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);

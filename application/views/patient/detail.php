@@ -690,7 +690,7 @@
 	</div>
 </div>
 <div class="d-none">
-	<input type="hidden" id="w_register_app" value="<?= $this->lang->line('w_register_app') ?>">
-	<input type="hidden" id="w_register_sur" value="<?= $this->lang->line('w_register_sur') ?>">
-	<input type="hidden" id="w_delete_file" value="<?= $this->lang->line('w_delete_file') ?>">
+	<input type="hidden" id="wm_register_app" value="<?= $this->lang->line('wm_register_app') ?>">
+	<input type="hidden" id="wm_register_sur" value="<?= $this->lang->line('wm_register_sur') ?>">
+	<input type="hidden" id="wm_delete_file" value="<?= $this->lang->line('wm_delete_file') ?>">
 </div>
