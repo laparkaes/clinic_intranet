@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title><?= $this->lang->line('lg_title') ?></title>
+    <title><?= $this->lang->line('w_login') ?></title>
     <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url() ?>resources/images/favicon.png">
 	<link href="<?= base_url() ?>resources/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.css" rel="stylesheet">
     <link href="<?= base_url() ?>resources/css/style.css" rel="stylesheet">
@@ -22,18 +22,18 @@
 									<div class="text-center mb-3">
 										<a href="<?= base_url() ?>"><img src="<?= base_url() ?>resources/images/favicon.png" alt=""></a>
 									</div>
-									<h4 class="text-center mb-3"><?= $this->lang->line('title_login') ?></h4>
+									<h3 class="text-center mb-3"><?= $this->lang->line('w_login') ?></h3>
                                     <form action="#" id="form_login">
                                         <div class="form-group">
                                             <label class="mb-1">
-												<strong><?= $this->lang->line('lb_username') ?></strong>
+												<strong><?= $this->lang->line('w_username') ?></strong>
 											</label>
                                             <input type="text" class="form-control" placeholder="email@example.com" name="email">
 											<div class="sys_msg" id="lg_email_msg"></div>
                                         </div>
                                         <div class="form-group">
                                             <label class="mb-1">
-												<strong><?= $this->lang->line('lb_password_actual') ?></strong>
+												<strong><?= $this->lang->line('w_password_actual') ?></strong>
 											</label>
                                             <input type="password" class="form-control" name="password">
 											<div class="sys_msg" id="lg_pass_msg"></div>

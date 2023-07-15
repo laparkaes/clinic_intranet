@@ -72,7 +72,7 @@ class Auth extends CI_Controller {
 			
 			if ($this->general->update("account", $acc_id, $acc_data)){
 				$type = "success";
-				$msg = $msg = $this->lang->line("success_chp");
+				$msg = $msg = $this->lang->line("s_change_password");
 			}else $msg = $this->lang->line("error_internal");
 		}else $msg = $this->lang->line("error_occurred");
 		

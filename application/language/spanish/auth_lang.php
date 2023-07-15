@@ -1,26 +1,23 @@
 <?php
 
 //messages
-$lang['success_chp'] = 'Su contraseña ha sido actualizada.';//success_change_password
-$lang['warning_chp'] = 'Deberá ingresar de nuevo después de aplicar el cambio.';//warning_change_password
+$lang['s_change_password'] = 'Su contraseña ha sido actualizada.';
+$lang['wm_change_password'] = 'Deberá ingresar de nuevo después de aplicar el cambio.';
 
-//index
-$lang['title_login'] = 'Ingresar';
-$lang['title_master_account'] = 'Usuario Maestro';
-$lang['title_reset_password'] = 'Restablecer Contraseña';
-$lang['lb_document'] = 'Documento';
-$lang['lb_number'] = 'Número';
-$lang['lb_username'] = 'Usuario';
-$lang['lb_password'] = 'Contraseña';
-$lang['lb_confirm'] = 'Confirmación';
-$lang['lb_name'] = 'Nombre';
-$lang['btn_gm'] = 'Generar Usuario Maestro';//generate_master
+//button
 $lang['btn_login'] = 'Ingresar';
-$lang['btn_confirm'] = 'Confirmar';
-$lang['btn_cancel'] = 'Cancelar';
 
-//change_password
-$lang['title_change_password'] = 'Cambiar Contraseña';
-$lang['lb_password_actual'] = 'Contraseña Actual';
-$lang['lb_password_new'] = 'Contraseña Nueva';
-$lang['txt_change_later'] = 'Cambiar más tarde';
+//word
+$lang['w_confirm'] = 'Confirmación';
+$lang['w_document'] = 'Documento';
+$lang['w_name'] = 'Nombre';
+$lang['w_number'] = 'Número';
+$lang['w_password'] = 'Contraseña';
+$lang['w_password_actual'] = 'Contraseña Actual';
+$lang['w_password_new'] = 'Contraseña Nueva';
+$lang['w_username'] = 'Usuario';
+$lang['w_change_password'] = 'Cambiar Contraseña';
+$lang['w_login'] = 'Ingresar';
+$lang['w_master_account'] = 'Usuario Maestro';
+$lang['w_reset_password'] = 'Restablecer Contraseña';
+$lang['w_change_later'] = 'Cambiar más tarde';

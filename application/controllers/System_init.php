@@ -63,7 +63,7 @@ class System_init extends CI_Controller {
 			
 			if ($this->general->update("system", 1, ["company_id" => $com_id])){
 				$type = "success";
-				$msg = $this->lang->line('success_cre');
+				$msg = $this->lang->line('s_company_register');
 			}else $msg = $this->lang->line('error_internal');
 		}else $msg = $this->lang->line("error_occurred");
 		
@@ -77,7 +77,7 @@ class System_init extends CI_Controller {
 		$sys_conf = $this->general->id("system", 1);
 		if ($this->general->update("system", $sys_conf->id, ["is_finished" => false, "company_id" => null])){
 			$type = "success";
-			$msg = $this->lang->line('success_cde');
+			$msg = $this->lang->line('s_company_delete');
 		}else $msg = $this->lang->line('error_internal');
 		
 		header('Content-Type: application/json');
@@ -117,7 +117,7 @@ class System_init extends CI_Controller {
 					
 					if ($this->general->update("system", 1, ["account_id" => $acc_id])){
 						$type = "success";
-						$msg = $this->lang->line('success_rac');
+						$msg = $this->lang->line('s_account_register');
 					}else $msg = $this->lang->line('error_internal');
 				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line('error_internal');
@@ -135,7 +135,7 @@ class System_init extends CI_Controller {
 			$this->general->delete("account", ["id" => $sys_conf->account_id]);
 			
 			$type = "success";
-			$msg = $this->lang->line('success_ade');
+			$msg = $this->lang->line('s_account_delete');
 		}else $msg = $this->lang->line('error_internal');
 		
 		header('Content-Type: application/json');
@@ -174,7 +174,7 @@ class System_init extends CI_Controller {
 				
 				if ($this->general->update("system", 1, $data)){
 					$type = "success";
-					$msg = $this->lang->line('success_rsd');
+					$msg = $this->lang->line('s_sunat_register');
 				}else $msg = $this->lang->line("error_internal");
 			}else $msg = $this->upload->display_errors("<span>","</span>");
 		}else $msg = $this->lang->line("error_occurred");
@@ -196,7 +196,7 @@ class System_init extends CI_Controller {
 		$sys_conf = $this->general->id("system", 1);
 		if ($this->general->update("system", $sys_conf->id, $data)){
 			$type = "success";
-			$msg = $this->lang->line('success_sdd');
+			$msg = $this->lang->line('s_sunat_delete');
 		}else $msg = $this->lang->line('error_internal');
 		
 		header('Content-Type: application/json');
@@ -212,7 +212,7 @@ class System_init extends CI_Controller {
 			$this->general->update("system", 1, ["is_finished" => false, "sunat_access" => true]);
 		
 			$type = "success";
-			$msg = $this->lang->line('success_sao');
+			$msg = $this->lang->line('s_sunat_finish');
 		}
 		
 		header('Content-Type: application/json');
@@ -234,7 +234,7 @@ class System_init extends CI_Controller {
 		if (!$msgs){
 			if ($this->general->insert("sale_type", $data)){
 				$type = "success";
-				$msg = $this->lang->line('success_rst');
+				$msg = $this->lang->line('s_sale_type_register');
 			}else $msg = $this->lang->line('error_internal');
 		}else $msg = $this->lang->line("error_occurred");
 		
@@ -257,10 +257,10 @@ class System_init extends CI_Controller {
 					$this->general->update("system", 1, ["sale_type_finished" => false]);
 					
 					$type = "success";
-					$msg = $this->lang->line("success_dst");
+					$msg = $this->lang->line("s_sale_type_delete");
 				}else $msg = $this->lang->line("error_internal");
-			}else $msg = $this->lang->line("error_stu");
-		}else $msg = $this->lang->line("error_stne");
+			}else $msg = $this->lang->line("e_sale_type_used");
+		}else $msg = $this->lang->line("e_sale_type_no_exists");
 		
 		$sale_types = $this->general->all("sale_type", "sunat_serie", "asc");
 		
@@ -277,9 +277,9 @@ class System_init extends CI_Controller {
 		if ($this->general->all("sale_type")){
 			if ($this->general->update("system", 1, ["sale_type_finished" => true])){
 				$type = "success";
-				$msg = $this->lang->line("success_fst");
+				$msg = $this->lang->line("s_sale_type_finish");
 			}else $msg = $this->lang->line("error_internal");
-		}else $msg = $this->lang->line("error_stlo");
+		}else $msg = $this->lang->line("e_sale_type_least");
 		
 		
 		header('Content-Type: application/json');
@@ -308,9 +308,9 @@ class System_init extends CI_Controller {
 				$this->general->insert_multi("role_access", $data);
 				
 				$type = "success";
-				$msg = $this->lang->line("success_inf");
+				$msg = $this->lang->line("s_init_finish");
 			}else $msg = $this->lang->line("error_internal");
-		}else $msg = $this->lang->line("error_sinf");
+		}else $msg = $this->lang->line("e_system_init_no_finished");
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);

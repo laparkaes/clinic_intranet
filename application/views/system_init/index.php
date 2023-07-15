@@ -27,7 +27,7 @@
 				<div class="col-md-8">
 					<div class="card">
 						<div class="card-header">
-							<h4 class="mb-0"><?= $this->lang->line('title_company') ?></h4>
+							<h4 class="mb-0"><?= $this->lang->line('w_company') ?></h4>
 							<?php if ($sys_conf->company_id){ ?>
 							<i class="fas fa-check text-success fa-lg"></i>
 							<?php }else{ ?>
@@ -38,7 +38,7 @@
 							<form id="form_company_init">
 								<div class="form-row">
 									<div class="form-group col-md-4">
-										<label><?= $this->lang->line('lb_tax_id') ?></label>
+										<label><?= $this->lang->line('w_tax_id') ?></label>
 										<div class="input-group">
                                             <input type="text" class="form-control" id="com_tax_id" value="<?= $sys_conf->company->tax_id ?>" name="tax_id">
                                             <div class="input-group-append">
@@ -50,31 +50,31 @@
 										<div class="sys_msg" id="com_tax_id_msg"></div>
 									</div>
 									<div class="form-group col-md-8">
-										<label><?= $this->lang->line('lb_name') ?></label>
+										<label><?= $this->lang->line('w_name') ?></label>
 										<input type="text" class="form-control" id="com_name" value="<?= $sys_conf->company->name ?>" name="name">
 										<div class="sys_msg" id="com_name_msg"></div>
 									</div>
 									<div class="form-group col-md-8">
-										<label><?= $this->lang->line('lb_email') ?></label>
+										<label><?= $this->lang->line('w_email') ?></label>
 										<input type="text" class="form-control" id="com_email" value="<?= $sys_conf->company->email ?>" name="email">
 										<div class="sys_msg" id="com_email_msg"></div>
 									</div>
 									<div class="form-group col-md-4">
-										<label><?= $this->lang->line('lb_tel') ?></label>
+										<label><?= $this->lang->line('w_tel') ?></label>
 										<input type="text" class="form-control" id="com_tel" value="<?= $sys_conf->company->tel ?>" name="tel">
 										<div class="sys_msg" id="com_tel_msg"></div>
 									</div>
 									<div class="form-group col-md-8">
-										<label><?= $this->lang->line('lb_address') ?></label>
+										<label><?= $this->lang->line('w_address') ?></label>
 										<input type="text" class="form-control" id="com_address" value="<?= $sys_conf->company->address ?>" name="address">
 										<div class="sys_msg" id="com_address_msg"></div>
 									</div>
 									<div class="form-group col-md-4">
-										<label><?= $this->lang->line('lb_urbanization') ?></label>
+										<label><?= $this->lang->line('w_urbanization') ?></label>
 										<input type="text" class="form-control" id="com_urbanization" value="<?= $sys_conf->company->urbanization ?>" name="urbanization">
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_department') ?></label>
+										<label><?= $this->lang->line('w_department') ?></label>
 										<select class="form-control" id="com_department_id" name="department_id">
 											<option value="">-</option>
 											<?php foreach($departments as $item){
@@ -86,7 +86,7 @@
 										<div class="sys_msg" id="com_department_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_province') ?></label>
+										<label><?= $this->lang->line('w_province') ?></label>
 										<select class="form-control" id="com_province_id" name="province_id">
 											<option value="">-</option>
 											<?php foreach($provinces as $item){
@@ -99,7 +99,7 @@
 										<div class="sys_msg" id="com_province_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_district') ?></label>
+										<label><?= $this->lang->line('w_district') ?></label>
 										<select class="form-control" id="com_district_id" name="district_id">
 											<option value="">-</option>
 											<?php foreach($districts as $item){
@@ -112,7 +112,7 @@
 										<div class="sys_msg" id="com_district_msg"></div>
 									</div>
 									<div class="form-group col-md-3">
-										<label><?= $this->lang->line('lb_ubigeo') ?></label>
+										<label><?= $this->lang->line('w_ubigeo') ?></label>
 										<input type="text" class="form-control" id="com_ubigeo" value="<?= $sys_conf->company->ubigeo ?>" name="ubigeo">
 										<div class="sys_msg" id="com_ubigeo_msg"></div>
 									</div>
@@ -137,7 +137,7 @@
 				<div class="col-md-8">
 					<div class="card">
 						<div class="card-header">
-							<h4 class="mb-0"><?= $this->lang->line('title_sunat_access') ?></h4>
+							<h4 class="mb-0"><?= $this->lang->line('w_sunat_access') ?></h4>
 							<?php if ($sys_conf->sunat_access){ ?>
 							<i class="fas fa-check text-success fa-lg"></i>
 							<?php }else{ ?>
@@ -151,7 +151,7 @@
 										<div class="form-row">
 											<div class="form-group col-md-12">
 												<div>
-													<label><?= $this->lang->line('lb_certificate') ?> (*.pem) / <?= $sys_conf->sunat_certificate ?></label>
+													<label><?= $this->lang->line('w_certificate') ?> (*.pem) / <?= $sys_conf->sunat_certificate ?></label>
 													<?php if ($sys_conf->sunat_certificate){ ?>
 													<i class="fas fa-check text-success ml-1"></i>
 													<?php } ?>
@@ -160,17 +160,17 @@
 												<div class="sys_msg" id="sunat_certificate_msg"></div>
 											</div>
 											<div class="form-group col-md-4">
-												<label><?= $this->lang->line('lb_ruc') ?></label>
+												<label><?= $this->lang->line('w_ruc') ?></label>
 												<input type="text" class="form-control" value="<?= $sys_conf->company->tax_id ?>" readonly>
 												<div class="sys_msg" id="sunat_ruc_msg"></div>
 											</div>
 											<div class="form-group col-md-4">
-												<label><?= $this->lang->line('lb_username') ?></label>
+												<label><?= $this->lang->line('w_username') ?></label>
 												<input type="text" class="form-control" value="<?= $sys_conf->sunat_username ?>" name="sunat_username">
 												<div class="sys_msg" id="sunat_username_msg"></div>
 											</div>
 											<div class="form-group col-md-4">
-												<label><?= $this->lang->line('lb_password') ?></label>
+												<label><?= $this->lang->line('w_password') ?></label>
 												<input type="text" class="form-control" value="<?= $sys_conf->sunat_password ?>" name="sunat_password">
 												<div class="sys_msg" id="sunat_password_msg"></div>
 											</div>
@@ -200,7 +200,7 @@
 				<div class="col-md-8">
 					<div class="card">
 						<div class="card-header">
-							<h4 class="mb-0"><?= $this->lang->line('title_master_account') ?></h4>
+							<h4 class="mb-0"><?= $this->lang->line('w_master_account') ?></h4>
 							<?php if ($sys_conf->account_id){ ?>
 							<i class="fas fa-check text-success fa-lg"></i>
 							<?php }else{ ?>
@@ -213,17 +213,17 @@
 									<div class="col-md-6">
 										<div class="form-row">
 											<div class="form-group col-md-12">
-												<label><?= $this->lang->line('lb_account') ?></label>
+												<label><?= $this->lang->line('w_account') ?></label>
 												<input type="email" class="form-control" value="<?= $sys_conf->account->email ?>" name="a[email]">
 												<div class="sys_msg" id="acc_email_msg"></div>
 											</div>
 											<div class="form-group col-md-6">
-												<label><?= $this->lang->line('lb_password') ?></label>
+												<label><?= $this->lang->line('w_password') ?></label>
 												<input type="password" class="form-control" name="a[password]">
 												<div class="sys_msg" id="acc_password_msg"></div>
 											</div>
 											<div class="form-group col-md-6">
-												<label><?= $this->lang->line('lb_confirm') ?></label>
+												<label><?= $this->lang->line('w_confirm') ?></label>
 												<input type="password" class="form-control" name="a[confirm]">
 												<div class="sys_msg" id="acc_confirm_msg"></div>
 											</div>
@@ -233,7 +233,7 @@
 										<?php $p = $sys_conf->account->person; ?>
 										<div class="form-row">
 											<div class="form-group col-md-6">
-												<label><?= $this->lang->line('lb_document') ?></label>
+												<label><?= $this->lang->line('w_document') ?></label>
 												<select class="form-control" id="pe_doc_type_id" name="p[doc_type_id]">
 													<?php foreach($doc_types as $d){ if ($d->sunat_code){ 
 													if ($p->doc_type_id == $d->id) $s = "selected"; else $s = ""; ?>
@@ -245,7 +245,7 @@
 											<div class="form-group col-md-6">
 												<label class="d-md-block d-none">&nbsp;</label>
 												<div class="input-group">
-													<input type="text" class="form-control" id="pe_doc_number" name="p[doc_number]" placeholder="<?= $this->lang->line('lb_number') ?>" value="<?= $p->doc_number ?>">
+													<input type="text" class="form-control" id="pe_doc_number" name="p[doc_number]" placeholder="<?= $this->lang->line('w_number') ?>" value="<?= $p->doc_number ?>">
 													<div class="input-group-append">
 														<button class="btn btn-primary border-0" type="button" id="btn_search_person">
 															<i class="fas fa-search"></i>
@@ -255,7 +255,7 @@
 												<div class="sys_msg" id="pe_doc_number_msg"></div>
 											</div>
 											<div class="form-group col-md-12">
-												<label><?= $this->lang->line('lb_name') ?></label>
+												<label><?= $this->lang->line('w_name') ?></label>
 												<input type="text" class="form-control" id="pe_name" name="p[name]" value="<?= $p->name ?>">
 												<div class="sys_msg" id="pe_name_msg"></div>
 											</div>
@@ -286,7 +286,7 @@
 				<div class="col-md-8">
 					<div class="card">
 						<div class="card-header">
-							<h4 class="mb-0"><?= $this->lang->line('title_sale_type') ?></h4>
+							<h4 class="mb-0"><?= $this->lang->line('w_sale_type') ?></h4>
 							<?php if ($sys_conf->sale_type_finished){ ?>
 							<i class="fas fa-check text-success fa-lg"></i>
 							<?php }else{ ?>
@@ -298,10 +298,10 @@
 								<table class="table table-responsive-md mb-0">
 									<thead>
 										<tr>
-											<th><strong><?= $this->lang->line('th_description') ?></strong></th>
-											<th><strong><?= $this->lang->line('th_serie') ?></strong></th>
-											<th><strong><?= $this->lang->line('th_correlative_factura') ?></strong></th>
-											<th><strong><?= $this->lang->line('th_correlative_boleta') ?></strong></th>
+											<th><strong><?= $this->lang->line('w_description') ?></strong></th>
+											<th><strong><?= $this->lang->line('w_serie') ?></strong></th>
+											<th><strong><?= $this->lang->line('w_correlative_factura') ?></strong></th>
+											<th><strong><?= $this->lang->line('w_correlative_boleta') ?></strong></th>
 											<th>
 												<?php if ($sys_conf->sale_type_finished) $d = "d-none"; else $d = ""; ?>
 												<button type="button" class="btn btn-primary <?= $d ?>" id="btn_finish_sale_type">
@@ -375,12 +375,12 @@
 	<input type="hidden" id="alert_warning_title" value="<?= $this->lang->line('alert_warning_title') ?>">
 	<input type="hidden" id="alert_confirm_btn" value="<?= $this->lang->line('alert_confirm_btn') ?>">
 	<input type="hidden" id="alert_cancel_btn" value="<?= $this->lang->line('alert_cancel_btn') ?>">
-	<input type="hidden" id="warning_rco" value="<?= $this->lang->line('warning_rco') ?>">
-	<input type="hidden" id="warning_rac" value="<?= $this->lang->line('warning_rac') ?>">
-	<input type="hidden" id="warning_rsd" value="<?= $this->lang->line('warning_rsd') ?>">
-	<input type="hidden" id="warning_rst" value="<?= $this->lang->line('warning_rst') ?>">
-	<input type="hidden" id="warning_fst" value="<?= $this->lang->line('warning_fst') ?>">
-	<input type="hidden" id="warning_fsi" value="<?= $this->lang->line('warning_fsi') ?>">
+	<input type="hidden" id="wm_company_remove" value="<?= $this->lang->line('wm_company_remove') ?>">
+	<input type="hidden" id="wm_account_remove" value="<?= $this->lang->line('wm_account_remove') ?>">
+	<input type="hidden" id="wm_sunat_remove" value="<?= $this->lang->line('wm_sunat_remove') ?>">
+	<input type="hidden" id="wm_sale_type_remove" value="<?= $this->lang->line('wm_sale_type_remove') ?>">
+	<input type="hidden" id="wm_sale_type_finish" value="<?= $this->lang->line('wm_sale_type_finish') ?>">
+	<input type="hidden" id="wm_sys_init_finish" value="<?= $this->lang->line('wm_sys_init_finish') ?>">
 	<script src="<?= base_url() ?>resources/vendor/global/global.min.js"></script>
 	<script src="<?= base_url() ?>resources/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.js"></script>
     <script src="<?= base_url() ?>resources/js/custom.min.js"></script>
