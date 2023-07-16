@@ -57,7 +57,7 @@ $lang['hd_logout'] = 'Salir';
 
 //navbar
 $lang['nav_today'] = 'Hoy';
-$lang['nav_dashboard'] = 'Tablero';
+$lang['nav_dashboard'] = 'Principal';
 $lang['nav_doctors'] = 'Médicos';
 $lang['nav_patients'] = 'Pacientes';
 $lang['nav_appointments'] = 'Consultas';

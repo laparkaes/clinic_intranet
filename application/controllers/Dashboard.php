@@ -66,32 +66,7 @@ class Dashboard extends CI_Controller {
 		
 		return $data;
 	}
-	/*
-	public function set_app_sur_today(){
-		$s_confirmed_id = $this->general->status("confirmed")->id;
-		$today = date("Y-m-d");
-		
-		$app = $this->general->all("appointment", "schedule_from", "asc", 200);
-		foreach($app as $item){
-			$data = [
-				"status_id" => $s_confirmed_id,
-				"schedule_from" => $today." ".explode(" ", $item->schedule_from)[1],
-				"schedule_to" => $today." ".explode(" ", $item->schedule_to)[1],
-			];
-			$this->general->update("appointment", $item->id, $data);
-		}
-		
-		$sur = $this->general->all("surgery", "schedule_from", "asc", 200);
-		foreach($sur as $item){
-			$data = [
-				"status_id" => $s_confirmed_id,
-				"schedule_from" => $today." ".explode(" ", $item->schedule_from)[1],
-				"schedule_to" => $today." ".explode(" ", $item->schedule_to)[1],
-			];
-			$this->general->update("appointment", $item->id, $data);
-		}
-	}
-	*/
+	
 	private function set_doctor_datas($data){
 		//set monthly resume
 		$from = date('Y-m-01 00:00:00');
@@ -325,41 +300,5 @@ class Dashboard extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode(["series" => $series, "xaxis" => $xaxis]);
-	}
-	
-	public function load_doctor_calendar(){
-		$account = $this->general->id("account", $this->session->userdata("aid"));
-		$today = date("Y-m-d");
-		$filter = [
-			"doctor_id" => $account->person_id,
-			"schedule_from >=" => date("Y-m-01", strtotime("-3 months", strtotime($today))),
-			"schedule_from <=" => date("Y-m-t", strtotime("+3 months", strtotime($today))),
-		];
-		$events = [];
-		
-		$apps = $this->general->filter("appointment", $filter, null, null, "schedule_from", "asc");
-		foreach($apps as $item){
-			$patient = $this->general->id("person", $item->patient_id);
-			$events[] = [
-				"title" => $this->lang->line('ev_appointment')."] ".$patient->name,
-				"start" => $item->schedule_from,
-				//"end" => $item->schedule_to,
-				//"className" => "bg-danger",
-			];
-		}
-		
-		$surs = $this->general->filter("appointment", $filter, null, null, "schedule_from", "asc");
-		foreach($surs as $item){
-			$patient = $this->general->id("person", $item->patient_id);
-			$events[] = [
-				"title" => $this->lang->line('ev_surgery')."] ".$patient->name,
-				"start" => $item->schedule_from,
-				//"end" => $item->schedule_to,
-				//"className" => "bg-danger",
-			];
-		}
-		
-		header('Content-Type: application/json');
-		echo json_encode(["events" => $events]);
 	}
 }

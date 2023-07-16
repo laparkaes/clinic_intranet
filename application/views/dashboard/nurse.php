@@ -1,5 +1,5 @@
 <div class="col-md-7 mb-4">
-	<h4><?= $this->lang->line('title_today') ?></h4>
+	<h4><?= $this->lang->line('w_today') ?></h4>
 	<div class="card mb-0" style="max-height: 350px; overflow-y: auto;">
 		<div class="card-body">
 			<?php if ($schedules){ ?>
@@ -7,8 +7,8 @@
 				<table class="table text-center bg-info-hover tr-rounded mb-0">
 					<thead>
 						<tr>
-							<th class="text-left"><?= $this->lang->line('th_time') ?></th>
-							<th class="text-center"><?= $this->lang->line('th_type') ?></th>
+							<th class="text-left"><?= $this->lang->line('w_time') ?></th>
+							<th class="text-center"><?= $this->lang->line('w_type') ?></th>
 							<th class="text-right"></th>
 						</tr>
 					</thead>
@@ -33,13 +33,13 @@
 				</table>
 			</div>
 			<?php }else{ ?>
-			<div class="text-success"><?= $this->lang->line('msg_no_pending') ?></div>
+			<div class="text-success"><?= $this->lang->line('t_no_pending') ?></div>
 			<?php } ?>
 		</div>
 	</div>
 </div>
 <div class="col-md-5 mb-4">
-	<h4><?= $this->lang->line('title_profile') ?></h4>
+	<h4><?= $this->lang->line('w_profile') ?></h4>
 	<div class="card">
 		<div class="card-body text-center d-flex align-items-top justify-content-center">
 			<div>

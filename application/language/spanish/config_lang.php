@@ -107,5 +107,4 @@ $lang['w_urbanization'] = 'Urbanización';
 $lang['w_view_all'] = 'Ver todos';
 
 //text
-$lang['msg_last_6_months'] = 'Registros de último mes.';
-$lang['msg_no_result'] = 'No hay resultado con datos ingresados.';
+$lang['t_no_result'] = 'No hay resultado con datos ingresados.';

@@ -180,7 +180,7 @@
 										</div>
 										<div class="row" id="ex_profile_list" style="max-height: 400px; overflow-y: auto;">
 											<div class="col-md-12 text-danger d-none" id="rp_no_result_msg">
-												<?= $this->lang->line('msg_no_result') ?>
+												<?= $this->lang->line('t_no_result') ?>
 											</div>
 											<?php foreach($exams as $ex){ ?>
 											<div class="col-md-6 ex_profile ex_profile_<?= $ex->category_id ?>">

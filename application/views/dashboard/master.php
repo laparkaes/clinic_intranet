@@ -1,5 +1,5 @@
 <div class="col-md-12">
-	<h4><?= $this->lang->line('title_monthly_resume') ?></h4>
+	<h4><?= $this->lang->line('w_monthly_resume') ?></h4>
 </div>
 <div class="col-md-4">
 	<div class="card">
@@ -8,7 +8,7 @@
 				<i class="fas fa-notes-medical" style="color: #5fe1ad; font-size: 40px;"></i>
 			</div>
 			<div class="col-md-8 pr-md-0 text-center">
-				<p class="mb-1"><?= $this->lang->line('lb_appointments') ?></p>
+				<p class="mb-1"><?= $this->lang->line('w_appointments') ?></p>
 				<h4 class="mb-0"><?= number_format($appointment_qty) ?></h4>
 			</div>
 		</div>
@@ -21,7 +21,7 @@
 				<i class="fas fa-file-medical-alt" style="color: #AC4CBC; font-size: 40px;"></i>
 			</div>
 			<div class="col-md-8 pr-md-0 text-center">
-				<p class="mb-1"><?= $this->lang->line('lb_surgeries') ?></p>
+				<p class="mb-1"><?= $this->lang->line('w_surgeries') ?></p>
 				<h4 class="mb-0"><?= number_format($surgery_qty) ?></h4>
 			</div>
 		</div>
@@ -34,14 +34,14 @@
 				<i class="fas fa-shopping-basket" style="color: #3A82EF; font-size: 40px;"></i>
 			</div>
 			<div class="col-md-8 pr-md-0 text-center">
-				<p class="mb-1"><?= $this->lang->line('lb_sales') ?></p>
+				<p class="mb-1"><?= $this->lang->line('w_sales') ?></p>
 				<h4 class="mb-0"><?= number_format($sale_qty) ?></h4>
 			</div>
 		</div>
 	</div>
 </div>
 <div class="col-md-7 mb-4">
-	<h4><?= $this->lang->line('title_monthly_income') ?></h4>
+	<h4><?= $this->lang->line('w_monthly_income') ?></h4>
 	<div class="card">
 		<div class="card-header pb-0 border-0">
 			<div class="btn-group">
@@ -56,7 +56,7 @@
 	</div>
 </div>
 <div class="col-md-5 mb-4">
-	<h4><?= $this->lang->line('title_profile') ?></h4>
+	<h4><?= $this->lang->line('w_profile') ?></h4>
 	<div class="card">
 		<div class="card-body text-center d-flex align-items-center justify-content-center">
 			<div>
@@ -70,22 +70,22 @@
 			<div class="row">
 				<div class="col-4 py-3 pr-0 border-right">
 					<h3 class="mb-1 text-primary"><?= $profile["doctor_qty"] ?></h3>
-					<span><?= $this->lang->line('lb_doctors') ?></span>
+					<span><?= $this->lang->line('w_doctors') ?></span>
 				</div>
 				<div class="col-4 py-3 border-right">
 					<h3 class="mb-1 text-primary"><?= $profile["patient_qty"] ?></h3>
-					<span><?= $this->lang->line('lb_patients') ?></span>
+					<span><?= $this->lang->line('w_patients') ?></span>
 				</div>
 				<div class="col-4 py-3 pl-0">
 					<h3 class="mb-1 text-primary"><?= $profile["account_qty"] ?></h3>
-					<span><?= $this->lang->line('lb_accounts') ?></span>
+					<span><?= $this->lang->line('w_accounts') ?></span>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 <div class="col-md-6">
-	<h4><?= $this->lang->line('title_sales_no_voucher') ?></h4>
+	<h4><?= $this->lang->line('w_sales_no_voucher') ?></h4>
 	<div class="card">
 		<div class="card-body">
 			<?php if ($sales){ ?>
@@ -93,8 +93,8 @@
 				<table class="table text-center bg-info-hover tr-rounded mb-0">
 					<thead>
 						<tr>
-							<th class="text-left"><?= $this->lang->line('th_amount') ?></th>
-							<th class="text-center"><?= $this->lang->line('th_date') ?></th>
+							<th class="text-left"><?= $this->lang->line('w_amount') ?></th>
+							<th class="text-center"><?= $this->lang->line('w_date') ?></th>
 							<th class="text-right"></th>
 						</tr>
 					</thead>
@@ -116,13 +116,13 @@
 				</table>
 			</div>
 			<?php }else{ ?>
-			<div class="text-success"><?= $this->lang->line('msg_sale_declare') ?></div>
+			<div><?= $this->lang->line('t_voucher_done') ?></div>
 			<?php } ?>
 		</div>
 	</div>
 </div>
 <div class="col-md-6">
-	<h4><?= $this->lang->line('title_vouchers_no_sunat') ?></h4>
+	<h4><?= $this->lang->line('w_vouchers_no_sunat') ?></h4>
 	<div class="card">
 		<div class="card-body">
 			<?php if ($vouchers){ ?>
@@ -130,8 +130,8 @@
 				<table class="table text-center bg-info-hover tr-rounded mb-0">
 					<thead>
 						<tr>
-							<th class="text-left"><?= $this->lang->line('th_type') ?></th>
-							<th class="text-center"><?= $this->lang->line('th_date') ?></th>
+							<th class="text-left"><?= $this->lang->line('w_type') ?></th>
+							<th class="text-center"><?= $this->lang->line('w_date') ?></th>
 							<th class="text-right"></th>
 						</tr>
 					</thead>
@@ -153,7 +153,7 @@
 				</table>
 			</div>
 			<?php }else{ ?>
-			<div class="text-success"><?= $this->lang->line('msg_voucher_sent') ?></div>
+			<div><?= $this->lang->line('t_voucher_sent') ?></div>
 			<?php } ?>
 		</div>
 	</div>

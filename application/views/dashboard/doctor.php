@@ -1,5 +1,5 @@
 <div class="col-md-12">
-	<h4><?= $this->lang->line('title_monthly_resume') ?></h4>
+	<h4><?= $this->lang->line('w_monthly_resume') ?></h4>
 </div>
 <div class="col-md-4">
 	<div class="card">
@@ -8,7 +8,7 @@
 				<i class="fas fa-notes-medical" style="color: #5fe1ad; font-size: 40px;"></i>
 			</div>
 			<div class="col-md-8 pr-md-0 text-center">
-				<p class="mb-1"><?= $this->lang->line('lb_appointments') ?></p>
+				<p class="mb-1"><?= $this->lang->line('w_appointments') ?></p>
 				<h4 class="mb-0"><?= number_format($appointment_qty) ?></h4>
 			</div>
 		</div>
@@ -21,7 +21,7 @@
 				<i class="fas fa-file-medical-alt" style="color: #AC4CBC; font-size: 40px;"></i>
 			</div>
 			<div class="col-md-8 pr-md-0 text-center">
-				<p class="mb-1"><?= $this->lang->line('lb_surgeries') ?></p>
+				<p class="mb-1"><?= $this->lang->line('w_surgeries') ?></p>
 				<h4 class="mb-0"><?= number_format($surgery_qty) ?></h4>
 			</div>
 		</div>
@@ -34,14 +34,14 @@
 				<i class="fas fa-user-injured" style="color: #3A82EF; font-size: 40px;"></i>
 			</div>
 			<div class="col-md-8 pr-md-0 text-center">
-				<p class="mb-1"><?= $this->lang->line('lb_patients') ?></p>
+				<p class="mb-1"><?= $this->lang->line('w_patients') ?></p>
 				<h4 class="mb-0"><?= number_format($patient_qty) ?></h4>
 			</div>
 		</div>
 	</div>
 </div>
 <div class="col-md-7 mb-4">
-	<h4><?= $this->lang->line('title_today') ?></h4>
+	<h4><?= $this->lang->line('w_today') ?></h4>
 	<div class="card mb-0" style="max-height: 450px; overflow-y: auto;">
 		<div class="card-body">
 			<?php if ($schedules){ ?>
@@ -49,8 +49,8 @@
 				<table class="table text-center bg-info-hover tr-rounded mb-0">
 					<thead>
 						<tr>
-							<th class="text-left"><?= $this->lang->line('th_time') ?></th>
-							<th class="text-center"><?= $this->lang->line('th_type') ?></th>
+							<th class="text-left"><?= $this->lang->line('w_time') ?></th>
+							<th class="text-center"><?= $this->lang->line('w_type') ?></th>
 							<th class="text-right"></th>
 						</tr>
 					</thead>
@@ -75,13 +75,13 @@
 				</table>
 			</div>
 			<?php }else{ ?>
-			<div class="text-success"><?= $this->lang->line('msg_no_pending') ?></div>
+			<div class="text-success"><?= $this->lang->line('t_no_pending') ?></div>
 			<?php } ?>
 		</div>
 	</div>
 </div>
 <div class="col-md-5 mb-4">
-	<h4><?= $this->lang->line('title_profile') ?></h4>
+	<h4><?= $this->lang->line('w_profile') ?></h4>
 	<div class="card">
 		<div class="card-body text-center d-flex align-items-top justify-content-center">
 			<div>
@@ -97,15 +97,15 @@
 			<div class="row">
 				<div class="col-4 py-3 pr-0 border-right">
 					<h3 class="mb-1 text-primary"><?= $profile["appointment_qty"] ?></h3>
-					<span><?= $this->lang->line('lb_appointments') ?></span>
+					<span><?= $this->lang->line('w_appointments') ?></span>
 				</div>
 				<div class="col-4 py-3 border-right">
 					<h3 class="mb-1 text-primary"><?= $profile["surgery_qty"] ?></h3>
-					<span><?= $this->lang->line('lb_surgeries') ?></span>
+					<span><?= $this->lang->line('w_surgeries') ?></span>
 				</div>
 				<div class="col-4 py-3 pl-0">
 					<h3 class="mb-1 text-primary"><?= $profile["patient_qty"] ?></h3>
-					<span><?= $this->lang->line('lb_patients') ?></span>
+					<span><?= $this->lang->line('w_patients') ?></span>
 				</div>
 			</div>
 		</div>
