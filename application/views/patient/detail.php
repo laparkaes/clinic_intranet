@@ -16,19 +16,25 @@
 <?php if ($person->doc_number){ ?>
 <div class="col-md-12">
 	<div class="row d-flex justify-content-center">
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<button class="btn btn-primary w-100 mb-3 control_bl_simple" value="bl_ga">
 				<div><i class="fal fa-notes-medical fa-5x fa-fw"></i></div>
 				<div class="fs-16 mt-2 pt-2 border-top border-white"><?= $this->lang->line('btn_generate_appointment') ?></div>
 			</button>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<button class="btn btn-primary w-100 mb-3 control_bl_simple" value="bl_gs">
 				<div><i class="fal fa-file-medical-alt fa-5x fa-fw"></i></div>
 				<div class="fs-16 mt-2 pt-2 border-top border-white"><?= $this->lang->line('btn_generate_surgery') ?></div>
 			</button>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-3">
+			<button class="btn btn-secondary w-100 mb-3" data-toggle="modal" data-target=".md_add_credit">
+				<div><i class="fal fa-money-check-edit fa-5x fa-fw"></i></div>
+				<div class="fs-16 mt-2 pt-2 border-top border-white"><?= $this->lang->line('btn_add_credit') ?></div>
+			</button>
+		</div>
+		<div class="col-md-3">
 			<button class="btn btn-info w-100 mb-3 control_bl_simple" value="bl_af">
 				<div><i class="fal fa-file fa-5x fa-fw"></i></div>
 				<div class="fs-16 mt-2 pt-2 border-top border-white"><?= $this->lang->line('btn_add_file') ?></div>
@@ -332,6 +338,11 @@
 						</a>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#credit">
+							<i class="far fa-money-check-edit mr-3"></i><span><?= $this->lang->line('w_credit') ?></span>
+						</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#files">
 							<i class="far fa-file mr-3"></i><span><?= $this->lang->line('w_files') ?></span>
 						</a>
@@ -612,6 +623,74 @@
 							<?php } ?>
 						</div>
 					</div>
+					<div class="tab-pane fade" id="credit" role="tabpanel">
+						<div class="row">
+							<?php $colors = ["primary", "secondary", "info", "success", "danger"]; 
+							foreach($credits as $i => $item){ ?>
+							<div class="col-md-6">
+								<div class="widget-stat card">
+									<div class="card-body p-4">
+										<div class="media ai-icon">
+											<span class="mr-3 bgl-<?= $colors[$i] ?> text-<?= $colors[$i] ?>">
+												<?= $currencies_arr[$item->currency_id]->description ?>
+											</span>
+											<div class="media-body">
+												<p class="mb-1"><?= $item->updated_at ?></p>
+												<h4 class="text-<?= $colors[$i] ?> mb-0">
+													<?= number_format($item->balance, 2) ?>
+												</h4>
+												<button class="btn btn-<?= $colors[$i] ?> btn-xs btn_update_balance">
+													<i class="fas fa-sync"></i>
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<?php } ?>
+						</div>
+						<div class="row">
+							<?php if ($credit_histories){ ?>
+							<div class="col-md-2">
+								<div class="mb-3" id="file_list_length_new"></div>
+							</div>
+							<div class="col-md-6"></div>
+							<div class="col-md-4">
+								<div class="mb-3" id="file_list_filter_new"></div>
+							</div>
+							<div class="col-md-12">
+								<div class="table-responsive">
+									<table id="file_list" class="display">
+										<thead>
+											<tr>
+												<th class="text-left pl-0"><?= $this->lang->line('w_date') ?></th>
+												<th><?= $this->lang->line('w_amount') ?></th>
+												<th><?= $this->lang->line('w_remark') ?></th>
+												<th class="text-right pr-0"></th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php foreach($credit_histories as $item){ ?>
+											<tr>
+												<td class="text-left pl-0"><?= $item->registed_at ?></td>
+												<td><?= $currencies_arr[$item->currency_id]->description." ".number_format($item->amount, 2) ?></td>
+												<td><?= $item->remark ?></td>
+												<td class="text-right pr-0">
+													<button type="button" class="btn btn-danger light sharp border-0 btn_delete_credit" value="<?= $item->id ?>">
+														<i class="far fa-trash"></i>
+													</button>
+												</td>
+											</tr>
+											<?php } ?>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<?php }else{ ?>
+							<div class="col-md-12"><?= $this->lang->line('t_no_credit_history') ?></div>
+							<?php } ?>
+						<div>
+					</div>
 					<div class="tab-pane fade" id="files" role="tabpanel">
 						<div class="row">
 							<?php if ($patient_files){ ?>
@@ -689,8 +768,58 @@
 		</div>
 	</div>
 </div>
+<div class="modal fade md_weekly_doctor_agenda" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header pb-0 border-0">
+				<h5 class="modal-title"><?= $this->lang->line('w_doctor_agenda') ?></h5>
+				<button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+			</div>
+			<div class="modal-body" id="bl_weekly_schedule"></div>
+		</div>
+	</div>
+</div>
+<div class="modal fade md_add_credit" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<form class="modal-content" id="form_add_credit">
+			<input type="hidden" name="person_id" value="<?= $person->id ?>" readonly>
+			<div class="modal-header pb-0 border-0">
+				<h5 class="modal-title"><?= $this->lang->line('w_add_credit') ?></h5>
+				<button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+			</div>
+			<div class="modal-body">
+				<div class="form-row">
+					<div class="form-group col-md-4">
+						<label><?= $this->lang->line('w_currency') ?></label>
+						<select class="form-control" name="currency_id">
+							<option value="">--</option>
+							<?php foreach($currencies as $item){ ?>
+							<option value="<?= $item->id ?>"><?= $item->description ?></option>
+							<?php } ?>
+						</select>
+						<div class="sys_msg" id="ac_currency_msg"></div>
+					</div>
+					<div class="form-group col-md-8">
+						<label><?= $this->lang->line('w_amount') ?></label>
+						<input type="text" class="form-control" name="amount" value="0">
+						<div class="sys_msg" id="ac_amount_msg"></div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger light" data-dismiss="modal">
+					<?= $this->lang->line('btn_close') ?>
+				</button>
+				<button type="submit" class="btn btn-primary">
+					<?= $this->lang->line('btn_add') ?>
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
 <div class="d-none">
 	<input type="hidden" id="wm_register_app" value="<?= $this->lang->line('wm_register_app') ?>">
 	<input type="hidden" id="wm_register_sur" value="<?= $this->lang->line('wm_register_sur') ?>">
 	<input type="hidden" id="wm_delete_file" value="<?= $this->lang->line('wm_delete_file') ?>">
+	<input type="hidden" id="wm_add_credit" value="<?= $this->lang->line('wm_add_credit') ?>">
 </div>

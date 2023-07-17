@@ -102,6 +102,14 @@ function update_info(dom){
 	});
 }
 
+function add_credit(dom){
+	$("#form_add_credit .sys_msg").html("");
+	ajax_form_warning(dom, "patient/add_credit", $("#wm_add_credit").val()).done(function(res) {
+		set_msg(res.msgs);
+		swal_redirection(res.type, res.msg, window.location.href);
+	});
+}
+
 $(document).ready(function() {
 	$(".control_bl_simple").on('click',(function(e) {control_bl_simple(this);}));
 	$("#ic_doctor_schedule_w_aa").on('click',(function(e) {load_doctor_schedule_weekly($("#aa_doctor").val(), null, "bl_weekly_schedule");}));
@@ -133,6 +141,9 @@ $(document).ready(function() {
 	$("#sur_specialty").change(function() {sur_set_doctor_sl(this);});
 	$("#sur_specialty, #sur_doctor, #sur_date").change(function() {sur_load_doctor_schedule();});
 	$("#sur_hour, #sur_min").change(function() {set_time_sl("sur", "#sur_schedule_list");});
+	
+	//admin credit
+	$("#form_add_credit").submit(function(e) {e.preventDefault(); add_credit(this);});
 	
 	//admin patient file
 	$("#form_upload_patient_file").submit(function(e) {e.preventDefault(); upload_patient_file(this);});

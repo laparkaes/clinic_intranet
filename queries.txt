@@ -1,0 +1,1 @@
+INSERT INTO `access` (`id`, `module`, `description`) VALUES (NULL, 'patient', 'admin_credit');

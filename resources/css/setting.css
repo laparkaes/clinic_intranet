@@ -1,55 +1,37 @@
 h1, h2, h3, h4, h5, h6{color: #1a8d5f !important; text-transform: uppercase;}
 textarea{resize: none;}
 .sys_msg{font-size: 80%;} 
-
 .form-control:disabled, .form-control[readonly]{background-color: #eee;}
 .bw.form-control:disabled, .bw.form-control[readonly]{background-color: #fff;}
-
 .w-30{width: 30% !important;}
-
 .div_thumb{width: 80px; height: 80px; overflow: hidden;}
 .img_thumb{height: 80px;}
-
 .table-sm th, .table-sm td{padding: 0.5rem;} 
 .table-xs th, .table-xs td{padding: 0.2rem;} 
-
 .brand-logo .logo-abbr{max-width: 50px;}
 .bg-normal{background-color: #fbfbfb;}
 .c_pointer{cursor: pointer;}
 .input-normal-o{
-	.form-control{
-		border-color:#d7dae3;
-		
-	}	
-	.input-group-text{
-		background-color:transparent;
-		border-color:#d7dae3;
-		color:#d7dae3;
-	}
+	.form-control{border-color:#d7dae3;}
+	.input-group-text{background-color:transparent; border-color:#d7dae3; color:#d7dae3;}
 }
-
 .pointer{cursor: pointer;} .pointer:hover{opacity: 70%;}
-
 #tb_sales_select.table #pr_search{max-width: 250px;}
 #tb_sales_select.table #pr_qty{max-width: 80px;}
-
 .ap_content_list_short{max-height: 150px; overflow: auto;}
 .ap_content_list{max-height: 250px; overflow: auto;}
 .ap_content_list_high{max-height:450px; overflow: auto;}
 .diag_impression:hover .ic_delete_diag_impres{display: initial !important;}
-
 .no_border_tb td{border:none;}
-
 .input-normal-o .form-control{
   border-color: #d7dae3;
 }
-
 .input-normal-o .input-group-text{
   background-color: transparent;
   border-color: #d7dae3;
 }
-
 summary:hover{color: #1a172f;}
+.header-info span{width: 160px;}
 
 /* sweet alert */
 .swal2-styled.swal2-confirm{

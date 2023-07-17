@@ -54,7 +54,7 @@
                                 <a class="nav-link" href="#" role="button" data-toggle="dropdown">
                                     <img src="<?= base_url() ?>resources/images/user.png" width="20" alt=""/>
 									<div class="header-info">
-										<span><?= $this->session->userdata('name') ?></span>
+										<span class="d-block text-truncate"><?= $this->session->userdata('name') ?></span>
 										<small><?= $this->lang->line($this->session->userdata('role')->name) ?></small>
 									</div>
                                 </a>

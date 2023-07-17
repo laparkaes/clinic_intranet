@@ -98,6 +98,14 @@ class Patient extends CI_Controller {
 		array_push($duration_ops, ["value" => 60, "txt" => "1 ".$this->lang->line('w_hour')]);
 		for($i = 2; $i <= 12; $i++) $duration_ops[] = ["value" => 60 * $i, "txt" => $i." ".$this->lang->line('w_hours')];
 		
+		$credit_ids = [];
+		$credits = $this->general->filter("credit", ["person_id" => $person->id]);
+		foreach($credits as $item) $credit_ids[] = $item->id;
+		if (!$credit_ids) $credit_ids[] = -1;
+		
+		$f_in = [["field" => "credit_id", "values" => $credit_ids]];
+		$credit_histories = $this->general->filter("credit_history", null, null, $f_in, "registed_at", "desc");
+		
 		$data = [
 			"person" => $person,
 			"appointments" => $appointments,
@@ -111,11 +119,14 @@ class Patient extends CI_Controller {
 			"doctors_arr" => $doctors_arr,
 			"specialty_arr" => $specialty_arr,
 			"status_arr" => $status_arr,
+			"currencies" => $currencies,
 			"currencies_arr" => $currencies_arr,
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"sales" => $this->general->filter("sale", ["client_id" => $person->id]),
 			"sex_ops" => $this->general->all("sex", "description", "asc"),
 			"blood_type_ops" => $this->general->all("blood_type", "description", "asc"),
+			"credits" => $credits,
+			"credit_histories" => $credit_histories,
 			"patient_files" => $this->general->filter("patient_file", ["patient_id" => $person->id, "active" => true], null, null, "registed_at", "desc"),
 			"title" => $this->lang->line('patient'),
 			"main" => "patient/detail",
@@ -234,7 +245,7 @@ class Patient extends CI_Controller {
 	public function delete_file(){
 		$type = "error"; $msg = null;
 		
-		if ($this->utility_lib->check_access("patient", "update")){		
+		if ($this->utility_lib->check_access("patient", "update")){
 			$patient_file = $this->general->id("patient_file", $this->input->post("id"));
 			
 			//change "active" field of DB without removing uploaded file
@@ -249,5 +260,46 @@ class Patient extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);
+	}
+	
+	public function add_credit(){
+		$type = "error"; $msgs = []; $msg = null;
+		
+		if ($this->utility_lib->check_access("patient", "admin_credit")){
+			$data = $this->input->post();
+			
+			$this->load->library('my_val');
+			$msgs = $this->my_val->credit($msgs, "ac_", $data);
+			
+			if (!$msgs){
+				$f = $data; unset($f["amount"]);
+				
+				//check if person has a credit account
+				$credit_acc = $this->general->filter("credit", $f);
+				if ($credit_acc) $credit_id = $credit_acc[0]->id;
+				else $credit_id = $this->general->insert("credit", $f);
+				
+				$credit_history = [
+					"credit_id" => $credit_id,
+					"currency_id" => $data["currency_id"],
+					"amount" => $data["amount"],
+					"registed_at" => date('Y-m-d H:i:s', time()),
+				];
+				if ($this->general->insert("credit_history", $credit_history)){
+					//update credit balance in credit table
+					$credit_data = [
+						"balance" => $this->general->sum("credit_history", "amount", ["credit_id" => $credit_id])->amount,
+						"updated_at" => date('Y-m-d H:i:s', time()),
+					];
+					$this->general->update("credit", $credit_id, $credit_data);
+					
+					$type = "success";
+					$msg = $this->lang->line('s_add_credit');
+				}else $msg = $this->lang->line('error_internal');
+			}else $msg = $this->lang->line('error_occurred');
+		}else $msg = $this->lang->line('error_no_permission');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
 	}
 }

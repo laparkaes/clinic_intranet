@@ -65,6 +65,7 @@ $lang['w_change'] = 'Vuelto';
 $lang['w_client'] = 'Cliente';
 $lang['w_data'] = 'Datos';
 $lang['w_date'] = 'Fecha';
+$lang['w_detail'] = 'Detalle';
 $lang['w_discount'] = 'Descuento';
 $lang['w_discount_short'] = 'Desc.';
 $lang['w_doc_number'] = 'Número de Documento';

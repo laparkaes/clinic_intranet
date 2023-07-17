@@ -45,6 +45,7 @@ $lang['btn_load_more'] = 'Cargar más';
 $lang['wa_admin_access'] = 'Gestión de acceso';
 $lang['wa_admin_account'] = 'Gestión de usuario';
 $lang['wa_admin_category'] = 'Gestión de categorias';
+$lang['wa_admin_credit'] = 'Gestión de creditos';
 $lang['wa_admin_image'] = 'Gestión de imagen';
 $lang['wa_admin_log'] = 'Gestión de historial';
 $lang['wa_admin_medicine'] = 'Gestión de medicina';

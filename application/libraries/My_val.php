@@ -518,4 +518,14 @@ class My_val{
 		
 		return $msgs;
 	}
+	
+	
+	public function credit($msgs, $prefix, $data){
+		if (!$data["currency_id"]) $msgs = $this->set_msg($msgs, $prefix."currency_msg", "error", "e_required_field");
+		if ($data["amount"]){
+			if (!is_numeric($data["amount"])) $msgs = $this->set_msg($msgs, $prefix."amount_msg", "error", "e_enter_number");
+		}else $msgs = $this->set_msg($msgs, $prefix."amount_msg", "error", "e_required_field");
+		
+		return $msgs;
+	}
 }

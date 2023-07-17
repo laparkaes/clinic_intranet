@@ -5,6 +5,7 @@ $lang['patients'] = 'Pacientes';
 //warning message
 $lang['wm_register_app'] = '¿Desea generar nueva consulta del paciente?';
 $lang['wm_register_sur'] = '¿Desea generar nueva cirugía del paciente?';
+$lang['wm_add_credit'] = '¿Desea agregar credito al paciente?';
 $lang['wm_delete_file'] = '¿Está seguro de eliminar archivo?';
 
 //success message
@@ -12,21 +13,27 @@ $lang['s_register'] = 'Paciente ha sido registrado.';
 $lang['s_update_info'] = 'Paciente ha sido actualizado.';
 $lang['s_upload_file'] = 'Archivo ha sido cargado.';
 $lang['s_delete_file'] = 'Archivo ha sido eliminado.';
+$lang['s_add_credit'] = 'Balance de credito ha sido actualizado.';
 
 //button
+$lang['btn_add_credit'] = 'Agregar Credito';
 $lang['btn_add_file'] = 'Agregar Archivo';
 $lang['btn_generate_appointment'] = 'Generar Consulta';
 $lang['btn_generate_surgery'] = 'Generar Cirugía';
 
 //word
+$lang['w_add_credit'] = 'Agregar Credito';
 $lang['w_add_file'] = 'Agregar Archivo';
 $lang['w_address'] = 'Dirección';
+$lang['w_amount'] = 'Monto';
 $lang['w_appointments'] = 'Consultas';
 $lang['w_attention'] = 'Atención';
 $lang['w_balance'] = 'Balance';
 $lang['w_birthday'] = 'F. Nacimiento';
 $lang['w_blood_type'] = 'G. Sangre';
 $lang['w_client'] = 'Cliente';
+$lang['w_credit'] = 'Credito';
+$lang['w_currency'] = 'Moneda';
 $lang['w_date'] = 'Fecha';
 $lang['w_doctor'] = 'Médico';
 $lang['w_doctor_agenda'] = 'Agenda del Médico';
@@ -65,6 +72,7 @@ $lang['w_type'] = 'Tipo';
 $lang['t_remark'] = 'Síntomas, Notas del paciente, etc.';
 $lang['t_select_file'] = 'Elegir un archivo';
 $lang['t_no_appointment'] = 'Paciente no cuenta con consulta.';
+$lang['t_no_credit_history'] = 'Paciente no cuenta con historial de credito.';
 $lang['t_no_surgery'] = 'Paciente no cuenta con cirugía.';
 $lang['t_no_sale'] = 'Paciente no cuenta con venta.';
 $lang['t_no_file'] = 'Paciente no cuenta con archivo.';
