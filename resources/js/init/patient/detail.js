@@ -110,6 +110,12 @@ function add_credit(dom){
 	});
 }
 
+function reverse_credit(dom){
+	ajax_simple_warning({id: $(dom).val()}, "patient/reverse_credit", $("#wm_reverse_credit").val()).done(function(res) {
+		swal_redirection(res.type, res.msg, window.location.href);
+	});
+}
+
 $(document).ready(function() {
 	$(".control_bl_simple").on('click',(function(e) {control_bl_simple(this);}));
 	$("#ic_doctor_schedule_w_aa").on('click',(function(e) {load_doctor_schedule_weekly($("#aa_doctor").val(), null, "bl_weekly_schedule");}));
@@ -144,6 +150,7 @@ $(document).ready(function() {
 	
 	//admin credit
 	$("#form_add_credit").submit(function(e) {e.preventDefault(); add_credit(this);});
+	$(".btn_reverse_credit").on('click',(function(e) {reverse_credit(this);}));
 	
 	//admin patient file
 	$("#form_upload_patient_file").submit(function(e) {e.preventDefault(); upload_patient_file(this);});

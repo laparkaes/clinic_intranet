@@ -283,6 +283,7 @@ class Patient extends CI_Controller {
 					"credit_id" => $credit_id,
 					"currency_id" => $data["currency_id"],
 					"amount" => $data["amount"],
+					"remark" => $this->lang->line('w_added_by')." ".$this->session->userdata('name'),
 					"registed_at" => date('Y-m-d H:i:s', time()),
 				];
 				if ($this->general->insert("credit_history", $credit_history)){
@@ -294,12 +295,47 @@ class Patient extends CI_Controller {
 					$this->general->update("credit", $credit_id, $credit_data);
 					
 					$type = "success";
-					$msg = $this->lang->line('s_add_credit');
+					$msg = $this->lang->line('s_update_credit');
 				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line('error_occurred');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
+	}
+	
+	public function reverse_credit(){
+		$type = "error"; $msg = null;
+		
+		if ($this->utility_lib->check_access("patient", "admin_credit")){
+			$id = $this->input->post("id");
+			$credit_history = (array)$this->general->id("credit_history", $id);
+			if ($credit_history){
+				unset($credit_history["id"]);
+				$credit_history["amount"] = -$credit_history["amount"];
+				
+				if ($credit_history["amount"] > 0) $msg = "w_added_by"; else $msg = "w_discounted_by";
+				$credit_history["remark"] = $this->lang->line($msg)." ".$this->session->userdata('name');
+				
+				$credit_history["registed_at"] = date('Y-m-d H:i:s', time());
+				if ($this->general->insert("credit_history", $credit_history)){
+					$this->general->update("credit_history", $id, ["is_reversed" => true]);
+					
+					//update credit balance in credit table
+					$credit_id = $credit_history["credit_id"];
+					$credit_data = [
+						"balance" => $this->general->sum("credit_history", "amount", ["credit_id" => $credit_id])->amount,
+						"updated_at" => date('Y-m-d H:i:s', time()),
+					];
+					$this->general->update("credit", $credit_id, $credit_data);
+					
+					$type = "success";
+					$msg = $this->lang->line('s_update_credit');
+				}else $msg = $this->lang->line('error_internal');
+			}else $msg = $this->lang->line('error_internal_refresh');
+		}else $msg = $this->lang->line('error_no_permission');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 }

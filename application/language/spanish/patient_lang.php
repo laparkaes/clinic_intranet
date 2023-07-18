@@ -6,6 +6,7 @@ $lang['patients'] = 'Pacientes';
 $lang['wm_register_app'] = '¿Desea generar nueva consulta del paciente?';
 $lang['wm_register_sur'] = '¿Desea generar nueva cirugía del paciente?';
 $lang['wm_add_credit'] = '¿Desea agregar credito al paciente?';
+$lang['wm_reverse_credit'] = '¿Desea revertir monto de historial?';
 $lang['wm_delete_file'] = '¿Está seguro de eliminar archivo?';
 
 //success message
@@ -13,7 +14,7 @@ $lang['s_register'] = 'Paciente ha sido registrado.';
 $lang['s_update_info'] = 'Paciente ha sido actualizado.';
 $lang['s_upload_file'] = 'Archivo ha sido cargado.';
 $lang['s_delete_file'] = 'Archivo ha sido eliminado.';
-$lang['s_add_credit'] = 'Balance de credito ha sido actualizado.';
+$lang['s_update_credit'] = 'Balance de credito ha sido actualizado.';
 
 //button
 $lang['btn_add_credit'] = 'Agregar Credito';
@@ -22,6 +23,7 @@ $lang['btn_generate_appointment'] = 'Generar Consulta';
 $lang['btn_generate_surgery'] = 'Generar Cirugía';
 
 //word
+$lang['w_added_by'] = 'Agregado por';
 $lang['w_add_credit'] = 'Agregar Credito';
 $lang['w_add_file'] = 'Agregar Archivo';
 $lang['w_address'] = 'Dirección';
@@ -35,6 +37,7 @@ $lang['w_client'] = 'Cliente';
 $lang['w_credit'] = 'Credito';
 $lang['w_currency'] = 'Moneda';
 $lang['w_date'] = 'Fecha';
+$lang['w_discounted_by'] = 'Descontado por';
 $lang['w_doctor'] = 'Médico';
 $lang['w_doctor_agenda'] = 'Agenda del Médico';
 $lang['w_document'] = 'Documento';

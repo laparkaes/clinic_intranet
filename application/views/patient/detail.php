@@ -639,9 +639,6 @@
 												<h4 class="text-<?= $colors[$i] ?> mb-0">
 													<?= number_format($item->balance, 2) ?>
 												</h4>
-												<button class="btn btn-<?= $colors[$i] ?> btn-xs btn_update_balance">
-													<i class="fas fa-sync"></i>
-												</button>
 											</div>
 										</div>
 									</div>
@@ -673,12 +670,16 @@
 											<?php foreach($credit_histories as $item){ ?>
 											<tr>
 												<td class="text-left pl-0"><?= $item->registed_at ?></td>
-												<td><?= $currencies_arr[$item->currency_id]->description." ".number_format($item->amount, 2) ?></td>
+												<?php if ($item->amount > 0){ $c = "success"; $s = "+"; }
+												else{ $c = "danger"; $s = "-"; } ?>
+												<td class="text-<?= $c ?>"><?= $s." ".$currencies_arr[$item->currency_id]->description." ".number_format(abs($item->amount), 2) ?></td>
 												<td><?= $item->remark ?></td>
 												<td class="text-right pr-0">
-													<button type="button" class="btn btn-danger light sharp border-0 btn_delete_credit" value="<?= $item->id ?>">
+													<?php if (!$item->is_reversed){ ?>
+													<button type="button" class="btn btn-danger light sharp border-0 btn_reverse_credit" value="<?= $item->id ?>">
 														<i class="far fa-trash"></i>
 													</button>
+													<?php } ?>
 												</td>
 											</tr>
 											<?php } ?>
@@ -822,4 +823,5 @@
 	<input type="hidden" id="wm_register_sur" value="<?= $this->lang->line('wm_register_sur') ?>">
 	<input type="hidden" id="wm_delete_file" value="<?= $this->lang->line('wm_delete_file') ?>">
 	<input type="hidden" id="wm_add_credit" value="<?= $this->lang->line('wm_add_credit') ?>">
+	<input type="hidden" id="wm_reverse_credit" value="<?= $this->lang->line('wm_reverse_credit') ?>">
 </div>
