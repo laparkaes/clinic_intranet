@@ -42,12 +42,12 @@ function update_info(dom){
 }
 
 function activation_control(dom, active){
-	var msg;
+	var msg_key;
 	
-	if (active == true) msg = $("#wm_enable_doctor").val();
-	else msg = $("#wm_disable_doctor").val();
+	if (active == true) msg_key = "wm_enable_doctor";
+	else msg_key = "wm_disable_doctor";
 	
-	ajax_simple_warning({id: $(dom).val(), active: active}, "doctor/activation_control", msg).done(function(res) {
+	ajax_simple_warning({id: $(dom).val(), active: active}, "doctor/activation_control", msg_key).done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }

@@ -282,11 +282,9 @@ class My_val{
 		if (!$data["description"]) $msgs = $this->set_msg($msgs, $prefix."description_msg", "error", "e_required_field");
 		if (!$data["category_id"]) $msgs = $this->set_msg($msgs, $prefix."category_msg", "error", "e_required_field");
 		if (!$data["currency_id"]) $msgs = $this->set_msg($msgs, $prefix."price_msg", "error", "e_required_field");
-		if ($data["price"]){
-			if (is_numeric($data["price"])){
-				if ($data["price"] < 0) $msgs = $this->set_msg($msgs, $prefix."price_msg", "error", "e_enter_positive_num");
-			}else $msgs = $this->set_msg($msgs, $prefix."price_msg", "error", "e_enter_number");
-		}else $msgs = $this->set_msg($msgs, $prefix."price_msg", "error", "e_required_field");
+		if (is_numeric($data["price"])){
+			if ($data["price"] < 0) $msgs = $this->set_msg($msgs, $prefix."price_msg", "error", "e_enter_positive_num");
+		}else $msgs = $this->set_msg($msgs, $prefix."price_msg", "error", "e_enter_number");
 		
 		return $msgs;
 	}

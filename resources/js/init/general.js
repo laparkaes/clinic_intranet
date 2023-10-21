@@ -1,3 +1,28 @@
+var default_lang = "sp";
+
+//msg_list[default_lang].key
+var msg_list = {
+	sp: {
+		//doctor
+		wm_doctor_register	: "¿Desea registrar nuevo médico?",
+		wm_disable_doctor 	: '¿Está seguro de desactivar médico?',
+		wm_enable_doctor	: '¿Está seguro de activar médico?',
+		
+		//product
+		wm_product_register	: "¿Desea registrar nuevo producto?",
+		wm_category_move	: "¿Desea mover todos los productos a otra categoría? Este cambio no es reversible.",
+		wm_category_delete	: "¿Desea eliminar categoría?",
+		wm_category_update	: "Los productos también modificará su categoría. ¿Desea actualizar categoría?",
+		wm_category_add		: "¿Desea agregar nueva categoría?",
+		wm_image_delete		: "¿Desea eliminar imagen?",
+		wm_image_main		: "¿Desea configurar como imagen de producto?",
+		wm_option_add		: "¿Desea agregar nueva opción del producto?",
+		wm_option_delete	: "¿Desea eliminar opción del producto?",
+		wm_option_edit		: "¿Desea actualizar opción del producto?",
+		wm_product_delete	: "¿Seguro de eliminar producto?",
+	},
+};
+
 function swal(type, msg){
 	Swal.fire({
 		title: $("#alert_" + type + "_title").val(),
@@ -34,12 +59,12 @@ function ajax_form(dom, url){
 	return deferred.promise();
 }
 
-function ajax_form_warning(dom, url, warning_msg){
+function ajax_form_warning(dom, url, w_msg_key){
 	var deferred = $.Deferred();
 	Swal.fire({
 		title: $("#alert_warning_title").val(),
 		icon: 'warning',
-		html: warning_msg,
+		html: msg_list[default_lang][w_msg_key],
 		showCancelButton: true,
 		confirmButtonText: $("#alert_confirm_btn").val(),
 		cancelButtonText: $("#alert_cancel_btn").val()
@@ -66,12 +91,12 @@ function ajax_simple(data, url){
 	return deferred.promise();
 }
 
-function ajax_simple_warning(data, url, warning_msg){
+function ajax_simple_warning(data, url, w_msg_key){
 	var deferred = $.Deferred();
 	Swal.fire({
 		title: $("#alert_warning_title").val(),
 		icon: 'warning',
-		html: warning_msg,
+		html: msg_list[default_lang][w_msg_key],
 		showCancelButton: true,
 		confirmButtonText: $("#alert_confirm_btn").val(),
 		cancelButtonText: $("#alert_cancel_btn").val()

@@ -125,7 +125,7 @@
 						<ul class="nav nav-tabs mb-4" role="tablist">
 							<li class="nav-item">
 								<a class="nav-link active" data-toggle="tab" href="#list_ct">
-									<?= $this->lang->line('w_nav_category_list') ?>
+									<?= $this->lang->line('w_nav_cat_list') ?>
 								</a>
 							</li>
 							<li class="nav-item">
@@ -301,8 +301,3 @@
 		</div>
 	</div>
 </div>
-<input type="hidden" id="wm_category_add" value="<?= $this->lang->line('wm_category_add') ?>">
-<input type="hidden" id="wm_category_update" value="<?= $this->lang->line('wm_category_update') ?>">
-<input type="hidden" id="wm_category_delete" value="<?= $this->lang->line('wm_category_delete') ?>">
-<input type="hidden" id="wm_category_move" value="<?= $this->lang->line('wm_category_move') ?>">
-<input type="hidden" id="wm_product_register" value="<?= $this->lang->line('wm_product_register') ?>">

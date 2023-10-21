@@ -2,10 +2,6 @@
 $lang['doctor'] = 'Médico';
 $lang['doctors'] = 'Médicos';
 
-//warning message
-$lang['wm_disable_doctor'] = '¿Está seguro de desactivar médico?';
-$lang['wm_enable_doctor'] = '¿Está seguro de activar médico?';
-
 //success message
 $lang['s_register_doctor'] = 'Médico ha sido registrado.';
 $lang['s_update_doctor'] = 'Médico ha sido actualizado.';

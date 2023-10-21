@@ -6,7 +6,7 @@ function register_doctor(dom){
 	if (d != "" && m != "" && y != "") $("#p_birthday").val(y + "-" + m + "-" + d); else $("#p_birthday").val("");
 	
 	$("#register_form .sys_msg").html("");
-	ajax_form(dom, "doctor/register").done(function(res) {
+	ajax_form_warning(dom, "doctor/register", "wm_doctor_register").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, res.move_to);
 	});

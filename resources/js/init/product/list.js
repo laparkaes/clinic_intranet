@@ -1,5 +1,5 @@
 function add_category(dom){
-	ajax_form_warning(dom, "product/add_category", $("#w_category_add").val()).done(function(res) {
+	ajax_form_warning(dom, "product/add_category", "wm_category_add").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
@@ -18,20 +18,20 @@ function control_edit_category_form(dom){
 }
 
 function update_category(dom){
-	ajax_form_warning(dom, "product/update_category", $("#w_category_update").val()).done(function(res) {
+	ajax_form_warning(dom, "product/update_category", "wm_category_update").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function delete_category(dom){
-	ajax_simple_warning({id: $(dom).val()}, "product/delete_category", $("#w_category_delete").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "product/delete_category", "wm_category_delete").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function move_product(dom){
 	$("#form_move_product .sys_msg").html("");
-	ajax_form_warning(dom, "product/move_product", $("#w_category_move").val()).done(function(res) {
+	ajax_form_warning(dom, "product/move_product", "wm_category_move").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
@@ -39,7 +39,7 @@ function move_product(dom){
 
 function register_product(dom){
 	$("#form_register_product .sys_msg").html("");
-	ajax_form_warning(dom, "product/register", $("#w_product_register").val()).done(function(res) {
+	ajax_form_warning(dom, "product/register", "wm_product_register").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, res.move_to);
 	});
