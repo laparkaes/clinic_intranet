@@ -6,10 +6,6 @@ $lang['account'] = 'Usuario';
 $lang['e_master_account'] = 'No puede eliminar un usuario maestro.';
 $lang['e_account_exists'] = 'Persona ya cuenta con usuario de rol elegido.';
 
-//warning message
-$lang['wm_account_remove'] = '¿Desea eliminar usuario elegido?';
-$lang['wm_password_reset'] = '¿Desea restablecer contraseña de usuario por su número de documento de identidad?';
-
 //success message
 $lang['s_account_register'] = 'Usuario ha sido registrado.';
 $lang['s_account_delete'] = 'Usuario ha sido eliminado.';

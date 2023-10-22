@@ -22,17 +22,6 @@ function update_account_email(dom){
 	});
 }
 
-function activation_control(dom, active){
-	var msg;
-	
-	if (active == true) msg = $("#warning_ado").val();
-	else msg = $("#warning_ddo").val();
-	
-	ajax_simple_warning({id: $(dom).val(), active: active}, "doctor/activation_control", msg).done(function(res) {
-		swal_redirection(res.type, res.msg, window.location.href);
-	});
-}
-
 function reset_person(prefix){
 	$("#" + prefix + "name").attr("readonly", false);
 	$("#" + prefix + "name").val("");

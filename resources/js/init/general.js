@@ -57,6 +57,11 @@ var msg_list = {
 		e_item_option		: 'Debe elegir una opción del producto.',
 		e_item_stock		: 'Debe ingresar cantidad menor que stock de opción.',
 		
+		//account
+		wm_account_add		: '¿Desea registrar nuevo usuario?',
+		wm_account_remove	: '¿Desea eliminar usuario elegido?',
+		wm_password_reset	: '¿Desea restablecer contraseña de usuario por su número de documento de identidad?',
+
 	},
 };
 

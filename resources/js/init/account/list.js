@@ -17,20 +17,20 @@ function reset_person(){
 }
 
 function register_account(dom){
-	ajax_form(dom, "account/register").done(function(res) {
+	ajax_form_warning(dom, "account/register", "wm_account_add").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function remove_account(dom){
-	ajax_simple_warning({id: $(dom).val()}, "account/remove", $("#wm_account_remove").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "account/remove", "wm_account_remove").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function reset_password(dom){
-	ajax_simple_warning({id: $(dom).val()}, "account/reset_password", $("#wm_password_reset").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "account/reset_password", "wm_password_reset").done(function(res) {
 		swal(res.type, res.msg);
 	});
 }
