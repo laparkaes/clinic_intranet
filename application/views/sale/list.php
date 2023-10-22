@@ -231,15 +231,6 @@
 		</div>
 	</div>
 </div>
-<div class="d-none">
-	<input type="hidden" id="wm_sale_add" value="<?= $this->lang->line('wm_sale_add') ?>">
-	<input type="hidden" id="e_list_duplicate" value="<?= $this->lang->line('e_list_duplicate') ?>">
-	<input type="hidden" id="e_list_currency" value="<?= $this->lang->line('e_list_currency') ?>">
-	<input type="hidden" id="e_item_select_least" value="<?= $this->lang->line('e_item_select_least') ?>">
-	<input type="hidden" id="e_item_select" value="<?= $this->lang->line('e_item_select') ?>">
-	<input type="hidden" id="e_item_option" value="<?= $this->lang->line('e_item_option') ?>">
-	<input type="hidden" id="e_item_stock" value="<?= $this->lang->line('e_item_stock') ?>">
-</div>
 <div class="modal fade" id="sl_product_modal" style="display: none;" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">

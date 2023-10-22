@@ -245,15 +245,10 @@
 		</div>
 	</div>
 </div>
-<div class="d-none">
-	<input type="hidden" id="appointment_id" value="<?= $appointment->id ?>">
-	<input type="hidden" id="bmi_class_under_weight" value="<?= $this->lang->line('w_bmi_class_under_weight') ?>">
-	<input type="hidden" id="bmi_class_normal" value="<?= $this->lang->line('w_bmi_class_normal') ?>">
-	<input type="hidden" id="bmi_class_overweight" value="<?= $this->lang->line('w_bmi_class_overweight') ?>">
-	<input type="hidden" id="bmi_class_obesity_1" value="<?= $this->lang->line('w_bmi_class_obesity_1') ?>">
-	<input type="hidden" id="bmi_class_obesity_2" value="<?= $this->lang->line('w_bmi_class_obesity_2') ?>">
-	<input type="hidden" id="bmi_class_obesity_3" value="<?= $this->lang->line('w_bmi_class_obesity_3') ?>">
-	<input type="hidden" id="wm_appointment_reschedule" value="<?= $this->lang->line('wm_appointment_reschedule') ?>">
-	<input type="hidden" id="wm_appointment_cancel" value="<?= $this->lang->line('wm_appointment_cancel') ?>">
-	<input type="hidden" id="wm_appointment_finish" value="<?= $this->lang->line('wm_appointment_finish') ?>">
-</div>
+<input type="hidden" id="appointment_id" value="<?= $appointment->id ?>">
+<input type="hidden" id="bmi_class_under_weight" value="<?= $this->lang->line('w_bmi_class_under_weight') ?>">
+<input type="hidden" id="bmi_class_normal" value="<?= $this->lang->line('w_bmi_class_normal') ?>">
+<input type="hidden" id="bmi_class_overweight" value="<?= $this->lang->line('w_bmi_class_overweight') ?>">
+<input type="hidden" id="bmi_class_obesity_1" value="<?= $this->lang->line('w_bmi_class_obesity_1') ?>">
+<input type="hidden" id="bmi_class_obesity_2" value="<?= $this->lang->line('w_bmi_class_obesity_2') ?>">
+<input type="hidden" id="bmi_class_obesity_3" value="<?= $this->lang->line('w_bmi_class_obesity_3') ?>">

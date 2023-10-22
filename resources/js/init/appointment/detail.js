@@ -1,18 +1,18 @@
 function cancel_appointment(dom){
-	ajax_simple_warning({id: $(dom).val()}, "appointment/cancel", $("#wm_appointment_cancel").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "appointment/cancel", "wm_appointment_cancel").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function finish_appointment(dom){
-	ajax_simple_warning({id: $(dom).val()}, "appointment/finish", $("#wm_appointment_finish").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "appointment/finish", "wm_appointment_finish").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function reschedule_appointment(dom){
 	$("#reschedule_form .sys_msg").html("");
-	ajax_form_warning(dom, "appointment/reschedule", $("#wm_appointment_reschedule").val()).done(function(res) {
+	ajax_form_warning(dom, "appointment/reschedule", "wm_appointment_reschedule").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, window.location.href);
 	});

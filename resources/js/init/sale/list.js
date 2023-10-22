@@ -251,7 +251,7 @@ function sl_product_add(){
 
 function add_sale(dom){
 	$("#form_sale .sys_msg").html("");
-	ajax_form_warning(dom, "sale/add", $("#wm_sale_add").val()).done(function(res) {
+	ajax_form_warning(dom, "sale/add", "wm_sale_add").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, res.move_to);
 	});

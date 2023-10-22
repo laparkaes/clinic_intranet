@@ -8,6 +8,26 @@ var msg_list = {
 		wm_disable_doctor 	: '¿Está seguro de desactivar médico?',
 		wm_enable_doctor	: '¿Está seguro de activar médico?',
 		
+		//patient
+		wm_patient_register	: "¿Desea registrar nuevo patiente?",
+		wm_register_app		: '¿Desea generar nueva consulta del paciente?',
+		wm_register_sur		: '¿Desea generar nueva cirugía del paciente?',
+		wm_add_credit		: '¿Desea agregar credito al paciente?',
+		wm_reverse_credit	: '¿Desea revertir monto de historial?',
+		wm_delete_file		: '¿Está seguro de eliminar archivo?',
+		
+		//appointment
+		wm_appointment_register		: '¿Desea generar nueva consulta?',
+		wm_appointment_cancel		: '¿Desea cancelar consulta?',
+		wm_appointment_finish		: '¿Desea finalizar consulta?',
+		wm_appointment_reschedule	: '¿Desea reprogramar consulta?',
+		
+		//surgery
+		wm_surgery_cancel		: '¿Desea cancelar cirugía?',
+		wm_surgery_reschedule	: '¿Desea reprogramar cirugía?',
+		wm_surgery_finish		: '¿Desea finalizar cirugía?',
+		wm_surgery_register		: '¿Desea generar nueva cirugía?',
+		
 		//product
 		wm_product_register	: "¿Desea registrar nuevo producto?",
 		wm_category_move	: "¿Desea mover todos los productos a otra categoría? Este cambio no es reversible.",
@@ -20,6 +40,23 @@ var msg_list = {
 		wm_option_delete	: "¿Desea eliminar opción del producto?",
 		wm_option_edit		: "¿Desea actualizar opción del producto?",
 		wm_product_delete	: "¿Seguro de eliminar producto?",
+		
+		//sale
+		wm_sale_add			: '¿Desea registrar la venta?',
+		wm_sale_cancel		: '¿Desea cancelar venta?',
+		wm_medical_unassign	: '¿Desea desasignar atención médica?',
+		wm_payment_add		: '¿Desea registrar pago?',
+		wm_payment_delete	: '¿Desea eliminar pago?',
+		wm_voucher_make		: '¿Desea generar comprobante de venta?',
+		wm_voucher_sunat	: '¿Desea enviar comprobante a Sunat?',
+		wm_voucher_void		: '¿Desea anular el comprobante? Esta acción no es reversible.',
+		e_list_duplicate	: 'Producto existe en la lista.',
+		e_list_currency		: 'Moneda de productos deben ser iguales.',
+		e_item_select_least	: 'Debe elegir al menos un ítem.',
+		e_item_select		: 'Debe elegir un ítem.',
+		e_item_option		: 'Debe elegir una opción del producto.',
+		e_item_stock		: 'Debe ingresar cantidad menor que stock de opción.',
+		
 	},
 };
 

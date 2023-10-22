@@ -1,13 +1,6 @@
 <?php
-
 $lang['appointment'] = 'Consulta';
 $lang['appointments'] = 'Consultas';
-
-//warning message
-$lang['wm_appointment_register'] = '¿Desea generar nueva consulta?';
-$lang['wm_appointment_cancel'] = '¿Desea cancelar consulta?';
-$lang['wm_appointment_finish'] = '¿Desea finalizar consulta?';
-$lang['wm_appointment_reschedule'] = '¿Desea reprogramar consulta?';
 
 //error message
 $lang['e_app_unconfirmed'] = 'Consulta debe ser confirmada para atender al paciente.';

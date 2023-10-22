@@ -565,11 +565,4 @@
 	</div>
 </div>
 <?php } ?>
-<input type="hidden" id="wm_payment_add" value="<?= $this->lang->line('wm_payment_add') ?>">
-<input type="hidden" id="wm_payment_delete" value="<?= $this->lang->line('wm_payment_delete') ?>">
-<input type="hidden" id="wm_sale_cancel" value="<?= $this->lang->line('wm_sale_cancel') ?>">
-<input type="hidden" id="wm_voucher_make" value="<?= $this->lang->line('wm_voucher_make') ?>">
-<input type="hidden" id="wm_medical_unassign" value="<?= $this->lang->line('wm_medical_unassign') ?>">
-<input type="hidden" id="wm_voucher_sunat" value="<?= $this->lang->line('wm_voucher_sunat') ?>">
-<input type="hidden" id="wm_voucher_void" value="<?= $this->lang->line('wm_voucher_void') ?>">
 <input type="hidden" id="btn_select_lang" value="<?= $this->lang->line('btn_select') ?>">

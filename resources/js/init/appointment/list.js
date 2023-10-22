@@ -15,7 +15,7 @@ function set_doctor_sl(dom){
 
 function register_appointment(dom){
 	$("#register_form .sys_msg").html("");
-	ajax_form_warning(dom, "appointment/register", $("#wm_appointment_register").val()).done(function(res) {
+	ajax_form_warning(dom, "appointment/register", "wm_appointment_register").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, res.move_to);
 	});
