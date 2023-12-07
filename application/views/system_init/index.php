@@ -375,12 +375,6 @@
 	<input type="hidden" id="alert_warning_title" value="<?= $this->lang->line('alert_warning_title') ?>">
 	<input type="hidden" id="alert_confirm_btn" value="<?= $this->lang->line('alert_confirm_btn') ?>">
 	<input type="hidden" id="alert_cancel_btn" value="<?= $this->lang->line('alert_cancel_btn') ?>">
-	<input type="hidden" id="wm_company_remove" value="<?= $this->lang->line('wm_company_remove') ?>">
-	<input type="hidden" id="wm_account_remove" value="<?= $this->lang->line('wm_account_remove') ?>">
-	<input type="hidden" id="wm_sunat_remove" value="<?= $this->lang->line('wm_sunat_remove') ?>">
-	<input type="hidden" id="wm_sale_type_remove" value="<?= $this->lang->line('wm_sale_type_remove') ?>">
-	<input type="hidden" id="wm_sale_type_finish" value="<?= $this->lang->line('wm_sale_type_finish') ?>">
-	<input type="hidden" id="wm_sys_init_finish" value="<?= $this->lang->line('wm_sys_init_finish') ?>">
 	<script src="<?= base_url() ?>resources/vendor/global/global.min.js"></script>
 	<script src="<?= base_url() ?>resources/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.js"></script>
     <script src="<?= base_url() ?>resources/js/custom.min.js"></script>

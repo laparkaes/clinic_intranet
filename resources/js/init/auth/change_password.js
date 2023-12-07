@@ -1,6 +1,6 @@
 function change_password(dom){
 	$("#form_change_password .sys_msg").html("");
-	ajax_form_warning(dom, "auth/change_password_apply", $("#wm_change_password").val()).done(function(res) {
+	ajax_form_warning(dom, "auth/change_password_apply", "wm_change_password").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, $("#base_url").val() + "auth/logout");
 	});

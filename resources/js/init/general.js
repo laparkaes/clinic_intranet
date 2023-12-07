@@ -3,6 +3,17 @@ var default_lang = "sp";
 //msg_list[default_lang].key
 var msg_list = {
 	sp: {
+		//system init
+		wm_company_remove	: '¿Desea eliminar empresa?',
+		wm_account_remove	: '¿Desea eliminar usuario?',
+		wm_sunat_remove		: '¿Desea eliminar datos de Sunat?',
+		wm_sale_type_remove	: '¿Desea eliminar tipo de venta?',
+		wm_sale_type_finish	: '¿Desea finalizar configuracion de tipo de ventas?',
+		wm_sys_init_finish	: '¿Desea finalizar inicialización del sistema?',
+		
+		//auth
+		wm_change_password	: 'Deberá ingresar de nuevo después de aplicar el cambio.',
+		
 		//doctor
 		wm_doctor_register	: "¿Desea registrar nuevo médico?",
 		wm_disable_doctor 	: '¿Está seguro de desactivar médico?',
@@ -62,6 +73,11 @@ var msg_list = {
 		wm_account_remove	: '¿Desea eliminar usuario elegido?',
 		wm_password_reset	: '¿Desea restablecer contraseña de usuario por su número de documento de identidad?',
 
+		//config
+		wm_profile_remove	: '¿Desea eliminar perfil elegido?',
+		wm_medicine_remove	: '¿Desea eliminar medicina elegida?',
+		wm_image_remove		: '¿Desea eliminar imagen elegida?',
+		wm_system_init		: 'Su sesión finalizará para acceder a la configuración del sistema. ¿Desea continuar?',
 	},
 };
 

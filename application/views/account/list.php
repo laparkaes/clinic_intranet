@@ -161,11 +161,8 @@
 							<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
 						</div>
 					</form>
-				
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-<input type="hidden" id="wm_account_remove" value="<?= $this->lang->line('wm_account_remove') ?>">
-<input type="hidden" id="wm_password_reset" value="<?= $this->lang->line('wm_password_reset') ?>">

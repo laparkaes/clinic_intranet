@@ -32,7 +32,7 @@ function search_company(){
 }
 
 function remove_company(){
-	ajax_simple_warning({}, "system_init/remove_company", $("#wm_company_remove").val()).done(function(res) {
+	ajax_simple_warning({}, "system_init/remove_company", "wm_company_remove").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
@@ -63,7 +63,7 @@ function search_person(){
 }
 
 function remove_account(){
-	ajax_simple_warning({}, "system_init/remove_account", $("#wm_account_remove").val()).done(function(res) {
+	ajax_simple_warning({}, "system_init/remove_account", "wm_account_remove").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
@@ -78,7 +78,7 @@ function sunat_access_init(dom){
 }
 
 function remove_sunat(){
-	ajax_simple_warning({}, "system_init/remove_sunat", $("#wm_sunat_remove").val()).done(function(res) {
+	ajax_simple_warning({}, "system_init/remove_sunat", "wm_sunat_remove").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
@@ -114,7 +114,7 @@ function add_sale_type(dom){
 }
 
 function remove_sale_type(id){
-	ajax_simple_warning({id:id}, "system_init/remove_sale_type", $("#wm_sale_type_remove").val()).done(function(res) {
+	ajax_simple_warning({id:id}, "system_init/remove_sale_type", "wm_sale_type_remove").done(function(res) {
 		swal(res.type, res.msg);
 		if (res.type == "success"){
 			$("#btn_finish_sale_type").removeClass("d-none");
@@ -124,14 +124,14 @@ function remove_sale_type(id){
 }
 
 function finish_sale_type(){
-	ajax_simple_warning({}, "system_init/finish_sale_type", $("#wm_sale_type_finish").val()).done(function(res) {
+	ajax_simple_warning({}, "system_init/finish_sale_type", "wm_sale_type_finish").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 /* end sale type */
 
 function finish_init(){
-	ajax_simple_warning({}, "system_init/finish_init", $("#wm_sys_init_finish").val()).done(function(res) {
+	ajax_simple_warning({}, "system_init/finish_init", "wm_sys_init_finish").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }

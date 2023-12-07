@@ -60,7 +60,7 @@ function update_company_data(dom){
 }
 
 function init_system(){
-	ajax_simple_warning({}, "config/system_init", $("#wm_system_init").val()).done(function(res) {
+	ajax_simple_warning({}, "config/system_init", "wm_system_init").done(function(res) {
 		swal_redirection(res.type, res.msg, $("#base_url").val() + "system_init");
 	});
 }
@@ -83,7 +83,7 @@ function register_profile(dom){
 }
 
 function remove_profile(dom){
-	ajax_simple_warning({id: $(dom).val()}, "config/remove_profile", $("#wm_profile_remove").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "config/remove_profile", "wm_profile_remove").done(function(res) {
 		swal(res.type, res.msg);
 		reset_profile_list();
 	});
@@ -198,7 +198,7 @@ function reset_image_list(){
 }
 
 function remove_image(dom){
-	ajax_simple_warning({id: $(dom).val()}, "config/remove_image", $("#wm_image_remove").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "config/remove_image", "wm_image_remove").done(function(res) {
 		swal(res.type, res.msg);
 		reset_image_list();
 	});
@@ -244,7 +244,7 @@ function register_medicine(dom){
 }
 
 function remove_medicine(dom){
-	ajax_simple_warning({id: $(dom).val()}, "config/remove_medicine", $("#wm_medicine_remove").val()).done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "config/remove_medicine", "wm_medicine_remove").done(function(res) {
 		swal(res.type, res.msg);
 		reset_medicine_list();
 	});

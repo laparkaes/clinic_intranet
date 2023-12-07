@@ -559,8 +559,4 @@
 		</div>
 	</div>
 </div>
-<input type="hidden" id="wm_profile_remove" value="<?= $this->lang->line('wm_profile_remove') ?>">
-<input type="hidden" id="wm_medicine_remove" value="<?= $this->lang->line('wm_medicine_remove') ?>">
-<input type="hidden" id="wm_image_remove" value="<?= $this->lang->line('wm_image_remove') ?>">
-<input type="hidden" id="wm_system_init" value="<?= $this->lang->line('wm_system_init') ?>">
 <input type="hidden" id="w_view_all" value="<?= $this->lang->line('w_view_all') ?>">

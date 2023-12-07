@@ -76,7 +76,6 @@
 	<input type="hidden" id="alert_warning_title" value="<?= $this->lang->line('alert_warning_title') ?>">
 	<input type="hidden" id="alert_confirm_btn" value="<?= $this->lang->line('alert_confirm_btn') ?>">
 	<input type="hidden" id="alert_cancel_btn" value="<?= $this->lang->line('alert_cancel_btn') ?>">
-	<input type="hidden" id="wm_change_password" value="<?= $this->lang->line('wm_change_password') ?>">
     <script src="<?= base_url() ?>resources/vendor/global/global.min.js"></script>
 	<script src="<?= base_url() ?>resources/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.js"></script>
     <script src="<?= base_url() ?>resources/js/custom.min.js"></script>
