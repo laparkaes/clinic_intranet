@@ -1,21 +1,4 @@
 <?php
-
-//bootstrap datepicker
-$lang['bd_select']	= 'Elegir';
-$lang['bd_cancel']	= 'Cancelar';
-$lang['bd_clean']	= 'Limpiar';
-
-//jquery datatable
-$lang['j_datatable_search']		= 'Buscar';
-$lang['j_datatable_no_record']	= 'No hay registro';
-
-//alert
-$lang['alert_success_title']	= '¡ Éxito !';
-$lang['alert_error_title']		= '¡ Error !';
-$lang['alert_warning_title']	= '¡ Un Momento !';
-$lang['alert_confirm_btn']		= 'Confirmar';
-$lang['alert_cancel_btn']		= 'Cancelar';
-
 //messages
 $lang['success_data_loaded']	= 'Carga exitosa.';
 $lang['error_doc_type']			= 'Elija tipo de documento.';
@@ -51,28 +34,9 @@ $lang['accepted']		= 'Aceptado';
 $lang['rejected']		= 'Rechazado';
 $lang['pending']		= 'Pendiente';
 
-//header
-$lang['hd_password']	= 'Contraseña';
-$lang['hd_logout']		= 'Salir';
-
 //navbar
 $lang['nav_today']		= 'Hoy';
-$lang['nav_dashboard']	= 'Principal';
-$lang['nav_doctors']	= 'Médicos';
-$lang['nav_patients']	= 'Pacientes';
-$lang['nav_appointments']	= 'Consultas';
-$lang['nav_surgeries']	= 'Cirugías';
-$lang['nav_products']	= 'Productos';
-$lang['nav_sales']		= 'Ventas';
-$lang['nav_reports']	= 'Reportes';
-$lang['nav_accounts']	= 'Usuarios';
-$lang['nav_settings']	= 'Ajustes';
 $lang['nav_back_to_list']	= 'Volver a Lista';
-
-//copyright
-$lang['cr_text']	= '© 2022 Todos los derechos reservados';
-$lang['cr_by']		= 'por';
-$lang['cr_owner']	= 'Everlyn';
 
 //select options
 $lang['frequency_D']	= 'D';

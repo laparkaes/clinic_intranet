@@ -18,6 +18,13 @@ class General_model extends CI_Model{
 		}else return array();
 	}
 	
+	function unique($tablename, $field, $value){
+		$this->db->where($field, $value);
+		$query = $this->db->get($tablename, 1, 0);
+		$result = $query->result();
+		if ($result) return $result[0]; else return null;
+	}
+	
 	function filter($tablename, $w = null, $l = null, $w_in = null, $order_by = "", $order = "", $limit = "", $offset = ""){
 		if ($w){ $this->db->group_start(); $this->db->where($w); $this->db->group_end(); }
 		if ($l){ $this->db->group_start(); $this->db->or_like($l); $this->db->group_end(); }

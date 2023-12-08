@@ -98,12 +98,15 @@ class Dashboard extends CI_Controller {
 		array_unique($patient_arr);
 		
 		$account = $this->general->id("account", $this->session->userdata('aid'));
-		$doctor = $this->general->filter("doctor", ["person_id" => $account->person_id], null, null, "registed_at", "desc")[0];
+		$doctor = $this->general->filter("doctor", ["person_id" => $account->person_id], null, null, "registed_at", "desc");
+		if ($doctor) $doctor = $doctor[0];
+		else $doctor = null;
+		
 		$data["profile"] = [
 			"email" => $account->email,
 			"name" => $this->general->id("person", $account->person_id)->name,
-			"license" => $doctor->license,
-			"specialty" => $this->general->id("specialty", $doctor->specialty_id)->name,
+			"license" => ($doctor != null ? $doctor->license : ""),
+			"specialty" => ($doctor != null ? $this->general->id("specialty", $doctor->specialty_id)->name : ""),
 			"role" => $this->lang->line($this->general->id("role", $account->role_id)->name),
 			"appointment_qty" => $this->general->counter("appointment", $filter),
 			"surgery_qty" => $this->general->counter("surgery", $filter),

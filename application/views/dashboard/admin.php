@@ -1,160 +1,102 @@
-<div class="col-md-12">
-	<h4><?= $this->lang->line('w_monthly_resume') ?></h4>
+<div class="pagetitle">
+	<h1><?= $title ?></h1>
+	<nav>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/"><?= $this->lang->line('w_home') ?></a></li>
+			<li class="breadcrumb-item active"><?= $title ?></li>
+		</ol>
+	</nav>
 </div>
-<div class="col-md-4">
-	<div class="card">
-		<div class="card-body row py-3">
-			<div class="col-md-4 px-md-0 text-center d-flex align-items-center justify-content-center">
-				<i class="fas fa-notes-medical" style="color: #5fe1ad; font-size: 40px;"></i>
-			</div>
-			<div class="col-md-8 pr-md-0 text-center">
-				<p class="mb-1"><?= $this->lang->line('w_appointments') ?></p>
-				<h4 class="mb-0"><?= number_format($appointment_qty) ?></h4>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="col-md-4">
-	<div class="card">
-		<div class="card-body row py-3">
-			<div class="col-md-4 px-md-0 text-center d-flex align-items-center justify-content-center">
-				<i class="fas fa-file-medical-alt" style="color: #AC4CBC; font-size: 40px;"></i>
-			</div>
-			<div class="col-md-8 pr-md-0 text-center">
-				<p class="mb-1"><?= $this->lang->line('w_surgeries') ?></p>
-				<h4 class="mb-0"><?= number_format($surgery_qty) ?></h4>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="col-md-4">
-	<div class="card">
-		<div class="card-body row py-3">
-			<div class="col-md-4 px-md-0 text-center d-flex align-items-center justify-content-center">
-				<i class="fas fa-shopping-basket" style="color: #3A82EF; font-size: 40px;"></i>
-			</div>
-			<div class="col-md-8 pr-md-0 text-center">
-				<p class="mb-1"><?= $this->lang->line('w_sales') ?></p>
-				<h4 class="mb-0"><?= number_format($sale_qty) ?></h4>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="col-md-7 mb-4">
-	<h4><?= $this->lang->line('w_monthly_income') ?></h4>
-	<div class="card">
-		<div class="card-header pb-0 border-0">
-			<div class="btn-group">
-				<?php $cl = ""; foreach($currencies as $item){ ?>
-				<button type="button" class="btn btn<?= $cl ?>-primary btn-xs btn_load_income_chart" value="<?= $item->id ?>">
-					<?= $item->description ?>
-				</button>
-				<?php $cl = "-outline";} ?>
-			</div>
-		</div>
-		<div class="card-body p-0" id="chart_monthly_income"></div>
-	</div>
-</div>
-<div class="col-md-5 mb-4">
-	<h4><?= $this->lang->line('w_profile') ?></h4>
-	<div class="card">
-		<div class="card-body text-center d-flex align-items-center justify-content-center">
-			<div>
-				<div class="mb-3"><i class="fas fa-user-tie fa-7x"></i></div>
-				<h4 class="text-black mb-3"><?= $profile["name"] ?></h4>
-				<div><?= $profile["role"] ?></div>
-				<div><?= $profile["email"] ?></div>
-			</div>
-		</div>
-		<div class="card-footer p-0 text-center">
-			<div class="row">
-				<div class="col-4 py-3 pr-0 border-right">
-					<h3 class="mb-1 text-primary"><?= $profile["doctor_qty"] ?></h3>
-					<span><?= $this->lang->line('w_doctors') ?></span>
-				</div>
-				<div class="col-4 py-3 border-right">
-					<h3 class="mb-1 text-primary"><?= $profile["patient_qty"] ?></h3>
-					<span><?= $this->lang->line('w_patients') ?></span>
-				</div>
-				<div class="col-4 py-3 pl-0">
-					<h3 class="mb-1 text-primary"><?= $profile["account_qty"] ?></h3>
-					<span><?= $this->lang->line('w_accounts') ?></span>
+<section class="section dashboard">
+	<div class="row">
+		<div class="col-md-4">
+			<div class="card info-card sales-card">
+				<div class="card-body">
+					<h5 class="card-title"><?= $this->lang->line('w_appointments') ?> <span>| <?= $this->lang->line('w_this_month') ?></span></h5>
+					<div class="d-flex align-items-center">
+						<div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+							<i class="bi bi-clipboard2-pulse"></i>
+						</div>
+						<div class="ps-3">
+							<h6><?= number_format($appointment_qty) ?></h6>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
-<div class="col-md-6">
-	<h4><?= $this->lang->line('w_sales_no_voucher') ?></h4>
-	<div class="card">
-		<div class="card-body">
-			<?php if ($sales){ ?>
-			<div class="table-responsive">
-				<table class="table text-center bg-info-hover tr-rounded mb-0">
-					<thead>
-						<tr>
-							<th class="text-left"><?= $this->lang->line('w_amount') ?></th>
-							<th class="text-center"><?= $this->lang->line('w_date') ?></th>
-							<th class="text-right"></th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php foreach($sales as $item){ ?>
-						<tr>
-							<td class="text-left"><?= $item->currency." ".number_format($item->total, 2) ?></td>
-							<td><?= date("Y-m-d", strtotime($item->registed_at)) ?></td>
-							<td class="text-right">
-								<a href="/intranet/sale/detail/<?= $item->id ?>">
-									<button type="button" class="btn btn-info light sharp">
-										<i class="fas fa-arrow-alt-right"></i>
-									</button>
-								</a>
-							</td>
-						</tr>
-						<?php } ?>
-					</tbody>
-				</table>
+		<div class="col-md-4">
+			<div class="card info-card revenue-card">
+				<div class="card-body">
+					<h5 class="card-title"><?= $this->lang->line('w_surgeries') ?> <span>| <?= $this->lang->line('w_this_month') ?></span></h5>
+					<div class="d-flex align-items-center">
+						<div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+							<i class="bi bi-heart-pulse"></i>
+						</div>
+						<div class="ps-3">
+							<h6><?= number_format($surgery_qty) ?></h6>
+						</div>
+					</div>
+				</div>
 			</div>
-			<?php }else{ ?>
-			<div><?= $this->lang->line('t_voucher_done') ?></div>
-			<?php } ?>
+		</div>
+		<div class="col-md-4">
+			<div class="card info-card customers-card">
+				<div class="card-body">
+					<h5 class="card-title"><?= $this->lang->line('w_sales') ?> <span>| <?= $this->lang->line('w_this_month') ?></span></h5>
+					<div class="d-flex align-items-center">
+						<div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+							<i class="bi bi-cart"></i>
+						</div>
+						<div class="ps-3">
+							<h6><?= number_format($sale_qty) ?></h6>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-7">
+			<div class="card">
+				<div class="card-body">
+					<div class="d-flex justify-content-between align-items-center">
+						<h5 class="card-title"><?= $this->lang->line('w_monthly_income') ?></h5>
+						<div class="btn-group">
+							<?php $cl = ""; foreach($currencies as $item){ ?>
+							<button type="button" class="btn btn<?= $cl ?>-primary btn-sm btn_load_income_chart" value="<?= $item->id ?>">
+								<?= $item->description ?>
+							</button>
+							<?php $cl = "-outline";} ?>
+						</div>
+					</div>
+					<div id="chart_monthly_income"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-5">
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title"><?= $this->lang->line('w_profile') ?></h5>
+					<div class="text-center pb-4">
+						<div class="mb-3"><i class="fas fa-users-crown fa-7x"></i></div>
+						<h4 class="text-black mb-3"><?= $profile["name"] ?></h4>
+						<div><?= $profile["role"] ?></div>
+						<div><?= $profile["email"] ?></div>
+					</div>
+					<div class="row text-center border-top">
+						<div class="col-4 pt-3 pr-0 border-end">
+							<h3 class="mb-1 text-black"><?= $profile["doctor_qty"] ?></h3>
+							<span><?= $this->lang->line('w_doctors') ?></span>
+						</div>
+						<div class="col-4 pt-3 border-end">
+							<h3 class="mb-1 text-black"><?= $profile["patient_qty"] ?></h3>
+							<span><?= $this->lang->line('w_patients') ?></span>
+						</div>
+						<div class="col-4 pt-3 pl-0">
+							<h3 class="mb-1 text-black"><?= $profile["account_qty"] ?></h3>
+							<span><?= $this->lang->line('w_accounts') ?></span>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
-</div>
-<div class="col-md-6">
-	<h4><?= $this->lang->line('w_vouchers_no_sunat') ?></h4>
-	<div class="card">
-		<div class="card-body">
-			<?php if ($vouchers){ ?>
-			<div class="table-responsive">
-				<table class="table text-center bg-info-hover tr-rounded mb-0">
-					<thead>
-						<tr>
-							<th class="text-left"><?= $this->lang->line('w_type') ?></th>
-							<th class="text-center"><?= $this->lang->line('w_date') ?></th>
-							<th class="text-right"></th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php foreach($vouchers as $item){ ?>
-						<tr>
-							<td class="text-left"><?= $item->voucher_type ?></td>
-							<td><?= date("Y-m-d", strtotime($item->registed_at)) ?></td>
-							<td class="text-right">
-								<a href="/intranet/sale/detail/<?= $item->sale_id ?>">
-									<button type="button" class="btn btn-info light sharp">
-										<i class="fas fa-arrow-alt-right"></i>
-									</button>
-								</a>
-							</td>
-						</tr>
-						<?php } ?>
-					</tbody>
-				</table>
-			</div>
-			<?php }else{ ?>
-			<div><?= $this->lang->line('t_voucher_sent') ?></div>
-			<?php } ?>
-		</div>
-	</div>
-</div>
+</section>

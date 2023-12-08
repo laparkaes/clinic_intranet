@@ -1,86 +1,88 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!DOCTYPE html>
-<html lang="en" class="h-100">
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title><?= $this->lang->line('w_change_password') ?></title>
-    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url() ?>resources/images/favicon.png">
-	<link href="<?= base_url() ?>resources/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.css" rel="stylesheet">
-    <link href="<?= base_url() ?>resources/css/style.css" rel="stylesheet">
-	<link href="<?= base_url() ?>resources/css/setting.css" rel="stylesheet">
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<title><?= $this->lang->line('w_change_password') ?></title>
+	<meta content="" name="description">
+	<meta content="" name="keywords">
+	<link href="<?= base_url() ?>assets/img/favicon.png" rel="icon">
+	<link href="<?= base_url() ?>assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+	<link href="https://fonts.gstatic.com" rel="preconnect">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+	<link href="<?= base_url() ?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="<?= base_url() ?>assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+	<link href="<?= base_url() ?>assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+	<link href="<?= base_url() ?>assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+	<link href="<?= base_url() ?>assets/vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+	<link href="<?= base_url() ?>assets/css/style.css" rel="stylesheet">
 </head>
-<body class="vh-100">
-    <div class="authincation h-100">
-        <div class="container h-100">
-            <div class="row justify-content-center h-100 align-items-center">
-                <div class="col-md-6">
-                    <div class="authincation-content">
-                        <div class="row no-gutters">
-                            <div class="col-xl-12">
-                                <div class="auth-form">
-									<h4 class="text-center mb-3"><?= $this->lang->line('w_change_password') ?></h4>
-                                    <form action="#" id="form_change_password">
-										<div class="form-row">
-                                            <div class="form-group col-md-12">
-                                                <label class="mb-1">
-													<strong><?= $this->lang->line('w_username') ?></strong>
-												</label>
-                                                <div><?= $account->email ?></div>
-                                            </div>
-                                            <div class="form-group col-md-12">
-                                                <label class="mb-1">
-													<strong><?= $this->lang->line('w_password_actual') ?></strong>
-												</label>
-                                                <input type="password" class="form-control" name="password_actual">
-												<div class="sys_msg" id="pw_actual_msg"></div>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="mb-1">
-													<strong><?= $this->lang->line('w_password_new') ?></strong>
-												</label>
-                                                <input type="password" class="form-control" name="password_new">
-												<div class="sys_msg" id="pw_new_msg"></div>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="mb-1">
-													<strong><?= $this->lang->line('w_confirm') ?></strong>
-												</label>
-                                                <input type="password" class="form-control" name="confirm">
-												<div class="sys_msg" id="pw_confirm_msg"></div>
-                                            </div>
-											
-                                            <div class="form-group col-md-12 pt-3">
-                                                <button type="submit" class="btn btn-primary btn-block">
-													<?= $this->lang->line('btn_confirm') ?>
-												</button>
-                                            </div>
-                                            <div class="form-group col-md-12 pt-3 text-right">
-                                                <a href="<?= base_url() ?>dashboard">
-													<?= $this->lang->line('w_change_later') ?>
-												</a>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<body>
+	<main>
+		<div class="container">
+			<section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+				<div class="container">
+					<div class="row justify-content-center">
+						<div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+							<div class="d-flex justify-content-center py-4">
+								<a href="<?= base_url() ?>" class="logo d-flex align-items-center w-auto">
+									<img src="<?= base_url() ?>assets/img/logo.png" alt="">
+									<span class="d-none d-lg-block">Everlyn Sys</span>
+								</a>
+							</div>
+							<div class="card mb-3">
+								<div class="card-body">
+									<div class="pt-4 pb-2">
+										<h5 class="card-title text-center pb-0 fs-4"><?= $this->lang->line('w_change_password') ?></h5>
+									</div>
+									<form class="row g-3" id="form_change_password">
+										<div class="col-12">
+											<label class="form-label"><?= $this->lang->line('w_username') ?></label>
+											<div class="text-end"><strong><?= $account->email ?></strong></div>
+										</div>
+										<div class="col-12">
+											<label class="form-label"><?= $this->lang->line('w_password_actual') ?></label>
+											<input type="password" class="form-control" name="password_actual">
+											<div class="sys_msg" id="pw_actual_msg"></div>
+										</div>
+										<div class="col-12">
+											<label class="form-label"><?= $this->lang->line('w_password_new') ?></label>
+											<input type="password" class="form-control" name="password_new">
+											<div class="sys_msg" id="pw_new_msg"></div>
+										</div>
+										<div class="col-12">
+											<label class="form-label"><?= $this->lang->line('w_confirm') ?></label>
+											<input type="password" class="form-control" name="confirm">
+											<div class="sys_msg" id="pw_confirm_msg"></div>
+										</div>
+										<div class="col-12 py-3">
+											<button class="btn btn-primary w-100" type="submit"><?= $this->lang->line('btn_confirm') ?></button>
+										</div>
+										<div class="col-12 text-end">
+											<a href="<?= base_url() ?>dashboard">
+												<?= $this->lang->line('w_change_later') ?>
+											</a>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</main>
+	
+	<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 	<input type="hidden" id="base_url" value="<?= base_url() ?>">
-	<input type="hidden" id="alert_success_title" value="<?= $this->lang->line('alert_success_title') ?>">
-	<input type="hidden" id="alert_error_title" value="<?= $this->lang->line('alert_error_title') ?>">
-	<input type="hidden" id="alert_warning_title" value="<?= $this->lang->line('alert_warning_title') ?>">
-	<input type="hidden" id="alert_confirm_btn" value="<?= $this->lang->line('alert_confirm_btn') ?>">
-	<input type="hidden" id="alert_cancel_btn" value="<?= $this->lang->line('alert_cancel_btn') ?>">
-    <script src="<?= base_url() ?>resources/vendor/global/global.min.js"></script>
-	<script src="<?= base_url() ?>resources/vendor_/sweetalert2-11.4.35/dist/sweetalert2.min.js"></script>
-    <script src="<?= base_url() ?>resources/js/custom.min.js"></script>
-	<script src="<?= base_url() ?>resources/js/deznav-init.js"></script>
-	<script src="<?= base_url() ?>resources/js/init/general.js"></script>
-	<script src="<?= base_url() ?>resources/js/init/auth/change_password.js"></script>
+	<script src="<?= base_url() ?>assets/vendor/jquery-3.7.0.min.js"></script>
+	<script src="<?= base_url() ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="<?= base_url() ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
+	<script src="<?= base_url() ?>assets/vendor/sweetalert2/dist/sweetalert2.all.min.js"></script>
+	<script src="<?= base_url() ?>assets/js/main.js"></script>
+	<script src="<?= base_url() ?>assets/js/lang.js"></script>
+	<script src="<?= base_url() ?>assets/js/func.js"></script>
+	<script src="<?= base_url() ?>assets/js/init/auth/change_password.js"></script>
 </body>
 </html>

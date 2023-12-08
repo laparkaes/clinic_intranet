@@ -1,41 +1,47 @@
-<div class="col-md-12">
-	<div class="welcome-text d-md-none d-block">
-		<h4 class="text-primary mb-3"><?= $this->lang->line('doctors') ?></h4>
+<div class="d-flex justify-content-between align-items-start">
+	<div class="pagetitle">
+		<h1><?= $title ?></h1>
+		<nav>
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="<?= base_url() ?>"><?= $this->lang->line('w_home') ?></a></li>
+				<li class="breadcrumb-item active"><?= $title ?></li>
+			</ol>
+		</nav>
 	</div>
-</div>
-<div class="col-sm-6">
 	<div class="btn-group mb-3">
 		<button type="button" class="btn btn-primary control_bl" id="btn_list" value="bl_list">
-			<i class="fas fa-list mr-2"></i><?= $this->lang->line('btn_list') ?>
+			<i class="bi bi-card-list"></i>
 		</button>
 		<button type="button" class="btn btn-outline-primary control_bl" value="bl_add">
-			<i class="fas fa-plus mr-2"></i><?= $this->lang->line('btn_add') ?>
+			<i class="bi bi-plus-lg"></i>
 		</button>
 	</div>
 </div>
-<div class="col-sm-6">
-	<form>
-		<div class="form-row">
-			<input type="hidden" value="1" name="page">
-			<div class="form-group col-sm-4">
-				<select class="form-control" id="sl_type" name="specialty">
-					<option value=""><?= $this->lang->line('w_specialty') ?></option>
-					<?php foreach($specialties as $item){ if ($item->doctor_qty){
-						if ($item->id == $f_url["specialty"]) $s = "selected"; else $s = ""; ?>
-					<option value="<?= $item->id ?>" <?= $s ?>><?= $item->name ?></option>
-					<?php }} ?>
-				</select>
+<div class="row">
+	<div class="col-12">
+		<form>
+			<div class="form-row">
+				<input type="hidden" value="1" name="page">
+				<div class="form-group col-sm-4">
+					<select class="form-control" id="sl_type" name="specialty">
+						<option value=""><?= $this->lang->line('w_specialty') ?></option>
+						<?php foreach($specialties as $item){ if ($item->doctor_qty){
+							if ($item->id == $f_url["specialty"]) $s = "selected"; else $s = ""; ?>
+						<option value="<?= $item->id ?>" <?= $s ?>><?= $item->name ?></option>
+						<?php }} ?>
+					</select>
+				</div>
+				<div class="form-group col-sm-6">
+					<input type="text" class="form-control" id="inp_name" name="name" placeholder="<?= $this->lang->line('t_search_by_name') ?>" value="<?= $f_url["name"] ?>">
+				</div>
+				<div class="form-group col-sm-2">
+					<button type="submit" class="btn btn-primary btn-block">
+						<i class="far fa-search"></i>
+					</button>
+				</div>
 			</div>
-			<div class="form-group col-sm-6">
-				<input type="text" class="form-control" id="inp_name" name="name" placeholder="<?= $this->lang->line('t_search_by_name') ?>" value="<?= $f_url["name"] ?>">
-			</div>
-			<div class="form-group col-sm-2">
-				<button type="submit" class="btn btn-primary btn-block">
-					<i class="far fa-search"></i>
-				</button>
-			</div>
-		</div>
-	</form>
+		</form>
+	</div>
 </div>
 <div class="col-md-12">
 	<div class="card">

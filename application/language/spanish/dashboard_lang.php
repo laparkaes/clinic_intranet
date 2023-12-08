@@ -28,6 +28,8 @@ $lang['w_today']		= 'Hoy';
 $lang['w_total']		= 'Total';
 $lang['w_type']			= 'Tipo';
 $lang['w_vouchers_no_sunat']	= 'Comprobantes no enviados a Sunat';
+$lang['w_home']			= 'Inicio';
+$lang['w_this_month']	= 'Este Mes';
 
 //text
 $lang['t_need_send_sunat']		= 'Requiere enviar a Sunat.';
