@@ -168,9 +168,10 @@ class Appointment extends CI_Controller {
 		if (!$appointment) redirect("/appointment");
 		
 		$appointment->status = $this->general->id("status", $appointment->status_id);
-		$appointment->is_editable = false; $actions = [];
+		$actions = [];
 		switch($appointment->status->code){
 			case "reserved":
+				$appointment->is_editable = false; 
 				array_push($actions, "reschedule");
 				array_push($actions, "cancel");
 				break;
@@ -179,9 +180,13 @@ class Appointment extends CI_Controller {
 				array_push($actions, "reschedule");
 				break;
 			case "finished":
+				$appointment->is_editable = true;
 				array_push($actions, "report");
 				break;
-			case "canceled": $appointment->status->color = "danger"; $appointment->is_editable = false; break;
+			case "canceled": 
+				$appointment->is_editable = false;
+				$appointment->status->color = "danger";
+				break;
 		}
 		
 		$appointment->specialty = $this->general->id("specialty", $appointment->specialty_id)->name;
@@ -1012,7 +1017,7 @@ class Appointment extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg, "medicines" => $medicines]);
 	}
 	
-	public function report($id){
+	public function clinical_history($id){
 		if (!$this->utility_lib->check_access("appointment", "report")) redirect("/errors/no_permission");
 		
 		$appointment = $this->general->id("appointment", $id);

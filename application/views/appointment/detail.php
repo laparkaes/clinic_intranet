@@ -1,76 +1,50 @@
 <div class="col-md-12">
+	<h4 class="fs-24 font-w600 mb-3"><?= $appointment->specialty ?></h4>
+	<?php if ($actions){ ?>
+	<div class="btn-group mb-3">
+		<?php if (in_array("report", $actions)) $d = ""; else $d = "disabled"; ?>
+		<a class="btn btn-primary" href="<?= base_url() ?>appointment/clinical_history/<?= $appointment->id ?>" target="_blank">
+			<?= $this->lang->line('w_clinical_history') ?>
+		</a>
+		<?php if (in_array("reschedule", $actions)) $d = ""; else $d = "disabled"; ?>
+		<button type="button" class="btn btn-info" id="btn_reschedule" <?= $d ?>>
+			<?= $this->lang->line('btn_reschedule') ?>
+		</button>
+		<?php if (in_array("cancel", $actions)) $d = ""; else $d = "disabled"; ?>
+		<button type="button" class="btn btn-danger" id="btn_cancel" <?= $d ?>>
+			<?= $this->lang->line('btn_cancel') ?>
+		</button>
+		<?php } ?>
+	</div>
+</div>
+<div class="col-md-12">
 	<div class="card">
-		<div class="card-header">
-			<h4 class="mb-0"><?= $appointment->specialty ?></h4>
-			<?php if ($actions){ ?>
-			<div role="group">
-				<i class="far fa-bars text-primary pointer" data-toggle="dropdown"></i>
-				<div class="dropdown-menu dropdown-menu-right">
-					<?php if (in_array("reschedule", $actions)){ ?>
-					<button type="button" class="dropdown-item text-info" id="btn_reschedule">
-						<?= $this->lang->line('btn_reschedule') ?>
-					</button>
-					<?php } if (in_array("cancel", $actions)){ ?>
-					<button type="button" class="dropdown-item text-danger" id="btn_cancel" value="<?= $appointment->id ?>">
-						<?= $this->lang->line('btn_cancel') ?>
-					</button>
-					<?php } if (in_array("report", $actions)){ ?>
-					<a class="dropdown-item text-success" href="<?= base_url() ?>appointment/report/<?= $appointment->id ?>" target="_blank">
-						<?= $this->lang->line('btn_report') ?>
-					</a>
-					<?php } ?>
-				</div>
-			</div>
-			<?php } ?>
-		</div>
 		<div class="card-body">
 			<div class="row" id="app_info">
-				<div class="col-md-12 mb-3">
-					<h5 class="mb-1"><?= $this->lang->line('w_doctor') ?></h5>
-					<div><?= $doctor->name ?></div>
-				</div>
-				<?php if ($appointment->sale_prod){ ?>
-				<div class="col-md-12 mb-3">
-					<h5 class="mb-1"><?= $this->lang->line('w_detail') ?></h5>
-					<div>
-						<span><?= $appointment->sale_prod ?></span>
-						<a href="<?= base_url() ?>sale/detail/<?= $appointment->sale_id ?>" target="_blank" class="ml-1">
-							<i class="fas fa-search"></i>
-						</a>
-					</div>
-				</div>
-				<?php } ?>
-				<div class="col-md-3 mb-3">
+				<div class="col-md-3 col-6 mb-3">
 					<h5 class="mb-1"><?= $this->lang->line('w_status') ?></h5>
 					<div class="text-<?= $appointment->status->color ?>"><?= $this->lang->line($appointment->status->code) ?></div>
 				</div>
-				<div class="col-md-3 mb-3">
-					<h5 class="mb-1"><?= $this->lang->line('w_date') ?></h5>
-					<div><?= date("Y-m-d", strtotime($appointment->schedule_from)) ?></div>
+				<div class="col-md-4 col-6 mb-3">
+					<h5 class="mb-1"><?= $this->lang->line('w_date_hour') ?></h5>
+					<div><?= date("Y-m-d h:i A", strtotime($appointment->schedule_from)) ?></div>
 				</div>
-				<div class="col-md-6 mb-3">
-					<h5 class="mb-1"><?= $this->lang->line('w_hour') ?></h5>
-					<div><?= date("h:i A", strtotime($appointment->schedule_from)) ?></div>
-				</div>
-				<div class="col-md-12 mb-3">
-					<h5 class="mb-1"><?= $this->lang->line('w_patient') ?></h5>
-					<div><?= $patient->name ?></div>
+				
+				<div class="col-md-5 mb-3">
+					<h5 class="mb-1"><?= $this->lang->line('w_detail') ?></h5>
+					<div><?php if ($appointment->sale_prod) echo $appointment->sale_prod; else echo "-"; ?></div>
 				</div>
 				<div class="col-md-3 mb-3">
 					<h5 class="mb-1"><?= $this->lang->line('w_history_number') ?></h5>
 					<div><?= $patient->doc_number ?></div>
 				</div>
-				<div class="col-md-3 mb-3">
-					<h5 class="mb-1"><?= $this->lang->line('w_sex') ?></h5>
-					<div><?= $patient->sex ?></div>
+				<div class="col-md-4 mb-3">
+					<h5 class="mb-1"><?= $this->lang->line('w_patient') ?></h5>
+					<div><?= $patient->name ?></div>
 				</div>
-				<div class="col-md-3 mb-3">
-					<h5 class="mb-1"><?= $this->lang->line('w_age') ?></h5>
-					<div><?= $patient->age ?></div>
-				</div>
-				<div class="col-md-3 mb-3">
-					<h5 class="mb-1"><?= $this->lang->line('w_blood_type') ?></h5>
-					<div><?= $patient->blood_type ?></div>
+				<div class="col-md-5 mb-3">
+					<h5 class="mb-1"><?= $this->lang->line('w_doctor') ?></h5>
+					<div><?= $doctor->name ?></div>
 				</div>
 			</div>
 			<div class="row d-none" id="app_reschedule">
@@ -125,7 +99,7 @@
 								<div class="sys_msg" id="ra_schedule_msg"></div>
 							</div>
 							<div class="form-group col-md-12 pt-3">
-								<button type="sumit" class="btn btn-primary"><?= $this->lang->line('btn_reschedule') ?></button>
+								<button type="sumit" class="btn btn-primary"><?= $this->lang->line('btn_confirm') ?></button>
 								<button type="button" class="btn btn-danger light" id="btn_reschedule_cancel"><?= $this->lang->line('btn_cancel') ?></button>
 							</div>
 						</div>
