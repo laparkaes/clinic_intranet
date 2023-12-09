@@ -21,7 +21,7 @@
 			<thead>
 				<tr class="sticky-top bg-white">
 					<th class="align-middle">
-						<i class="fas fa-square text-success"></i> <?= $this->lang->line('txt_busy') ?>
+						<i class="bi bi-square-fill text-success"></i> <?= $this->lang->line('txt_busy') ?>
 					</th>
 					<?php foreach($dates as $i => $d){ ?>
 					<th style="width: 90px;"><strong><?= $d["hd"] ?></strong></th>

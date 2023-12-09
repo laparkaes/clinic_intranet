@@ -1,28 +1,31 @@
-<?php $mins = array("00", "15", "30", "45"); ?>
-<div class="row">
-	<div class="col-md-12 text-center">
+<?php if ($msg){ ?>
+<div class="text-danger"><?= $msg ?></div>
+<?php }else{ $mins = array("00", "15", "30", "45"); ?>
+<div class="row text-center">
+	<div class="col-md-12 mb-3">
+		<strong><?= $room->name ?></strong>
+	</div>
+	<div class="col-md-12">
 		<div class="btn-group">
 			<button type="button" class="btn btn-primary btn_room_schedule_w" value="<?= $prev ?>">
-				<i class="fas fa-chevron-double-left"></i>
+				<i class="bi bi-chevron-left"></i>
 			</button>
 			<button type="button" class="btn btn-primary btn_room_schedule_w" value="<?= date("Y-m-d") ?>">
-				<?= $this->lang->line('w_today') ?>
+				<?= $this->lang->line('txt_today') ?>
 			</button>
 			<button type="button" class="btn btn-primary btn_room_schedule_w" value="<?= $next ?>">
-				<i class="fas fa-chevron-double-right"></i>
+				<i class="bi bi-chevron-right"></i>
 			</button>
 		</div>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-12">
-		<div class="text-danger"><?= $msg ?></div>
-		<div class="text-right"></div>
-		<table class="table table-sm w-100 mb-0 text-center">
+		<table class="table">
 			<thead>
-				<tr class="sticky-top bg-white">
-					<th class="align-middle">
-						<i class="fas fa-square text-success"></i> <?= $this->lang->line('w_busy') ?>
+				<tr class="sticky-top bg-white" style="top: -17px;">
+					<th class="align-middle" style="width: 120px;">
+						<i class="bi bi-square-fill text-success"></i> <?= $this->lang->line('txt_busy') ?>
 					</th>
 					<?php foreach($dates as $i => $d){ ?>
 					<th style="width: 90px;"><strong><?= $d["hd"] ?></strong></th>
@@ -51,3 +54,4 @@
 		</table>
 	</div>
 </div>
+<?php } ?>

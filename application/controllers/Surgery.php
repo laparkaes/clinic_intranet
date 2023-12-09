@@ -395,7 +395,7 @@ class Surgery extends CI_Controller {
 	}
 	
 	function load_room_availability(){
-		$msg = null; $cells = array();
+		$msg = null; $cells = array(); $room = null;
 		$date = $this->input->post("date"); if (!$date) $date = date("Y-m-d");
 		$room_id = $this->input->post("room_id");
 		
@@ -448,7 +448,7 @@ class Surgery extends CI_Controller {
 			$cells = array_unique($cells);
 		}else $msg = "Elija una sala de cirugia";
 		
-		$data = array("msg" => $msg, "dates" => $dates, "cells" => $cells, "prev" => $prev, "next" => $next);
+		$data = array("msg" => $msg, "dates" => $dates, "cells" => $cells, "prev" => $prev, "next" => $next, "room" => $room);
 		echo $this->load->view('surgery/tb_weekly_availability', $data, true);
 	}
 }

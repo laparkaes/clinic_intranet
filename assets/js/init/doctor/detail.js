@@ -5,7 +5,7 @@ function enable_update_form(){
 	
 	$("#du_doc_type_id").prop("disabled", true);
 	$("#du_doc_number").prop("readonly", true);
-	$("#du_name").prop("readonly", true);
+	//$("#du_name").prop("readonly", true);
 	
 	$("#btn_update_info").addClass("d-none").prop("disabled", true);
 	$("#btn_update_confirm").removeClass("d-none").prop("disabled", false);
