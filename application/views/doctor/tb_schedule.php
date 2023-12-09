@@ -1,10 +1,9 @@
 <?php $mins = array("00", "15", "30", "45"); ?>
 <div class="text-right text-danger"><?= $msg ?></div>
-<div class="text-right"><i class="fas fa-square text-success"></i> <?= $this->lang->line('txt_busy') ?></div>
-<table class="table table-sm w-100 mb-0 text-center">
+<table class="table w-100 mb-0 text-center">
 	<thead>
 		<tr>
-			<th></th>
+			<th><?= $date ?></th>
 			<?php foreach($mins as $m){ ?>
 			<th style="width: 80px;"><strong><?= $m ?></strong></th>
 			<?php } ?>

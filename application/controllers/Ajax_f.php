@@ -129,13 +129,14 @@ class Ajax_f extends CI_Controller {
 		$cells = array(); $msg = null;
 		$doctor_id = $this->input->post("doctor_id");
 		$date = $this->input->post("date");
+		if (!$date) $date = date("Y-m-d");
 		
 		if (!$doctor_id) $msg = $this->lang->line('error_select_doctor');
 		if (!$date) $msg = $this->lang->line('error_select_date');
 		
 		if (!$msg) $cells = $this->set_doctor_schedule_cell($doctor_id, $date);
 		
-		echo $this->load->view('doctor/tb_schedule', array("msg" => $msg, "cells" => $cells), true);
+		echo $this->load->view('doctor/tb_schedule', ["msg" => $msg, "cells" => $cells, "date" => $date], true);
 	}
 	
 	public function load_doctor_schedule_weekly(){

@@ -86,7 +86,7 @@ function search_person_sur(){
 }
 
 function aa_load_doctor_schedule(){
-	$("#aa_schedule").html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
+	$("#aa_schedule").html('');
 	load_doctor_schedule_n($("#aa_doctor_id").val(), $("#aa_date").val()).done(function(res) {
 		$("#aa_schedule").html(res);
 		$("#aa_schedule .sch_cell").on('click',(function(e) {set_time_dom("#aa_hour", "#aa_min", this);}));
@@ -123,8 +123,9 @@ $(document).ready(function() {
 	$(".control_bl_simple").on('click',(function(e) {control_bl_simple(this);}));
 	$("#btn_weekly_agenda").on('click',(function(e) {load_doctor_schedule_weekly($("#doctor_id").val(), null, "bl_weekly_agenda");}));
 	$("#ic_room_availability_w").on('click',(function(e) {load_room_availability($("#sur_room_id").val(), null, "bl_room_availability");}));
-	set_datatable("appointment_list", 10, false);
-	set_datatable("surgery_list", 10, false);
+	set_date_picker(".date_picker", new Date());
+	//set_datatable("appointment_list", 10, false);
+	//set_datatable("surgery_list", 10, false);
 	
 	//doctor update
 	$("#form_update_info").submit(function(e) {e.preventDefault(); update_info(this);});
@@ -141,7 +142,7 @@ $(document).ready(function() {
 	//appointment generate
 	aa_load_doctor_schedule();
 	$("#app_register_form").submit(function(e) {e.preventDefault(); app_register(this);});
-	$("#aa_date").change(function() {aa_load_doctor_schedule();});
+	$("#aa_date").on('focusout',(function(e) {aa_load_doctor_schedule();}));
 	$("#btn_aa_search_pt").on('click',(function(e) {search_person_aa();}));
 	$("#aa_pt_doc_type_id").on('change',(function(e) {reset_person("aa_pt_");}));
 	$("#aa_pt_doc_number").keyup(function() {reset_person("aa_pt_");});
@@ -150,7 +151,7 @@ $(document).ready(function() {
 	//surgery generate
 	sur_load_doctor_schedule();
 	$("#sur_register_form").submit(function(e) {e.preventDefault(); sur_register(this);});
-	$("#sur_date").change(function() {sur_load_doctor_schedule();});
+	$("#sur_date").on('focusout',(function(e) {sur_load_doctor_schedule();}));
 	$("#btn_sur_search_pt").on('click',(function(e) {search_person_sur();}));
 	$("#sur_pt_doc_type_id").on('change',(function(e) {reset_person("sur_pt_");}));
 	$("#sur_pt_doc_number").keyup(function() {reset_person("sur_pt_");});

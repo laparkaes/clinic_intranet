@@ -217,7 +217,7 @@ function set_time_dom(id_hour, id_min, dom){//used when select a cell in doctor 
 	$(id_min).val(val.substring(lastIndex));
 	
 	$(".sch_cell").html("");
-	$(dom).html('<i class="fas fa-check text-info"></i>');
+	$(dom).html('<i class="bi bi-check-lg text-primary"></i>');
 }
 
 function load_doctor_schedule_n(doctor_id, date){//new function
@@ -297,7 +297,33 @@ function get_params(){
 	return params;
 }
 
+function set_date_picker(dom, minDate){
+	var option = {
+		"allowInputToggle": true,
+		"showClose": false,
+		"showClear": false,
+		"showTodayButton": true,
+		"format": "YYYY-MM-DD",
+		locale: 'es',
+		icons: {
+			time: "bi bi-clock",
+			date: "bi bi-calendar",
+			up: "bi bi-chevron-up",
+			down: "bi bi-chevron-down",
+			previous: "bi bi-chevron-left",
+			next: "bi bi-chevron-right",
+			today: "bi bi-calendar",
+			clear: "bi bi-trash",
+			close: "bi bi-x",
+		}
+	};
+	if (minDate != null) option.minDate = minDate;
+	
+	$(dom).datetimepicker(option);
+}
+
 $(document).ready(function() {
+	/*
 	if ($(".date_picker").length > 0){
 		$(".date_picker").bootstrapMaterialDatePicker({
 			weekStart: 0,
@@ -306,8 +332,29 @@ $(document).ready(function() {
 			minDate : new Date(),
 			okText: component_list[default_lang].bd_select,
 			cancelText: component_list[default_lang].bd_cancel,
-		});	
+		});
+		
+		$(".date_picker").datetimepicker({
+            "allowInputToggle": true,
+            "showClose": false,
+            "showClear": false,
+            "showTodayButton": true,
+            "format": "YYYY-MM-DD",
+			locale: 'es',
+			icons: {
+				time: "bi bi-clock",
+				date: "bi bi-calendar",
+				up: "bi bi-chevron-up",
+				down: "bi bi-chevron-down",
+				previous: "bi bi-chevron-left",
+				next: "bi bi-chevron-right",
+				today: "bi bi-calendar",
+				clear: "bi bi-trash",
+				close: "bi bi-x",
+			}
+		});
 	}
+	*/
 	if ($(".date_picker_all").length > 0){
 		$(".date_picker_all").bootstrapMaterialDatePicker({
 			weekStart: 0,
