@@ -4,7 +4,7 @@
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="<?= base_url() ?>"><?= $this->lang->line('w_home') ?></a></li>
 			<li class="breadcrumb-item"><a href="<?= base_url() ?>doctor"><?= $this->lang->line('doctors') ?></a></li>
-			<li class="breadcrumb-item active"><a href="javascript:void(0)"><?= $this->lang->line('txt_detail') ?></a></li>
+			<li class="breadcrumb-item active"><?= $this->lang->line('txt_detail') ?></li>
 		</ol>
 	</nav>
 </div>
@@ -437,17 +437,17 @@
 							<table class="table datatable">
 								<thead>
 									<tr>
-										<th class="pl-0"><?= $this->lang->line('w_date') ?></th>
+										<th><?= $this->lang->line('w_date') ?></th>
 										<th><?= $this->lang->line('w_time') ?></th>
 										<th><?= $this->lang->line('w_patient') ?></th>
 										<th><?= $this->lang->line('w_status') ?></th>
-										<th class="text-right pr-0"></th>
+										<th></th>
 									</tr>
 								</thead>
 								<tbody>
 									<?php foreach($appointments as $item){ ?>
 									<tr>
-										<td class="pl-0">
+										<td>
 											<?= date("Y-m-d", strtotime($item->schedule_from)) ?>
 										</td>
 										<td>
@@ -459,11 +459,9 @@
 										<td>
 											<span class="text-<?= $status_arr[$item->status_id]->color ?>"><?= $this->lang->line($status_arr[$item->status_id]->code) ?></span>
 										</td>
-										<td class="text-right pr-0">
-											<a href="<?= base_url() ?>appointment/detail/<?= $item->id ?>">
-												<button class="btn btn-primary btn-sm">
-													<i class="bi bi-search"></i>
-												</button>
+										<td class="text-right">
+											<a href="<?= base_url() ?>appointment/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
+												<i class="bi bi-search"></i>
 											</a>
 										</td>
 									</tr>
@@ -472,7 +470,7 @@
 							</table>
 						</div>
 						<?php }else{ ?>
-						<div class="col-md-12">
+						<div>
 							<?= $this->lang->line('t_no_appointment') ?>
 						</div>
 						<?php } ?>
@@ -508,10 +506,8 @@
 											<?= $this->lang->line($status_arr[$item->status_id]->code) ?>
 										</td>
 										<td class="text-right pr-0">
-											<a href="<?= base_url() ?>surgery/detail/<?= $item->id ?>">
-												<button class="btn btn-primary light sharp border-0">
-													<i class="fas fa-search"></i>
-												</button>
+											<a href="<?= base_url() ?>surgery/detail/<?= $item->id ?>" class="btn btn-primary">
+												<i class="fas fa-search"></i>
 											</a>
 										</td>
 									</tr>
