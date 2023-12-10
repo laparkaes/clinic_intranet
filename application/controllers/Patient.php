@@ -97,7 +97,7 @@ class Patient extends CI_Controller {
 		array_push($duration_ops, ["value" => 30, "txt" => "30 ".$this->lang->line('w_minutes')]);
 		array_push($duration_ops, ["value" => 60, "txt" => "1 ".$this->lang->line('w_hour')]);
 		for($i = 2; $i <= 12; $i++) $duration_ops[] = ["value" => 60 * $i, "txt" => $i." ".$this->lang->line('w_hours')];
-		
+		/*
 		$credit_ids = [];
 		$credits = $this->general->filter("credit", ["person_id" => $person->id]);
 		foreach($credits as $item) $credit_ids[] = $item->id;
@@ -105,7 +105,7 @@ class Patient extends CI_Controller {
 		
 		$f_in = [["field" => "credit_id", "values" => $credit_ids]];
 		$credit_histories = $this->general->filter("credit_history", null, null, $f_in, "registed_at", "desc");
-		
+		*/
 		$data = [
 			"person" => $person,
 			"appointments" => $appointments,
@@ -126,7 +126,7 @@ class Patient extends CI_Controller {
 			"sex_ops" => $this->general->all("sex", "description", "asc"),
 			"blood_type_ops" => $this->general->all("blood_type", "description", "asc"),
 			"credits" => $credits,
-			"credit_histories" => $credit_histories,
+			//"credit_histories" => $credit_histories,
 			"patient_files" => $this->general->filter("patient_file", ["patient_id" => $person->id, "active" => true], null, null, "registed_at", "desc"),
 			"title" => $this->lang->line('patient'),
 			"main" => "patient/detail",

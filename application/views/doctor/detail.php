@@ -8,7 +8,7 @@
 		</ol>
 	</nav>
 </div>
-<div class="row d-flex justify-content-center">
+<div class="row">
 	<div class="col-md-3">
 		<button class="btn btn-primary w-100 mb-3 control_bl_simple" value="bl_ga">
 			<div><i class="bi bi-clipboard2-pulse" style="font-size: 50px;"></i></div>
@@ -208,7 +208,7 @@
 							<div class="col-md-8">
 								<label class="form-label">
 									<span><?= $this->lang->line('w_room') ?></span>
-									<i class="bi bi-alarm ms-2" id="ic_room_availability_w" data-bs-toggle="modal" data-bs-target="#md_weekly_room_availability"></i></span>
+									<i class="bi bi-alarm ms-2" id="ic_room_availability_w" data-bs-toggle="modal" data-bs-target="#md_weekly_room_availability"></i>
 								</label>
 								<select class="form-select" name="sur[room_id]" id="sur_room_id">
 									<option value="">--</option>
@@ -293,7 +293,7 @@
 		<div class="card">
 			<div class="card-body" style="min-height: 500px;">
 				<h5 class="card-title"><?= $this->lang->line('w_records') ?></h5>
-				<ul class="nav nav-tabs nav-tabs-bordered" id="borderedTab" role="tablist">
+				<ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
 					<li class="nav-item" role="presentation">
 						<button class="nav-link active" id="information-tab" data-bs-toggle="tab" data-bs-target="#bordered-information" type="button" role="tab" aria-controls="information" aria-selected="true"><?= $this->lang->line('w_information') ?></button>
 					</li>
@@ -304,7 +304,7 @@
 						<button class="nav-link" id="surgeries-tab" data-bs-toggle="tab" data-bs-target="#bordered-surgeries" type="button" role="tab" aria-controls="surgeries" aria-selected="false" tabindex="-1"><?= $this->lang->line('w_surgeries') ?></button>
 					</li>
 				</ul>
-				<div class="tab-content pt-3" id="borderedTabContent">
+				<div class="tab-content pt-3">
 					<div class="tab-pane fade show active" id="bordered-information" role="tabpanel" aria-labelledby="information-tab">
 						<form class="row g-3" id="form_update_info">
 							<input type="hidden" name="p[id]" value="<?= $person->id ?>">
@@ -330,11 +330,32 @@
 								<div class="sys_msg" id="du_name_msg"></div>
 							</div>
 							<div class="col-md-3">
+								<label class="form-label"><?= $this->lang->line('w_specialty') ?></label>
+								<select class="form-select" name="d[specialty_id]" disabled>
+									<option value="" selected><?= $this->lang->line('w_select') ?>...</option>
+									<?php foreach($specialties as $item){ 
+									if ($doctor->specialty_id == $item->id) $s = "selected"; else $s = ""; ?>
+									<option value="<?= $item->id ?>" <?= $s ?>><?= $item->name ?></option>
+									<?php } ?>
+								</select>
+								<div class="sys_msg" id="du_specialty_msg"></div>
+							</div>
+							<div class="col-md-3">
+								<label class="form-label"><?= $this->lang->line('w_license_number') ?></label>
+								<input type="text" class="form-control" name="d[license]" value="<?= $doctor->license ?>" readonly>
+								<div class="sys_msg" id="du_license_msg"></div>
+							</div>
+							<div class="col-md-6">
+								<label class="form-label"><?= $this->lang->line('w_email') ?></label>
+								<input type="email" class="form-control" name="p[email]" placeholder="email@example.com" value="<?= $person->email ?>" readonly>
+								<div class="sys_msg" id="du_email_msg"></div>
+							</div>
+							<div class="col-md-4">
 								<label class="form-label"><?= $this->lang->line('w_tel') ?></label>
 								<input type="text" class="form-control" id="du_tel" name="p[tel]" value="<?= $person->tel ?>" readonly>
 								<div class="sys_msg" id="du_tel_msg"></div>
 							</div>
-							<div class="col-md-3">
+							<div class="col-md-4">
 								<?php
 								if ($person->birthday){
 									$aux = strtotime($person->birthday);
@@ -370,7 +391,7 @@
 								</div>
 								<div class="sys_msg" id="du_birthday_msg"></div>
 							</div>
-							<div class="col-md-3">
+							<div class="col-md-2">
 								<label class="form-label"><?= $this->lang->line('w_sex') ?></label>
 								<select class="form-select" name="p[sex_id]" disabled>
 									<option value="" selected="">--</option>
@@ -381,7 +402,7 @@
 								</select>
 								<div class="sys_msg" id="du_sex_msg"></div>
 							</div>
-							<div class="col-md-3">
+							<div class="col-md-2">
 								<label class="form-label"><?= $this->lang->line('w_blood_type') ?></label>
 								<select class="form-select" name="p[blood_type_id]" disabled>
 									<option value="" selected="">--</option>
@@ -391,27 +412,6 @@
 									<?php } ?>
 								</select>
 								<div class="sys_msg" id="du_blood_type_msg"></div>
-							</div>
-							<div class="col-md-6">
-								<label class="form-label"><?= $this->lang->line('w_email') ?></label>
-								<input type="email" class="form-control" name="p[email]" placeholder="email@example.com" value="<?= $person->email ?>" readonly>
-								<div class="sys_msg" id="du_email_msg"></div>
-							</div>
-							<div class="col-md-3">
-								<label class="form-label"><?= $this->lang->line('w_specialty') ?></label>
-								<select class="form-select" name="d[specialty_id]" disabled>
-									<option value="" selected><?= $this->lang->line('w_select') ?>...</option>
-									<?php foreach($specialties as $item){ 
-									if ($doctor->specialty_id == $item->id) $s = "selected"; else $s = ""; ?>
-									<option value="<?= $item->id ?>" <?= $s ?>><?= $item->name ?></option>
-									<?php } ?>
-								</select>
-								<div class="sys_msg" id="du_specialty_msg"></div>
-							</div>
-							<div class="col-md-3">
-								<label class="form-label"><?= $this->lang->line('w_license_number') ?></label>
-								<input type="text" class="form-control" name="d[license]" value="<?= $doctor->license ?>" readonly>
-								<div class="sys_msg" id="du_license_msg"></div>
 							</div>
 							<div class="col-md-12">
 								<label class="form-label"><?= $this->lang->line('w_address') ?></label>
@@ -432,153 +432,98 @@
 						</form>
 					</div>
 					<div class="tab-pane fade" id="bordered-appointments" role="tabpanel" aria-labelledby="appointments-tab">
-					Nesciunt totam et. Consequuntur magnam aliquid eos nulla dolor iure eos quia. Accusantium distinctio omnis et atque fugiat. Itaque doloremque aliquid sint quasi quia distinctio similique. Voluptate nihil recusandae mollitia dolores. Ut laboriosam voluptatum dicta.
+						<?php if ($appointments){ ?>
+						<div class="table-responsive">
+							<table class="table datatable">
+								<thead>
+									<tr>
+										<th class="pl-0"><?= $this->lang->line('w_date') ?></th>
+										<th><?= $this->lang->line('w_time') ?></th>
+										<th><?= $this->lang->line('w_patient') ?></th>
+										<th><?= $this->lang->line('w_status') ?></th>
+										<th class="text-right pr-0"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php foreach($appointments as $item){ ?>
+									<tr>
+										<td class="pl-0">
+											<?= date("Y-m-d", strtotime($item->schedule_from)) ?>
+										</td>
+										<td>
+											<div class="text-nowrap">
+												<?= date("h:i a", strtotime($item->schedule_from)) ?>
+											</div>
+										</td>
+										<td><?= $patient_arr[$item->patient_id] ?></td>
+										<td>
+											<span class="text-<?= $status_arr[$item->status_id]->color ?>"><?= $this->lang->line($status_arr[$item->status_id]->code) ?></span>
+										</td>
+										<td class="text-right pr-0">
+											<a href="<?= base_url() ?>appointment/detail/<?= $item->id ?>">
+												<button class="btn btn-primary btn-sm">
+													<i class="bi bi-search"></i>
+												</button>
+											</a>
+										</td>
+									</tr>
+									<?php } ?>
+								</tbody>
+							</table>
+						</div>
+						<?php }else{ ?>
+						<div class="col-md-12">
+							<?= $this->lang->line('t_no_appointment') ?>
+						</div>
+						<?php } ?>
 					</div>
 					<div class="tab-pane fade" id="bordered-surgeries" role="tabpanel" aria-labelledby="surgeries-tab">
-					Saepe animi et soluta ad odit soluta sunt. Nihil quos omnis animi debitis cumque. Accusantium quibusdam perspiciatis qui qui omnis magnam. Officiis accusamus impedit molestias nostrum veniam. Qui amet ipsum iure. Dignissimos fuga tempore dolor.
-					</div>
-				</div>
-				
-				
-				<!-- Nav tabs -->
-				<div class="custom-tab-1">
-					<ul class="nav nav-tabs mb-4">
-						<li class="nav-item">
-							<a class="nav-link active" data-toggle="tab" href="#information">
-								<i class="far fa-comment-alt mr-3"></i><span></span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" data-toggle="tab" href="#">
-								<i class="far fa-notes-medical mr-3"></i><span></span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" data-toggle="tab" href="#">
-								<i class="far fa-file-medical-alt mr-3"></i><span></span>
-							</a>
-						</li>
-					</ul>
-					<div class="tab-content">	
-						<div class="tab-pane fade active show" id="information" role="tabpanel">
-							
+						<?php if ($surgeries){ ?>
+						<div class="table-responsive">
+							<table class="table datatable">
+								<thead>
+									<tr>
+										<th class="pl-0"><?= $this->lang->line('w_date') ?></th>
+										<th><?= $this->lang->line('w_start') ?></th>
+										<th><?= $this->lang->line('w_end') ?></th>
+										<th><?= $this->lang->line('w_room') ?></th>
+										<th><?= $this->lang->line('w_patient') ?></th>
+										<th><?= $this->lang->line('w_status') ?></th>
+										<th class="text-right pr-0"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php foreach($surgeries as $item){ ?>
+									<tr>
+										<td class="pl-0"><?= date("Y-m-d", strtotime($item->schedule_from)) ?></td>
+										<td>
+											<div class="text-nowrap"><?= date("h:i a", strtotime($item->schedule_from)) ?></div>
+										</td>
+										<td>
+											<div class="text-nowrap"><?= date("h:i a", strtotime($item->schedule_to)) ?></div>
+										</td>
+										<td><?= $rooms_arr[$item->room_id] ?></td>
+										<td><?= $patient_arr[$item->patient_id] ?></td>
+										<td class="text-<?= $status_arr[$item->status_id]->color ?>">
+											<?= $this->lang->line($status_arr[$item->status_id]->code) ?>
+										</td>
+										<td class="text-right pr-0">
+											<a href="<?= base_url() ?>surgery/detail/<?= $item->id ?>">
+												<button class="btn btn-primary light sharp border-0">
+													<i class="fas fa-search"></i>
+												</button>
+											</a>
+										</td>
+									</tr>
+									<?php } ?>
+								</tbody>
+							</table>
 						</div>
-						<div class="tab-pane fade" id="appointments" role="tabpanel">
-							<div class="row">
-								<?php if ($appointments){ ?>
-								<div class="col-md-2">
-									<div class="mb-3" id="appointment_list_length_new"></div>
-								</div>
-								<div class="col-md-6"></div>
-								<div class="col-md-4">
-									<div class="mb-3" id="appointment_list_filter_new"></div>
-								</div>
-								<div class="col-md-12">
-									<div class="table-responsive">
-										<table id="appointment_list" class="display">
-											<thead>
-												<tr>
-													<th class="pl-0"><?= $this->lang->line('w_date') ?></th>
-													<th><?= $this->lang->line('w_time') ?></th>
-													<th><?= $this->lang->line('w_patient') ?></th>
-													<th><?= $this->lang->line('w_status') ?></th>
-													<th class="text-right pr-0"></th>
-												</tr>
-											</thead>
-											<tbody>
-												<?php foreach($appointments as $item){ ?>
-												<tr>
-													<td class="pl-0">
-														<?= date("Y-m-d", strtotime($item->schedule_from)) ?>
-													</td>
-													<td>
-														<div class="text-nowrap">
-															<?= date("h:i a", strtotime($item->schedule_from)) ?>
-														</div>
-													</td>
-													<td><?= $patient_arr[$item->patient_id] ?></td>
-													<td class="text-<?= $status_arr[$item->status_id]->color ?>">
-														<?= $this->lang->line($status_arr[$item->status_id]->code) ?>
-													</td>
-													<td class="text-right pr-0">
-														<a href="<?= base_url() ?>appointment/detail/<?= $item->id ?>">
-															<button class="btn btn-primary light sharp border-0">
-																<i class="fas fa-search"></i>
-															</button>
-														</a>
-													</td>
-												</tr>
-												<?php } ?>
-											</tbody>
-										</table>
-									</div>
-								</div>
-								<?php }else{ ?>
-								<div class="col-md-12">
-									<?= $this->lang->line('t_no_appointment') ?>
-								</div>
-								<?php } ?>
-							</div>
+						<?php }else{ ?>
+						<div class="col-md-12">
+							<?= $this->lang->line('t_no_surgery') ?>
 						</div>
-						<div class="tab-pane fade" id="surgeries" role="tabpanel">
-							<div class="row">
-								<?php if ($surgeries){ ?>
-								<div class="col-md-2">
-									<div class="mb-3" id="surgery_list_length_new"></div>
-								</div>
-								<div class="col-md-6"></div>
-								<div class="col-md-4">
-									<div class="mb-3" id="surgery_list_filter_new"></div>
-								</div>
-								<div class="col-md-12">
-									<div class="table-responsive">
-										<table id="surgery_list" class="display">
-											<thead>
-												<tr>
-													<th class="pl-0"><?= $this->lang->line('w_date') ?></th>
-													<th><?= $this->lang->line('w_start') ?></th>
-													<th><?= $this->lang->line('w_end') ?></th>
-													<th><?= $this->lang->line('w_room') ?></th>
-													<th><?= $this->lang->line('w_patient') ?></th>
-													<th><?= $this->lang->line('w_status') ?></th>
-													<th class="text-right pr-0"></th>
-												</tr>
-											</thead>
-											<tbody>
-												<?php foreach($surgeries as $item){ ?>
-												<tr>
-													<td class="pl-0"><?= date("Y-m-d", strtotime($item->schedule_from)) ?></td>
-													<td>
-														<div class="text-nowrap"><?= date("h:i a", strtotime($item->schedule_from)) ?></div>
-													</td>
-													<td>
-														<div class="text-nowrap"><?= date("h:i a", strtotime($item->schedule_to)) ?></div>
-													</td>
-													<td><?= $rooms_arr[$item->room_id] ?></td>
-													<td><?= $patient_arr[$item->patient_id] ?></td>
-													<td class="text-<?= $status_arr[$item->status_id]->color ?>">
-														<?= $this->lang->line($status_arr[$item->status_id]->code) ?>
-													</td>
-													<td class="text-right pr-0">
-														<a href="<?= base_url() ?>surgery/detail/<?= $item->id ?>">
-															<button class="btn btn-primary light sharp border-0">
-																<i class="fas fa-search"></i>
-															</button>
-														</a>
-													</td>
-												</tr>
-												<?php } ?>
-											</tbody>
-										</table>
-									</div>
-								</div>
-								<?php }else{ ?>
-								<div class="col-md-12">
-									<?= $this->lang->line('t_no_surgery') ?>
-								</div>
-								<?php } ?>
-							</div>
-						</div>
+						<?php } ?>
 					</div>
 				</div>
 			</div>
@@ -588,15 +533,11 @@
 <div class="modal fade" id="md_weekly_room_availability" tabindex="-1">
 	<div class="modal-dialog modal-fullscreen">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title"><?= $this->lang->line('w_room_availability') ?></h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
 			<div class="modal-body">
 				<div id="bl_room_availability"></div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?= $this->lang->line('btn_close') ?></button>
+				<button type="button" class="btn btn-danger" data-bs-dismiss="modal"><?= $this->lang->line('btn_close') ?></button>
 			</div>
 		</div>
 	</div>

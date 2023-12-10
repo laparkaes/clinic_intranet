@@ -59,8 +59,6 @@ $lang['w_surgeries']		= 'Cirugías';
 $lang['w_tel']				= 'Teléfono';
 $lang['w_time']				= 'Hora';
 $lang['w_weekly_agenda']	= 'Agenda Semanal';
-$lang['w_home']				= 'Inicio';
-$lang['w_list']				= 'Lista';
 
 //text
 $lang['t_no_appointment']	= 'Médico no cuenta con consulta.';

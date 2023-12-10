@@ -76,6 +76,8 @@ $lang['txt_tomorrow']		= 'Mañana';
 $lang['txt_busy_hours']		= 'Horario Ocupado';
 $lang['txt_busy']			= 'Ocupado';
 $lang['txt_today']			= 'Hoy';
+$lang['w_home']				= 'Inicio';
+$lang['w_list']				= 'Lista';
 
 //days
 $lang['day_Mon']	= 'Lun';

@@ -118,11 +118,31 @@
 						<div class="sys_msg" id="dn_name_msg"></div>
 					</div>
 					<div class="col-md-3">
+						<label class="form-label"><?= $this->lang->line('w_specialty') ?></label>
+						<select class="form-select" name="doctor[specialty_id]">
+							<option value="" selected>--</option>
+							<?php foreach($specialties as $item){ ?>
+							<option value="<?= $item->id ?>"><?= $item->name ?></option>
+							<?php } ?>
+						</select>
+						<div class="sys_msg" id="dn_specialty_msg"></div>
+					</div>
+					<div class="col-md-3">
+						<label class="form-label"><?= $this->lang->line('w_license_number') ?></label>
+						<input type="text" class="form-control" name="doctor[license]">
+						<div class="sys_msg" id="dn_license_msg"></div>
+					</div>
+					<div class="col-md-6">
+						<label class="form-label"><?= $this->lang->line('w_email') ?></label>
+						<input type="email" class="form-control" name="personal[email]" placeholder="email@example.com">
+						<div class="sys_msg" id="dn_email_msg"></div>
+					</div>
+					<div class="col-md-4">
 						<label class="form-label"><?= $this->lang->line('w_tel') ?></label>
 						<input type="text" class="form-control" id="dn_tel" name="personal[tel]">
 						<div class="sys_msg" id="dn_tel_msg"></div>
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-4">
 						<label class="form-label"><?= $this->lang->line('w_birthday') ?></label>
 						<input type="hidden" id="p_birthday" name="personal[birthday]" readonly="">
 						<div class="input-group">
@@ -148,7 +168,7 @@
 						</div>
 						<div class="sys_msg" id="dn_birthday_msg"></div>
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-2">
 						<label class="form-label"><?= $this->lang->line('w_sex') ?></label>
 						<select class="form-select" name="personal[sex_id]">
 							<option value="" selected="">--</option>
@@ -158,7 +178,7 @@
 						</select>
 						<div class="sys_msg" id="dn_sex_msg"></div>
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-2">
 						<label class="form-label"><?= $this->lang->line('w_blood_type') ?></label>
 						<select class="form-select" name="personal[blood_type_id]">
 							<option value="" selected="">--</option>
@@ -167,26 +187,6 @@
 							<?php } ?>
 						</select>
 						<div class="sys_msg" id="dn_blood_type_msg"></div>
-					</div>
-					<div class="col-md-6">
-						<label class="form-label"><?= $this->lang->line('w_email') ?></label>
-						<input type="email" class="form-control" name="personal[email]" placeholder="email@example.com">
-						<div class="sys_msg" id="dn_email_msg"></div>
-					</div>
-					<div class="col-md-3">
-						<label class="form-label"><?= $this->lang->line('w_specialty') ?></label>
-						<select class="form-select" name="doctor[specialty_id]">
-							<option value="" selected>--</option>
-							<?php foreach($specialties as $item){ ?>
-							<option value="<?= $item->id ?>"><?= $item->name ?></option>
-							<?php } ?>
-						</select>
-						<div class="sys_msg" id="dn_specialty_msg"></div>
-					</div>
-					<div class="col-md-3">
-						<label class="form-label"><?= $this->lang->line('w_license_number') ?></label>
-						<input type="text" class="form-control" name="doctor[license]">
-						<div class="sys_msg" id="dn_license_msg"></div>
 					</div>
 					<div class="col-md-12">
 						<label class="form-label"><?= $this->lang->line('w_address') ?></label>
