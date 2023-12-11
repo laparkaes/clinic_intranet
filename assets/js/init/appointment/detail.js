@@ -272,6 +272,7 @@ $(document).ready(function() {
 	//general
 	load_doctor_schedule_appointment();
 	set_date_picker(".date_picker", new Date());
+	set_time_picker(".time_picker");
 	
 	$(".btn_process").on('click',(function(e) {control_process_forms(this);}));
 	$("#btn_cancel").on('click',(function(e) {cancel_appointment(this);}));

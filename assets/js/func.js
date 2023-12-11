@@ -322,6 +322,29 @@ function set_date_picker(dom, minDate){
 	$(dom).datetimepicker(option);
 }
 
+function set_time_picker(dom){
+	var option = {
+		"allowInputToggle": true,
+		"showClose": false,
+		"showClear": false,
+		"showTodayButton": true,
+		"format": "HH:mm",
+		locale: 'es',
+		icons: {
+			time: "bi bi-clock",
+			date: "bi bi-calendar",
+			up: "bi bi-chevron-up",
+			down: "bi bi-chevron-down",
+			previous: "bi bi-chevron-left",
+			next: "bi bi-chevron-right",
+			today: "bi bi-calendar",
+			clear: "bi bi-trash",
+			close: "bi bi-x",
+		}
+	};
+	$(dom).datetimepicker(option);
+}
+
 $(document).ready(function() {
 	/*
 	if ($(".date_picker").length > 0){
