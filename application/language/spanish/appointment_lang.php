@@ -12,6 +12,7 @@ $lang['e_select_exam']				= 'Elija un examen.';
 $lang['e_duplicated_exam']			= 'Examen ya esta agregado.';
 $lang['e_profile_includes_exam']	= 'Examen esta incluido en perfil "&profile&".';//
 $lang['e_duplicated_image']			= 'Imagen ya esta agregada.';
+$lang['e_reserved_appointment'] 	= 'Consulta reservada no puede ser editada.';
 
 //success message
 $lang['s_app_register']		= 'Consulta ha sido registrado.';
@@ -214,9 +215,11 @@ $lang['w_yes']				= 'Si';
 $lang['w_patient_name']		= 'Nombre de paciente';
 $lang['w_add_appointment']	= 'Agregar Consulta';
 $lang['w_general_information'] = 'Datos Generales';
+$lang['w_results'] 			= 'resultado(s)';
+$lang['w_Results'] 			= 'Resultado(s)';
 
 //text
-$lang['t_enter_filter']		= 'Ingrese Palabras separadas con espacio.';
+$lang['t_enter_filter']		= 'Ingrese palabras separadas con espacio.';
 $lang['t_no_appointments']	= 'No existe consultas registradas.';
 $lang['t_no_confirmed']		= 'Consulta aún no ha sido confirmada.';
 $lang['t_other_illness']	= 'Otras enfermedades previas separadas con coma (,)';

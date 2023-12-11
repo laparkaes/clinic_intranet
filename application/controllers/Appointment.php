@@ -468,7 +468,7 @@ class Appointment extends CI_Controller {
 				if ($data["appointment_id"]){
 					$appointment = $this->general->id("appointment", $data["appointment_id"]);
 					$appointment->status = $this->general->id("status", $appointment->status_id);
-					if (!strcmp("confirmed", $appointment->status->code)){
+					if ("reserved" !== $appointment->status->code){
 						//set enterance time
 						$data["entered_at"] = $data["date"]." ".$data["time"];
 						unset($data["date"]);
@@ -496,7 +496,7 @@ class Appointment extends CI_Controller {
 				$appointment = $this->general->id("appointment", $data["appointment_id"]);
 				$appointment->status = $this->general->id("status", $appointment->status_id);
 					
-				if (!strcmp("confirmed", $appointment->status->code)){
+				if ("reserved" !== $appointment->status->code){
 					$type = "success";
 					$msg = $this->save_data($data, "appointment_anamnesis", "s_personal_info");
 				}else $msg = $this->lang->line('e_app_unconfirmed');
@@ -517,7 +517,7 @@ class Appointment extends CI_Controller {
 			if ($data["appointment_id"]){
 				$appointment = $this->general->id("appointment", $data["appointment_id"]);
 				$appointment->status = $this->general->id("status", $appointment->status_id);
-				if (!strcmp("confirmed", $appointment->status->code)){
+				if ("reserved" !== $appointment->status->code){
 					$type = "success";
 					$msg = $this->save_data($data, "appointment_physical", "s_triage");
 				}else $msg = $this->lang->line('e_app_unconfirmed');
@@ -538,7 +538,7 @@ class Appointment extends CI_Controller {
 			if ($data["appointment_id"]){
 				$appointment = $this->general->id("appointment", $data["appointment_id"]);
 				$appointment->status = $this->general->id("status", $appointment->status_id);
-				if (!strcmp("confirmed", $appointment->status->code)){
+				if ("reserved" !== $appointment->status->code){
 					if (array_key_exists("patho_pre_illnesses", $data))
 						$data["patho_pre_illnesses"] = str_replace(", ",",", implode(",", $data["patho_pre_illnesses"]));
 					else $data["patho_pre_illnesses"] = null;
@@ -563,7 +563,7 @@ class Appointment extends CI_Controller {
 			if ($data["appointment_id"]){
 				$appointment = $this->general->id("appointment", $data["appointment_id"]);
 				$appointment->status = $this->general->id("status", $appointment->status_id);
-				if (!strcmp("confirmed", $appointment->status->code)){
+				if ("reserved" !== $appointment->status->code){
 					$type = "success";
 					$msg = $this->save_data($data, "appointment_physical", "s_physical_exam");
 				}else $msg = $this->lang->line('e_app_unconfirmed');
@@ -581,7 +581,7 @@ class Appointment extends CI_Controller {
 		if ($filter){
 			$filter = explode(" ", $filter);
 			$diags = $this->general->find("diag_impression_detail", "description", "code", $filter);
-			$qty = number_format(count($diags))." ".$this->lang->line('txt_results');
+			$qty = number_format(count($diags))." ".$this->lang->line('w_results');
 			
 			$type = "success"; 
 		}else $msgs = $this->my_val->set_msg($msgs, "di_diagnosis_msg", "error", "e_filter_blank");
@@ -599,16 +599,17 @@ class Appointment extends CI_Controller {
 			//appointment status validation
 			$appointment = $this->general->id("appointment", $data["appointment_id"]);
 			$appointment->status = $this->general->id("status", $appointment->status_id);
-			if (in_array($appointment->status->code, ["reserved", "finished", "canceled"])){
-				$msg = $this->lang->line('error_nea');
-				$type = "error";
-			}else{
+			
+			if ($appointment->status->code !== "reserved"){
 				if (!$this->general->filter("appointment_diag_impression" , $data)){
 					if (!$this->general->insert("appointment_diag_impression" , $data)){
 						$msg = $this->lang->line('error_internal');
 						$type = "error";
 					}
 				}	
+			}else{
+				$msg = $this->lang->line('e_reserved_appointment');
+				$type = "error";
 			}
 		}else{
 			$msg = $this->lang->line('error_no_permission');
@@ -633,14 +634,15 @@ class Appointment extends CI_Controller {
 			//appointment status validation
 			$appointment = $this->general->id("appointment", $data["appointment_id"]);
 			$appointment->status = $this->general->id("status", $appointment->status_id);
-			if (in_array($appointment->status->code, ["reserved", "finished", "canceled"])){
-				$msg = $this->lang->line('error_nea');
-				$type = "error";
-			}else{
+			
+			if ($appointment->status->code !== "reserved"){
 				if (!$this->general->delete("appointment_diag_impression", $data)){
 					$msg = $this->lang->line('error_internal');
 					$type = "error";
 				}
+			}else{
+				$msg = $this->lang->line('e_reserved_appointment');
+				$type = "error";
 			}
 		}else{
 			$msg = $this->lang->line('error_no_permission');
