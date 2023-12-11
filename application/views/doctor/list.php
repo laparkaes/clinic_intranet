@@ -44,7 +44,7 @@
 				<h5 class="card-title"><?= $this->lang->line('w_list') ?></h5>
 				<?php if ($doctors){ ?>
 				<div class="table-responsive">
-					<table class="table table-responsive-md">
+					<table class="table">
 						<thead>
 							<tr>
 								<th><strong>#</strong></th>
@@ -66,9 +66,9 @@
 								</td>
 								<td><?= $item->person->tel ?></td>
 								<td><span class="text-<?= $status[$item->status_id]->color ?>"><?= $status[$item->status_id]->text ?></span></td>
-								<td class="text-right">
-									<a href="<?= base_url() ?>doctor/detail/<?= $item->id ?>">
-										<i class="bi bi-search"></i>
+								<td class="text-end">
+									<a href="<?= base_url() ?>doctor/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
+										<i class="bi bi-arrow-right"></i>
 									</a>
 								</td>
 							</tr>

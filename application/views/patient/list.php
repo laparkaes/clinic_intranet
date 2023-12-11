@@ -53,8 +53,8 @@
 								<td><?= $item->name ?></td>
 								<td><?= $item->tel ?></td>
 								<td class="text-right">
-									<a href="<?= base_url() ?>patient/detail/<?= $item->id ?>">
-										<i class="bi bi-search"></i>
+									<a href="<?= base_url() ?>patient/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
+										<i class="bi bi-arrow-right"></i>
 									</a>
 								</td>
 							</tr>

@@ -20,7 +20,7 @@
 		<table class="table w-100 mb-0 text-center">
 			<thead>
 				<tr class="sticky-top bg-white">
-					<th class="align-middle">
+					<th class="align-middle" style="width: 120px;">
 						<i class="bi bi-square-fill text-success"></i> <?= $this->lang->line('txt_busy') ?>
 					</th>
 					<?php foreach($dates as $i => $d){ ?>

@@ -46,6 +46,7 @@ $(document).ready(function() {
 	//general
 	load_doctor_schedule_appointment();
 	$(".control_bl").on('click',(function(e) {control_bl(this);}));
+	set_date_picker(".date_picker", new Date());
 	
 	var params = get_params(); console.log(params);
 	if (params.a == "add") $("#btn_add").trigger("click");

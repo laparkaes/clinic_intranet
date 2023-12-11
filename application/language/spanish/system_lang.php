@@ -62,6 +62,7 @@ $lang['btn_search']		= 'Buscar';
 $lang['btn_select']		= 'Elegir';
 $lang['btn_update']		= 'Actualizar';
 $lang['btn_view']		= 'Ver';
+$lang['btn_back']		= 'Volver';
 
 //text
 $lang['txt_detail']			= 'Detalle';

@@ -271,6 +271,8 @@ function remove_image(image_id){
 $(document).ready(function() {
 	//general
 	load_doctor_schedule_appointment();
+	set_date_picker(".date_picker", new Date());
+	
 	$(".btn_process").on('click',(function(e) {control_process_forms(this);}));
 	$("#btn_cancel").on('click',(function(e) {cancel_appointment(this);}));
 	$("#btn_finish").on('click',(function(e) {finish_appointment(this);}));
@@ -280,6 +282,7 @@ $(document).ready(function() {
 	//reschedule
 	$("#reschedule_form").submit(function(e) {e.preventDefault(); reschedule_appointment(this);});
 	$(".doc_schedule").change(function() {load_doctor_schedule_appointment();});
+	$("#ra_date").on('focusout',(function(e) {load_doctor_schedule_appointment(this);}));
 	$("#ra_hour, #ra_min").change(function() {set_time_sl("ra", "#rp_schedule");});
 	
 	//information

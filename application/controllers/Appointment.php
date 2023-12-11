@@ -20,19 +20,24 @@ class Appointment extends CI_Controller {
 		$f_url = [
 			"page" => $this->input->get("page"),
 			"status" => $this->input->get("status"),
-			"date" => $this->input->get("date"),
+			"keyword" => $this->input->get("keyword"),
 		];
 		
-		$f_w = [];
+		$f_w = $f_w_in = [];
 		if (!$f_url["page"]) $f_url["page"] = 1;
 		if ($f_url["status"]) $f_w["status_id"] = $f_url["status"];
-		if ($f_url["date"]){
-			$f_w["schedule_from >="] = $f_url["date"]." 00:00:00";
-			$f_w["schedule_to <="] = $f_url["date"]." 23:59:59";
+		if ($f_url["keyword"]){
+			$aux = [-1];
+			$people = $this->general->filter("person", null, ["name" => $f_url["keyword"]]);
+			foreach($people as $p) $aux[] = $p->id;
+			
+			$f_w_in[] = ["field" => "patient_id", "values" => $aux];
+			//$f_w["schedule_from >="] = $f_url["date"]." 00:00:00";
+			//$f_w["schedule_to <="] = $f_url["date"]." 23:59:59";
 		}
 		
 		if ($this->session->userdata('role')->name === "doctor") $f_w["doctor_id"] = $this->session->userdata('pid');
-		$appointments = $this->general->filter("appointment", $f_w, null, null, "schedule_from", "desc", 25, 25*($f_url["page"]-1));
+		$appointments = $this->general->filter("appointment", $f_w, null, $f_w_in, "schedule_from", "desc", 25, 25*($f_url["page"]-1));
 		foreach($appointments as $item){
 			$item->patient = $this->general->id("person", $item->patient_id)->name;
 			$item->doctor = $this->general->id("person", $item->doctor_id)->name;
@@ -66,7 +71,7 @@ class Appointment extends CI_Controller {
 		foreach($status as $item) $status_arr[$item->id] = $item;
 		
 		$data = [
-			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("appointment", $f_w)),
+			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("appointment", $f_w, null, $f_w_in)),
 			"f_url" => $f_url,
 			"status" => $status,
 			"status_arr" => $status_arr,
@@ -181,7 +186,7 @@ class Appointment extends CI_Controller {
 				break;
 			case "finished":
 				$appointment->is_editable = true;
-				array_push($actions, "report");
+				array_push($actions, "clinic_history");
 				break;
 			case "canceled": 
 				$appointment->is_editable = false;

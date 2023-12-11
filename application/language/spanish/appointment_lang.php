@@ -211,6 +211,9 @@ $lang['w_weight_']			= 'Peso';
 $lang['w_workplan']			= 'Plan de Trabajo';
 $lang['w_year']				= 'Año';
 $lang['w_yes']				= 'Si';
+$lang['w_patient_name']		= 'Nombre de paciente';
+$lang['w_add_appointment']	= 'Agregar Consulta';
+$lang['w_general_information'] = 'Datos Generales';
 
 //text
 $lang['t_enter_filter']		= 'Ingrese Palabras separadas con espacio.';
