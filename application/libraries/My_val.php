@@ -231,11 +231,11 @@ class My_val{
 				"doctor_id" => $surgery->doctor_id,
 				"room_id" => $data["room_id"],
 				"schedule_from" => $schedule_from,
-				"schedule_to" => date("Y-m-d H:i:s", strtotime("+14 minutes", strtotime($schedule_from)))
+				"schedule_to" => date("Y-m-d H:i:s", strtotime("+".($data["duration"]-1)." minutes", strtotime($schedule_from)))
 			];
 			
 			$status_ids = [
-				$this->CI->general->filter("status", ["code" => "reserved"])[0]->id,
+				//$this->CI->general->filter("status", ["code" => "reserved"])[0]->id,
 				$this->CI->general->filter("status", ["code" => "confirmed"])[0]->id
 			];
 			

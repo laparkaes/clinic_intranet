@@ -54,7 +54,8 @@ $(document).ready(function() {
 	//register
 	$("#register_form").submit(function(e) {e.preventDefault(); register_appointment(this);});
 	$("#aa_specialty").change(function() {set_doctor_sl(this);});
-	$("#aa_specialty, #aa_doctor, #aa_date").change(function() {load_doctor_schedule_appointment();});
+	$("#aa_specialty, #aa_doctor").change(function() {load_doctor_schedule_appointment();});
+	$("#aa_date").on('focusout',(function(e) {load_doctor_schedule_appointment();}));
 	$("#aa_pt_doc_type_id").change(function() {reset_person();});
 	$("#aa_pt_doc_number").keyup(function() {reset_person();});
 	$("#btn_search_pt").on('click',(function(e) {search_person_pt();}));

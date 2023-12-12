@@ -224,6 +224,8 @@ $lang['w_results'] 			= 'resultado(s)';
 $lang['w_Results'] 			= 'Resultado(s)';
 $lang['w_unit'] 			= 'unidad';
 $lang['w_units'] 			= 'unidades';
+$lang['w_surgery'] 			= 'Cirugía';
+$lang['w_appointment'] 		= 'Consulta';
 
 //text
 $lang['t_enter_filter']		= 'Ingrese palabras separadas con espacio.';
@@ -232,3 +234,4 @@ $lang['t_no_confirmed']		= 'Consulta aún no ha sido confirmada.';
 $lang['t_other_illness']	= 'Otras enfermedades previas separadas con coma (,)';
 $lang['t_remark']			= 'Síntomas, Notas del paciente, etc.';
 $lang['t_one_session_each']	= 'Una sesión cada ';
+$lang['t_free_appointment']	= 'Generar como consulta gratuita';

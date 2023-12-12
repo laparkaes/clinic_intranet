@@ -32,8 +32,6 @@ class Appointment extends CI_Controller {
 			foreach($people as $p) $aux[] = $p->id;
 			
 			$f_w_in[] = ["field" => "patient_id", "values" => $aux];
-			//$f_w["schedule_from >="] = $f_url["date"]." 00:00:00";
-			//$f_w["schedule_to <="] = $f_url["date"]." 23:59:59";
 		}
 		
 		if ($this->session->userdata('role')->name === "doctor") $f_w["doctor_id"] = $this->session->userdata('pid');
@@ -246,7 +244,7 @@ class Appointment extends CI_Controller {
 			$d = $this->general->filter("doctor", ["person_id" => $doctor->id])[0];
 			$item->specialty = $specialties[$d->specialty_id];
 			$item->link_to = "surgery";
-			$item->type = $this->lang->line($item->link_to);
+			$item->type = $this->lang->line("w_".$item->link_to);
 		}
 		
 		$appointment_histories = $this->general->filter("appointment", $filter);
@@ -254,7 +252,7 @@ class Appointment extends CI_Controller {
 			$d = $this->general->filter("doctor", ["person_id" => $doctor->id])[0];
 			$item->specialty = $specialties[$d->specialty_id];
 			$item->link_to = "appointment";
-			$item->type = $this->lang->line($item->link_to);
+			$item->type = $this->lang->line("w_".$item->link_to);
 		}
 		
 		$histories = array_merge($surgery_histories, $appointment_histories);
@@ -359,8 +357,9 @@ class Appointment extends CI_Controller {
 				
 				$app["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
 				$app["schedule_to"] = date("Y-m-d H:i:s", strtotime("+14 minutes", strtotime($app["schedule_from"])));
-				$app["status_id"] = $this->general->status("reserved")->id;
+				$app["status_id"] = ($this->input->post("as_free") == null) ? $this->general->status("reserved")->id : $this->general->status("confirmed")->id;
 				$app["registed_at"] = $now;
+				
 				$appointment_id = $this->general->insert("appointment", $app);
 				if ($appointment_id){
 					$this->utility_lib->add_log("appointment_register", $pt["name"]);

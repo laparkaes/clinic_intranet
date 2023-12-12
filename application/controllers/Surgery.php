@@ -22,19 +22,22 @@ class Surgery extends CI_Controller {
 		$f_url = [
 			"page" => $this->input->get("page"),
 			"status" => $this->input->get("status"),
-			"date" => $this->input->get("date"),
+			"keyword" => $this->input->get("keyword"),
 		];
 		
-		$f_w = [];
+		$f_w = $f_w_in = [];
 		if (!$f_url["page"]) $f_url["page"] = 1;
 		if ($f_url["status"]) $f_w["status_id"] = $f_url["status"];
-		if ($f_url["date"]){
-			$f_w["schedule_from >="] = $f_url["date"]." 00:00:00";
-			$f_w["schedule_to <="] = $f_url["date"]." 23:59:59";
+		if ($f_url["keyword"]){
+			$aux = [-1];
+			$people = $this->general->filter("person", null, ["name" => $f_url["keyword"]]);
+			foreach($people as $p) $aux[] = $p->id;
+			
+			$f_w_in[] = ["field" => "patient_id", "values" => $aux];
 		}
 		
 		if ($this->session->userdata('role')->name === "doctor") $f_w["doctor_id"] = $this->session->userdata('pid');
-		$surgeries = $this->general->filter("surgery", $f_w, null, null, "schedule_from", "desc", 25, 25*($f_url["page"]-1));
+		$surgeries = $this->general->filter("surgery", $f_w, null, $f_w_in, "schedule_from", "desc", 25, 25*($f_url["page"]-1));
 		foreach($surgeries as $item){
 			$item->patient = $this->general->id("person", $item->patient_id)->name;
 			$item->doctor = $this->general->id("person", $item->doctor_id)->name;
@@ -75,7 +78,7 @@ class Surgery extends CI_Controller {
 		for($i = 2; $i <= 12; $i++) array_push($duration_ops, ["value" => 60 * $i, "txt" => $i." ".$this->lang->line('w_hours')]);
 		
 		$data = array(
-			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("surgery", $f_w)),
+			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("surgery", $f_w, null, $f_w_in)),
 			"f_url" => $f_url,
 			"status" => $status,
 			"status_arr" => $status_arr,

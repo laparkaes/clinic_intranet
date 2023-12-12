@@ -46,11 +46,11 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<th><strong>#</strong></th>
-								<th><strong><?= $this->lang->line('w_itinerary') ?></strong></th>
-								<th><strong><?= $this->lang->line('w_specialty') ?></strong></th>
-								<th><strong><?= $this->lang->line('w_doctor') ?> / <?= $this->lang->line('w_patient') ?></strong></th>
-								<th><strong><?= $this->lang->line('w_status') ?></strong></th>
+								<th>#</th>
+								<th><?= $this->lang->line('w_itinerary') ?></th>
+								<th><?= $this->lang->line('w_specialty') ?></th>
+								<th><?= $this->lang->line('w_doctor') ?> / <?= $this->lang->line('w_patient') ?></th>
+								<th><?= $this->lang->line('w_status') ?></th>
 								<th></th>
 							</tr>
 						</thead>
@@ -189,6 +189,14 @@
 							<div class="col-md-12">
 								<label class="form-label"><?= $this->lang->line('w_remark') ?> (<?= $this->lang->line('w_optional') ?>)</label>
 								<textarea class="form-control" rows="4" name="app[remark]" placeholder="<?= $this->lang->line('t_remark') ?>"></textarea>
+							</div>
+							<div class="col-md-12 pt-3">
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" name="as_free" id="as_free">
+									<label class="form-check-label" for="as_free">
+										<?= $this->lang->line('t_free_appointment') ?>
+									</label>
+								</div>
 							</div>
 							<div class="col-md-12 pt-3">
 								<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>

@@ -52,6 +52,12 @@ $lang['w_tel']			= 'Teléfono';
 $lang['w_time']			= 'Hora';
 $lang['w_title']		= 'Título';
 $lang['w_type']			= 'Tipo';
+$lang['w_patient_name']	= 'Nombre de paciente';
+$lang['w_add_surgery']	= 'Agregar Cirugía';
+$lang['w_general_information'] = 'Datos Generales';
+$lang['w_date_hour']		= 'Fecha y Hora';
+$lang['w_surgery'] 			= 'Cirugía';
+$lang['w_appointment'] 		= 'Consulta';
 
 //text
 $lang['t_remark']		= 'Síntomas, Notas del paciente, etc.';

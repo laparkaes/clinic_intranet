@@ -43,6 +43,7 @@ $(document).ready(function() {
 	//general
 	load_doctor_schedule_surgery();
 	$(".control_bl").on('click',(function(e) {control_bl(this);}));
+	set_date_picker(".date_picker", new Date());
 	
 	var params = get_params(); console.log(params);
 	if (params.a == "add") $("#btn_add").trigger("click");
@@ -50,7 +51,8 @@ $(document).ready(function() {
 	//register
 	$("#register_form").submit(function(e) {e.preventDefault(); register_surgery(this);});
 	$("#sur_specialty").change(function() {set_doctor_sl(this);});
-	$("#sur_specialty, #sur_doctor, #sur_date").change(function() {load_doctor_schedule_surgery();});
+	$("#sur_specialty, #sur_doctor").change(function() {load_doctor_schedule_surgery();});
+	$("#sur_date").on('focusout',(function(e) {load_doctor_schedule_surgery();}));
 	$("#sur_pt_doc_type_id").change(function() {reset_person();});
 	$("#sur_pt_doc_number").keyup(function() {reset_person();});
 	$("#btn_search_pt").on('click',(function(e) {search_person_pt();}));

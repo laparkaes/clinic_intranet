@@ -41,6 +41,7 @@ function control_reschedule_form(){
 
 $(document).ready(function() {
 	//general
+	set_date_picker(".date_picker", new Date());
 	$("#btn_cancel").on('click',(function(e) {cancel_surgery(this);}));
 	$("#btn_finish").on('click',(function(e) {finish_surgery(this);}));
 	$("#btn_reschedule, #btn_reschedule_cancel").on('click',(function(e) {control_reschedule_form();}));
