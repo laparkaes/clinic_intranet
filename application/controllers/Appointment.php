@@ -173,6 +173,7 @@ class Appointment extends CI_Controller {
 		if (!$appointment) redirect("/appointment");
 		
 		$appointment->status = $this->general->id("status", $appointment->status_id);
+		
 		$actions = [];
 		switch($appointment->status->code){
 			case "reserved":
@@ -192,6 +193,15 @@ class Appointment extends CI_Controller {
 				$appointment->is_editable = false;
 				$appointment->status->color = "danger";
 				break;
+		}
+		
+		//define posible operations by role
+		switch($this->session->userdata("role")->name){
+			case "master": $operations = ["information", "triage", "attention"]; break;
+			case "admin": $operations = ["information", "triage", "attention"]; break;
+			case "doctor": $operations = ["attention"]; break;
+			case "nurse": $operations = ["triage"]; break;
+			default: $operations = ["information"]; //reception
 		}
 		
 		$appointment->specialty = $this->general->id("specialty", $appointment->specialty_id)->name;
@@ -297,6 +307,7 @@ class Appointment extends CI_Controller {
 		
 		$data = array(
 			"actions" => $actions,
+			"operations" => $operations,
 			"appointment" => $appointment,
 			"appointment_datas" => $this->set_appointment_data($appointment),
 			"doctor" => $doctor,
@@ -600,7 +611,7 @@ class Appointment extends CI_Controller {
 			$appointment = $this->general->id("appointment", $data["appointment_id"]);
 			$appointment->status = $this->general->id("status", $appointment->status_id);
 			
-			if ($appointment->status->code !== "reserved"){
+			if ("reserved" !== $appointment->status->code){
 				if (!$this->general->filter("appointment_diag_impression" , $data)){
 					if (!$this->general->insert("appointment_diag_impression" , $data)){
 						$msg = $this->lang->line('error_internal');
@@ -635,7 +646,7 @@ class Appointment extends CI_Controller {
 			$appointment = $this->general->id("appointment", $data["appointment_id"]);
 			$appointment->status = $this->general->id("status", $appointment->status_id);
 			
-			if ($appointment->status->code !== "reserved"){
+			if ("reserved" !== $appointment->status->code){
 				if (!$this->general->delete("appointment_diag_impression", $data)){
 					$msg = $this->lang->line('error_internal');
 					$type = "error";
@@ -668,7 +679,8 @@ class Appointment extends CI_Controller {
 			if ($data["appointment_id"]){
 				$appointment = $this->general->id("appointment", $data["appointment_id"]);
 				$appointment->status = $this->general->id("status", $appointment->status_id);
-				if (!strcmp("confirmed", $appointment->status->code)){
+				
+				if ("reserved" !== $appointment->status->code){
 					$type = "success";
 					$msg = $this->save_data($data, "appointment_result", "s_result");
 				}else $msg = $this->lang->line('e_app_unconfirmed');
@@ -850,7 +862,6 @@ class Appointment extends CI_Controller {
 		
 		if ($this->utility_lib->check_access("appointment", "update_medical_attention")){			
 			$data = $this->input->post();
-			
 			if ($this->general->delete("appointment_examination", $data)){
 				$type = "success";
 				$msg = $this->lang->line('s_exam_remove');
@@ -905,14 +916,12 @@ class Appointment extends CI_Controller {
 			if (!$msgs){
 				$appointment = $this->general->id("appointment", $data["appointment_id"]);
 				$appointment->status = $this->general->id("status", $appointment->status_id);
-				if (in_array($appointment->status->code, ["reserved", "finished", "canceled"]))
-					$msg = $this->lang->line('error_nea');
-				elseif (!$this->general->insert("appointment_therapy", $data))
-					$msg = $this->lang->line('error_internal');
-				else{
+				
+				if ("reserved" !== $appointment->status->code){
+					$this->general->insert("appointment_therapy", $data);
 					$msg = $this->lang->line('s_therapy_add');
 					$type = "success";
-				}
+				}else $msg = $this->lang->line('e_app_unconfirmed');
 			}else $msg = $this->lang->line('error_occurred');
 		}else $msg = $this->lang->line('error_no_permission');
 		
@@ -931,15 +940,12 @@ class Appointment extends CI_Controller {
 			//appointment status validation
 			$appointment = $this->general->id("appointment", $data["appointment_id"]);
 			$appointment->status = $this->general->id("status", $appointment->status_id);
-			if (in_array($appointment->status->code, ["reserved", "finished", "canceled"])){
-				$msg = $this->lang->line('error_nea');
-			}else{
-				if (!$this->general->delete("appointment_therapy", $data)) $msg = $this->lang->line('error_internal');
-				else{
-					$msg = $this->lang->line('s_therapy_remove');
-					$type = "success";
-				}
-			}
+			
+			if ("reserved" !== $appointment->status->code){
+				$this->general->delete("appointment_therapy", $data);
+				$msg = $this->lang->line('s_therapy_remove');
+				$type = "success";
+			}else $msg = $this->lang->line('e_app_unconfirmed');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		$therapies = $this->set_therapy_list($data["appointment_id"]);
@@ -981,14 +987,12 @@ class Appointment extends CI_Controller {
 			if (!$msgs){
 				$appointment = $this->general->id("appointment", $data["appointment_id"]);
 				$appointment->status = $this->general->id("status", $appointment->status_id);
-				if (in_array($appointment->status->code, ["reserved", "finished", "canceled"]))
-					$msg = $this->lang->line('error_nea');
-				elseif (!$this->general->insert("appointment_medicine", $data))
-					$msg = $this->lang->line('error_internal');
-				else{
+				
+				if ("reserved" !== $appointment->status->code){
+					$this->general->insert("appointment_medicine", $data);
 					$msg = $this->lang->line('s_medicine_add');
 					$type = "success";
-				}
+				}else $msg = $this->lang->line('e_app_unconfirmed');
 			}else $msg = $this->lang->line('error_occurred');
 		}else $msg = $this->lang->line('error_no_permission');
 		
@@ -1007,15 +1011,12 @@ class Appointment extends CI_Controller {
 			//appointment status validation
 			$appointment = $this->general->id("appointment", $data["appointment_id"]);
 			$appointment->status = $this->general->id("status", $appointment->status_id);
-			if (in_array($appointment->status->code, array("reserved", "finished", "canceled"))){
-				$msg = $this->lang->line('error_nea');
-			}else{
-				if (!$this->general->delete("appointment_medicine", $data)) $msg = $this->lang->line('error_internal');
-				else{
-					$msg = $this->lang->line('s_medicine_remove');
-					$type = "success";
-				}
-			}
+			
+			if ("reserved" !== $appointment->status->code){
+				$this->general->delete("appointment_medicine", $data);
+				$msg = $this->lang->line('s_medicine_remove');
+				$type = "success";
+			}else $msg = $this->lang->line('e_app_unconfirmed');
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		$medicines = $this->set_medicine_list($data["appointment_id"]);

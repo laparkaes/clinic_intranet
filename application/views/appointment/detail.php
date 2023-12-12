@@ -236,35 +236,42 @@
 	$im = $appointment_datas["images"];
 	$th = $appointment_datas["therapy"];
 	$me = $appointment_datas["medicine"];
+	
+	$outline = "";
+	if (in_array("information" , $operations)){
 	?>
 	<div class="col-md-4">
 		<div class="d-grid gap-2">
-			<button type="button" class="btn btn-primary btn-lg btn_process mb-3" value="process_information">
+			<button type="button" class="btn btn<?= $outline ?>-primary btn-lg btn_process mb-3" value="process_information">
 				<i class="bi bi-info-circle me-3"></i>
 				<span><?= $this->lang->line('btn_information') ?></span>
 			</button>
 		</div>
 	</div>
+	<?php $outline = "-outline";} if (in_array("triage" , $operations)){ ?>
 	<div class="col-md-4">
 		<div class="d-grid gap-2">
-			<button type="button" class="btn btn-outline-primary btn-lg btn_process mb-3" value="process_triage">
+			<button type="button" class="btn btn<?= $outline ?>-primary btn-lg btn_process mb-3" value="process_triage">
 				<i class="bi bi-journal-medical me-3"></i>
 				<span><?= $this->lang->line('btn_triage') ?></span>
 			</button>
 		</div>
 	</div>
+	<?php $outline = "-outline";} if (in_array("attention" , $operations)){ ?>
 	<div class="col-md-4">
 		<div class="d-grid gap-2">
-			<button type="button" class="btn btn-outline-primary btn-lg btn_process mb-3" value="process_attention">
+			<button type="button" class="btn btn<?= $outline ?>-primary btn-lg btn_process mb-3" value="process_attention">
 				<i class="bi bi-clipboard2-pulse me-3"></i>
 				<span><?= $this->lang->line('btn_attention') ?></span>
 			</button>
 		</div>
 	</div>
+	<?php } ?>
 </div>
 <div class="row">
 	<div class="col-md-12">
-		<div class="card process process_information">
+		<?php $dnone = ""; if (in_array("information" , $operations)){ ?>
+		<div class="card process process_information <?= $dnone ?>">
 			<div class="card-body">
 				<h5 class="card-title"><?= $this->lang->line('w_basic_data') ?></h5>
 				<form class="row g-3" id="form_basic_data">
@@ -326,7 +333,7 @@
 				</form>
 			</div>
 		</div>
-		<div class="card process process_information">
+		<div class="card process process_information <?= $dnone ?>">
 			<div class="card-body">
 				<h5 class="card-title"><?= $this->lang->line('w_personal_information') ?></h5>
 				<form class="row g-3" id="form_personal_information">
@@ -422,7 +429,8 @@
 				</form>
 			</div>
 		</div>
-		<div class="card process process_triage d-none">
+		<?php  $dnone = "d-none";} if (in_array("triage" , $operations)){ ?>
+		<div class="card process process_triage <?= $dnone ?>">
 			<div class="card-body">
 				<h5 class="card-title"><?= $this->lang->line('w_triage') ?></h5>
 				<form class="row g-3" id="form_triage">
@@ -474,7 +482,8 @@
 				</form>
 			</div>
 		</div>
-		<div class="card process process_attention d-none">
+		<?php  $dnone = "d-none";} if (in_array("attention" , $operations)){ ?>
+		<div class="card process process_attention <?= $dnone ?>">
 			<div class="card-body">
 				<h5 class="card-title"><?= $this->lang->line('w_anamnesis') ?></h5>
 				<form class="row g-3" id="form_anamnesis">
@@ -741,7 +750,7 @@
 				</form>
 			</div>
 		</div>
-		<div class="card process process_attention d-none">
+		<div class="card process process_attention <?= $dnone ?>">
 			<div class="card-body">
 				<h5 class="card-title"><?= $this->lang->line('w_physical_exam') ?></h5>
 				<form class="row g-3" id="form_physical_exam">
@@ -888,7 +897,7 @@
 				</form>
 			</div>
 		</div>
-		<div class="card process process_attention d-none">
+		<div class="card process process_attention <?= $dnone ?>">
 			<div class="card-body">
 				<div class="d-flex justify-content-between align-items-center">
 					<h5 class="card-title"><?= $this->lang->line('w_diagnostic_impression') ?></h5>
@@ -934,7 +943,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="card process process_attention d-none">
+		<div class="card process process_attention <?= $dnone ?>">
 			<div class="card-body">
 				<h5 class="card-title"><?= $this->lang->line('w_result') ?></h5>
 				<form class="row g-3" id="form_result">
@@ -971,7 +980,7 @@
 				</form>
 			</div>
 		</div>
-		<div class="card process process_attention d-none">
+		<div class="card process process_attention <?= $dnone ?>">
 			<div class="card-body">
 				<h5 class="card-title"><?= $this->lang->line('w_auxiliary_exam') ?></h5>
 				<ul class="nav nav-tabs nav-tabs-bordered" id="auxiliary_exams_tab" role="tablist">
@@ -1128,7 +1137,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="card process process_attention d-none">
+		<div class="card process process_attention <?= $dnone ?>">
 			<div class="card-body">
 				<h5 class="card-title"><?= $this->lang->line('w_treatment') ?></h5>
 				<ul class="nav nav-tabs nav-tabs-bordered" id="auxiliary_exams_tab" role="tablist">
@@ -1310,14 +1319,16 @@
 				</div>
 			</div>
 		</div>
+		<?php if ($appointment->status->code === "confirmed"){ ?>
+		<div class="card process process_attention <?= $dnone ?> text-center">
+			<div class="card-body py-3">
+				<button type="button" class="btn btn-success btn-lg" id="btn_finish" value="<?= $appointment->id ?>">
+					<?= $this->lang->line('btn_finish_appointment') ?>
+				</button>
+			</div>
+		</div>
+		<?php }} ?>
 	</div>
-	<?php if ($appointment->status->code === "confirmed"){ ?>
-	<div class="col-md-12 text-center">
-		<button type="button" class="btn btn-success btn-lg" id="btn_finish" value="<?= $appointment->id ?>">
-			<?= $this->lang->line('btn_finish_appointment') ?>
-		</button>
-	</div>
-	<?php } ?>
 </div>
 <?php }//end else block ?>
 <div class="modal fade" id="md_weekly_doctor_agenda" tabindex="-1">
@@ -1339,13 +1350,3 @@
 <input type="hidden" id="bmi_class_obesity_1" value="<?= $this->lang->line('w_bmi_class_obesity_1') ?>">
 <input type="hidden" id="bmi_class_obesity_2" value="<?= $this->lang->line('w_bmi_class_obesity_2') ?>">
 <input type="hidden" id="bmi_class_obesity_3" value="<?= $this->lang->line('w_bmi_class_obesity_3') ?>">
-
-
-<!--
-<?php if ($appointment->status->code === "reserved"){ ?>
-<div class="col-md-12">
-	<h3 class="text-center text-danger mb-5"><?= $this->lang->line('t_no_confirmed') ?></h3>
-</div>
-<?php } elseif ($appointment->status->code === "confirmed") $this->load->view('appointment/detail_'.$this->session->userdata("role")->name); elseif ($appointment->status->code === "finished") $this->load->view('appointment/detail_finished'); ?>
--->
-
