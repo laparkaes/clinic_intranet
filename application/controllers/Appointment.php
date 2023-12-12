@@ -748,14 +748,14 @@ class Appointment extends CI_Controller {
 				$aux_exams = $this->general->filter("examination", null, null, [["field" => "id", "values" => $aux_ex_ids]]);
 				foreach($aux_exams as $e) $aux_ex_arr[] = $e->name;
 				
-				$item->type = $this->lang->line('txt_profile');
+				$item->type = $this->lang->line('w_profile');
 				$item->exams = implode(", ", $aux_ex_arr);
 			}	
 		}else $profiles = [];
 		
 		if ($ex_ids){
 			$exams = $this->general->filter("examination", null, null, [["field" => "id", "values" => $ex_ids]], "name", "asc");
-			foreach($exams as $item) $item->type = $this->lang->line('txt_exam');	
+			foreach($exams as $item) $item->type = $this->lang->line('w_exam');	
 		}else $exams = [];
 		
 		return ["profiles" => $profiles, "exams" => $exams];
@@ -871,11 +871,11 @@ class Appointment extends CI_Controller {
 		foreach($therapies as $item){
 			$item->physical_therapy = $this->general->id("physical_therapy", $item->physical_therapy_id)->name;
 			
-			if ($item->session > 1) $session_txt = $this->lang->line('txt_session_p');
-			else $session_txt = $this->lang->line('txt_session');
+			if ($item->session > 1) $session_txt = $this->lang->line('w_sessions');
+			else $session_txt = $this->lang->line('w_session');
 			$session_txt = $item->session." ".$session_txt;
 			
-			$unit_text = "txt_";
+			$unit_text = "w_";
 			switch($item->frequency_unit){
 				case "D": $unit_text = $unit_text."day"; break;
 				case "W": $unit_text = $unit_text."week"; break;
@@ -884,7 +884,7 @@ class Appointment extends CI_Controller {
 			}
 			if ($item->frequency > 1) $unit_text = $unit_text."_p";
 			$frequency_txt = $item->frequency." ".$this->lang->line($unit_text);
-			$item->sub_txt = $session_txt.", ".$this->lang->line('txt_one_session_each')." ".$frequency_txt;
+			$item->sub_txt = $session_txt.", ".$this->lang->line('t_one_session_each')." ".$frequency_txt;
 		}
 		usort($therapies, function($a, $b) {
 			return strcmp($a->physical_therapy, $b->physical_therapy);
@@ -954,7 +954,7 @@ class Appointment extends CI_Controller {
 			$sub_txt_arr = [];
 			
 			if ($item->quantity > 1) $sub_txt_arr[] = number_format($item->quantity)." ".$this->lang->line('w_units');
-			else $sub_txt_arr[] = number_format($item->quantity)." ".$this->lang->line('txt_unit');
+			else $sub_txt_arr[] = number_format($item->quantity)." ".$this->lang->line('w_unit');
 			
 			if ($item->dose_id) $sub_txt_arr[] = $this->general->id("medicine_dose", $item->dose_id)->description;
 			if ($item->application_way_id) $sub_txt_arr[] = $this->general->id("medicine_application_way ", $item->application_way_id)->description;

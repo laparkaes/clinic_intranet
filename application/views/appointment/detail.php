@@ -162,7 +162,7 @@
 						</thead>
 						<tbody>
 							<?php foreach($histories as $item){ ?>
-							<tr class="text-left">
+							<tr>
 								<td><?= date("Y-m-d h:i a", strtotime($item->schedule_from)) ?></td>
 								<td><?= $item->type ?></td>
 								<td><?= $item->specialty ?></td>
@@ -261,6 +261,8 @@
 			</button>
 		</div>
 	</div>
+</div>
+<div class="row">
 	<div class="col-md-12">
 		<div class="card process process_information">
 			<div class="card-body">
@@ -903,24 +905,15 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div><strong><?= $this->lang->line('w_Results') ?></strong></div>
-						<div class="ap_content_list_high">
-							<table class="table">
-								<tbody id="search_diag_result"></tbody>
-								<tfoot><td class="sys_msg" id="di_diagnosis_msg" colspan="3"></td></tfoot>
-							</table>
-						</div>
-					</div>
-					<div class="col-md-6">
 						<div><strong><?= $this->lang->line('w_selected_diag') ?></strong></div>
 						<table class="table">
 							<tbody id="selected_diags">
 								<?php foreach($di as $d){ ?>
-								<tr class="text-left">
+								<tr>
 									<td><?= $d->code ?></td>
 									<td><?= $d->description ?></td>
 									<?php if ($appointment->is_editable){ ?>
-									<td class="text-right">
+									<td class="text-end">
 										<button type="button" class="btn btn-danger btn-sm btn_delete_diag" value="<?= $d->id ?>"><i class="bi bi-dash"></i></button>
 									</td>
 									<?php } ?>
@@ -928,6 +921,15 @@
 								<?php } ?>
 							</tbody>
 						</table>
+					</div>
+					<div class="col-md-6">
+						<div><strong><?= $this->lang->line('w_Results') ?></strong></div>
+						<div class="ap_content_list_high">
+							<table class="table">
+								<tbody id="search_diag_result"></tbody>
+								<tfoot><td class="sys_msg" id="di_diagnosis_msg" colspan="3"></td></tfoot>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -969,94 +971,67 @@
 				</form>
 			</div>
 		</div>
-
-	</div>
-</div>
-
-
-<div class="col-md-12 process process_attention d-none">
-	<div class="card">
-		<div class="card-header">
-			<h4 class="mb-0"><?= $this->lang->line('w_auxiliary_exam') ?></h4>
-		</div>
-		<div class="card-body">
-			<div class="default-tab">
-				<ul class="nav nav-tabs mb-4">
-					<li class="nav-item">
-						<a href="#auxiliary_exams_lab" class="nav-link active" data-toggle="tab">
-							<?= $this->lang->line('w_laboratory') ?>
-						</a>
+		<div class="card process process_attention d-none">
+			<div class="card-body">
+				<h5 class="card-title"><?= $this->lang->line('w_auxiliary_exam') ?></h5>
+				<ul class="nav nav-tabs nav-tabs-bordered" id="auxiliary_exams_tab" role="tablist">
+					<li class="nav-item" role="presentation">
+						<button class="nav-link active" id="auxiliary_exams_lab-tab" data-bs-toggle="tab" data-bs-target="#bordered-auxiliary_exams_lab" type="button" role="tab" aria-controls="auxiliary_exams_lab" aria-selected="true"><?= $this->lang->line('w_laboratory') ?></button>
 					</li>
-					<li class="nav-item">
-						<a href="#auxiliary_exams_img" class="nav-link" data-toggle="tab">
-							<?= $this->lang->line('w_image') ?>
-						</a>
+					<li class="nav-item" role="presentation">
+						<button class="nav-link" id="auxiliary_exams_img-tab" data-bs-toggle="tab" data-bs-target="#bordered-auxiliary_exams_img" type="button" role="tab" aria-controls="auxiliary_exams_img" aria-selected="false" tabindex="-1"><?= $this->lang->line('w_image') ?></button>
 					</li>
 				</ul>
-				<div class="tab-content">
-					<div id="auxiliary_exams_lab" class="tab-pane active">
-						<?php if ($appointment->is_editable){ ?>
-						<div class="row">
-							<div class="col-md-6">
-								<div class="form-row">
-									<div class="col-md-12">
-										<label class="form-label"><?= $this->lang->line('w_profile') ?></label>
-										<div class="input-group">
-											<select class="form-select" id="sl_profile_exam">
-												<option value="">--</option>
-												<?php foreach($exam_profiles as $item){ ?>
-												<option value="<?= $item->id ?>"><?= $item->name ?></option>
-												<?php } ?>
-											</select>
-											<div class="input-group-append">
-												<button class="btn btn-primary" type="button" id="btn_add_exam_profile">
-													<i class="fas fa-plus"></i>
-												</button>
-											</div>
-										</div>
-									</div>
+				<div class="tab-content pt-4" id="auxiliary_exams_tab_content">
+					<div class="tab-pane fade show active" id="bordered-auxiliary_exams_lab" role="tabpanel" aria-labelledby="auxiliary_exams_lab-tab">
+						<div class="row g-3">
+							<div class="col-md-5">
+								<label class="form-label"><?= $this->lang->line('w_profile') ?></label>
+								<div class="input-group">
+									<select class="form-select" id="sl_profile_exam">
+										<option value="">--</option>
+										<?php foreach($exam_profiles as $item){ ?>
+										<option value="<?= $item->id ?>"><?= $item->name ?></option>
+										<?php } ?>
+									</select>
+									<button class="btn btn-primary" type="button" id="btn_add_exam_profile">
+										<i class="bi bi-plus"></i>
+									</button>
 								</div>
 							</div>
-							<div class="col-md-6">
-								<div class="form-row">
-									<div class="col-md-4">
-										<label class="form-label"><?= $this->lang->line('w_category') ?></label>
-										<select class="form-select" id="sl_exam_category">
-											<option value=""><?= $this->lang->line('w_all') ?></option>
-											<?php foreach($exam_categories as $item){ ?>
-											<option value="<?= $item->id ?>"><?= $item->name ?></option>
-											<?php } ?>
-										</select>
-									</div>
-									<div class="col-md-8">
-										<label class="form-label"><?= $this->lang->line('w_exam') ?></label>
-										<div class="input-group">
-											<select class="form-select" id="sl_exam">
-												<option value="">--</option>
-												<?php foreach($examinations as $item){ ?>
-												<option value="<?= $item->id ?>" class="exam_cat exam_cat_<?= $item->category_id ?>"><?= $item->name ?></option>
-												<?php } ?>
-											</select>
-											<div class="input-group-append">
-												<button class="btn btn-primary" type="button" id="btn_add_exam">
-													<i class="fas fa-plus"></i>
-												</button>
-											</div>
-										</div>
-									</div>
+							<div class="col-md-3">
+								<label class="form-label"><?= $this->lang->line('w_category') ?></label>
+								<select class="form-select" id="sl_exam_category">
+									<option value=""><?= $this->lang->line('w_all') ?></option>
+									<?php foreach($exam_categories as $item){ ?>
+									<option value="<?= $item->id ?>"><?= $item->name ?></option>
+									<?php } ?>
+								</select>
+							</div>
+							<div class="col-md-4">
+								<label class="form-label"><?= $this->lang->line('w_exam') ?></label>
+								<div class="input-group">
+									<select class="form-select" id="sl_exam">
+										<option value="">--</option>
+										<?php foreach($examinations as $item){ ?>
+										<option value="<?= $item->id ?>" class="exam_cat exam_cat_<?= $item->category_id ?>"><?= $item->name ?></option>
+										<?php } ?>
+									</select>
+									<button class="btn btn-primary" type="button" id="btn_add_exam">
+										<i class="bi bi-plus"></i>
+									</button>
 								</div>
 							</div>
 						</div>
-						<?php } ?>
-						<div class="row">
+						<div class="row mt-3">
 							<div class="table-responsive">
-								<table class="table table-responsive-md">
+								<table class="table">
 									<thead>
 										<tr>
-											<th><strong><?= $this->lang->line('w_type') ?></strong></th>
-											<th class="w-30"><strong><?= $this->lang->line('w_profile') ?></strong></th>
-											<th><strong><?= $this->lang->line('w_exams') ?></strong></th>
-											<?php if ($appointment->is_editable){ ?><th></th><?php } ?>
+											<th><?= $this->lang->line('w_type') ?></th>
+											<th><?= $this->lang->line('w_profile') ?></th>
+											<th><?= $this->lang->line('w_exams') ?></th>
+											<th></th>
 										</tr>
 									</thead>
 									<tbody id="tbody_exams_profiles">
@@ -1065,13 +1040,11 @@
 											<td><?= $ep->type ?></td>
 											<td><?= $ep->name ?></td>
 											<td><?= $ep->exams ?></td>
-											<?php if ($appointment->is_editable){ ?>
-											<td>
-												<button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_exam_profile" value="<?= $ep->id ?>">
-													<i class="fas fa-trash"></i>
+											<td class="text-end">
+												<button type="button" class="btn btn-danger btn-sm btn_remove_exam_profile" value="<?= $ep->id ?>">
+													<i class="bi bi-trash"></i>
 												</button>
 											</td>
-											<?php } ?>
 										</tr>
 										<?php } foreach($ex_examinations as $ee){ ?>
 										<tr>
@@ -1079,9 +1052,9 @@
 											<td>-</td>
 											<td><?= $ee->name ?></td>
 											<?php if ($appointment->is_editable){ ?>
-											<td class="text-right">
-												<button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_exam" value="<?= $ee->id ?>">
-													<i class="fas fa-trash"></i>
+											<td class="text-end">
+												<button type="button" class="btn btn-danger btn-sm btn_remove_exam" value="<?= $ee->id ?>">
+													<i class="bi bi-trash"></i>
 												</button>
 											</td>
 											<?php } ?>
@@ -1092,12 +1065,11 @@
 							</div>
 						</div>
 					</div>
-					<div id="auxiliary_exams_img" class="tab-pane">
-						<?php if ($appointment->is_editable){ ?>
+					<div class="tab-pane fade" id="bordered-auxiliary_exams_img" role="tabpanel" aria-labelledby="auxiliary_exams_img-tab">
 						<div class="row">
 							<div class="col-md-12">
-								<div class="form-row">
-									<div class="col-md-2">
+								<div class="row g-3">
+									<div class="col-md-auto">
 										<label class="form-label"><?= $this->lang->line('w_category') ?></label>
 										<select class="form-select" id="sl_aux_img_category">
 											<option value="">--</option>
@@ -1106,7 +1078,7 @@
 											<?php } ?>
 										</select>
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-auto">
 										<label class="form-label"><?= $this->lang->line('w_image') ?></label>
 										<select class="form-select" id="sl_aux_img">
 											<option value="">--</option>
@@ -1115,23 +1087,25 @@
 											<?php } ?>
 										</select>
 									</div>
-									<div class="d-flex align-items-end">
-										<button type="button" class="btn btn-primary" id="btn_add_img">
-											<?= $this->lang->line('btn_add') ?>
-										</button>
+									<div class="col-md-auto">
+										<label class="form-label d-md-block d-none">&nbsp;</label>
+										<div>
+											<button type="button" class="btn btn-primary" id="btn_add_img">
+												<i class="bi bi-plus"></i>
+											</button>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<?php } ?>
-						<div class="row">
+						<div class="row mt-3">
 							<div class="table-responsive">
-								<table class="table table-responsive-md">
+								<table class="table">
 									<thead>
 										<tr>
-											<th><strong><?= $this->lang->line('w_category') ?></strong></th>
-											<th><strong><?= $this->lang->line('w_image') ?></strong></th>
-											<?php if ($appointment->is_editable){ ?><th></th><?php } ?>
+											<th><?= $this->lang->line('w_category') ?></th>
+											<th><?= $this->lang->line('w_image') ?></th>
+											<th></th>
 										</tr>
 									</thead>
 									<tbody id="tbody_images">
@@ -1139,13 +1113,11 @@
 										<tr>
 											<td><?= $item->category ?></td>
 											<td><?= $item->name ?></td>
-											<?php if ($appointment->is_editable){ ?>
-											<td class="text-right">
-												<button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_image" value="<?= $item->image_id ?>">
-													<i class="fas fa-trash"></i>
+											<td class="text-end">
+												<button type="button" class="btn btn-danger btn-sm btn_remove_image" value="<?= $item->image_id ?>">
+													<i class="bi bi-trash"></i>
 												</button>
 											</td>
-											<?php } ?>
 										</tr>
 										<?php } ?>
 									</tbody>
@@ -1156,121 +1128,107 @@
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
-<div class="col-md-12 process process_attention d-none">
-	<div class="card">
-		<div class="card-header">
-			<h4 class="mb-0"><?= $this->lang->line('w_treatment') ?></h4>
-		</div>
-		<div class="card-body">
-			<div class="default-tab">
-				<ul class="nav nav-tabs mb-4">
-					<li class="nav-item">
-						<a href="#treatments-1" class="nav-link active" data-toggle="tab">
-							<?= $this->lang->line('w_medicine') ?>
-						</a>
+		<div class="card process process_attention d-none">
+			<div class="card-body">
+				<h5 class="card-title"><?= $this->lang->line('w_treatment') ?></h5>
+				<ul class="nav nav-tabs nav-tabs-bordered" id="auxiliary_exams_tab" role="tablist">
+					<li class="nav-item" role="presentation">
+						<button class="nav-link active" id="treatments-1-tab" data-bs-toggle="tab" data-bs-target="#bordered-treatments-1" type="button" role="tab" aria-controls="treatments-1" aria-selected="true"><?= $this->lang->line('w_medicine') ?></button>
 					</li>
-					<li class="nav-item">
-						<a href="#treatments-2" class="nav-link" data-toggle="tab">
-							<?= $this->lang->line('w_physical_therapy') ?>
-						</a>
+					<li class="nav-item" role="presentation">
+						<button class="nav-link" id="treatments-2-tab" data-bs-toggle="tab" data-bs-target="#bordered-treatments-2" type="button" role="tab" aria-controls="treatments-2" aria-selected="false" tabindex="-1"><?= $this->lang->line('w_physical_therapy') ?></button>
 					</li>
 				</ul>
-				<div class="tab-content">
-					<div id="treatments-1" class="tab-pane active">
+				<div class="tab-content pt-4" id="auxiliary_exams_tab_content">
+					<div class="tab-pane fade show active" id="bordered-treatments-1" role="tabpanel" aria-labelledby="treatments-1-tab">
 						<div class="row">
-							<?php if ($appointment->is_editable){ $next_col = 6; ?>
 							<div class="col-md-6">
-								<h5><?= $this->lang->line('w_add_medicine') ?></h5>
-								<form action="#" id="form_add_medicine">
+								<form class="row g-3" id="form_add_medicine">
 									<input type="hidden" name="appointment_id" value="<?= $appointment->id ?>">
-									<div class="form-row">
-										<div class="col-md-12">
-											<label class="form-label"><?= $this->lang->line('w_medicine') ?></label>
-											<select class="form-select" name="medicine_id">
-												<option value="">--</option>
-												<?php foreach($medicines as $item){ ?>
-												<option value="<?= $item->id ?>"><?= $item->name ?></option>
-												<?php } ?>
-											</select>
-											<div class="sys_msg" id="md_medicine_msg"></div>
-										</div>
-										<div class="col-md-6">
-											<label class="form-label"><?= $this->lang->line('w_quantity') ?></label>
-											<input type="number" class="form-control" name="quantity" value="1">
-											<div class="sys_msg" id="md_quantity_msg"></div>
-										</div>
-										<div class="col-md-6">
-											<label class="form-label"><?= $this->lang->line('w_dose') ?></label>
-											<select class="form-select" name="dose_id">
-												<option value="">--</option>
-												<?php $medicine_dose = $options["medicine_dose"];
-												foreach($medicine_dose as $item){ ?>
-												<option value="<?= $item->id ?>"><?= $item->description ?></option>
-												<?php } ?>
-											</select>
-											<div class="sys_msg" id="md_quantity_msg"></div>
-										</div>
-										<div class="col-md-4">
-											<label class="form-label"><?= $this->lang->line('w_application_way') ?></label>
-											<select class="form-select" name="application_way_id">
-												<option value="">--</option>
-												<?php $application_way = $options["medicine_application_way"];
-												foreach($application_way as $item){ ?>
-												<option value="<?= $item->id ?>"><?= $item->description ?></option>
-												<?php } ?>
-											</select>
-											<div class="sys_msg" id="md_via_application_msg"></div>
-										</div>
-										<div class="col-md-4">
-											<label class="form-label"><?= $this->lang->line('w_frequency') ?></label>
-											<select class="form-select" name="frequency_id">
-												<option value="">--</option>
-												<?php $medicine_frequency = $options["medicine_frequency"];
-												foreach($medicine_frequency as $item){ ?>
-												<option value="<?= $item->id ?>"><?= $item->description ?></option>
-												<?php } ?>
-											</select>
-											<div class="sys_msg" id="md_frequency_msg"></div>
-										</div>
-										<div class="col-md-4">
-											<label class="form-label"><?= $this->lang->line('w_duration') ?></label>
-											<select class="form-select" name="duration_id">
-												<option value="">--</option>
-												<?php $medicine_duration = $options["medicine_duration"];
-												foreach($medicine_duration as $item){ ?>
-												<option value="<?= $item->id ?>"><?= $item->description ?></option>
-												<?php } ?>
-											</select>
-											<div class="sys_msg" id="md_duration_msg"></div>
-										</div>
-										<div class="col-md-12 pt-3 mb-0">
-											<button type="sumit" class="btn btn-primary">
-												<?= $this->lang->line('btn_add') ?>
-											</button>
-											<div class="sys_msg" id="md_result_msg"></div>
-										</div>
+									<div class="col-md-12">
+										<strong><?= $this->lang->line('w_add_medicine') ?></strong>
+									</div>
+									<div class="col-md-12">
+										<label class="form-label"><?= $this->lang->line('w_medicine') ?></label>
+										<select class="form-select" name="medicine_id">
+											<option value="">--</option>
+											<?php foreach($medicines as $item){ ?>
+											<option value="<?= $item->id ?>"><?= $item->name ?></option>
+											<?php } ?>
+										</select>
+										<div class="sys_msg" id="md_medicine_msg"></div>
+									</div>
+									<div class="col-md-6">
+										<label class="form-label"><?= $this->lang->line('w_quantity') ?></label>
+										<input type="number" class="form-control" name="quantity" value="1">
+										<div class="sys_msg" id="md_quantity_msg"></div>
+									</div>
+									<div class="col-md-6">
+										<label class="form-label"><?= $this->lang->line('w_dose') ?></label>
+										<select class="form-select" name="dose_id">
+											<option value="">--</option>
+											<?php $medicine_dose = $options["medicine_dose"];
+											foreach($medicine_dose as $item){ ?>
+											<option value="<?= $item->id ?>"><?= $item->description ?></option>
+											<?php } ?>
+										</select>
+										<div class="sys_msg" id="md_quantity_msg"></div>
+									</div>
+									<div class="col-md-4">
+										<label class="form-label"><?= $this->lang->line('w_application_way') ?></label>
+										<select class="form-select" name="application_way_id">
+											<option value="">--</option>
+											<?php $application_way = $options["medicine_application_way"];
+											foreach($application_way as $item){ ?>
+											<option value="<?= $item->id ?>"><?= $item->description ?></option>
+											<?php } ?>
+										</select>
+										<div class="sys_msg" id="md_via_application_msg"></div>
+									</div>
+									<div class="col-md-4">
+										<label class="form-label"><?= $this->lang->line('w_frequency') ?></label>
+										<select class="form-select" name="frequency_id">
+											<option value="">--</option>
+											<?php $medicine_frequency = $options["medicine_frequency"];
+											foreach($medicine_frequency as $item){ ?>
+											<option value="<?= $item->id ?>"><?= $item->description ?></option>
+											<?php } ?>
+										</select>
+										<div class="sys_msg" id="md_frequency_msg"></div>
+									</div>
+									<div class="col-md-4">
+										<label class="form-label"><?= $this->lang->line('w_duration') ?></label>
+										<select class="form-select" name="duration_id">
+											<option value="">--</option>
+											<?php $medicine_duration = $options["medicine_duration"];
+											foreach($medicine_duration as $item){ ?>
+											<option value="<?= $item->id ?>"><?= $item->description ?></option>
+											<?php } ?>
+										</select>
+										<div class="sys_msg" id="md_duration_msg"></div>
+									</div>
+									<div class="col-md-12 pt-3">
+										<button type="submit" class="btn btn-primary">
+											<?= $this->lang->line('btn_add') ?>
+										</button>
+										<div class="sys_msg" id="md_result_msg"></div>
 									</div>
 								</form>
 							</div>
-							<?php }else $next_col = 12; ?>
-							<div class="col-md-<?= $next_col ?>">
-								<?php if ($appointment->is_editable){ ?>
-								<h5 class="mb-3"><?= $this->lang->line('w_selected_medicines') ?></h5>
-								<?php } ?>
-								<table class="table no_border_tb mb-0">
+							<div class="col-md-6">
+								<div class="mb-3"><strong><?= $this->lang->line('w_selected_medicines') ?></strong></div>
+								<table class="table">
 									<tbody id="selected_medicines">
 										<?php foreach($me as $m){ ?>
-										<tr class="text-left">
+										<tr>
 											<td>
 												<div><?= $m->medicine ?></div>
 												<small><?= $m->sub_txt ?></small>
 											</td>
 											<?php if ($appointment->is_editable){ ?>
-											<td class="text-right">
-												<button type="button" class="btn tp-btn-light btn-danger btn-xs btn_delete_medicine" value="<?= $m->id ?>">
-													<i class="fas fa-minus"></i>
+											<td class="text-end">
+												<button type="button" class="btn btn-danger btn-sm btn_delete_medicine" value="<?= $m->id ?>">
+													<i class="bi bi-dash"></i>
 												</button>
 											</td>
 											<?php } ?>
@@ -1281,68 +1239,64 @@
 							</div>
 						</div>
 					</div>
-					<div id="treatments-2" class="tab-pane">
+					<div class="tab-pane fade" id="bordered-treatments-2" role="tabpanel" aria-labelledby="treatments-2-tab">
 						<div class="row">
-							<?php if ($appointment->is_editable){ $next_col = 6; ?>
 							<div class="col-md-6">
-								<h5><?= $this->lang->line('w_add_therapy') ?></h5>
-								<form action="#" id="form_add_therapy">
+								<form class="row g-3" id="form_add_therapy">
 									<input type="hidden" name="appointment_id" value="<?= $appointment->id ?>">
-									<div class="form-row">
-										<div class="col-md-12">
-											<label class="form-label"><?= $this->lang->line('w_therapy') ?></label>
-											<select class="form-select" name="physical_therapy_id">
-												<option value="">--</option>
-												<?php foreach($physical_therapies as $item){ ?>
-												<option value="<?= $item->id ?>"><?= $item->name ?></option>
-												<?php } ?>
+									<div class="col-md-12">
+										<strong><?= $this->lang->line('w_add_therapy') ?></strong>
+									</div>
+									<div class="col-md-12">
+										<label class="form-label"><?= $this->lang->line('w_therapy') ?></label>
+										<select class="form-select" name="physical_therapy_id">
+											<option value="">--</option>
+											<?php foreach($physical_therapies as $item){ ?>
+											<option value="<?= $item->id ?>"><?= $item->name ?></option>
+											<?php } ?>
+										</select>
+										<div class="sys_msg" id="at_physical_therapy_msg"></div>
+									</div>
+									<div class="col-md-6">
+										<label class="form-label"><?= $this->lang->line('w_session') ?></label>
+										<input type="number" class="form-control" name="session" value="1" min="1">
+										<div class="sys_msg" id="at_session_msg"></div>
+									</div>
+									<div class="col-md-6">
+										<label class="form-label"><?= $this->lang->line('w_one_session_each') ?></label>
+										<div class="input-group input-normal-o">
+											<input type="number" class="form-control" name="frequency" value="1" min="1">
+											<select class="form-select" name="frequency_unit">
+												<option value="D"><?= $this->lang->line('w_day') ?></option>
+												<option value="W"><?= $this->lang->line('w_week') ?></option>
+												<option value="M"><?= $this->lang->line('w_month') ?></option>
+												<option value="Y"><?= $this->lang->line('w_year') ?></option>
 											</select>
-											<div class="sys_msg" id="at_physical_therapy_msg"></div>
 										</div>
-										<div class="col-md-6">
-											<label class="form-label"><?= $this->lang->line('w_session') ?></label>
-											<input type="number" class="form-control" name="session" value="1" min="1">
-											<div class="sys_msg" id="at_session_msg"></div>
-										</div>
-										<div class="col-md-6">
-											<label class="form-label"><?= $this->lang->line('w_one_session_each') ?></label>
-											<div class="input-group input-normal-o">
-												<input type="number" class="form-control" name="frequency" value="1" min="1">
-												<select class="form-select" name="frequency_unit">
-													<option value="D"><?= $this->lang->line('w_day') ?></option>
-													<option value="W"><?= $this->lang->line('w_week') ?></option>
-													<option value="M"><?= $this->lang->line('w_month') ?></option>
-													<option value="Y"><?= $this->lang->line('w_year') ?></option>
-												</select>
-											</div>
-											<div class="sys_msg" id="at_frequency_msg"></div>
-										</div>
-										<div class="col-md-12 pt-3 mb-0">
-											<button type="submit" class="btn btn-primary">
-												<?= $this->lang->line('btn_add') ?>
-											</button>
-											<div class="sys_msg" id="at_result_msg"></div>
-										</div>
+										<div class="sys_msg" id="at_frequency_msg"></div>
+									</div>
+									<div class="col-md-12 pt-3">
+										<button type="submit" class="btn btn-primary">
+											<?= $this->lang->line('btn_add') ?>
+										</button>
+										<div class="sys_msg" id="at_result_msg"></div>
 									</div>
 								</form>
 							</div>
-							<?php }else $next_col = 12; ?>
-							<div class="col-md-<?= $next_col ?>">
-								<?php if ($appointment->is_editable){ ?>
-								<h5 class="mb-3"><?= $this->lang->line('w_selected_therapies') ?></h5>
-								<?php } ?>
-								<table class="table no_border_tb mb-0">
+							<div class="col-md-6">
+								<div class="mb-3"><strong><?= $this->lang->line('w_selected_therapies') ?></strong></div>
+								<table class="table">
 									<tbody id="selected_therapies">
 										<?php foreach($th as $t){ ?>
-										<tr class="text-left">
+										<tr>
 											<td>
 												<div><?= $t->physical_therapy ?></div>
 												<small><?= $t->sub_txt ?></small>
 											</td>
 											<?php if ($appointment->is_editable){ ?>
-											<td class="text-right">
-												<button type="button" class="btn tp-btn-light btn-danger btn_delete_therapy" value="<?= $t->id ?>">
-													<i class="fas fa-minus"></i>
+											<td class="text-end">
+												<button type="button" class="btn btn-danger btn-sm btn_delete_therapy" value="<?= $t->id ?>">
+													<i class="bi bi-dash"></i>
 												</button>
 											</td>
 											<?php } ?>
@@ -1357,35 +1311,15 @@
 			</div>
 		</div>
 	</div>
-</div>
-<?php if ($appointment->is_editable){ ?>
-<div class="col-md-12 process process_attention d-none">
-	<div class="card">
-		<div class="card-body">
-			<div class="text-center">
-				<button type="button" class="btn btn-primary btn-lg btn-block" id="btn_finish" value="<?= $appointment->id ?>">
-					<?= $this->lang->line('btn_finish_appointment') ?>
-				</button>
-			</div>
-		</div>
+	<?php if ($appointment->status->code === "confirmed"){ ?>
+	<div class="col-md-12 text-center">
+		<button type="button" class="btn btn-success btn-lg" id="btn_finish" value="<?= $appointment->id ?>">
+			<?= $this->lang->line('btn_finish_appointment') ?>
+		</button>
 	</div>
-</div>
-<?php } ?>
-	
-	
 	<?php } ?>
 </div>
-
-
-<!--
-<?php if ($appointment->status->code === "reserved"){ ?>
-<div class="col-md-12">
-	<h3 class="text-center text-danger mb-5"><?= $this->lang->line('t_no_confirmed') ?></h3>
-</div>
-<?php } elseif ($appointment->status->code === "confirmed") $this->load->view('appointment/detail_'.$this->session->userdata("role")->name); elseif ($appointment->status->code === "finished") $this->load->view('appointment/detail_finished'); ?>
--->
-
-
+<?php }//end else block ?>
 <div class="modal fade" id="md_weekly_doctor_agenda" tabindex="-1">
 	<div class="modal-dialog modal-fullscreen">
 		<div class="modal-content">
@@ -1398,7 +1332,6 @@
 		</div>
 	</div>
 </div>
-
 <input type="hidden" id="appointment_id" value="<?= $appointment->id ?>">
 <input type="hidden" id="bmi_class_under_weight" value="<?= $this->lang->line('w_bmi_class_under_weight') ?>">
 <input type="hidden" id="bmi_class_normal" value="<?= $this->lang->line('w_bmi_class_normal') ?>">
@@ -1406,3 +1339,13 @@
 <input type="hidden" id="bmi_class_obesity_1" value="<?= $this->lang->line('w_bmi_class_obesity_1') ?>">
 <input type="hidden" id="bmi_class_obesity_2" value="<?= $this->lang->line('w_bmi_class_obesity_2') ?>">
 <input type="hidden" id="bmi_class_obesity_3" value="<?= $this->lang->line('w_bmi_class_obesity_3') ?>">
+
+
+<!--
+<?php if ($appointment->status->code === "reserved"){ ?>
+<div class="col-md-12">
+	<h3 class="text-center text-danger mb-5"><?= $this->lang->line('t_no_confirmed') ?></h3>
+</div>
+<?php } elseif ($appointment->status->code === "confirmed") $this->load->view('appointment/detail_'.$this->session->userdata("role")->name); elseif ($appointment->status->code === "finished") $this->load->view('appointment/detail_finished'); ?>
+-->
+

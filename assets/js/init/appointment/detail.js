@@ -95,7 +95,7 @@ function delete_therapy(dom){
 function set_medicine(medicines){
 	$("#selected_medicines").html("");
 	medicines.forEach(function(element, index){
-		$("#selected_medicines").append('<tr class="text-left"><td><div>' + element.medicine + '</div><small>' + element.sub_txt + '</small></td><td class="text-end"><button type="button" class="btn tp-btn-light btn-danger btn-xs btn_delete_medicine" value="' + element.id + '"><i class="fas fa-minus"></i></button></td></tr>');
+		$("#selected_medicines").append('<tr class="text-left"><td><div>' + element.medicine + '</div><small>' + element.sub_txt + '</small></td><td class="text-end"><button type="button" class="btn btn-danger btn-sm btn_delete_medicine" value="' + element.id + '"><i class="bi bi-dash"></i></button></td></tr>');
 	});
 	
 	$(".btn_delete_medicine").on('click',(function(e) {delete_medicine(this);}));
@@ -193,11 +193,11 @@ function set_profiles_exams(profiles, exams){
 	$("#tbody_exams_profiles").html("");
 	
 	$.each(profiles, function(index, value) {
-		$("#tbody_exams_profiles").append('<tr><td>' + value.type + '</td><td>' + value.name + '</td><td>' + value.exams + '</td><td class="text-end"><button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_exam_profile" value="' + value.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+		$("#tbody_exams_profiles").append('<tr><td>' + value.type + '</td><td>' + value.name + '</td><td>' + value.exams + '</td><td class="text-end"><button type="button" class="btn btn-danger btn-sm btn_remove_exam_profile" value="' + value.id + '"><i class="bi bi-trash"></i></button></td></tr>');
 	});
 	
 	$.each(exams, function(index, value) {
-		$("#tbody_exams_profiles").append('<tr><td>' + value.type + '</td><td>-</td><td>' + value.name + '</td><td class="text-end"><button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_exam" value="' + value.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+		$("#tbody_exams_profiles").append('<tr><td>' + value.type + '</td><td>-</td><td>' + value.name + '</td><td class="text-end"><button type="button" class="btn btn-danger btn-sm btn_remove_exam" value="' + value.id + '"><i class="bi bi-trash"></i></button></td></tr>');
 	});
 	
 	$(".btn_remove_exam_profile").on('click',(function(e) {remove_exam_profile($(this).val());}));
@@ -246,7 +246,7 @@ function set_image(imgs){
 	$("#tbody_images").html("");
 	
 	$.each(imgs, function(index, value) {
-		$("#tbody_images").append('<tr><td>' + value.category + '</td><td>' + value.name + '</td><td class="text-end"><button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_image" value="' + value.image_id + '"><i class="fas fa-trash"></i></button></td></tr>');
+		$("#tbody_images").append('<tr><td>' + value.category + '</td><td>' + value.name + '</td><td class="text-end"><button type="button" class="btn btn-danger btn-sm btn_remove_image" value="' + value.image_id + '"><i class="bi bi-trash"></i></button></td></tr>');
 	});
 	
 	$(".btn_remove_image").on('click',(function(e) {remove_image($(this).val());}));
