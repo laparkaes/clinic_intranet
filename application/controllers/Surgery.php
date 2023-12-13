@@ -178,7 +178,7 @@ class Surgery extends CI_Controller {
 			$d = $this->general->filter("doctor", array("person_id" => $doctor->id))[0];
 			$item->specialty = $specialties[$d->specialty_id];
 			$item->link_to = "surgery";
-			$item->type = $this->lang->line($item->link_to);
+			$item->type = $this->lang->line("w_".$item->link_to);
 		}
 		
 		$appointment_histories = $this->general->filter("appointment", $filter);
@@ -186,7 +186,7 @@ class Surgery extends CI_Controller {
 			$d = $this->general->filter("doctor", array("person_id" => $doctor->id))[0];
 			$item->specialty = $specialties[$d->specialty_id];
 			$item->link_to = "appointment";
-			$item->type = $this->lang->line($item->link_to);
+			$item->type = $this->lang->line("w_".$item->link_to);
 		}
 		
 		$histories = array_merge($surgery_histories, $appointment_histories);

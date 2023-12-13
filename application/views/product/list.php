@@ -1,124 +1,127 @@
-<div class="col-md-12">
-	<div class="welcome-text d-md-none d-block">
-		<h4 class="text-primary mb-3"><?= $this->lang->line('products') ?></h4>
+<div class="d-flex justify-content-between align-items-start">
+	<div class="pagetitle">
+		<h1><?= $title ?></h1>
+		<nav>
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="<?= base_url() ?>"><?= $this->lang->line('w_home') ?></a></li>
+				<li class="breadcrumb-item active"><?= $title ?></li>
+			</ol>
+		</nav>
 	</div>
-</div>
-<div class="col-sm-5">
 	<div class="btn-group mb-3">
 		<button type="button" class="btn btn-primary control_bl" id="btn_list" value="bl_list">
-			<i class="fas fa-list mr-2"></i><?= $this->lang->line('btn_list') ?>
+			<i class="bi bi-card-list"></i>
 		</button>
 		<button type="button" class="btn btn-outline-primary control_bl" value="bl_category">
-			<i class="fas fa-sitemap mr-2"></i><?= $this->lang->line('btn_categories') ?>
+			<i class="bi bi-diagram-3"></i>
 		</button>
 		<button type="button" class="btn btn-outline-primary control_bl" value="bl_add">
-			<i class="fas fa-plus mr-2"></i><?= $this->lang->line('btn_add') ?>
+			<i class="bi bi-plus-lg"></i>
 		</button>
 	</div>
 </div>
-<div class="col-sm-7">
-	<form>
-		<div class="form-row">
-			<input type="hidden" value="1" name="page">
-			<div class="form-group col-sm-3">
-				<select class="form-control" id="sl_type" name="type">
-					<option value=""><?= $this->lang->line('w_type') ?></option>
-					<?php foreach($prod_types as $item){
-						if ($item->id == $f_url["type"]) $s = "selected"; else $s = ""; ?>
-					<option value="<?= $item->id ?>" <?= $s ?>><?= $item->description ?></option>
-					<?php } ?>
-				</select>
-			</div>
-			<div class="form-group col-sm-3">
-				<select class="form-control" id="sl_category" name="category">
-					<option value=""><?= $this->lang->line('w_category') ?></option>
-					<?php foreach($categories as $item){
-						if ($item->id == $f_url["category"]) $s = "selected"; else $s = ""; ?>
-					<option value="<?= $item->id ?>" <?= $s ?>><?= $item->name ?></option>
-					<?php } ?>
-				</select>
-			</div>
-			<div class="form-group col-sm-4">
-				<input type="text" class="form-control" id="inp_keyword" name="keyword" placeholder="<?= $this->lang->line('w_search') ?>" value="<?= $f_url["keyword"] ?>">
-			</div>
-			<div class="form-group col-sm-2">
-				<button type="submit" class="btn btn-primary btn-block">
-					<i class="far fa-search"></i>
-				</button>
+<form class="row d-flex justify-content-end g-3">
+	<input type="hidden" value="1" name="page">
+	<div class="col-md-auto col-12">
+		<select class="form-select" id="sl_type" name="type">
+			<option value=""><?= $this->lang->line('w_type') ?></option>
+			<?php foreach($prod_types as $item){
+				if ($item->id == $f_url["type"]) $s = "selected"; else $s = ""; ?>
+			<option value="<?= $item->id ?>" <?= $s ?>><?= $item->description ?></option>
+			<?php } ?>
+		</select>
+	</div>
+	<div class="col-md-auto col-12">
+		<select class="form-select" id="sl_category" name="category">
+			<option value=""><?= $this->lang->line('w_category') ?></option>
+			<?php foreach($categories as $item){
+				if ($item->id == $f_url["category"]) $s = "selected"; else $s = ""; ?>
+			<option value="<?= $item->id ?>" <?= $s ?>><?= $item->name ?></option>
+			<?php } ?>
+		</select>
+	</div>
+	<div class="col-md-auto col-12">
+		<input type="text" class="form-control" id="inp_keyword" name="keyword" placeholder="<?= $this->lang->line('w_search') ?>" value="<?= $f_url["keyword"] ?>">
+	</div>
+	<div class="col-md-auto col-12 text-center d-grid gap-2">
+		<button type="submit" class="btn btn-primary btn-block">
+			<i class="bi bi-search"></i>
+		</button>
+  </div>
+</form>
+<div class="row mt-3">
+	<div class="col">
+		<div class="card bl_content" id="bl_list">
+			<div class="card-body">
+				<h5 class="card-title"><?= $this->lang->line('w_list') ?></h5>
+				<?php if ($products){ ?>
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th><?= $this->lang->line('w_image') ?></th>
+								<th><?= $this->lang->line('w_type') ?></th>
+								<th><?= $this->lang->line('w_product') ?></th>
+								<th><?= $this->lang->line('w_price') ?></th>
+								<th><?= $this->lang->line('w_stock') ?></th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php $color_arr = array("success", "info", "warning", "danger");
+							$no_img_path = "uploaded/products/no_img.png";
+							foreach($products as $i => $item){ ?>
+							<tr>
+								<td><strong><?= number_format(($f_url["page"] - 1) * 25 + 1 + $i) ?></strong></td>
+								<td>
+									<?php if ($item->image){
+										$prod_img_path = "uploaded/products/".$item->id."/".$item->image;
+										if (file_exists($prod_img_path)) $img_path = $prod_img_path;
+										else $img_path = $no_img_path;
+									}else $img_path = $no_img_path; ?>
+									<img src="<?= base_url().$img_path ?>" style="max-width: 60px; max-height: 60px;" />
+								</td>
+								<td><?= $prod_types_arr[$item->type_id]->description ?></td>
+								<td>
+									<div><?= $item->description ?></div>
+									<div><?= $item->code ?>, <?= $categories_arr[$item->category_id] ?></div>
+								</td>
+								<td>
+									<?= $currencies_arr[$item->currency_id]->description." ".number_format($item->price, 2) ?>
+								</td>
+								<td>
+									<?php if ($item->stock) echo number_format($item->stock); else echo "-"; ?>
+								</td>
+								<td class="text-end">
+									<a href="<?= base_url() ?>product/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
+										<i class="bi bi-search"></i>
+									</a>
+								</td>
+							</tr>
+							<?php } ?>
+						</tbody>
+					</table>
+					<div class="btn-group" role="group" aria-label="paging">
+						<?php foreach($paging as $p){
+						$f_url["page"] = $p[0]; ?>
+						<a href="<?= base_url() ?>product?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
+							<?= $p[1] ?>
+						</a>
+						<?php } ?>
+					</div>
+				</div>
+				<?php }else{ ?>
+				<h5 class="text-danger"><?= $this->lang->line('t_no_products') ?></h5>
+				<?php } ?>
 			</div>
 		</div>
-	</form>
+	</div>
 </div>
-<div class="col-md-12">
+
+<div class="col">
 	<div class="card">
 		<div class="card-body">
-			<div class="row bl_content" id="bl_list">
-				<div class="col-md-12">
-					<?php if ($products){ ?>
-					<div class="table-responsive">
-						<table class="table table-responsive-md">
-							<thead>
-								<tr>
-									<th><strong>#</strong></th>
-									<th><strong><?= $this->lang->line('w_image') ?></strong></th>
-									<th><strong><?= $this->lang->line('w_product') ?></strong></th>
-									<th><strong><?= $this->lang->line('w_price') ?></strong></th>
-									<th><strong><?= $this->lang->line('w_stock') ?></strong></th>
-									<th></th>
-								</tr>
-							</thead>
-							<tbody>
-								<?php $color_arr = array("success", "info", "warning", "danger");
-								$no_img_path = "uploaded/products/no_img.png";
-								foreach($products as $i => $item){ ?>
-								<tr>
-									<td><strong><?= number_format(($f_url["page"] - 1) * 25 + 1 + $i) ?></strong></td>
-									<td>
-										<?php if ($item->image){
-											$prod_img_path = "uploaded/products/".$item->id."/".$item->image;
-											if (file_exists($prod_img_path)) $img_path = $prod_img_path;
-											else $img_path = $no_img_path;
-										}else $img_path = $no_img_path; ?>
-										<div class="div_thumb">
-											<img src="<?= base_url().$img_path ?>" class="img_thumb" />
-										</div>
-									</td>
-									<td>
-										<div><span class="badge light badge-<?= $color_arr[$item->type_id-1] ?> mr-1"><?= $prod_types_arr[$item->type_id]->description ?></span><span class="badge light badge-secondary"><?= $item->code ?></span></div>
-										<div><?= $item->description ?></div>
-										<div><small><?= $categories_arr[$item->category_id] ?></small></div>
-									</td>
-									<td>
-										<?= $currencies_arr[$item->currency_id]->description." ".number_format($item->price, 2) ?>
-									</td>
-									<td>
-										<?php if ($item->stock) echo number_format($item->stock); else echo "-"; ?>
-									</td>
-									<td class="text-right">
-										<a href="<?= base_url() ?>product/detail/<?= $item->id ?>">
-											<button type="button" class="btn btn-info light sharp">
-												<i class="fas fa-arrow-alt-right"></i>
-											</button>
-										</a>
-									</td>
-								</tr>
-								<?php } ?>
-							</tbody>
-						</table>
-						<div class="btn-group" role="group" aria-label="paging">
-							<?php foreach($paging as $p){
-							$f_url["page"] = $p[0]; ?>
-							<a href="<?= base_url() ?>product?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
-								<?= $p[1] ?>
-							</a>
-							<?php } ?>
-						</div>
-					</div>
-					<?php }else{ ?>
-					<h5 class="text-danger mt-3"><?= $this->lang->line('t_no_products') ?></h5>
-					<?php } ?>
-				</div>
-			</div>
 			<div class="row bl_content d-none" id="bl_category">
 				<div class="col-md-12">
 					<div class="default-tab">
@@ -139,9 +142,9 @@
 								<table class="table table-small mb-0 w-100">
 									<thead>
 										<tr>
-											<th style="width:50px;"><strong>#</strong></th>
-											<th><strong><?= $this->lang->line('w_category') ?></strong></th>
-											<th><strong><?= $this->lang->line('w_products') ?></strong></th>
+											<th style="width:50px;"><strong>#</th>
+											<th><?= $this->lang->line('w_category') ?></th>
+											<th><?= $this->lang->line('w_products') ?></th>
 											<th></th>
 										</tr>
 									</thead>
@@ -151,7 +154,7 @@
 												<td colspan="3">
 													<input type="text" class="form-control" name="name" placeholder="<?= $this->lang->line('w_category_name') ?>">
 												</td>
-												<td class="text-right">
+												<td class="text-end">
 													<button class="btn btn-primary sharp" type="submit">
 														<i class="far fa-plus"></i>
 													</button>
@@ -179,7 +182,7 @@
 												</form>
 											</td>
 											<td><?= number_format($c->prod_qty) ?></td>
-											<td class="text-right">
+											<td class="text-end">
 												<div class="dropdown">
 													<button type="button" class="btn btn-info light sharp border-0" data-toggle="dropdown">
 														<i class="far fa-ellipsis-h"></i>
