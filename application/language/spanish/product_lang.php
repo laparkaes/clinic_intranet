@@ -63,8 +63,9 @@ $lang['w_stock'] 			= 'Stock';
 $lang['w_tel'] 				= 'Teléfono';
 $lang['w_type'] 			= 'Tipo';
 $lang['w_value'] 			= 'Valor';
-$lang['w_vat'] 				= 'VAT';
+$lang['w_vat'] 				= 'IGV';
 $lang['w_web'] 				= 'Página Web';
+$lang['w_add_product'] 		= 'Agregar Producto';
 
 //text
 $lang['t_no_products'] 		= 'No existe productos registrados o cumplan con datos de búsqueda.';

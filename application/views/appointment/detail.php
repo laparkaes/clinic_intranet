@@ -3,7 +3,7 @@
 	<nav>
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="<?= base_url() ?>"><?= $this->lang->line('w_home') ?></a></li>
-			<li class="breadcrumb-item"><a href="<?= base_url() ?>doctor"><?= $this->lang->line('appointments') ?></a></li>
+			<li class="breadcrumb-item"><a href="<?= base_url() ?>appointment"><?= $this->lang->line('appointments') ?></a></li>
 			<li class="breadcrumb-item active"><?= $this->lang->line('txt_detail') ?></li>
 		</ol>
 	</nav>

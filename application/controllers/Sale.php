@@ -37,16 +37,17 @@ class Sale extends CI_Controller {
 		
 		$f_url = [
 			"page" => $this->input->get("page"),
-			"status" => $this->input->get("status"),
-			"date" => $this->input->get("date"),
+			"client" => $this->input->get("client"),
 		];
 		
 		$f_w = $f_l = $f_in = [];
 		if (!$f_url["page"]) $f_url["page"] = 1;
-		if ($f_url["status"]) $f_w["status_id"] = $f_url["status"];
-		if ($f_url["date"]){
-			$f_w["registed_at >="] = $f_url["date"]." 00:00:00";
-			$f_w["registed_at <="] = $f_url["date"]." 23:59:59";
+		if ($f_url["client"]){
+			$aux = [-1];
+			$people = $this->general->filter("person", null, ["name" => $f_url["client"]]);
+			foreach($people as $p) $aux[] = $p->id;
+			
+			$f_in[] = ["field" => "client_id", "values" => $aux];
 		}
 		
 		$sales = $this->general->filter("sale", $f_w, $f_l, $f_in, "updated_at", "desc", 25, 25 * ($f_url["page"] - 1));
