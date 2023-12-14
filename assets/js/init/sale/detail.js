@@ -113,7 +113,7 @@ function search_reservations(attn){
 		$("#rs_" + attn + "_list").html("");
 		if (res.type == "error") swal(res.type, res.msg);
 		$.each(res.reservations, function(index, value) {
-			$("#rs_" + attn + "_list").append('<tr><td><strong>' + (index + 1) + '</strong></td><td><div>' + value.schedule + '</div><div>' + value.pt_name + '</div><small>' + value.pt_doc + '</small></td><td class="text-right"><button type="button" class="btn btn-info btn-xxs btn_rs_select" value="' + value.id + '">' + $("#btn_select_lang").val() + '</button></td></tr>');
+			$("#rs_" + attn + "_list").append('<tr><td><strong>' + (index + 1) + '</strong></td><td><div>' + value.schedule + '</div><div>' + value.pt_name + '</div><small>' + value.pt_doc + '</small></td><td class="text-end"><button type="button" class="btn btn-success btn-sm btn_rs_select" value="' + value.id + '">' + $("#btn_select_lang").val() + '</button></td></tr>');
 		});
 		
 		$(".btn_rs_select").on('click',(function(e) {asign_reservation(attn, $(this).val());}));

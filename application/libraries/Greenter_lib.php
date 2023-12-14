@@ -37,12 +37,13 @@ class Greenter_lib{
 	}
 	
 	private function set_see(){
-		$see = new See();
-		$see->setCertificate(file_get_contents($this->cert_path));
-		$see->setService($this->service_link);
-		$see->setClaveSOL($this->ruc, $this->user, $this->pass);
-		
-		return $see;
+		if (file_exists($this->cert_path)){
+			$see = new See();
+			$see->setCertificate(file_get_contents($this->cert_path));
+			$see->setService($this->service_link);
+			$see->setClaveSOL($this->ruc, $this->user, $this->pass);	
+			return $see;
+		}else return null;
 	}
 	
 	private function set_client($cl){
@@ -132,34 +133,36 @@ class Greenter_lib{
 		$sunat_sent = false; $sunat_msg = $sunat_notes = null;
 		
 		$see = $this->set_see();
-		$invoice = $this->set_invoice($voucher_data);
-		$result = $see->send($invoice);
+		if ($see){
+			$invoice = $this->set_invoice($voucher_data);
+			$result = $see->send($invoice);
 
-		// Verificamos que la conexión con SUNAT fue exitosa.
-		if ($result->isSuccess()){
-			$upload_dir = "uploaded/sunat/".date("Ym");
-			if(!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
-			$upload_dir = $upload_dir."/";
+			// Verificamos que la conexión con SUNAT fue exitosa.
+			if ($result->isSuccess()){
+				$upload_dir = "uploaded/sunat/".date("Ym");
+				if(!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+				$upload_dir = $upload_dir."/";
 
-			// Guardar XML firmado digitalmente.
-			file_put_contents($upload_dir.$invoice->getName().'.xml', $see->getFactory()->getLastXml());
-			
-			// Guardamos el CDR
-			file_put_contents($upload_dir.'R-'.$invoice->getName().'.zip', $result->getCdrZip());
-			
-			$sunat_sent = true;
-			$sunat_msg = $result->getCdrResponse()->getDescription();
-			$notes = $result->getCdrResponse()->getNotes();
-			if ($notes) $sunat_notes = implode("&&&", $notes);
-		}else{
-			$sunat_sent = false;
-			$sunat_msg = $result->getError()->getCode()." - ".$result->getError()->getMessage();
-			
-			// Mostrar error al conectarse a SUNAT.
-			//echo 'Codigo Error: '.$result->getError()->getCode();
-			//echo 'Mensaje Error: '.$result->getError()->getMessage();
-			//exit();
-		}
+				// Guardar XML firmado digitalmente.
+				file_put_contents($upload_dir.$invoice->getName().'.xml', $see->getFactory()->getLastXml());
+				
+				// Guardamos el CDR
+				file_put_contents($upload_dir.'R-'.$invoice->getName().'.zip', $result->getCdrZip());
+				
+				$sunat_sent = true;
+				$sunat_msg = $result->getCdrResponse()->getDescription();
+				$notes = $result->getCdrResponse()->getNotes();
+				if ($notes) $sunat_notes = implode("&&&", $notes);
+			}else{
+				$sunat_sent = false;
+				$sunat_msg = $result->getError()->getCode()." - ".$result->getError()->getMessage();
+				
+				// Mostrar error al conectarse a SUNAT.
+				//echo 'Codigo Error: '.$result->getError()->getCode();
+				//echo 'Mensaje Error: '.$result->getError()->getMessage();
+				//exit();
+			}
+		}else $sunat_msg = "Certificate file error. Refresh page manually. (F5)";
 		
 		return ["sunat_sent" => $sunat_sent, "sunat_msg" => $sunat_msg, "sunat_notes" => $sunat_notes];
 	}
@@ -210,28 +213,30 @@ class Greenter_lib{
 		$is_success = false; $message = $ticket = null;
 		
 		$see = $this->set_see();
-		$invoice_void = $this->set_invoice_void($voucher_data, $data);
-		if ($invoice_void){
-			$result = $see->send($invoice_void);
-			if ($result->isSuccess()){
-				$ticket = $result->getTicket();
-				$statusResult = $see->getStatus($ticket);
-				if ($statusResult->isSuccess()) {
-					$upload_dir = "uploaded/sunat/".date("Ym")."/anulados";
-					if(!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
-					$upload_dir = $upload_dir."/";
-					
-					// Guardar XML
-					file_put_contents($upload_dir.$invoice_void->getName().'.xml', $see->getFactory()->getLastXml());
+		if ($see){
+			$invoice_void = $this->set_invoice_void($voucher_data, $data);
+			if ($invoice_void){
+				$result = $see->send($invoice_void);
+				if ($result->isSuccess()){
+					$ticket = $result->getTicket();
+					$statusResult = $see->getStatus($ticket);
+					if ($statusResult->isSuccess()) {
+						$upload_dir = "uploaded/sunat/".date("Ym")."/anulados";
+						if(!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+						$upload_dir = $upload_dir."/";
+						
+						// Guardar XML
+						file_put_contents($upload_dir.$invoice_void->getName().'.xml', $see->getFactory()->getLastXml());
 
-					// Guardar CDR
-					file_put_contents($upload_dir.'R-'.$invoice_void->getName().'.zip', $statusResult->getCdrZip());
-					
-					$is_success = true;
-					$message = $statusResult->getCdrResponse()->getDescription();
-				}else $message = $statusResult->getError()->getCode()." - ".$statusResult->getError()->getMessage();
-			}else $message = $result->getError()->getCode()." - ".$result->getError()->getMessage();
-		}
+						// Guardar CDR
+						file_put_contents($upload_dir.'R-'.$invoice_void->getName().'.zip', $statusResult->getCdrZip());
+						
+						$is_success = true;
+						$message = $statusResult->getCdrResponse()->getDescription();
+					}else $message = $statusResult->getError()->getCode()." - ".$statusResult->getError()->getMessage();
+				}else $message = $result->getError()->getCode()." - ".$result->getError()->getMessage();
+			}
+		}else $message = "Certificate file error. Refresh page manually. (F5)";
 		
 		return ["ticket" => $ticket, "is_success" => $is_success, "message" => $message, "reason" => $data["reason"]];
 	}

@@ -9,6 +9,7 @@ $lang['e_voucher_exist']	= 'Existe un comprobante emitido. Vuelva a cargar la p�
 $lang['e_no_reservation']	= 'No hay reservación con documento ingresado. Genere una reserva con datos de cliente para continuar.';
 $lang['e_sale_cenceled']	= 'Es una venta previamente cancelada.';
 $lang['e_voucher_exists']	= 'Existe un comprobante vinculado con esta venta.';
+$lang['e_item_option']		= 'Debe elegir una opción del producto.';
 
 //success message
 $lang['s_sale_add']				= 'Venta ha sido agregada con éxito.';
@@ -88,6 +89,19 @@ $lang['w_unit_price_short']	= 'Cant. * P/U';
 $lang['w_unit_price_short']	= 'P/U';
 $lang['w_void_voucher']		= 'Anular comprobante';
 $lang['w_voucher']			= 'Comprobante';
+
+//voucher
+$lang['w_ruc']				= 'RUC';
+$lang['w_description']		= 'Descripción';
+$lang['w_qty_unit_price']	= 'Cant. * P/U';
+$lang['w_total']			= 'Total';
+$lang['w_taxed_operation']	= 'Op. Gravada';
+$lang['w_vat_per']			= 'IGV 18%';
+$lang['w_total_amount']		= 'Monto Total';
+$lang['w_change']			= 'Vuelto';
+$lang['w_are_u']			= 'SON';
+$lang['w_remarks']			= 'Observación';
+$lang['w_way_to_pay']		= 'Forma de Pago';
 
 //text
 $lang['t_canceled_sale']	= 'Venta anulada. No requiere ninguna comunicación con Sunat.';

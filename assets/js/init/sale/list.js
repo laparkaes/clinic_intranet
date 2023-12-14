@@ -234,7 +234,7 @@ function sl_product_add(){
 	var prod = {product_id: item.id, option_id: opt_id, price: item.price, discount: discount, qty: qty};
 	var dom_str = '<tr id="sl_pr_' + item.id + '_' + opt_id + '"><td class="sl_pr_num"></td><td><div>' + item.description + '</div>';
 	if (opt_description != "") dom_str += '<small>' + opt_description + '</small>';
-	dom_str += '</td><td>' + qty + '</td><td>' + item.currency + ' ' + nf(price - discount) + '</td><td>' + item.currency + ' ' + nf((price - discount) * qty) + '</td><td class="text-right"><textarea class="sl_pr_arr d-none" name="sl_pr[' + item.id + '_' + opt_id + ']">' + JSON.stringify(prod) + '</textarea><button type="button" class="btn btn-danger light sharp" id="btn_sl_pr_delete_' + item.id + '_' + opt_id + '" value="' + item.id + '_' + opt_id + '"><i class="fas fa-trash"></i></button></td></tr>';
+	dom_str += '</td><td>' + qty + '</td><td>' + item.currency + ' ' + nf(price - discount) + '</td><td>' + item.currency + ' ' + nf((price - discount) * qty) + '</td><td class="text-end"><textarea class="sl_pr_arr d-none" name="sl_pr[' + item.id + '_' + opt_id + ']">' + JSON.stringify(prod) + '</textarea><button type="button" class="btn btn-danger btn-sm" id="btn_sl_pr_delete_' + item.id + '_' + opt_id + '" value="' + item.id + '_' + opt_id + '"><i class="bi bi-trash"></i></button></td></tr>';
 	
 	$("#tb_product_list").append(dom_str);
 	control_payment_info_form();

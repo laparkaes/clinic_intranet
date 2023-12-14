@@ -28,7 +28,7 @@
 		</tr>
 	</table>
 	<div class="text-center mt">
-		<div><strong><?= $this->lang->line('label_ruc') ?>: <?= $company->tax_id ?></strong></div>
+		<div><strong><?= $this->lang->line('w_ruc') ?>: <?= $company->tax_id ?></strong></div>
 		<div><strong><?= strtoupper($voucher->type)." ".$this->lang->line("of_electronic_sale_u") ?></strong></div>
 		<div><strong><?= $title ?></strong></div>
 	</div>
@@ -42,8 +42,8 @@
 	<div class="mt" style="border-bottom: 1px solid black;">
 		<table>
 			<tr>
-				<td><?= $this->lang->line('label_description') ?><br/><?= $this->lang->line('label_qty_unit_price') ?></td>
-				<td style="text-align: right; vertical-align: bottom;"><?= $this->lang->line('label_total') ?></td>
+				<td><?= $this->lang->line('w_description') ?><br/><?= $this->lang->line('w_qty_unit_price') ?></td>
+				<td style="text-align: right; vertical-align: bottom;"><?= $this->lang->line('w_total') ?></td>
 			</tr>
 		</table>
 		<table style="border-top: 1px solid black;">
@@ -57,15 +57,15 @@
 	</div>
 	<table style="margin-top: 10px; text-align: right;">
 		<tr>
-			<td><?= $this->lang->line('label_taxed_operation') ?></td>
+			<td><?= $this->lang->line('w_taxed_operation') ?></td>
 			<td><?= $voucher->currency." ".number_format($invoice->getMtoOperGravadas(), 2) ?></td>
 		</tr>
 		<tr>
-			<td><?= $this->lang->line('label_vat_per') ?></td>
+			<td><?= $this->lang->line('w_vat_per') ?></td>
 			<td><?= $voucher->currency." ".number_format($invoice->getTotalImpuestos(), 2) ?></td>
 		</tr>
 		<tr>
-			<td><?= $this->lang->line('label_total_amount') ?></td>
+			<td><?= $this->lang->line('w_total_amount') ?></td>
 			<td><?= $voucher->currency." ".number_format($invoice->getMtoImpVenta(), 2) ?></td>
 		</tr>
 		<tr>
@@ -73,16 +73,16 @@
 			<td style="padding-top: 10px;"><?= $voucher->currency." ".number_format($voucher->received, 2) ?></td>
 		</tr>
 		<tr>
-			<td><?= $this->lang->line('label_change') ?></td>
+			<td><?= $this->lang->line('w_change') ?></td>
 			<td><?= $voucher->currency." ".number_format($voucher->change, 2) ?></td>
 		</tr>
 	</table>
-	<div style="margin-top: 10px;"><?= $this->lang->line('label_are_u')." ".$invoice->getLegends()[0]->getValue(); ?></div>
+	<div style="margin-top: 10px;"><?= $this->lang->line('w_are_u')." ".$invoice->getLegends()[0]->getValue(); ?></div>
 	<div class="mt" style="border-top: 1px dashed black; border-bottom: 1px dashed black;">
-		<div><strong><?= $this->lang->line('label_remarks') ?></strong></div>
+		<div><strong><?= $this->lang->line('w_remarks') ?></strong></div>
 		<table>
 			<tr>
-				<td style="width: 80px;"><?= $this->lang->line('label_way_to_pay') ?></td>
+				<td style="width: 80px;"><?= $this->lang->line('w_way_to_pay') ?></td>
 				<td>: <?= $invoice->getFormaPago()->getTipo() ?></td>
 			</tr>
 		</table>
