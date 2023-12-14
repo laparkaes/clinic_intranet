@@ -100,7 +100,7 @@
 							</div>
 						</div>
 						<hr>
-						<div class="row g-3 mt-3">
+						<div class="row g-3">
 							<div class="col-md-12 d-flex justify-content-between">
 								<h4><strong><?= $this->lang->line('w_sunat') ?></strong></h4>
 								<div>
@@ -197,94 +197,82 @@
 						<span><?= $this->lang->line('t_no_medical') ?></span>
 						<?php } ?>
 					</div>
-					<div class="tab-pane fade" id="bordered-contact" role="tabpanel" aria-labelledby="contact-tab">
-						Saepe animi et soluta ad odit soluta sunt. Nihil quos omnis animi debitis cumque. Accusantium quibusdam perspiciatis qui qui omnis magnam. Officiis accusamus impedit molestias nostrum veniam. Qui amet ipsum iure. Dignissimos fuga tempore dolor.
-					</div>
-					<div class="tab-pane fade" id="bordered-contact" role="tabpanel" aria-labelledby="contact-tab">
-						Saepe animi et soluta ad odit soluta sunt. Nihil quos omnis animi debitis cumque. Accusantium quibusdam perspiciatis qui qui omnis magnam. Officiis accusamus impedit molestias nostrum veniam. Qui amet ipsum iure. Dignissimos fuga tempore dolor.
-					</div>
-				</div>
-			
-				<div class="custom-tab-1">
-					<div class="tab-content">
-						<div class="tab-pane fade" id="tab_payments" role="tabpanel">
-							<div class="table-responsive">
-								<table class="table table-responsive-md">
-									<thead>
-										<tr>
-											<th style="width: 70px;"><strong>#</th>
-											<th><?= $this->lang->line('w_date') ?></th>
-											<th><?= $this->lang->line('w_form_of_payment') ?></th>
-											<th><?= $this->lang->line('w_received') ?></th>
-											<th><?= $this->lang->line('w_change') ?></th>
-											<th><?= $this->lang->line('w_balance') ?></th>
-											<?php if (!$voucher->sale_id){ ?>
-											<th></th>
-											<?php } ?>
-										</tr>
-									</thead>
-									<tbody>
-										<?php $p_qty = count($payments); foreach($payments as $i => $p){ ?>
-										<tr>
-											<td><?= $i + 1 ?></td>
-											<td><?= $p->registed_at ?></td>
-											<td><?= $p->payment_method ?></td>
-											<td><?= $sale->currency." ".number_format($p->received, 2) ?></td>
-											<td><?php if ($p->change) echo $sale->currency." ".number_format($p->change, 2);
-											else echo "-" ?></td>
-											<td><?= $sale->currency." ".number_format($p->balance, 2) ?></td>
-											<?php if (!$voucher->sale_id){ ?>
-											<td class="text-end">
-												<?php if ((!$i) and ($p_qty > 1)){ ?>
-												<button type="button" class="btn btn-danger" id="btn_delete_payment" value="<?= $p->id ?>">
-													<i class="fas fa-trash"></i>
-												</button>
-												<?php } ?>
-											</td>
-											<?php } ?>
-										</tr>
+					<div class="tab-pane fade" id="bordered-tab_payments" role="tabpanel" aria-labelledby="tab_payments-tab">
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th><?= $this->lang->line('w_date') ?></th>
+										<th><?= $this->lang->line('w_form_of_payment') ?></th>
+										<th><?= $this->lang->line('w_received') ?></th>
+										<th><?= $this->lang->line('w_change') ?></th>
+										<th><?= $this->lang->line('w_balance') ?></th>
+										<?php if (!$voucher->sale_id){ ?>
+										<th></th>
 										<?php } ?>
-									</tbody>
-								</table>
-							</div>
+									</tr>
+								</thead>
+								<tbody>
+									<?php $p_qty = count($payments); foreach($payments as $i => $p){ ?>
+									<tr>
+										<td><?= $i + 1 ?></td>
+										<td><?= $p->registed_at ?></td>
+										<td><?= $p->payment_method ?></td>
+										<td><?= $sale->currency." ".number_format($p->received, 2) ?></td>
+										<td><?= ($p->change > 0) ? $sale->currency." ".number_format($p->change, 2) : "-" ?></td>
+										<td><?= $sale->currency." ".number_format($p->balance, 2) ?></td>
+										<?php if (!$voucher->sale_id){ ?>
+										<td class="text-end">
+											<?php if ((!$i) and ($p_qty > 1)){ ?>
+											<button type="button" class="btn btn-danger" id="btn_delete_payment" value="<?= $p->id ?>">
+												<i class="bi bi-trash"></i>
+											</button>
+											<?php } ?>
+										</td>
+										<?php } ?>
+									</tr>
+									<?php } ?>
+								</tbody>
+							</table>
 						</div>
-						<div class="tab-pane fade" id="tab_items" role="tabpanel">
-							<div class="table-responsive">
-								<table class="table table-responsive-md mb-0">
-									<thead>
-										<tr>
-											<th>#</th>
-											<th><?= $this->lang->line('w_product') ?></th>
-											<th><?= $this->lang->line('w_unit_price_short') ?></th>
-											<th><?= $this->lang->line('w_discount_short') ?></th>
-											<th><?= $this->lang->line('w_qty') ?></th>
-											<th class="text-end"><strong><?= $this->lang->line('w_subtotal') ?></th>
-										</tr>
-									</thead>
-									<tbody>
-										<?php $i = 0; foreach($products as $p){ $price = $p->price - $p->discount; $i++; ?>
-										<tr>
-											<td><?= $i ?></td>
-											<td>
-												<div><?= $p->product->category ?></div>
-												<div><?= $p->product->code ?></div>
-												<div><?= $p->product->description ?></div>
-												<?php if ($p->product->option){ ?>
-												<div><?= $p->product->option ?></div>
-												<?php } ?>
-											</td>
-											<td class="text-nowrap"><?= $sale->currency." ".number_format($p->price, 2) ?></td>
-											<td>
-												<?php if ($p->discount) echo $sale->currency." ".number_format($p->discount, 2);
-												else echo "-" ?>
-											</td>
-											<td><?= number_format($p->qty) ?></td>
-											<td class="text-nowrap text-end"><?= $sale->currency." ".number_format($price * $p->qty, 2) ?></td>
-										</tr>
-										<?php } ?>
-									</tbody>
-								</table>
-							</div>
+					</div>
+					<div class="tab-pane fade" id="bordered-tab_items" role="tabpanel" aria-labelledby="tab_items-tab">
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th><?= $this->lang->line('w_product') ?></th>
+										<th><?= $this->lang->line('w_unit_price_short') ?></th>
+										<th><?= $this->lang->line('w_discount_short') ?></th>
+										<th><?= $this->lang->line('w_qty') ?></th>
+										<th class="text-end"><?= $this->lang->line('w_subtotal') ?></th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php $i = 0; foreach($products as $p){ $price = $p->price - $p->discount; $i++; ?>
+									<tr>
+										<td><?= $i ?></td>
+										<td>
+											<div><?= $p->product->description ?></div>
+											<?php if ($p->product->option){ ?>
+											<div><?= $p->product->option ?></div>
+											<?php } ?>
+											<div><?= $p->product->category ?></div>
+											<div><?= $p->product->code ?></div>
+										</td>
+										<td class="text-nowrap"><?= $sale->currency." ".number_format($p->price, 2) ?></td>
+										<td>
+											<?php if ($p->discount) echo $sale->currency." ".number_format($p->discount, 2);
+											else echo "-" ?>
+										</td>
+										<td><?= number_format($p->qty) ?></td>
+										<td class="text-nowrap text-end"><?= $sale->currency." ".number_format($price * $p->qty, 2) ?></td>
+									</tr>
+									<?php } ?>
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
@@ -293,14 +281,6 @@
 	</div>
 </div>
 <?php if ($sale->voucher_id){ ?>
-<div class="modal fade " tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-body">
-			</div>
-		</div>
-	</div>
-</div>
 <div class="modal fade" id="md_void_voucher" tabindex="-1">
 	<div class="modal-dialog">
 		<div class="modal-content">

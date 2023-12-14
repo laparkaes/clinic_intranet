@@ -27,6 +27,7 @@ $lang['w_personal_info']	= 'Datos Personales';
 $lang['w_role']				= 'Rol';
 $lang['w_sex']				= 'Sexo';
 $lang['w_tel']				= 'Teléfono';
+$lang['w_new_account']		= 'Nuevo Usuario';
 
 //text
 $lang['t_no_accounts']	= 'No existe usuarios registrados o cumplan con datos de búsqueda.';

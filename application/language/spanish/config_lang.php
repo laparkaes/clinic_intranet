@@ -100,6 +100,7 @@ $lang['w_time']			= 'Hora';
 $lang['w_ubigeo']		= 'Ubigeo';
 $lang['w_urbanization']	= 'Urbanización';
 $lang['w_view_all']		= 'Ver todos';
+$lang['w_sys_config']	= 'Configuración del Sistema';
 
 //text
 $lang['t_no_result']	= 'No hay resultado con datos ingresados.';

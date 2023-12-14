@@ -94,7 +94,7 @@ function load_more_profile(){
 	ajax_simple({offset: offset}, "config/load_more_profile").done(function(res) {
 		if (res.length > 0){
 			$.each(res, function(index, item) {
-				$("#profile_list").append('<tr><td>' + (offset + index + 1) + '</td><td>' + item.name + '</td><td>' + item.exams + '</td><td class="text-right"><button type="button" class="btn btn-danger shadow btn-xs sharp remove_profile" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+				$("#profile_list").append('<tr><td>' + (offset + index + 1) + '</td><td>' + item.name + '</td><td>' + item.exams + '</td><td class="text-end"><button type="button" class="btn btn-danger btn-sm remove_profile" value="' + item.id + '"><i class="bi bi-x-lg"></i></button></td></tr>');
 			});
 			
 			$('.remove_profile').off('click').on('click',(function(e) {remove_profile(this);}));
@@ -140,7 +140,7 @@ function set_exam_cat(categories, exams){
 		$("#rp_category").html(""); $("#rp_category").append('<option value="">' + $("#w_view_all").val() + '</option>');
 		
 		$.each(categories, function(index, item) {
-			$("#ad_category_list").append('<tr class="ad_cat_rows"><td><strong>' + (index + 1) + '</strong></td><td>' + item.name + '</td><td class="text-right"><button type="button" class="btn light btn-danger btn_remove_exam_category" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+			$("#ad_category_list").append('<tr class="ad_cat_rows"><td><strong>' + (index + 1) + '</strong></td><td>' + item.name + '</td><td class="text-end"><button type="button" class="btn light btn-danger btn_remove_exam_category" value="' + item.id + '"><i class="bi bi-x-lg"></i></button></td></tr>');
 			$("#rp_category").append('<option value="' + item.id + '">' + item.name + '</option>');
 			$("#ad_ex_category").append('<option value="' + item.id + '">' + item.name + '</option>');
 		});
@@ -152,7 +152,7 @@ function set_exam_cat(categories, exams){
 		$(".ad_exam_rows").remove();
 		$(".ex_profile").remove();
 		$.each(exams, function(index, item) {
-			$("#ad_exam_list").append('<tr class="ad_exam_rows"><td><strong>' + (index + 1) + '</strong></td><td>' + item.name + '<br/><small>' + item.category + '</small></td><td class="text-right"><button type="button" class="btn light btn-danger btn_remove_exam" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+			$("#ad_exam_list").append('<tr class="ad_exam_rows"><td><strong>' + (index + 1) + '</strong></td><td>' + item.name + '<br/><small>' + item.category + '</small></td><td class="text-end"><button type="button" class="btn light btn-danger btn_remove_exam" value="' + item.id + '"><i class="bi bi-x-lg"></i></button></td></tr>');
 			
 			$("#ex_profile_list").append('<div class="col-md-6 ex_profile ex_profile_' + item.category_id + '"><div class="custom-control custom-checkbox mb-3"><input type="checkbox" class="custom-control-input" id="exam_' + item.id + '" value="' + item.id + '"name="exams[]"><label class="custom-control-label" for="exam_' + item.id + '">' + item.name + '</label></div></div>');
 		});
@@ -209,7 +209,7 @@ function load_more_image(){
 	ajax_simple({offset: offset}, "config/load_more_image").done(function(res) {
 		if (res.length > 0){
 			$.each(res, function(index, item) {
-				$("#image_list").append('<tr><td>' + (offset + index + 1) + '</td><td>' + item.category + '</td><td>' + item.name + '</td><td class="text-right"><button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_image" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+				$("#image_list").append('<tr><td>' + (offset + index + 1) + '</td><td>' + item.category + '</td><td>' + item.name + '</td><td class="text-end"><button type="button" class="btn btn-danger btn-sm btn_remove_image" value="' + item.id + '"><i class="bi bi-x-lg"></i></button></td></tr>');
 			});
 			
 			$('.btn_remove_image').off('click').on('click',(function(e) {remove_image(this);}));
@@ -255,7 +255,7 @@ function load_more_medicine(){
 	ajax_simple({offset: offset}, "config/load_more_medicine").done(function(res) {
 		if (res.length > 0){
 			$.each(res, function(index, item) {
-				$("#medicine_list").append('<tr><td>' + (offset + index + 1) + '</td><td>' + item.name + '</td><td class="text-right"><button type="button" class="btn btn-danger shadow btn-xs sharp btn_remove_medicine" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+				$("#medicine_list").append('<tr><td>' + (offset + index + 1) + '</td><td>' + item.name + '</td><td class="text-end"><button type="button" class="btn btn-danger btn-sm btn_remove_medicine" value="' + item.id + '"><i class="bi bi-x-lg"></i></button></td></tr>');
 			});
 			
 			$('.btn_remove_medicine').off('click').on('click',(function(e) {remove_medicine(this);}));
