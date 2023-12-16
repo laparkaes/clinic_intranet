@@ -441,7 +441,7 @@
 													<input type="text" class="form-control" name="name" placeholder="<?= $this->lang->line('w_category_name') ?>">
 												</div>
 												<div class="col-md-auto">
-													<button type="submit" class="btn btn-primary"><i class="bi bi-plus"></i></button>
+													<button type="submit" class="btn btn-primary"><i class="bi bi-plus-lg"></i></button>
 												</div>
 											</form>
 										</td>
@@ -485,7 +485,7 @@
 													<input type="text" class="form-control" name="name" placeholder="<?= $this->lang->line('w_examination_name') ?>">
 												</div>
 												<div class="col-md-auto">
-													<button type="submit" class="btn btn-primary"><i class="bi bi-plus"></i></button>
+													<button type="submit" class="btn btn-primary"><i class="bi bi-plus-lg"></i></button>
 												</div>
 											</form>
 										</td>
