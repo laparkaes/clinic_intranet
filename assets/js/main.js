@@ -299,7 +299,7 @@
   /**
    * Initiate Datatables
    */
-  const datatables = select('.datatable', true)
+  const datatables = select('.datatable', true);
   const options = {
 			searchable: true,
 			sortable: false,

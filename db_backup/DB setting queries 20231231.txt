@@ -1,0 +1,2 @@
+ALTER TABLE `account` CHANGE `active` `is_valid` TINYINT(1) NULL DEFAULT NULL; 
+UPDATE `account` SET `is_valid` = '1';
