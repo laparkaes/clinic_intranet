@@ -10,6 +10,20 @@ class Dashboard extends CI_Controller {
 		$this->lang->load("dashboard", "spanish");
 		$this->lang->load("system", "spanish");
 		$this->load->model('general_model','general');
+		
+		/* layout menu setting 
+		1. groups & menus: 
+			- dashboard: dashboard (no child)
+			- clinic: appointment, surgery, patient, doctor
+			- commercial: sale, purcharse, product
+			- report: money flow, report
+			- system: account, config
+		*/
+		
+		
+		
+		
+		
 		$this->nav_menu = "dashboard";
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 	}
