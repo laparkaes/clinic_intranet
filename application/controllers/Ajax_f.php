@@ -136,7 +136,7 @@ class Ajax_f extends CI_Controller {
 		
 		if (!$msg) $cells = $this->set_doctor_schedule_cell($doctor_id, $date);
 		
-		echo $this->load->view('doctor/tb_schedule', ["msg" => $msg, "cells" => $cells, "date" => $date], true);
+		echo $this->load->view('clinic/doctor/tb_schedule', ["msg" => $msg, "cells" => $cells, "date" => $date], true);
 	}
 	
 	public function load_doctor_schedule_weekly(){
@@ -165,6 +165,6 @@ class Ajax_f extends CI_Controller {
 		}
 		
 		$data = array("msg" => $msg, "dates" => $dates, "cells" => $cells, "prev" => $prev, "next" => $next);
-		echo $this->load->view('doctor/tb_schedule_weekly', $data, true);
+		echo $this->load->view('clinic/doctor/tb_schedule_weekly', $data, true);
 	}
 }

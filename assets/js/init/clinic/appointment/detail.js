@@ -1,18 +1,20 @@
+let basic_path = "clinic/appointment/";
+
 function cancel_appointment(dom){
-	ajax_simple_warning({id: $(dom).val()}, "appointment/cancel", "wm_appointment_cancel").done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, basic_path + "cancel", "wm_appointment_cancel").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function finish_appointment(dom){
-	ajax_simple_warning({id: $(dom).val()}, "appointment/finish", "wm_appointment_finish").done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, basic_path + "finish", "wm_appointment_finish").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function reschedule_appointment(dom){
 	$("#reschedule_form .sys_msg").html("");
-	ajax_form_warning(dom, "appointment/reschedule", "wm_appointment_reschedule").done(function(res) {
+	ajax_form_warning(dom, basic_path + "reschedule", "wm_appointment_reschedule").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
@@ -20,7 +22,7 @@ function reschedule_appointment(dom){
 
 function save_form(name, dom){
 	$("#form_" + name + " .sys_msg").html("");
-	ajax_form(dom, "appointment/save_" + name).done(function(res) {
+	ajax_form(dom, basic_path + "save_" + name).done(function(res) {
 		set_msg(res.msgs);
 		swal(res.type, res.msg);
 	});
@@ -36,7 +38,7 @@ function set_diag(diags){
 
 function add_diag(dom){
 	var data = {appointment_id: $("#appointment_id").val(), diag_id: $(dom).val()};
-	ajax_simple(data, "appointment/add_diag").done(function(res) {
+	ajax_simple(data, basic_path + "add_diag").done(function(res) {
 		set_diag(res.diags);
 		swal(res.type, res.msg);
 	});
@@ -44,7 +46,7 @@ function add_diag(dom){
 
 function delete_diag(dom){
 	var data = {appointment_id: $("#appointment_id").val(), diag_id: $(dom).val()};
-	ajax_simple(data, "appointment/delete_diag").done(function(res) {
+	ajax_simple(data, basic_path + "delete_diag").done(function(res) {
 		set_diag(res.diags);
 		swal(res.type, res.msg);
 	});
@@ -52,7 +54,7 @@ function delete_diag(dom){
 
 function search_diag(dom){
 	$("#form_search_diag .sys_msg").html("");
-	ajax_form(dom, "appointment/search_diag").done(function(res) {
+	ajax_form(dom, basic_path + "search_diag").done(function(res) {
 		set_msg(res.msgs);
 		if (res.type == "success"){
 			$("#di_diagnosis_msg").html(res.qty);
@@ -76,7 +78,7 @@ function set_therapy(therapies){
 
 function add_therapy(dom){
 	$("#form_add_therapy .sys_msg").html("");
-	ajax_form(dom, "appointment/add_therapy").done(function(res) {
+	ajax_form(dom, basic_path + "add_therapy").done(function(res) {
 		set_therapy(res.therapies);
 		set_msg(res.msgs);
 		swal(res.type, res.msg);
@@ -86,7 +88,7 @@ function add_therapy(dom){
 
 function delete_therapy(dom){
 	var data = {appointment_id: $("#appointment_id").val(), id: $(dom).val()};
-	ajax_simple(data, "appointment/delete_therapy").done(function(res) {
+	ajax_simple(data, basic_path + "delete_therapy").done(function(res) {
 		set_therapy(res.therapies);
 		swal(res.type, res.msg);
 	});
@@ -103,7 +105,7 @@ function set_medicine(medicines){
 
 function add_medicine(dom){
 	$("#form_add_medicine .sys_msg").html("");
-	ajax_form(dom, "appointment/add_medicine").done(function(res) {
+	ajax_form(dom, basic_path + "add_medicine").done(function(res) {
 		set_medicine(res.medicines);
 		set_msg(res.msgs);
 		swal(res.type, res.msg);
@@ -113,7 +115,7 @@ function add_medicine(dom){
 
 function delete_medicine(dom){
 	var data = {appointment_id: $("#appointment_id").val(), id: $(dom).val()};
-	ajax_simple(data, "appointment/delete_medicine").done(function(res) {
+	ajax_simple(data, basic_path + "delete_medicine").done(function(res) {
 		set_medicine(res.medicines);
 		swal(res.type, res.msg);
 	});
@@ -206,7 +208,7 @@ function set_profiles_exams(profiles, exams){
 
 function add_exam_profile(profile_id){
 	var data = {appointment_id: $("#appointment_id").val(), profile_id: profile_id};
-	ajax_simple(data, "appointment/add_exam_profile").done(function(res) {
+	ajax_simple(data, basic_path + "add_exam_profile").done(function(res) {
 		set_profiles_exams(res.profiles, res.exams);
 		swal(res.type, res.msg); 
 	});
@@ -214,7 +216,7 @@ function add_exam_profile(profile_id){
 
 function add_exam(exam_id){
 	var data = {appointment_id: $("#appointment_id").val(), examination_id: exam_id};
-	ajax_simple(data, "appointment/add_exam").done(function(res) {
+	ajax_simple(data, basic_path + "add_exam").done(function(res) {
 		set_profiles_exams(res.profiles, res.exams);
 		swal(res.type, res.msg); 
 	});
@@ -222,7 +224,7 @@ function add_exam(exam_id){
 
 function remove_exam_profile(profile_id){
 	var data = {appointment_id: $("#appointment_id").val(), profile_id: profile_id};
-	ajax_simple(data, "appointment/remove_exam_profile").done(function(res) {
+	ajax_simple(data, basic_path + "remove_exam_profile").done(function(res) {
 		set_profiles_exams(res.profiles, res.exams);
 		swal(res.type, res.msg); 
 	});
@@ -230,7 +232,7 @@ function remove_exam_profile(profile_id){
 
 function remove_exam(exam_id){
 	var data = {appointment_id: $("#appointment_id").val(), examination_id: exam_id};
-	ajax_simple(data, "appointment/remove_exam").done(function(res) {
+	ajax_simple(data, basic_path + "remove_exam").done(function(res) {
 		set_profiles_exams(res.profiles, res.exams);
 		swal(res.type, res.msg); 
 	});
@@ -254,7 +256,7 @@ function set_image(imgs){
 
 function add_img(img_id){
 	var data = {appointment_id: $("#appointment_id").val(), image_id: img_id};
-	ajax_simple(data, "appointment/add_image").done(function(res) {
+	ajax_simple(data, basic_path + "add_image").done(function(res) {
 		set_image(res.images);
 		swal(res.type, res.msg); 
 	});
@@ -262,7 +264,7 @@ function add_img(img_id){
 
 function remove_image(image_id){
 	var data = {appointment_id: $("#appointment_id").val(), image_id: image_id};
-	ajax_simple(data, "appointment/remove_image").done(function(res) {
+	ajax_simple(data, basic_path + "remove_image").done(function(res) {
 		set_image(res.images);
 		swal(res.type, res.msg); 
 	});

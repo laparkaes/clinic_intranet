@@ -2,20 +2,13 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<style>
-	html, body{padding: 0px; font-size: 12px; font-family: 'poppins', sans-serif; line-height: 1.5; color: black;}
+	html, body{padding: 0; font-size: 12px; font-family: 'poppins', sans-serif; line-height: 1.5; color: black;}
 	.title_1{font-size: 150%;}
 	.title_2{font-size: 135%;}
 	.title_3{font-size: 120%;}
 	.text-center{text-align: center;}
 	.text-left{text-align: left;}
 	
-	table {border-collapse: collapse;}
-	.table {width: 100%; max-width: 100%; margin-bottom: 1rem; background-color: transparent; border-bottom: 1px solid #000;}
-	.table-glue {margin-bottom: 0; border-bottom: 0;}
-
-	th {background-color: #ddd;}
-	.table td, .table th {padding: .5rem; vertical-align: top; border-top: 1px solid #000;}
-	.table thead th {vertical-align: bottom; border-bottom: 2px solid #000;}
 	
 	.table-5 td, .table-5 th {width: 20%;}
 	.table-4 td, .table-4 th {width: 25%;}
@@ -28,6 +21,10 @@
 	.mt-4{margin-top: 3rem;}
 	
 	.pre-line {white-space: pre-line;}
+	
+	.datatable{width: 100%;}
+	.datatable td{vertical-align: top; padding-bottom: 8px;}
+	
 	</style>
 </head>
 <body>
@@ -42,129 +39,180 @@ $im = $appointment_datas["images"];
 $th = $appointment_datas["therapy"];
 $me = $appointment_datas["medicine"];
 ?>
-<div class="title_1 text-center">
-	<strong><?= $this->lang->line('w_clinical_history') ?></strong>
-</div>
-<table class="table table-4 text-center mt-4">
+<table style="width: 100%;">
 	<tr>
-		<th><?= $this->lang->line('w_date') ?></th>
-		<th><?= $this->lang->line('w_history_number') ?></th>
-		<th><?= $this->lang->line('w_entry_mode') ?></th>
-		<th><?= $this->lang->line('w_insurance') ?></th>
-	</tr>
-	<tr>
-		<td><?= $bd->entered_at ?></td>
-		<td><?= $patient->doc_number ?></td>
-		<td><?= $bd->entry_mode ?></td>
-		<td><?= $bd->insurance_name ?></td>
+		<td style="width: 60%; font-size: 200%; vertical-align: top;"><strong><?= $this->lang->line('w_clinical_history') ?></strong></td>
+		<td style="width: 40%;">
+			<table style="width: 100%;">
+				<tr>
+					<td><strong><?= $this->lang->line('w_history_number') ?></strong></td>
+					<td style="text-align: right;"><?= $patient->doc_number ?></td>
+				</tr>
+				<tr>
+					<td><strong><?= $this->lang->line('w_date_hour') ?></strong></td>
+					<td style="text-align: right;"><?= $bd->entered_at ?></td>
+				</tr>
+				<tr>
+					<td><strong><?= $this->lang->line('w_entry_mode') ?></strong></td>
+					<td style="text-align: right;"><?= $bd->entry_mode ?></td>
+				</tr>
+				<tr>
+					<td><strong><?= $this->lang->line('w_insurance') ?></strong></td>
+					<td style="text-align: right;"><?= ($bd->insurance_name) ? $bd->insurance_name : "-" ?></td>
+				</tr>
+			</table>
+		</td>
 	</tr>
 </table>
-<div class="title_2 mt-4">
+<div style="font-size: 150%; border-bottom: 1px solid black;">
 	<strong>1. <?= $this->lang->line('w_anamnesis') ?></strong>
 </div>
-<div class="title_3 mt-2">
+<br/>
+<div style="font-size: 120%;">
 	<strong>1) <?= $this->lang->line('w_personal_information') ?></strong>
 </div>
-<table class="table table-4 text-center mt-1">
+<table class="datatable" style="width: 100%;">
 	<tr>
-		<th colspan="2"><?= $this->lang->line('w_name') ?></th>
-		<th><?= $this->lang->line('w_age') ?></th>
-		<th><?= $this->lang->line('w_sex') ?></th>
+		<td colspan="2" style="width: 50%;">
+			<div><strong><?= $this->lang->line('w_name') ?></strong></div>
+			<div><?= ($an->name) ? $an->name: '-' ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_age') ?></strong></div>
+			<div><?= ($an->age) ? $an->age: '-' ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_sex') ?></strong></div>
+			<div><?= ($an->sex) ? $an->sex: '-' ?></div>
+		</td>
 	</tr>
 	<tr>
-		<td colspan="2"><?= $an->name ?></td>
-		<td><?= $an->age ?></td>
-		<td><?= $an->sex ?></td>
+		<td colspan="2" style="width: 50%;">
+			<div><strong><?= $this->lang->line('w_address') ?></strong></div>
+			<div><?= ($an->address) ? $an->address: '-' ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_birth_place') ?></strong></div>
+			<div><?= ($an->birthplace) ? $an->birthplace: '-' ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_birth_day') ?></strong></div>
+			<div><?= ($an->birthday) ? $an->birthday: '-' ?></div>
+		</td>
 	</tr>
 	<tr>
-		<th colspan="2"><?= $this->lang->line('w_address') ?></th>
-		<th><?= $this->lang->line('w_birth_place') ?></th>
-		<th><?= $this->lang->line('w_birth_day') ?></th>
+		<td style="width: 25%; padding-bottom: 8px;">
+			<div><strong><?= $this->lang->line('w_tel') ?></strong></div>
+			<div><?= ($an->tel) ? $an->tel: '-' ?></div>
+		</td>
+		<td style="width: 25%; padding-bottom: 8px;">
+			<div><strong><?= $this->lang->line('w_responsible') ?></strong></div>
+			<div><?= ($an->responsible) ? $an->responsible: '-' ?></div>
+		</td>
+		<td style="width: 25%; padding-bottom: 8px;">
+			<div><strong><?= $this->lang->line('w_place_of_origin') ?></strong></div>
+			<div><?= ($an->provenance_place) ? $an->provenance_place: '-' ?></div>
+		</td>
+		<td style="width: 25%; padding-bottom: 8px;">
+			<div><strong><?= $this->lang->line('w_last_trips') ?></strong></div>
+			<div><?= ($an->last_trips) ? $an->last_trips: '-' ?></div>
+		</td>
 	</tr>
 	<tr>
-		<td colspan="2"><?= $an->address ?></td>
-		<td><?= $an->birthplace ?></td>
-		<td><?= $an->birthday ?></td>
-	</tr>
-	<tr>
-		<th><?= $this->lang->line('w_tel') ?></th>
-		<th><?= $this->lang->line('w_responsible') ?></th>
-		<th><?= $this->lang->line('w_place_of_origin') ?></th>
-		<th><?= $this->lang->line('w_last_trips') ?></th>
-	</tr>
-	<tr>
-		<td><?= $an->tel ?></td>
-		<td><?= $an->responsible ?></td>
-		<td><?= $an->provenance_place ?></td>
-		<td><?= $an->last_trips ?></td>
-	</tr>
-	<tr>
-		<th><?= $this->lang->line('w_race') ?></th>
-		<th><?= $this->lang->line('w_marital_status') ?></th>
-		<th><?= $this->lang->line('w_occupation') ?></th>
-		<th><?= $this->lang->line('w_religion') ?></th>
-	</tr>
-	<tr>
-		<td><?= $an->race ?></td>
-		<td><?= $an->civil_status ?></td>
-		<td><?= $an->occupation ?></td>
-		<td><?= $an->religion ?></td>
+		<td style="width: 25%; padding-bottom: 8px;">
+			<div><strong><?= $this->lang->line('w_race') ?></strong></div>
+			<div><?= ($an->race) ? $an->race: '-' ?></div>
+		</td>
+		<td style="width: 25%; padding-bottom: 8px;">
+			<div><strong><?= $this->lang->line('w_marital_status') ?></strong></div>
+			<div><?= ($an->civil_status) ? $an->civil_status: '-' ?></div>
+		</td>
+		<td style="width: 25%; padding-bottom: 8px;">
+			<div><strong><?= $this->lang->line('w_occupation') ?></strong></div>
+			<div><?= ($an->occupation) ? $an->occupation: '-' ?></div>
+		</td>
+		<td style="width: 25%; padding-bottom: 8px;">
+			<div><strong><?= $this->lang->line('w_religion') ?></strong></div>
+			<div><?= ($an->religion) ? $an->religion: '-' ?></div>
+		</td>
 	</tr>
 </table>
-<div class="title_3 mt-3">
+<br/>
+<div style="font-size: 120%;">
 	<strong>2) <?= $this->lang->line('w_current_illness') ?></strong>
 </div>
-<table class="table table-3 table-glue text-center mt-1">
+<table class="datatable" style="width: 100%;">
 	<tr>
-		<th><?= $this->lang->line('w_illness_time') ?></th>
-		<th><?= $this->lang->line('w_start') ?></th>
-		<th><?= $this->lang->line('w_grade') ?></th>
+		<td colspan="2" style="width: 50%;">
+			<div><strong><?= $this->lang->line('w_illness_time') ?></strong></div>
+			<div><?= ($an->illness_time) ? $an->illness_time: '-' ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_start') ?></strong></div>
+			<div><?= ($an->illness_start) ? $an->illness_start: '-' ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_grade') ?></strong></div>
+			<div><?= ($an->illness_course) ? $an->illness_course: '-' ?></div>
+		</td>
 	</tr>
 	<tr>
-		<td><?= $an->illness_time ?></td>
-		<td><?= $an->illness_start ?></td>
-		<td><?= $an->illness_course ?></td>
+		<td colspan="4">
+			<div><strong><?= $this->lang->line('w_main_symptoms') ?></strong></div>
+			<div><?= ($an->illness_main_symptoms) ? $an->illness_main_symptoms: '-' ?></div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="4">
+			<div><strong><?= $this->lang->line('w_story') ?></strong></div>
+			<div><?= ($an->illness_story) ? $an->illness_story: '-' ?></div>
+		</td>
 	</tr>
 </table>
-<table class="table table-2 text-center">
-	<tr>
-		<th><?= $this->lang->line('w_main_symptoms') ?></th>
-		<th><?= $this->lang->line('w_story') ?></th>
-	</tr>
-	<tr>
-		<td class="text-left pre-line"><?= $an->illness_main_symptoms ?></td>
-		<td class="text-left pre-line"><?= $an->illness_story ?></td>
-	</tr>
-</table>
-<div class="title_3 mt-3">
+<br/>
+<div style="font-size: 120%;">
 	<strong>3) <?= $this->lang->line('w_biological_functions') ?></strong>
 </div>
-<table class="table table-4 text-center mt-1">
+
+<table class="datatable" style="width: 100%;">
 	<tr>
-		<th><?= $this->lang->line('w_appetite') ?></th>
-		<th><?= $this->lang->line('w_urine') ?></th>
-		<th><?= $this->lang->line('w_thirst') ?></th>
-		<th><?= $this->lang->line('w_bowel_movements') ?></th>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_appetite') ?></strong></div>
+			<div><?= ($an->func_bio_appetite) ? $an->func_bio_appetite : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_urine') ?></strong></div>
+			<div><?= ($an->func_bio_urine) ? $an->func_bio_urine : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_thirst') ?></strong></div>
+			<div><?= ($an->func_bio_thirst)? $an->func_bio_thirst : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_bowel_movements') ?></strong></div>
+			<div><?= ($an->func_bio_bowel_movements) ? $an->func_bio_bowel_movements : "-" ?></div>
+		</td>
 	</tr>
 	<tr>
-		<td><?= $an->func_bio_appetite ?></td>
-		<td><?= $an->func_bio_urine ?></td>
-		<td><?= $an->func_bio_thirst ?></td>
-		<td><?= $an->func_bio_bowel_movements ?></td>
-	</tr>
-	<tr>
-		<th><?= $this->lang->line('w_sweat') ?></th>
-		<th><?= $this->lang->line('w_weight_') ?></th>
-		<th><?= $this->lang->line('w_sleep') ?></th>
-		<th><?= $this->lang->line('w_encouragement') ?></th>
-	</tr>
-	<tr>
-		<td><?= $an->func_bio_sweat ?></td>
-		<td><?= $an->func_bio_weight ?></td>
-		<td><?= $an->func_bio_sleep ?></td>
-		<td><?= $an->func_bio_encouragement ?></td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_sweat') ?></strong></div>
+			<div><?= ($an->func_bio_sweat) ? $an->func_bio_sweat : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_weight_') ?></strong></div>
+			<div><?= ($an->func_bio_weight) ? $an->func_bio_weight : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_sleep') ?></strong></div>
+			<div><?= ($an->func_bio_sleep) ? $an->func_bio_sleep : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_encouragement') ?></strong></div>
+			<div><?= ($an->func_bio_encouragement) ? $an->func_bio_encouragement : "-" ?></div>
+		</td>
 	</tr>
 </table>
+
 <div class="title_3 mt-3">
 	<strong>4) <?= $this->lang->line('w_personal_background') ?></strong>
 </div>

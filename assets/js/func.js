@@ -188,7 +188,7 @@ function control_bl_simple(dom){
 }
 
 function load_doctor_schedule(doctor_id, date, dom_id){
-	$("#" + dom_id).html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
+	$("#" + dom_id).html('<div class="text-center mt-5"><div class="spinner-border" style="width: 50px; height: 50px;" role="status"><span class="visually-hidden">Loading...</span></div></div>');
 	$.ajax({
 		url: base_url + "ajax_f/load_doctor_schedule",
 		type: "POST",
@@ -205,7 +205,7 @@ function set_time_sl(prefix, list_id){
 	
 	if ((hh != "") && (mm != "")){
 		$(list_id + " .sch_cell").html("");
-		$(list_id + " #" + hh + mm + ".sch_cell").html('<i class="fas fa-check text-info"></i>');
+		$(list_id + " #" + hh + mm + ".sch_cell").html('<i class="bi bi-check-lg text-primary"></i>');
 	}
 }
 

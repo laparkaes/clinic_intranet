@@ -13,7 +13,7 @@
 		<?php if ($actions){ ?>
 		<div class="btn-group">
 			<?php if (in_array("clinic_history", $actions)){ ?>
-			<a class="btn btn-primary" href="<?= base_url() ?>appointment/clinical_history/<?= $appointment->id ?>" target="_blank">
+			<a class="btn btn-primary" href="<?= base_url() ?>clinic/appointment/clinical_history/<?= $appointment->id ?>" target="_blank">
 				<?= $this->lang->line('w_clinical_history') ?>
 			</a>
 			<?php } if (in_array("reschedule", $actions)) $d = ""; else $d = "disabled"; ?>
@@ -294,7 +294,7 @@
 							</div>
 							<div class="col-md-6">
 								<label class="form-label"><?= $this->lang->line('w_date') ?></label>
-								<input type="text" class="form-control date_picker" value="<?= $bd->date ?>" name="date">
+								<input type="text" class="form-control" value="<?= $bd->date ?>" name="date">
 								<div class="sys_msg" id="bd_date_msg"></div>
 							</div>
 							<div class="col-md-6">
@@ -371,7 +371,7 @@
 					</div>
 					<div class="col-md-3">
 						<label class="form-label"><?= $this->lang->line('w_birthday') ?></label>
-						<input type="text" class="form-control date_picker_all" name="birthday" value="<?= $an->birthday ?>">
+						<input type="text" class="form-control" name="birthday" value="<?= $an->birthday ?>">
 						<div class="sys_msg" id="pi_birthday_msg"></div>
 					</div>
 					<div class="col-md-3">
@@ -542,7 +542,7 @@
 									</div>
 									<div class="col-md-3">
 										<label class="form-label"><?= $this->lang->line('w_birthday') ?></label>
-										<input type="text" class="form-control date_picker" name="birthday" value="<?= $an->birthday ?>">
+										<input type="text" class="form-control" name="birthday" value="<?= $an->birthday ?>">
 										<div class="sys_msg" id="an_birthday_msg"></div>
 									</div>
 									<div class="col-md-3">

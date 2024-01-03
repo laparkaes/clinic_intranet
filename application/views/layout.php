@@ -72,158 +72,112 @@
 		<ul class="sidebar-nav" id="sidebar-nav">
 			<?php if (in_array("dashboard", $this->nav_menus)){ ?>
 			<li class="nav-item">
-				<a class="nav-link <?= ($this->nav_menu === "dashboard") ? "" : "collapsed" ?>" href="<?= base_url() ?>dashboard">
+				<a class="nav-link <?= ($this->nav_menu[0] === "dashboard") ? "" : "collapsed" ?>" href="<?= base_url() ?>dashboard">
 					<i class="bi bi-grid"></i>
 					<span>Principal</span>
 				</a>
 			</li>
+			<?php } if (in_array("clinic", $this->nav_menus)){ ?>
 			<li class="nav-item">
-				
-				<a class="nav-link " data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-					<i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i>
-					<?php print_r($this->nav_menus); ?>
+				<a class="nav-link <?= ($this->nav_menu[0] === "clinic") ? "" : "collapsed" ?>" data-bs-target="#clinic-nav" data-bs-toggle="collapse" href="#" aria-expanded="<?= ($this->nav_menu[0] === "clinic") ? "true" : "false" ?>">
+					<i class="bi bi-clipboard-plus"></i><span>Clínica</span><i class="bi bi-chevron-down ms-auto"></i>
 				</a>
-				<ul id="components-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+				<ul id="clinic-nav" class="nav-content collapse <?= ($this->nav_menu[0] === "clinic") ? "show" : "" ?>" data-bs-parent="#sidebar-nav">
+					<?php if (in_array("appointment", $this->nav_menus)){ ?>
 					<li>
-						<a class="active" href="components-alerts.html">
-							<i class="bi bi-circle"></i><span>Alerts</span>
+						<a href="<?= base_url() ?>clinic/appointment" class="<?= ($this->nav_menu[1] === "appointment") ? "active" : "" ?>">
+							<i class="bi bi-circle"></i><span>Consultas</span>
 						</a>
 					</li>
-					
-					
-          <li>
-            <a href="components-accordion.html">
-              <i class="bi bi-circle"></i><span>Accordion</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-badges.html">
-              <i class="bi bi-circle"></i><span>Badges</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-breadcrumbs.html">
-              <i class="bi bi-circle"></i><span>Breadcrumbs</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-buttons.html">
-              <i class="bi bi-circle"></i><span>Buttons</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-cards.html">
-              <i class="bi bi-circle"></i><span>Cards</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-carousel.html">
-              <i class="bi bi-circle"></i><span>Carousel</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-list-group.html">
-              <i class="bi bi-circle"></i><span>List group</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-modal.html">
-              <i class="bi bi-circle"></i><span>Modal</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-tabs.html">
-              <i class="bi bi-circle"></i><span>Tabs</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-pagination.html">
-              <i class="bi bi-circle"></i><span>Pagination</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-progress.html">
-              <i class="bi bi-circle"></i><span>Progress</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-spinners.html">
-              <i class="bi bi-circle"></i><span>Spinners</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-tooltips.html" class="active">
-              <i class="bi bi-circle"></i><span>Tooltips</span>
-            </a>
-          </li>
-        </ul>
-      </li>
+					<?php } if (in_array("surgery", $this->nav_menus)){ ?>
+					<li>
+						<a href="<?= base_url() ?>clinic/surgery" class="<?= ($this->nav_menu[1] === "surgery") ? "active" : "" ?>">
+							<i class="bi bi-circle"></i><span>Cirugías</span>
+						</a>
+					</li>
+					<?php } if (in_array("patient", $this->nav_menus)){ ?>
+					<li>
+						<a href="<?= base_url() ?>clinic/patient" class="<?= ($this->nav_menu[1] === "patient") ? "active" : "" ?>">
+							<i class="bi bi-circle"></i><span>Pacientes</span>
+						</a>
+					</li>
+					<?php } if (in_array("doctor", $this->nav_menus)){ ?>
+					<li>
+						<a href="<?= base_url() ?>clinic/doctor" class="<?= ($this->nav_menu[1] === "doctor") ? "active" : "" ?>">
+							<i class="bi bi-circle"></i><span>Médicos</span>
+						</a>
+					</li>
+					<?php } ?>
+				</ul>
+			</li>
+			<?php } if (in_array("commerce", $this->nav_menus)){ ?>
+			<li class="nav-item">
+				<a class="nav-link <?= ($this->nav_menu[0] === "commerce") ? "" : "collapsed" ?>" data-bs-target="#commerce-nav" data-bs-toggle="collapse" href="#" aria-expanded="<?= ($this->nav_menu[0] === "commerce") ? "true" : "false" ?>">
+					<i class="bi bi-cart"></i><span>Comercio</span><i class="bi bi-chevron-down ms-auto"></i>
+				</a>
+				<ul id="commerce-nav" class="nav-content collapse <?= ($this->nav_menu[0] === "commerce") ? "show" : "" ?>" data-bs-parent="#sidebar-nav">
+					<li>
+						<a href="<?= base_url() ?>sale" class="<?= ($this->nav_menu[1] === "sale") ? "active" : "" ?>">
+							<i class="bi bi-circle"></i><span>Ventas</span>
+						</a>
+					</li>
+					<li>
+						<a href="<?= base_url() ?>purchase" class="<?= ($this->nav_menu[1] === "purchase") ? "active" : "" ?>">
+							<i class="bi bi-circle"></i><span>Compras</span>
+						</a>
+					</li>
+					<li>
+						<a href="<?= base_url() ?>product" class="<?= ($this->nav_menu[1] === "product") ? "active" : "" ?>">
+							<i class="bi bi-circle"></i><span>Productos</span>
+						</a>
+					</li>
+				</ul>
+			</li>
+			<?php } if (in_array("moneyflow", $this->nav_menus)){ ?>
+			<li class="nav-item">
+				<a class="nav-link <?= ($this->nav_menu[0] === "moneyflow") ? "" : "collapsed" ?>" data-bs-target="#moneyflow-nav" data-bs-toggle="collapse" href="#" aria-expanded="<?= ($this->nav_menu[0] === "moneyflow") ? "true" : "false" ?>">
+					<i class="bi bi-coin"></i><span>Flujo de Caja</span><i class="bi bi-chevron-down ms-auto"></i>
+				</a>
+				<ul id="moneyflow-nav" class="nav-content collapse <?= ($this->nav_menu[0] === "moneyflow") ? "show" : "" ?>" data-bs-parent="#sidebar-nav">
+					<li>
+						<a href="<?= base_url() ?>resume" class="<?= ($this->nav_menu[1] === "resume") ? "active" : "" ?>">
+							<i class="bi bi-circle"></i><span>Resumen</span>
+						</a>
+					</li>
+					<li>
+						<a href="<?= base_url() ?>inoutcome" class="<?= ($this->nav_menu[1] === "inoutcome") ? "active" : "" ?>">
+							<i class="bi bi-circle"></i><span>Ingreso/Egreso</span>
+						</a>
+					</li>
+				</ul>
+			</li>
+			<?php } if (in_array("system", $this->nav_menus)){ ?>
+			<li class="nav-item">
+				<a class="nav-link <?= ($this->nav_menu[0] === "system") ? "" : "collapsed" ?>" data-bs-target="#system-nav" data-bs-toggle="collapse" href="#" aria-expanded="<?= ($this->nav_menu[0] === "system") ? "true" : "false" ?>">
+					<i class="bi bi-pc-display"></i><span>Sistema</span><i class="bi bi-chevron-down ms-auto"></i>
+				</a>
+				<ul id="system-nav" class="nav-content collapse <?= ($this->nav_menu[0] === "system") ? "show" : "" ?>" data-bs-parent="#sidebar-nav">
+					<li>
+						<a href="<?= base_url() ?>account" class="<?= ($this->nav_menu[1] === "account") ? "active" : "" ?>">
+							<i class="bi bi-circle"></i><span>Usuarios</span>
+						</a>
+					</li>
+					<li>
+						<a href="<?= base_url() ?>config" class="<?= ($this->nav_menu[1] === "config") ? "active" : "" ?>">
+							<i class="bi bi-circle"></i><span>Ajustes</span>
+						</a>
+					</li>
+				</ul>
+			</li>
+			<?php } ?>
 			
-			
-			<?php } if (in_array("doctor", $this->nav_menus)){ ?>
-			<li class="nav-item">
-				<a class="nav-link <?= ($this->nav_menu === "doctor") ? "" : "collapsed" ?>" href="<?= base_url() ?>doctor">
-					<i class="bi bi-person-plus"></i>
-					<span>Médicos</span>
-				</a>
-			</li>
-			<?php } if (in_array("patient", $this->nav_menus)){ ?>
-			<li class="nav-item">
-				<a class="nav-link <?= ($this->nav_menu === "patient") ? "" : "collapsed" ?>" href="<?= base_url() ?>patient">
-					<i class="bi bi-person"></i>
-					<span>Pacientes</span>
-				</a>
-			</li>
-			<?php } if (in_array("appointment", $this->nav_menus)){ ?>
-			<li class="nav-item">
-				<a class="nav-link <?= ($this->nav_menu === "appointment") ? "" : "collapsed" ?>" href="<?= base_url() ?>appointment">
-					<i class="bi bi-clipboard2-pulse"></i>
-					<span>Consultas</span>
-				</a>
-			</li>
-			<?php } if (in_array("surgery", $this->nav_menus)){ ?>
-			<li class="nav-item">
-				<a class="nav-link <?= ($this->nav_menu === "surgery") ? "" : "collapsed" ?>" href="<?= base_url() ?>surgery">
-					<i class="bi bi-heart-pulse"></i>
-					<span>Cirugías</span>
-				</a>
-			</li>
-			<?php } if (in_array("product", $this->nav_menus)){ ?>
-			<li class="nav-item">
-				<a class="nav-link <?= ($this->nav_menu === "product") ? "" : "collapsed" ?>" href="<?= base_url() ?>product">
-					<i class="bi bi-box"></i>
-					<span>Productos</span>
-				</a>
-			</li>
-			<?php } if (in_array("sale", $this->nav_menus)){ ?>
-			<li class="nav-item">
-				<a class="nav-link <?= ($this->nav_menu === "sale") ? "" : "collapsed" ?>" href="<?= base_url() ?>sale">
-					<i class="bi bi-basket"></i>
-					<span>Ventas</span>
-				</a>
-			</li>
-			<?php } if (in_array("account", $this->nav_menus)){ ?>
-			<li class="nav-item">
-				<a class="nav-link <?= ($this->nav_menu === "account") ? "" : "collapsed" ?>" href="<?= base_url() ?>account">
-					<i class="bi bi-person-vcard"></i>
-					<span>Usuarios</span>
-				</a>
-			</li>
-			<?php } if (in_array("report", $this->nav_menus)){ ?>
-			<li class="nav-item">
+			<!-- li class="nav-item">
 				<a class="nav-link <?= ($this->nav_menu === "report") ? "" : "collapsed" ?>" href="<?= base_url() ?>report">
 					<i class="bi bi-file-earmark-ruled"></i>
 					<span>Reportes</span>
 				</a>
-			</li>
-			<?php } if (in_array("config", $this->nav_menus)){ ?>
-			<li class="nav-item">
-				<a class="nav-link <?= ($this->nav_menu === "config") ? "" : "collapsed" ?>" href="<?= base_url() ?>config">
-					<i class="bi bi-gear"></i>
-					<span>Ajustes</span>
-				</a>
-			</li>
-			<?php } ?>
+			</li -->
+			
 		</ul>
 	</aside>
 	<main id="main" class="main">

@@ -1,3 +1,5 @@
+let basic_path = "clinic/appointment/";
+
 function load_doctor_schedule_appointment(){
 	$("#aa_schedule").html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
 	load_doctor_schedule_n($("#aa_doctor").val(), $("#aa_date").val()).done(function(res) {
@@ -15,7 +17,7 @@ function set_doctor_sl(dom){
 
 function register_appointment(dom){
 	$("#register_form .sys_msg").html("");
-	ajax_form_warning(dom, "appointment/register", "wm_appointment_register").done(function(res) {
+	ajax_form_warning(dom, basic_path + "register", "wm_appointment_register").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, res.move_to);
 	});

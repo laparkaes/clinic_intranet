@@ -11,7 +11,7 @@ class Surgery extends CI_Controller {
 		$this->lang->load("surgery", "spanish");
 		$this->lang->load("system", "spanish");
 		$this->load->model('general_model','general');
-		$this->nav_menu = "surgery";
+		$this->nav_menu = ["clinic", "surgery"];
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 	}
 	

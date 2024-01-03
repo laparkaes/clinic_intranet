@@ -9,7 +9,7 @@ class Patient extends CI_Controller {
 		$this->lang->load("patient", "spanish");
 		$this->lang->load("system", "spanish");
 		$this->load->model('general_model','general');
-		$this->nav_menu = "patient";
+		$this->nav_menu = ["clinic", "patient"];
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 	}
 	

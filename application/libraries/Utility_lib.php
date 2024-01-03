@@ -130,6 +130,27 @@ class Utility_lib{
 		$access = $this->CI->general->filter("access", ["description" => "index"], null, [["field" => "id", "values" => $access_ids]]);
 		foreach($access as $item) $nav_menus[] = $item->module;
 		
+		/* layout menu setting 
+		groups & menus: 
+			- dashboard: dashboard (no child)
+			- clinic: appointment, surgery, patient, doctor
+			- commerce: sale, purcharse, product
+			- moneyflow: resume, inoutcome
+			- system: account, config
+		*/
+		
+		foreach(["appointment", "surgery", "patient", "doctor"] as $item)
+			if (in_array($item, $nav_menus)){ $nav_menus[] = "clinic"; break; }
+		
+		foreach(["sale", "purchase", "product"] as $item)
+			if (in_array($item, $nav_menus)){ $nav_menus[] = "commerce"; break; }
+		
+		foreach(["resume", "inoutcome"] as $item)
+			if (in_array($item, $nav_menus)){ $nav_menus[] = "moneyflow"; break; }
+		
+		foreach(["account", "config"] as $item)
+			if (in_array($item, $nav_menus)){ $nav_menus[] = "system"; break; }
+		
 		return $nav_menus;
 	}
 	

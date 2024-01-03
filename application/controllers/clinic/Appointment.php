@@ -9,8 +9,9 @@ class Appointment extends CI_Controller {
 		$this->lang->load("appointment", "spanish");
 		$this->lang->load("system", "spanish");
 		$this->load->model('general_model','general');
-		$this->nav_menu = "appointment";
+		$this->nav_menu = ["clinic", "appointment"];
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
+		$this->path = "clinic/appointment/";
 	}
 	
 	public function index(){
@@ -78,8 +79,8 @@ class Appointment extends CI_Controller {
 			"doctors" => $doctors,
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"title" => $this->lang->line('appointments'),
-			"main" => "appointment/list",
-			"init_js" => "appointment/list.js"
+			"main" => $this->path."list",
+			"init_js" => $this->path."list.js"
 		];
 		
 		$this->load->view('layout', $data);
@@ -103,17 +104,60 @@ class Appointment extends CI_Controller {
 		$anamnesis = $this->general->filter("appointment_anamnesis", ["appointment_id" => $appointment->id]);
 		if ($anamnesis) $anamnesis = $anamnesis[0];
 		else{
-			$anamnesis = $this->general->structure("appointment_anamnesis");
-			$patient = $this->general->id("person", $appointment->patient_id);
-			if ($patient){
-				$anamnesis->name = $anamnesis->responsible = $patient->name;
-				$anamnesis->sex_id = $patient->sex_id;
-				$anamnesis->tel = $patient->tel;
-				$anamnesis->address = $patient->address;
-				if ($patient->birthday){
-					$anamnesis->birthday = $patient->birthday;
-					$anamnesis->age = $this->my_func->age_calculator($patient->birthday, false);
+			$anamnesis = null;
+			
+			$f = [
+				"patient_id" => $appointment->patient_id,
+				"status_id" => $this->general->status("finished")->id,
+			];
+			$app_aux = $this->general->filter("appointment", $f, null, null, "schedule_from", "desc", 1, 0);
+			if ($app_aux){
+				$app_anam_aux = $this->general->filter("appointment_anamnesis", ["appointment_id" => $app_aux[0]->id]);
+				if ($app_anam_aux){
+					$app_anam_aux = $app_anam_aux[0];
+					$app_anam_arr = [
+						"appointment_id" => $appointment->id,
+						"name" => $app_anam_aux->name,
+						"age" => $this->my_func->age_calculator($app_anam_aux->birthday, false),
+						"sex_id" => $app_anam_aux->sex_id,
+						"address" => $app_anam_aux->address,
+						"birthplace" => $app_anam_aux->birthplace,
+						"birthday" => $app_anam_aux->birthday,
+						"tel" => $app_anam_aux->tel,
+						"responsible" => $app_anam_aux->responsible,
+						"provenance_place" => $app_anam_aux->provenance_place,
+						"last_trips" => $app_anam_aux->last_trips,
+						"race" => $app_anam_aux->race,
+						"civil_status_id" => $app_anam_aux->civil_status_id,
+						"occupation" => $app_anam_aux->occupation,
+						"religion" => $app_anam_aux->religion,
+						"patho_pre_illnesses" => $app_anam_aux->patho_pre_illnesses,
+						"patho_pre_illnesses_other" => $app_anam_aux->patho_pre_illnesses_other,
+						"patho_pre_hospitalization" => $app_anam_aux->patho_pre_hospitalization,
+						"patho_pre_surgery" => $app_anam_aux->patho_pre_surgery,
+						"patho_ram" => $app_anam_aux->patho_ram,
+						"patho_transfusion" => $app_anam_aux->patho_transfusion,
+						"patho_pre_medication" => $app_anam_aux->patho_pre_medication,
+						"family_history" => $app_anam_aux->family_history,
+					];
+					$this->general->insert("appointment_anamnesis", $app_anam_arr);
+					$anamnesis = $this->general->filter("appointment_anamnesis", ["appointment_id" => $appointment->id])[0];
 				}
+			}
+			
+			if ($anamnesis == null){
+				$anamnesis = $this->general->structure("appointment_anamnesis");
+				$patient = $this->general->id("person", $appointment->patient_id);
+				if ($patient){
+					$anamnesis->name = $anamnesis->responsible = $patient->name;
+					$anamnesis->sex_id = $patient->sex_id;
+					$anamnesis->tel = $patient->tel;
+					$anamnesis->address = $patient->address;
+					if ($patient->birthday){
+						$anamnesis->birthday = $patient->birthday;
+						$anamnesis->age = $this->my_func->age_calculator($patient->birthday, false);
+					}
+				}	
 			}
 		}
 		
@@ -168,7 +212,7 @@ class Appointment extends CI_Controller {
 		if (!$this->utility_lib->check_access("appointment", "detail")) redirect("/errors/no_permission");
 		
 		$appointment = $this->general->id("appointment", $id);
-		if (!$appointment) redirect("/appointment");
+		if (!$appointment) redirect("/clinic/appointment");
 		
 		$appointment->status = $this->general->id("status", $appointment->status_id);
 		
@@ -323,8 +367,8 @@ class Appointment extends CI_Controller {
 			"physical_therapies" => $this->general->all("physical_therapy", "name", "asc"),
 			"medicines" => $this->general->all("medicine", "name", "asc"),
 			"title" => "Consulta",
-			"main" => "appointment/detail",
-			"init_js" => "appointment/detail.js"
+			"main" => $this->path."detail",
+			"init_js" => $this->path."detail.js"
 		);
 		
 		$this->load->view('layout', $data);
@@ -365,7 +409,7 @@ class Appointment extends CI_Controller {
 					$this->utility_lib->add_log("appointment_register", $pt["name"]);
 					
 					$type = "success";
-					$move_to = base_url()."appointment/detail/".$appointment_id;
+					$move_to = base_url()."clinic/appointment/detail/".$appointment_id;
 					$msg = $this->lang->line('s_app_register');
 				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line('error_occurred');
@@ -1028,7 +1072,7 @@ class Appointment extends CI_Controller {
 		if (!$this->utility_lib->check_access("appointment", "report")) redirect("/errors/no_permission");
 		
 		$appointment = $this->general->id("appointment", $id);
-		if (!$appointment) redirect("/appointment");
+		if (!$appointment) redirect("/clinic/appointment");
 		
 		$doctor = $this->general->id("person", $appointment->doctor_id);
 		if ($doctor){
@@ -1059,10 +1103,11 @@ class Appointment extends CI_Controller {
 			"patient" => $patient
 		];
 		
-		$html = $this->load->view('appointment/report', $data, true);
+		$html = $this->load->view('clinic/appointment/clinical_history', $data, true);
 		$filename = str_replace(" ", "_", $patient->name)."_".$patient->doc_number."_".$appointment->id;
 		
 		$this->load->library('dompdf_lib');
 		$this->dompdf_lib->make_pdf_a4($html, $filename);
+		//echo $html;
 	}
 }
