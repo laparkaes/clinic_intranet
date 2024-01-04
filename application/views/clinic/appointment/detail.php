@@ -71,17 +71,6 @@
 							<div class="col-md-12">
 								<strong><?= $this->lang->line('w_attention') ?></strong>
 							</div>
-							<div class="col-md-12">
-								<label class="form-label">
-									<span><?= $this->lang->line('w_doctor') ?></span>
-									<i class="bi bi-clock ms-2" id="ic_doctor_schedule_w" data-bs-toggle="modal" data-bs-target="#md_weekly_doctor_agenda"></i>
-								</label>
-								<div class="form-control"><?= $doctor->name ?></div>
-							</div>
-							<div class="col-md-12">
-								<label class="form-label"><?= $this->lang->line('w_patient') ?></label>
-								<div class="form-control"><?= $patient->name ?></div>
-							</div>
 							<div class="col-md-4">
 								<label class="form-label"><?= $this->lang->line('w_date') ?></label>
 								<input type="text" class="form-control date_picker doc_schedule schedule" id="ra_date" name="date" value="<?= date('Y-m-d') ?>">
@@ -114,6 +103,17 @@
 									</select>
 								</div>
 								<div class="sys_msg" id="ra_schedule_msg"></div>
+							</div>
+							<div class="col-md-12">
+								<label class="form-label">
+									<span><?= $this->lang->line('w_doctor') ?></span>
+									<i class="bi bi-clock ms-2" id="ic_doctor_schedule_w" data-bs-toggle="modal" data-bs-target="#md_weekly_doctor_agenda"></i>
+								</label>
+								<div class="form-control"><?= $doctor->name ?></div>
+							</div>
+							<div class="col-md-12">
+								<label class="form-label"><?= $this->lang->line('w_patient') ?></label>
+								<div class="form-control"><?= $patient->name ?></div>
 							</div>
 							<div class="col-md-12 pt-3">
 								<button type="sumit" class="btn btn-primary"><?= $this->lang->line('btn_confirm') ?></button>
@@ -163,12 +163,12 @@
 						<tbody>
 							<?php foreach($histories as $item){ ?>
 							<tr>
-								<td><?= date("Y-m-d h:i a", strtotime($item->schedule_from)) ?></td>
+								<td class="w-25"><?= date("Y-m-d h:i a", strtotime($item->schedule_from)) ?></td>
 								<td><?= $item->type ?></td>
 								<td><?= $item->specialty ?></td>
 								<td class="text-end">
 									<?php if ($appointment->id != $item->id){ ?>
-									<a href="<?= base_url().$item->link_to."/detail/".$item->id ?>" target="_blank">
+									<a href="<?= base_url()."clinic/".$item->link_to."/detail/".$item->id ?>" target="_blank">
 										<i class="bi bi-search"></i>
 									</a>
 									<?php }else{ ?>
@@ -193,7 +193,7 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<th><?= $this->lang->line('w_date') ?></th>
+								<th class="w-25"><?= $this->lang->line('w_date') ?></th>
 								<th><?= $this->lang->line('w_title') ?></th>
 								<th></th>
 							</tr>
@@ -202,7 +202,7 @@
 							<?php $file_path = "/archivos/pacientes/".str_replace(" ", "_", $patient->name)."_".$patient->doc_number."/";
 							foreach($patient_files as $item){ ?>
 							<tr>
-								<td><?= date("Y-m-d<\b\\r>h:i:s", strtotime($item->registed_at)) ?></td>
+								<td><?= date("Y-m-d h:i a", strtotime($item->registed_at)) ?></td>
 								<td><?= $item->title ?></td>
 								<td>
 									<a href="<?= $file_path.$item->filename ?>" target="_blank">

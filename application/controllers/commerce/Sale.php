@@ -9,7 +9,7 @@ class Sale extends CI_Controller {
 		$this->lang->load("system", "spanish");
 		$this->lang->load("sale", "spanish");
 		$this->load->model('general_model','general');
-		$this->nav_menu = "sale";
+		$this->nav_menu = ["commerce", "sale"];
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 		$this->sunat_resolution = "0180050001138";
 	}
@@ -93,8 +93,8 @@ class Sale extends CI_Controller {
 			"sale_types" => $this->general->all("sale_type", "sunat_serie", "asc"),
 			"sales" => $sales,
 			"title" => $this->lang->line('sales'),
-			"main" => "sale/list",
-			"init_js" => "sale/list.js"
+			"main" => "commerce/sale/list",
+			"init_js" => "commerce/sale/list.js"
 		);
 		
 		$this->load->view('layout', $data);
@@ -181,7 +181,7 @@ class Sale extends CI_Controller {
 					if ($this->general->update("sale", $sale_id, $sale_data)){
 						$type = "success";
 						$msg = $this->lang->line('s_sale_add');
-						$move_to = base_url()."sale/detail/".$sale_id;
+						$move_to = base_url()."commerce/sale/detail/".$sale_id;
 					}
 				}
 			}else $msg = $this->lang->line('error_occurred');
@@ -306,8 +306,8 @@ class Sale extends CI_Controller {
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"voucher_types" => $this->general->all("voucher_type", "description", "asc"),
 			"title" => $this->lang->line('sale'),
-			"main" => "sale/detail",
-			"init_js" => "sale/detail.js"
+			"main" => "commerce/sale/detail",
+			"init_js" => "commerce/sale/detail.js"
 		);
 		
 		$this->load->view('layout', $data);

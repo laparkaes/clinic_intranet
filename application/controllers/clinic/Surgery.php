@@ -90,8 +90,8 @@ class Surgery extends CI_Controller {
 			"doctors" => $doctors,
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"title" => $this->lang->line('surgeries'),
-			"main" => "surgery/list",
-			"init_js" => "surgery/list.js"
+			"main" => "clinic/surgery/list",
+			"init_js" => "clinic/surgery/list.js"
 		);
 		
 		$this->load->view('layout', $data);
@@ -102,7 +102,7 @@ class Surgery extends CI_Controller {
 		if (!$this->utility_lib->check_access("surgery", "detail")) redirect("/errors/no_permission");
 		
 		$surgery = $this->general->id("surgery", $id);
-		if (!$surgery) redirect("/surgery");
+		if (!$surgery) redirect("clinic/surgery");
 		
 		//duration diff give last minute as additional
 		$surgery->duration = (strtotime($surgery->schedule_to) - strtotime($surgery->schedule_from) + 60)/60;
@@ -208,8 +208,8 @@ class Surgery extends CI_Controller {
 			"duration_ops" => $duration_ops,
 			"patient_files" => $this->general->filter("patient_file", array("patient_id" => $surgery->patient_id)),
 			"title" => $this->lang->line('surgery'),
-			"main" => "surgery/detail",
-			"init_js" => "surgery/detail.js"
+			"main" => "clinic/surgery/detail",
+			"init_js" => "clinic/surgery/detail.js"
 		);
 		
 		$this->load->view('layout', $data);
@@ -251,7 +251,7 @@ class Surgery extends CI_Controller {
 					$this->utility_lib->add_log("surgery_register", $pt["name"]);
 					
 					$type = "success";
-					$move_to = base_url()."surgery/detail/".$surgery_id;
+					$move_to = base_url()."clinic/surgery/detail/".$surgery_id;
 					$msg = $this->lang->line('s_surgery_register');
 				}else $msg = $this->lang->line('error_internal');	
 			}else $msg = $this->lang->line('error_occurred');
@@ -345,7 +345,7 @@ class Surgery extends CI_Controller {
 		
 		/*
 		$surgery = $this->general->id("surgery", $id);
-		if (!$surgery) redirect("/surgery");
+		if (!$surgery) redirect("clinic/surgery");
 		
 		$doctor = $this->general->id("person", $surgery->doctor_id);
 		if ($doctor){
@@ -376,7 +376,7 @@ class Surgery extends CI_Controller {
 			"patient" => $patient
 		);
 		
-		$html = $this->load->view('surgery/report', $data, true);
+		$html = $this->load->view('clinic/surgery/report', $data, true);
 		
 		//echo $html;
 		
@@ -452,6 +452,6 @@ class Surgery extends CI_Controller {
 		}else $msg = "Elija una sala de cirugia";
 		
 		$data = array("msg" => $msg, "dates" => $dates, "cells" => $cells, "prev" => $prev, "next" => $next, "room" => $room);
-		echo $this->load->view('surgery/tb_weekly_availability', $data, true);
+		echo $this->load->view('clinic/surgery/tb_weekly_availability', $data, true);
 	}
 }

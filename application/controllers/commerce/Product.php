@@ -10,7 +10,7 @@ class Product extends CI_Controller {
 		$this->lang->load("system", "spanish");	
 		$this->load->model('product_model','product');
 		$this->load->model('general_model','general');
-		$this->nav_menu = "product";
+		$this->nav_menu = ["commerce", "product"];
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 	}
 	
@@ -61,8 +61,8 @@ class Product extends CI_Controller {
 			"currencies" => $currencies,
 			"currencies_arr" => $currencies_arr,
 			"title" => $this->lang->line('products'),
-			"main" => "product/list",
-			"init_js" => "product/list.js"
+			"main" => "commerce/product/list",
+			"init_js" => "commerce/product/list.js"
 		];
 		
 		$this->load->view('layout', $data);
@@ -177,7 +177,7 @@ class Product extends CI_Controller {
 					
 					$type = "success";
 					$msg = $this->lang->line('s_product_add');
-					$move_to = base_url()."product/detail/".$product_id;
+					$move_to = base_url()."commerce/product/detail/".$product_id;
 					
 					if ($_FILES["image"]["name"]){
 						$upload_dir = "uploaded/products/".$product_id;
@@ -234,8 +234,8 @@ class Product extends CI_Controller {
 			"currencies" => $this->general->all("currency", "description", "asc"),
 			"images" => $this->product->images($product_id),
 			"title" => "Producto",
-			"main" => "product/detail",
-			"init_js" => "product/detail.js"
+			"main" => "commerce/product/detail",
+			"init_js" => "commerce/product/detail.js"
 		);
 		
 		$this->load->view('layout', $data);
@@ -353,7 +353,7 @@ class Product extends CI_Controller {
 				$product = $this->general->id("product", $id);
 				$this->utility_lib->add_log("product_delete", $product->description);
 				
-				$move_to = base_url()."product";
+				$move_to = base_url()."commerce/product";
 				$type = "success";
 				$msg = $this->lang->line('s_product_delete');
 			}else $msg = $this->lang->line('error_internal');

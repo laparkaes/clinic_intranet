@@ -1,25 +1,27 @@
+let basic_path = "clinic/surgery/";
+
 function cancel_surgery(dom){
-	ajax_simple_warning({id: $(dom).val()}, "surgery/cancel", "wm_surgery_cancel").done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, basic_path + "cancel", "wm_surgery_cancel").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function finish_surgery(dom){
-	ajax_form_warning(dom, "surgery/finish", "wm_surgery_finish").done(function(res) {
+	ajax_form_warning(dom, basic_path + "finish", "wm_surgery_finish").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function reschedule_surgery(dom){
 	$("#reschedule_form .sys_msg").html("");
-	ajax_form_warning(dom, "surgery/reschedule", "wm_surgery_reschedule").done(function(res) {
+	ajax_form_warning(dom, basic_path + "reschedule", "wm_surgery_reschedule").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function load_doctor_schedule_surgery(){
-	$("#rp_schedule").html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
+	$("#rp_schedule").html('<div class="text-center mt-5"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
 	load_doctor_schedule_n($("#rs_doctor").val(), $("#rs_date").val()).done(function(res) {
 		$("#rp_schedule").html(res);
 		$("#rp_schedule .sch_cell").on('click',(function(e) {set_time_dom("#rs_hour", "#rs_min", this);}));

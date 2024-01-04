@@ -94,7 +94,7 @@
 									<?php if ($item->stock) echo number_format($item->stock); else echo "-"; ?>
 								</td>
 								<td class="text-end">
-									<a href="<?= base_url() ?>product/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
+									<a href="<?= base_url() ?>commerce/product/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
 										<i class="bi bi-search"></i>
 									</a>
 								</td>
@@ -105,7 +105,7 @@
 					<div class="btn-group" role="group" aria-label="paging">
 						<?php foreach($paging as $p){
 						$f_url["page"] = $p[0]; ?>
-						<a href="<?= base_url() ?>product?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
+						<a href="<?= base_url() ?>commerce/product?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
 							<?= $p[1] ?>
 						</a>
 						<?php } ?>
@@ -220,7 +220,7 @@
 				<h5 class="card-title"><?= $this->lang->line('w_add_product') ?></h5>
 				<div class="row">
 					<div class="col-md-4 text-center">
-						<img src="uploaded/products/no_img.png" id="img_preview" style="max-width: 100%;">
+						<img src="<?= base_url() ?>uploaded/products/no_img.png" id="img_preview" style="max-width: 100%;">
 					</div>
 					<div class="col-md-8">
 						<form class="row g-3" id="form_register_product">

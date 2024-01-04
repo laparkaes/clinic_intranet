@@ -39,8 +39,8 @@ class Patient extends CI_Controller {
 			"sex_ops" => $this->general->all("sex", "description", "asc"),
 			"blood_type_ops" => $this->general->all("blood_type", "description", "asc"),
 			"title" => $this->lang->line('patients'),
-			"main" => "patient/list",
-			"init_js" => "patient/list.js"
+			"main" => "clinic/patient/list",
+			"init_js" => "clinic/patient/list.js"
 		];
 		
 		$this->load->view('layout', $data);
@@ -129,8 +129,8 @@ class Patient extends CI_Controller {
 			"credit_histories" => [],//$credit_histories,
 			"patient_files" => $this->general->filter("patient_file", ["patient_id" => $person->id, "active" => true], null, null, "registed_at", "desc"),
 			"title" => $this->lang->line('patient'),
-			"main" => "patient/detail",
-			"init_js" => "patient/detail.js"
+			"main" => "clinic/patient/detail",
+			"init_js" => "clinic/patient/detail.js"
 		];
 		
 		$this->load->view('layout', $data);
@@ -160,7 +160,7 @@ class Patient extends CI_Controller {
 				
 				if ($person_id){
 					$type = "success";
-					$move_to = base_url()."patient/detail/".$person_id;
+					$move_to = base_url()."clinic/patient/detail/".$person_id;
 					$msg = $this->lang->line('s_register');
 				}else $msg = $this->lang->line('error_internal');
 			}else $msg = $this->lang->line('error_occurred');

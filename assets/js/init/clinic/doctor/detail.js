@@ -1,3 +1,5 @@
+let basic_path = "clinic/doctor/";
+
 function enable_update_form(){
 	$("#form_update_info input").prop("readonly", false);
 	$("#form_update_info select").prop("disabled", false);
@@ -33,7 +35,7 @@ function update_info(dom){
 	$("#du_doc_type_id").prop("disabled", false);
 	
 	$("#form_update_info .sys_msg").html("");
-	ajax_form(dom, "doctor/update_info").done(function(res) {
+	ajax_form(dom, basic_path + "update_info").done(function(res) {
 		set_msg(res.msgs);
 		swal(res.type, res.msg);
 		if (res.type == "success") disable_update_form();
@@ -47,7 +49,7 @@ function activation_control(dom, active){
 	if (active == true) msg_key = "wm_enable_doctor";
 	else msg_key = "wm_disable_doctor";
 	
-	ajax_simple_warning({id: $(dom).val(), active: active}, "doctor/activation_control", msg_key).done(function(res) {
+	ajax_simple_warning({id: $(dom).val(), active: active}, basic_path + "activation_control", msg_key).done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
@@ -105,7 +107,7 @@ function sur_load_doctor_schedule(){
 
 function app_register(dom){
 	$("#app_register_form .sys_msg").html("");
-	ajax_form(dom, "appointment/register").done(function(res) {
+	ajax_form(dom, "clinic/appointment/register").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, res.move_to);
 	});
@@ -113,7 +115,7 @@ function app_register(dom){
 
 function sur_register(dom){
 	$("#sur_register_form .sys_msg").html("");
-	ajax_form(dom, "surgery/register").done(function(res) {
+	ajax_form(dom, "clinic/surgery/register").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, res.move_to);
 	});

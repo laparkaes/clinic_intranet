@@ -66,6 +66,7 @@ var msg_list = {
 		wm_option_add		: "¿Desea agregar nueva opción del producto?",
 		wm_option_delete	: "¿Desea eliminar opción del producto?",
 		wm_option_edit		: "¿Desea actualizar opción del producto?",
+		wm_provider_delete	: "¿Seguro de eliminar proveedor?",
 		wm_product_delete	: "¿Seguro de eliminar producto?",
 		
 		//sale

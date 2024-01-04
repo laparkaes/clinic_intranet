@@ -186,7 +186,7 @@ class General_model extends CI_Model{
 		return $this->db->insert_batch($tablename, $data);
 	}
 	
-	function update($tablename, $id, $data){ 
+	function update($tablename, $id, $data){
 		if ($id) $this->db->where('id', $id);
 		return $this->db->update($tablename, $data);
 	}

@@ -46,7 +46,7 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<th>#</strong></th>
+								<th>#</th>
 								<th><?= $this->lang->line('w_itinerary') ?></th>
 								<th><?= $this->lang->line('w_room') ?></th>
 								<th><?= $this->lang->line('w_specialty') ?></th>
@@ -68,7 +68,7 @@
 								<td><?= $item->doctor ?><br/>/ <?= $item->patient ?></td>
 								<td><span class="text-<?= $status_arr[$item->status_id]->color ?>"><?= $this->lang->line($status_arr[$item->status_id]->code) ?></span></td>
 								<td class="text-end">
-									<a href="<?= base_url() ?>surgery/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
+									<a href="<?= base_url() ?>clinic/surgery/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
 										<i class="bi bi-search"></i>
 									</a>
 								</td>
@@ -79,7 +79,7 @@
 					<div class="btn-group" role="group" aria-label="paging">
 						<?php foreach($paging as $p){
 						$f_url["page"] = $p[0]; ?>
-						<a href="<?= base_url() ?>surgery?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
+						<a href="<?= base_url() ?>clinic/surgery?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
 							<?= $p[1] ?>
 						</a>
 						<?php } ?>
@@ -99,38 +99,15 @@
 							<div class="col-md-12">
 								<strong><?= $this->lang->line('w_attention') ?></strong>
 							</div>
-							<div class="col-md-6">
-								<label class="form-label"><?= $this->lang->line('w_specialty') ?></label>
-								<select class="form-select" id="sur_specialty" name="sur[specialty_id]">
-									<option value="">--</option>
-									<?php foreach($specialties as $item){ if ($item->doctor_qty){ ?>
-									<option value="<?= $item->id ?>"><?= $item->name ?></option>
-									<?php }} ?>
-								</select>
-								<div class="sys_msg" id="sur_specialty_msg"></div>
-							</div>
-							<div class="col-md-6">
-								<label class="form-label">
-									<span><?= $this->lang->line('w_doctor') ?></span>
-									<i class="bi bi-alarm ms-2" id="ic_doctor_schedule_w" data-bs-toggle="modal" data-bs-target="#md_weekly_doctor_agenda"></i>
-								</label>
-								<select class="form-select" id="sur_doctor" name="sur[doctor_id]">
-									<option value="">--</option>
-									<?php foreach($doctors as $item){ ?>
-									<option class="spe spe_<?= $item->specialty_id ?> d-none" value="<?= $item->person_id ?>"><?= $item->name ?></option>
-									<?php } ?>
-								</select>
-								<div class="sys_msg" id="sur_doctor_msg"></div>
-							</div>
-							<div class="col-md-6">
+							<div class="col-md-4">
 								<label class="form-label"><?= $this->lang->line('w_date') ?></label>
 								<input type="text" class="form-control date_picker" id="sur_date" name="sch[date]" value="<?= date('Y-m-d') ?>">
 								<div class="sys_msg" id="sur_date_msg"></div>
 							</div>
-							<div class="col-md-6">
+							<div class="col-md-8">
 								<label class="form-label"><?= $this->lang->line('w_time') ?></label>
 								<div class="input-group">
-									<select class="form-control text-center px-0" id="sur_hour" name="sch[hour]">
+									<select class="form-control" id="sur_hour" name="sch[hour]">
 										<option value="" selected>--</option>
 										<?php for($i = 9; $i <= 18; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
 										<option value="<?= $i ?>">
@@ -145,7 +122,7 @@
 										<?php } ?>
 									</select>
 									<span class="input-group-text">:</span>
-									<select class="form-control text-center px-0" id="sur_min" name="sch[min]">
+									<select class="form-control" id="sur_min" name="sch[min]">
 										<option value="" selected>--</option>
 										<option value="00">00</option>
 										<option value="15">15</option>
@@ -154,6 +131,29 @@
 									</select>
 								</div>
 								<div class="sys_msg" id="sur_schedule_msg"></div>
+							</div>
+							<div class="col-md-12">
+								<label class="form-label"><?= $this->lang->line('w_specialty') ?></label>
+								<select class="form-select" id="sur_specialty" name="sur[specialty_id]">
+									<option value="">--</option>
+									<?php foreach($specialties as $item){ if ($item->doctor_qty){ ?>
+									<option value="<?= $item->id ?>"><?= $item->name ?></option>
+									<?php }} ?>
+								</select>
+								<div class="sys_msg" id="sur_specialty_msg"></div>
+							</div>
+							<div class="col-md-12">
+								<label class="form-label">
+									<span><?= $this->lang->line('w_doctor') ?></span>
+									<i class="bi bi-alarm ms-2" id="ic_doctor_schedule_w" data-bs-toggle="modal" data-bs-target="#md_weekly_doctor_agenda"></i>
+								</label>
+								<select class="form-select" id="sur_doctor" name="sur[doctor_id]">
+									<option value="">--</option>
+									<?php foreach($doctors as $item){ ?>
+									<option class="spe spe_<?= $item->specialty_id ?> d-none" value="<?= $item->person_id ?>"><?= $item->name ?></option>
+									<?php } ?>
+								</select>
+								<div class="sys_msg" id="sur_doctor_msg"></div>
 							</div>
 							<div class="col-md-8">
 								<label class="form-label">
@@ -182,7 +182,7 @@
 								<strong><?= $this->lang->line('w_patient') ?></strong>
 								<input type="hidden" id="sur_pt_id" name="sur[patient_id]" value="">
 							</div>
-							<div class="col-md-6">
+							<div class="col-md-12">
 								<label class="form-label"><?= $this->lang->line('w_document') ?></label>
 								<select class="form-select" id="sur_pt_doc_type_id" name="pt[doc_type_id]">
 									<?php foreach($doc_types as $item){ if ($item->sunat_code){ ?>
@@ -191,8 +191,8 @@
 								</select>
 								<div class="sys_msg" id="sur_pt_doc_type_msg"></div>
 							</div>
-							<div class="col-md-6">
-								<label class="form-label d-md-block d-none">&nbsp;</label>
+							<div class="col-md-12">
+								<label class="form-label">Numero</label>
 								<div class="input-group">
 									<input type="text" class="form-control" id="sur_pt_doc_number" name="pt[doc_number]" placeholder="<?= $this->lang->line('w_number') ?>">
 									<button class="btn btn-primary" type="button" id="btn_search_pt">

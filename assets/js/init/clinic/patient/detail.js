@@ -1,5 +1,7 @@
+let basic_path = "clinic/patient/";
+
 function delete_patient_file(dom){
-	ajax_simple_warning({id: $(dom).val()}, "patient/delete_file", "wm_delete_file").done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, basic_path + "delete_file", "wm_delete_file").done(function(res) {
 		//set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
@@ -7,14 +9,14 @@ function delete_patient_file(dom){
 
 function upload_patient_file(dom){
 	$("#form_upload_patient_file .sys_msg").html("");
-	ajax_form(dom, "patient/upload_file").done(function(res) {
+	ajax_form(dom, basic_path + "upload_file").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function aa_load_doctor_schedule(){
-	$("#aa_schedule_list").html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
+	$("#aa_schedule_list").html('<div class="text-center mt-5"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
 	load_doctor_schedule_n($("#aa_doctor").val(), $("#aa_date").val()).done(function(res) {
 		$("#aa_schedule_list").html(res);
 		$("#aa_schedule_list .sch_cell").on('click',(function(e) {set_time_dom("#aa_hour", "#aa_min", this);}));
@@ -23,7 +25,7 @@ function aa_load_doctor_schedule(){
 }
 
 function sur_load_doctor_schedule(){
-	$("#sur_schedule_list").html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
+	$("#sur_schedule_list").html('<div class="text-center mt-5"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
 	load_doctor_schedule_n($("#sur_doctor").val(), $("#sur_date").val()).done(function(res) {
 		$("#sur_schedule_list").html(res);
 		$("#sur_schedule_list .sch_cell").on('click',(function(e) {set_time_dom("#sur_hour", "#sur_min", this);}));
@@ -45,7 +47,7 @@ function sur_set_doctor_sl(dom){
 
 function register_appointment(dom){
 	$("#add_appointment_form .sys_msg").html("");
-	ajax_form_warning(dom, "appointment/register", "wm_register_app").done(function(res) {
+	ajax_form_warning(dom, "clinic/appointment/register", "wm_register_app").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, res.move_to);
 	});
@@ -53,7 +55,7 @@ function register_appointment(dom){
 
 function register_surgery(dom){
 	$("#sur_register_form .sys_msg").html("");
-	ajax_form_warning(dom, "surgery/register", "wm_register_sur").done(function(res) {
+	ajax_form_warning(dom, "clinic/surgery/register", "wm_register_sur").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, res.move_to);
 	});
@@ -94,7 +96,7 @@ function update_info(dom){
 	$("#pu_doc_type_id").prop("disabled", false);
 	
 	$("#form_update_info .sys_msg").html("");
-	ajax_form(dom, "patient/update_info").done(function(res) {
+	ajax_form(dom, basic_path + "update_info").done(function(res) {
 		set_msg(res.msgs);
 		swal(res.type, res.msg);
 		if (res.type == "success") disable_update_form();
@@ -104,14 +106,14 @@ function update_info(dom){
 
 function add_credit(dom){
 	$("#form_add_credit .sys_msg").html("");
-	ajax_form_warning(dom, "patient/add_credit", "wm_add_credit").done(function(res) {
+	ajax_form_warning(dom, basic_path + "add_credit", "wm_add_credit").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function reverse_credit(dom){
-	ajax_simple_warning({id: $(dom).val()}, "patient/reverse_credit", "wm_reverse_credit").done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, basic_path + "reverse_credit", "wm_reverse_credit").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
@@ -121,10 +123,6 @@ $(document).ready(function() {
 	$("#ic_doctor_schedule_w_aa").on('click',(function(e) {load_doctor_schedule_weekly($("#aa_doctor").val(), null, "bl_weekly_schedule");}));
 	$("#ic_doctor_schedule_w_sur").on('click',(function(e) {load_doctor_schedule_weekly($("#sur_doctor").val(), null, "bl_weekly_schedule");}));
 	$("#ic_room_availability_w").on('click',(function(e) {load_room_availability($("#sur_room_id").val(), null, "bl_room_availability");}));
-	//set_datatable("appointment_list", 10, false);
-	//set_datatable("surgery_list", 10, false);
-	//set_datatable("file_list", 10, false);
-	//set_datatable("sale_list", 10, false);
 	set_date_picker(".date_picker", new Date());
 	
 	//update information

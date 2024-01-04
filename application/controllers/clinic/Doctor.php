@@ -64,8 +64,8 @@ class Doctor extends CI_Controller {
 			"sex_ops" => $this->general->all("sex", "description", "asc"),
 			"blood_type_ops" => $this->general->all("blood_type", "description", "asc"),
 			"title" => $this->lang->line('doctors'),
-			"main" => "doctor/list",
-			"init_js" => "doctor/list.js"
+			"main" => "clinic/doctor/list",
+			"init_js" => "clinic/doctor/list.js"
 		];
 		
 		$this->load->view('layout', $data);
@@ -132,8 +132,8 @@ class Doctor extends CI_Controller {
 			"sex_ops" => $this->general->all("sex", "description", "asc"),
 			"blood_type_ops" => $this->general->all("blood_type", "description", "asc"),
 			"title" => $this->lang->line('doctor'),
-			"main" => "doctor/detail",
-			"init_js" => "doctor/detail.js"
+			"main" => "clinic/doctor/detail",
+			"init_js" => "clinic/doctor/detail.js"
 		];
 		$this->load->view('layout', $data);
 	}
@@ -195,7 +195,7 @@ class Doctor extends CI_Controller {
 				$this->utility_lib->add_log("doctor_register", $person->name);
 					
 				$type = "success";
-				$move_to = base_url()."doctor/detail/".$doctor->id;
+				$move_to = base_url()."clinic/doctor/detail/".$doctor->id;
 				$msg = $this->lang->line('s_register_doctor');
 			}else $msg = $this->lang->line('error_occurred');
 		}else $msg = $this->lang->line('error_no_permission');

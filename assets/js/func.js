@@ -297,6 +297,16 @@ function get_params(){
 	return params;
 }
 
+function format_date(currentDate){//for javascript operation
+	// 년, 월, 일을 가져오기
+	var year = currentDate.getFullYear();
+	var month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고, 두 자리로 표현
+	var day = currentDate.getDate().toString().padStart(2, '0'); // 일을 두 자리로 표현
+
+	// "YYYY-MM-DD" 형식으로 조합
+	return `${year}-${month}-${day}`;
+}
+
 function set_date_picker(dom, minDate){
 	var option = {
 		"allowInputToggle": true,
@@ -317,8 +327,7 @@ function set_date_picker(dom, minDate){
 			close: "bi bi-x",
 		}
 	};
-	if (minDate != null) option.minDate = minDate;
-	
+	if (minDate != null) option.minDate = format_date(minDate);//minDate;
 	$(dom).datetimepicker(option);
 }
 

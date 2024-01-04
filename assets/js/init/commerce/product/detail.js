@@ -1,9 +1,9 @@
 function add_image(dom){
 	$("#form_add_image .sys_msg").html("");
-	ajax_form(dom, "product/add_image").done(function(res) {
+	ajax_form(dom, "commerce/product/add_image").done(function(res) {
 		swal(res.type, res.msg);
 		if (res.type == "success"){
-			$("#bl_images").append('<div class="col-md-3" id="img_' + res.img.id + '"><div class="text-center border rounded overflow-hidden mb-3 w-100"><div class="overflow-hidden" style="width: 100%; height: 100px;"><img src="' + res.img.link + '" style="max-weight: 100px; max-height: 100px;" /></div><div class="border-top"><button type="button" class="btn btn-xs text-info p-1 btn_set_img" id="btn_set_img_' + res.img.id + '" value="' + res.img.id + '"><i class="far fa-image"></i></button><button type="button" class="btn btn-xs text-danger p-1 btn_delete_img" id="btn_delete_img_' + res.img.id + '" value="' + res.img.id + '"><i class="far fa-trash"></i></button></div></div></div>');
+			$("#bl_images").append('<div class="col-md-3" id="img_' + res.img.id + '"><div class="text-center border rounded overflow-hidden mb-3 w-100"><div class="overflow-hidden" style="width: 100%; height: 100px;"><img src="' + res.img.link + '" style="max-weight: 100px; max-height: 100px;" /></div><div class="border-top"><button type="button" class="btn btn-xs text-primary p-1 btn_set_img" id="btn_set_img_' + res.img.id + '" value="' + res.img.id + '"><i class="bi bi-image"></i></button><button type="button" class="btn btn-xs text-danger p-1 btn_delete_img" id="btn_delete_img_' + res.img.id + '" value="' + res.img.id + '"><i class="bi bi-trash"></i></button></div></div></div>');
 			
 			$("input[name=image]").val("");
 			$("#btn_delete_img_" + res.img.id).on('click',(function(e) {delete_image(this);}));
@@ -13,28 +13,28 @@ function add_image(dom){
 }
 
 function delete_image(dom){
-	ajax_simple_warning({id: $(dom).val()}, "product/delete_image", "wm_image_delete").done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "commerce/product/delete_image", "wm_image_delete").done(function(res) {
 		swal(res.type, res.msg);
 		if (res.type == "success") $("#img_" + res.id).remove();
 	});
 }
 
 function set_product_image(dom){
-	ajax_simple_warning({id: $(dom).val()}, "product/set_product_image", "wm_image_main").done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "commerce/product/set_product_image", "wm_image_main").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function save_provider(dom){
 	$("#form_edit_provider .sys_msg").html("");
-	ajax_form(dom, "product/save_provider").done(function(res) {
+	ajax_form(dom, "commerce/product/save_provider").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function clean_provider(){
-	ajax_simple({product_id: $('input[name="product_id"]').val()}, "product/clean_provider").done(function(res) {
+	ajax_simple_warning({product_id: $('input[name="product_id"]').val()}, "commerce/product/clean_provider", "wm_provider_delete").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
@@ -52,32 +52,32 @@ function set_stock(dom){
 
 function edit_product(dom){
 	$("#form_edit_product .sys_msg").html("");
-	ajax_form(dom, "product/edit_product").done(function(res) {
+	ajax_form(dom, "commerce/product/edit_product").done(function(res) {
 		set_msg(res.msgs);
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function delete_product(dom){
-	ajax_simple_warning({id: $(dom).val()}, "product/delete_product", "wm_product_delete").done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "commerce/product/delete_product", "wm_product_delete").done(function(res) {
 		swal_redirection(res.type, res.msg, res.move_to);
 	});
 }
 
 function add_option(dom){
-	ajax_form_warning(dom, "product/add_option", "wm_option_add").done(function(res) {
+	ajax_form_warning(dom, "commerce/product/add_option", "wm_option_add").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function edit_option(dom){
-	ajax_form_warning(dom, "product/edit_option", "wm_option_edit").done(function(res) {
+	ajax_form_warning(dom, "commerce/product/edit_option", "wm_option_edit").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }
 
 function delete_option(dom){
-	ajax_simple_warning({id: $(dom).val()}, "product/delete_option", "wm_option_delete").done(function(res) {
+	ajax_simple_warning({id: $(dom).val()}, "commerce/product/delete_option", "wm_option_delete").done(function(res) {
 		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }

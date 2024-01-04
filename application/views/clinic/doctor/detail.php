@@ -3,12 +3,13 @@
 	<nav>
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="<?= base_url() ?>"><?= $this->lang->line('w_home') ?></a></li>
-			<li class="breadcrumb-item"><a href="<?= base_url() ?>doctor"><?= $this->lang->line('doctors') ?></a></li>
+			<li class="breadcrumb-item"><a href="<?= base_url() ?>clinic/doctor"><?= $this->lang->line('doctors') ?></a></li>
 			<li class="breadcrumb-item active"><?= $this->lang->line('txt_detail') ?></li>
 		</ol>
 	</nav>
 </div>
 <div class="row">
+	<?php if ($doctor->status->code === "enabled"){ ?>
 	<div class="col-md-3">
 		<button class="btn btn-primary w-100 mb-3 control_bl_simple" value="bl_ga">
 			<div><i class="bi bi-clipboard2-pulse" style="font-size: 50px;"></i></div>
@@ -21,6 +22,7 @@
 			<div class="fs-16 mt-2 pt-2 border-top border-white"><?= $this->lang->line('btn_generate_surgery') ?></div>
 		</button>
 	</div>
+	<?php } ?>
 	<div class="col-md-3">
 		<button class="btn btn-success w-100 mb-3 control_bl_simple" id="btn_weekly_agenda" value="bl_bs">
 			<div><i class="bi bi-journal" style="font-size: 50px;"></i></div>
@@ -45,6 +47,7 @@
 </div>
 <div class="row">
 	<div class="col">
+		<?php if ($doctor->status->code === "enabled"){ ?>
 		<div class="card bl_simple d-none" id="bl_ga">
 			<div class="card-body">
 				<h5 class="card-title"><?= $this->lang->line('w_generate_appointment') ?></h5>
@@ -53,18 +56,6 @@
 						<form class="row g-3" id="app_register_form">
 							<div class="col-md-12">
 								<strong><?= $this->lang->line('w_attention') ?></strong>
-							</div>
-							<div class="col-md-12">
-								<label class="form-label"><?= $this->lang->line('w_specialty') ?></label>
-								<input type="hidden" value="<?= $doctor->specialty_id ?>" name="app[specialty_id]" readonly>
-								<input type="text" class="form-control" value="<?= $doctor->specialty ?>" readonly>
-								<div class="sys_msg" id="aa_specialty_msg"></div>
-							</div>
-							<div class="col-md-12">
-								<label class="form-label"><?= $this->lang->line('w_doctor') ?></label>
-								<input type="hidden" value="<?= $person->id ?>" id="aa_doctor_id" name="app[doctor_id]" readonly>
-								<input type="text" class="form-control" value="<?= $person->name ?>" readonly>
-								<div class="sys_msg" id="aa_doctor_msg"></div>
 							</div>
 							<div class="col-md-4">
 								<label class="form-label"><?= $this->lang->line('w_date') ?></label>
@@ -99,11 +90,23 @@
 								</div>
 								<div class="sys_msg" id="aa_schedule_msg"></div>
 							</div>
+							<div class="col-md-12">
+								<label class="form-label"><?= $this->lang->line('w_specialty') ?></label>
+								<input type="hidden" value="<?= $doctor->specialty_id ?>" name="app[specialty_id]" readonly>
+								<input type="text" class="form-control" value="<?= $doctor->specialty ?>" readonly>
+								<div class="sys_msg" id="aa_specialty_msg"></div>
+							</div>
+							<div class="col-md-12">
+								<label class="form-label"><?= $this->lang->line('w_doctor') ?></label>
+								<input type="hidden" value="<?= $person->id ?>" id="aa_doctor_id" name="app[doctor_id]" readonly>
+								<input type="text" class="form-control" value="<?= $person->name ?>" readonly>
+								<div class="sys_msg" id="aa_doctor_msg"></div>
+							</div>
 							<div class="col-md-12 pt-3">
 								<strong><?= $this->lang->line('w_patient') ?></strong>
 							</div>
 							<input type="hidden" id="aa_pt_id" name="app[patient_id]" value="">
-							<div class="col-md-6">
+							<div class="col-md-12">
 								<label class="form-label"><?= $this->lang->line('w_document') ?></label>
 								<select class="form-select" id="aa_pt_doc_type_id" name="pt[doc_type_id]">
 									<?php foreach($doc_types as $item){ if ($item->sunat_code){ ?>
@@ -112,8 +115,8 @@
 								</select>
 								<div class="sys_msg" id="aa_pt_doc_type_msg"></div>
 							</div>
-							<div class="col-md-6">
-								<label class="form-label d-md-block d-none">&nbsp;</label>
+							<div class="col-md-12">
+								<label class="form-label">Numero</label>
 								<div class="input-group">
 									<input type="text" class="form-control" id="aa_pt_doc_number" name="pt[doc_number]" placeholder="<?= $this->lang->line('txt_number') ?>">
 									<button class="btn btn-primary" type="button" id="btn_aa_search_pt">
@@ -160,18 +163,6 @@
 							<div class="col-md-12">
 								<strong><?= $this->lang->line('w_attention') ?></strong>
 							</div>
-							<div class="col-md-12">
-								<label class="form-label"><?= $this->lang->line('w_specialty') ?></label>
-								<input type="hidden" value="<?= $doctor->specialty_id ?>" name="sur[specialty_id]" readonly>
-								<input type="text" class="form-control" value="<?= $doctor->specialty ?>" readonly>
-								<div class="sys_msg" id="sur_specialty_msg"></div>
-							</div>
-							<div class="col-md-12">
-								<label class="form-label"><?= $this->lang->line('w_doctor') ?></label>
-								<input type="hidden" value="<?= $person->id ?>" id="sur_doctor_id" name="sur[doctor_id]" readonly>
-								<input type="text" class="form-control" value="<?= $person->name ?>" readonly>
-								<div class="sys_msg" id="sur_doctor_msg"></div>
-							</div>
 							<div class="col-md-4">
 								<label class="form-label"><?= $this->lang->line('w_date') ?></label>
 								<input type="text" class="form-control bw date_picker" id="sur_date" name="sch[date]" value="<?= date('Y-m-d') ?>">
@@ -205,6 +196,18 @@
 								</div>
 								<div class="sys_msg" id="sur_schedule_msg"></div>
 							</div>
+							<div class="col-md-12">
+								<label class="form-label"><?= $this->lang->line('w_specialty') ?></label>
+								<input type="hidden" value="<?= $doctor->specialty_id ?>" name="sur[specialty_id]" readonly>
+								<input type="text" class="form-control" value="<?= $doctor->specialty ?>" readonly>
+								<div class="sys_msg" id="sur_specialty_msg"></div>
+							</div>
+							<div class="col-md-12">
+								<label class="form-label"><?= $this->lang->line('w_doctor') ?></label>
+								<input type="hidden" value="<?= $person->id ?>" id="sur_doctor_id" name="sur[doctor_id]" readonly>
+								<input type="text" class="form-control" value="<?= $person->name ?>" readonly>
+								<div class="sys_msg" id="sur_doctor_msg"></div>
+							</div>
 							<div class="col-md-8">
 								<label class="form-label">
 									<span><?= $this->lang->line('w_room') ?></span>
@@ -232,7 +235,7 @@
 								<strong><?= $this->lang->line('w_patient') ?></strong>
 								<input type="hidden" id="sur_pt_id" name="sur[patient_id]" value="">
 							</div>
-							<div class="col-md-6">
+							<div class="col-md-12">
 								<label class="form-label"><?= $this->lang->line('w_document') ?></label>
 								<select class="form-select" id="sur_pt_doc_type_id" name="pt[doc_type_id]">
 									<?php foreach($doc_types as $item){ if ($item->sunat_code){ ?>
@@ -241,8 +244,8 @@
 								</select>
 								<div class="sys_msg" id="sur_pt_doc_type_msg"></div>
 							</div>
-							<div class="col-md-6">
-								<label class="form-label d-md-block d-none">&nbsp;</label>
+							<div class="col-md-12">
+								<label class="form-label">Numero</label>
 								<div class="input-group">
 									<input type="text" class="form-control" id="sur_pt_doc_number" name="pt[doc_number]" placeholder="<?= $this->lang->line('txt_number') ?>">
 									<button class="btn btn-primary" type="button" id="btn_sur_search_pt">
@@ -280,6 +283,7 @@
 				</div>
 			</div>
 		</div>
+		<?php } ?>
 		<div class="card bl_simple d-none" id="bl_bs">
 			<div class="card-body">
 				<h5 class="card-title"><?= $this->lang->line('w_weekly_agenda') ?></h5>
@@ -460,7 +464,7 @@
 											<span class="text-<?= $status_arr[$item->status_id]->color ?>"><?= $this->lang->line($status_arr[$item->status_id]->code) ?></span>
 										</td>
 										<td class="text-right">
-											<a href="<?= base_url() ?>appointment/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
+											<a href="<?= base_url() ?>clinic/appointment/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
 												<i class="bi bi-search"></i>
 											</a>
 										</td>
@@ -506,8 +510,8 @@
 											<?= $this->lang->line($status_arr[$item->status_id]->code) ?>
 										</td>
 										<td class="text-right pr-0">
-											<a href="<?= base_url() ?>surgery/detail/<?= $item->id ?>" class="btn btn-primary">
-												<i class="fas fa-search"></i>
+											<a href="<?= base_url() ?>clinic/surgery/detail/<?= $item->id ?>" class="btn btn-primary">
+												<i class="bi bi-search"></i>
 											</a>
 										</td>
 									</tr>

@@ -21,7 +21,7 @@
 				<?= $this->lang->line('btn_reschedule') ?>
 			</button>
 			<?php if (in_array("cancel", $actions)) $d = ""; else $d = "disabled"; ?>
-			<button type="button" class="btn btn-danger" id="btn_cancel" <?= $d ?>>
+			<button type="button" class="btn btn-danger" id="btn_cancel" <?= $d ?> value="<?= $surgery->id ?>">
 				<?= $this->lang->line('btn_cancel') ?>
 			</button>
 			<?php } ?>
@@ -72,17 +72,6 @@
 							<div class="col-md-12">
 								<strong><?= $this->lang->line('w_attention') ?></strong>
 							</div>
-							<div class="col-md-12">
-								<label class="form-label">
-									<span><?= $this->lang->line('w_doctor') ?></span>
-									<i class="bi bi-clock ms-2" id="ic_doctor_schedule_w" data-bs-toggle="modal" data-bs-target="#md_weekly_doctor_agenda"></i>
-								</label>
-								<div class="form-control"><?= $doctor->name ?></div>
-							</div>
-							<div class="col-md-12">
-								<label class="form-label"><?= $this->lang->line('w_patient') ?></label>
-								<div class="form-control"><?= $patient->name ?></div>
-							</div>
 							<div class="col-md-4">
 								<label class="form-label"><?= $this->lang->line('w_date') ?></label>
 								<input type="text" class="form-control date_picker doc_schedule schedule" id="rs_date" name="date" value="<?= date('Y-m-d', strtotime($surgery->schedule_from)) ?>">
@@ -121,6 +110,17 @@
 									</select>
 								</div>
 								<div class="sys_msg" id="rs_schedule_msg"></div>
+							</div>
+							<div class="col-md-12">
+								<label class="form-label">
+									<span><?= $this->lang->line('w_doctor') ?></span>
+									<i class="bi bi-clock ms-2" id="ic_doctor_schedule_w" data-bs-toggle="modal" data-bs-target="#md_weekly_doctor_agenda"></i>
+								</label>
+								<div class="form-control"><?= $doctor->name ?></div>
+							</div>
+							<div class="col-md-12">
+								<label class="form-label"><?= $this->lang->line('w_patient') ?></label>
+								<div class="form-control"><?= $patient->name ?></div>
 							</div>
 							<div class="col-md-8">
 								<label class="form-label">

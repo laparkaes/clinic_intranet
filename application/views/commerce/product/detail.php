@@ -3,7 +3,7 @@
 	<nav>
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="<?= base_url() ?>"><?= $this->lang->line('w_home') ?></a></li>
-			<li class="breadcrumb-item"><a href="<?= base_url() ?>product"><?= $this->lang->line('products') ?></a></li>
+			<li class="breadcrumb-item"><a href="<?= base_url() ?>commerce/product"><?= $this->lang->line('products') ?></a></li>
 			<li class="breadcrumb-item active"><?= $this->lang->line('txt_detail') ?></li>
 		</ol>
 	</nav>
@@ -160,7 +160,7 @@
 					<div id="bl_images" class="row">
 						<?php foreach($images as $item){
 						$img_path = base_url()."uploaded/products/".$item->product_id."/".$item->filename;
-						if (!strcmp($item->filename, $product->image)) $bd_color = "border-info"; else $bd_color = ""; ?>
+						if (!strcmp($item->filename, $product->image)) $bd_color = "border-primary"; else $bd_color = ""; ?>
 						<div class="col-md-3" id="img_<?= $item->id ?>">
 							<div class="text-center border <?= $bd_color ?> rounded overflow-hidden mb-3 w-100">
 								<div class="overflow-hidden" style="width: 100%; height: 100px;">

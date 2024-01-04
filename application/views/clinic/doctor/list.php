@@ -67,7 +67,7 @@
 								<td><?= $item->person->tel ?></td>
 								<td><span class="text-<?= $status[$item->status_id]->color ?>"><?= $status[$item->status_id]->text ?></span></td>
 								<td class="text-end">
-									<a href="<?= base_url() ?>doctor/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
+									<a href="<?= base_url() ?>clinic/doctor/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
 										<i class="bi bi-arrow-right"></i>
 									</a>
 								</td>
@@ -78,7 +78,7 @@
 					<div class="btn-group" role="group" aria-label="paging">
 						<?php foreach($paging as $p){
 						$f_url["page"] = $p[0]; ?>
-						<a href="<?= base_url() ?>doctor?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
+						<a href="<?= base_url() ?>clinic/doctor?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
 							<?= $p[1] ?>
 						</a>
 						<?php } ?>
