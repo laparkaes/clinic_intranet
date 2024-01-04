@@ -64,14 +64,15 @@ $me = $appointment_datas["medicine"];
 		</td>
 	</tr>
 </table>
-<div style="font-size: 150%; border-bottom: 1px solid black;">
+<br/>
+<div style="font-size: 150%; border-top: 1px solid black; border-bottom: 1px solid black;">
 	<strong>1. <?= $this->lang->line('w_anamnesis') ?></strong>
 </div>
 <br/>
 <div style="font-size: 120%;">
 	<strong>1) <?= $this->lang->line('w_personal_information') ?></strong>
 </div>
-<table class="datatable" style="width: 100%;">
+<table class="datatable">
 	<tr>
 		<td colspan="2" style="width: 50%;">
 			<div><strong><?= $this->lang->line('w_name') ?></strong></div>
@@ -101,37 +102,37 @@ $me = $appointment_datas["medicine"];
 		</td>
 	</tr>
 	<tr>
-		<td style="width: 25%; padding-bottom: 8px;">
+		<td style="width: 25%;">
 			<div><strong><?= $this->lang->line('w_tel') ?></strong></div>
 			<div><?= ($an->tel) ? $an->tel: '-' ?></div>
 		</td>
-		<td style="width: 25%; padding-bottom: 8px;">
+		<td style="width: 25%;">
 			<div><strong><?= $this->lang->line('w_responsible') ?></strong></div>
 			<div><?= ($an->responsible) ? $an->responsible: '-' ?></div>
 		</td>
-		<td style="width: 25%; padding-bottom: 8px;">
+		<td style="width: 25%;">
 			<div><strong><?= $this->lang->line('w_place_of_origin') ?></strong></div>
 			<div><?= ($an->provenance_place) ? $an->provenance_place: '-' ?></div>
 		</td>
-		<td style="width: 25%; padding-bottom: 8px;">
+		<td style="width: 25%;">
 			<div><strong><?= $this->lang->line('w_last_trips') ?></strong></div>
 			<div><?= ($an->last_trips) ? $an->last_trips: '-' ?></div>
 		</td>
 	</tr>
 	<tr>
-		<td style="width: 25%; padding-bottom: 8px;">
+		<td style="width: 25%;">
 			<div><strong><?= $this->lang->line('w_race') ?></strong></div>
 			<div><?= ($an->race) ? $an->race: '-' ?></div>
 		</td>
-		<td style="width: 25%; padding-bottom: 8px;">
+		<td style="width: 25%;">
 			<div><strong><?= $this->lang->line('w_marital_status') ?></strong></div>
 			<div><?= ($an->civil_status) ? $an->civil_status: '-' ?></div>
 		</td>
-		<td style="width: 25%; padding-bottom: 8px;">
+		<td style="width: 25%;">
 			<div><strong><?= $this->lang->line('w_occupation') ?></strong></div>
 			<div><?= ($an->occupation) ? $an->occupation: '-' ?></div>
 		</td>
-		<td style="width: 25%; padding-bottom: 8px;">
+		<td style="width: 25%;">
 			<div><strong><?= $this->lang->line('w_religion') ?></strong></div>
 			<div><?= ($an->religion) ? $an->religion: '-' ?></div>
 		</td>
@@ -157,13 +158,11 @@ $me = $appointment_datas["medicine"];
 		</td>
 	</tr>
 	<tr>
-		<td colspan="4">
+		<td colspan="2" style="width: 50%;">
 			<div><strong><?= $this->lang->line('w_main_symptoms') ?></strong></div>
 			<div><?= ($an->illness_main_symptoms) ? $an->illness_main_symptoms: '-' ?></div>
 		</td>
-	</tr>
-	<tr>
-		<td colspan="4">
+		<td colspan="2" style="width: 50%;">
 			<div><strong><?= $this->lang->line('w_story') ?></strong></div>
 			<div><?= ($an->illness_story) ? $an->illness_story: '-' ?></div>
 		</td>
@@ -173,7 +172,6 @@ $me = $appointment_datas["medicine"];
 <div style="font-size: 120%;">
 	<strong>3) <?= $this->lang->line('w_biological_functions') ?></strong>
 </div>
-
 <table class="datatable" style="width: 100%;">
 	<tr>
 		<td style="width: 25%;">
@@ -212,157 +210,203 @@ $me = $appointment_datas["medicine"];
 		</td>
 	</tr>
 </table>
-
-<div class="title_3 mt-3">
+<br/>
+<div style="font-size: 120%;">
 	<strong>4) <?= $this->lang->line('w_personal_background') ?></strong>
 </div>
-<table class="table table-2 text-center mt-1">
+<div style="font-size: 100%;">
+	<strong>A. <?= $this->lang->line('w_pathological') ?></strong>
+</div>
+<table class="datatable" style="width: 100%;">
 	<tr>
-		<th colspan="2" class="text-left">a. <?= $this->lang->line('w_pathological') ?></th>
+		<td colspan="2">
+			<div><strong><?= $this->lang->line('w_previous_illnesses') ?></strong></div>
+			<div><?= ($an->patho_pre_illnesses_txt) ? $an->patho_pre_illnesses_txt : "-" ?></div>
+		</td>
 	</tr>
 	<tr>
-		<th colspan="2"><?= $this->lang->line('w_previous_illnesses') ?></th>
+		<td style="width: 50%;">
+			<div><strong><?= $this->lang->line('w_previous_hospitalizations') ?></strong></div>
+			<div class="pre-line"><?= ($an->patho_pre_hospitalization) ? $an->patho_pre_hospitalization : "-" ?></div>
+		</td>
+		<td style="width: 50%;">
+			<div><strong><?= $this->lang->line('w_previous_surgeries') ?></strong></div>
+			<div class="pre-line"><?= ($an->patho_pre_surgery)? $an->patho_pre_surgery : "-" ?></div>
+		</td>
 	</tr>
 	<tr>
-		<td colspan="2"><?= $an->patho_pre_illnesses_txt ?></td>
+		<td style="width: 50%;">
+			<div><strong><?= $this->lang->line('w_ram') ?></strong></div>
+			<div class="pre-line"><?= ($an->patho_ram) ? $an->patho_ram : "-" ?></div>
+		</td>
+		<td style="width: 50%;">
+			<div><strong><?= $this->lang->line('w_transfusions') ?></strong></div>
+			<div class="pre-line"><?= ($an->patho_transfusion)? $an->patho_transfusion : "-" ?></div>
+		</td>
 	</tr>
 	<tr>
-		<th><?= $this->lang->line('w_previous_hospitalizations') ?></th>
-		<th><?= $this->lang->line('w_previous_surgeries') ?></th>
+		<td colspan="2">
+			<div><strong><?= $this->lang->line('w_prior_medication') ?></strong></div>
+			<div class="pre-line"><?= ($an->patho_pre_medication) ? $an->patho_pre_medication : "-" ?></div>
+		</td>
 	</tr>
 	<tr>
-		<td class="pre-line"><?= $an->patho_pre_hospitalization ?></td>
-		<td class="pre-line"><?= $an->patho_pre_surgery ?></td>
-	</tr>
-	<tr>
-		<th><?= $this->lang->line('w_ram') ?></th>
-		<th><?= $this->lang->line('w_transfusions') ?></th>
-	</tr>
-	<tr>
-		<td><?= $an->patho_ram ?></td>
-		<td><?= $an->patho_transfusion ?></td>
-	</tr>
-	<tr>
-		<th colspan="2"><?= $this->lang->line('w_prior_medication') ?></th>
-	</tr>
-	<tr>
-		<td colspan="2"><?= $an->patho_pre_medication ?></td>
-	</tr>
-</table>
-<table class="table table-4 text-center mt-1">
-	<tr>
-		<th colspan="4" class="text-left">b. <?= $this->lang->line('w_gynecological') ?></th>
-	</tr>
-	<tr>
-		<th><?= $this->lang->line('w_fur') ?></th>
-		<th><?= $this->lang->line('w_g') ?></th>
-		<th><?= $this->lang->line('w_p') ?></th>
-		<th><?= $this->lang->line('w_mac') ?></th>
-	</tr>
-	<tr>
-		<td><?= $an->gyne_fur ?></td>
-		<td><?= $an->gyne_g ?></td>
-		<td><?= $an->gyne_p ?></td>
-		<td><?= $an->gyne_mac ?></td>
+		<td colspan="2">
+			<div><strong><?= $this->lang->line('w_family_background') ?></strong></div>
+			<div class="pre-line"><?= ($an->family_history) ? $an->family_history : "-" ?></div>
+		</td>
 	</tr>
 </table>
-<table class="table table-2 text-center mt-1">
+<br/>
+<div style="font-size: 100%;">
+	<strong>B. <?= $this->lang->line('w_gynecological') ?></strong>
+</div>
+<table class="datatable" style="width: 100%;">
 	<tr>
-		<th colspan="2" class="text-left">c. <?= $this->lang->line('w_family_background') ?></th>
-	</tr>
-	<tr>
-		<td colspan="2" class="text-left pre-line"><?= $an->family_history ?></td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_fur') ?></strong></div>
+			<div><?= ($an->gyne_fur) ? $an->gyne_fur : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_g') ?></strong></div>
+			<div><?= ($an->gyne_g)? $an->gyne_g : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_p') ?></strong></div>
+			<div><?= ($an->gyne_p) ? $an->gyne_p : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_mac') ?></strong></div>
+			<div><?= ($an->gyne_mac)? $an->gyne_mac : "-" ?></div>
+		</td>
 	</tr>
 </table>
-<div class="title_2 mt-4">
+<br/>
+<div style="font-size: 150%; border-top: 1px solid black; border-bottom: 1px solid black;">
 	<strong>2. <?= $this->lang->line('w_physical_exam') ?></strong>
 </div>
-<div class="title_3 mt-3">
+<br/>
+<div style="font-size: 120%;">
 	<strong>1) <?= $this->lang->line('w_vital_functions') ?></strong>
 </div>
-<table class="table table-4 text-center mt-1">
+<table class="datatable" style="width: 100%;">
 	<tr>
-		<th><?= $this->lang->line('w_pa') ?></th>
-		<th><?= $this->lang->line('w_fc') ?></th>
-		<th><?= $this->lang->line('w_fr') ?></th>
-		<th><?= $this->lang->line('w_temperature') ?></th>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_pa') ?></strong></div>
+			<div><?= ($ph->v_pa) ? $ph->v_pa : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_fc') ?></strong></div>
+			<div><?= ($ph->v_fc)? $ph->v_fc : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_fr') ?></strong></div>
+			<div><?= ($ph->v_fr) ? $ph->v_fr : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_temperature') ?></strong></div>
+			<div><?= ($ph->v_temperature)? $ph->v_temperature : "-" ?></div>
+		</td>
 	</tr>
 	<tr>
-		<td><?= $ph->v_pa ?></td>
-		<td><?= $ph->v_fc ?></td>
-		<td><?= $ph->v_fr ?></td>
-		<td><?= $ph->v_temperature ?></td>
-	</tr>
-	<tr>
-		<th><?= $this->lang->line('w_weight') ?></th>
-		<th><?= $this->lang->line('w_height') ?></th>
-		<th><?= $this->lang->line('w_bmi') ?></th>
-		<th><?= $this->lang->line('w_class') ?></th>
-	</tr>
-	<tr>
-		<td><?= $ph->v_weight ?></td>
-		<td><?= $ph->v_height ?></td>
-		<td><?= $ph->v_imc ?></td>
-		<td><?= $ph->v_imc_class ?></td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_weight') ?></strong></div>
+			<div><?= ($ph->v_weight) ? $ph->v_weight : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_height') ?></strong></div>
+			<div><?= ($ph->v_height)? $ph->v_height : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_bmi') ?></strong></div>
+			<div><?= ($ph->v_imc) ? $ph->v_imc : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_class') ?></strong></div>
+			<div><?= ($ph->v_imc_class)? $ph->v_imc_class : "-" ?></div>
+		</td>
 	</tr>
 </table>
-<div class="title_3 mt-3">
+<br/>
+<div style="font-size: 120%;">
 	<strong>2) <?= $this->lang->line('w_general_exam') ?></strong>
 </div>
-<table class="table table-2 table-glue text-center mt-1">
+<table class="datatable" style="width: 100%;">
 	<tr>
-		<th><?= $this->lang->line('w_appearance') ?></th>
-		<th><?= $this->lang->line('w_skin') ?></th>
-	</tr>
-	<tr>
-		<td class="text-left pre-line"><?= $ph->g_appearance ?></td>
-		<td class="text-left pre-line"><?= $ph->g_skin ?></td>
+		<td colspan="4">
+			<div><strong><?= $this->lang->line('w_appearance') ?></strong></div>
+			<div class="pre-line"><?= ($ph->g_appearance) ? $ph->g_appearance : "-" ?></div>
+		</td>
 	</tr>
 </table>
-<table class="table table-3 text-center">
+<table class="datatable" style="width: 100%;">
 	<tr>
-		<th><?= $this->lang->line('w_tcsc') ?></th>
-		<th><?= $this->lang->line('w_soma') ?></th>
-		<th><?= $this->lang->line('w_lymphatic') ?></th>
-	</tr>
-	<tr>
-		<td class="text-left pre-line"><?= $ph->g_tcsc ?></td>
-		<td class="text-left pre-line"><?= $ph->g_soma ?></td>
-		<td class="text-left pre-line"><?= $ph->g_lymphatic ?></td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_skin') ?></strong></div>
+			<div class="pre-line"><?= ($ph->g_skin)? $ph->g_skin : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_tcsc') ?></strong></div>
+			<div class="pre-line"><?= ($ph->g_tcsc) ? $ph->g_tcsc : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_soma') ?></strong></div>
+			<div class="pre-line"><?= ($ph->g_soma)? $ph->g_soma : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_lymphatic') ?></strong></div>
+			<div class="pre-line"><?= ($ph->g_lymphatic)? $ph->g_lymphatic : "-" ?></div>
+		</td>
 	</tr>
 </table>
-<div class="title_3 mt-3">
+<br/>
+<div style="font-size: 120%;">
 	<strong>3) <?= $this->lang->line('w_regional_examination') ?></strong>
 </div>
-<table class="table table-4 text-center mt-1">
+<table class="datatable" style="width: 100%;">
 	<tr>
-		<th><?= $this->lang->line('w_head') ?></th>
-		<th><?= $this->lang->line('w_neck') ?></th>
-		<th><?= $this->lang->line('w_breasts') ?></th>
-		<th><?= $this->lang->line('w_chest_and_lungs') ?></th>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_head') ?></strong></div>
+			<div class="pre-line"><?= ($ph->r_head) ? $ph->r_head : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_neck') ?></strong></div>
+			<div class="pre-line"><?= ($ph->r_neck)? $ph->r_neck : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_breasts') ?></strong></div>
+			<div class="pre-line"><?= ($ph->r_breasts) ? $ph->r_breasts : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_chest_and_lungs') ?></strong></div>
+			<div class="pre-line"><?= ($ph->r_thorax_lungs)? $ph->r_thorax_lungs : "-" ?></div>
+		</td>
 	</tr>
 	<tr>
-		<td class="text-left pre-line"><?= $ph->r_head ?></td>
-		<td class="text-left pre-line"><?= $ph->r_neck ?></td>
-		<td class="text-left pre-line"><?= $ph->r_breasts ?></td>
-		<td class="text-left pre-line"><?= $ph->r_thorax_lungs ?></td>
-	</tr>
-	<tr>
-		<th><?= $this->lang->line('w_cardiovascular') ?></th>
-		<th><?= $this->lang->line('w_abdomen') ?></th>
-		<th><?= $this->lang->line('w_genitourinary') ?></th>
-		<th><?= $this->lang->line('w_neurological') ?></th>
-	</tr>
-	<tr>
-		<td class="text-left pre-line"><?= $ph->r_cardiovascular ?></td>
-		<td class="text-left pre-line"><?= $ph->r_abdomen ?></td>
-		<td class="text-left pre-line"><?= $ph->r_genitourinary ?></td>
-		<td class="text-left pre-line"><?= $ph->r_neurologic ?></td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_cardiovascular') ?></strong></div>
+			<div class="pre-line"><?= ($ph->r_cardiovascular) ? $ph->r_cardiovascular : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_abdomen') ?></strong></div>
+			<div class="pre-line"><?= ($ph->r_abdomen)? $ph->r_abdomen : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_genitourinary') ?></strong></div>
+			<div class="pre-line"><?= ($ph->r_genitourinary) ? $ph->r_genitourinary : "-" ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_neurological') ?></strong></div>
+			<div class="pre-line"><?= ($ph->r_neurologic)? $ph->r_neurologic : "-" ?></div>
+		</td>
 	</tr>
 </table>
-<div class="title_2 mt-4">
+<br/>
+<div style="font-size: 150%; border-top: 1px solid black; border-bottom: 1px solid black;">
 	<strong>3. <?= $this->lang->line('w_diagnostic_impression') ?></strong>
 </div>
+
+
 <table class="table text-center mt-1">
 	<tr>
 		<th>#</th>
