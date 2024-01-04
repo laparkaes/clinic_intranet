@@ -3,27 +3,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<style>
 	html, body{padding: 0; font-size: 12px; font-family: 'poppins', sans-serif; line-height: 1.5; color: black;}
-	.title_1{font-size: 150%;}
-	.title_2{font-size: 135%;}
-	.title_3{font-size: 120%;}
+	
 	.text-center{text-align: center;}
 	.text-left{text-align: left;}
-	
-	
-	.table-5 td, .table-5 th {width: 20%;}
-	.table-4 td, .table-4 th {width: 25%;}
-	.table-3 td, .table-3 th {width: 33.33%;}
-	.table-2 td, .table-2 th {width: 50%;}
-
-	.mt-1{margin-top: 0.5rem;}
-	.mt-2{margin-top: 1rem;}
-	.mt-3{margin-top: 2rem;}
-	.mt-4{margin-top: 3rem;}
 	
 	.pre-line {white-space: pre-line;}
 	
 	.datatable{width: 100%;}
-	.datatable td{vertical-align: top; padding-bottom: 8px;}
+	.datatable td{vertical-align: top; padding: 4px;}
 	
 	</style>
 </head>
@@ -405,128 +392,195 @@ $me = $appointment_datas["medicine"];
 <div style="font-size: 150%; border-top: 1px solid black; border-bottom: 1px solid black;">
 	<strong>3. <?= $this->lang->line('w_diagnostic_impression') ?></strong>
 </div>
-
-
-<table class="table text-center mt-1">
+<table class="datatable" style="width: 100%;">
 	<tr>
-		<th>#</th>
-		<th><?= $this->lang->line('w_cie10') ?></th>
-		<th><?= $this->lang->line('w_description') ?></th>
+		<td style="width: 8%; padding-bottom: 0;">
+			<div><strong>#</strong></div>
+		</td>
+		<td style="width: 17%; padding-bottom: 0;">
+			<div><strong><?= $this->lang->line('w_cie10') ?></strong></div>
+		</td>
+		<td style="width: 75%; padding-bottom: 0;">
+			<div><strong><?= $this->lang->line('w_description') ?></strong></div>
+		</td>
 	</tr>
 	<?php foreach($di as $i => $d){ ?>
 	<tr>
-		<td><?= $i + 1 ?></td>
-		<td><?= $d->code ?></td>
-		<td class="text-left"><?= $d->description ?></td>
+		<td style="padding-bottom: 0;"><?= $i + 1 ?></td>
+		<td style="padding-bottom: 0;"><?= $d->code ?></td>
+		<td style="padding-bottom: 0;"><?= $d->description ?></td>
 	</tr>
 	<?php } ?>
 </table>
-<div class="title_2 mt-4">
+<br/>
+<div style="font-size: 150%; border-top: 1px solid black; border-bottom: 1px solid black;">
 	<strong>4. <?= $this->lang->line('w_result') ?></strong>
 </div>
-<table class="table table-3 text-center mt-1">
+<table class="datatable" style="width: 100%;">
 	<tr>
-		<th><?= $this->lang->line('w_diagnosis') ?> [<?= $re->type ?>]</th>
-		<th><?= $this->lang->line('w_workplan') ?></th>
-		<th><?= $this->lang->line('w_treatment') ?></th>
-	</tr>
-	<tr>
-		<td class="text-left pre-line"><?= $re->diagnosis ?></td>
-		<td class="text-left pre-line"><?= $re->plan ?></td>
-		<td class="text-left pre-line"><?= $re->treatment ?></td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_diagnosis') ?></strong></div>
+			<div class="pre-line"><?= $re->type ?><br/><?= ($re->diagnosis) ? $re->diagnosis : null ?></div>
+		</td>
+		<td style="width: 37.5%;">
+			<div><strong><?= $this->lang->line('w_workplan') ?></strong></div>
+			<div class="pre-line"><?= ($re->plan) ? $re->plan : "-" ?></div>
+		</td>
+		<td style="width: 37.5%;">
+			<div><strong><?= $this->lang->line('w_treatment') ?></strong></div>
+			<div class="pre-line"><?= ($re->treatment) ? $re->treatment : "-" ?></div>
+		</td>
 	</tr>
 </table>
-<div class="title_2 mt-4">
+<br/>
+<div style="font-size: 150%; border-top: 1px solid black; border-bottom: 1px solid black;">
 	<strong>5. <?= $this->lang->line('w_auxiliary_exam') ?></strong>
 </div>
-<div class="title_3 mt-3">
+<div style="font-size: 120%;">
 	<strong>1) <?= $this->lang->line('w_laboratory') ?></strong>
 </div>
-<table class="table text-center mt-1">
+<?php if ($ex_profiles or $ex_examinations){ ?>
+<table class="datatable" style="width: 100%;">
 	<tr>
-		<th>#</th>
-		<th><?= $this->lang->line('w_type') ?></th>
-		<th><?= $this->lang->line('w_profile') ?></th>
-		<th style="width: 60%;"><?= $this->lang->line('w_exams') ?></th>
+		<td style="width: 8%; padding-bottom: 0;">
+			<div><strong>#</strong></div>
+		</td>
+		<td style="width: 17%; padding-bottom: 0;">
+			<div><strong><?= $this->lang->line('w_type') ?></strong></div>
+		</td>
+		<td style="width: 25%; padding-bottom: 0;">
+			<div><strong><?= $this->lang->line('w_profile') ?></strong></div>
+		</td>
+		<td style="width: 50%; padding-bottom: 0;">
+			<div><strong><?= $this->lang->line('w_exams') ?></strong></div>
+		</td>
 	</tr>
 	<?php foreach($ex_profiles as $i => $ep){ ?>
 	<tr>
-		<td><?= $i + 1 ?></td>
-		<td><?= $ep->type ?></td>
-		<td><?= $ep->name ?></td>
-		<td class="text-left"><?= $ep->exams ?></td>
+		<td style="padding-bottom: 0;"><?= $i + 1 ?></td>
+		<td style="padding-bottom: 0;"><?= $ep->type ?></td>
+		<td style="padding-bottom: 0;"><?= $ep->name ?></td>
+		<td style="padding-bottom: 0;"><?= $ep->exams ?></td>
 	</tr>
 	<?php } foreach($ex_examinations as $j => $ee){ ?>
 	<tr>
-		<td><?= $i + $j + 2 ?></td>
-		<td><?= $ee->type ?></td>
-		<td>-</td>
-		<td class="text-left"><?= $ee->name ?></td>
+		<td style="padding-bottom: 0;"><?= $i + $j + 2 ?></td>
+		<td style="padding-bottom: 0;"><?= $ee->type ?></td>
+		<td style="padding-bottom: 0;">-</td>
+		<td style="padding-bottom: 0;"><?= $ee->name ?></td>
 	</tr>
 	<?php } ?>
 </table>
-<div class="title_3 mt-3">
+<?php }else{ ?>
+<div>No se aplica</div>
+<?php } ?>
+<br/>
+<div style="font-size: 120%;">
 	<strong>2) <?= $this->lang->line('w_image') ?></strong>
 </div>
-<table class="table text-center mt-1">
+<?php if ($im){ ?>
+<table class="datatable" style="width: 100%;">
 	<tr>
-		<th>#</th>
-		<th><?= $this->lang->line('w_category') ?></th>
-		<th style="width: 60%;"><?= $this->lang->line('w_image') ?></th>
+		<td style="width: 8%; padding-bottom: 0;">
+			<div><strong>#</strong></div>
+		</td>
+		<td style="width: 17%; padding-bottom: 0;">
+			<div><strong><?= $this->lang->line('w_category') ?></strong></div>
+		</td>
+		<td style="width: 75%; padding-bottom: 0;">
+			<div><strong><?= $this->lang->line('w_image') ?></strong></div>
+		</td>
 	</tr>
 	<?php foreach($im as $i => $item){ ?>
 	<tr>
-		<td><?= $i + 1 ?></td>
-		<td><?= $item->category ?></td>
-		<td class="text-left"><?= $item->name ?></td>
+		<td style="padding-bottom: 0;"><?= $i + 1 ?></td>
+		<td style="padding-bottom: 0;"><?= $item->category ?></td>
+		<td style="padding-bottom: 0;"><?= $item->name ?></td>
 	</tr>
 	<?php } ?>
 </table>
-<div class="title_2 mt-4">
+<?php }else{ ?>
+<div>No se aplica</div>
+<?php } ?>
+<br/>
+<div style="font-size: 150%; border-top: 1px solid black; border-bottom: 1px solid black;">
 	<strong>6. <?= $this->lang->line('w_treatment') ?></strong>
 </div>
-<div class="title_3 mt-3">
+<div style="font-size: 120%;">
 	<strong>1) <?= $this->lang->line('w_medicine') ?></strong>
 </div>
-<table class="table text-center mt-1">
+<?php if ($me){ ?>
+<table class="datatable" style="width: 100%;">
 	<tr>
-		<th>#</th>
-		<th><?= $this->lang->line('w_medicine') ?></th>
-		<th style="width: 60%;"><?= $this->lang->line('w_detail') ?></th>
+		<td style="width: 8%; padding-bottom: 0;">
+			<div><strong>#</strong></div>
+		</td>
+		<td style="width: 17%; padding-bottom: 0;">
+			<div><strong><?= $this->lang->line('w_medicine') ?></strong></div>
+		</td>
+		<td style="width: 75%; padding-bottom: 0;">
+			<div><strong><?= $this->lang->line('w_detail') ?></strong></div>
+		</td>
 	</tr>
 	<?php foreach($me as $i => $m){ ?>
 	<tr>
-		<td><?= $i + 1 ?></td>
-		<td><?= $m->medicine ?></td>
-		<td class="text-left"><?= $m->sub_txt ?></td>
+		<td style="padding-bottom: 0;"><?= $i + 1 ?></td>
+		<td style="padding-bottom: 0;"><?= $m->medicine ?></td>
+		<td style="padding-bottom: 0;"><?= $m->sub_txt ?></td>
 	</tr>
 	<?php } ?>
 </table>
-<div class="title_3 mt-3">
+<?php }else{ ?>
+<div>No se aplica</div>
+<?php } ?>
+<br/>
+<div style="font-size: 120%;">
 	<strong>2) <?= $this->lang->line('w_physical_therapy') ?></strong>
 </div>
-<table class="table text-center mt-1">
+<?php if ($th){ ?>
+<table class="datatable">
 	<tr>
-		<th>#</th>
-		<th><?= $this->lang->line('w_therapy') ?></th>
-		<th style="width: 60%;"><?= $this->lang->line('w_detail') ?></th>
+		<td style="width: 8%; padding-bottom: 0;">
+			<div><strong>#</strong></div>
+		</td>
+		<td style="width: 17%; padding-bottom: 0;">
+			<div><strong><?= $this->lang->line('w_therapy') ?></strong></div>
+		</td>
+		<td style="width: 75%; padding-bottom: 0;">
+			<div><strong><?= $this->lang->line('w_detail') ?></strong></div>
+		</td>
 	</tr>
 	<?php foreach($th as $i => $t){ ?>
 	<tr>
-		<td><?= $i + 1 ?></td>
-		<td><?= $t->physical_therapy ?></td>
-		<td class="text-left"><?= $t->sub_txt ?></td>
+		<td style="padding-bottom: 0;"><?= $i + 1 ?></td>
+		<td style="padding-bottom: 0;"><?= $t->physical_therapy ?></td>
+		<td style="padding-bottom: 0;"><?= $t->sub_txt ?></td>
 	</tr>
 	<?php } ?>
 </table>
-<table class="table table_2 text-center" style="margin-top: 150px; border: 1px solid #000;">
+<?php }else{ ?>
+<div>No se aplica</div>
+<?php } ?>
+<br/>
+<br/>
+<br/>
+<br/>
+<table style="width: 70%; border: 1px solid #000; border-collapse: collapse; margin: 0 auto; text-align: center;">
 	<tr>
-		<td style="width: 50%; height: 150px; border-right: 1px solid #000;"></td>
-		<td></td>
+		<td style="width: 50%; border: 1px solid #000;">
+			<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+		</td>
+		<td style="width: 50%; border: 1px solid #000;">
+			<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+		</td>
 	</tr>
 	<tr>
-		<th style="border-right: 1px solid #000;">Int. Medicina</th>
-		<th>Dr. <?= $doctor->name ?> / <?= $doctor->data->license ?></th>
+		<td style="width: 50%; border: 1px solid #000;">
+			Int. Medicina
+		</td>
+		<td style="width: 50%; border: 1px solid #000;">
+			Dr. <?= $doctor->name ?> / <?= $doctor->data->license ?>
+		</td>
 	</tr>
 </table>
 </body>
