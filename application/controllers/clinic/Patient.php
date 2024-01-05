@@ -77,7 +77,7 @@ class Patient extends CI_Controller {
 		$specialties = $this->general->all("specialty", "name", "asc");
 		foreach($specialties as $item){
 			$f_aux["specialty_id"] = $item->id;
-			$item->dr_qty = $this->general->counter("doctor", $f_aux);
+			$item->doctor_qty = $this->general->counter("doctor", $f_aux);
 			$specialty_arr[$item->id] = $item->name;
 		}
 		

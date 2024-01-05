@@ -81,6 +81,7 @@ class Doctor extends CI_Controller {
 		if ($account) $account = $account[0]; else $account = $this->general->structure("account");
 		
 		//set doctor data
+		$doctor->person = $person;
 		$doctor->specialty = $this->general->id("specialty", $doctor->specialty_id)->name;
 		$doctor->status = $this->general->id("status", $doctor->status_id);
 		

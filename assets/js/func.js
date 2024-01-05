@@ -247,7 +247,6 @@ function load_doctor_schedule_weekly(doctor_id, date, dom_id){
 	});
 }
 
-
 function load_room_availability(room_id, date, dom_id){
 	$("#" + dom_id).html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
 	$.ajax({

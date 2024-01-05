@@ -39,109 +39,7 @@
 <div class="row">
 	<div class="col">
 		<div class="card bl_simple d-none" id="bl_ga">
-			<div class="card-body">
-				<h5 class="card-title"><?= $this->lang->line('w_generate_appointment') ?></h5>
-				<div class="row">
-					<div class="col-md-6">
-						<form class="row g-3" id="add_appointment_form">
-							<div class="col-md-12">
-								<strong><?= $this->lang->line('w_attention') ?></strong>
-							</div>
-							<div class="col-md-4">
-								<label class="form-label"><?= $this->lang->line('w_date') ?></label>
-								<input type="text" class="form-control date_picker" id="aa_date" name="sch[date]" value="<?= date('Y-m-d') ?>">
-								<div class="sys_msg" id="aa_date_msg"></div>
-							</div>
-							<div class="col-md-8">
-								<label class="form-label"><?= $this->lang->line('w_time') ?></label>
-								<div class="input-group">
-									<select class="form-select" id="aa_hour" name="sch[hour]">
-										<option value="" selected>--</option>
-										<?php for($i = 9; $i <= 18; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
-										<option value="<?= $i ?>">
-											<?php 
-											switch(true){
-												case $i < 12: echo $i." AM"; break;
-												case $i == 12: echo $i." M"; break;
-												case $i > 12: echo ($i - 12)." PM"; break;
-											}
-											?>
-										</option>
-										<?php } ?>
-									</select>
-									<span class="input-group-text">:</span>
-									<select class="form-select" id="aa_min" name="sch[min]">
-										<option value="" selected>--</option>
-										<option value="00">00</option>
-										<option value="15">15</option>
-										<option value="30">30</option>
-										<option value="45">45</option>
-									</select>
-								</div>
-								<div class="sys_msg" id="aa_schedule_msg"></div>
-							</div>
-							<div class="col-md-12">
-								<label class="form-label"><?= $this->lang->line('w_specialty') ?></label>
-								<select class="form-select" id="aa_specialty" name="app[specialty_id]">
-									<option value="">--</option>
-									<?php foreach($specialties as $item){ if($item->dr_qty){ ?>
-									<option value="<?= $item->id ?>"><?= $item->name ?></option>
-									<?php }} ?>
-								</select>
-								<div class="sys_msg" id="aa_specialty_msg"></div>
-							</div>
-							<div class="col-md-12">
-								<label class="form-label">
-									<span><?= $this->lang->line('w_doctor') ?></span>
-									<i class="bi bi-alarm ms-2" id="ic_doctor_schedule_w_aa" data-bs-toggle="modal" data-bs-target="#md_weekly_doctor_agenda"></i>
-								</label>
-								<select class="form-select" id="aa_doctor" name="app[doctor_id]">
-									<option value="">--</option>
-									<?php foreach($doctors as $item){ if ($item->status_id == $s_enabled->id){ ?>
-									<option class="spe spe_<?= $item->specialty_id ?> d-none" value="<?= $item->person_id ?>"><?= $item->name ?></option>
-									<?php }} ?>
-								</select>
-								<div class="sys_msg" id="aa_doctor_msg"></div>
-							</div>
-							<div class="col-md-12 pt-3">
-								<strong><?= $this->lang->line('w_patient') ?></strong>
-							</div>
-							<input type="hidden" id="aa_pt_id" name="app[patient_id]" value="<?= $person->id ?>">
-							<div class="col-md-12">
-								<input type="hidden" name="pt[doc_type_id]" value="<?= $person->doc_type_id ?>">
-								<input type="hidden" name="pt[doc_number]" value="<?= $person->doc_number ?>">
-								<label class="form-label"><?= $this->lang->line('w_document') ?></label>
-								<input type="text" class="form-control" value="<?= $person->doc_type." ".$person->doc_number ?>" readonly>
-								<div class="sys_msg" id="pt_doc_msg"></div>
-							</div>
-							<div class="col-md-8">
-								<label class="form-label"><?= $this->lang->line('w_name') ?></label>
-								<input type="text" class="form-control" name="pt[name]" value="<?= $person->name ?>" readonly>
-								<div class="sys_msg" id="pt_name_msg"></div>
-							</div>
-							<div class="col-md-4">
-								<label class="form-label"><?= $this->lang->line('w_tel') ?></label>
-								<input type="text" class="form-control" name="pt[tel]" value="<?= $person->tel ?>">
-								<div class="sys_msg" id="pt_tel_msg"></div>
-							</div>
-							<div class="col-md-12">
-								<label class="form-label"><?= $this->lang->line('w_remark') ?> (<?= $this->lang->line('w_optional') ?>)</label>
-								<textarea class="form-control" rows="4" name="app[remark]" placeholder="<?= $this->lang->line('t_remark') ?>"></textarea>
-							</div>
-							<div class="col-md-12 pt-3 mb-0">
-								<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
-							</div>
-						</form>
-					</div>
-					<div class="col-md-6">
-						<div class="d-flex justify-content-between mb-3">
-							<strong><?= $this->lang->line('w_doctor_agenda') ?></strong>
-							<span><i class="bi bi-square-fill text-success"></i> <?= $this->lang->line('txt_busy') ?></span>
-						</div>
-						<div id="aa_schedule_list"></div>
-					</div>
-				</div>
-			</div>
+			<?php $this->load->view("clinic/appointment/form_add_appointment", ["patient" => $person, "doctor" => null]); ?>
 		</div>
 		<div class="card bl_simple d-none" id="bl_gs">
 			<div class="card-body">
@@ -451,14 +349,17 @@
 										<td>
 											<div class="text-nowrap"><?= date("h:i A", strtotime($item->schedule_from)) ?></div>
 										</td>
-										<td><?= $doctors_arr[$item->doctor_id]->name ?><br/><?= $specialty_arr[$item->specialty_id] ?></td>
-										<td class="text-<?= $status_arr[$item->status_id]->color ?>">
-											<?= $this->lang->line($status_arr[$item->status_id]->code) ?>
+										<td>
+											<?= $doctors_arr[$item->doctor_id]->name ?><br/>
+											<?= $specialty_arr[$item->specialty_id] ?>
 										</td>
-										<td class="text-end">
-											<a href="<?= base_url() ?>clinic/appointment/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
-												<i class="bi bi-search"></i>
-											</a>
+										<td>
+											<span class="text-<?= $status_arr[$item->status_id]->color ?>"><?= $this->lang->line($status_arr[$item->status_id]->code) ?></span>
+										</td>
+										<td>
+											<div class="text-end">
+												<a href="<?= base_url() ?>clinic/appointment/detail/<?= $item->id ?>" class="btn btn-primary btn-sm"><i class="bi bi-search"></i></a>
+											</div>
 										</td>
 									</tr>
 									<?php } ?>

@@ -43,21 +43,6 @@ class Appointment extends CI_Controller {
 			$item->specialty = $this->general->id("specialty", $item->specialty_id)->name;
 		}
 		
-		$aux_f = ["status_id" => $this->general->status("enabled")->id];
-		$specialties = $this->general->all("specialty", "name", "asc");
-		foreach($specialties as $s){
-			$aux_f["specialty_id"] = $s->id;
-			$s->doctor_qty = $this->general->counter("doctor", $aux_f);
-		}
-		unset($aux_f["specialty_id"]);
-		
-		$doctors = $this->general->filter("doctor", $aux_f);
-		foreach($doctors as $d){
-			if (!$this->general->id("person", $d->person_id)) echo $d->person_id."<br/>";
-			$d->name = $this->general->id("person", $d->person_id)->name;
-		}
-		usort($doctors, function($a, $b) {return strcmp(strtoupper($a->name), strtoupper($b->name));});
-		
 		$status_aux = [];
 		$status_ids = $this->general->only("appointment", "status_id");
 		foreach($status_ids as $item) $status_aux[] = $item->status_id;
@@ -75,8 +60,6 @@ class Appointment extends CI_Controller {
 			"status" => $status,
 			"status_arr" => $status_arr,
 			"appointments" => $appointments,
-			"specialties" => $specialties,
-			"doctors" => $doctors,
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"title" => $this->lang->line('appointments'),
 			"main" => $this->path."list",
@@ -1068,7 +1051,7 @@ class Appointment extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg, "medicines" => $medicines]);
 	}
 	
-	public function clinical_history($id){
+	public function medical_history($id){
 		if (!$this->utility_lib->check_access("appointment", "report")) redirect("/errors/no_permission");
 		
 		$appointment = $this->general->id("appointment", $id);
@@ -1103,7 +1086,7 @@ class Appointment extends CI_Controller {
 			"patient" => $patient
 		];
 		
-		$html = $this->load->view('clinic/appointment/clinical_history', $data, true);
+		$html = $this->load->view('clinic/appointment/medical_history', $data, true);
 		$filename = str_replace(" ", "_", $patient->name)."_".$patient->doc_number."_".$appointment->id;
 		
 		$this->load->library('dompdf_lib');

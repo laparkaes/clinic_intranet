@@ -13,7 +13,7 @@
 		<?php if ($actions){ ?>
 		<div class="btn-group">
 			<?php if (in_array("clinic_history", $actions)){ ?>
-			<a class="btn btn-primary" href="<?= base_url() ?>clinic/appointment/clinical_history/<?= $appointment->id ?>" target="_blank">
+			<a class="btn btn-primary" href="<?= base_url() ?>clinic/appointment/medical_history/<?= $appointment->id ?>" target="_blank">
 				<?= $this->lang->line('w_clinical_history') ?>
 			</a>
 			<?php } if (in_array("reschedule", $actions)) $d = ""; else $d = "disabled"; ?>
