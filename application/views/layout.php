@@ -116,21 +116,25 @@
 					<i class="bi bi-cart"></i><span>Comercio</span><i class="bi bi-chevron-down ms-auto"></i>
 				</a>
 				<ul id="commerce-nav" class="nav-content collapse <?= ($this->nav_menu[0] === "commerce") ? "show" : "" ?>" data-bs-parent="#sidebar-nav">
+					<?php if (in_array("sale", $this->nav_menus)){ ?>
 					<li>
 						<a href="<?= base_url() ?>commerce/sale" class="<?= ($this->nav_menu[1] === "sale") ? "active" : "" ?>">
 							<i class="bi bi-circle"></i><span>Ventas</span>
 						</a>
 					</li>
+					<?php } if (in_array("purchase", $this->nav_menus)){ ?>
 					<li>
 						<a href="<?= base_url() ?>commerce/purchase" class="<?= ($this->nav_menu[1] === "purchase") ? "active" : "" ?>">
 							<i class="bi bi-circle"></i><span>Compras</span>
 						</a>
 					</li>
+					<?php } if (in_array("product", $this->nav_menus)){ ?>
 					<li>
 						<a href="<?= base_url() ?>commerce/product" class="<?= ($this->nav_menu[1] === "product") ? "active" : "" ?>">
 							<i class="bi bi-circle"></i><span>Productos</span>
 						</a>
 					</li>
+					<?php } ?>
 				</ul>
 			</li>
 			<?php } if (in_array("moneyflow", $this->nav_menus)){ ?>
