@@ -44,7 +44,7 @@ if (!$doctor){
 				<div class="col-md-12">
 					<label class="form-label">
 						<span><?= $this->lang->line('w_doctor') ?></span>
-						<i class="bi bi-clock ms-2 ic_doctor_weekly_aa" data-bs-toggle="modal" data-bs-target="#md_weekly_doctor_agenda"></i>
+						<i class="bi bi-clock ms-2" id="ic_doctor_weekly_aa" data-bs-toggle="modal" data-bs-target="#md_doctor_weekly_app"></i>
 					</label>
 					<?php if ($doctor){ ?>
 					<select class="form-select" id="aa_doctor" name="app[doctor_id]">
@@ -170,14 +170,26 @@ if (!$doctor){
 		</div>
 	</div>
 </div>
+<div class="modal fade" id="md_doctor_weekly_app" tabindex="-1">
+	<div class="modal-dialog modal-fullscreen">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div id="bl_doctor_weekly_app"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?= $this->lang->line('btn_close') ?></button>
+			</div>
+		</div>
+	</div>
+</div>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-	function reset_person_aa(){
+	function reset_person_app(){
 		$("#aa_pt_name").val("");
 		$("#aa_pt_tel").val("");
 	}
 
-	function load_doctor_schedule_appointment(){
+	function load_doctor_schedule_app(){
 		$("#aa_schedule").html('<div class="text-center mt-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
 		load_doctor_schedule_n($("#aa_doctor").val(), $("#aa_date").val()).done(function(res) {
 			$("#aa_schedule").html(res);
@@ -187,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 	
 	set_date_picker("#aa_date", new Date());
-	load_doctor_schedule_appointment();
+	load_doctor_schedule_app();
 	
 	$("#app_register_form").submit(function(e) {
 		e.preventDefault();
@@ -199,22 +211,22 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 	
 	$("#aa_specialty").change(function() {
-		load_doctor_schedule_appointment();
+		load_doctor_schedule_app();
 		$("#aa_doctor").val("");
 		$("#aa_doctor .spe").addClass("d-none");
 		$("#aa_doctor .spe_" + $(this).val()).removeClass("d-none");
 	});
 	
 	$("#aa_doctor").change(function() {
-		load_doctor_schedule_appointment();
+		load_doctor_schedule_app();
 	});
 	
 	$("#aa_date").focusout(function() {
-		load_doctor_schedule_appointment();
+		load_doctor_schedule_app();
 	});
 	
-	$("#aa_pt_doc_type_id").change(function() {reset_person_aa();});
-	$("#aa_pt_doc_number").keyup(function() {reset_person_aa();});
+	$("#aa_pt_doc_type_id").change(function() {reset_person_app();});
+	$("#aa_pt_doc_number").keyup(function() {reset_person_app();});
 	
 	$("#btn_search_pt_aa").click(function() {
 		var data = {doc_type_id: $("#aa_pt_doc_type_id").val(), doc_number: $("#aa_pt_doc_number").val()};
@@ -224,12 +236,12 @@ document.addEventListener("DOMContentLoaded", () => {
 			if (res.type == "success"){
 				$("#aa_pt_name").val(res.person.name);
 				$("#aa_pt_tel").val(res.person.tel);
-			}else reset_person_aa();
+			}else reset_person_app();
 		});
 	});
 	
-	$(".ic_doctor_weekly_aa").click(function() {
-		load_doctor_schedule_weekly($("#aa_doctor").val(), null, "bl_weekly_schedule");
+	$("#ic_doctor_weekly_aa").click(function() {
+		load_doctor_schedule_weekly($("#aa_doctor").val(), null, "bl_doctor_weekly_app");
 	});
 	
 	$("#aa_hour, #aa_min").change(function() {

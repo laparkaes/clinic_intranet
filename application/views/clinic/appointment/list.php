@@ -93,15 +93,3 @@
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="md_weekly_doctor_agenda" tabindex="-1">
-	<div class="modal-dialog modal-fullscreen">
-		<div class="modal-content">
-			<div class="modal-body">
-				<div id="bl_weekly_schedule"></div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?= $this->lang->line('btn_close') ?></button>
-			</div>
-		</div>
-	</div>
-</div>

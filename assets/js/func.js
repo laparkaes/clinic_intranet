@@ -250,7 +250,7 @@ function load_doctor_schedule_weekly(doctor_id, date, dom_id){
 function load_room_availability(room_id, date, dom_id){
 	$("#" + dom_id).html('<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-5x"></i></div>');
 	$.ajax({
-		url: base_url + "surgery/load_room_availability",
+		url: base_url + "clinic/surgery/load_room_availability",
 		type: "POST",
 		data: {room_id: room_id, date: date},
 		success:function(res){
