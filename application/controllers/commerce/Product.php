@@ -546,4 +546,9 @@ class Product extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "list" => $list]);
 	}
+
+	//used in commerce/sale/form_add_sale
+	public function search_product(){
+		print_r($this->input->post());
+	}
 }

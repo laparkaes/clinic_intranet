@@ -215,7 +215,11 @@
 document.addEventListener("DOMContentLoaded", () => {
 	$("#form_search_products").submit(function(e) {
 		e.preventDefault();
-		alert("1");
+		ajax_form(this, "commerce/product/search_product").done(function(res) {
+			alert(res);
+			set_msg(res.msgs);
+			swal_redirection(res.type, res.msg, res.move_to);
+		});
 	});
 });
 </script>
