@@ -1,39 +1,36 @@
 <div class="card-body">
 	<h5 class="card-title"><?= $this->lang->line('w_add_product') ?></h5>
-	<div class="row">
-		<div class="col-md-6">
-			<form class="row g-3" id="form_search_products">
-				<div class="col-md-12">
-					<label class="form-label"><?= $this->lang->line('w_category') ?></label>
-					<select class="form-select" name="category_id">
-						<option value="">--</option>
-						<?php foreach($categories as $item){ ?>
-						<option value="<?= $item->id ?>"><?= $item->name ?></option>
-						<?php } ?>
-					</select>
-				</div>
-				<div class="col-md-12">
-					<label class="form-label"><?= $this->lang->line('w_item') ?></label>
-					<input type="text" class="form-control" name="description">
-				</div>
-				<div class="col-md-12 pt-3">
-					<button type="submit" class="btn btn-primary">Buscar</button>
-				</div>
-			</form>
+	<form class="row justify-content-end g-3" id="form_search_products">
+		<div class="col-md-auto col-12">
+			<select class="form-select" name="category_id">
+				<option value=""><?= $this->lang->line('w_category') ?></option>
+				<?php foreach($categories as $item){ ?>
+				<option value="<?= $item->id ?>"><?= $item->name ?></option>
+				<?php } ?>
+			</select>
 		</div>
-		<div class="col-md-6">
-			<div class="table-responsive">
-				<table class="table align-middle">
-					<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td>Brandon Jacob</td>
-							<td class="text-end"><button class="btn btn-success btn-sm">Elegir</button></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+		<div class="col-md-auto col-12">
+			<input type="text" class="form-control" name="description" placeholder="Descripcion">
 		</div>
+		<div class="col-md-auto col-12 pt-md-0 pt-3">
+			<button type="submit" class="btn btn-primary">Buscar</button>
+		</div>
+	</form>
+	<div class="table-responsive mt-3">
+		<table class="table align-middle">
+			<thead>
+				<tr>
+					<th colspan="3" scope="col">Resultado</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th scope="row" style="width: 70px;">1</th>
+					<td>Brandon Jacob</td>
+					<td class="text-end"><button class="btn btn-success btn-sm">Elegir</button></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	
 	<div class="row g-3 mt-3">
