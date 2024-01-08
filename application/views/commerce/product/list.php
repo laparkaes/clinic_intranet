@@ -282,3 +282,72 @@
 		</div>
 	</div>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+	function cancel_edit_category(){
+		$(".ct_name").removeClass("d-none");
+		$(".form_update_category").addClass("d-none");
+	}
+	
+	//general
+	$(".control_bl").click(function() {
+		control_bl(this);
+	});
+	
+	//category
+	$("#form_add_category").submit(function(e) {
+		e.preventDefault();
+		ajax_form_warning(this, "commerce/product/add_category", "wm_category_add").done(function(res) {
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
+	});
+	
+	$(".form_update_category").submit(function(e) {
+		e.preventDefault();
+		ajax_form_warning(this, "commerce/product/update_category", "wm_category_update").done(function(res) {
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
+	});
+	
+	$("#form_move_product").submit(function(e) {
+		e.preventDefault();
+		$("#form_move_product .sys_msg").html("");
+		ajax_form_warning(this, "commerce/product/move_product", "wm_category_move").done(function(res) {
+			set_msg(res.msgs);
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
+	});
+	
+	$(".btn_edit_ct").click(function() {
+		var ct_id = $(this).val();
+		cancel_edit_category();
+		$("#ct_name_" + ct_id).addClass("d-none");
+		$("#form_update_category_" + ct_id).removeClass("d-none");
+		$("#form_update_category_" + ct_id + " input[name=name]").val($("#ct_name_" + ct_id).html());
+	});
+	
+	$(".btn_cancel_edit_ct").click(function() {
+		cancel_edit_category();
+	});
+	
+	$(".btn_delete_ct").click(function() {
+		ajax_simple_warning({id: $(this).val()}, "commerce/product/delete_category", "wm_category_delete").done(function(res) {
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
+	});
+	
+	//product
+	$("#form_register_product").submit(function(e) {
+		e.preventDefault();
+		$("#form_register_product .sys_msg").html("");
+		ajax_form_warning(this, "commerce/product/register", "wm_product_register").done(function(res) {
+			set_msg(res.msgs);
+			swal_redirection(res.type, res.msg, res.move_to);
+		});
+	});
+	
+	$("#ap_image").change(function() {
+		set_img_preview(this, "img_preview");
+	});
+});
+</script>

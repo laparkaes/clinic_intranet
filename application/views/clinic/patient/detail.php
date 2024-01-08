@@ -437,7 +437,6 @@
 	</div>
 </div>
 
-
 <div class="modal fade md_add_credit" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<form class="modal-content" id="form_add_credit">
@@ -476,3 +475,95 @@
 		</form>
 	</div>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+	function disable_update_form(){
+		$("#form_update_info input").prop("readonly", true);
+		$("#form_update_info select").prop("disabled", true);
+		$("#form_update_info button").prop("disabled", true);
+		
+		$("#btn_update_info").removeClass("d-none").prop("disabled", false);
+		$("#btn_update_confirm").addClass("d-none").prop("disabled", true);
+		$("#btn_update_cancel").addClass("d-none").prop("disabled", true);
+	}
+
+	//general
+	$(".control_bl_simple").click(function() {
+		control_bl_simple(this);
+	});
+	
+	//update information
+	$("#form_update_info").submit(function(e) {
+		e.preventDefault();
+		
+		//birthday merge
+		let d = $("#p_birthday_d").val();
+		let m = $("#p_birthday_m").val();
+		let y = $("#p_birthday_y").val();
+		if (d != "" && m != "" && y != "") $("#p_birthday").val(y + "-" + m + "-" + d); else $("#p_birthday").val("");
+		
+		//doc_type_id field
+		$("#pu_doc_type_id").prop("disabled", false);
+		
+		$("#form_update_info .sys_msg").html("");
+		ajax_form(this, "clinic/patient/update_info").done(function(res) {
+			set_msg(res.msgs);
+			swal(res.type, res.msg);
+			if (res.type == "success") disable_update_form();
+			//swal_redirection(res.type, res.msg, window.location.href);
+		});
+	});
+	
+	$("#btn_update_info").click(function() {
+		$("#form_update_info input").prop("readonly", false);
+		$("#form_update_info select").prop("disabled", false);
+		$("#form_update_info button").prop("disabled", false);
+		
+		$("#btn_update_info").addClass("d-none").prop("disabled", true);
+		$("#btn_update_confirm").removeClass("d-none").prop("disabled", false);
+		$("#btn_update_cancel").removeClass("d-none").prop("disabled", false);
+	});
+	
+	$("#btn_update_cancel").click(function() {
+		disable_update_form();
+		document.getElementById("form_update_info").reset();
+	});
+	
+	//admin credit
+	$("#form_add_credit").submit(function(e) {
+		e.preventDefault();
+		$("#form_add_credit .sys_msg").html("");
+		ajax_form_warning(this, "clinic/patient/add_credit", "wm_add_credit").done(function(res) {
+			set_msg(res.msgs);
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
+	});
+	
+	$(".btn_reverse_credit").click(function() {
+		ajax_simple_warning({id: $(this).val()}, "clinic/patient/reverse_credit", "wm_reverse_credit").done(function(res) {
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
+	});
+	
+	//admin patient file
+	$("#form_upload_patient_file").submit(function(e) {
+		e.preventDefault();
+		$("#form_upload_patient_file .sys_msg").html("");
+		ajax_form(this, "clinic/patient/upload_file").done(function(res) {
+			set_msg(res.msgs);
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
+	});
+	
+	$(".btn_delete_file").click(function() {
+		ajax_simple_warning({id: $(this).val()}, "clinic/patient/delete_file", "wm_delete_file").done(function(res) {
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
+	});
+	
+	$("#upload_file").change(function(e) {
+		$("#lb_selected_filename").html(e.target.files[0].name); 
+		$("#ip_selected_filename").val(e.target.files[0].name);
+	});
+});
+</script>

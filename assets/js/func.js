@@ -352,6 +352,3 @@ function set_time_picker(dom){
 	};
 	$(dom).datetimepicker(option);
 }
-
-$(document).ready(function() {
-});

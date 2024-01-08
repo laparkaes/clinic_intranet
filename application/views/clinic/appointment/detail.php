@@ -168,7 +168,7 @@
 								<td><?= $item->specialty ?></td>
 								<td class="text-end">
 									<?php if ($appointment->id != $item->id){ ?>
-									<a href="<?= base_url()."clinic/".$item->link_to."/detail/".$item->id ?>" target="_blank">
+									<a href="<?= base_url()."clinic/".$item->link_to."/medical_history/".$item->id ?>" target="_blank">
 										<i class="bi bi-search"></i>
 									</a>
 									<?php }else{ ?>
@@ -204,7 +204,7 @@
 							<tr>
 								<td><?= date("Y-m-d h:i a", strtotime($item->registed_at)) ?></td>
 								<td><?= $item->title ?></td>
-								<td>
+								<td class="text-end">
 									<a href="<?= $file_path.$item->filename ?>" target="_blank">
 										<i class="bi bi-search"></i>
 									</a>
@@ -1368,14 +1368,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		$(".btn_delete_diag").on('click',(function(e) {delete_diag(this);}));
 	}
 
-	function add_diag(dom){
-		var data = {appointment_id: $("#appointment_id").val(), diag_id: $(dom).val()};
-		ajax_simple(data, "clinic/appointment/add_diag").done(function(res) {
-			set_diag(res.diags);
-			swal(res.type, res.msg);
-		});
-	}
-
 	function delete_diag(dom){
 		var data = {appointment_id: $("#appointment_id").val(), diag_id: $(dom).val()};
 		ajax_simple(data, "clinic/appointment/delete_diag").done(function(res) {
@@ -1393,16 +1385,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		$(".btn_delete_therapy").on('click',(function(e) {delete_therapy(this);}));
 	}
 
-	function add_therapy(dom){
-		$("#form_add_therapy .sys_msg").html("");
-		ajax_form(dom, "clinic/appointment/add_therapy").done(function(res) {
-			set_therapy(res.therapies);
-			set_msg(res.msgs);
-			swal(res.type, res.msg);
-			if (res.type == "success") $("#form_add_therapy")[0].reset();
-		});
-	}
-
 	function delete_therapy(dom){
 		var data = {appointment_id: $("#appointment_id").val(), id: $(dom).val()};
 		ajax_simple(data, "clinic/appointment/delete_therapy").done(function(res) {
@@ -1418,16 +1400,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 		
 		$(".btn_delete_medicine").on('click',(function(e) {delete_medicine(this);}));
-	}
-
-	function add_medicine(dom){
-		$("#form_add_medicine .sys_msg").html("");
-		ajax_form(dom, "clinic/appointment/add_medicine").done(function(res) {
-			set_medicine(res.medicines);
-			set_msg(res.msgs);
-			swal(res.type, res.msg);
-			if (res.type == "success") $("#form_add_medicine")[0].reset();
-		});
 	}
 
 	function delete_medicine(dom){
@@ -1501,12 +1473,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-	function filter_img_sl(img_cat_id){
-		$("#sl_aux_img").val("");
-		$(".img_cat").addClass("d-none");
-		if (img_cat_id != "") $(".img_cat_" + img_cat_id).removeClass("d-none");
-	}
-
 	function set_image(imgs){
 		$("#tbody_images").html("");
 		
@@ -1515,14 +1481,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 		
 		$(".btn_remove_image").on('click',(function(e) {remove_image($(this).val());}));
-	}
-
-	function add_img(img_id){
-		var data = {appointment_id: $("#appointment_id").val(), image_id: img_id};
-		ajax_simple(data, "clinic/appointment/add_image").done(function(res) {
-			set_image(res.images);
-			swal(res.type, res.msg); 
-		});
 	}
 
 	function remove_image(image_id){
@@ -1641,7 +1599,13 @@ document.addEventListener("DOMContentLoaded", () => {
 				res.diags.forEach(function (diag) {
 					$("#search_diag_result").append('<tr><td>' + diag.code + '</td><td>' + diag.description + '</td><td class="text-end"><button type="button" class="btn btn-success btn-sm btn_add_diag" value="' + diag.id + '"><i class="bi bi-plus"></i></button></td></tr>');
 				});
-				$(".btn_add_diag").on('click',(function(e) {add_diag(this);}));
+				$(".btn_add_diag").click(function() {
+					var data = {appointment_id: $("#appointment_id").val(), diag_id: $(this).val()};
+					ajax_simple(data, "clinic/appointment/add_diag").done(function(res) {
+						set_diag(res.diags);
+						swal(res.type, res.msg);
+					});
+				});
 			}
 		});
 	});
@@ -1692,18 +1656,56 @@ document.addEventListener("DOMContentLoaded", () => {
 	$(".btn_remove_exam").click(function() {
 		remove_exam($(this).val());
 	});
-	////////////////////////// hasta aqui avance
+	
 	//aux exams - image
-	$("#sl_aux_img_category").change(function() {filter_img_sl($(this).val());});
-	$("#btn_add_img").on('click',(function(e) {add_img($("#sl_aux_img").val());}));
-	$(".btn_remove_image").on('click',(function(e) {remove_image($(this).val());}));
+	$("#sl_aux_img_category").change(function() {
+		$("#sl_aux_img").val("");
+		$(".img_cat").addClass("d-none");
+		if ($(this).val() != "") $(".img_cat_" + $(this).val()).removeClass("d-none");
+	});
 	
-	//appointment - prescription - therapy
-	$("#form_add_therapy").submit(function(e) {e.preventDefault(); add_therapy(this);});
-	$(".btn_delete_therapy").on('click',(function(e) {delete_therapy(this);}));
+	$("#btn_add_img").click(function() {
+		var data = {appointment_id: $("#appointment_id").val(), image_id: $("#sl_aux_img").val()};
+		ajax_simple(data, "clinic/appointment/add_image").done(function(res) {
+			set_image(res.images);
+			swal(res.type, res.msg); 
+		});
+	});
 	
-	//appointment - prescription - medicine
-	$("#form_add_medicine").submit(function(e) {e.preventDefault(); add_medicine(this);});
-	$(".btn_delete_medicine").on('click',(function(e) {delete_medicine(this);}));
+	$(".btn_remove_image").click(function() {
+		remove_image($(this).val());
+	});
+	
+	//treatment - medicine
+	$("#form_add_medicine").submit(function(e) {
+		e.preventDefault(); 
+		$("#form_add_medicine .sys_msg").html("");
+		ajax_form(this, "clinic/appointment/add_medicine").done(function(res) {
+			set_medicine(res.medicines);
+			set_msg(res.msgs);
+			swal(res.type, res.msg);
+			if (res.type == "success") $("#form_add_medicine")[0].reset();
+		});
+	});
+	
+	$(".btn_delete_medicine").click(function() {
+		delete_medicine(this);
+	});
+	
+	//treatment - therapy
+	$("#form_add_therapy").submit(function(e) {
+		e.preventDefault(); 
+		$("#form_add_therapy .sys_msg").html("");
+		ajax_form(this, "clinic/appointment/add_therapy").done(function(res) {
+			set_therapy(res.therapies);
+			set_msg(res.msgs);
+			swal(res.type, res.msg);
+			if (res.type == "success") $("#form_add_therapy")[0].reset();
+		});
+	});
+	
+	$(".btn_delete_therapy").click(function() {
+		delete_therapy(this);
+	});
 });
 </script>

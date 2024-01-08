@@ -95,3 +95,12 @@
 		</div>
 	</div>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+	var params = get_params();
+	if (params.a == "add") $("#btn_add").trigger("click");
+	$(".control_bl").click(function() {
+		control_bl(this);
+	});
+});
+</script>

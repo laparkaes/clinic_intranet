@@ -301,3 +301,82 @@
 		</div>
 	</div>
 </div>
+<input type="hidden" id="doctor_id" value="<?= $person->id ?>">
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+	function disable_update_form(){
+		$("#form_update_info input").prop("readonly", true);
+		$("#form_update_info select").prop("disabled", true);
+		$("#form_update_info button").prop("disabled", true);
+		
+		$("#btn_update_info").removeClass("d-none").prop("disabled", false);
+		$("#btn_update_confirm").addClass("d-none").prop("disabled", true);
+		$("#btn_update_cancel").addClass("d-none").prop("disabled", true);
+	}
+
+	function activation_control(dom, active){
+		var msg_key;
+		
+		if (active == true) msg_key = "wm_enable_doctor";
+		else msg_key = "wm_disable_doctor";
+		
+		ajax_simple_warning({id: $(dom).val(), active: active}, "clinic/doctor/activation_control", msg_key).done(function(res) {
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
+	}
+
+	//general
+	$(".control_bl_simple").click(function() {
+		control_bl_simple(this);
+	});
+	
+	$("#btn_weekly_agenda").click(function() {
+		load_doctor_schedule_weekly($("#doctor_id").val(), null, "bl_weekly_agenda");
+	});
+	
+	//doctor update
+	$("#form_update_info").submit(function(e) {
+		e.preventDefault();
+		
+		//birthday merge
+		let d = $("#p_birthday_d").val();
+		let m = $("#p_birthday_m").val();
+		let y = $("#p_birthday_y").val();
+		if (d != "" && m != "" && y != "") $("#p_birthday").val(y + "-" + m + "-" + d); else $("#p_birthday").val("");
+		
+		//doc_type_id field
+		$("#du_doc_type_id").prop("disabled", false);
+		
+		$("#form_update_info .sys_msg").html("");
+		ajax_form(this, "clinic/doctor/update_info").done(function(res) {
+			set_msg(res.msgs);
+			swal(res.type, res.msg);
+			if (res.type == "success") disable_update_form();
+		});
+	});
+	
+	$("#btn_update_info").click(function() {
+		$("#form_update_info input").prop("readonly", false);
+		$("#form_update_info select").prop("disabled", false);
+		$("#form_update_info button").prop("disabled", false);
+		
+		$("#btn_update_info").addClass("d-none").prop("disabled", true);
+		$("#btn_update_confirm").removeClass("d-none").prop("disabled", false);
+		$("#btn_update_cancel").removeClass("d-none").prop("disabled", false);
+	});
+	
+	$("#btn_update_cancel").click(function() {
+		document.getElementById("form_update_info").reset();
+		disable_update_form();
+	});
+	
+	//doctor activation
+	$("#btn_deactivate").click(function() {
+		activation_control(this, false);
+	});
+	
+	$("#btn_activate").click(function() {
+		activation_control(this, true);
+	});
+});
+</script>

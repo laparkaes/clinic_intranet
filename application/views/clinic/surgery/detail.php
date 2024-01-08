@@ -74,7 +74,7 @@
 							</div>
 							<div class="col-md-4">
 								<label class="form-label"><?= $this->lang->line('w_date') ?></label>
-								<input type="text" class="form-control date_picker doc_schedule schedule" id="rs_date" name="date" value="<?= date('Y-m-d', strtotime($surgery->schedule_from)) ?>">
+								<input type="text" class="form-control schedule" id="rs_date" name="date" value="<?= date('Y-m-d', strtotime($surgery->schedule_from)) ?>">
 								<div class="sys_msg" id="rs_date_msg"></div>
 							</div>
 							<div class="col-md-8">
@@ -114,7 +114,7 @@
 							<div class="col-md-12">
 								<label class="form-label">
 									<span><?= $this->lang->line('w_doctor') ?></span>
-									<i class="bi bi-clock ms-2" id="ic_doctor_schedule_w" data-bs-toggle="modal" data-bs-target="#md_weekly_doctor_agenda"></i>
+									<i class="bi bi-clock ms-2" id="ic_doctor_weekly" data-bs-toggle="modal" data-bs-target="#md_weekly_doctor_agenda"></i>
 								</label>
 								<div class="form-control"><?= $doctor->name ?></div>
 							</div>
@@ -125,7 +125,7 @@
 							<div class="col-md-8">
 								<label class="form-label">
 									<span><?= $this->lang->line('w_room') ?></span>
-									<i class="bi bi-alarm ms-2" id="ic_room_availability_w" data-bs-toggle="modal" data-bs-target="#md_weekly_room_availability"></i>
+									<i class="bi bi-alarm ms-2" id="ic_room_weekly" data-bs-toggle="modal" data-bs-target="#md_weekly_room_availability"></i>
 								</label>
 								<select class="form-select" id="rs_room_id" name="room_id">
 									<option value="">--</option>
@@ -276,8 +276,6 @@
 	</div>
 	<?php } // end else ?>
 </div>
-
-
 <div class="modal fade" id="md_weekly_doctor_agenda" tabindex="-1">
 	<div class="modal-dialog modal-fullscreen">
 		<div class="modal-content">
@@ -303,3 +301,71 @@
 	</div>
 </div>
 <input type="hidden" id="surgery_id" value="<?= $surgery->id ?>">
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+	function load_doctor_schedule_sur(){
+		$("#rp_schedule").html('<div class="text-center mt-5"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+		load_doctor_schedule_n($("#rs_doctor").val(), $("#rs_date").val()).done(function(res) {
+			$("#rp_schedule").html(res);
+			$("#rp_schedule .sch_cell").on('click',(function(e) {set_time_dom("#rs_hour", "#rs_min", this);}));
+			set_time_sl("rs", "#rp_schedule");
+		});
+		
+	}
+
+	//general
+	set_date_picker("#rs_date", new Date());
+	
+	$("#btn_cancel").click(function() {
+		ajax_simple_warning({id: $(this).val()}, "clinic/surgery/cancel", "wm_surgery_cancel").done(function(res) {
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
+	});
+	
+	$("#btn_reschedule, #btn_reschedule_cancel").click(function() {
+		if ($("#sur_reschedule").hasClass("d-none")) {
+			load_doctor_schedule_sur();
+			$("#sur_reschedule").removeClass("d-none");
+			$("#sur_info").addClass("d-none");
+		}else{
+			$("#sur_reschedule").addClass("d-none");
+			$("#sur_info").removeClass("d-none");
+		}
+	});
+	
+	//reschedule
+	$("#form_reschedule").submit(function(e) {
+		e.preventDefault();
+		$("#reschedule_form .sys_msg").html("");
+		ajax_form_warning(this, "clinic/surgery/reschedule", "wm_surgery_reschedule").done(function(res) {
+			set_msg(res.msgs);
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
+	});
+	
+	$("#rs_date").focusout(function() {
+		load_doctor_schedule_sur();
+	});
+	
+	$("#rs_hour, #rs_min").change(function() {
+		set_time_sl("rs", "#rp_schedule");
+	});
+	
+	//finish surgery
+	$("#form_result").submit(function(e) {
+		e.preventDefault();
+		ajax_form_warning(this, "clinic/surgery/finish", "wm_surgery_finish").done(function(res) {
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
+	});
+	
+	//weekly
+	$("#ic_doctor_weekly").click(function() {
+		load_doctor_schedule_weekly($("#rs_doctor").val(), null, "bl_weekly_schedule");
+	});
+	
+	$("#ic_room_weekly").click(function() {
+		load_room_availability($("#rs_room_id").val(), $("#rs_date").val(), "bl_room_availability");
+	});
+});
+</script>
