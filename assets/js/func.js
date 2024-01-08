@@ -1,5 +1,9 @@
 var base_url = $("#base_url").val();
 
+function nf(num){//number format
+	return parseFloat(num).toLocaleString('es-US', {maximumFractionDigits: 2, minimumFractionDigits: 2});
+}
+
 function swal(type, msg){
 	Swal.fire({
 		title: component_list[default_lang]["alert_" + type + "_title"],

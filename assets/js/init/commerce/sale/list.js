@@ -1,7 +1,3 @@
-function nf(num){//number format
-	return parseFloat(num).toLocaleString('es-US', {maximumFractionDigits: 2, minimumFractionDigits: 2});
-}
-
 function control_client_name(activate){
 	if (activate == true){
 		$("#client_name").val("");
