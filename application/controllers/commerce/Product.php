@@ -549,6 +549,43 @@ class Product extends CI_Controller {
 
 	//used in commerce/sale/form_add_sale
 	public function search_product(){
-		print_r($this->input->post());
+		$id = $this->input->post("id");
+		$category_id = $this->input->post("category_id");
+		$description = $this->input->post("description");
+		
+		$w = $l = [];
+		$w["active"] = true;
+		if ($id) $w["id"] = $id;
+		if ($category_id) $w["category_id"] = $category_id;
+		if ($description) $l["description"] = $description;
+		
+		$products = $this->general->filter("product", $w, $l, null, "description", "asc");
+		if ($products){
+			$cat_arr = [];
+			$categories = $this->general->all("product_category");
+			foreach($categories as $c) $cat_arr[$c->id] = $c->name;
+			
+			$type_arr = [];
+			$types = $this->general->all("product_type");
+			foreach($types as $t) $type_arr[$t->id] = $t->description;
+			
+			$cur_arr = [];
+			$currencies = $this->general->all("currency");
+			foreach($currencies as $c) $cur_arr[$c->id] = $c->description;
+			
+			foreach($products as $p){
+				$p->currency = $cur_arr[$p->currency_id];
+				$p->category = $cat_arr[$p->category_id];
+				$p->type = $type_arr[$p->type_id];
+				$p->price_txt = number_format($p->price, 2);
+				$p->stock_txt = ($p->type === "Producto") ? number_format($p->stock) : "-";
+			}
+		}
+		
+		//send with option information of first product
+		$products[0]->options = $this->general->filter("product_option", ["product_id" => $products[0]->id], null, null, "id", "asc");
+		
+		header('Content-Type: application/json');
+		echo json_encode(["products" => $products]);
 	}
 }

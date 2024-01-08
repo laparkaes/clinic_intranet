@@ -300,6 +300,17 @@ function get_params(){
 	return params;
 }
 
+function form_to_object(form_id){
+	var formData = new FormData($('#' + form_id)[0]);
+
+	var formDataObject = {};
+	formData.forEach(function(value, key) {
+		formDataObject[key] = value;
+	});
+	
+	return formDataObject;
+}
+
 function format_date(currentDate){//for javascript operation
 	// 년, 월, 일을 가져오기
 	var year = currentDate.getFullYear();

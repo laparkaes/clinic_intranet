@@ -84,6 +84,7 @@ var msg_list = {
 		e_item_select		: 'Debe elegir un ítem.',
 		e_item_option		: 'Debe elegir una opción del producto.',
 		e_item_stock		: 'Debe ingresar cantidad menor que stock de opción.',
+		e_item_no_stock		: 'No hay stock suficiente para la venta.',
 		
 		//account
 		wm_account_add		: '¿Desea registrar nuevo usuario?',

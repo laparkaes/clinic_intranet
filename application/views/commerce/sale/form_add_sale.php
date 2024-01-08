@@ -1,86 +1,6 @@
-<div class="card-body">
-	<h5 class="card-title"><?= $this->lang->line('w_add_product') ?></h5>
-	<form class="row justify-content-end g-3" id="form_search_products">
-		<div class="col-md-auto col-12">
-			<select class="form-select" name="category_id">
-				<option value=""><?= $this->lang->line('w_category') ?></option>
-				<?php foreach($categories as $item){ ?>
-				<option value="<?= $item->id ?>"><?= $item->name ?></option>
-				<?php } ?>
-			</select>
-		</div>
-		<div class="col-md-auto col-12">
-			<input type="text" class="form-control" name="description" placeholder="Descripcion">
-		</div>
-		<div class="col-md-auto col-12 pt-md-0 pt-3">
-			<button type="submit" class="btn btn-primary">Buscar</button>
-		</div>
-	</form>
-	<div class="table-responsive mt-3">
-		<table class="table align-middle">
-			<thead>
-				<tr>
-					<th colspan="3" scope="col">Resultado</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<th scope="row" style="width: 70px;">1</th>
-					<td>Brandon Jacob</td>
-					<td class="text-end"><button class="btn btn-success btn-sm">Elegir</button></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	
-	<div class="row g-3 mt-3">
-		<div class="col-md-12">
-			<label class="form-label"><?= $this->lang->line('w_category') ?></label>
-			<select class="form-select" id="sl_pr_category">
-				<option value="">--</option>
-				<?php foreach($categories as $item){ ?>
-				<option value="<?= $item->id ?>"><?= $item->name ?></option>
-				<?php } ?>
-			</select>
-		</div>
-		<div class="col-md-12">
-			<label class="form-label"><?= $this->lang->line('w_item') ?></label>
-			<select class="form-select" id="sl_pr_items">
-				<option value="">--</option>
-			</select>
-		</div>
-		<div class="col-md-6 sl_pr_detail d-none">
-			<label class="form-label"><?= $this->lang->line('w_unit_price') ?></label>
-			<input type="text" class="form-control" id="sl_pr_uprice_txt" readonly>
-		</div>
-		<div class="col-md-6 sl_pr_detail d-none">
-			<label class="form-label"><?= $this->lang->line('w_option') ?></label>
-			<select class="form-select" id="sl_pr_options">
-				<option value="">--</option>
-			</select>
-		</div>
-		<div class="col-md-6 sl_pr_detail d-none">
-			<label class="form-label"><?= $this->lang->line('w_unit_discount') ?></label>
-			<input type="text" class="form-control" id="sl_pr_udiscount" step="0.01" min="0">
-		</div>
-		<div class="col-md-6 sl_pr_detail d-none">
-			<label class="form-label"><?= $this->lang->line('w_quantity') ?></label>
-			<input type="text" class="form-control" id="sl_pr_quantity">
-		</div>
-		<div class="col-md-12 sl_pr_detail d-none">
-			<label class="form-label"><?= $this->lang->line('w_subtotal') ?></label>
-			<input type="text" class="form-control text-end" id="sl_pr_subtotal" value="0.00" readonly>
-		</div>
-		<div class="col-md-12 pt-3">
-			<button type="button" class="btn btn-primary" id="btn_sl_pr_add">
-				<?= $this->lang->line('btn_add') ?>
-			</button>
-		</div>
-	</div>
-</div>
-<div class="card-body">
+<div class="card-body add_sale_step" id="step_set_sale_information">
 	<h5 class="card-title"><?= $this->lang->line('w_new_sale') ?></h5>
-	<form id="form_add_sale" class="row">
+	<form id="form_add_sale" class="row g-3">
 		<input type="hidden" id="sale_total">
 		<input type="hidden" id="op_currency" name="currency" value="">
 		<input type="hidden" id="payment_received" name="payment[received]">
@@ -97,7 +17,7 @@
 							<th><?= $this->lang->line('w_unit_price_short') ?></th>
 							<th><?= $this->lang->line('w_subtotal') ?></th>
 							<th class="text-end">
-								<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#sl_product_modal">
+								<button type="button" class="btn btn-primary btn-sm" id="btn_search_product">
 									<i class="bi bi-plus-lg"></i>
 								</button>
 							</th>
@@ -160,7 +80,7 @@
 		</div>
 		<div class="col-md-6 payment_info d-none">
 			<div class="row g-3">
-				<div class="col-md-6">
+				<div class="col-md-12">
 					<label class="form-label"><?= $this->lang->line('w_document') ?></label>
 					<select class="form-select" id="client_doc_type" name="client[doc_type_id]">
 						<?php foreach($doc_types as $item){ ?>
@@ -169,8 +89,8 @@
 					</select>
 					<div class="sys_msg" id="client_doc_type_msg"></div>
 				</div>
-				<div class="col-md-6">
-					<label class="form-label d-md-block d-none">&nbsp;</label>
+				<div class="col-md-12">
+					<label class="form-label">Numero</label>
 					<div class="input-group">
 						<input type="text" class="form-control" id="client_doc_number" name="client[doc_number]" placeholder="<?= $this->lang->line('w_number') ?>">
 						<button class="btn btn-primary" type="button" id="btn_search_client">
@@ -184,42 +104,243 @@
 					<input type="text" class="form-control" id="client_name" name="client[name]">
 					<div class="sys_msg" id="client_name_msg"></div>
 				</div>
-				<div class="col-md-12 pt-3">
-					<button type="button" class="btn btn-primary" id="btn_add_sale">
-						<?= $this->lang->line('btn_register_sale') ?>
-					</button>
-				</div>
 			</div>
+		</div>
+		<div class="col-md-12 payment_info d-none pt-3">
+			<button type="button" class="btn btn-primary" id="btn_add_sale">
+				<?= $this->lang->line('btn_register_sale') ?>
+			</button>
 		</div>
 	</form>
 </div>
-<div class="modal fade" id="sl_product_modal" tabindex="-1">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title"><?= $this->lang->line('w_add_product') ?></h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-danger light" id="btn_sl_pr_cancel" data-bs-dismiss="modal">
-					<?= $this->lang->line('btn_close') ?>
-				</button>
-			</div>
+<div class="card-body add_sale_step d-none" id="step_search_product">
+	<h5 class="card-title"><?= $this->lang->line('w_add_product') ?></h5>
+	<form class="row justify-content-end g-3" id="form_search_products">
+		<div class="col-md-auto col-12">
+			<select class="form-select" name="category_id">
+				<option value=""><?= $this->lang->line('w_category') ?></option>
+				<?php foreach($categories as $item){ ?>
+				<option value="<?= $item->id ?>"><?= $item->name ?></option>
+				<?php } ?>
+			</select>
 		</div>
+		<div class="col-md-auto col-12">
+			<input type="text" class="form-control" name="description" placeholder="Descripcion">
+		</div>
+		<div class="col-md-auto col-12 pt-md-0 pt-3">
+			<button type="submit" class="btn btn-primary">Buscar</button>
+			<button type="button" class="btn btn-secondary" id="btn_back_to_sale_information">Volver</button>
+		</div>
+	</form>
+	<div class="table-responsive mt-3">
+		<table class="table align-middle">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col"><?= $this->lang->line('w_category') ?></th>
+					<th scope="col"><?= $this->lang->line('w_item') ?></th>
+					<th scope="col"><?= $this->lang->line('w_unit_price_short') ?></th>
+					<th scope="col"><?= $this->lang->line('w_stock') ?></th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody id="tb_search_product">
+			</tbody>
+		</table>
 	</div>
 </div>
-
+<div class="card-body add_sale_step d-none" id="step_set_product_detail">
+	<h5 class="card-title"><?= $this->lang->line('w_product_detail') ?></h5>
+	<form class="row g-3" id="form_set_product_detail">
+		<div class="col-md-12">
+			<label class="form-label"><?= $this->lang->line('w_product') ?></label>
+			<input type="text" class="form-control" id="product" readonly>
+			<input type="text" class="form-control d-none" id="product_id" name="product_id" readonly>
+		</div>
+		<div class="col-md-3">
+			<label class="form-label"><?= $this->lang->line('w_option') ?></label>
+			<select class="form-select" id="option_id" name="option_id">
+				<option value="">--</option>
+			</select>
+		</div>
+		<div class="col-md-2">
+			<label class="form-label"><?= $this->lang->line('w_unit_price_short') ?></label>
+			<div class="input-group">
+				<span class="input-group-text currency"></span>
+				<input type="text" class="form-control text-end" id="price_txt" readonly>
+			</div>
+			<input type="text" class="form-control d-none" id="price" name="price" readonly>
+		</div>
+		<div class="col-md-2">
+			<label class="form-label"><?= $this->lang->line('w_discount_unit') ?></label>
+			<div class="input-group">
+				<span class="input-group-text currency"></span>
+				<input type="text" class="form-control text-end" id="discount" name="discount">
+			</div>
+		</div>
+		<div class="col-md-2">
+			<label class="form-label"><?= $this->lang->line('w_quantity') ?></label>
+			<input type="number" class="form-control" id="quantity" name="qty" value="1">
+		</div>
+		<div class="col-md-3">
+			<label class="form-label"><?= $this->lang->line('w_subtotal') ?></label>
+			<div class="input-group">
+				<span class="input-group-text currency"></span>
+				<input type="text" class="form-control text-end" id="subtotal_txt" value="0.00" readonly>
+			</div>
+		</div>
+		<div class="col-md-12 pt-3">
+			<button type="submit" class="btn btn-primary" id="btn_add_product_to_list">
+				<?= $this->lang->line('btn_add') ?>
+			</button>
+			<button type="button" class="btn btn-secondary" id="btn_back_to_search">
+				<?= $this->lang->line('btn_back') ?>
+			</button>
+		</div>
+	</form>
+</div>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+	function set_step(dom_id){
+		$(".add_sale_step").addClass("d-none");
+		$("#" + dom_id).removeClass("d-none");
+	}
+	
+	$("#btn_search_product").click(function() {
+		set_step("step_search_product");
+	});
+	
+	$("#btn_back_to_sale_information").click(function() {
+		set_step("step_set_sale_information");
+	});
+	
+	$("#btn_back_to_search").click(function() {
+		set_step("step_search_product");
+	});
+	
+	//step - set sale information
+	function set_total(){
+		var total = 0;
+		var prod;
+		$.each($("#tb_product_list tr"), function(index, value){
+			$(value).find(".num").html(index + 1);
+			prod = JSON.parse($(value).find(".prod_data").val());
+			total += (prod.price - prod.discount) * prod.qty;
+		});
+		
+		$("#sale_total").val(total);
+		$("#sl_pr_total_amount").html($("#op_currency").val() + " " + nf(total));
+	}
+	
+	//step - select product
+	var selected_product;
+	var row_num = 0;
+	
 	$("#form_search_products").submit(function(e) {
 		e.preventDefault();
 		ajax_form(this, "commerce/product/search_product").done(function(res) {
-			alert(res);
-			set_msg(res.msgs);
-			swal_redirection(res.type, res.msg, res.move_to);
+			$("#tb_search_product").html("");
+			$.each(res.products, function(index, value){
+				$("#tb_search_product").append('<tr><th scope="row" style="width: 70px;">' + (index + 1) + '</th><td>' + value.category + '</td><td>' + value.description + '</td><td class="text-nowrap">' + value.price_txt + '</td><td class="text-nowrap">' + value.stock_txt + '</td><td class="text-end"><button class="btn btn-success btn-sm btn_select_product" value="' + value.id + '">Elegir</button></td></tr>');
+			});
+			
+			$(".btn_select_product").click(function() {
+				set_step("step_set_product_detail");
+				ajax_simple({id: $(this).val()}, "commerce/product/search_product").done(function(res) {
+					if (res.products.length > 0){
+						var prod = res.products[0];
+						$(".currency").html(prod.currency);
+						$("#product_id").val(prod.id);
+						$("#product").val(prod.description);
+						$("#price_txt").val(prod.price_txt);
+						$("#price").val(prod.price);
+						$("#discount").val(0);
+						$("#quantity").val(1);
+						$("#subtotal_txt").val(prod.price_txt);
+						
+						//setting options
+						$("#option_id").html("");
+						$("#option_id").append('<option value="">--</option>');
+						$.each(prod.options, function(index, value){
+							$("#option_id").append('<option value="' + value.id + '">' + value.description + ' (' + value.stock + ')</option>');
+						});
+						
+						if ($("#op_currency").val() == ""){
+							$("#op_currency").val(prod.currency);
+							$(".payment_currency").html(prod.currency);
+						}
+						selected_product = prod;
+					}
+				});
+			});
 		});
+	});
+	
+	//step - product_detail
+	$("#form_set_product_detail").submit(function(e) {
+		e.preventDefault();
+		var data = form_to_object("form_set_product_detail");
+		
+		//check stock
+		if (selected_product.type == "Producto"){
+			if (data.option_id == ""){
+				swal("error", msg_list[default_lang].e_item_option);
+				return;
+			}else{
+				var stock_ok = false;
+				$.each(selected_product.options, function(index, value){
+					if (value.id == data.option_id) 
+						if (parseInt(value.stock) >= parseInt(data.qty)) 
+							stock_ok = true;
+				});
+				
+				if (!stock_ok){
+					swal("error", msg_list[default_lang].e_item_no_stock);
+					return;
+				}
+			}
+		}
+		
+		if ($("#op_currency").val() == selected_product.currency){
+			$("#tb_product_list").append('<tr id="row_' + row_num + '"><td class="num"></td><td>' + selected_product.description + '</td><td>' + data.qty + '</td><td>' + selected_product.currency + ' ' + nf(data.price - data.discount) + '</td><td>' + selected_product.currency + ' ' + nf((data.price - data.discount) * data.qty) + '</td><td class="text-end"><button type="button" class="btn btn-danger btn-sm" id="btn_remove_product_' + row_num + '" value="' + row_num + '"><i class="bi bi-trash"></i></button><textarea class="prod_data d-none" name="sl_pr[' + row_num + ']">' + JSON.stringify(data) + '</textarea></td></tr>');
+			
+			$("#btn_remove_product_" + row_num).click(function() {
+				$("#row_" + $(this).val()).remove();
+				set_total();
+				
+				if ($("#tb_product_list tr").length < 1){
+					$("#step_set_sale_information .payment_info").addClass("d-none");
+					$("#op_currency").val("");
+					$(".payment_currency").html("");
+				}
+			});
+			
+			$("#step_set_sale_information .payment_info").removeClass("d-none");
+			
+			set_total();
+			set_step("step_set_sale_information");
+			row_num++;
+		}else{
+			swal("error", msg_list[default_lang].e_list_currency);
+			return;
+		}
+		
+		//console.log(selected_product);
+		//console.log(data);
+	});
+	
+	$("#form_set_product_detail #quantity").change(function() {
+		if (parseInt($(this).val()) <= 0) $(this).val(1);
+		$("#subtotal_txt").val(nf((selected_product.price - $("#discount").val()) * $(this).val()));
+	}).keyup(function() {
+		if (parseInt($(this).val()) <= 0) $(this).val(1);
+		$("#subtotal_txt").val(nf((selected_product.price - $("#discount").val()) * $(this).val()));
+	});
+	
+	$("#discount").keyup(function() {
+		if (parseFloat($(this).val()) > selected_product.price) $(this).val(selected_product.price);
+		else if (parseFloat($(this).val()) < 0) $(this).val(0);
+		$("#subtotal_txt").val(nf((selected_product.price - $(this).val()) * $("#quantity").val()));
 	});
 });
 </script>
