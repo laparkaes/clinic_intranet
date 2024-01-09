@@ -367,3 +367,10 @@ function set_time_picker(dom){
 	};
 	$(dom).datetimepicker(option);
 }
+
+$('form.no_enter input').keypress(function(event) {
+	if (event.keyCode === 13) {
+		event.preventDefault();
+		return false;
+	}
+});

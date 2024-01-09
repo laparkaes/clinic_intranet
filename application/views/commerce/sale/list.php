@@ -65,7 +65,7 @@
 									<i class="bi bi-circle-fill text-<?= $item->voucher->color ?>" title="<?= $item->voucher->sunat_msg ?>"></i>
 								</td>
 								<td class="text-end">
-									<a href="<?= base_url() ?>sale/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
+									<a href="<?= base_url() ?>commerce/sale/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
 										<i class="bi bi-arrow-right"></i>
 									</a>
 								</td>
@@ -76,7 +76,7 @@
 					<div class="btn-group" role="group" aria-label="paging">
 						<?php foreach($paging as $p){
 						$f_url["page"] = $p[0]; ?>
-						<a href="<?= base_url() ?>sale?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
+						<a href="<?= base_url() ?>commerce/sale?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
 							<?= $p[1] ?>
 						</a>
 						<?php } ?>
@@ -93,3 +93,13 @@
 	</div>
 </div>
 <input type="hidden" id="e_item_option" value="<?= $this->lang->line('e_item_option') ?>">
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+	$(".control_bl").click(function() {
+		control_bl(this);
+	});
+	
+	var params = get_params();
+	if (params.a == "add") $("#btn_add").trigger("click");
+});
+</script>

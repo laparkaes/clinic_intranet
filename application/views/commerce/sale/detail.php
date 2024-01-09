@@ -524,3 +524,8 @@
 </div>
 <?php } ?>
 <input type="hidden" id="btn_select_lang" value="<?= $this->lang->line('btn_select') ?>">
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+	
+});
+</script>

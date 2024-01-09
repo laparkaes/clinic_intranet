@@ -1,6 +1,13 @@
+<?php
+$this->lang->load("sale", "spanish");
+$categories = $this->general->all("product_category", "name", "asc");
+$doc_types = $this->general->all("doc_type", "sunat_code", "asc");
+$payment_methods = $this->general->all("payment_method", "description", "asc");
+$sale_types = $this->general->all("sale_type", "sunat_serie", "asc");
+?>
 <div class="card-body add_sale_step" id="step_set_sale_information">
 	<h5 class="card-title"><?= $this->lang->line('w_new_sale') ?></h5>
-	<form id="form_add_sale" class="row g-3">
+	<form class="row g-3 no_enter" id="form_add_sale">
 		<input type="hidden" id="sale_total">
 		<input type="hidden" id="op_currency" name="currency" value="">
 		<input type="hidden" id="payment_received" name="payment[received]">
@@ -107,7 +114,7 @@
 			</div>
 		</div>
 		<div class="col-md-12 payment_info d-none pt-3">
-			<button type="button" class="btn btn-primary" id="btn_add_sale">
+			<button type="submit" class="btn btn-primary">
 				<?= $this->lang->line('btn_register_sale') ?>
 			</button>
 		</div>
@@ -151,7 +158,7 @@
 </div>
 <div class="card-body add_sale_step d-none" id="step_set_product_detail">
 	<h5 class="card-title"><?= $this->lang->line('w_product_detail') ?></h5>
-	<form class="row g-3" id="form_set_product_detail">
+	<form class="row g-3 no_enter" id="form_set_product_detail">
 		<div class="col-md-12">
 			<label class="form-label"><?= $this->lang->line('w_product') ?></label>
 			<input type="text" class="form-control" id="product" readonly>
@@ -243,13 +250,68 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	}
 	
+	function calculate_payment(e, type){
+		if ((e.which == 13) || (e.which == 0)){
+			var total = $("#sale_total").val();
+			if (total == ""){ swal("error", $("#e_item_select_least").val()); return; }
+			else total = parseFloat(total);
+			
+			var received = parseFloat($("#payment_received_v").val().replace(/,/g, ""));
+			var change = parseFloat($("#payment_change_v").val().replace(/,/g, ""));
+			var balance = parseFloat($("#payment_balance_v").val().replace(/,/g, ""));
+			
+			if (isNaN(change) || (change < 0)) change = 0;
+			else if (change > received) change = received;
+			
+			if (isNaN(received) || (received <= 0)) received = total;
+			
+			if (type == "received"){
+				if (received > total){
+					change = received - total;
+					balance = 0;
+				}else{
+					change = 0;
+					balance = total - received;
+				}
+			}else{//type = "change"
+				if (received > total){
+					var min_change = received - total;
+					if (change < min_change){
+						change = min_change;
+						balance = 0;
+					}
+				}
+				balance = total - received + change;
+			}
+			
+			//set payment data
+			$("#payment_received").val(received);
+			$("#payment_change").val(change);
+			$("#payment_balance").val(balance);
+			
+			//set payment view
+			$("#payment_received_v").val(nf(received));
+			$("#payment_change_v").val(nf(change));
+			$("#payment_balance_v").val(nf(balance));
+		}
+	}
+	
 	control_doc_number();
 	
-	$("#client_doc_type").change(function() {
+	$("#form_add_sale").submit(function(e) {
+		e.preventDefault();
+		$("#form_sale .sys_msg").html("");
+		ajax_form_warning(this, "commerce/sale/add", "wm_sale_add").done(function(res) {
+			set_msg(res.msgs);
+			swal_redirection(res.type, res.msg, res.move_to);
+		});
+	});
+	
+	$("#form_add_sale #client_doc_type").change(function() {
 		control_doc_number();
 	});
 	
-	$("#btn_search_client").click(function() {
+	$("#form_add_sale #btn_search_client").click(function() {
 		var data = {doc_type_id: $("#client_doc_type").val(), doc_number: $("#client_doc_number").val()};
 		ajax_simple(data, "ajax_f/search_person").done(function(res) {
 			swal(res.type, res.msg);
@@ -257,15 +319,17 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	});
 	
-	$("#payment_received_v").keypress(function(e) {calculate_payment(e, "received");});
+	$("#form_add_sale #payment_received_v").keypress(function(e) {
+		calculate_payment(e, "received");
+	}).focusout(function(e) {
+		calculate_payment(e, "received");
+	});
 	
-	$("#payment_received_v").focusout(function(e) {calculate_payment(e, "received");});
-	
-	$("#payment_change_v").keypress(function(e) {calculate_payment(e, "change");});
-	
-	$("#payment_change_v").focusout(function(e) {calculate_payment(e, "change");});	
-	
-	
+	$("#form_add_sale #payment_change_v").keypress(function(e) {
+		calculate_payment(e, "change");
+	}).focusout(function(e) {
+		calculate_payment(e, "change");
+	});	
 	
 	//step - select product
 	var selected_product;
@@ -369,7 +433,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		$("#subtotal_txt").val(nf((selected_product.price - $("#discount").val()) * $(this).val()));
 	});
 	
-	$("#discount").keyup(function() {
+	$("#form_set_product_detail #discount").keyup(function() {
 		if (parseFloat($(this).val()) > selected_product.price) $(this).val(selected_product.price);
 		else if (parseFloat($(this).val()) < 0) $(this).val(0);
 		$("#subtotal_txt").val(nf((selected_product.price - $(this).val()) * $("#quantity").val()));

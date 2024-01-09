@@ -1,7 +1,3 @@
-function nf(num){//number format
-	return parseFloat(num).toLocaleString('es-US', {maximumFractionDigits: 2, minimumFractionDigits: 2});
-}
-
 function calculate_payment(e, type){
 	if ((e.which == 13) || (e.which == 0)){
 		var total = parseFloat($("#payment_total").val().replace(/,/g, ""));
@@ -116,7 +112,7 @@ function search_reservations(attn){
 			$("#rs_" + attn + "_list").append('<tr><td><strong>' + (index + 1) + '</strong></td><td><div>' + value.schedule + '</div><div>' + value.pt_name + '</div><small>' + value.pt_doc + '</small></td><td class="text-end"><button type="button" class="btn btn-success btn-sm btn_rs_select" value="' + value.id + '">' + $("#btn_select_lang").val() + '</button></td></tr>');
 		});
 		
-		$(".btn_rs_select").on('click',(function(e) {asign_reservation(attn, $(this).val());}));
+		$(".btn_rs_select").click(function() {asign_reservation(attn, $(this).val());});
 	});
 }
 
@@ -142,28 +138,28 @@ function void_voucher(dom){
 
 $(document).ready(function() {
 	//asign medical attention
-	$(".btn_select_product").on('click',(function(e) { $("#rs_selected_product").val($(this).val()); }));
-	$("#btn_search_surgery").on('click',(function(e) {search_reservations("surgery");}));
-	$("#btn_search_appointment").on('click',(function(e) {search_reservations("appointment");}));
-	$(".btn_unassign_reservation").on('click',(function(e) {unassign_reservation($(this).val());}));
+	$(".btn_select_product").click(function() {$("#rs_selected_product").val($(this).val());});
+	$("#btn_search_surgery").click(function() {search_reservations("surgery");});
+	$("#btn_search_appointment").click(function() {search_reservations("appointment");});
+	$(".btn_unassign_reservation").click(function() {unassign_reservation($(this).val());});
 	
 	//voucher
 	$("#form_make_voucher").submit(function(e) {e.preventDefault(); make_voucher(this);});
 	$("#form_void_voucher").submit(function(e) {e.preventDefault(); void_voucher(this);});
-	$("#btn_make_voucher").on('click',(function(e) {$("#form_make_voucher").submit();}));
-	$("#btn_void_voucher").on('click',(function(e) {$("#form_void_voucher").submit();}));
-	$("#mv_doc_type").on('change',(function(e) {control_doc_number();}));
+	$("#btn_make_voucher").click(function() {$("#form_make_voucher").submit();});
+	$("#btn_void_voucher").click(function() {$("#form_void_voucher").submit();});
+	$("#mv_doc_type").change(function() {control_doc_number();});
 	$("#mv_doc_number").keyup(function() {control_client_name(true);});
-	$("#btn_search_person_mv").on('click',(function(e) {search_person_mv();}));
-	$("#btn_send_sunat").on('click',(function(e) {send_sunat($(this).val());}));
+	$("#btn_search_person_mv").click(function() {search_person_mv();});
+	$("#btn_send_sunat").click(function() {send_sunat($(this).val());});
 	
 	//sale
-	$("#btn_cancel_sale").on('click',(function(e) {cancel_sale(this);}));
+	$("#btn_cancel_sale").click(function() {cancel_sale(this);});
 	
 	//payment
 	$("#form_add_payment").submit(function(e) {e.preventDefault(); add_payment(this);});
-	$("#btn_add_payment").on('click',(function(e) {$("#form_add_payment").submit();}));
-	$("#btn_delete_payment").on('click',(function(e) {delete_payment(this);}));
+	$("#btn_add_payment").click(function() {$("#form_add_payment").submit();});
+	$("#btn_delete_payment").click(function() {delete_payment(this);});
 	$("#payment_received_v").keypress(function(e) {calculate_payment(e, "received");});
 	$("#payment_received_v").focusout(function(e) {calculate_payment(e, "received");});
 	$("#payment_change_v").keypress(function(e) {calculate_payment(e, "change");});
