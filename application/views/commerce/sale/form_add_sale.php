@@ -231,6 +231,41 @@ document.addEventListener("DOMContentLoaded", () => {
 		$("#sale_total").val(total);
 		$("#sl_pr_total_amount").html($("#op_currency").val() + " " + nf(total));
 	}
+
+	function control_doc_number(){
+		$("#client_doc_number, #client_name").val("");
+		if ($("#client_doc_type").val() == 1){
+			$("#client_doc_number, #client_name").prop("readonly", true);
+			$("#btn_search_client").prop("disabled", true);
+		}else{
+			$("#client_doc_number, #client_name").prop("readonly", false);
+			$("#btn_search_client").prop("disabled", false);
+		}
+	}
+	
+	control_doc_number();
+	
+	$("#client_doc_type").change(function() {
+		control_doc_number();
+	});
+	
+	$("#btn_search_client").click(function() {
+		var data = {doc_type_id: $("#client_doc_type").val(), doc_number: $("#client_doc_number").val()};
+		ajax_simple(data, "ajax_f/search_person").done(function(res) {
+			swal(res.type, res.msg);
+			if (res.type == "success") $("#client_name").val(res.person.name);
+		});
+	});
+	
+	$("#payment_received_v").keypress(function(e) {calculate_payment(e, "received");});
+	
+	$("#payment_received_v").focusout(function(e) {calculate_payment(e, "received");});
+	
+	$("#payment_change_v").keypress(function(e) {calculate_payment(e, "change");});
+	
+	$("#payment_change_v").focusout(function(e) {calculate_payment(e, "change");});	
+	
+	
 	
 	//step - select product
 	var selected_product;
@@ -324,9 +359,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			swal("error", msg_list[default_lang].e_list_currency);
 			return;
 		}
-		
-		//console.log(selected_product);
-		//console.log(data);
 	});
 	
 	$("#form_set_product_detail #quantity").change(function() {

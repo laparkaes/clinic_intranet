@@ -1,32 +1,4 @@
-function control_client_name(activate){
-	if (activate == true){
-		$("#client_name").val("");
-		$("#client_name").prop("readonly", false);
-	}else $("#client_name").prop("readonly", true);
-}
-
-function search_person_ns(){
-	var data = {doc_type_id: $("#client_doc_type").val(), doc_number: $("#client_doc_number").val()};
-	ajax_simple(data, "ajax_f/search_person").done(function(res) {
-		swal(res.type, res.msg);
-		if (res.type == "success"){
-			$("#client_name").val(res.person.name);
-			$("#client_name").attr("readonly", true);
-			control_client_name(false);
-		}else control_client_name(true);
-	});
-}
-
-function control_doc_number(){
-	$("#client_doc_number, #client_name").val("");
-	if ($("#client_doc_type").val() == 1){
-		$("#client_doc_number, #client_name").prop("readonly", true);
-		$("#btn_search_client").prop("disabled", true);
-	}else{
-		$("#client_doc_number, #client_name").prop("readonly", false);
-		$("#btn_search_client").prop("disabled", false);
-	}
-}
+//function search_person_ns(){}
 
 function load_items(category_id){
 	$("#sl_pr_items").html('');
@@ -183,11 +155,6 @@ function set_sl_pr_total(){
 	$(".payment_currency").html(cur);
 }
 
-function control_payment_info_form(){
-	if ($("#tb_product_list").find("tr").length > 0) $(".payment_info").removeClass("d-none");
-	else $(".payment_info").addClass("d-none");
-}
-
 function sl_product_delete(row_id){
 	$("#sl_pr_" + row_id).remove();
 	set_sl_pr_num();
@@ -263,22 +230,6 @@ $(document).ready(function() {
 	if (params.a == "add") $("#btn_add").trigger("click");
 	
 	//new sale - select item
-	$("#sl_pr_category").on('change',(function(e) {load_items($(this).val());}));
-	$("#sl_pr_items").on('change',(function(e) {select_item();}));
-	$("#sl_pr_udiscount").on('keyup',(function(e) {calculate_subtotal(e);}));
-	$("#sl_pr_udiscount").on('focusout',(function(e) {calculate_subtotal(e);}));
-	$("#sl_pr_quantity").on('keyup',(function(e) {calculate_subtotal(e);}));
-	$("#sl_pr_quantity").on('focusout',(function(e) {calculate_subtotal(e);}));
-	$("#btn_sl_pr_add").on('click',(function(e) {sl_product_add();}));
 	
 	//new sale - payment data
-	control_doc_number();
-	control_payment_info_form();
-	$("#client_doc_type").on('change',(function(e) {control_doc_number();}));
-	$("#client_doc_number").keyup(function() {control_client_name(true);});
-	$("#btn_search_client").on('click',(function(e) {search_person_ns();}));
-	$("#payment_received_v").keypress(function(e) {calculate_payment(e, "received");});
-	$("#payment_received_v").focusout(function(e) {calculate_payment(e, "received");});
-	$("#payment_change_v").keypress(function(e) {calculate_payment(e, "change");});
-	$("#payment_change_v").focusout(function(e) {calculate_payment(e, "change");});	
 });
