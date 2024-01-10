@@ -95,11 +95,10 @@
 <input type="hidden" id="e_item_option" value="<?= $this->lang->line('e_item_option') ?>">
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+	var params = get_params();
+	if (params.a == "add") $("#btn_add").trigger("click");
 	$(".control_bl").click(function() {
 		control_bl(this);
 	});
-	
-	var params = get_params();
-	if (params.a == "add") $("#btn_add").trigger("click");
 });
 </script>

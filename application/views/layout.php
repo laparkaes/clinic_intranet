@@ -162,26 +162,23 @@
 				</a>
 				<ul id="system-nav" class="nav-content collapse <?= ($this->nav_menu[0] === "system") ? "show" : "" ?>" data-bs-parent="#sidebar-nav">
 					<li>
-						<a href="<?= base_url() ?>account" class="<?= ($this->nav_menu[1] === "account") ? "active" : "" ?>">
+						<a href="<?= base_url() ?>sys/account" class="<?= ($this->nav_menu[1] === "account") ? "active" : "" ?>">
 							<i class="bi bi-circle"></i><span>Usuarios</span>
 						</a>
 					</li>
 					<li>
-						<a href="<?= base_url() ?>config" class="<?= ($this->nav_menu[1] === "config") ? "active" : "" ?>">
+						<a href="<?= base_url() ?>sys/report" class="<?= ($this->nav_menu[1] === "report") ? "active" : "" ?>">
+							<i class="bi bi-circle"></i><span>Reportes</span>
+						</a>
+					</li>
+					<li>
+						<a href="<?= base_url() ?>sys/config" class="<?= ($this->nav_menu[1] === "config") ? "active" : "" ?>">
 							<i class="bi bi-circle"></i><span>Ajustes</span>
 						</a>
 					</li>
 				</ul>
 			</li>
 			<?php } ?>
-			
-			<!-- li class="nav-item">
-				<a class="nav-link <?= ($this->nav_menu === "report") ? "" : "collapsed" ?>" href="<?= base_url() ?>report">
-					<i class="bi bi-file-earmark-ruled"></i>
-					<span>Reportes</span>
-				</a>
-			</li -->
-			
 		</ul>
 	</aside>
 	<main id="main" class="main">

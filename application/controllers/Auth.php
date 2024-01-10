@@ -15,7 +15,7 @@ class Auth extends CI_Controller {
 		if ($this->session->userdata('logged_in')) redirect("/dashboard");
 		else{
 			$this->load->library('my_val');
-			if (!$this->my_val->system_init()) redirect("/system_init");
+			if (!$this->my_val->system_init()) redirect("system/system_init");
 			//return true if systen init is completed
 		}
 		

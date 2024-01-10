@@ -12,7 +12,7 @@
 <div class="row">
 	<?php if ($voucher->sale_id){ ?>
 	<div class="col-md-3">
-		<a href="<?= base_url() ?>sale/voucher/<?= $voucher->id ?>" target="_blank" class="btn btn-primary w-100 mb-3">
+		<a href="<?= base_url() ?>commerce/sale/voucher/<?= $voucher->id ?>" target="_blank" class="btn btn-primary w-100 mb-3">
 			<div><i class="bi bi-file-earmark-text" style="font-size: 50px;"></i></div>
 			<div class="fs-16 mt-2 pt-2 border-top border-white"><?= $voucher->type ?></div>
 		</a>
@@ -26,7 +26,7 @@
 	</div>
 	<?php } ?>
 	<div class="col-md-3">
-		<a href="<?= base_url() ?>sale/payment_report/<?= $sale->id ?>" target="_blank" class="btn btn-primary w-100 mb-3">
+		<a href="<?= base_url() ?>commerce/sale/payment_report/<?= $sale->id ?>" target="_blank" class="btn btn-primary w-100 mb-3">
 			<div><i class="bi bi-file-earmark-ruled" style="font-size: 50px;"></i></div>
 			<div class="mt-2 pt-2 border-top border-white"><?= $this->lang->line('btn_payment_report') ?></div>
 		</a>
@@ -296,17 +296,17 @@
 						<input class="form-control" type="text" name="reason">
 						<div class="sys_msg" id="vv_reason_msg"></div>
 					</div>
+					<div class="col-md-12 pt-3">
+						<?php if (!$sale->balance){ ?>
+						<button type="submit" class="btn btn-primary" id="btn_void_voucher">
+							<?= $this->lang->line('btn_void') ?>
+						</button>
+						<?php } ?>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+							<?= $this->lang->line('btn_close') ?>
+						</button>
+					</div>
 				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-					<?= $this->lang->line('btn_close') ?>
-				</button>
-				<?php if (!$sale->balance){ ?>
-				<button type="button" class="btn btn-primary" id="btn_void_voucher">
-					<?= $this->lang->line('btn_void') ?>
-				</button>
-				<?php } ?>
 			</div>
 		</div>
 	</div>
@@ -359,17 +359,17 @@
 						</select>
 						<div class="sys_msg" id="mv_voucher_type_msg"></div>
 					</div>
+					<div class="col-md-12 pt-3">
+						<?php if (!$sale->balance){ ?>
+						<button type="submit" class="btn btn-primary">
+							<?= $this->lang->line('btn_emit') ?>
+						</button>
+						<?php } ?>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+							<?= $this->lang->line('btn_close') ?>
+						</button>
+					</div>
 				</form>
-				<?php } ?>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-					<?= $this->lang->line('btn_close') ?>
-				</button>
-				<?php if (!$sale->balance){ ?>
-				<button type="button" class="btn btn-primary" id="btn_make_voucher">
-					<?= $this->lang->line('btn_emit') ?>
-				</button>
 				<?php } ?>
 			</div>
 		</div>
@@ -526,6 +526,172 @@
 <input type="hidden" id="btn_select_lang" value="<?= $this->lang->line('btn_select') ?>">
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+	function search_reservations(attn){
+		var data = {doc_number: $("#rs_" + attn + "_doc_number").val(), attn: attn};
+		ajax_simple(data, "commerce/sale/search_reservations").done(function(res) {
+			$("#rs_" + attn + "_list").html("");
+			if (res.type == "error") swal(res.type, res.msg);
+			$.each(res.reservations, function(index, value) {
+				$("#rs_" + attn + "_list").append('<tr><td><strong>' + (index + 1) + '</strong></td><td><div>' + value.schedule + '</div><div>' + value.pt_name + '</div><small>' + value.pt_doc + '</small></td><td class="text-end"><button type="button" class="btn btn-success btn-sm btn_rs_select" value="' + value.id + '">' + $("#btn_select_lang").val() + '</button></td></tr>');
+			});
+			
+			$(".btn_rs_select").click(function() {
+				var data = {id: $("#rs_selected_product").val(), attn_id: $(this).val(), field: attn};
+				ajax_simple(data, "commerce/sale/asign_reservation").done(function(res) {
+					swal_redirection(res.type, res.msg, window.location.href);
+				});
+			});
+		});
+	}
+
+	function calculate_payment(e, type){
+		if ((e.which == 13) || (e.which == 0)){
+			var total = parseFloat($("#payment_total").val().replace(/,/g, ""));
+			var received = parseFloat($("#payment_received_v").val().replace(/,/g, ""));
+			var change = parseFloat($("#payment_change_v").val().replace(/,/g, ""));
+			var balance = parseFloat($("#payment_balance_v").val().replace(/,/g, ""));
+			
+			if (isNaN(change) || (change < 0)) change = 0;
+			else if (change > received) change = received;
+			
+			if (isNaN(received) || (received <= 0)) received = total;
+			
+			if (type == "received"){
+				if (received > total){
+					change = received - total;
+					balance = 0;
+				}else{
+					change = 0;
+					balance = total - received;
+				}
+			}else{//type = "change"
+				if (received > total){
+					var min_change = received - total;
+					if (change < min_change){
+						change = min_change;
+						balance = 0;
+					}
+				}
+				balance = total - received + change;
+			}
+			
+			//set payment data
+			$("#payment_received").val(received);
+			$("#payment_change").val(change);
+			$("#payment_balance").val(balance);
+			
+			//set payment view
+			$("#payment_received_v").val(nf(received));
+			$("#payment_change_v").val(nf(change));
+			$("#payment_balance_v").val(nf(balance));
+		}
+	}
+
+	//asign medical attention
+	$(".btn_select_product").click(function() {
+		$("#rs_selected_product").val($(this).val());
+	});
 	
+	$("#btn_search_surgery").click(function() {
+		search_reservations("surgery");
+	});
+	
+	$("#btn_search_appointment").click(function() {
+		search_reservations("appointment");
+	});
+	
+	$(".btn_unassign_reservation").click(function() {
+		var data = {id: $(this).val()};
+		ajax_simple_warning(data, "commerce/sale/unassign_reservation", "wm_medical_unassign").done(function(res) {
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
+	});
+	
+	//voucher
+	$("#form_make_voucher").submit(function(e) {
+		e.preventDefault();
+		ajax_form_warning(this, "commerce/sale/make_voucher", "wm_voucher_make").done(function(res) {
+			set_msg(res.msgs);
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
+	});
+	
+	$("#form_void_voucher").submit(function(e) {
+		e.preventDefault();
+		ajax_form_warning(this, "commerce/sale/void_voucher", "wm_voucher_void").done(function(res) {
+			set_msg(res.msgs);
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
+	});
+	
+	$("#mv_doc_type").change(function() {
+		$("#mv_doc_number, #mv_name").val("");
+		if ($("#mv_doc_type").val() == 1){
+			$("#mv_doc_number, #mv_name").prop("readonly", true);
+			$("#btn_search_person_mv").prop("disabled", true);
+		}else{
+			$("#mv_doc_number, #mv_name").prop("readonly", false);
+			$("#btn_search_person_mv").prop("disabled", false);
+		}
+	});
+	
+	$("#mv_doc_number").keyup(function() {
+		$("#mv_name").val("");
+	});
+	
+	$("#btn_search_person_mv").click(function() {
+		var data = {doc_type_id: $("#mv_doc_type").val(), doc_number: $("#mv_doc_number").val()};
+		ajax_simple(data, "ajax_f/search_person").done(function(res) {
+			swal(res.type, res.msg);
+			if (res.type == "success"){
+				$("#mv_name").val(res.person.name);
+			}else $("#mv_name").val("");
+		});
+	});
+	
+	$("#btn_send_sunat").click(function() {
+		ajax_simple_warning({id: $(this).val()}, "commerce/sale/send_sunat", "wm_voucher_sunat").done(function(res) {
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
+	});
+	
+	//sale
+	$("#btn_cancel_sale").click(function() {
+		ajax_simple_warning({id: $(this).val()}, "commerce/sale/cancel_sale", "wm_sale_cancel").done(function(res) {
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
+	});
+	
+	//payment
+	$("#form_add_payment").submit(function(e) {
+		e.preventDefault();
+		function add_payment(dom){
+			ajax_form_warning(this, "commerce/sale/add_payment", "wm_payment_add").done(function(res) {
+				swal_redirection(res.type, res.msg, window.location.href);
+			});
+		}
+	});
+	
+	$("#btn_add_payment").click(function() {
+		$("#form_add_payment").submit();
+	});
+	
+	$("#btn_delete_payment").click(function() {
+		ajax_simple_warning({id: $(this).val()}, "commerce/sale/delete_payment", "wm_payment_delete").done(function(res) {
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
+	});
+	
+	$("#payment_received_v").keypress(function(e) {
+		calculate_payment(e, "received");
+	}).focusout(function(e) {
+		calculate_payment(e, "received");
+	});
+	
+	$("#payment_change_v").keypress(function(e) {
+		calculate_payment(e, "change");
+	}).focusout(function(e) {
+		calculate_payment(e, "change");
+	});
 });
 </script>

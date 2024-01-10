@@ -750,8 +750,8 @@ class Sale extends CI_Controller {
 			//$data["logo"] = base64_encode(file_get_contents(FCPATH."/resources/images/logo.png"));
 			$data["invoice"] = $invoice;
 			
-			//echo $this->load->view("voucher/invoice", $data, true);
-			$this->my_func->make_pdf($this->load->view("voucher/invoice", $data, true), $data["title"]);
+			//echo $this->load->view("commerce/voucher/invoice", $data, true);
+			$this->my_func->make_pdf($this->load->view("commerce/voucher/invoice", $data, true), $data["title"]);
 		}else echo $this->lang->line('error_no_permission');
 	}
 	
@@ -797,8 +797,8 @@ class Sale extends CI_Controller {
 				//"logo" => base64_encode(file_get_contents(FCPATH."/resources/images/logo.png")),
 			];
 			
-			//echo $this->load->view("voucher/ticket", $data, true);
-			$this->my_func->make_pdf($this->load->view("voucher/ticket", $data, true), $title);
+			//echo $this->load->view("commerce/voucher/ticket", $data, true);
+			$this->my_func->make_pdf($this->load->view("commerce/voucher/ticket", $data, true), $title);
 		}else echo $this->lang->line('error_no_permission');
 	}
 }
