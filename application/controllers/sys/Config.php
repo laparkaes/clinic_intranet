@@ -18,9 +18,16 @@ class Config extends CI_Controller {
 		if (!$this->session->userdata('logged_in')) redirect("/");
 		if (!$this->utility_lib->check_access("config", "index")) redirect("/errors/no_permission");
 		
-		$modules = ["dashboard", "doctor", "patient", "appointment", "surgery", "product", "sale", "report", "account", "config"];
+		$module_group = [];
+		$module_group["dashboard"] = ["dashboard"];
+		$module_group["clinic"] = ["appointment", "surgery", "doctor", "patient"];
+		$module_group["commerce"] = ["sale", "purchase", "product"];
+		$module_group["sys"] = ["account", "report", "config"];
+		
 		$access = [];
-		foreach($modules as $item) $access[$item] = $this->general->filter("access", ["module" => $item], null, null, "id", "asc");
+		foreach($module_group as $mg => $modules)
+			foreach($modules as $m) 
+				$access[$m] = $this->general->filter("access", ["module" => $m], null, null, "id", "asc");
 		
 		$role_access = [];
 		$role_access_rec = $this->general->all("role_access", null);
@@ -74,6 +81,7 @@ class Config extends CI_Controller {
 			"role_access" => $role_access,
 			"roles_arr" => $roles_arr,
 			"roles" => $roles,
+			"module_group" => $module_group,
 			"access" => $access,
 			"log_code_arr" => $log_code_arr,
 			"logs" => $logs,

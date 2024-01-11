@@ -338,38 +338,46 @@
 						</div>
 					</div>
 					<div class="tab-pane fade" id="bordered-bl_access_admin" role="tabpanel" aria-labelledby="bl_access_admin-tab">
-						<div class="table-responsive">
-							<table class="table text-center">
-								<tbody>
-									<?php $colspan = count($roles) + 1; foreach($access as $module => $a_list){ ?>
-									<tr>
-										<td class="text-start">
-											<strong><?= $this->lang->line('wm_'.$module) ?></strong>
-										</td>
-										<?php foreach($roles as $item){ ?>
-										<td style="width: 105px;"><strong><?= $this->lang->line($item->name) ?></strong></td>
+						<?php foreach($module_group as $mg => $modules){ ?>
+						<div class="mb-3">
+							<h5 class="card-title"><?= $this->lang->line('mg_'.$mg) ?></h5>
+							<?php foreach($modules as $m){ $a_list = $access[$m]; ?>
+							<div class="table-responsive">
+								<table class="table text-center">
+									<thead>
+										<tr>
+											<th class="text-start">
+												<?= $this->lang->line('wm_'.$m) ?>
+											</th>
+											<?php foreach($roles as $item){ ?>
+											<th style="width: 105px;"><?= $this->lang->line($item->name) ?></th>
+											<?php } ?>
+										</tr>
+									</thead>
+									<tbody>
+										<?php foreach($a_list as $a){ ?>
+										<tr>
+											<td class="text-start ps-4">
+												<?= $this->lang->line('wa_'.$a->description) ?>
+											</td>
+											<?php foreach($roles as $r){ 
+											$value = $r->id."_".$a->id;
+											if (in_array($value, $role_access)) $c = "checked"; else $c = ""; ?>
+											<td>
+												<div class="custom-control custom-checkbox">
+													<input type="checkbox" class="custom-control-input chk_access" id="chk_<?= $value ?>" value="<?= $value ?>" <?= $c ?>>
+													<label class="custom-control-label" for="chk_<?= $value ?>"></label>
+												</div>
+											</td>
+											<?php } ?>
+										</tr>
 										<?php } ?>
-									</tr>
-									<?php foreach($a_list as $a){ ?>
-									<tr>
-										<td class="text-start ps-4">
-											<?= $this->lang->line('wa_'.$a->description) ?>
-										</td>
-										<?php foreach($roles as $r){ 
-										$value = $r->id."_".$a->id;
-										if (in_array($value, $role_access)) $c = "checked"; else $c = ""; ?>
-										<td>
-											<div class="custom-control custom-checkbox">
-												<input type="checkbox" class="custom-control-input chk_access" id="chk_<?= $value ?>" value="<?= $value ?>" <?= $c ?>>
-												<label class="custom-control-label" for="chk_<?= $value ?>"></label>
-											</div>
-										</td>
-										<?php } ?>
-									</tr>
-									<?php }} ?>
-								</tbody>
-							</table>
+									</tbody>
+								</table>
+							</div>
+							<?php } ?>
 						</div>
+						<?php } ?>
 					</div>
 					<div class="tab-pane fade" id="bordered-bl_history_admin" role="tabpanel" aria-labelledby="bl_history_admin-tab">
 						<div class="table-responsive">

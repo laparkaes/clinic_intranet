@@ -1,0 +1,1 @@
+INSERT INTO `access` (`module`, `description`) VALUES ('purchase', 'index'), ('purchase', 'register'), ('purchase', 'detail'), ('purchase', 'update');

@@ -35,7 +35,7 @@ $lang['btn_examination']	= 'Examen';
 $lang['btn_init_system']	= 'Inicialización del Sistema';
 $lang['btn_load_more']		= 'Cargar más';
 
-//word access
+//access
 $lang['wa_admin_access']	= 'Gestión de acceso';
 $lang['wa_admin_account']	= 'Gestión de usuario';
 $lang['wa_admin_category']	= 'Gestión de categorias';
@@ -57,14 +57,21 @@ $lang['wa_delete']			= 'Eliminar';
 $lang['wa_reset_password']	= 'Restablecer contraseña';
 $lang['wa_update_company']	= 'Actualizar datos de empresa';
 
-//word module
+//module group
+$lang['mg_dashboard']		= 'Principal';
+$lang['mg_clinic']			= 'Clínica';
+$lang['mg_commerce']		= 'Comercio';
+$lang['mg_sys']				= 'Sistema';
+
+//module
 $lang['wm_account']		= 'Módulo Usuario';
 $lang['wm_appointment']	= 'Módulo Consulta';
 $lang['wm_config']		= 'Módulo Configuración';
-$lang['wm_dashboard']	= 'Módulo Tablero';
+$lang['wm_dashboard']	= 'Módulo Principal';
 $lang['wm_doctor']		= 'Módulo Médico';
 $lang['wm_patient']		= 'Módulo Paciente';
 $lang['wm_product']		= 'Módulo Producto';
+$lang['wm_purchase']	= 'Módulo Compra';
 $lang['wm_report']		= 'Módulo Reporte';
 $lang['wm_sale']		= 'Módulo Venta';
 $lang['wm_surgery']		= 'Módulo Cirugía';
