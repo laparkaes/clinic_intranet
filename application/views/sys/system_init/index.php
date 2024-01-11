@@ -415,9 +415,18 @@
 		});
 		
 		//sunat
-		$("#form_sunat_access_init").submit(function(e) {e.preventDefault(); sunat_access_init(this);});
-		$("#btn_remove_sunat").click(function() {remove_sunat();});
-		$("#btn_test_sunat").click(function() {test_sunat();});
+		$("#form_sunat_access_init").submit(function(e) {
+			e.preventDefault(); 
+			sunat_access_init(this);
+		});
+		
+		$("#btn_remove_sunat").click(function() {
+			remove_sunat();
+		});
+		
+		$("#btn_test_sunat").click(function() {
+			test_sunat();
+		});
 		
 		//sale type
 		$("#form_add_sale_type").submit(function(e) {e.preventDefault(); add_sale_type(this);});
