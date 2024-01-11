@@ -21,11 +21,10 @@ class Dashboard extends CI_Controller {
 		
 		$role_name = $this->session->userdata('role')->name;
 		
-		$data = array(
-			"init_js" => "dashboard/".$role_name.".js",
+		$data = [
 			"title" => $this->lang->line('dashboard'),
 			"main" => "dashboard/".$role_name,
-		);
+		];
 		
 		switch($role_name){
 			case "master": $data = $this->set_master_datas($data); break;

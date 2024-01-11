@@ -87,7 +87,6 @@ class Sale extends CI_Controller {
 			"sales" => $sales,
 			"title" => $this->lang->line('sales'),
 			"main" => "commerce/sale/list",
-			"init_js" => "commerce/sale/list.js"
 		);
 		
 		$this->load->view('layout', $data);
@@ -300,7 +299,6 @@ class Sale extends CI_Controller {
 			"voucher_types" => $this->general->all("voucher_type", "description", "asc"),
 			"title" => $this->lang->line('sale'),
 			"main" => "commerce/sale/detail",
-			"init_js" => "commerce/sale/detail.js"
 		);
 		
 		$this->load->view('layout', $data);

@@ -24,7 +24,6 @@ class Report extends CI_Controller {
 			"report_types" => $this->general->all("report_type", "id", "asc"),
 			"title" => "Reportes",
 			"main" => "sys/report/index",
-			"init_js" => "sys/report/index.js"
 		);
 		
 		$this->load->view('layout', $data);

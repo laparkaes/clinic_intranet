@@ -73,9 +73,20 @@
 			</section>
 		</div>
 	</main>
-	
 	<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 	<input type="hidden" id="base_url" value="<?= base_url() ?>">
+	<script>
+	document.addEventListener("DOMContentLoaded", () => {
+		$("#form_change_password").submit(function(e) {
+			e.preventDefault();
+			$("#form_change_password .sys_msg").html("");
+			ajax_form_warning(this, "auth/change_password_apply", "wm_change_password").done(function(res) {
+				set_msg(res.msgs);
+				swal_redirection(res.type, res.msg, $("#base_url").val() + "auth/logout");
+			});
+		});
+	});
+	</script>
 	<script src="<?= base_url() ?>assets/vendor/jquery-3.7.0.min.js"></script>
 	<script src="<?= base_url() ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="<?= base_url() ?>assets/vendor/apexcharts/apexcharts.min.js"></script>

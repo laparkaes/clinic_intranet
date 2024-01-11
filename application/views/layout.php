@@ -202,8 +202,5 @@
 	<script src="<?= base_url() ?>assets/js/main.js"></script>
 	<script src="<?= base_url() ?>assets/js/lang.js"></script>
 	<script src="<?= base_url() ?>assets/js/func.js"></script>
-	<?php if ($init_js){ ?>
-	<script src="<?= base_url() ?>assets/js/init/<?= $init_js ?>"></script>
-	<?php } ?>
 </body>
 </html>

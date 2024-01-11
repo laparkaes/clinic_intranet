@@ -60,9 +60,21 @@
 			</section>
 		</div>
 	</main>
-	
 	<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 	<input type="hidden" id="base_url" value="<?= base_url() ?>">
+	<script>
+	document.addEventListener("DOMContentLoaded", () => {
+		$("#form_login").submit(function(e) {
+			e.preventDefault();
+			$("#form_login .sys_msg").html("");
+			ajax_form(this, "auth/login").done(function(res) {
+				set_msg(res.msgs);
+				if (res.type == "success") window.location.href = res.move_to;
+				else swal(res.type, res.msg);
+			});
+		});
+	});
+	</script>
 	<script src="<?= base_url() ?>assets/vendor/jquery-3.7.0.min.js"></script>
 	<script src="<?= base_url() ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="<?= base_url() ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
@@ -70,6 +82,5 @@
 	<script src="<?= base_url() ?>assets/js/main.js"></script>
 	<script src="<?= base_url() ?>assets/js/lang.js"></script>
 	<script src="<?= base_url() ?>assets/js/func.js"></script>
-	<script src="<?= base_url() ?>assets/js/init/auth/index.js"></script>
 </body>
 </html>

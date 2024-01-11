@@ -65,7 +65,6 @@ class Doctor extends CI_Controller {
 			"blood_type_ops" => $this->general->all("blood_type", "description", "asc"),
 			"title" => $this->lang->line('doctors'),
 			"main" => "clinic/doctor/list",
-			"init_js" => "clinic/doctor/list.js"
 		];
 		
 		$this->load->view('layout', $data);
@@ -134,7 +133,6 @@ class Doctor extends CI_Controller {
 			"blood_type_ops" => $this->general->all("blood_type", "description", "asc"),
 			"title" => $this->lang->line('doctor'),
 			"main" => "clinic/doctor/detail",
-			"init_js" => "clinic/doctor/detail.js"
 		];
 		$this->load->view('layout', $data);
 	}

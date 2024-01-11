@@ -63,7 +63,6 @@ class Appointment extends CI_Controller {
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"title" => $this->lang->line('appointments'),
 			"main" => $this->path."list",
-			"init_js" => $this->path."list.js"
 		];
 		
 		$this->load->view('layout', $data);
@@ -351,7 +350,6 @@ class Appointment extends CI_Controller {
 			"medicines" => $this->general->all("medicine", "name", "asc"),
 			"title" => "Consulta",
 			"main" => $this->path."detail",
-			"init_js" => $this->path."detail.js"
 		);
 		
 		$this->load->view('layout', $data);

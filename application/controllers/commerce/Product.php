@@ -62,7 +62,6 @@ class Product extends CI_Controller {
 			"currencies_arr" => $currencies_arr,
 			"title" => $this->lang->line('products'),
 			"main" => "commerce/product/list",
-			"init_js" => "commerce/product/list.js"
 		];
 		
 		$this->load->view('layout', $data);
@@ -235,7 +234,6 @@ class Product extends CI_Controller {
 			"images" => $this->product->images($product_id),
 			"title" => "Producto",
 			"main" => "commerce/product/detail",
-			"init_js" => "commerce/product/detail.js"
 		);
 		
 		$this->load->view('layout', $data);

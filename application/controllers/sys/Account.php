@@ -49,7 +49,6 @@ class Account extends CI_Controller {
 			"accounts" => $accounts,
 			"title" => $this->lang->line('accounts'),
 			"main" => "sys/account/list",
-			"init_js" => "sys/account/list.js"
 		);
 		
 		$this->load->view('layout', $data);

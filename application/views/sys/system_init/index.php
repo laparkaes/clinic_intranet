@@ -417,24 +417,74 @@
 		//sunat
 		$("#form_sunat_access_init").submit(function(e) {
 			e.preventDefault(); 
-			sunat_access_init(this);
+			ajax_form(this, "sys/system_init/sunat").done(function(res) {
+				set_msg(res.msgs);
+				swal_redirection(res.type, res.msg, window.location.href);
+			});
 		});
 		
 		$("#btn_remove_sunat").click(function() {
-			remove_sunat();
+			ajax_simple_warning({}, "sys/system_init/remove_sunat", "wm_sunat_remove").done(function(res) {
+				swal_redirection(res.type, res.msg, window.location.href);
+			});
 		});
 		
 		$("#btn_test_sunat").click(function() {
-			test_sunat();
+			ajax_simple({}, "sys/system_init/test_sunat").done(function(res) {
+				swal_redirection(res.type, res.msg, window.location.href);
+			});
 		});
 		
 		//sale type
-		$("#form_add_sale_type").submit(function(e) {e.preventDefault(); add_sale_type(this);});
-		$(".btn_remove_sale_type").click(function() {remove_sale_type($(this).val());});
-		$("#btn_finish_sale_type").click(function() {finish_sale_type();});
+		function remove_sale_type(id){
+			ajax_simple_warning({id:id}, "sys/system_init/remove_sale_type", "wm_sale_type_remove").done(function(res) {
+				swal(res.type, res.msg);
+				if (res.type == "success"){
+					$("#btn_finish_sale_type").removeClass("d-none");
+					set_sale_types(res.sale_types);
+				}
+			});
+		}
+		
+		function set_sale_types(sale_types){
+			$(".row_sale_type").remove();
+			$.each(sale_types, function(index, item) {
+				$("#tbody_sale_types").append('<tr class="row_sale_type"><td>' + item.description + '</td><td>' + item.sunat_serie + '</td><td>' + item.start_factura + '</td><td>' + item.start_boleta + '</td><td class="text-right"><button type="button" class="btn btn-danger light btn_remove_sale_type" value="' + item.id + '"><i class="fas fa-trash"></i></button></td></tr>');
+			});
+			
+			$(".btn_remove_sale_type").on('click',(function(e) {remove_sale_type($(this).val());}));
+		}
+		
+		$("#form_add_sale_type").submit(function(e) {
+			e.preventDefault();
+			ajax_form(this, "sys/system_init/add_sale_type").done(function(res) {
+				set_msg(res.msgs);
+				swal(res.type, res.msg);
+				if (res.type == "success"){
+					$("#form_add_sale_type").reset();
+					$("#btn_finish_sale_type").removeClass("d-none");
+					set_sale_types(res.sale_types);
+				}
+				
+			});
+		});
+		
+		$(".btn_remove_sale_type").click(function() {
+			remove_sale_type($(this).val());
+		});
+		
+		$("#btn_finish_sale_type").click(function() {
+			ajax_simple_warning({}, "sys/system_init/finish_sale_type", "wm_sale_type_finish").done(function(res) {
+				swal_redirection(res.type, res.msg, window.location.href);
+			});
+		});
 		
 		//general
-		$("#btn_finish").click(function() {finish_init();});
+		$("#btn_finish").click(function() {
+			ajax_simple_warning({}, "sys/system_init/finish_init", "wm_sys_init_finish").done(function(res) {
+				swal_redirection(res.type, res.msg, window.location.href);
+			});
+		});
 	});
 	</script>
 	<script src="<?= base_url() ?>assets/vendor/jquery-3.7.0.min.js"></script>

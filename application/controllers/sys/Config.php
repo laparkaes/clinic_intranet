@@ -90,7 +90,6 @@ class Config extends CI_Controller {
 			"company" => $this->general->id("company", $sys_conf->company_id),
 			"title" => $this->lang->line('setting'),
 			"main" => "sys/config/index",
-			"init_js" => "sys/config/index.js"
 		);
 		
 		$this->load->view('layout', $data);

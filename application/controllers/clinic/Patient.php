@@ -40,7 +40,6 @@ class Patient extends CI_Controller {
 			"blood_type_ops" => $this->general->all("blood_type", "description", "asc"),
 			"title" => $this->lang->line('patients'),
 			"main" => "clinic/patient/list",
-			"init_js" => "clinic/patient/list.js"
 		];
 		
 		$this->load->view('layout', $data);
@@ -130,7 +129,6 @@ class Patient extends CI_Controller {
 			"patient_files" => $this->general->filter("patient_file", ["patient_id" => $person->id, "active" => true], null, null, "registed_at", "desc"),
 			"title" => $this->lang->line('patient'),
 			"main" => "clinic/patient/detail",
-			"init_js" => "clinic/patient/detail.js"
 		];
 		
 		$this->load->view('layout', $data);

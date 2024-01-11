@@ -77,7 +77,6 @@ class Surgery extends CI_Controller {
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"title" => $this->lang->line('surgeries'),
 			"main" => "clinic/surgery/list",
-			"init_js" => "clinic/surgery/list.js"
 		);
 		
 		$this->load->view('layout', $data);
@@ -195,7 +194,6 @@ class Surgery extends CI_Controller {
 			"patient_files" => $this->general->filter("patient_file", array("patient_id" => $surgery->patient_id)),
 			"title" => $this->lang->line('surgery'),
 			"main" => "clinic/surgery/detail",
-			"init_js" => "clinic/surgery/detail.js"
 		);
 		
 		$this->load->view('layout', $data);
