@@ -78,7 +78,7 @@
 						<div class="btn-group" role="group" aria-label="paging">
 							<?php foreach($paging as $p){
 							$f_url["page"] = $p[0]; ?>
-							<a href="<?= base_url() ?>account?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
+							<a href="<?= base_url() ?>sys/account?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
 								<?= $p[1] ?>
 							</a>
 							<?php } ?>
@@ -156,3 +156,57 @@
 		</div>
 	</div>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+	//list
+	$(".control_bl").click(function() {
+		control_bl(this);
+	});
+	
+	$(".btn_reset_password").click(function() {
+		ajax_simple_warning({id: $(this).val()}, "sys/account/reset_password", "wm_password_reset").done(function(res) {
+			swal(res.type, res.msg);
+		});
+	});
+	
+	$(".btn_remove_account").click(function() {
+		ajax_simple_warning({id: $(this).val()}, "sys/account/remove", "wm_account_remove").done(function(res) {
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
+	});
+	
+	//register
+	$("#form_register_account").submit(function(e) {
+		e.preventDefault();
+		ajax_form_warning(this, "sys/account/register", "wm_account_add").done(function(res) {
+			set_msg(res.msgs);
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
+		
+	});
+	
+	function reset_person(){
+		$("#ra_name").val("");
+		$("#ra_tel").val("");
+	}
+	
+	$("#btn_search_person_ra").click(function() {
+		var data = {doc_type_id: $("#ra_doc_type_id").val(), doc_number: $("#ra_doc_number").val()};
+		ajax_simple(data, "ajax_f/search_person").done(function(res) {
+			swal(res.type, res.msg);
+			if (res.type == "success"){
+				$("#ra_name").val(res.person.name);
+				$("#ra_tel").val(res.person.tel);
+			}else reset_person();
+		});
+	});
+	
+	$("#ra_doc_type_id").change(function() {
+		reset_person();
+	});
+	
+	$("#ra_doc_number").keyup(function() {
+		reset_person();
+	});
+});
+</script>

@@ -155,12 +155,12 @@
 					</li>
 				</ul>
 			</li>
-			<?php } if (in_array("system", $this->nav_menus)){ ?>
+			<?php } if (in_array("sys", $this->nav_menus)){ ?>
 			<li class="nav-item">
-				<a class="nav-link <?= ($this->nav_menu[0] === "system") ? "" : "collapsed" ?>" data-bs-target="#system-nav" data-bs-toggle="collapse" href="#" aria-expanded="<?= ($this->nav_menu[0] === "system") ? "true" : "false" ?>">
+				<a class="nav-link <?= ($this->nav_menu[0] === "sys") ? "" : "collapsed" ?>" data-bs-target="#sys-nav" data-bs-toggle="collapse" href="#" aria-expanded="<?= ($this->nav_menu[0] === "sys") ? "true" : "false" ?>">
 					<i class="bi bi-pc-display"></i><span>Sistema</span><i class="bi bi-chevron-down ms-auto"></i>
 				</a>
-				<ul id="system-nav" class="nav-content collapse <?= ($this->nav_menu[0] === "system") ? "show" : "" ?>" data-bs-parent="#sidebar-nav">
+				<ul id="sys-nav" class="nav-content collapse <?= ($this->nav_menu[0] === "sys") ? "show" : "" ?>" data-bs-parent="#sidebar-nav">
 					<li>
 						<a href="<?= base_url() ?>sys/account" class="<?= ($this->nav_menu[1] === "account") ? "active" : "" ?>">
 							<i class="bi bi-circle"></i><span>Usuarios</span>

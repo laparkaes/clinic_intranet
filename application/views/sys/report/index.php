@@ -42,7 +42,7 @@
 						</form>
 					</div>
 					<div class="col-md-6">
-						<img class="w-100" src="./resources/images/report_example.png">
+						<img class="w-100" src="<?= base_url() ?>/resources/images/report_example.png">
 						<div class="text-center mt-3"><?= $this->lang->line('w_example') ?></div>
 					</div>
 				</div>
@@ -50,3 +50,18 @@
 		</div>
 	</div>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+	set_date_picker("#gr_from", null);
+	set_date_picker("#gr_to", null);
+	
+	$("#form_generate_report").submit(function(e) {
+		e.preventDefault();
+		ajax_form(this, "sys/report/generate_report").done(function(res) {
+			set_msg(res.msgs);
+			if (res.type == "success") location.href = res.move_to;
+			else swal(res.type, res.msg);
+		});
+	});
+});
+</script>

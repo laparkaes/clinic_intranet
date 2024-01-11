@@ -264,23 +264,6 @@ function load_room_availability(room_id, date, dom_id){
 	});
 }
 
-function set_between_dates(id_from, id_to){
-	id_from = "#" + id_from;
-	id_to = "#" + id_to;
-	
-	$(id_to).bootstrapMaterialDatePicker({
-		weekStart: 0, format: 'YYYY-MM-DD', time: false, maxDate: $(id_to).val(), minDate: $(id_from).val()
-	}).on('change', function(e, date) {
-		$(id_from).bootstrapMaterialDatePicker('setMaxDate', date);
-	}); 
-
-	$(id_from).bootstrapMaterialDatePicker({
-		weekStart: 0, format: 'YYYY-MM-DD', time: false, maxDate: $(id_to).val()
-	}).on('change', function(e, date) {
-		$(id_to).bootstrapMaterialDatePicker('setMinDate', date);
-	}); 
-}
-
 function get_params(){
 	var url = window.location.href;
 	var params = {};

@@ -10,7 +10,7 @@ class Config extends CI_Controller {
 		$this->lang->load("config", "spanish");
 		$this->lang->load("log", "spanish");
 		$this->load->model('general_model','general');
-		$this->nav_menu = "config";
+		$this->nav_menu = ["sys", "config"];
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 	}
 	
@@ -89,8 +89,8 @@ class Config extends CI_Controller {
 			"districts" => $this->general->all("address_district", "name", "asc"),
 			"company" => $this->general->id("company", $sys_conf->company_id),
 			"title" => $this->lang->line('setting'),
-			"main" => "config/index",
-			"init_js" => "config/index.js"
+			"main" => "sys/config/index",
+			"init_js" => "sys/config/index.js"
 		);
 		
 		$this->load->view('layout', $data);

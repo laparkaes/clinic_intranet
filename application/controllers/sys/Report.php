@@ -12,7 +12,7 @@ class Report extends CI_Controller {
 		$this->lang->load("system", "spanish");
 		$this->lang->load("report", "spanish");
 		$this->load->model('general_model','general');
-		$this->nav_menu = "report";
+		$this->nav_menu = ["sys", "report"];
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 	}
 	
@@ -23,8 +23,8 @@ class Report extends CI_Controller {
 		$data = array(
 			"report_types" => $this->general->all("report_type", "id", "asc"),
 			"title" => "Reportes",
-			"main" => "report/index",
-			"init_js" => "report/index.js"
+			"main" => "sys/report/index",
+			"init_js" => "sys/report/index.js"
 		);
 		
 		$this->load->view('layout', $data);

@@ -39,10 +39,9 @@ class System_init extends CI_Controller {
 			"districts" => $this->general->all("address_district", "name", "asc"),
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"sale_types" => $this->general->all("sale_type", "sunat_serie", "asc"),
-			"title" => $this->lang->line('system_init'),
 		];
 		
-		$this->load->view("system_init/index", $data);
+		$this->load->view("sys/system_init/index", $data);
 	}
 	
 	public function company(){

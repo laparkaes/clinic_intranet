@@ -149,7 +149,7 @@ class Utility_lib{
 			if (in_array($item, $nav_menus)){ $nav_menus[] = "moneyflow"; break; }
 		
 		foreach(["account", "config"] as $item)
-			if (in_array($item, $nav_menus)){ $nav_menus[] = "system"; break; }
+			if (in_array($item, $nav_menus)){ $nav_menus[] = "sys"; break; }
 		
 		return $nav_menus;
 	}

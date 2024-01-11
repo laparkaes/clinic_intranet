@@ -9,7 +9,7 @@ class Account extends CI_Controller {
 		$this->lang->load("system", "spanish");
 		$this->lang->load("account", "spanish");
 		$this->load->model('general_model','general');
-		$this->nav_menu = "account";
+		$this->nav_menu = ["sys", "account"];
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 	}
 	
@@ -48,8 +48,8 @@ class Account extends CI_Controller {
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"accounts" => $accounts,
 			"title" => $this->lang->line('accounts'),
-			"main" => "account/list",
-			"init_js" => "account/list.js"
+			"main" => "sys/account/list",
+			"init_js" => "sys/account/list.js"
 		);
 		
 		$this->load->view('layout', $data);
@@ -76,7 +76,7 @@ class Account extends CI_Controller {
 					$a["person_id"] = $this->general->insert("person", $p);
 				}
 				
-				if (!$this->general->filter("account", ["role_id" => $a["role_id"], "person_id" => $a["person_id"]])){
+				if (!$this->general->filter("account", ["email" => $a["email"]])){
 					unset($a["confirm"]);
 					$a["password"] = password_hash($a["password"], PASSWORD_BCRYPT);
 					$a["registed_at"] = date('Y-m-d H:i:s', time());
