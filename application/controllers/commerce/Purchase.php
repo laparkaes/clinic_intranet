@@ -11,10 +11,27 @@ class Purchase extends CI_Controller {
 		$this->load->model('general_model','general');
 		$this->nav_menu = ["commerce", "purchase"];
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
-		$this->sunat_resolution = "0180050001138";
 	}
 	
 	public function index(){
+		if (!$this->session->userdata('logged_in')) redirect('/');
+		if (!$this->utility_lib->check_access("purchase", "index")) redirect("/errors/no_permission");
 		
+		$f_url = [
+			"page" => $this->input->get("page"),
+			"provider" => $this->input->get("provider"),
+		];
+		
+		$purchases = [];
+		
+		$data = array(
+			"paging" => 1,//$this->my_func->set_page($f_url["page"], $this->general->counter("purchase", $f_w)),
+			"f_url" => $f_url,
+			"purchases" => $purchases,
+			"title" => $this->lang->line('purchases'),
+			"main" => "commerce/purchase/list",
+		);
+		
+		$this->load->view('layout', $data);
 	}
 }

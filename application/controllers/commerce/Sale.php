@@ -81,7 +81,7 @@ class Sale extends CI_Controller {
 		];
 		
 		$data = array(
-			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("appointment", $f_w)),
+			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("sale", $f_w)),
 			"f_url" => $f_url,
 			"status" => $status,
 			"sales" => $sales,

@@ -1,7 +1,9 @@
 <?php
-$lang['products'] = 'Productos';
+$lang['purchases'] = 'Compras';
 
 //success message
+
+
 $lang["s_category_add"]		= "Categoría ha sido creada.";
 $lang["s_category_update"]	= "Categoría ha sido actualizada.";
 $lang["s_category_delete"]	= "Categoría ha sido eliminada.";
@@ -19,6 +21,8 @@ $lang["s_option_delete"]	= "Opción ha sido eliminada.";
 $lang["s_option_update"]	= "Opción ha sido actualizada.";
 
 //error message
+
+
 $lang["e_category_name"]			= "Ingrese nombre de categoría.";
 $lang["e_category_exists"]			= "Nombre ingresado existe.";
 $lang["e_category_remove_products"]	= "No puede eliminar categoría con productos.";
@@ -28,10 +32,16 @@ $lang["e_category_no_product"] 		= "No hay ningun producto de categoría elegida
 $lang["e_product_no_stock"]			= "Producto no cuenta con stock.";
 
 //button
+
+
 $lang['btn_categories']	= 'Categorías';
 $lang['btn_clean']		= 'Limpiar';
 
 //word
+$lang['w_provider'] 		= 'Proveedor';
+
+
+
 $lang['w_address']			= 'Dirección';
 $lang['w_category'] 		= 'Categoría';
 $lang['w_category_name'] 	= 'Nombre de Categoría';
@@ -54,7 +64,6 @@ $lang['w_person'] 			= 'Encargado';
 $lang['w_price'] 			= 'Precio';
 $lang['w_product'] 			= 'Producto';
 $lang['w_products'] 		= 'Productos';
-$lang['w_provider'] 		= 'Proveedor';
 $lang['w_register_date'] 	= 'Fecha de Registro';
 $lang['w_remark'] 			= 'Observación';
 $lang['w_ruc'] 				= 'RUC';
