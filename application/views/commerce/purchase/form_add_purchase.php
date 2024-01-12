@@ -2,7 +2,6 @@
 $this->lang->load("sale", "spanish");
 $categories = $this->general->all("product_category", "name", "asc");
 $doc_types = $this->general->all("doc_type", "sunat_code", "asc");
-$payment_methods = $this->general->all("payment_method", "description", "asc");
 $sale_types = $this->general->all("sale_type", "sunat_serie", "asc");
 ?>
 <div class="card-body add_sale_step" id="step_set_sale_information">
@@ -44,20 +43,7 @@ $sale_types = $this->general->all("sale_type", "sunat_serie", "asc");
 			<div class="row g-3">
 				<div class="col-md-12">
 					<label class="form-label"><?= $this->lang->line('w_sale_type') ?></label>
-					<select class="form-select" name="sale_type_id">
-						<?php foreach($sale_types as $item){ ?>
-						<option value="<?= $item->id ?>"><?= $item->sunat_serie." - ".$item->description ?></option>
-						<?php } ?>
-					</select>
-				</div>
-				<div class="col-md-6">
-					<label class="form-label"><?= $this->lang->line('w_payment_method') ?></label>
-					<select class="form-select" name="payment[payment_method_id]">
-						<?php foreach($payment_methods as $item){ ?>
-						<option value="<?= $item->id ?>"><?= $item->description ?></option>
-						<?php } ?>
-					</select>
-					<div class="sys_msg" id="payment_method_msg"></div>
+					<input type="file" class="form-control">
 				</div>
 				<div class="col-md-6">
 					<label class="form-label"><?= $this->lang->line('w_received') ?></label>
@@ -170,22 +156,14 @@ $sale_types = $this->general->all("sale_type", "sunat_serie", "asc");
 				<option value="">--</option>
 			</select>
 		</div>
-		<div class="col-md-2">
+		<div class="col-md-3">
 			<label class="form-label"><?= $this->lang->line('w_unit_price_short') ?></label>
 			<div class="input-group">
 				<span class="input-group-text currency"></span>
-				<input type="text" class="form-control text-end" id="price_txt" readonly>
-			</div>
-			<input type="text" class="form-control d-none" id="price" name="price" readonly>
-		</div>
-		<div class="col-md-2">
-			<label class="form-label"><?= $this->lang->line('w_discount_unit') ?></label>
-			<div class="input-group">
-				<span class="input-group-text currency"></span>
-				<input type="text" class="form-control text-end" id="discount" name="discount">
+				<input type="text" class="form-control" id="price" name="price">
 			</div>
 		</div>
-		<div class="col-md-2">
+		<div class="col-md-3">
 			<label class="form-label"><?= $this->lang->line('w_quantity') ?></label>
 			<input type="number" class="form-control" id="quantity" name="qty" value="1">
 		</div>
@@ -232,7 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		$.each($("#tb_product_list tr"), function(index, value){
 			$(value).find(".num").html(index + 1);
 			prod = JSON.parse($(value).find(".prod_data").val());
-			total += (prod.price - prod.discount) * prod.qty;
+			total += prod.price * prod.qty;
 		});
 		
 		$("#sale_total").val(total);
@@ -351,11 +329,9 @@ document.addEventListener("DOMContentLoaded", () => {
 						$(".currency").html(prod.currency);
 						$("#product_id").val(prod.id);
 						$("#product").val(prod.description);
-						$("#price_txt").val(prod.price_txt);
-						$("#price").val(prod.price);
-						$("#discount").val(0);
+						$("#price").val(0);
 						$("#quantity").val(1);
-						$("#subtotal_txt").val(prod.price_txt);
+						$("#subtotal_txt").val(0);
 						
 						//setting options
 						$("#option_id").html("");
@@ -401,7 +377,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 		
 		if ($("#op_currency").val() == selected_product.currency){
-			$("#tb_product_list").append('<tr id="row_' + row_num + '"><td class="num"></td><td>' + selected_product.description + '</td><td>' + data.qty + '</td><td>' + selected_product.currency + ' ' + nf(data.price - data.discount) + '</td><td>' + selected_product.currency + ' ' + nf((data.price - data.discount) * data.qty) + '</td><td class="text-end"><button type="button" class="btn btn-danger btn-sm" id="btn_remove_product_' + row_num + '" value="' + row_num + '"><i class="bi bi-trash"></i></button><textarea class="prod_data d-none" name="sl_pr[' + row_num + ']">' + JSON.stringify(data) + '</textarea></td></tr>');
+			$("#tb_product_list").append('<tr id="row_' + row_num + '"><td class="num"></td><td>' + selected_product.description + '</td><td>' + data.qty + '</td><td>' + selected_product.currency + ' ' + nf(data.price) + '</td><td>' + selected_product.currency + ' ' + nf(data.price * data.qty) + '</td><td class="text-end"><button type="button" class="btn btn-danger btn-sm" id="btn_remove_product_' + row_num + '" value="' + row_num + '"><i class="bi bi-trash"></i></button><textarea class="prod_data d-none" name="sl_pr[' + row_num + ']">' + JSON.stringify(data) + '</textarea></td></tr>');
 			
 			$("#btn_remove_product_" + row_num).click(function() {
 				$("#row_" + $(this).val()).remove();
@@ -425,18 +401,12 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	});
 	
-	$("#form_set_product_detail #quantity").change(function() {
+	$("#form_set_product_detail #quantity, #form_set_product_detail #price").change(function() {
 		if (parseInt($(this).val()) <= 0) $(this).val(1);
-		$("#subtotal_txt").val(nf((selected_product.price - $("#discount").val()) * $(this).val()));
+		$("#subtotal_txt").val(nf($("#price").val() * $(this).val()));
 	}).keyup(function() {
 		if (parseInt($(this).val()) <= 0) $(this).val(1);
-		$("#subtotal_txt").val(nf((selected_product.price - $("#discount").val()) * $(this).val()));
-	});
-	
-	$("#form_set_product_detail #discount").keyup(function() {
-		if (parseFloat($(this).val()) > selected_product.price) $(this).val(selected_product.price);
-		else if (parseFloat($(this).val()) < 0) $(this).val(0);
-		$("#subtotal_txt").val(nf((selected_product.price - $(this).val()) * $("#quantity").val()));
+		$("#subtotal_txt").val(nf($("#price").val() * $(this).val()));
 	});
 });
 </script>
