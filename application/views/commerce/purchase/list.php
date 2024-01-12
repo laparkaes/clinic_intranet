@@ -20,7 +20,7 @@
 <form class="row justify-content-end">
 		<input type="hidden" value="1" name="page">
 		<div class="col-md-auto">
-			<input type="text" class="form-control" name="client" placeholder="<?= $this->lang->line('w_provider') ?>" value="<?= $f_url["provider"] ?>">
+			<input type="text" class="form-control" name="provider" placeholder="<?= $this->lang->line('w_provider') ?>" value="<?= $f_url["provider"] ?>">
 		</div>
 		<div class="col-md-auto">
 			<button type="submit" class="btn btn-primary">
@@ -42,9 +42,8 @@
 								<th>#</th>
 								<th><?= $this->lang->line('w_date') ?></th>
 								<th><?= $this->lang->line('w_provider') ?></th>
-								<th class="text-nowrap"><?= $this->lang->line('w_total') ?> (<?= $this->lang->line('w_balance') ?>)</th>
+								<th><?= $this->lang->line('w_total') ?></th>
 								<th><?= $this->lang->line('w_status') ?></th>
-								<th><?= $this->lang->line('w_sunat') ?></th>
 								<th></th>
 							</tr>
 						</thead>
@@ -52,18 +51,15 @@
 							<?php foreach($purchases as $i => $item){ $cur = $item->currency->description; ?>
 							<tr>
 								<th><?= number_format(($f_url["page"] - 1) * 25 + 1 + $i) ?></th>
-								<td><?= str_replace(" ", "<br/>", $item->registed_at) ?></td>
+								<td><?= $item->registed_at ?></td>
 								<td>
-									<?php if ($item->client) echo $item->client->name; else echo "-"; ?>
+									<?php if ($item->provider) echo $item->provider->name; else echo "-"; ?>
 								</td>
 								<td class="text-nowrap">
 									<?= $cur." ".number_format($item->total, 2) ?>
 									<?php if ($item->balance) echo "<br/><small>(".$cur." ".number_format($item->balance, 2).")</small>"; ?>
 								</td>
 								<td class="text-nowrap text-<?= $item->status->color ?>"><?= $item->status->lang ?></td>
-								<td>
-									<i class="bi bi-circle-fill text-<?= $item->voucher->color ?>" title="<?= $item->voucher->sunat_msg ?>"></i>
-								</td>
 								<td class="text-end">
 									<a href="<?= base_url() ?>commerce/purchase/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
 										<i class="bi bi-arrow-right"></i>
@@ -76,14 +72,14 @@
 					<div class="btn-group" role="group" aria-label="paging">
 						<?php foreach($paging as $p){
 						$f_url["page"] = $p[0]; ?>
-						<a href="<?= base_url() ?>commerce/sale?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
+						<a href="<?= base_url() ?>commerce/purchase?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
 							<?= $p[1] ?>
 						</a>
 						<?php } ?>
 					</div>
 				</div>
 				<?php }else{ ?>
-				<h5 class="text-danger"><?= $this->lang->line('t_no_sales') ?></h5>
+				<h5 class="text-danger"><?= $this->lang->line('t_no_purchases') ?></h5>
 				<?php } ?>
 			</div>
 		</div>

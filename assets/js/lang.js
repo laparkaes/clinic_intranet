@@ -86,6 +86,10 @@ var msg_list = {
 		e_item_stock		: 'Debe ingresar cantidad menor que stock de opción.',
 		e_item_no_stock		: 'No hay stock suficiente para la venta.',
 		
+		//purchase
+		wm_zero_price		: 'Producto se registra sin precio de adquisición.',
+		wm_purchase_add		: '¿Desea registrar la compra?',
+		
 		//account
 		wm_account_add		: '¿Desea registrar nuevo usuario?',
 		wm_account_remove	: '¿Desea eliminar usuario elegido?',
