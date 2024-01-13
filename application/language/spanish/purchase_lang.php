@@ -29,6 +29,7 @@ $lang['w_quantity']			= 'Cantidad';
 $lang['w_new_purchase']		= 'Nueva Compra';
 $lang['w_date']				= 'Fecha';
 $lang['w_status']			= 'Estado';
+$lang['w_purchase_detail']	= 'Detalle de Compra';
 
 //text
 $lang['t_no_purchases'] 	= 'No existe compras registradas o cumplan con datos de búsqueda.';

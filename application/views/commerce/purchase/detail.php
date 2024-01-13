@@ -1,18 +1,18 @@
 <div class="pagetitle">
-	<h1><?= $this->lang->line('w_sale_detail') ?></h1>
+	<h1><?= $this->lang->line('w_purchase_detail') ?></h1>
 	<nav>
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="<?= base_url() ?>"><?= $this->lang->line('w_home') ?></a></li>
-			<li class="breadcrumb-item"><a href="<?= base_url() ?>sale"><?= $this->lang->line('sales') ?></a></li>
+			<li class="breadcrumb-item"><a href="<?= base_url() ?>purchase"><?= $this->lang->line('purchases') ?></a></li>
 			<li class="breadcrumb-item active"><?= $this->lang->line('txt_detail') ?></li>
 		</ol>
 	</nav>
 </div>
-<?php if ($sale->status_id != $canceled_id){ ?>
+<?php if ($purchase->status_id != $canceled_id){ ?>
 <div class="row">
-	<?php if ($voucher->sale_id){ ?>
+	<?php if ($voucher->purchase_id){ ?>
 	<div class="col-md-3">
-		<a href="<?= base_url() ?>commerce/sale/voucher/<?= $voucher->id ?>" target="_blank" class="btn btn-primary w-100 mb-3">
+		<a href="<?= base_url() ?>commerce/purchase/voucher/<?= $voucher->id ?>" target="_blank" class="btn btn-primary w-100 mb-3">
 			<div><i class="bi bi-file-earmark-text" style="font-size: 50px;"></i></div>
 			<div class="fs-16 mt-2 pt-2 border-top border-white"><?= $voucher->type ?></div>
 		</a>
@@ -26,22 +26,22 @@
 	</div>
 	<?php } ?>
 	<div class="col-md-3">
-		<a href="<?= base_url() ?>commerce/sale/payment_report/<?= $sale->id ?>" target="_blank" class="btn btn-primary w-100 mb-3">
+		<a href="<?= base_url() ?>commerce/purchase/payment_report/<?= $purchase->id ?>" target="_blank" class="btn btn-primary w-100 mb-3">
 			<div><i class="bi bi-file-earmark-ruled" style="font-size: 50px;"></i></div>
 			<div class="mt-2 pt-2 border-top border-white"><?= $this->lang->line('btn_payment_report') ?></div>
 		</a>
 	</div>
 	<div class="col-md-3">
-		<?php if ($sale->balance && ($sale->status_id != $canceled_id)) $d = ""; else $d = "disabled"; ?>
+		<?php if ($purchase->balance && ($purchase->status_id != $canceled_id)) $d = ""; else $d = "disabled"; ?>
 		<button class="btn btn-success w-100 mb-3" data-bs-toggle="modal" data-bs-target="#md_add_payment" <?= $d ?>>
 			<div><i class="bi bi-credit-card" style="font-size: 50px;"></i></div>
 			<div class="mt-2 pt-2 border-top border-white"><?= $this->lang->line('btn_add_payment') ?></div>
 		</button>
 	</div>
 	<div class="col-md-3">
-		<button class="btn btn-outline-danger w-100 mb-3" id="btn_cancel_sale" value="<?= $sale->id ?>">
+		<button class="btn btn-outline-danger w-100 mb-3" id="btn_cancel_purchase" value="<?= $purchase->id ?>">
 			<div><i class="bi bi-trash" style="font-size: 50px;"></i></div>
-			<div class="mt-2 pt-2 border-top border-danger"><?= $this->lang->line('btn_cancel_sale') ?></div>
+			<div class="mt-2 pt-2 border-top border-danger"><?= $this->lang->line('btn_cancel_purchase') ?></div>
 		</button>
 	</div>
 </div>
@@ -80,23 +80,23 @@
 							</div>
 							<div class="col-md-3">
 								<label class="form-label"><?= $this->lang->line('w_status') ?></label>
-								<div class="form-control text-<?= $sale->status->color ?>"><?= $this->lang->line($sale->status->code) ?></div>
+								<div class="form-control text-<?= $purchase->status->color ?>"><?= $this->lang->line($purchase->status->code) ?></div>
 							</div>
 							<div class="col-md-3">
 								<label class="form-label"><?= $this->lang->line('w_total') ?></label>
-								<div class="form-control"><?= $sale->currency." ".number_format($sale->total, 2) ?></div>
+								<div class="form-control"><?= $purchase->currency." ".number_format($purchase->total, 2) ?></div>
 							</div>
 							<div class="col-md-3">
 								<label class="form-label"><?= $this->lang->line('w_balance') ?></label>
-								<div class="form-control"><?= $sale->currency." ".number_format($sale->balance, 2) ?></div>
+								<div class="form-control"><?= $purchase->currency." ".number_format($purchase->balance, 2) ?></div>
 							</div>
 							<div class="col-md-3">
 								<label class="form-label"><?= $this->lang->line('w_last_update') ?></label>
-								<div class="form-control"><?= $sale->updated_at ?></div>
+								<div class="form-control"><?= $purchase->updated_at ?></div>
 							</div>
 							<div class="col-md-3">
 								<label class="form-label"><?= $this->lang->line('w_date') ?></label>
-								<div class="form-control"><?= $sale->registed_at ?></div>
+								<div class="form-control"><?= $purchase->registed_at ?></div>
 							</div>
 						</div>
 						<hr>
@@ -208,7 +208,7 @@
 										<th><?= $this->lang->line('w_received') ?></th>
 										<th><?= $this->lang->line('w_change') ?></th>
 										<th><?= $this->lang->line('w_balance') ?></th>
-										<?php if (!$voucher->sale_id){ ?>
+										<?php if (!$voucher->purchase_id){ ?>
 										<th></th>
 										<?php } ?>
 									</tr>
@@ -219,10 +219,10 @@
 										<td><?= $i + 1 ?></td>
 										<td><?= $p->registed_at ?></td>
 										<td><?= $p->payment_method ?></td>
-										<td><?= $sale->currency." ".number_format($p->received, 2) ?></td>
-										<td><?= ($p->change > 0) ? $sale->currency." ".number_format($p->change, 2) : "-" ?></td>
-										<td><?= $sale->currency." ".number_format($p->balance, 2) ?></td>
-										<?php if (!$voucher->sale_id){ ?>
+										<td><?= $purchase->currency." ".number_format($p->received, 2) ?></td>
+										<td><?= ($p->change > 0) ? $purchase->currency." ".number_format($p->change, 2) : "-" ?></td>
+										<td><?= $purchase->currency." ".number_format($p->balance, 2) ?></td>
+										<?php if (!$voucher->purchase_id){ ?>
 										<td class="text-end">
 											<?php if ((!$i) and ($p_qty > 1)){ ?>
 											<button type="button" class="btn btn-danger" id="btn_delete_payment" value="<?= $p->id ?>">
@@ -262,13 +262,13 @@
 											<div><?= $p->product->category ?></div>
 											<div><?= $p->product->code ?></div>
 										</td>
-										<td class="text-nowrap"><?= $sale->currency." ".number_format($p->price, 2) ?></td>
+										<td class="text-nowrap"><?= $purchase->currency." ".number_format($p->price, 2) ?></td>
 										<td>
-											<?php if ($p->discount) echo $sale->currency." ".number_format($p->discount, 2);
+											<?php if ($p->discount) echo $purchase->currency." ".number_format($p->discount, 2);
 											else echo "-" ?>
 										</td>
 										<td><?= number_format($p->qty) ?></td>
-										<td class="text-nowrap text-end"><?= $sale->currency." ".number_format($price * $p->qty, 2) ?></td>
+										<td class="text-nowrap text-end"><?= $purchase->currency." ".number_format($price * $p->qty, 2) ?></td>
 									</tr>
 									<?php } ?>
 								</tbody>
@@ -280,7 +280,7 @@
 		</div>
 	</div>
 </div>
-<?php if ($sale->voucher_id){ ?>
+<?php if ($purchase->voucher_id){ ?>
 <div class="modal fade" id="md_void_voucher" tabindex="-1">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -290,14 +290,14 @@
 			</div>
 			<div class="modal-body">
 				<form class="row g-3" id="form_void_voucher">
-					<input type="hidden" name="id" value="<?= $sale->voucher_id ?>">
+					<input type="hidden" name="id" value="<?= $purchase->voucher_id ?>">
 					<div class="col-md-12">
 						<label class="form-label"><?= $this->lang->line('w_reason') ?></label>
 						<input class="form-control" type="text" name="reason">
 						<div class="sys_msg" id="vv_reason_msg"></div>
 					</div>
 					<div class="col-md-12 pt-3">
-						<?php if (!$sale->balance){ ?>
+						<?php if (!$purchase->balance){ ?>
 						<button type="submit" class="btn btn-primary" id="btn_void_voucher">
 							<?= $this->lang->line('btn_void') ?>
 						</button>
@@ -320,11 +320,11 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<?php if ($sale->balance){ ?>
-				<p class="text-danger mb-0"><?= $this->lang->line('w_pending_payment').": ".$sale->currency." ".number_format($sale->balance, 2) ?></p>
+				<?php if ($purchase->balance){ ?>
+				<p class="text-danger mb-0"><?= $this->lang->line('w_pending_payment').": ".$purchase->currency." ".number_format($purchase->balance, 2) ?></p>
 				<?php }else{ ?>
 				<form class="row g-3" id="form_make_voucher">
-					<input type="hidden" name="sale_id" value="<?= $sale->id ?>">
+					<input type="hidden" name="purchase_id" value="<?= $purchase->id ?>">
 					<div class="col-md-6">
 						<label class="form-label"><?= $this->lang->line('w_document') ?></label>
 						<select class="form-select" id="mv_doc_type" name="cli[doc_type_id]">
@@ -360,7 +360,7 @@
 						<div class="sys_msg" id="mv_voucher_type_msg"></div>
 					</div>
 					<div class="col-md-12 pt-3">
-						<?php if (!$sale->balance){ ?>
+						<?php if (!$purchase->balance){ ?>
 						<button type="submit" class="btn btn-primary">
 							<?= $this->lang->line('btn_emit') ?>
 						</button>
@@ -457,7 +457,7 @@
 		</div>
 	</div>
 </div>
-<?php } if ($sale->balance && ($sale->status_id != $canceled_id)){ ?>
+<?php } if ($purchase->balance && ($purchase->status_id != $canceled_id)){ ?>
 <div class="modal fade" id="md_add_payment" tabindex="-1">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -467,14 +467,14 @@
 			</div>
 			<div class="modal-body">
 				<form class="row g-3" id="form_add_payment">
-					<input type="hidden" name="sale_id" value="<?= $sale->id ?>" readonly>
-					<input type="hidden" id="payment_total" name="total" value="<?= $sale->balance ?>" readonly>
-					<input type="hidden" id="payment_received" name="received" value="<?= $sale->balance ?>">
+					<input type="hidden" name="purchase_id" value="<?= $purchase->id ?>" readonly>
+					<input type="hidden" id="payment_total" name="total" value="<?= $purchase->balance ?>" readonly>
+					<input type="hidden" id="payment_received" name="received" value="<?= $purchase->balance ?>">
 					<input type="hidden" id="payment_change" name="change" value="0">
 					<input type="hidden" id="payment_balance" name="balance" value="0">
 					<div class="col-md-12 d-flex justify-content-between text-primary">
 						<h3 class="text-primary"><?= $this->lang->line('w_amount_to_pay') ?></h3>
-						<h3 class="text-primary"><?= $sale->currency." ".number_format($sale->balance, 2) ?></h3>
+						<h3 class="text-primary"><?= $purchase->currency." ".number_format($purchase->balance, 2) ?></h3>
 					</div>
 					<div class="col-md-6">
 						<label class="form-label"><?= $this->lang->line('w_payment_method') ?></label>
@@ -488,15 +488,15 @@
 					<div class="col-md-6">
 						<label class="form-label"><?= $this->lang->line('w_received') ?></label>
 						<div class="input-group">
-							<span class="input-group-text"><?= $sale->currency ?></span>
-							<input type="text" class="form-control text-end" id="payment_received_v" value="<?= number_format($sale->balance, 2) ?>">
+							<span class="input-group-text"><?= $purchase->currency ?></span>
+							<input type="text" class="form-control text-end" id="payment_received_v" value="<?= number_format($purchase->balance, 2) ?>">
 						</div>
 						<div class="sys_msg" id="pay_received_msg"></div>
 					</div>
 					<div class="col-md-6">
 						<label class="form-label"><?= $this->lang->line('w_change') ?></label>
 						<div class="input-group">
-							<span class="input-group-text"><?= $sale->currency ?></span>
+							<span class="input-group-text"><?= $purchase->currency ?></span>
 							<input type="text" class="form-control text-end" id="payment_change_v" value="0.00">
 						</div>
 						<div class="sys_msg" id="pay_change_msg"></div>
@@ -504,7 +504,7 @@
 					<div class="col-md-6">
 						<label class="form-label"><?= $this->lang->line('w_balance') ?></label>
 						<div class="input-group">
-							<span class="input-group-text"><?= $sale->currency ?></span>
+							<span class="input-group-text"><?= $purchase->currency ?></span>
 							<input type="text" class="form-control text-end" id="payment_balance_v" value="0.00" readonly>
 						</div>
 						<div class="sys_msg" id="pay_balance_msg"></div>
@@ -528,7 +528,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 	function search_reservations(attn){
 		var data = {doc_number: $("#rs_" + attn + "_doc_number").val(), attn: attn};
-		ajax_simple(data, "commerce/sale/search_reservations").done(function(res) {
+		ajax_simple(data, "commerce/purchase/search_reservations").done(function(res) {
 			$("#rs_" + attn + "_list").html("");
 			if (res.type == "error") swal(res.type, res.msg);
 			$.each(res.reservations, function(index, value) {
@@ -537,7 +537,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			
 			$(".btn_rs_select").click(function() {
 				var data = {id: $("#rs_selected_product").val(), attn_id: $(this).val(), field: attn};
-				ajax_simple(data, "commerce/sale/asign_reservation").done(function(res) {
+				ajax_simple(data, "commerce/purchase/asign_reservation").done(function(res) {
 					swal_redirection(res.type, res.msg, window.location.href);
 				});
 			});
@@ -602,7 +602,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	
 	$(".btn_unassign_reservation").click(function() {
 		var data = {id: $(this).val()};
-		ajax_simple_warning(data, "commerce/sale/unassign_reservation", "wm_medical_unassign").done(function(res) {
+		ajax_simple_warning(data, "commerce/purchase/unassign_reservation", "wm_medical_unassign").done(function(res) {
 			swal_redirection(res.type, res.msg, window.location.href);
 		});
 	});
@@ -610,7 +610,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	//voucher
 	$("#form_make_voucher").submit(function(e) {
 		e.preventDefault();
-		ajax_form_warning(this, "commerce/sale/make_voucher", "wm_voucher_make").done(function(res) {
+		ajax_form_warning(this, "commerce/purchase/make_voucher", "wm_voucher_make").done(function(res) {
 			set_msg(res.msgs);
 			swal_redirection(res.type, res.msg, window.location.href);
 		});
@@ -618,7 +618,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	
 	$("#form_void_voucher").submit(function(e) {
 		e.preventDefault();
-		ajax_form_warning(this, "commerce/sale/void_voucher", "wm_voucher_void").done(function(res) {
+		ajax_form_warning(this, "commerce/purchase/void_voucher", "wm_voucher_void").done(function(res) {
 			set_msg(res.msgs);
 			swal_redirection(res.type, res.msg, window.location.href);
 		});
@@ -650,14 +650,14 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 	
 	$("#btn_send_sunat").click(function() {
-		ajax_simple_warning({id: $(this).val()}, "commerce/sale/send_sunat", "wm_voucher_sunat").done(function(res) {
+		ajax_simple_warning({id: $(this).val()}, "commerce/purchase/send_sunat", "wm_voucher_sunat").done(function(res) {
 			swal_redirection(res.type, res.msg, window.location.href);
 		});
 	});
 	
-	//sale
-	$("#btn_cancel_sale").click(function() {
-		ajax_simple_warning({id: $(this).val()}, "commerce/sale/cancel_sale", "wm_sale_cancel").done(function(res) {
+	//purchase
+	$("#btn_cancel_purchase").click(function() {
+		ajax_simple_warning({id: $(this).val()}, "commerce/purchase/cancel_purchase", "wm_purchase_cancel").done(function(res) {
 			swal_redirection(res.type, res.msg, window.location.href);
 		});
 	});
@@ -666,7 +666,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	$("#form_add_payment").submit(function(e) {
 		e.preventDefault();
 		function add_payment(dom){
-			ajax_form_warning(this, "commerce/sale/add_payment", "wm_payment_add").done(function(res) {
+			ajax_form_warning(this, "commerce/purchase/add_payment", "wm_payment_add").done(function(res) {
 				swal_redirection(res.type, res.msg, window.location.href);
 			});
 		}
@@ -677,7 +677,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 	
 	$("#btn_delete_payment").click(function() {
-		ajax_simple_warning({id: $(this).val()}, "commerce/sale/delete_payment", "wm_payment_delete").done(function(res) {
+		ajax_simple_warning({id: $(this).val()}, "commerce/purchase/delete_payment", "wm_payment_delete").done(function(res) {
 			swal_redirection(res.type, res.msg, window.location.href);
 		});
 	});
