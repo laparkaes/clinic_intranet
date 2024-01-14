@@ -35,7 +35,7 @@ class Purchase extends CI_Controller {
 		$purchases = $this->general->filter("purchase", $f_w, $f_l, $f_in, "updated_at", "desc", 25, 25 * ($f_url["page"] - 1));
 		foreach($purchases as $item){
 			$item->currency = $this->general->id("currency", $item->currency_id);
-			$item->provider = $this->general->id("person", $item->provider_id);
+			$item->provider = $this->general->id("company", $item->provider_id);
 			$item->status = $this->general->id("status", $item->status_id);
 			$item->status->lang = $this->lang->line($item->status->code);
 		}
@@ -56,9 +56,25 @@ class Purchase extends CI_Controller {
 		if (!$this->utility_lib->check_access("purchase", "detail")) redirect("/errors/no_permission");
 		
 		$purchase = $this->general->id("purchase", $id);
+		$purchase->status = $this->general->id("status", $purchase->status_id);
+		$purchase->currency = $this->general->id("currency", $purchase->currency_id);
+		
+		$products = $this->general->filter("purchase_product", ["purchase_id" => $purchase->id]);
+		foreach($products as $p){
+			$prod = $this->general->id("product", $p->product_id);
+			$prod->category = $this->general->id("product_category", $prod->category_id);
+			$prod->type = $this->general->id("product_type", $prod->type_id);
+			$prod->currency = $this->general->id("currency", $prod->currency_id);
+			$p->option = $this->general->id("product_option", $p->option_id);
+			$p->prod = $prod;
+		}
+		
+		$provider = ($purchase->provider_id > 0) ? $this->general->id("company", $purchase->provider_id) : null;
 		
 		$data = [
 			"purchase" => $purchase,
+			"products" => $products,
+			"provider" => $provider,
 			"title" => $this->lang->line('purchase'),
 			"main" => "commerce/purchase/detail",
 		];
@@ -180,13 +196,9 @@ class Purchase extends CI_Controller {
 			
 			if (!$msgs){
 				//provider processing
-				$doc_type = $this->general->id("doc_type", $provider["doc_type_id"]);
-				if ($doc_type->description === "Sin Documento") $provider_id = null;
-				else{
-					$provider_rec = $this->general->filter("person", $provider);
-					if ($provider_rec) $provider_id = $provider_rec[0]->id;
-					else $provider_id = $this->general->insert("person", $provider);
-				}
+				$provider_rec = $this->general->filter("company", $provider);
+				if ($provider_rec) $provider_id = $provider_rec[0]->id;
+				else $provider_id = $this->general->insert("company", $provider);
 				
 				//set purchase data
 				$currency = $this->general->filter("currency", ["description" => $currency])[0];
@@ -259,4 +271,7 @@ class Purchase extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg, "msgs" => $msgs, "move_to" => $move_to]);
 	}
 	
+	public function save_provider(){
+		print_r($this->input->post());
+	}
 }

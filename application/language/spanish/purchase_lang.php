@@ -30,6 +30,22 @@ $lang['w_new_purchase']		= 'Nueva Compra';
 $lang['w_date']				= 'Fecha';
 $lang['w_status']			= 'Estado';
 $lang['w_purchase_detail']	= 'Detalle de Compra';
+$lang['w_products']			= 'Productos';
+$lang['w_detail']			= 'Detalle';
+$lang['w_amount']			= 'Monto';
+$lang['w_vat']				= 'IGV';
+$lang['w_last_update']		= 'Última actualización';
+$lang['w_provider'] 		= 'Proveedor';
+$lang['w_ruc'] 				= 'RUC';
+$lang['w_company'] 			= 'Empresa';
+$lang['w_web'] 				= 'Página Web';
+$lang['w_person'] 			= 'Encargado';
+$lang['w_tel'] 				= 'Teléfono';
+$lang['w_email'] 			= 'Email';
+$lang['w_address']			= 'Dirección';
+$lang['w_remark'] 			= 'Observación';
+
+
 
 //text
 $lang['t_no_purchases'] 	= 'No existe compras registradas o cumplan con datos de búsqueda.';

@@ -39,17 +39,17 @@ $doc_types = $this->general->all("doc_type", "sunat_code", "asc");
 			<div class="row g-3">
 				<div class="col-md-3">
 					<label class="form-label"><?= $this->lang->line('w_document') ?></label>
-					<select class="form-select" id="provider_doc_type" name="provider[doc_type_id]">
-						<?php foreach($doc_types as $item){ ?>
+					<select class="form-select" id="provider_doc_type">
+						<?php foreach($doc_types as $item){ if ($item->id == 4){//ruc ?>
 						<option value="<?= $item->id ?>"><?= $item->description ?></option>
-						<?php } ?>
+						<?php }} ?>
 					</select>
 					<div class="sys_msg" id="provider_doc_type_msg"></div>
 				</div>
 				<div class="col-md-3">
 					<label class="form-label"><?= $this->lang->line('w_number') ?></label>
 					<div class="input-group">
-						<input type="text" class="form-control" id="provider_doc_number" name="provider[doc_number]" placeholder="<?= $this->lang->line('w_number') ?>">
+						<input type="text" class="form-control" id="provider_doc_number" name="provider[tax_id]" placeholder="<?= $this->lang->line('w_number') ?>">
 						<button class="btn btn-primary" type="button" id="btn_search_provider">
 							<i class="bi bi-search"></i>
 						</button>
@@ -208,10 +208,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 	
 	$("#form_add_purchase #btn_search_provider").click(function() {
-		var data = {doc_type_id: $("#provider_doc_type").val(), doc_number: $("#provider_doc_number").val()};
-		ajax_simple(data, "ajax_f/search_person").done(function(res) {
+		ajax_simple({tax_id: $("#provider_doc_number").val()}, "ajax_f/search_company").done(function(res) {
 			swal(res.type, res.msg);
-			if (res.type == "success") $("#provider_name").val(res.person.name);
+			if (res.type == "success") $("#provider_name").val(res.company.name);
 		});
 	});
 	

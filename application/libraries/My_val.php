@@ -518,11 +518,8 @@ class My_val{
 	}
 	
 	public function purchase_provider($msgs, $data){
-		$doc_type = $this->CI->general->id("doc_type", $data["doc_type_id"]);
-		if ($doc_type->description !== "Sin Documento"){
-			if (!$data["doc_number"]) $msgs = $this->set_msg($msgs, "provider_doc_number_msg", "error", "e_required_field");
-			if (!$data["name"]) $msgs = $this->set_msg($msgs, "provider_name_msg", "error", "e_required_field");
-		}
+		if (!$data["tax_id"]) $msgs = $this->set_msg($msgs, "provider_doc_number_msg", "error", "e_required_field");
+		if (!$data["name"]) $msgs = $this->set_msg($msgs, "provider_name_msg", "error", "e_required_field");
 		
 		return $msgs;
 	}
