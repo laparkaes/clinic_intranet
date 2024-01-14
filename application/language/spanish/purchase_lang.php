@@ -3,6 +3,7 @@ $lang['purchases'] = 'Compras';
 
 //success message
 $lang['s_purchase_add']			= 'Compra ha sido agregada con éxito.';
+$lang['s_provider_update']		= 'Proveedor ha sido actualizado con éxito.';
 
 //error message
 

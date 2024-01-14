@@ -86,7 +86,7 @@
 								</td>
 								<td><?= $p->option ? $p->option->description : "" ?></td>
 								<td><?= $p->prod->currency->description." ".number_format($p->price, 2) ?></td>
-								<td><?= $p->qty ?></td>
+								<td><?= number_format($p->qty) ?></td>
 								<td class="text-end">
 									<a href="<?= base_url() ?>commerce/product/detail/<?= $p->product_id ?>" class="btn btn-primary btn-sm">
 										<i class="bi bi-search"></i>
@@ -103,11 +103,10 @@
 			<div class="card-body">
 				<h5 class="card-title"><?= $this->lang->line('w_provider') ?></h5>
 				<form class="row g-3" id="form_save_provider">
-					<input type="hidden" name="id" value="<?= $provider->id ?>">
 					<div class="col-md-4">
 						<label class="form-label"><?= $this->lang->line('w_ruc') ?></label>
 						<div class="input-group">
-							<input type="text" class="form-control" id="prov_ruc" name="tax_id" value="<?= $provider->tax_id ?>">
+							<input type="text" class="form-control" id="prov_ruc" name="provider[tax_id]" value="<?= $provider->tax_id ?>">
 							<button class="btn btn-primary" id="btn_search_provider" type="button">
 								<i class="bi bi-search"></i>
 							</button>
@@ -116,32 +115,32 @@
 					</div>
 					<div class="col-md-4">
 						<label class="form-label"><?= $this->lang->line('w_company') ?></label>
-						<input type="text" class="form-control" id="prov_name" name="name" value="<?= $provider->name ?>">
+						<input type="text" class="form-control" id="prov_name" name="provider[name]" value="<?= $provider->name ?>">
 						<div class="sys_msg" id="epv_company_msg"></div>
 					</div>
 					<div class="col-md-4">
 						<label class="form-label"><?= $this->lang->line('w_web') ?></label>
-						<input type="text" class="form-control" id="prov_web" name="web" value="<?= $provider->web ?>">
+						<input type="text" class="form-control" id="prov_web" name="provider[web]" value="<?= $provider->web ?>">
 					</div>
 					<div class="col-md-4">
 						<label class="form-label"><?= $this->lang->line('w_person') ?></label>
-						<input type="text" class="form-control" id="prov_person" name="person" value="<?= $provider->person ?>">
+						<input type="text" class="form-control" id="prov_person" name="provider[person]" value="<?= $provider->person ?>">
 					</div>
 					<div class="col-md-4">
 						<label class="form-label"><?= $this->lang->line('w_tel') ?></label>
-						<input type="text" class="form-control" id="prov_tel" name="tel" value="<?= $provider->tel ?>">
+						<input type="text" class="form-control" id="prov_tel" name="provider[tel]" value="<?= $provider->tel ?>">
 					</div>
 					<div class="col-md-4">
 						<label class="form-label"><?= $this->lang->line('w_email') ?></label>
-						<input type="text" class="form-control" id="prov_email" name="email" value="<?= $provider->email ?>">
+						<input type="text" class="form-control" id="prov_email" name="provider[email]" value="<?= $provider->email ?>">
 					</div>
 					<div class="col-md-12">
 						<label class="form-label"><?= $this->lang->line('w_address') ?></label>
-						<input type="text" class="form-control" id="prov_address" name="address" value="<?= $provider->address ?>">
+						<input type="text" class="form-control" id="prov_address" name="provider[address]" value="<?= $provider->address ?>">
 					</div>
 					<div class="col-md-12">
 						<label class="form-label"><?= $this->lang->line('w_remark') ?></label>
-						<textarea class="form-control" id="prov_remark" rows="3" name="remark"><?= $provider->remark ?></textarea>
+						<textarea class="form-control" id="prov_remark" rows="3" name="provider[remark]"><?= $provider->remark ?></textarea>
 					</div>
 					<div class="col-md-12 pt-3">
 						<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_save') ?></button>
@@ -167,8 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		e.preventDefault();
 		$("#form_edit_provider .sys_msg").html("");
 		ajax_form(this, "commerce/purchase/save_provider").done(function(res) {
-			set_msg(res.msgs);
-			swal_redirection(res.type, res.msg, window.location.href);
+			swal(res.type, res.msg);
 		});
 	});
 	

@@ -69,7 +69,8 @@ class Purchase extends CI_Controller {
 			$p->prod = $prod;
 		}
 		
-		$provider = ($purchase->provider_id > 0) ? $this->general->id("company", $purchase->provider_id) : null;
+		$provider = ($purchase->provider_id) ? $this->general->id("company", $purchase->provider_id) : null;
+		if (!$provider) $provider = $this->general->structure("company");
 		
 		$data = [
 			"purchase" => $purchase,
@@ -80,105 +81,6 @@ class Purchase extends CI_Controller {
 		];
 		
 		$this->load->view('layout', $data);
-		
-		/*
-		$this->update_balance($id);
-		
-		$sale = $this->general->id("sale", $id);
-		$sale->type = $this->general->id("sale_type", $sale->sale_type_id);
-		$sale->currency = $this->general->id("currency", $sale->currency_id)->description;
-		$sale->status = $this->general->id("status", $sale->status_id);
-		
-		if ($sale->client_id){
-			$client = $this->general->id("person", $sale->client_id);
-			$client->doc_type = $this->general->id("doc_type", $client->doc_type_id)->short;
-		}else{
-			$client = $this->general->structure("person");
-			$client->doc_type = "";
-		}
-		
-		$filter = ["sale_id" => $sale->id];
-		
-		$payments = $this->general->filter("payment", $filter, null, null, "registed_at", "desc");
-		foreach($payments as $item) 
-			$item->payment_method = $this->general->id("payment_method", $item->payment_method_id)->description;
-		
-		$appo_qty = $surg_qty = 0;
-		$products = $this->general->filter("sale_product", $filter);
-		foreach($products as $item){
-			$item->product = $this->general->id("product", $item->product_id);
-			$item->product->category = $this->general->id("product_category", $item->product->category_id)->name;
-			if ($item->option_id) $item->product->option = $this->general->id("product_option", $item->option_id)->description;
-			else $item->product->option = "";
-			
-			$item->type = null;
-			$item->attention = null;
-			$item->path = null;
-			if(strpos(strtoupper($item->product->description), strtoupper("consulta")) !== false){
-				$appo_qty++;
-				$item->type = $this->lang->line('w_appointment');
-				if ($item->appointment_id) $item->path = base_url()."appointment/detail/".$item->appointment_id;
-				
-				if ($item->appointment_id){
-					$app = $this->general->id("appointment", $item->appointment_id);
-					$patient = $this->general->id("person", $app->patient_id);
-					$doc_type = $this->general->id("doc_type", $patient->doc_type_id);
-					$item->attention = new stdClass;
-					$item->attention->schedule = $app->schedule_from;
-					$item->attention->patient = $patient->name;
-					$item->attention->patient_doc = $doc_type->short." ".$patient->doc_number;
-				}
-			}elseif(strpos(strtoupper($item->product->category), strtoupper("cirugía")) !== false){
-				$surg_qty++;
-				$item->type = $this->lang->line('w_surgery');
-				if ($item->surgery_id) $item->path = base_url()."surgery/detail/".$item->surgery_id;
-				
-				if ($item->surgery_id){
-					$sur = $this->general->id("surgery", $item->surgery_id);
-					$patient = $this->general->id("person", $sur->patient_id);
-					$doc_type = $this->general->id("doc_type", $patient->doc_type_id);
-					$item->attention = new stdClass;
-					$item->attention->schedule = $sur->schedule_from;
-					$item->attention->patient = $patient->name;
-					$item->attention->patient_doc = $doc_type->short." ".$patient->doc_number;
-				}
-			}
-		}
-		usort($products, function($a, $b) { return strcmp($a->product->description, $b->product->description); });
-		
-		if ($sale->voucher_id) $voucher = $this->general->id("voucher", $sale->voucher_id);
-		else $voucher = $this->general->structure("voucher");
-		
-		if ($voucher->voucher_type_id) $voucher->type = $this->general->id("voucher_type", $voucher->voucher_type_id)->description;
-		else $voucher->type = "";
-		
-		if ($voucher->status_id) $voucher->status = $this->general->id("status", $voucher->status_id);
-		else{
-			if ($sale->status->code !== "canceled") $voucher->status = $this->general->status("pending");
-			else $voucher->status = $this->general->status("finished");
-		}
-		
-		if ($voucher->sunat_sent === null){
-			if ($sale->status->code !== "canceled") $voucher->sunat_msg = $this->lang->line('t_no_voucher');
-			else $voucher->sunat_msg = $this->lang->line('t_canceled_sale');
-		}
-		
-		$data = array(
-			"canceled_id" => $this->general->status("canceled")->id,
-			"appo_qty" => $appo_qty,
-			"surg_qty" => $surg_qty,
-			"sale" => $sale,
-			"client" => $client,
-			"voucher" => $voucher,
-			"payments" => $payments,
-			"products" => $products,
-			"payment_method" => $this->general->all("payment_method", "description", "asc"),
-			"doc_types" => $this->general->all("doc_type", "id", "asc"),
-			"voucher_types" => $this->general->all("voucher_type", "description", "asc"),
-			"title" => $this->lang->line('sale'),
-			"main" => "commerce/sale/detail",
-		);
-		*/
 	}
 	
 	public function add(){
@@ -272,6 +174,27 @@ class Purchase extends CI_Controller {
 	}
 	
 	public function save_provider(){
-		print_r($this->input->post());
+		$type = "error"; $msg = null;
+		
+		if ($this->utility_lib->check_access("purchase", "update")){
+			$id = $this->input->post("id");
+			$data = $this->input->post("provider");
+			
+			if ($data["tax_id"]){
+				$provider = $this->general->filter("company", ["tax_id" => $data["tax_id"]]);
+				if ($provider){
+					$provider_id = $provider[0]->id;
+					$this->general->update("company", $provider_id, $data);
+				}else $provider_id = $this->general->insert("company", $data);
+			}else $provider_id = null;
+			
+			$this->general->update("purchase", $id, ["provider_id" => $provider_id]);
+				
+			$type = "success";
+			$msg = $this->lang->line('s_provider_update');
+		}else $msg = $this->lang->line('error_no_permission');
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 }
