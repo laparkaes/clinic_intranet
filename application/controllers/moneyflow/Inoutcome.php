@@ -1,51 +1,42 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Purchase extends CI_Controller {
+class Inoutcome extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
 		date_default_timezone_set('America/Lima');
 		$this->lang->load("system", "spanish");
-		$this->lang->load("purchase", "spanish");
+		$this->lang->load("inoutcome", "spanish");
 		$this->load->model('general_model','general');
-		$this->nav_menu = ["commerce", "purchase"];
+		$this->nav_menu = ["moneyflow", "inoutcome"];
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 	}
 	
 	public function index(){
 		if (!$this->session->userdata('logged_in')) redirect('/');
-		if (!$this->utility_lib->check_access("purchase", "index")) redirect("/errors/no_permission");
+		if (!$this->utility_lib->check_access("inoutcome", "index")) redirect("/errors/no_permission");
 		
 		$f_url = [
 			"page" => $this->input->get("page"),
-			"provider" => $this->input->get("provider"),
+			"keyword" => $this->input->get("keyword"),
 		];
 		if (!$f_url["page"]) $f_url["page"] = 1;
 		
 		$f_w = $f_l = $f_in = [];
-		if ($f_url["provider"]){
-			$aux = [-1];
-			$people = $this->general->filter("person", null, ["name" => $f_url["provider"]]);
-			foreach($people as $p) $aux[] = $p->id;
-			
-			$f_in[] = ["field" => "provider_id", "values" => $aux];
-		}
+		if ($f_url["keyword"]) $f_l["description"] = $f_url["keyword"];
 		
-		$purchases = $this->general->filter("purchase", $f_w, $f_l, $f_in, "updated_at", "desc", 25, 25 * ($f_url["page"] - 1));
-		foreach($purchases as $item){
-			$item->currency = $this->general->id("currency", $item->currency_id);
-			$item->provider = $this->general->id("company", $item->provider_id);
-			$item->status = $this->general->id("status", $item->status_id);
-			$item->status->lang = $this->lang->line($item->status->code);
+		$inoutcomes = $this->general->filter("inoutcome", $f_w, $f_l, $f_in, "updated_at", "desc", 25, 25 * ($f_url["page"] - 1));
+		foreach($inoutcomes as $item){
+			
 		}
 		
 		$data = array(
-			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("purchase", $f_w)),
+			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("inoutcome", $f_w)),
 			"f_url" => $f_url,
-			"purchases" => $purchases,
-			"title" => $this->lang->line('purchases'),
-			"main" => "commerce/purchase/list",
+			"inoutcomes" => $inoutcomes,
+			"title" => $this->lang->line('inoutcome'),
+			"main" => "moneyflow/inoutcome/list",
 		);
 		
 		$this->load->view('layout', $data);

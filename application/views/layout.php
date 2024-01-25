@@ -144,12 +144,12 @@
 				</a>
 				<ul id="moneyflow-nav" class="nav-content collapse <?= ($this->nav_menu[0] === "moneyflow") ? "show" : "" ?>" data-bs-parent="#sidebar-nav">
 					<li>
-						<a href="<?= base_url() ?>resume" class="<?= ($this->nav_menu[1] === "resume") ? "active" : "" ?>">
+						<a href="<?= base_url() ?>moneyflow/resume" class="<?= ($this->nav_menu[1] === "resume") ? "active" : "" ?>">
 							<i class="bi bi-circle"></i><span>Resumen</span>
 						</a>
 					</li>
 					<li>
-						<a href="<?= base_url() ?>inoutcome" class="<?= ($this->nav_menu[1] === "inoutcome") ? "active" : "" ?>">
+						<a href="<?= base_url() ?>moneyflow/inoutcome" class="<?= ($this->nav_menu[1] === "inoutcome") ? "active" : "" ?>">
 							<i class="bi bi-circle"></i><span>Ingreso/Egreso</span>
 						</a>
 					</li>

@@ -61,6 +61,7 @@ $lang['wa_update_company']	= 'Actualizar datos de empresa';
 $lang['mg_dashboard']		= 'Principal';
 $lang['mg_clinic']			= 'Clínica';
 $lang['mg_commerce']		= 'Comercio';
+$lang['mg_moneyflow']		= 'Flujo de Caja';
 $lang['mg_sys']				= 'Sistema';
 
 //module
@@ -72,6 +73,8 @@ $lang['wm_doctor']		= 'Módulo Médico';
 $lang['wm_patient']		= 'Módulo Paciente';
 $lang['wm_product']		= 'Módulo Producto';
 $lang['wm_purchase']	= 'Módulo Compra';
+$lang['wm_resume']		= 'Módulo Resumen';
+$lang['wm_inoutcome']	= 'Módulo Ingreso/Egreso';
 $lang['wm_report']		= 'Módulo Reporte';
 $lang['wm_sale']		= 'Módulo Venta';
 $lang['wm_surgery']		= 'Módulo Cirugía';

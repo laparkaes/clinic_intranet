@@ -22,6 +22,7 @@ class Config extends CI_Controller {
 		$module_group["dashboard"] = ["dashboard"];
 		$module_group["clinic"] = ["appointment", "surgery", "doctor", "patient"];
 		$module_group["commerce"] = ["sale", "purchase", "product"];
+		$module_group["moneyflow"] = ["resume", "inoutcome"];
 		$module_group["sys"] = ["account", "report", "config"];
 		
 		$access = [];
