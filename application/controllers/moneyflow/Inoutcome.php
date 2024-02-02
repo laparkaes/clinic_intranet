@@ -26,7 +26,7 @@ class Inoutcome extends CI_Controller {
 		$f_w = $f_l = $f_in = [];
 		if ($f_url["keyword"]) $f_l["description"] = $f_url["keyword"];
 		
-		$inoutcomes = $this->general->filter("inoutcome", $f_w, $f_l, $f_in, "updated_at", "desc", 25, 25 * ($f_url["page"] - 1));
+		$inoutcomes = $this->general->filter("inoutcome", $f_w, $f_l, $f_in, "date", "desc", 25, 25 * ($f_url["page"] - 1));
 		foreach($inoutcomes as $item){
 			
 		}

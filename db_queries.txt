@@ -1,5 +1,7 @@
 INSERT INTO `access` (`module`, `description`) VALUES ('purchase', 'index'), ('purchase', 'register'), ('purchase', 'detail'), ('purchase', 'update');
 
+INSERT INTO `access` (`module`, `description`) VALUES ('inoutcome', 'index'), ('inoutcome', 'register'), ('inoutcome', 'detail'), ('inoutcome', 'update');
+
 CREATE TABLE `purchase` (
   `id` int(11) NOT NULL,
   `provider_id` int(11) DEFAULT NULL,
