@@ -102,12 +102,12 @@ if (!$doctor){
 					<input type="hidden" name="pt[doc_type_id]" value="<?= $patient->doc_type_id ?>">
 					<input type="hidden" name="pt[doc_number]" value="<?= $patient->doc_number ?>">
 					<label class="form-label"><?= $this->lang->line('w_document') ?></label>
-					<input type="text" class="form-control" value="<?= $patient->doc_type." ".$patient->doc_number ?>" readonly>
+					<input type="text" class="form-control" value="<?= $patient->doc_type." ".$patient->doc_number ?>">
 					<div class="sys_msg" id="pt_doc_msg"></div>
 				</div>
 				<div class="col-md-8">
 					<label class="form-label"><?= $this->lang->line('w_name') ?></label>
-					<input type="text" class="form-control" name="pt[name]" value="<?= $patient->name ?>" readonly>
+					<input type="text" class="form-control" name="pt[name]" value="<?= $patient->name ?>">
 					<div class="sys_msg" id="pt_name_msg"></div>
 				</div>
 				<div class="col-md-4">
@@ -138,7 +138,7 @@ if (!$doctor){
 				</div>
 				<div class="col-md-8">
 					<label class="form-label"><?= $this->lang->line('w_name') ?></label>
-					<input type="text" class="form-control" id="aa_pt_name" name="pt[name]" readonly>
+					<input type="text" class="form-control" id="aa_pt_name" name="pt[name]">
 					<div class="sys_msg" id="aa_pt_name_msg"></div>
 				</div>
 				<div class="col-md-4">

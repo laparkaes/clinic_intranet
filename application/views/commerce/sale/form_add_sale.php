@@ -79,7 +79,7 @@ $sale_types = $this->general->all("sale_type", "sunat_serie", "asc");
 					<label class="form-label"><?= $this->lang->line('w_balance') ?></label>
 					<div class="input-group">
 						<span class="input-group-text payment_currency"></span>
-						<input type="text" class="form-control text-end" id="payment_balance_v" value="0.00" readonly>
+						<input type="text" class="form-control text-end" id="payment_balance_v" value="0.00">
 					</div>
 					<div class="sys_msg" id="pay_balance_msg"></div>
 				</div>
@@ -161,8 +161,8 @@ $sale_types = $this->general->all("sale_type", "sunat_serie", "asc");
 	<form class="row g-3 no_enter" id="form_set_product_detail">
 		<div class="col-md-12">
 			<label class="form-label"><?= $this->lang->line('w_product') ?></label>
-			<input type="text" class="form-control" id="product" readonly>
-			<input type="text" class="form-control d-none" id="product_id" name="product_id" readonly>
+			<input type="text" class="form-control" id="product">
+			<input type="text" class="form-control d-none" id="product_id" name="product_id">
 		</div>
 		<div class="col-md-3">
 			<label class="form-label"><?= $this->lang->line('w_option') ?></label>
@@ -174,9 +174,9 @@ $sale_types = $this->general->all("sale_type", "sunat_serie", "asc");
 			<label class="form-label"><?= $this->lang->line('w_unit_price_short') ?></label>
 			<div class="input-group">
 				<span class="input-group-text currency"></span>
-				<input type="text" class="form-control text-end" id="price_txt" readonly>
+				<input type="text" class="form-control text-end" id="price_txt">
 			</div>
-			<input type="text" class="form-control d-none" id="price" name="price" readonly>
+			<input type="text" class="form-control d-none" id="price" name="price">
 		</div>
 		<div class="col-md-2">
 			<label class="form-label"><?= $this->lang->line('w_discount_unit') ?></label>
@@ -193,7 +193,7 @@ $sale_types = $this->general->all("sale_type", "sunat_serie", "asc");
 			<label class="form-label"><?= $this->lang->line('w_subtotal') ?></label>
 			<div class="input-group">
 				<span class="input-group-text currency"></span>
-				<input type="text" class="form-control text-end" id="subtotal_txt" value="0.00" readonly>
+				<input type="text" class="form-control text-end" id="subtotal_txt" value="0.00">
 			</div>
 		</div>
 		<div class="col-md-12 pt-3">
