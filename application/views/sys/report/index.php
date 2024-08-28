@@ -42,7 +42,7 @@
 						</form>
 					</div>
 					<div class="col-md-6">
-						<img class="w-100" src="<?= base_url() ?>/resources/images/report_example.png">
+						<img class="w-100" src="<?= base_url() ?>resources/images/report_example.png">
 						<div class="text-center mt-3"><?= $this->lang->line('w_example') ?></div>
 					</div>
 				</div>

@@ -11,21 +11,21 @@
 	<div class="row">
 		<div class="col-md-4">
 			<div class="d-grid gap-2">
-				<a href="<?= base_url() ?>appointment?a=add" class="btn btn-primary btn-lg mb-3">
+				<a href="<?= base_url() ?>clinic/appointment?a=add" class="btn btn-primary btn-lg mb-3">
 					<i class="bi bi-clipboard2-pulse me-3"></i> <?= $this->lang->line('w_appointment') ?>
 				</a>
 			</div>
 		</div>
 		<div class="col-md-4">
 			<div class="d-grid gap-2">
-				<a href="<?= base_url() ?>surgery?a=add" class="btn btn-primary btn-lg mb-3">
+				<a href="<?= base_url() ?>clinic/surgery?a=add" class="btn btn-primary btn-lg mb-3">
 					<i class="bi bi-heart-pulse me-3"></i> <?= $this->lang->line('w_surgery') ?>
 				</a>
 			</div>
 		</div>
 		<div class="col-md-4">
 			<div class="d-grid gap-2">
-				<a href="<?= base_url() ?>sale?a=add" class="btn btn-primary btn-lg mb-3">
+				<a href="<?= base_url() ?>commerce/sale?a=add" class="btn btn-primary btn-lg mb-3">
 					<i class="bi bi-basket me-3"></i> <?= $this->lang->line('w_sale') ?>
 				</a>
 			</div>

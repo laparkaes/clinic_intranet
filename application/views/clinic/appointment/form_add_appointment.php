@@ -102,12 +102,12 @@ if (!$doctor){
 					<input type="hidden" name="pt[doc_type_id]" value="<?= $patient->doc_type_id ?>">
 					<input type="hidden" name="pt[doc_number]" value="<?= $patient->doc_number ?>">
 					<label class="form-label"><?= $this->lang->line('w_document') ?></label>
-					<input type="text" class="form-control" value="<?= $patient->doc_type." ".$patient->doc_number ?>">
+					<input type="text" class="form-control" value="<?= $patient->doc_type." ".$patient->doc_number ?>" readonly>
 					<div class="sys_msg" id="pt_doc_msg"></div>
 				</div>
 				<div class="col-md-8">
 					<label class="form-label"><?= $this->lang->line('w_name') ?></label>
-					<input type="text" class="form-control" name="pt[name]" value="<?= $patient->name ?>">
+					<input type="text" class="form-control" name="pt[name]" value="<?= $patient->name ?>" readonly>
 					<div class="sys_msg" id="pt_name_msg"></div>
 				</div>
 				<div class="col-md-4">
@@ -138,7 +138,7 @@ if (!$doctor){
 				</div>
 				<div class="col-md-8">
 					<label class="form-label"><?= $this->lang->line('w_name') ?></label>
-					<input type="text" class="form-control" id="aa_pt_name" name="pt[name]">
+					<input type="text" class="form-control" id="aa_pt_name" name="pt[name]" readonly>
 					<div class="sys_msg" id="aa_pt_name_msg"></div>
 				</div>
 				<div class="col-md-4">
@@ -236,7 +236,10 @@ document.addEventListener("DOMContentLoaded", () => {
 			if (res.type == "success"){
 				$("#aa_pt_name").val(res.person.name);
 				$("#aa_pt_tel").val(res.person.tel);
-			}else reset_person_app();
+			}else {
+				reset_person_app();
+				$("#aa_pt_name").prop("readonly", false);
+			}
 		});
 	});
 	
