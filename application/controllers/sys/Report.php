@@ -64,7 +64,7 @@ class Report extends CI_Controller {
 			if (!in_array($item, $skip))
 				if (strcmp($item, $today)){
 					$files = scandir($path."/".$item, SCANDIR_SORT_ASCENDING);
-					foreach($files as $file) if (!in_array($file, $skip)) unlink($path."/".$item."/".$file);
+					//foreach($files as $file) if (!in_array($file, $skip)) unlink($path."/".$item."/".$file);
 					rmdir($path."/".$item);
 				}
 				
