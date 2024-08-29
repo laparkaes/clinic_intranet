@@ -2,7 +2,7 @@
 $this->lang->load("sale", "spanish");
 $categories = $this->general->all("product_category", "name", "asc");
 $doc_types = $this->general->all("doc_type", "sunat_code", "asc");
-$payment_methods = $this->general->all("payment_method", "description", "asc");
+$payment_methods = $this->general->all("payment_method", "id", "asc");
 $sale_types = $this->general->all("sale_type", "sunat_serie", "asc");
 ?>
 <div class="card-body add_sale_step" id="step_set_sale_information">
