@@ -56,6 +56,7 @@ class Report extends CI_Controller {
 	}
 	
 	private function upload_dir(){
+		/*
 		$path = "uploaded/reports";
 		$today = date("Ymd");
 		$skip = [".", ".."];
@@ -64,11 +65,13 @@ class Report extends CI_Controller {
 			if (!in_array($item, $skip))
 				if (strcmp($item, $today)){
 					$files = scandir($path."/".$item, SCANDIR_SORT_ASCENDING);
-					//foreach($files as $file) if (!in_array($file, $skip)) unlink($path."/".$item."/".$file);
+					foreach($files as $file) if (!in_array($file, $skip)) unlink($path."/".$item."/".$file);
 					rmdir($path."/".$item);
 				}
-				
-		$upload_dir = "uploaded/reports/".date("Ymd");
+		*/
+			
+		//$upload_dir = "uploaded/reports/".date("Ymd");
+		$upload_dir = "uploaded/reports/";
 		if(!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
 		return $upload_dir."/";
 	}
@@ -94,7 +97,8 @@ class Report extends CI_Controller {
 	}
 	
 	private function make_excel($data){
-		$fileName = $this->lang->line('report')."_".$data["type_name"]."_".date("Ymdhis").'.xlsx';  
+		//$fileName = $this->lang->line('report')."_".$data["type_name"]."_".date("Ymdhis").'.xlsx';
+		$fileName = $this->lang->line('report')."_".$data["type_name"].'.xlsx';
 		$upload_dir = $this->upload_dir();
 		
 		/*
