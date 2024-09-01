@@ -12,6 +12,7 @@ class Report extends CI_Controller {
 		$this->lang->load("system", "spanish");
 		$this->lang->load("report", "spanish");
 		$this->load->model('general_model','general');
+		$this->load->model('custom_query_model','customQuery');
 		$this->nav_menu = ["sys", "report"];
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
 	}
@@ -118,7 +119,7 @@ class Report extends CI_Controller {
 			case 3: $sheet = $this->set_sheet_appointmet($data); break;
 			case 4: $sheet = $this->set_sheet_surgery($data); break;
 			case 5: $sheet = $this->set_sheet_product($data); break;
-			case 6: $sheet = $this->set_sheet_sale($data); break;
+			case 6: $sheet = $this->set_sheet_sale2($data); break;
 			case 7: $sheet = $this->set_sheet_voucher($data); break;
 			case 8: $sheet = $this->set_sheet_log($data); break;
 			case 9: $sheet = $this->set_sheet_account($data); break;
@@ -487,6 +488,82 @@ class Report extends CI_Controller {
 			$row++;
 		}
 		
+		return $spreadsheet;
+	}
+
+	private function set_sheet_sale2($data){
+		$main_query = $this->customQuery->custom_report_sale($data["from"], $data["to"]);
+		$status_arr = [];
+		$status = $this->general->all("status");
+		foreach($status as $item) $status_arr[$item->id] = $this->lang->line($item->code);
+		
+		$headers = [
+			$this->lang->line('w_id'),
+			$this->lang->line('w_registed_at'),
+			$this->lang->line('w_last_update'),
+			$this->lang->line('w_status'),
+			$this->lang->line('w_type'),
+			$this->lang->line('w_client'),
+			$this->lang->line('w_currency'),
+			$this->lang->line('w_total'),
+			$this->lang->line('w_amount'),
+			$this->lang->line('w_vat'),
+			"metodo de pago",
+			$this->lang->line('w_paid'),
+			$this->lang->line('w_balance'),
+			$this->lang->line('w_detail_payment'),
+			$this->lang->line('w_products')
+		];
+
+		$spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+		$sheet = $this->set_report_header($sheet, range('A', 'Z'), $headers);
+		$row = 2;
+		$style_arr = ['alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT]];
+		$total_precio = 0;
+		foreach($main_query as $item){
+			$amount_difference = $item->paymentReceived - $item->paymentChange;
+			$text_payment = $item->PaymentRegistedAt." [ $item->currencyDesc $amount_difference ]";
+
+			$sheet->setCellValue('A'.$row, $item->id);
+			$sheet->setCellValue('B'.$row, $item->registed_at);
+			$sheet->setCellValue('C'.$row, $item->updated_at);
+			$sheet->setCellValue('D'.$row, $status_arr[$item->status_id]);
+			$sheet->setCellValue('E'.$row, $item->saleTypeDesc);
+			$sheet->setCellValue('F'.$row, $item->clientFullName);
+			$sheet->setCellValue('G'.$row, $item->currencyDesc);
+			$sheet->setCellValue('H'.$row, number_format($item->total, 2));
+			$sheet->setCellValue('I'.$row, number_format($item->amount, 2));
+			$sheet->setCellValue('J'.$row, number_format($item->vat, 2));
+			$sheet->setCellValue('K'.$row, $item->paymentMethodDesc);
+			$sheet->setCellValue('L'.$row, number_format($item->paymentReceived, 2));
+			$sheet->setCellValue('M'.$row, number_format($item->paymentBalance, 2));
+			$sheet->setCellValue('N'.$row, $text_payment);
+			$sheet->setCellValue('O'.$row, $item->productDesc);
+			$sheet->getStyle($row)->applyFromArray($style_arr);
+
+			$total_precio = $total_precio + $item->total;
+			$row++;
+		}
+
+		// totales
+		$sheet->setCellValue('A'.($row), "");
+		$sheet->setCellValue('B'.($row), "");
+		$sheet->setCellValue('C'.($row), "");
+		$sheet->setCellValue('D'.($row), "");
+		$sheet->setCellValue('E'.($row), "");
+		$sheet->setCellValue('F'.($row), "");
+		$sheet->setCellValue('G'.($row), "TOTAL");
+		$sheet->setCellValue('H'.($row), $total_precio);
+		$sheet->setCellValue('I'.($row), "");
+		$sheet->setCellValue('J'.($row), "");
+		$sheet->setCellValue('K'.($row), "");
+		$sheet->setCellValue('L'.($row), "");
+		$sheet->setCellValue('M'.($row), "");
+		$sheet->setCellValue('N'.($row), "");
+		$sheet->setCellValue('O'.($row), "");
+		$sheet->getStyle($row)->applyFromArray($style_arr);
+
 		return $spreadsheet;
 	}
 	

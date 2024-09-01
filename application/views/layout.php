@@ -112,7 +112,7 @@
 			</li>
 			<?php } if (in_array("commerce", $this->nav_menus)){ ?>
 			<li class="nav-item">
-				<a class="nav-link <?= ($this->nav_menu[0] === "commerce") ? "" : "collapsed" ?>" data-bs-target="#commerce-nav" data-bs-toggle="collapse" href="#" aria-expanded="<?= ($this->nav_menu[0] === "commerce") ? "true" : "false" ?>">
+			<a class="nav-link <?= ($this->nav_menu[0] === "commerce") ? "" : "collapsed" ?>" data-bs-target="#commerce-nav" data-bs-toggle="collapse" href="#" aria-expanded="<?= ($this->nav_menu[0] === "commerce") ? "true" : "false" ?>">
 					<i class="bi bi-cart"></i><span>Comercio</span><i class="bi bi-chevron-down ms-auto"></i>
 				</a>
 				<ul id="commerce-nav" class="nav-content collapse <?= ($this->nav_menu[0] === "commerce") ? "show" : "" ?>" data-bs-parent="#sidebar-nav">
@@ -161,21 +161,31 @@
 					<i class="bi bi-pc-display"></i><span>Sistema</span><i class="bi bi-chevron-down ms-auto"></i>
 				</a>
 				<ul id="sys-nav" class="nav-content collapse <?= ($this->nav_menu[0] === "sys") ? "show" : "" ?>" data-bs-parent="#sidebar-nav">
-					<li>
-						<a href="<?= base_url() ?>sys/account" class="<?= ($this->nav_menu[1] === "account") ? "active" : "" ?>">
-							<i class="bi bi-circle"></i><span>Usuarios</span>
-						</a>
-					</li>
-					<li>
-						<a href="<?= base_url() ?>sys/report" class="<?= ($this->nav_menu[1] === "report") ? "active" : "" ?>">
-							<i class="bi bi-circle"></i><span>Reportes</span>
-						</a>
-					</li>
-					<li>
-						<a href="<?= base_url() ?>sys/config" class="<?= ($this->nav_menu[1] === "config") ? "active" : "" ?>">
-							<i class="bi bi-circle"></i><span>Ajustes</span>
-						</a>
-					</li>
+					<?php if( in_array("account", $this->nav_menus) ) : ?>
+						<li>
+							<a href="<?= base_url() ?>sys/account" class="<?= ($this->nav_menu[1] === "account") ? "active" : "" ?>">
+								<i class="bi bi-circle"></i><span>Usuarios</span>
+							</a>
+						</li>
+					<?php endif; ?>
+
+					<?php if( in_array("report", $this->nav_menus) ) : ?>
+						<li>
+							<a href="<?= base_url() ?>sys/report" class="<?= ($this->nav_menu[1] === "report") ? "active" : "" ?>">
+								<i class="bi bi-circle"></i><span>Reportes</span>
+							</a>
+						</li>
+					<?php endif; ?>
+
+				
+					<?php if( in_array("config", $this->nav_menus) ) : ?>
+						<li>
+							<a href="<?= base_url() ?>sys/config" class="<?= ($this->nav_menu[1] === "config") ? "active" : "" ?>">
+								<i class="bi bi-circle"></i><span>Ajustes</span>
+							</a>
+						</li>
+					<?php endif; ?>
+
 				</ul>
 			</li>
 			<?php } ?>
