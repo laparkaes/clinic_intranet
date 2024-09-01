@@ -2,6 +2,11 @@
 
 class Custom_Query_model extends CI_Model{
 
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     function custom_report_sale($first_date, $second_date){
         $sql = "
         SELECT a.*, 
