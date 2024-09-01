@@ -121,15 +121,17 @@ class Utility_lib{
 		
 		if ($this->CI->session->userdata('role')) $role_id = $this->CI->session->userdata('role')->id;
 		else $role_id = -1;
-		
+
 		$role_access = $this->CI->general->filter("role_access", ["role_id" => $role_id]);
+
 		if ($role_access){ foreach($role_access as $item) $access_ids[] = $item->access_id; }
 		else $access_ids = [-1];
 		
 		$nav_menus = [];
 		$access = $this->CI->general->filter("access", ["description" => "index"], null, [["field" => "id", "values" => $access_ids]]);
+
 		foreach($access as $item) $nav_menus[] = $item->module;
-		
+
 		/* layout menu setting 
 		groups & menus: 
 			- dashboard: dashboard (no child)
@@ -148,9 +150,10 @@ class Utility_lib{
 		foreach(["resume", "inoutcome"] as $item)
 			if (in_array($item, $nav_menus)){ $nav_menus[] = "moneyflow"; break; }
 		
-		foreach(["account", "config"] as $item)
+		foreach(["account", "config", "report"] as $item)
 			if (in_array($item, $nav_menus)){ $nav_menus[] = "sys"; break; }
-		
+
+
 		return $nav_menus;
 	}
 	
