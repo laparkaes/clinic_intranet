@@ -8,12 +8,14 @@ class Custom_query_model extends CI_Model{
     }
 
     function custom_report_sale($first_date, $second_date){
-        $sql = "
-        SELECT a.*, 
+        $sql = "SELECT a.*, 
         b.code AS statusCode, 
         c.description AS saleTypeDesc, 
         d.name AS clientFullName, 
-        e.description AS currencyDesc, 
+        e.description AS currencyDesc,
+        f.price AS priceProduct,
+        f.discount AS discountProduct,
+        f.qty AS quantyProduct, 
         g.description AS productDesc, 
         h.received AS paymentReceived, 
         h.`change` AS paymentChange, 
@@ -29,6 +31,7 @@ class Custom_query_model extends CI_Model{
         INNER JOIN product g ON f.product_id = g.id
         INNER JOIN payment h ON a.id = h.sale_id
         INNER JOIN payment_method i ON h.payment_method_id = i.id
+        
 
         WHERE a.registed_at  BETWEEN '$first_date 00:00:00' AND '$second_date 23:59:59';
         ";

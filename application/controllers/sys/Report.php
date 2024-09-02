@@ -505,6 +505,9 @@ class Report extends CI_Controller {
 			$this->lang->line('w_type'),
 			$this->lang->line('w_client'),
 			$this->lang->line('w_currency'),
+			"precio unitario",
+			"descuento",
+			"cantidad",
 			$this->lang->line('w_total'),
 			$this->lang->line('w_amount'),
 			$this->lang->line('w_vat'),
@@ -520,10 +523,12 @@ class Report extends CI_Controller {
 		$sheet = $this->set_report_header($sheet, range('A', 'Z'), $headers);
 		$row = 2;
 		$style_arr = ['alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT]];
+		$total_detalle=0;
 		$total_precio = 0;
 		foreach($main_query as $item){
 			$amount_difference = $item->paymentReceived - $item->paymentChange;
 			$text_payment = $item->PaymentRegistedAt." [ $item->currencyDesc $amount_difference ]";
+			$total_detalle=($item->priceProduct * $item->quantyProduct)-$item->discountProduct;
 
 			$sheet->setCellValue('A'.$row, $item->id);
 			$sheet->setCellValue('B'.$row, $item->registed_at);
@@ -532,36 +537,42 @@ class Report extends CI_Controller {
 			$sheet->setCellValue('E'.$row, $item->saleTypeDesc);
 			$sheet->setCellValue('F'.$row, $item->clientFullName);
 			$sheet->setCellValue('G'.$row, $item->currencyDesc);
-			$sheet->setCellValue('H'.$row, number_format($item->total, 2));
-			$sheet->setCellValue('I'.$row, number_format($item->amount, 2));
-			$sheet->setCellValue('J'.$row, number_format($item->vat, 2));
-			$sheet->setCellValue('K'.$row, $item->paymentMethodDesc);
-			$sheet->setCellValue('L'.$row, number_format($item->paymentReceived, 2));
-			$sheet->setCellValue('M'.$row, number_format($item->paymentBalance, 2));
-			$sheet->setCellValue('N'.$row, $text_payment);
-			$sheet->setCellValue('O'.$row, $item->productDesc);
+			$sheet->setCellValue('H'.$row, $item->priceProduct);
+			$sheet->setCellValue('I'.$row, $item->discountProduct);
+			$sheet->setCellValue('J'.$row, $item->quantyProduct);
+			$sheet->setCellValue('K'.$row, number_format($total_detalle, 2));
+			$sheet->setCellValue('L'.$row, number_format($item->amount, 2));
+			$sheet->setCellValue('M'.$row, number_format($item->vat, 2));
+			$sheet->setCellValue('N'.$row, $item->paymentMethodDesc);
+			$sheet->setCellValue('O'.$row, number_format($item->paymentReceived, 2));
+			$sheet->setCellValue('P'.$row, number_format($item->paymentBalance, 2));
+			$sheet->setCellValue('Q'.$row, $text_payment);
+			$sheet->setCellValue('R'.$row, $item->productDesc);
 			$sheet->getStyle($row)->applyFromArray($style_arr);
 
 			$total_precio = $total_precio + $item->total;
 			$row++;
 		}
 
-		// totales
+		/* totales */
 		$sheet->setCellValue('A'.($row), "");
 		$sheet->setCellValue('B'.($row), "");
 		$sheet->setCellValue('C'.($row), "");
 		$sheet->setCellValue('D'.($row), "");
 		$sheet->setCellValue('E'.($row), "");
 		$sheet->setCellValue('F'.($row), "");
-		$sheet->setCellValue('G'.($row), "TOTAL");
-		$sheet->setCellValue('H'.($row), $total_precio);
+		$sheet->setCellValue('G'.($row), "");
+		$sheet->setCellValue('H'.($row), "");
 		$sheet->setCellValue('I'.($row), "");
-		$sheet->setCellValue('J'.($row), "");
-		$sheet->setCellValue('K'.($row), "");
+		$sheet->setCellValue('J'.($row), "TOTAL");
+		$sheet->setCellValue('K'.($row), $total_precio);
 		$sheet->setCellValue('L'.($row), "");
 		$sheet->setCellValue('M'.($row), "");
 		$sheet->setCellValue('N'.($row), "");
 		$sheet->setCellValue('O'.($row), "");
+		$sheet->setCellValue('P'.($row), "");
+		$sheet->setCellValue('Q'.($row), "");
+		$sheet->setCellValue('R'.($row), "");
 		$sheet->getStyle($row)->applyFromArray($style_arr);
 
 		return $spreadsheet;
