@@ -98,8 +98,8 @@ class Report extends CI_Controller {
 	}
 	
 	private function make_excel($data){
-		//$fileName = $this->lang->line('report')."_".$data["type_name"]."_".date("Ymdhis").'.xlsx';
-		$fileName = $this->lang->line('report')."_".$data["type_name"].'.xlsx';
+		$fileName = $this->lang->line('report')."_".$data["type_name"]."_".date("Ymdhis").'.xlsx';
+		//$fileName = $this->lang->line('report')."_".$data["type_name"].'.xlsx';
 		$upload_dir = $this->upload_dir();
 		
 		/*
