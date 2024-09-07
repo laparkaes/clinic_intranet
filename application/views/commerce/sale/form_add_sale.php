@@ -114,7 +114,7 @@ $sale_types = $this->general->all("sale_type", "sunat_serie", "asc");
 			</div>
 		</div>
 		<div class="col-md-12 payment_info d-none pt-3">
-			<button type="submit" class="btn btn-primary">
+			<button disabled="disabled" id="btn_register_sale_in_form_sale" type="submit" class="btn btn-primary">
 				<?= $this->lang->line('btn_register_sale') ?>
 			</button>
 		</div>
@@ -293,6 +293,9 @@ document.addEventListener("DOMContentLoaded", () => {
 			$("#payment_received_v").val(nf(received));
 			$("#payment_change_v").val(nf(change));
 			$("#payment_balance_v").val(nf(balance));
+
+			var buttonSaleSubmit = $("#btn_register_sale_in_form_sale");
+			buttonSaleSubmit.prop("disabled", balance > 0);
 		}
 	}
 	

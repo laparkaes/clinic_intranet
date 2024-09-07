@@ -236,7 +236,7 @@ class Sale extends CI_Controller {
 			$item->type = null;
 			$item->attention = null;
 			$item->path = null;
-			if(strpos(strtoupper($item->product->description), strtoupper("consulta")) !== false){
+			if($item->product->apply_sale_association == 1){
 				$appo_qty++;
 				$item->type = $this->lang->line('w_appointment');
 				if ($item->appointment_id) $item->path = base_url()."appointment/detail/".$item->appointment_id;
