@@ -34,7 +34,8 @@
 		<?php if ($client->doc_type_id){ ?>
 		<tr><td><?= $client->doc_type->short ?></td><td>: <?= $client->doc_number ?></td></tr>
 		<?php } ?>
-		<tr><td><?= $this->lang->line("date") ?></td><td>: <?= date('Y-m-d H:i:s', time()) ?></td></tr>
+		<tr><td><?= $this->lang->line("date") ?></td><td>: <?= $sale->registed_at //date('Y-m-d H:i:s', time()) ?></td></tr>
+		<tr><td><?= $this->lang->line("payment_method") ?></td><td>: <?= strtoupper($payments[0]->payment_method) ?></td></tr>
 	</table>
 	<div class="mt" style="border-bottom: 1px solid black;">
 		<table>
@@ -57,12 +58,14 @@
 			<td><?= $this->lang->line('label_total') ?></td>
 			<td><?= $currency->description." ".number_format($sale->total, 2) ?></td>
 		</tr>
+<!-- 		
 		<?php foreach($payments as $item){ ?>
 		<tr>
 			<td><?= $item->registed_at ?></td>
 			<td><?= "- ".$currency->description." ".number_format($item->received - $item->change, 2) ?></td>
 		</tr>
 		<?php } ?>
+		 -->
 	</table>
 	<div class="mt text-center"><strong>Saldo por pagar: <?= $currency->description." ".number_format($sale->balance, 2) ?></strong></div>
 	<div class="mt text-center">NO VÁLIDO COMO COMPROBANTE CONTABLE</div>

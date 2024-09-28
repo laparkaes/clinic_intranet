@@ -99,3 +99,5 @@ $lang['of_electronic_sale_u']	= 'DE VENTA ELECTRÓNICA';
 $lang['foreigner_card_short']	= 'Carnet Extr.';
 $lang['client']					= 'Cliente';
 $lang['date']					= 'Fecha';
+$lang['payment_method']         = 'Método de pago';
+$lang['label_total']            = 'Total';

@@ -940,3 +940,5 @@ $lang['please_choose_bed_after_that'] = 'Please Choose Bed After That';
 $lang['tawk_to_settings'] = 'Tawk.to Chat Settings';
 $lang['next_renewal_date'] = 'Next Renewal Date';
 $lang['expired_on'] = 'Expired On';
+$lang['payment_method'] = 'Payment method';
+$lang['label_total'] = 'Total';

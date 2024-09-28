@@ -300,7 +300,6 @@ class Sale extends CI_Controller {
 			"title" => $this->lang->line('sale'),
 			"main" => "commerce/sale/detail",
 		);
-		
 		$this->load->view('layout', $data);
 	}
 
@@ -771,6 +770,8 @@ class Sale extends CI_Controller {
 			
 			$currency = $this->general->id("currency", $sale->currency_id);
 			$payments = $this->general->filter("payment", $filter);
+			foreach($payments as $item) 
+				$item->payment_method = $this->general->id("payment_method", $item->payment_method_id)->description;
 			
 			$products = $this->general->filter("sale_product", $filter);
 			foreach($products as $item){
