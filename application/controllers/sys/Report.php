@@ -470,6 +470,7 @@ class Report extends CI_Controller {
 			
 			$sheet->setCellValue('A'.$row, $item->id);
 			$sheet->setCellValue('B'.$row, $item->registed_at);
+
 			$sheet->setCellValue('C'.$row, $item->updated_at);
 			$sheet->setCellValue('D'.$row, $on_sale);
 			$sheet->setCellValue('E'.$row, $category_arr[$item->category_id]);
@@ -493,6 +494,11 @@ class Report extends CI_Controller {
 
 	private function set_sheet_sale2($data){
 		$main_query = $this->customQuery->custom_report_sale($data["from"], $data["to"]);
+		// aqui deberia ir tu query principal
+		// echo "<pre>";
+		// print_r($main_query);
+		// echo "</pre>";
+		// exit;
 		$status_arr = [];
 		$status = $this->general->all("status");
 		foreach($status as $item) $status_arr[$item->id] = $this->lang->line($item->code);
@@ -505,17 +511,18 @@ class Report extends CI_Controller {
 			$this->lang->line('w_type'),
 			$this->lang->line('w_client'),
 			$this->lang->line('w_currency'),
-			"precio unitario",
-			"descuento",
-			"cantidad",
+			$this->lang->line('w_unit_price'),
+			$this->lang->line('w_discount'),
+			$this->lang->line('w_quantity'),
 			$this->lang->line('w_total'),
 			$this->lang->line('w_amount'),
 			$this->lang->line('w_vat'),
-			"metodo de pago",
+			$this->lang->line('w_payment_method'),
 			$this->lang->line('w_paid'),
 			$this->lang->line('w_balance'),
 			$this->lang->line('w_detail_payment'),
-			$this->lang->line('w_products')
+			$this->lang->line('w_products'),
+			$this->lang->line('w_detail')
 		];
 
 		$spreadsheet = new Spreadsheet();
@@ -524,12 +531,14 @@ class Report extends CI_Controller {
 		$row = 2;
 		$style_arr = ['alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT]];
 		$total_detalle=0;
-		$total_precio = 0;
+		
+
 		foreach($main_query as $item){
 			$amount_difference = $item->paymentReceived - $item->paymentChange;
 			$text_payment = $item->PaymentRegistedAt." [ $item->currencyDesc $amount_difference ]";
 			$total_detalle=($item->priceProduct * $item->quantyProduct)-$item->discountProduct;
-
+            $text_prod_opt=$item->optionDesc;
+		
 			$sheet->setCellValue('A'.$row, $item->id);
 			$sheet->setCellValue('B'.$row, $item->registed_at);
 			$sheet->setCellValue('C'.$row, $item->updated_at);
@@ -548,32 +557,13 @@ class Report extends CI_Controller {
 			$sheet->setCellValue('P'.$row, number_format($item->paymentBalance, 2));
 			$sheet->setCellValue('Q'.$row, $text_payment);
 			$sheet->setCellValue('R'.$row, $item->productDesc);
+			$sheet->setCellValue('S'.$row, $text_prod_opt);
 			$sheet->getStyle($row)->applyFromArray($style_arr);
-
-			$total_precio = $total_precio + $item->total;
+			
 			$row++;
 		}
 
-		/* totales */
-		$sheet->setCellValue('A'.($row), "");
-		$sheet->setCellValue('B'.($row), "");
-		$sheet->setCellValue('C'.($row), "");
-		$sheet->setCellValue('D'.($row), "");
-		$sheet->setCellValue('E'.($row), "");
-		$sheet->setCellValue('F'.($row), "");
-		$sheet->setCellValue('G'.($row), "");
-		$sheet->setCellValue('H'.($row), "");
-		$sheet->setCellValue('I'.($row), "");
-		$sheet->setCellValue('J'.($row), "TOTAL");
-		$sheet->setCellValue('K'.($row), $total_precio);
-		$sheet->setCellValue('L'.($row), "");
-		$sheet->setCellValue('M'.($row), "");
-		$sheet->setCellValue('N'.($row), "");
-		$sheet->setCellValue('O'.($row), "");
-		$sheet->setCellValue('P'.($row), "");
-		$sheet->setCellValue('Q'.($row), "");
-		$sheet->setCellValue('R'.($row), "");
-		$sheet->getStyle($row)->applyFromArray($style_arr);
+		
 
 		return $spreadsheet;
 	}
@@ -870,5 +860,69 @@ class Report extends CI_Controller {
 		}
 		
 		return $spreadsheet;
+	}
+
+
+	private function set_consolidado_ventas($data){
+		$main_query = $this->customQuery->custom_report_consolidated_sale($data["from"], $data["to"]);
+		// aqui deberia ir tu query principal
+		// echo "<pre>";
+		// print_r($main_query);
+		// echo "</pre>";
+		// exit;
+		$efectivo =  [];
+		$yape =  [];
+		$transferencia = [];
+
+		foreach($main_query as $item){
+			if($item->payment_method_id == 1) { // efectivo
+			
+				// si ya existe actualizamos la cantidad
+				$index = $this->findIndexByProperty($efectivo, "ProductId", $item->ProductId );
+				//array_search($item->ProductId, $efectivo);
+				echo "<pre> pre index";
+				print_r($index);
+				echo "</pre> <br>";
+				//$this->findIndexByProperty($efectivo, "ProductId", $item->ProductId );
+				if ($index >= 0) {
+					echo "<pre> index";
+					print_r($index);
+					echo "</pre> <br>";
+					exit;
+					//$efectivo[index].totalQty = $var_custom + $efectivo[index].qty;
+				} else {
+					// en el caso de un registro nuevo
+					$item->totalQty = $item->qty;
+					array_push($efectivo, $item);
+					
+				}
+			} else if($item->payment_method_id == 2) { // yape 
+
+			} else if($item->payment_method_id == 3) { // transferencia
+
+			}
+		}
+
+
+	}
+
+	function findObjectById($array, $property, $value){
+		foreach ( $array as $element ) {
+			if ( $value == $element[$property] ) {
+				return $element;
+			}
+		}
+		return false;
+	}
+
+	function findIndexByProperty($array, $property, $value){
+		$index = 0;
+		foreach ( $array as $element ) {
+			if ( $value == $element->$property ) {
+				return $index;
+			}
+			$index++;
+		}
+		return -1;
 	}
 }
