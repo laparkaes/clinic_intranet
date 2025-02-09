@@ -139,7 +139,7 @@ class Appointment extends CI_Controller {
 						$anamnesis->birthday = $patient->birthday;
 						$anamnesis->age = $this->my_func->age_calculator($patient->birthday, false);
 					}
-				}	
+				}
 			}
 		}
 		
@@ -381,7 +381,7 @@ class Appointment extends CI_Controller {
 				}
 				
 				$app["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
-				$app["schedule_to"] = date("Y-m-d H:i:s", strtotime("+14 minutes", strtotime($app["schedule_from"])));
+				$app["schedule_to"] = date("Y-m-d H:i:s", strtotime("+9 minutes", strtotime($app["schedule_from"])));
 				$app["status_id"] = ($this->input->post("as_free") == null) ? $this->general->status("reserved")->id : $this->general->status("confirmed")->id;
 				$app["registed_at"] = $now;
 				
@@ -451,7 +451,7 @@ class Appointment extends CI_Controller {
 			
 			if($appointment){
 				$this->load->library('my_val');
-				$msgs = $this->my_val->appointment_reschedule($msgs, "ra_", $appointment, $data);
+				//$msgs = $this->my_val->appointment_reschedule($msgs, "ra_", $appointment, $data);
 				
 				if (!$msgs){
 					$schedule_from = $data["date"]." ".$data["hour"].":".$data["min"];
@@ -981,20 +981,27 @@ class Appointment extends CI_Controller {
 	private function set_medicine_list($appointment_id){
 		$medicines = $this->general->filter("appointment_medicine", ["appointment_id" => $appointment_id]);
 		foreach($medicines as $item){
+			$item->medicine = $this->general->id("medicine", $item->medicine_id)->name;
+			$item->unit = $item->quantity > 1 ? $this->lang->line('w_units') : $this->lang->line('w_unit');
+			$item->dose = $item->dose_id ? $this->general->id("medicine_dose", $item->dose_id) : $this->general->structure("medicine_dose");
+			$item->application_way = $item->application_way_id ? $this->general->id("medicine_application_way", $item->application_way_id) : $this->general->structure("medicine_application_way");
+			$item->frequency = $item->frequency_id ? $this->general->id("medicine_frequency", $item->frequency_id) : $this->general->structure("medicine_frequency");
+			$item->duration = $item->duration_id ? $this->general->id("medicine_duration", $item->duration_id) : $this->general->structure("medicine_duration");
+			
 			$sub_txt_arr = [];
 			
-			if ($item->quantity > 1) $sub_txt_arr[] = number_format($item->quantity)." ".$this->lang->line('w_units');
-			else $sub_txt_arr[] = number_format($item->quantity)." ".$this->lang->line('w_unit');
+			$sub_txt_arr[] = number_format($item->quantity)." ".$item->unit;
+			if ($item->dose->description) $sub_txt_arr[] = $item->dose->description;
+			if ($item->application_way->description) $sub_txt_arr[] = $item->application_way->description;
+			if ($item->frequency->description) $sub_txt_arr[] = $item->frequency->description;
+			if ($item->duration->description) $sub_txt_arr[] = $item->duration->description;
 			
-			if ($item->dose_id) $sub_txt_arr[] = $this->general->id("medicine_dose", $item->dose_id)->description;
-			if ($item->application_way_id) $sub_txt_arr[] = $this->general->id("medicine_application_way ", $item->application_way_id)->description;
-			if ($item->frequency_id) $sub_txt_arr[] = $this->general->id("medicine_frequency", $item->frequency_id)->description;
-			if ($item->duration_id) $sub_txt_arr[] = $this->general->id("medicine_duration", $item->duration_id)->description;
-			
-			$item->medicine = $this->general->id("medicine", $item->medicine_id)->name;
 			$item->sub_txt = implode(", ", $sub_txt_arr);
 		}
-		usort($medicines, function($a, $b) { return strcmp($a->medicine, $b->medicine); });
+		
+		usort($medicines, function($a, $b) { 
+			return strcmp($a->medicine, $b->medicine);
+		});
 		
 		return $medicines;
 	}
@@ -1090,5 +1097,92 @@ class Appointment extends CI_Controller {
 		$this->load->library('dompdf_lib');
 		$this->dompdf_lib->make_pdf_a4($html, $filename);
 		//echo $html;
+	}
+
+	public function print_examination($id){
+		$appointment = $this->general->id("appointment", $id);
+		
+		$doctor = $this->general->id("person", $appointment->doctor_id);
+		if ($doctor){
+			$doctor->age = $doctor->birthday ? $this->my_func->age_calculator($doctor->birthday, true) : "-";
+			
+			$data = $this->general->filter("doctor", ["person_id" => $doctor->id]);
+			if ($data) $doctor->data = $data[0];
+			else $doctor->data = $this->general->structure("doctor");
+			
+			$doctor->data->specialty = $doctor->data->specialty_id ? $this->general->id("specialty", $doctor->data->specialty_id)->name : "";
+		}else{
+			$doctor = $this->general->structure("person");
+			$doctor->data = $this->general->structure("doctor");
+		}
+		
+		$patient = $this->general->id("person", $appointment->patient_id);
+		$patient->age = $patient->birthday ? $this->my_func->age_calculator($patient->birthday, true) : "-";
+		
+		$data = [
+			"doctor" => $doctor,
+			"patient" => $patient,
+			"examination" => $this->set_profiles_exams($id),
+		];
+		
+		$this->load->view('print_template/examination', $data);
+	}
+	
+	public function print_image($id){
+		$appointment = $this->general->id("appointment", $id);
+		
+		$doctor = $this->general->id("person", $appointment->doctor_id);
+		if ($doctor){
+			$doctor->age = $doctor->birthday ? $this->my_func->age_calculator($doctor->birthday, true) : "-";
+			
+			$data = $this->general->filter("doctor", ["person_id" => $doctor->id]);
+			if ($data) $doctor->data = $data[0];
+			else $doctor->data = $this->general->structure("doctor");
+			
+			$doctor->data->specialty = $doctor->data->specialty_id ? $this->general->id("specialty", $doctor->data->specialty_id)->name : "";
+		}else{
+			$doctor = $this->general->structure("person");
+			$doctor->data = $this->general->structure("doctor");
+		}
+		
+		$patient = $this->general->id("person", $appointment->patient_id);
+		$patient->age = $patient->birthday ? $this->my_func->age_calculator($patient->birthday, true) : "-";
+		
+		$data = [
+			"doctor" => $doctor,
+			"patient" => $patient,
+			"image" => $this->set_images($id),
+		];
+		
+		$this->load->view('print_template/image', $data);
+	}
+	
+	public function print_medicine($id){
+		$appointment = $this->general->id("appointment", $id);
+		
+		$doctor = $this->general->id("person", $appointment->doctor_id);
+		if ($doctor){
+			$doctor->age = $doctor->birthday ? $this->my_func->age_calculator($doctor->birthday, true) : "-";
+			
+			$data = $this->general->filter("doctor", ["person_id" => $doctor->id]);
+			if ($data) $doctor->data = $data[0];
+			else $doctor->data = $this->general->structure("doctor");
+			
+			$doctor->data->specialty = $doctor->data->specialty_id ? $this->general->id("specialty", $doctor->data->specialty_id)->name : "";
+		}else{
+			$doctor = $this->general->structure("person");
+			$doctor->data = $this->general->structure("doctor");
+		}
+		
+		$patient = $this->general->id("person", $appointment->patient_id);
+		$patient->age = $patient->birthday ? $this->my_func->age_calculator($patient->birthday, true) : "-";
+		
+		$data = [
+			"doctor" => $doctor,
+			"patient" => $patient,
+			"medicine" => $this->set_medicine_list($id),
+		];
+		
+		$this->load->view('print_template/medicine', $data);
 	}
 }

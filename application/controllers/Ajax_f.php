@@ -7,6 +7,7 @@ class Ajax_f extends CI_Controller {
 		parent::__construct();
 		date_default_timezone_set('America/Lima');
 		$this->lang->load("system", "spanish");
+		$this->lang->load("appointment", "spanish");
 		$this->load->model('general_model','general');
 	}
 	
@@ -100,7 +101,7 @@ class Ajax_f extends CI_Controller {
 		$appointments = $this->general->filter("appointment", $f);
 		$surgeries = $this->general->filter("surgery", $f);
 		
-		$min_range = array([0, 15], [15, 30], [30, 45], [45, 60]);
+		$min_range = array([0, 10], [10, 20], [20, 30], [30, 40], [40, 50], [50, 60]);
 		$aux = array();
 		
 		if ($appointments) foreach($appointments as $item) array_push($aux, array("sh" => date("H", strtotime($item->schedule_from)), "sm" => date("i", strtotime($item->schedule_from)), "eh" => date("H", strtotime($item->schedule_to)), "em" => date("i", strtotime($item->schedule_to))));
@@ -118,15 +119,48 @@ class Ajax_f extends CI_Controller {
 			
 			do{
 				array_push($cells, date("Hi", $i));
-				$i += 900;//15 minutes in seconds
+				$i += 600;//10 minutes in seconds
 			}while($i <= $end);
 		}
 		
 		return $cells;
 	}
 	
+	public function test(){
+		
+		$status_arr = [];
+		$status = $this->general->filter("status");
+		foreach($status as $item) $status_arr[$item->id] = $item;
+		
+		
+		$f = [
+			//"status_id" => $this->general->status("confirmed")->id, 
+			"doctor_id" => 3,
+			"schedule_from >=" => date("Y-m-d 00:00:00", strtotime("2025-02-03")),
+			"schedule_from <=" => date("Y-m-d 23:23:59", strtotime("2025-02-03")),
+		];
+		
+		$schedules = [];
+		
+		$app = $this->general->filter("appointment", $f);
+		foreach($app as $item){
+			$schedules[] = [
+				"type" => "appointment",
+				"specialty" => $this->general->unique("specialty", "id", $item->specialty_id)->name,
+				"patient" => $this->general->unique("person", "id", $item->patient_id)->name,
+				"status" => $status_arr[$item->status_id],
+				"reserved" => date("H:i", strtotime($item->schedule_from)),
+			];
+		}
+		
+		foreach($schedules as $item){
+			print_r($item);
+			echo "<br/>";
+		}
+	}
+	
 	public function load_doctor_schedule(){
-		$cells = array(); $msg = null;
+		$schedules = []; $msg = null;
 		$doctor_id = $this->input->post("doctor_id");
 		$date = $this->input->post("date");
 		if (!$date) $date = date("Y-m-d");
@@ -134,9 +168,48 @@ class Ajax_f extends CI_Controller {
 		if (!$doctor_id) $msg = $this->lang->line('error_select_doctor');
 		if (!$date) $msg = $this->lang->line('error_select_date');
 		
-		if (!$msg) $cells = $this->set_doctor_schedule_cell($doctor_id, $date);
+		$status_arr = [];
+		$status = $this->general->filter("status");
+		foreach($status as $item) $status_arr[$item->id] = $item;
 		
-		echo $this->load->view('clinic/doctor/tb_schedule', ["msg" => $msg, "cells" => $cells, "date" => $date], true);
+		//if (!$msg) $cells = $this->set_doctor_schedule_cell($doctor_id, $date);
+		if (!$msg){
+			$f = [
+				//"status_id" => $this->general->status("confirmed")->id, 
+				"doctor_id" => $doctor_id,
+				"schedule_from >=" => date("Y-m-d 00:00:00", strtotime($date)),
+				"schedule_from <=" => date("Y-m-d 23:23:59", strtotime($date)),
+			];
+			
+			$app = $this->general->filter("appointment", $f, null, null, "schedule_from", "asc");
+			foreach($app as $item){
+				$schedules[] = [
+					"type" => "appointment",
+					"specialty" => $this->general->unique("specialty", "id", $item->specialty_id)->name,
+					"patient" => $this->general->unique("person", "id", $item->patient_id)->name,
+					"status" => $status_arr[$item->status_id],
+					"reserved" => date("H:i", strtotime($item->schedule_from)),
+				];
+			}
+			
+			$sur = $this->general->filter("surgery", $f, null, null, "schedule_from", "asc");
+			foreach($sur as $item){
+				$schedules[] = [
+					"type" => "surgery",
+					"specialty" => $this->general->unique("specialty", "id", $item->specialty_id)->name,
+					"patient" => $this->general->unique("person", "id", $item->patient_id)->name,
+					"status" => $status_arr[$item->status_id],
+					"reserved" => date("H:i", strtotime($item->schedule_from)),
+				];
+			}
+			
+			usort($schedules, function ($a, $b) {
+				return strtotime($a['reserved']) - strtotime($b['reserved']);
+			});
+		}
+		
+		//echo $this->load->view('clinic/doctor/tb_schedule', ["msg" => $msg, "cells" => $cells, "date" => $date], true);
+		echo $this->load->view('clinic/doctor/tb_schedule', ["msg" => $msg, "status_arr" => $status_arr, "schedules" => $schedules, "date" => $date], true);
 	}
 	
 	public function load_doctor_schedule_weekly(){

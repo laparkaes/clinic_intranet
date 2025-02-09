@@ -70,7 +70,7 @@ if (!$doctor){
 					<div class="input-group">
 						<select class="form-select" id="aa_hour" name="sch[hour]">
 							<option value="" selected>--</option>
-							<?php for($i = 9; $i <= 18; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
+							<?php for($i = 0; $i < 24; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
 							<option value="<?= $i ?>">
 								<?php 
 								switch(true){
@@ -83,12 +83,12 @@ if (!$doctor){
 							<?php } ?>
 						</select>
 						<span class="input-group-text">:</span>
+						<?php $mins = ["00", "10", "20", "30", "40", "50"]; ?>
 						<select class="form-select" id="aa_min" name="sch[min]">
 							<option value="" selected>--</option>
-							<option value="00">00</option>
-							<option value="15">15</option>
-							<option value="30">30</option>
-							<option value="45">45</option>
+							<?php foreach($mins as $item){ ?>
+							<option value="<?= $item ?>"><?= $item ?></option>
+							<?php } ?>
 						</select>
 					</div>
 					<div class="sys_msg" id="aa_schedule_msg"></div>
@@ -198,7 +198,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 	
-	set_date_picker("#aa_date", new Date());
+	//set_date_picker("#aa_date", new Date());
+	set_date_picker("#aa_date", null);
 	load_doctor_schedule_app();
 	
 	$("#app_register_form").submit(function(e) {

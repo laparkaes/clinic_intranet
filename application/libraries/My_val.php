@@ -96,10 +96,12 @@ class My_val{
 			];
 			
 			//check appointment and surgery available
+			/*
 			$sur_available = $this->CI->general->is_available("surgery", $app, $status_ids);
 			$app_available = $this->CI->general->is_available("appointment", $app, $status_ids);
 			if (!($sur_available and $app_available)) 
 				$msgs = $this->set_msg($msgs, $prefix."schedule_msg", "error", "e_doctor_no_available");
+			*/
 		}
 		
 		return $msgs;

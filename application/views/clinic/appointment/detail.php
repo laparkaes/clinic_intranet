@@ -25,7 +25,25 @@
 				<?= $this->lang->line('btn_cancel') ?>
 			</button>
 			<?php } ?>
-		</div>		
+		</div>
+		|
+		<?php if ($appointment_datas["examination"]["profiles"] or $appointment_datas["examination"]["exams"]){ ?>
+		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment/print_examination/<?= $appointment->id ?>" target="_blank">
+			<i class="bi bi-printer"></i> Exámenes
+		</a>
+		<?php } if ($appointment_datas["images"]){ ?>
+		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment/print_image/<?= $appointment->id ?>" target="_blank">
+			<i class="bi bi-printer"></i> Imágenes
+		</a>
+		<?php } if ($appointment_datas["medicine"]){ ?>
+		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment/print_medicine/<?= $appointment->id ?>" target="_blank">
+			<i class="bi bi-printer"></i> Medicamento
+		</a>
+		<?php } if ($appointment_datas["therapy"]){ ?>
+		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment/print_therapy/<?= $appointment->id ?>" target="_blank">
+			<i class="bi bi-printer"></i> Terapia
+		</a>
+		<?php } ?>
 	</div>
 	<div class="col-md-12 pt-3">
 		<div class="card" id="app_info">
@@ -81,7 +99,7 @@
 								<div class="input-group">
 									<select class="form-select schedule" id="ra_hour" name="hour">
 										<option value="" selected>--</option>
-										<?php for($i = 9; $i < 18; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
+										<?php for($i = 0; $i < 24; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
 										<option value="<?= $i ?>">
 											<?php 
 											switch(true){
@@ -94,12 +112,12 @@
 										<?php } ?>
 									</select>
 									<span class="input-group-text">:</span>
-									<select class="form-select schedule" id="ra_min" name="min">
+									<?php $mins = ["00", "10", "20", "30", "40", "50"]; ?>
+									<select class="form-select" id="ra_min" name="min">
 										<option value="" selected>--</option>
-										<option value="00">00</option>
-										<option value="15">15</option>
-										<option value="30">30</option>
-										<option value="45">45</option>
+										<?php foreach($mins as $item){ ?>
+										<option value="<?= $item ?>"><?= $item ?></option>
+										<?php } ?>
 									</select>
 								</div>
 								<div class="sys_msg" id="ra_schedule_msg"></div>
@@ -1528,7 +1546,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	
 	//reschedule
 	load_doctor_schedule_app();
-	set_date_picker("#ra_date", new Date());
+	set_date_picker("#ra_date", null);
 	
 	$("#reschedule_form").submit(function(e) {
 		e.preventDefault(); 
