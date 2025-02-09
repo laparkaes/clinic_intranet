@@ -27,7 +27,7 @@
 			<?php } ?>
 		</div>
 		|
-		<?php if ($appointment_datas["examination"]["profiles"] or $appointment_datas["examination"]["exams"]){ ?>
+		<?php if ($appointment_datas["examination"]["exams"]){ ?>
 		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment/print_examination/<?= $appointment->id ?>" target="_blank">
 			<i class="bi bi-printer"></i> Exámenes
 		</a>
