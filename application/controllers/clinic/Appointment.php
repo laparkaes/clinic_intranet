@@ -1185,4 +1185,33 @@ class Appointment extends CI_Controller {
 		
 		$this->load->view('print_template/medicine', $data);
 	}
+	
+	public function print_therapy($id){
+		$appointment = $this->general->id("appointment", $id);
+		
+		$doctor = $this->general->id("person", $appointment->doctor_id);
+		if ($doctor){
+			$doctor->age = $doctor->birthday ? $this->my_func->age_calculator($doctor->birthday, true) : "-";
+			
+			$data = $this->general->filter("doctor", ["person_id" => $doctor->id]);
+			if ($data) $doctor->data = $data[0];
+			else $doctor->data = $this->general->structure("doctor");
+			
+			$doctor->data->specialty = $doctor->data->specialty_id ? $this->general->id("specialty", $doctor->data->specialty_id)->name : "";
+		}else{
+			$doctor = $this->general->structure("person");
+			$doctor->data = $this->general->structure("doctor");
+		}
+		
+		$patient = $this->general->id("person", $appointment->patient_id);
+		$patient->age = $patient->birthday ? $this->my_func->age_calculator($patient->birthday, true) : "-";
+		
+		$data = [
+			"doctor" => $doctor,
+			"patient" => $patient,
+			"therapy" => $this->set_therapy_list($id),
+		];
+		//print_r($data);
+		$this->load->view('print_template/therapy', $data);
+	}
 }
