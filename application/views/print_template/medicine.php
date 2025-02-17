@@ -12,6 +12,7 @@
 	}
 
 	body {
+		font-size: 14px;
 		display: flex;
 		flex-direction: column;
 		height: 100vh; /* 화면 전체 높이 */
@@ -22,15 +23,14 @@
 		top: 0;
 		left: 0;
 		width: 100%;
-		height: 80px;
+		height: 170px;
 	}
 
 	.content {
 		flex: 1;
-		margin-top: 70px;
+		margin-top: 170px;
 		margin-bottom: 100px;
 		overflow-y: auto;
-		padding-top: 80px;
 	}
 
 	.footer {
@@ -38,12 +38,8 @@
 		bottom: 0;
 		left: 0;
 		width: 100%;
-		height: 70px;
+		height: 100px;
 		text-align: center;
-	}
-	
-	table{
-		font-size: 12px;
 	}
     </style>
     <script>
