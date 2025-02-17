@@ -1,0 +1,3 @@
+cd C:\xampp\mysql\bin
+
+mysql -uroot -p everlyn < C:\xampp\htdocs\clinic\db_backup\clinic20250203.sql
