@@ -723,9 +723,6 @@ class Sale extends CI_Controller {
 	}
 	
 	public function voucher($id){
-		echo "Fuera de servicio.";
-		return;
-		
 		if ($this->utility_lib->check_access("sale", "admin_voucher")){
 			$data = $this->set_voucher_data($id);
 			
@@ -799,8 +796,8 @@ class Sale extends CI_Controller {
 				//"logo" => base64_encode(file_get_contents(FCPATH."/resources/images/logo.png")),
 			];
 			
-			//echo $this->load->view("commerce/voucher/ticket", $data, true);
-			$this->my_func->make_pdf($this->load->view("commerce/voucher/ticket", $data, true), $title);
+			echo $this->load->view("commerce/voucher/ticket", $data, true);
+			//$this->my_func->make_pdf($this->load->view("commerce/voucher/ticket", $data, true), $title);
 		}else echo $this->lang->line('error_no_permission');
 	}
 }

@@ -9,6 +9,14 @@
 	.mt{margin-top: 20px;}
 	.text-center{text-align: center;}
 	</style>
+    <script>
+	window.onload = function () {
+		window.print(); // 인쇄 창 열기
+		setTimeout(function () {
+			window.close(); // 일정 시간 후 창 닫기 (일부 브라우저에서 필요)
+		}, 500); 
+	};
+    </script>
 </head>
 <body>
 	<table>

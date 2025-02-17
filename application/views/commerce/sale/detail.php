@@ -12,10 +12,12 @@
 <div class="row">
 	<?php if ($voucher->sale_id){ ?>
 	<div class="col-md-3">
-		<a href="<?= base_url() ?>commerce/sale/voucher/<?= $voucher->id ?>" target="_blank" class="btn btn-primary w-100 mb-3">
+		<!-- a href="<?= base_url() ?>commerce/sale/voucher/<?= $voucher->id ?>" target="_blank" -->
+		<button class="btn btn-primary w-100 mb-3" disabled>
 			<div><i class="bi bi-file-earmark-text" style="font-size: 50px;"></i></div>
 			<div class="fs-16 mt-2 pt-2 border-top border-white"><?= $voucher->type ?></div>
-		</a>
+		</button>
+		<!-- /a -->
 	</div>
 	<?php }else{ ?>
 	<div class="col-md-3">
