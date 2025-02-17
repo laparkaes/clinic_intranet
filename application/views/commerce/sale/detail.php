@@ -19,7 +19,7 @@
 	</div>
 	<?php }else{ ?>
 	<div class="col-md-3">
-		<button class="btn btn-primary w-100 mb-3" data-bs-toggle="modal" data-bs-target="#md_voucher">
+		<button class="btn btn-primary w-100 mb-3" data-bs-toggle="modal" data-bs-target="#md_voucher" disabled>
 			<div><i class="bi bi-file-earmark-text" style="font-size: 50px;"></i></div>
 			<div class="mt-2 pt-2 border-top border-white"><?= $this->lang->line('btn_voucher') ?></div>
 		</button>

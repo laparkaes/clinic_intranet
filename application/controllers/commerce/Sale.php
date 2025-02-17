@@ -723,6 +723,9 @@ class Sale extends CI_Controller {
 	}
 	
 	public function voucher($id){
+		echo "Fuera de servicio.";
+		return;
+		
 		if ($this->utility_lib->check_access("sale", "admin_voucher")){
 			$data = $this->set_voucher_data($id);
 			
