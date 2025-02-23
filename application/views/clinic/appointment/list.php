@@ -30,6 +30,9 @@
 	<div class="col-md-auto col-12">
 		<input type="text" class="form-control" name="keyword" placeholder="<?= $this->lang->line('w_patient_name') ?>" value="<?= $f_url["keyword"] ?>">
 	</div>
+	<div class="col-md-auto col-12">
+		<input type="text" class="form-control" name="diagnosis" placeholder="<?= $this->lang->line('w_diagnosis') ?> (min 3 letras)" value="<?= $f_url["diagnosis"] ?>">
+	</div>
 	<div class="col-md-auto col-12 text-center d-grid gap-2">
 		<button type="submit" class="btn btn-primary btn-block">
 			<i class="bi bi-search"></i>
