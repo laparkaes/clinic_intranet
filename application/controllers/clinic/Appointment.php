@@ -49,32 +49,7 @@ class Appointment extends CI_Controller {
 			foreach($app_diag as $item) $aux[] = $item->appointment_id;
 			$aux = array_unique($aux);
 			
-			print_r($aux);
-			
-			/*
-			print_r($aux);
-			
-			echo $f_url["diagnosis"];
-			echo "<br/><br/>";
-			
-			foreach($diags as $item){
-				print_r($item);
-				echo "<br/><br/>";
-			}
-			
-			foreach($app_diag as $item){
-				print_r($item);
-				echo "<br/><br/>";
-			}
-			
-			*/
-			
-			return;
-			
-			$people = $this->general->filter("person", null, ["name" => $f_url["keyword"]]);
-			foreach($people as $p) $aux[] = $p->id;
-			
-			$f_w_in[] = ["field" => "patient_id", "values" => $aux];
+			$f_w_in[] = ["field" => "id", "values" => $aux];
 		}else $f_url["diagnosis"] = null;
 		
 		if ($this->session->userdata('role')->name === "doctor") $f_w["doctor_id"] = $this->session->userdata('pid');

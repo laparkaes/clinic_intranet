@@ -1,5 +1,4 @@
-Primero la impresión está bien pero la letra más grande
-
-Y la búsqueda por diagnóstico
-
+[done] Primero la impresión está bien pero la letra más grande
+[done] Y la búsqueda por diagnóstico
 Y también quería preguntarte si el usuario de recepción tiene acceso a la ganancia total de l semana O solo del día para cuadrar
+

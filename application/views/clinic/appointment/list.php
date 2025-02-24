@@ -17,59 +17,55 @@
 		</button>
 	</div>
 </div>
-<form class="row d-flex justify-content-end g-3">
-	<input type="hidden" value="1" name="page">
-	<div class="col-md-auto col-12">
-		<select class="form-select" id="sl_status" name="status">
-			<option value=""><?= $this->lang->line('w_status') ?></option>
-			<?php foreach($status as $item){ if ($item->id == $f_url["status"]) $s = "selected"; else $s = ""; ?>
-			<option value="<?= $item->id ?>" <?= $s ?>><?= $this->lang->line($item->code) ?></option>
-			<?php } ?>
-		</select>
-	</div>
-	<div class="col-md-auto col-12">
-		<input type="text" class="form-control" name="keyword" placeholder="<?= $this->lang->line('w_patient_name') ?>" value="<?= $f_url["keyword"] ?>">
-	</div>
-	<div class="col-md-auto col-12">
-		<input type="text" class="form-control" name="diagnosis" placeholder="<?= $this->lang->line('w_diagnosis') ?> (min 3 letras)" value="<?= $f_url["diagnosis"] ?>">
-	</div>
-	<div class="col-md-auto col-12 text-center d-grid gap-2">
-		<button type="submit" class="btn btn-primary btn-block">
-			<i class="bi bi-search"></i>
-		</button>
-  </div>
-</form>
-<div class="row mt-3">
+<div class="row">
 	<div class="col">
 		<div class="card bl_content" id="bl_list">
 			<div class="card-body">
-				<h5 class="card-title"><?= $this->lang->line('w_list') ?></h5>
+				<div class="d-flex justify-content-between">
+					<h5 class="card-title">Lista de Consultas</h5>
+					<form class="row d-flex justify-content-end align-items-center">
+						<input type="hidden" value="1" name="page">
+						<div class="input-group mb-3">
+							<select class="form-select" id="sl_status" name="status" style="width: 150px;">
+								<option value="">Estado</option>
+								<?php foreach($status as $item){ if ($item->id == $f_url["status"]) $s = "selected"; else $s = ""; ?>
+								<option value="<?= $item->id ?>" <?= $s ?>><?= $this->lang->line($item->code) ?></option>
+								<?php } ?>
+							</select>
+							<input type="text" class="form-control" name="keyword" placeholder="Paciente" value="<?= $f_url["keyword"] ?>" style="width: 250px;">
+							<input type="text" class="form-control" name="diagnosis" placeholder="Diagnóstico (min 3 letras)" value="<?= $f_url["diagnosis"] ?>" style="width: 250px;">
+							<button type="submit" class="btn btn-primary btn-block">
+								<i class="bi bi-search"></i>
+							</button>
+						</div>
+					</form>
+				</div>
+				
 				<?php if ($appointments){ ?>
 				<div class="table-responsive">
-					<table class="table">
+					<table class="table align-middle">
 						<thead>
 							<tr>
-								<th>#</th>
-								<th><?= $this->lang->line('w_itinerary') ?></th>
-								<th><?= $this->lang->line('w_specialty') ?></th>
-								<th><?= $this->lang->line('w_doctor') ?> / <?= $this->lang->line('w_patient') ?></th>
-								<th><?= $this->lang->line('w_status') ?></th>
-								<th></th>
+								<th>Estado</th>
+								<th>Fecha</th>
+								<th>Hora</th>
+								<th>Especialidad</th>
+								<th>Médico</th>
+								<th>Paciente</th>
+								<th class="text-end">Ver</th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php foreach($appointments as $i => $item){ ?>
 							<tr>
-								<td><strong><?= number_format(($f_url["page"] - 1) * 25 + 1 + $i) ?></strong></td>
-								<td>
-									<div class="text-nowrap"><?= date("h:i A", strtotime($item->schedule_from)); ?></div>
-									<div><?= date("Y-m-d", strtotime($item->schedule_from)); ?></div>
-								</td>
-								<td><?= $item->specialty ?></td>
-								<td><?= $item->doctor ?><br/>/ <?= $item->patient ?></td>
 								<td><span class="text-<?= $status_arr[$item->status_id]->color ?>"><?= $this->lang->line($status_arr[$item->status_id]->code) ?></span></td>
+								<td><?= date("Y-m-d", strtotime($item->schedule_from)); ?></td>
+								<td><?= date("h:i A", strtotime($item->schedule_from)); ?></td>
+								<td><?= $item->specialty ?></td>
+								<td><?= $item->doctor ?></td>
+								<td><?= $item->patient ?></td>
 								<td class="text-end">
-									<a href="<?= base_url() ?>clinic/appointment/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
+									<a href="<?= base_url() ?>clinic/appointment/detail/<?= $item->id ?>" class="btn btn-success">
 										<i class="bi bi-arrow-right"></i>
 									</a>
 								</td>
