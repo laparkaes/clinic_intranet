@@ -2,3 +2,7 @@
 [done] Y la búsqueda por diagnóstico
 Y también quería preguntarte si el usuario de recepción tiene acceso a la ganancia total de l semana O solo del día para cuadrar
 
+Guia para capacitar a recepción
+Cuando se agrega medicamentos después de finalizar consulta no se puede imprimir
+Terapia física según dolencia (de ahí te paso fotos de que necesita cada cosita) 
+Medicamentos con su nombre genérico ya no usaremos marcas
