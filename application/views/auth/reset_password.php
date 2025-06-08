@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta content="width=device-width, initial-scale=1.0" name="viewport">
-	<title><?= $this->lang->line('w_change_password') ?></title>
+	<title>Everlyn - Reestablecer contraseña</title>
 	<meta content="" name="description">
 	<meta content="" name="keywords">
 	<link href="<?= base_url() ?>assets/img/favicon.png" rel="icon">
@@ -34,35 +34,33 @@
 							<div class="card mb-3">
 								<div class="card-body">
 									<div class="pt-4 pb-2">
-										<h5 class="card-title text-center pb-0 fs-4"><?= $this->lang->line('w_change_password') ?></h5>
+										<h5 class="card-title text-center pb-0 fs-4">Reestablecer Contraseña</h5>
+										<p class="text-center small">Ingrese los datos.</p>
 									</div>
-									<form class="row g-3" id="form_change_password">
+									<form class="row g-3" id="form_reset_password">
 										<div class="col-12">
-											<label class="form-label"><?= $this->lang->line('w_username') ?></label>
-											<div class="text-end"><strong><?= $account->email ?></strong></div>
+											<label class="form-label">Usuario</label>
+											<input type="text" class="form-control" name="account">
+											<div class="sys_msg" id="pw_account_msg"></div>
 										</div>
 										<div class="col-12">
-											<label class="form-label"><?= $this->lang->line('w_password_actual') ?></label>
-											<input type="password" class="form-control" name="password_actual">
-											<div class="sys_msg" id="pw_actual_msg"></div>
-										</div>
-										<div class="col-12">
-											<label class="form-label"><?= $this->lang->line('w_password_new') ?></label>
+											<label class="form-label">Contraseña nueva</label>
 											<input type="password" class="form-control" name="password_new">
 											<div class="sys_msg" id="pw_new_msg"></div>
 										</div>
 										<div class="col-12">
-											<label class="form-label"><?= $this->lang->line('w_confirm') ?></label>
+											<label class="form-label">Confirmación</label>
 											<input type="password" class="form-control" name="confirm">
 											<div class="sys_msg" id="pw_confirm_msg"></div>
 										</div>
-										<div class="col-12 py-3">
-											<button class="btn btn-primary w-100" type="submit"><?= $this->lang->line('btn_confirm') ?></button>
+										<div class="col-12">
+											<label class="form-label">Key</label>
+											<input type="password" class="form-control" name="key">
+											<div class="sys_msg" id="pw_key_msg"></div>
 										</div>
-										<div class="col-12 text-end">
-											<a href="<?= base_url() ?>dashboard">
-												<?= $this->lang->line('w_change_later') ?>
-											</a>
+										<div class="col-12 py-3">
+											<button class="btn btn-primary" type="submit">Reestablecer</button>
+											<a type="button" class="btn btn-outline-secondary border-white" href="<?= base_url() ?>auth">Cancelar</a>
 										</div>
 									</form>
 								</div>
@@ -77,12 +75,12 @@
 	<input type="hidden" id="base_url" value="<?= base_url() ?>">
 	<script>
 	document.addEventListener("DOMContentLoaded", () => {
-		$("#form_change_password").submit(function(e) {
+		$("#form_reset_password").submit(function(e) {
 			e.preventDefault();
-			$("#form_change_password .sys_msg").html("");
-			ajax_form_warning(this, "auth/change_password_apply", "wm_change_password").done(function(res) {
+			$("#form_reset_password .sys_msg").html("");
+			ajax_form_warning(this, "auth/reset_password_process", "Desea reestablecer la contraseña?").done(function(res) {
 				set_msg(res.msgs);
-				swal_redirection(res.type, res.msg, $("#base_url").val() + "auth/logout");
+				if (res.type == "success") swal_redirection(res.type, res.msg, $("#base_url").val() + "auth");
 			});
 		});
 	});
@@ -94,6 +92,5 @@
 	<script src="<?= base_url() ?>assets/js/main.js"></script>
 	<script src="<?= base_url() ?>assets/js/lang.js"></script>
 	<script src="<?= base_url() ?>assets/js/func.js"></script>
-	<script src="<?= base_url() ?>assets/js/init/auth/change_password.js"></script>
 </body>
 </html>

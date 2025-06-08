@@ -1,24 +1,32 @@
 var base_url = $("#base_url").val();
 
+var swal_lang = {
+	"success"	: '¡ Éxito !',
+	"error"		: '¡ Error !',
+	"warning"	: '¡ Un Momento !',
+	"confirm"	: 'Confirmar',
+	"cancel"	: 'Cancelar',
+};
+
 function nf(num){//number format
 	return parseFloat(num).toLocaleString('es-US', {maximumFractionDigits: 2, minimumFractionDigits: 2});
 }
 
 function swal(type, msg){
 	Swal.fire({
-		title: component_list[default_lang]["alert_" + type + "_title"],
+		title: swal_lang[type],
 		icon: type,
 		html: msg,
-		confirmButtonText: component_list[default_lang].alert_confirm_btn,
+		confirmButtonText: swal_lang[confirm],
 	});
 }
 
 function swal_redirection(type, msg, move_to){
 	Swal.fire({
-		title: component_list[default_lang]["alert_" + type + "_title"],
+		title: swal_lang[type],
 		icon: type,
 		html: msg,
-		confirmButtonText: component_list[default_lang].alert_confirm_btn,
+		confirmButtonText: swal_lang[confirm],
 	}).then((result) => {
 		if (result.isConfirmed) if (type == "success") location.href = move_to;
 	});
@@ -40,15 +48,15 @@ function ajax_form(dom, url){
 	return deferred.promise();
 }
 
-function ajax_form_warning(dom, url, w_msg_key){
+function ajax_form_warning(dom, url, msg){
 	var deferred = $.Deferred();
 	Swal.fire({
-		title: component_list[default_lang].alert_warning_title,
+		title: swal_lang["warning"],
 		icon: 'warning',
-		html: msg_list[default_lang][w_msg_key],
+		html: msg,
 		showCancelButton: true,
-		confirmButtonText: component_list[default_lang].alert_confirm_btn,
-		cancelButtonText: component_list[default_lang].alert_cancel_btn,
+		confirmButtonText: swal_lang["confirm"],
+		cancelButtonText: swal_lang["cancel"],
 	}).then((result) => {
 		if (result.isConfirmed) ajax_form(dom, url).done(function(res) {
 			deferred.resolve(res);
@@ -72,15 +80,15 @@ function ajax_simple(data, url){
 	return deferred.promise();
 }
 
-function ajax_simple_warning(data, url, w_msg_key){
+function ajax_simple_warning(data, url, msg){
 	var deferred = $.Deferred();
 	Swal.fire({
-		title: component_list[default_lang].alert_warning_title,
+		title: swal_lang["warning"],
 		icon: 'warning',
-		html: msg_list[default_lang][w_msg_key],
+		html: msg,
 		showCancelButton: true,
-		confirmButtonText: component_list[default_lang].alert_confirm_btn,
-		cancelButtonText: component_list[default_lang].alert_cancel_btn,
+		confirmButtonText: swal_lang["confirm"],
+		cancelButtonText: swal_lang["cancel"],
 	}).then((result) => {
 		if (result.isConfirmed) ajax_simple(data, url).done(function(res) {
 			deferred.resolve(res);

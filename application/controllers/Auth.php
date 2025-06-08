@@ -53,10 +53,51 @@ class Auth extends CI_Controller {
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to]);
 	}
 	
-	public function change_password(){
-		if (!$this->session->userdata('logged_in')) redirect("/auth");
+	public function create_account(){
+		$this->load->view('auth/create_account');
+	}
+	
+	public function create_account_process(){
+		$type = "error";
+		$msg = "";
+		$msgs = [];
+		$data = $this->input->post();
 		
-		$this->load->view('auth/change_password', ["account" => $this->general->id("account", $this->session->userdata('aid'))]);
+		//account
+		if ($data["account"]){
+			if ($this->general->filter("account", ["account" => $data["account"], "is_valid" => true]))
+				$msgs[] = ["dom_id" => "ac_account_msg", "type" => "danger", "msg" => "Existe usuario registrado."];
+		}else $msgs[] = ["dom_id" => "ac_account_msg", "type" => "danger", "msg" => "Ingrese usuario."];
+		
+		//password
+		if ($data["password"]){
+			if (strlen($data["password"]) < 6) $msgs[] = ["dom_id" => "ac_password_msg", "type" => "danger", "msg" => "Contraseña debe ser minimo 6 letras."];
+		}else $msgs[] = ["dom_id" => "ac_password_msg", "type" => "danger", "msg" => "Ingrese contraseña."];
+		
+		//confirm
+		if ($data["confirm"]){
+			if ($data["password"] !== $data["confirm"]) $msgs[] = ["dom_id" => "ac_password_msg", "type" => "danger", "msg" => "Ingrese confirmación correcta."];
+		}else $msgs[] = ["dom_id" => "ac_confirm_msg", "type" => "danger", "msg" => "Ingrese confirmación de contraseña."];
+		
+		//key
+		if ($data["key"]){
+			if ($data["key"] !== "150990") $msgs[] = ["dom_id" => "ac_key_msg", "type" => "danger", "msg" => "Ingrese clave correcto."];
+		}else $msgs[] = ["dom_id" => "ac_key_msg", "type" => "danger", "msg" => "Ingrese clave de sistema."];
+		
+		if (!$msgs){
+			$type = "success";
+			
+			
+			
+			//$msg = "";
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
+	}
+	
+	public function reset_password(){
+		$this->load->view('auth/reset_password');
 	}
 	
 	public function change_password_apply(){
