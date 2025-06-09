@@ -7,9 +7,13 @@ class Utility_lib{
 		$this->CI = &get_instance();
 	}
 	
-	public function add_log($code, $detail){
-		$log_code = $this->CI->general->filter("log_code", ["code" => $code]);
-		if ($log_code) $this->CI->general->insert("log", ["account_id" => $this->CI->session->userdata('aid'), "log_code_id" => $log_code[0]->id, "detail" => $detail, "registed_at" => date('Y-m-d H:i:s', time())]);
+	public function add_log($detail){
+		$log = [
+			"account_id" => $this->CI->session->userdata('aid'),
+			"detail" => $detail,
+			"registed_at" => date('Y-m-d H:i:s', time()),
+		];
+		$this->CI->general->insert("log", $log);
 	}
 	
 	public function check_access($module, $description){

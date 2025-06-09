@@ -46,7 +46,7 @@
 										<div class="col-12">
 											<label class="form-label">Contraseña</label>
 											<input type="password" class="form-control" name="password">
-											<div class="sys_msg" id="lg_pass_msg"></div>
+											<div class="sys_msg" id="lg_password_msg"></div>
 										</div>
 										<div class="col-12 pt-3">
 											<button type="submit" class="btn btn-primary">Ingresar</button>
@@ -71,9 +71,9 @@
 		$("#form_login").submit(function(e) {
 			e.preventDefault();
 			$("#form_login .sys_msg").html("");
-			ajax_form(this, "auth/login").done(function(res) {
+			ajax_form(this, "auth/login_process").done(function(res) {
 				set_msg(res.msgs);
-				if (res.type == "success") window.location.href = res.move_to;
+				if (res.type == "success") window.location.href = $("#base_url").val() + "dashboard";
 			});
 		});
 	});

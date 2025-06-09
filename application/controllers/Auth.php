@@ -9,31 +9,51 @@ class Auth extends CI_Controller {
 		$this->lang->load("auth", "spanish");
 		$this->lang->load("system", "spanish");
 		$this->load->model('general_model','general');
+		
+		$this->sys_key = "150990";//Nasthya's birthday
 	}
 	
 	public function index(){
 		if ($this->session->userdata('logged_in')) redirect("/dashboard");
-		else{
-			$this->load->library('my_val');
-			if (!$this->my_val->system_init()) redirect("system/system_init");
-			//return true if systen init is completed
-		}
 		
 		$this->load->view('auth/index');
 	}
 	
-	public function login(){
-		$type = "error"; $msgs = []; $msg = $move_to = null;
+	public function login_process(){
+		$type = "error"; 
+		$msgs = [];
 		$data = $this->input->post();
 		
-		$this->load->library('my_val');
-		$msgs = $this->my_val->login($msgs, "lg_", $data);
+		$account = $this->general->filter("account", ["account" => $data["account"], "is_valid" => true]);
+		$pass = "xxxxxxxxxxxxxxxx";//aux string to make error
+		
+		//account
+		if ($data["account"]){//blank?
+			if (!$account)//exists?
+				$msgs[] = ["dom_id" => "lg_account_msg", "type" => "danger", "msg" => "Usuario no registrado."];
+			else $pass = $account[0]->password;//save en var to compare later
+		}else $msgs[] = ["dom_id" => "lg_account_msg", "type" => "danger", "msg" => "Ingrese usuario."];
+		
+		
+		//password
+		if ($data["password"]){//blank?
+			if (strlen($data["password"]) < 6)//less than 6 chars?
+				$msgs[] = ["dom_id" => "lg_password_msg", "type" => "danger", "msg" => "Contraseña debe ser minimo 6 letras."];
+			elseif (!password_verify($data["password"], $pass))//password ok?
+				$msgs[] = ["dom_id" => "lg_password_msg", "type" => "danger", "msg" => "Error de contraseña."];
+		}else $msgs[] = ["dom_id" => "lg_password_msg", "type" => "danger", "msg" => "Ingrese contraseña."];
 		
 		if (!$msgs){
-			$account = $this->general->filter("account", ["email" => $data["email"], "is_valid" => true])[0];
-			$this->general->update("account", $account->id, ["logged_at" => date('Y-m-d H:i:s', time())]);
+			$this->general->update("account", $account[0]->id, ["logged_at" => date('Y-m-d H:i:s', time())]);
 			
-			$person = $this->general->id("person", $account->person_id);
+			$modules = [];
+			$access = $this->general->filter("account_access", ["account_id" => $account[0]->id]);
+			foreach($access as $item) $modules[] = $this->general->unique("access", "id", $item->access_id)->code;
+			
+			
+		}
+		/*
+		if (!$msgs){
 			
 			$session_data = array(
 				"aid" => $account->id,
@@ -48,9 +68,10 @@ class Auth extends CI_Controller {
 			if ($data["password"] === $person->doc_number) $move_to = base_url()."auth/change_password";
 			else $move_to = base_url()."dashboard";
 		}else $msg = $this->lang->line("error_occurred");
+		*/
 		
 		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to]);
+		echo json_encode(["type" => $type, "msgs" => $msgs]);
 	}
 	
 	public function create_account(){
@@ -64,32 +85,43 @@ class Auth extends CI_Controller {
 		$data = $this->input->post();
 		
 		//account
-		if ($data["account"]){
-			if ($this->general->filter("account", ["account" => $data["account"], "is_valid" => true]))
+		if ($data["account"]){//blank?
+			if ($this->general->filter("account", ["account" => $data["account"], "is_valid" => true]))//duplicated?
 				$msgs[] = ["dom_id" => "ac_account_msg", "type" => "danger", "msg" => "Existe usuario registrado."];
 		}else $msgs[] = ["dom_id" => "ac_account_msg", "type" => "danger", "msg" => "Ingrese usuario."];
 		
 		//password
-		if ($data["password"]){
-			if (strlen($data["password"]) < 6) $msgs[] = ["dom_id" => "ac_password_msg", "type" => "danger", "msg" => "Contraseña debe ser minimo 6 letras."];
+		if ($data["password"]){//blank?
+			if (strlen($data["password"]) < 6)//less than 6 chars?
+				$msgs[] = ["dom_id" => "ac_password_msg", "type" => "danger", "msg" => "Contraseña debe ser minimo 6 letras."];
 		}else $msgs[] = ["dom_id" => "ac_password_msg", "type" => "danger", "msg" => "Ingrese contraseña."];
 		
 		//confirm
-		if ($data["confirm"]){
-			if ($data["password"] !== $data["confirm"]) $msgs[] = ["dom_id" => "ac_password_msg", "type" => "danger", "msg" => "Ingrese confirmación correcta."];
+		if ($data["confirm"]){//blank?
+			if ($data["password"] !== $data["confirm"])//same to password?
+				$msgs[] = ["dom_id" => "ac_confirm_msg", "type" => "danger", "msg" => "Ingrese confirmación correcta."];
 		}else $msgs[] = ["dom_id" => "ac_confirm_msg", "type" => "danger", "msg" => "Ingrese confirmación de contraseña."];
 		
 		//key
-		if ($data["key"]){
-			if ($data["key"] !== "150990") $msgs[] = ["dom_id" => "ac_key_msg", "type" => "danger", "msg" => "Ingrese clave correcto."];
+		if ($data["key"]){//blank?
+			if ($data["key"] !== $this->sys_key)//defined in constructor
+				$msgs[] = ["dom_id" => "ac_key_msg", "type" => "danger", "msg" => "Ingrese clave correcto."];
 		}else $msgs[] = ["dom_id" => "ac_key_msg", "type" => "danger", "msg" => "Ingrese clave de sistema."];
 		
 		if (!$msgs){
-			$type = "success";
+			unset($data["confirm"]);
+			unset($data["key"]);
 			
+			$data["is_valid"] 		= true;
+			$data["password"]		= password_hash($data["password"], PASSWORD_BCRYPT);
+			$data["registed_at"]	= date('Y-m-d H:i:s', time());
 			
-			
-			//$msg = "";
+			if ($this->general->insert("account", $data)){
+				$type = "success";
+				$msg = "Usuario ha ido creado con exito.";
+				
+				$this->utility_lib->add_log("Crear usuario ".$data["account"]);
+			}
 		}
 		
 		header('Content-Type: application/json');
@@ -100,22 +132,51 @@ class Auth extends CI_Controller {
 		$this->load->view('auth/reset_password');
 	}
 	
-	public function change_password_apply(){
-		$type = "error"; $msgs = []; $msg = null;
-		
+	public function reset_password_process(){
+		$type = "error";
+		$msg = "";
+		$msgs = [];
 		$data = $this->input->post();
-		$this->load->library('my_val');
-		$msgs = $this->my_val->change_password($msgs, "pw_", $data);
+		
+		//account
+		if ($data["account"]){//blank?
+			if (!$this->general->filter("account", ["account" => $data["account"], "is_valid" => true]))//exist account?
+				$msgs[] = ["dom_id" => "pw_account_msg", "type" => "danger", "msg" => "No existe usuario registrado."];
+		}else $msgs[] = ["dom_id" => "pw_account_msg", "type" => "danger", "msg" => "Ingrese usuario."];
+		
+		//password
+		if ($data["password"]){//blank?
+			if (strlen($data["password"]) < 6)//less than 6 chars?
+				$msgs[] = ["dom_id" => "pw_password_msg", "type" => "danger", "msg" => "Contraseña debe ser minimo 6 letras."];
+		}else $msgs[] = ["dom_id" => "pw_password_msg", "type" => "danger", "msg" => "Ingrese contraseña nueva."];
+		
+		//confirm
+		if ($data["confirm"]){//blank?
+			if ($data["password"] !== $data["confirm"])//same to password?
+				$msgs[] = ["dom_id" => "pw_confirm_msg", "type" => "danger", "msg" => "Ingrese confirmación correcta."];
+		}else $msgs[] = ["dom_id" => "pw_confirm_msg", "type" => "danger", "msg" => "Ingrese confirmación de contraseña nueva."];
+		
+		//key
+		if ($data["key"]){//blank?
+			if ($data["key"] !== $this->sys_key)//defined in constructor
+				$msgs[] = ["dom_id" => "pw_key_msg", "type" => "danger", "msg" => "Ingrese clave correcto."];
+		}else $msgs[] = ["dom_id" => "pw_key_msg", "type" => "danger", "msg" => "Ingrese clave de sistema."];
 		
 		if (!$msgs){
-			$acc_id = $this->session->userdata('aid');
-			$acc_data = ["password" => password_hash($data["password_new"], PASSWORD_BCRYPT)];
+			unset($data["confirm"]);
+			unset($data["key"]);
 			
-			if ($this->general->update("account", $acc_id, $acc_data)){
+			$data["password"]	= password_hash($data["password"], PASSWORD_BCRYPT);
+			$data["updated_at"]	= date('Y-m-d H:i:s', time());
+			
+			$account = $this->general->unique("account", "account", $data["account"]);
+			if ($this->general->update("account", $account->id, $data)){
 				$type = "success";
-				$msg = $msg = $this->lang->line("s_change_password");
-			}else $msg = $this->lang->line("error_internal");
-		}else $msg = $this->lang->line("error_occurred");
+				$msg = "Contraseña de usuario [".$data["account"]."] ha ido actualizada.";
+				
+				$this->utility_lib->add_log("Actualizar contraseña de usuario ".$data["account"]);
+			}
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);

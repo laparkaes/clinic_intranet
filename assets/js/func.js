@@ -17,7 +17,7 @@ function swal(type, msg){
 		title: swal_lang[type],
 		icon: type,
 		html: msg,
-		confirmButtonText: swal_lang[confirm],
+		confirmButtonText: swal_lang["confirm"],
 	});
 }
 
@@ -26,7 +26,7 @@ function swal_redirection(type, msg, move_to){
 		title: swal_lang[type],
 		icon: type,
 		html: msg,
-		confirmButtonText: swal_lang[confirm],
+		confirmButtonText: swal_lang["confirm"],
 	}).then((result) => {
 		if (result.isConfirmed) if (type == "success") location.href = move_to;
 	});

@@ -441,25 +441,6 @@ class My_val{
 		return $res;
 	}
 	
-	public function login($msgs, $prefix, $data){
-		$account = $this->CI->general->filter("account", ["email" => $data["email"], "is_valid" => true]);
-		
-		if ($account){
-			$account = $account[0];
-			if ($data["email"]){
-				if (!filter_var($data["email"], FILTER_VALIDATE_EMAIL))
-					$msgs = $this->set_msg($msgs, $prefix."email_msg", "error", "e_enter_email_format");
-			}else $msgs = $this->set_msg($msgs, $prefix."email_msg", "error", "e_email_format");	
-			
-			if ($data["password"]){
-				if (!password_verify($data["password"], $account->password))
-					$msgs = $this->set_msg($msgs, $prefix."pass_msg", "error", "e_password_wrong");
-			}else $msgs = $this->set_msg($msgs, $prefix."pass_msg", "error", "e_required_field");
-		}else $msgs = $this->set_msg($msgs, $prefix."email_msg", "error", "e_account_no_exists");
-		
-		return $msgs;
-	}
-	
 	public function change_password($msgs, $prefix, $data){
 		if ($data["password_actual"]){
 			if (strlen($data["password_actual"]) >= 6){

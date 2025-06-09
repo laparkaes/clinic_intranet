@@ -45,8 +45,8 @@
 										</div>
 										<div class="col-12">
 											<label class="form-label">Contraseña nueva</label>
-											<input type="password" class="form-control" name="password_new">
-											<div class="sys_msg" id="pw_new_msg"></div>
+											<input type="password" class="form-control" name="password">
+											<div class="sys_msg" id="pw_password_msg"></div>
 										</div>
 										<div class="col-12">
 											<label class="form-label">Confirmación</label>
@@ -78,7 +78,7 @@
 		$("#form_reset_password").submit(function(e) {
 			e.preventDefault();
 			$("#form_reset_password .sys_msg").html("");
-			ajax_form_warning(this, "auth/reset_password_process", "Desea reestablecer la contraseña?").done(function(res) {
+			ajax_form(this, "auth/reset_password_process").done(function(res) {
 				set_msg(res.msgs);
 				if (res.type == "success") swal_redirection(res.type, res.msg, $("#base_url").val() + "auth");
 			});
