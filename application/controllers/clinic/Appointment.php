@@ -11,10 +11,9 @@ class Appointment extends CI_Controller {
 		$this->load->model('general_model','general');
 		$this->nav_menu = ["clinic", "appointment"];
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
-		$this->path = "clinic/appointment/";
 	}
 	
-	public function index(){
+	public function index(){//appointment list
 		if (!$this->session->userdata('logged_in')) redirect('/');
 		if (!$this->utility_lib->check_access("appointment", "index")) redirect("/errors/no_permission");
 		
@@ -79,7 +78,50 @@ class Appointment extends CI_Controller {
 			"appointments" => $appointments,
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"title" => $this->lang->line('appointments'),
-			"main" => $this->path."list",
+			"main" => "clinic/appointment/list",
+		];
+		
+		$this->load->view('layout', $data);
+	}
+	
+	public function add(){
+		/*
+		Updated: 2025 0622
+		Notes
+		- 2025 0622: Created as a page for remove tab actions
+		*/
+		
+		$enabled_id = $this->general->status("enabled")->id;
+		
+		//load specialties
+		$aux_f = ["status_id" => $enabled_id];
+		$specialties = $this->general->all("specialty", "name", "asc");
+		foreach($specialties as $s){
+			$aux_f["specialty_id"] = $s->id;
+			$s->doctor_qty = $this->general->counter("doctor", $aux_f);
+		}
+		unset($aux_f["specialty_id"]);
+		
+		//load doctors
+		$aux_f = ["status_id" => $enabled_id];
+		$doctors = $this->general->filter("doctor", $aux_f);
+		foreach($doctors as $d){
+			if (!$this->general->id("person", $d->person_id)) echo $d->person_id."<br/>";
+			$d->name = $this->general->id("person", $d->person_id)->name;
+		}
+		
+		//sort by name
+		usort($doctors, function($a, $b) {
+			return strcmp(strtoupper($a->name), strtoupper($b->name));
+		});
+		
+		$data = [
+			"specialties"	=> $specialties,
+			"doctors"		=> $doctors,
+			"mins"			=> ["00", "10", "20", "30", "40", "50"],
+			"doc_types"		=> $this->general->all("doc_type", "id", "asc"),
+			"title" 		=> $this->lang->line('appointments'),
+			"main" 			=> "clinic/appointment/add",
 		];
 		
 		$this->load->view('layout', $data);
@@ -366,7 +408,7 @@ class Appointment extends CI_Controller {
 			"physical_therapies" => $this->general->all("physical_therapy", "name", "asc"),
 			"medicines" => $this->general->all("medicine", "name", "asc"),
 			"title" => "Consulta",
-			"main" => $this->path."detail",
+			"main" => "clinic/appointment/detail",
 		);
 		
 		$this->load->view('layout', $data);

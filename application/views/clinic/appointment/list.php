@@ -1,20 +1,24 @@
 <div class="d-flex justify-content-between align-items-start">
 	<div class="pagetitle">
-		<h1><?= $title ?></h1>
+		<h1>Consultas</h1>
 		<nav>
 			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="<?= base_url() ?>"><?= $this->lang->line('w_home') ?></a></li>
-				<li class="breadcrumb-item active"><?= $title ?></li>
+				<li class="breadcrumb-item"><a href="<?= base_url() ?>">Inicio</a></li>
+				<li class="breadcrumb-item">Consultas</li>
+				<li class="breadcrumb-item active">Lista</li>
 			</ol>
 		</nav>
 	</div>
 	<div class="btn-group mb-3">
-		<button type="button" class="btn btn-primary control_bl" id="btn_list" value="bl_list">
-			<i class="bi bi-card-list"></i>
-		</button>
+		<a class="btn btn-primary" href="<?= base_url() ?>clinic/appointment">
+			Lista
+		</a>
 		<button type="button" class="btn btn-outline-primary control_bl" value="bl_add">
-			<i class="bi bi-plus-lg"></i>
+			Búsqueda
 		</button>
+		<a class="btn btn-outline-primary" href="<?= base_url() ?>clinic/appointment/add">
+			Agregar Consulta
+		</a>
 	</div>
 </div>
 <div class="row">
