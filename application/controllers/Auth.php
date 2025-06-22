@@ -50,17 +50,25 @@ class Auth extends CI_Controller {
 			$access = $this->general->filter("account_access", ["account_id" => $account[0]->id]);
 			foreach($access as $item) $modules[] = $this->general->unique("access", "id", $item->access_id)->code;
 			
-			unset($account[0]->password);
 			
-			$session_data = [
-				"account" => $account[0],
-				"modules" => $modules,
-				"logged_in" => true,
-			];
+		}
+		/*
+		if (!$msgs){
+			
+			$session_data = array(
+				"aid" => $account->id,
+				"pid" => $person->id,
+				"name" => $person->name,
+				"role" => $this->general->id("role", $account->role_id),
+				"logged_in" => true
+			);
 			$this->session->set_userdata($session_data);
 			
 			$type = "success";
-		}
+			if ($data["password"] === $person->doc_number) $move_to = base_url()."auth/change_password";
+			else $move_to = base_url()."dashboard";
+		}else $msg = $this->lang->line("error_occurred");
+		*/
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs]);
