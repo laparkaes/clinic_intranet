@@ -119,7 +119,8 @@ class Report extends CI_Controller {
 			case 3: $sheet = $this->set_sheet_appointmet($data); break;
 			case 4: $sheet = $this->set_sheet_surgery($data); break;
 			case 5: $sheet = $this->set_sheet_product($data); break;
-			case 6: $sheet = $this->set_sheet_sale2($data); break;
+			//case 6: $sheet = $this->set_sheet_sale2($data); break;
+			case 6: $sheet = $this->set_sheet_sale($data); break;
 			case 7: $sheet = $this->set_sheet_voucher($data); break;
 			case 8: $sheet = $this->set_sheet_log($data); break;
 			case 9: $sheet = $this->set_sheet_account($data); break;
@@ -492,7 +493,7 @@ class Report extends CI_Controller {
 		return $spreadsheet;
 	}
 
-	private function set_sheet_sale2($data){
+	private function set_sheet_sale2($data){//no usar este codigo
 		$main_query = $this->customQuery->custom_report_sale($data["from"], $data["to"]);
 		// aqui deberia ir tu query principal
 		// echo "<pre>";
@@ -569,6 +570,132 @@ class Report extends CI_Controller {
 	}
 	
 	private function set_sheet_sale($data){
+		//$data = ["from" => "2025-01-01", "to" => "2025-08-01"];
+		
+		$type_arr = [];
+		$type = $this->general->all("sale_type");
+		foreach($type as $item) $type_arr[$item->id] = $item->description;
+		
+		$status_arr = [];
+		$status = $this->general->all("status");
+		foreach($status as $item) $status_arr[$item->id] = $this->lang->line($item->code);
+		
+		$currency_arr = [];
+		$currency = $this->general->all("currency");
+		foreach($currency as $item) $currency_arr[$item->id] = $item->description;
+		
+		$product_arr = [];
+		$product = $this->general->all("product");
+		foreach($product as $item) $product_arr[$item->id] = $item->description;
+		
+		$filter = [
+			"registed_at >=" => $data["from"],
+			"registed_at <" => date("Y-m-d", strtotime("+1 day", strtotime($data["to"])))
+		];
+		
+		//set people array
+		$person_ids = [];
+		$client_ids = $this->general->only("sale", "client_id", $filter);
+		foreach($client_ids as $item) $person_ids[] = $item->client_id;
+		if (!$person_ids) $person_ids = [-1];
+		
+		$people_arr = [];
+		$people = $this->general->filter("person", null, null, [["field" => "id", "values" => $person_ids]]);
+		foreach($people as $item) $people_arr[$item->id] = $item->name;
+		
+		$headers = [
+			"# Venta",
+			"Fecha",
+			"YYYY",
+			"MM",
+			"DD",
+			"Estado",
+			"Tipo",
+			"Cliente",
+			"Item",
+			"Opcion",
+			"Moneda",
+			"P/U",
+			"Descuento",
+			"Cantidad",
+			"Total",
+			"Op. gravada",
+			"IGV",
+		]; //print_R($headers); echo "<br/><br/>";
+		
+		$rows = [];
+		$rows[] = $headers;
+		
+		$sales = $this->general->filter("sale", $filter, null, null, "registed_at", "desc");
+		foreach($sales as $item){
+			$curr = $currency_arr[$item->currency_id];
+			$client = $item->client_id ? $this->general->id("person", $item->client_id)->name : null;
+		
+			$products = $this->general->filter("sale_product", ["sale_id" => $item->id]);
+			if ($products){
+				foreach($products as $p){
+					
+					$pr = $this->general->id("product", $p->product_id);
+					$op = $this->general->id("product_option", $p->option_id);
+					
+					$total = ($p->price - $p->discount) * $p->qty;
+					$amount = round($total / 1.18, 2);
+					$igv = $total - $amount;
+					
+					$rows[] = [
+						$item->id, 
+						$item->registed_at, 
+						date("Y", strtotime($item->registed_at)), 
+						date("m", strtotime($item->registed_at)), 
+						date("d", strtotime($item->registed_at)), 
+						$status_arr[$item->status_id], 
+						$type_arr[$item->sale_type_id],
+						$client,
+						$pr->code." / ".$pr->description,
+						$op ? $op->description : "",
+						$curr,
+						$p->price,
+						$p->discount,
+						$p->qty,
+						$total,
+						$amount,
+						$igv,
+					];
+					
+					/*
+					print_r($row); echo "<br/>";echo "<br/>";
+					
+					print_r($item); echo "<br/>";
+					print_r($p); echo "<br/>";
+					print_r($pr); echo "<br/>";
+					print_r($op); echo "<br/>";
+					*/
+				}
+			}
+		}
+		
+		$spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+		
+		$sheet = $this->set_report_header($sheet, range('A', 'Z'), $headers);//report general information setting
+		
+		foreach($rows as $r => $row){
+			foreach ($row as $c => $val){
+				$sheet->setCellValueByColumnAndRow($c + 1, $r + 1, $val);
+			}
+		}
+		
+		$style_arr = [
+			'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFF']],
+			'alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER],
+			'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'color' => ['argb' => '1a8d5f']]
+		];
+		$sheet->getStyle(1)->applyFromArray($style_arr);
+		
+		return $spreadsheet;
+	}
+	
+	private function set_sheet_sale_backup($data){//no usar
 		$type_arr = [];
 		$type = $this->general->all("sale_type");
 		foreach($type as $item) $type_arr[$item->id] = $item->description;
@@ -861,7 +988,6 @@ class Report extends CI_Controller {
 		
 		return $spreadsheet;
 	}
-
 
 	private function set_consolidado_ventas($data){
 		$main_query = $this->customQuery->custom_report_consolidated_sale($data["from"], $data["to"]);

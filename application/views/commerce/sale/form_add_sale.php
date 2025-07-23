@@ -20,6 +20,7 @@ $sale_types = $this->general->all("sale_type", "sunat_serie", "asc");
 						<tr>
 							<th>#</th>
 							<th><?= $this->lang->line('w_item') ?></th>
+							<th>Opcion</th>
 							<th><?= $this->lang->line('w_qty') ?></th>
 							<th><?= $this->lang->line('w_unit_price_short') ?></th>
 							<th><?= $this->lang->line('w_subtotal') ?></th>
@@ -161,7 +162,7 @@ $sale_types = $this->general->all("sale_type", "sunat_serie", "asc");
 	<form class="row g-3 no_enter" id="form_set_product_detail">
 		<div class="col-md-12">
 			<label class="form-label"><?= $this->lang->line('w_product') ?></label>
-			<input type="text" class="form-control" id="product">
+			<input type="text" class="form-control" id="product" readonly>
 			<input type="text" class="form-control d-none" id="product_id" name="product_id">
 		</div>
 		<div class="col-md-3">
@@ -382,7 +383,8 @@ document.addEventListener("DOMContentLoaded", () => {
 	$("#form_set_product_detail").submit(function(e) {
 		e.preventDefault();
 		var data = form_to_object("form_set_product_detail");
-		
+		console.log(data);
+		console.log(selected_product);
 		//check stock
 		if (selected_product.type == "Producto"){
 			if (data.option_id == ""){
@@ -392,8 +394,10 @@ document.addEventListener("DOMContentLoaded", () => {
 				var stock_ok = false;
 				$.each(selected_product.options, function(index, value){
 					if (value.id == data.option_id) 
-						if (parseInt(value.stock) >= parseInt(data.qty)) 
+						if (parseInt(value.stock) >= parseInt(data.qty)){
 							stock_ok = true;
+							data.option_description = value.description
+						}
 				});
 				
 				if (!stock_ok){
@@ -404,7 +408,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 		
 		if ($("#op_currency").val() == selected_product.currency){
-			$("#tb_product_list").append('<tr id="row_' + row_num + '"><td class="num"></td><td>' + selected_product.description + '</td><td>' + data.qty + '</td><td>' + selected_product.currency + ' ' + nf(data.price - data.discount) + '</td><td>' + selected_product.currency + ' ' + nf((data.price - data.discount) * data.qty) + '</td><td class="text-end"><button type="button" class="btn btn-danger btn-sm" id="btn_remove_product_' + row_num + '" value="' + row_num + '"><i class="bi bi-trash"></i></button><textarea class="prod_data d-none" name="sl_pr[' + row_num + ']">' + JSON.stringify(data) + '</textarea></td></tr>');
+			$("#tb_product_list").append('<tr id="row_' + row_num + '"><td class="num"></td><td>' + selected_product.description + '</td><td>' + data.option_description + '</td><td>' + data.qty + '</td><td>' + selected_product.currency + ' ' + nf(data.price - data.discount) + '</td><td>' + selected_product.currency + ' ' + nf((data.price - data.discount) * data.qty) + '</td><td class="text-end"><button type="button" class="btn btn-danger btn-sm" id="btn_remove_product_' + row_num + '" value="' + row_num + '"><i class="bi bi-trash"></i></button><textarea class="prod_data d-none" name="sl_pr[' + row_num + ']">' + JSON.stringify(data) + '</textarea></td></tr>');
 			
 			$("#btn_remove_product_" + row_num).click(function() {
 				$("#row_" + $(this).val()).remove();

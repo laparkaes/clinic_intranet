@@ -139,6 +139,8 @@ class Sale extends CI_Controller {
 					$sale_id = $this->general->insert("sale", $sale_data);
 					$products = $res["products"];
 					foreach($products as $item){
+						unset($item->option_description);
+						
 						$item->sale_id = $sale_id;
 						$this->general->insert("sale_product", $item);
 						$total += $item->qty * ($item->price - $item->discount);
