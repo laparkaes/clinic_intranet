@@ -655,7 +655,7 @@ class Report extends CI_Controller {
 						$status_arr[$item->status_id], 
 						$type_arr[$item->sale_type_id],
 						$client,
-						$pr->code." / ".$pr->description,
+						$pr->description." (".$pr->code.")",
 						$op ? $op->description : "",
 						$payment_method,
 						$curr,
