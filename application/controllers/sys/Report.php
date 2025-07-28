@@ -614,6 +614,7 @@ class Report extends CI_Controller {
 			"Cliente",
 			"Item",
 			"Opcion",
+			"Metodo de Pago",
 			"Moneda",
 			"P/U",
 			"Descuento",
@@ -630,6 +631,7 @@ class Report extends CI_Controller {
 		foreach($sales as $item){
 			$curr = $currency_arr[$item->currency_id];
 			$client = $item->client_id ? $this->general->id("person", $item->client_id)->name : null;
+			$payment_method = $this->general->id("payment_method", $item->payment_method_id)->description : null;
 		
 			$products = $this->general->filter("sale_product", ["sale_id" => $item->id]);
 			if ($products){
@@ -653,6 +655,7 @@ class Report extends CI_Controller {
 						$client,
 						$pr->code." / ".$pr->description,
 						$op ? $op->description : "",
+						$payment_method,
 						$curr,
 						$p->price,
 						$p->discount,
