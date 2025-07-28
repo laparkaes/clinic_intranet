@@ -631,7 +631,9 @@ class Report extends CI_Controller {
 		foreach($sales as $item){
 			$curr = $currency_arr[$item->currency_id];
 			$client = $item->client_id ? $this->general->id("person", $item->client_id)->name : null;
-			$payment_method = $item->payment_method_id ? $this->general->id("payment_method", $item->payment_method_id)->description : null;
+			
+			$payment = $this->general->id("payment", $item->sales_id);
+			$payment_method = $payment ? $this->general->id("payment_method", $payment->payment_method_id)->description : null;
 		
 			$products = $this->general->filter("sale_product", ["sale_id" => $item->id]);
 			if ($products){
