@@ -632,7 +632,7 @@ class Report extends CI_Controller {
 			$curr = $currency_arr[$item->currency_id];
 			$client = $item->client_id ? $this->general->id("person", $item->client_id)->name : null;
 			
-			$payment = $this->general->id("payment", $item->sales_id);
+			$payment = $this->general->id("payment", $item->id);
 			$payment_method = $payment ? $this->general->id("payment_method", $payment->payment_method_id)->description : null;
 		
 			$products = $this->general->filter("sale_product", ["sale_id" => $item->id]);
