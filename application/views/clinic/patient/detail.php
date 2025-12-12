@@ -113,12 +113,12 @@
 							</div>
 							<div class="col-md-6">
 								<label class="form-label"><?= $this->lang->line('w_name') ?></label>
-								<input type="text" class="form-control" id="pu_name" name="name" value="<?= $person->name ?>" readonly>
+								<input type="text" class="form-control" id="pu_name" name="name" value="<?= $person->name ?>">
 								<div class="sys_msg" id="pu_name_msg"></div>
 							</div>
 							<div class="col-md-4">
 								<label class="form-label"><?= $this->lang->line('w_tel') ?></label>
-								<input type="text" class="form-control" id="pu_tel" name="tel" value="<?= $person->tel ?>" readonly>
+								<input type="text" class="form-control" id="pu_tel" name="tel" value="<?= $person->tel ?>">
 								<div class="sys_msg" id="pu_tel_msg"></div>
 							</div>
 							<div class="col-md-4">
@@ -130,7 +130,7 @@
 								}else $b = $d = $m = $y = null;
 								?>
 								<label class="form-label"><?= $this->lang->line('w_birthday') ?></label>
-								<input type="hidden" id="p_birthday" name="birthday" value="<?= $b ?>" readonly>
+								<input type="hidden" id="p_birthday" name="birthday" value="<?= $b ?>">
 								<div class="input-group">
 									<select class="form-select" id="p_birthday_d" disabled>
 										<option value="" selected=""><?= $this->lang->line('date_d') ?></option>

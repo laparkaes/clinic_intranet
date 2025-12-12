@@ -1,6 +1,6 @@
 ALTER TABLE `account` ADD `username` VARCHAR(20) NULL AFTER `person_id`, ADD `name` VARCHAR(30) NULL AFTER `username`; 
 
-ALTER TABLE `account` CHANGE `password` `password` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `username` 
+ALTER TABLE `account` CHANGE `password` `password` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `username`;
 
 UPDATE `account` SET `username` = 'laparkaes' WHERE `account`.`id` = 1; 
 UPDATE `account` SET `name` = 'Georgio Park' WHERE `account`.`id` = 1; 
