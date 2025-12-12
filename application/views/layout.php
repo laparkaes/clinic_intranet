@@ -73,28 +73,28 @@
 				</a>
 			</li>
 			
-			<!-- Clinic Menus -->
-			<li class="nav-heading pt-2">Clínica</li>
+			<!-- Attention Menus -->
+			<li class="nav-heading pt-2">Atención</li>
 			<li class="nav-item">
-				<a class="nav-link <?= ($this->nav_menu === "appointment") ? "" : "collapsed" ?>" href="<?= base_url() ?>clinic/appointment">
+				<a class="nav-link <?= ($this->nav_menu === "appointment") ? "" : "collapsed" ?>" href="<?= base_url() ?>attention/appointment">
 					<i class="bi bi-capsule"></i>
 					<span>Citas</span>
 				</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link <?= ($this->nav_menu === "surgery") ? "" : "collapsed" ?>" href="<?= base_url() ?>clinic/surgery">
+				<a class="nav-link <?= ($this->nav_menu === "surgery") ? "" : "collapsed" ?>" href="<?= base_url() ?>attention/surgery">
 					<i class="bi bi-heart-pulse"></i>
 					<span>Cirugías</span>
 				</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link <?= ($this->nav_menu === "patient") ? "" : "collapsed" ?>" href="<?= base_url() ?>clinic/patient">
+				<a class="nav-link <?= ($this->nav_menu === "patient") ? "" : "collapsed" ?>" href="<?= base_url() ?>attention/patient">
 					<i class="bi bi-person-vcard"></i>
 					<span>Pacientes</span>
 				</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link <?= ($this->nav_menu === "doctor") ? "" : "collapsed" ?>" href="<?= base_url() ?>clinic/doctor">
+				<a class="nav-link <?= ($this->nav_menu === "doctor") ? "" : "collapsed" ?>" href="<?= base_url() ?>attention/doctor">
 					<i class="bi bi-person-plus"></i>
 					<span>Médicos</span>
 				</a>

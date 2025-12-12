@@ -34,7 +34,12 @@ class Georgio_model extends CI_Model{
 		
 		if ($l){
 			$this->db->group_start();
-			foreach($l as $item) $this->db->or_like($item["field"], $item["values"]);
+			 foreach($l as $item) {
+				// values 배열이 여러 값일 경우 각 값을 각각 처리
+				foreach($item["values"] as $value) {
+					$this->db->like($item["field"], trim($value));
+				}
+			}
 			$this->db->group_end();
 		}
 		
@@ -100,7 +105,18 @@ class Georgio_model extends CI_Model{
 	
 	function counter($tablename, $w = null, $l = null, $w_in = null, $group_by = null){
 		if ($w){ $this->db->group_start(); $this->db->where($w); $this->db->group_end(); }
-		if ($l){ $this->db->group_start(); $this->db->or_like($l); $this->db->group_end(); }
+		
+		if ($l){
+			$this->db->group_start();
+			 foreach($l as $item) {
+				// values 배열이 여러 값일 경우 각 값을 각각 처리
+				foreach($item["values"] as $value) {
+					$this->db->like($item["field"], trim($value));
+				}
+			}
+			$this->db->group_end();
+		}
+		
 		if ($w_in){
 			$this->db->group_start();
 			foreach($w_in as $item) $this->db->where_in($item["field"], $item["values"]);
