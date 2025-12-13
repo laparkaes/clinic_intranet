@@ -4,16 +4,16 @@
 			<i class="bi bi-search me-1"></i> Buscar
 		</button> 
 		<button type="button" class="btn btn-success"><i class="bi bi-file-earmark-spreadsheet me-1"></i> Descargar</button>
-		<button type="button" class="btn btn-secondary"><i class="bi bi-plus-square me-1"></i> Registrar</button>
+		<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#registration_modal">
+			<i class="bi bi-plus-square me-1"></i> Registrar
+		</button>
 	</div>
 	<div>
 		<?php if ($f_url["name"]){ $aux = $f_url; unset($aux["name"]); ?>
 		<a href="<?= base_url() ?>attention/patient?<?= http_build_query($aux) ?>" class="badge bg-info text-dark me-1"><?= $f_url["name"] ?> | X</a>
-		<?php } ?>
-		<?php if ($f_url["doc_number"]){ $aux = $f_url; unset($aux["doc_number"]); ?>
+		<?php } if ($f_url["doc_number"]){ $aux = $f_url; unset($aux["doc_number"]); ?>
 		<a href="<?= base_url() ?>attention/patient?<?= http_build_query($aux) ?>" class="badge bg-info text-dark me-1"><?= $f_url["doc_number"] ?> | X</a>
-		<?php } ?>
-		<?php if ($f_url["tel"]){ $aux = $f_url; unset($aux["tel"]); ?>
+		<?php } if ($f_url["tel"]){ $aux = $f_url; unset($aux["tel"]); ?>
 		<a href="<?= base_url() ?>attention/patient?<?= http_build_query($aux) ?>" class="badge bg-info text-dark me-1"><?= $f_url["tel"] ?> | X</a>
 		<?php } ?>
 	</div>
@@ -96,81 +96,18 @@
 	</div>
 </div>
 
-
-
-
-<div class="d-flex justify-content-between align-items-start">
-	<div class="pagetitle">
-		<h1><?= $title ?></h1>
-		<nav>
-			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="<?= base_url() ?>">Inicio</a></li>
-				<li class="breadcrumb-item active"><?= $title ?></li>
-			</ol>
-		</nav>
-	</div>
-	<div class="btn-group mb-3">
-		<button type="button" class="btn btn-primary control_bl" id="btn_list" value="bl_list">
-			<i class="bi bi-card-list"></i>
-		</button>
-		<button type="button" class="btn btn-outline-primary control_bl" value="bl_add">
-			<i class="bi bi-plus-lg"></i>
-		</button>
-	</div>
-</div>
-
-
-<div class="row mt-3">
-	<div class="col">
-		<div class="card bl_content" id="bl_list">
-			<div class="card-body">
-				<h5 class="card-title"><?= $this->lang->line('w_list') ?></h5>
-				<?php if ($patients){ ?>
-				<div class="table-responsive">
-					<table class="table table-responsive-md">
-						<thead>
-							<tr>
-								<th><strong>#</strong></th>
-								<th><strong><?= $this->lang->line('w_document') ?></strong></th>
-								<th><strong><?= $this->lang->line('w_name') ?></strong></th>
-								<th><strong><?= $this->lang->line('w_tel') ?></strong></th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php foreach($patients as $i => $item){ ?>
-							<tr>
-								<td><strong><?= number_format(($f_url["page"] - 1) * 25 + 1 + $i) ?></strong></td>
-								<td><?= $doc_types_arr[$item->doc_type_id]." ".$item->doc_number ?></td>
-								<td><?= $item->name ?></td>
-								<td><?= $item->tel ?></td>
-								<td class="text-right">
-									<a href="<?= base_url() ?>clinic/patient/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
-										<i class="bi bi-arrow-right"></i>
-									</a>
-								</td>
-							</tr>
-							<?php } ?>
-						</tbody>
-					</table>
-					<div class="btn-group" role="group" aria-label="paging">
-						<?php foreach($paging as $p){
-						$f_url["page"] = $p[0]; ?>
-						<a href="<?= base_url() ?>clinic/patient?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
-							<?= $p[1] ?>
-						</a>
-						<?php } ?>
-					</div>
-				</div>
-				<?php }else{ ?>
-				<h5 class="text-danger mt-3"><?= $this->lang->line('t_no_patients') ?></h5>
-				<?php } ?>
+<div class="modal fade" id="registration_modal" tabindex="-1" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog">
+		<form class="modal-content" id="form_register">
+			<div class="modal-header">
+				<h5 class="modal-title">Registrar</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-		</div>
-		<div class="card bl_content d-none" id="bl_add">
-			<div class="card-body">
-				<h5 class="card-title"><?= $this->lang->line('w_patient_info') ?></h5>
-				<form class="row g-3" id="form_register">
+			<div class="modal-body">
+				<div class="row g-3">
+				
+				
+				
 					<div class="form-group col-md-3">
 						<label class="form-label"><?= $this->lang->line('w_document') ?></label>
 						<select class="form-select" id="pn_doc_type_id" name="doc_type_id">
@@ -256,6 +193,26 @@
 						<input type="text" class="form-control" name="address">
 						<div class="sys_msg" id="pn_address_msg"></div>
 					</div>
+				
+				
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				<button type="submit" class="btn btn-primary">Registrar</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+
+<div class="row mt-3">
+	<div class="col">
+		<div class="card bl_content" id="bl_list"></div>
+		<div class="card bl_content" id="bl_add">
+			<div class="card-body">
+				<h5 class="card-title"><?= $this->lang->line('w_patient_info') ?></h5>
+				<form class="row g-3">
 					<div class="form-group col-md-12 pt-3">
 						<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
 					</div>
