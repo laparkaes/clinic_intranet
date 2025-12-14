@@ -208,7 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (d != "" && m != "" && y != "") $("#p_birthday").val(y + "-" + m + "-" + d); else $("#p_birthday").val("");
 		
 		$("#form_register .sys_msg").html("");
-		ajax_form_warning(this, "attention/patient/registration", "¿Desea registrar nuevo paciente?").done(function(res) {
+		ajax_form_warning(this, "attention/patient/insert", "¿Desea registrar nuevo paciente?").done(function(res) {
 			set_msg(res.msgs);
 			swal_redirection(res.type, res.msg, res.move_to);
 		});

@@ -97,7 +97,6 @@ class Patient extends CI_Controller {
 	
 	public function detail($id){
 		if (!$this->session->userdata('logged_in')) redirect('/');
-		if (!$this->utility_lib->check_access("patient", "detail")) redirect("/errors/no_permission");
 		
 		$person = $this->gm->id("person", $id);
 		$person->doc_type = $this->gm->id("doc_type", $person->doc_type_id)->short;
@@ -184,7 +183,7 @@ class Patient extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	public function registration(){
+	public function insert(){//checked 20241213
 		//set default return values
 		$type = "error"; 
 		$msgs = []; 
@@ -199,39 +198,24 @@ class Patient extends CI_Controller {
 		if (!$data["doc_number"]) $msgs[] = ["dom_id" => "pn_doc_number_msg", "type" => "error", "msg" => "Campo requerido."];
 		if (!$data["name"]) $msgs[] = ["dom_id" => "pn_name_msg", "type" => "error", "msg" => "Campo requerido."];
 		if (!$data["tel"]) $msgs[] = ["dom_id" => "pn_tel_msg", "type" => "error", "msg" => "Campo requerido."];
+		if (!$data["birthday"]) $msgs[] = ["dom_id" => "pn_birthday_msg", "type" => "error", "msg" => "Campo requerido."];
 		
-		if ($data["doc_type_id"] and $data["doc_number"]){//if patient already registered
+		//if patient already registered
+		if ($data["doc_type_id"] and $data["doc_number"]){
 			$person = $this->gm->filter("person", ["doc_type_id" => $data["doc_type_id"], "doc_number" => $data["doc_number"]]);
 			if ($person) $msgs[] = ["dom_id" => "pn_doc_number_msg", "type" => "error", "msg" => "Paciente registrado."];
 		}
 		
-		print_r($data);
-		echo "<br/><br/>";
-		print_r($msgs);
+		//print_r($data); echo "<br/><br/>"; print_r($msgs); return;
 		
-		//
 		if (!$msgs){
-			//person data creation if does'nt exist
-			$people = $this->gm->filter("person", ["doc_type_id" => $data["doc_type_id"], "doc_number" => $data["doc_number"]], null, null, "registed_at", "desc");
-			if ($people){
-				$person = $people[0];
-				$this->gm->update("person", $person->id, $data);
-				$person_id = $person->id;
-				$this->utility_lib->add_log("person_update", $person->name);
-			}else{
-				$data["registed_at"] = date('Y-m-d H:i:s', time());
-				$person_id = $this->gm->insert("person", $data);
-				$this->utility_lib->add_log("person_register", $data["name"]);
-			}
+			$data["registed_at"] = date('Y-m-d H:i:s', time());
+			$person_id = $this->gm->insert("person", $data);
 			
-			if ($person_id){
-				$type = "success";
-				$move_to = base_url()."clinic/patient/detail/".$person_id;
-				$msg = $this->lang->line('s_register');
-			}else $msg = $this->lang->line('error_internal');
+			$type = "success";
+			$move_to = base_url()."attention/patient/detail/".$person_id;
+			$msg = "Paciente ha sido registrado.";
 		}else $msg = "Ocurrió un error. Revise los datos.";
-		
-		return;
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to]);
