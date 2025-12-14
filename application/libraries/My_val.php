@@ -15,21 +15,6 @@ class My_val{
 		return $msgs;
 	}
 	
-	public function person($msgs, $prefix, $data){
-		if (!$data["doc_type_id"]) $msgs = $this->set_msg($msgs, $prefix."doc_type_msg", "error", "e_required_field");
-		if (!$data["doc_number"]) $msgs = $this->set_msg($msgs, $prefix."doc_number_msg", "error", "e_required_field");
-		if (!$data["name"]) $msgs = $this->set_msg($msgs, $prefix."name_msg", "error", "e_required_field");
-		if (array_key_exists("tel", $data))
-			if (!$data["tel"]) $msgs = $this->set_msg($msgs, $prefix."tel_msg", "error", "e_required_field");
-		if (array_key_exists("email", $data))
-			if ($data["email"]) 
-				if (!filter_var($data["email"], FILTER_VALIDATE_EMAIL))
-					$msgs = $this->set_msg($msgs, $prefix."email_msg", "error", "e_email_format");
-		/* optionals: $p["birthday"], $p["sex"], $p["blood_type"], $p["address"] */
-		
-		return $msgs;
-	}
-	
 	public function doctor($msgs, $prefix, $data, $dup = true){
 		if (!$data["specialty_id"]) $msgs = $this->set_msg($msgs, $prefix."specialty_msg", "error", "e_required_field");
 		if (!$data["license"]) $msgs = $this->set_msg($msgs, $prefix."license_msg", "error", "e_required_field");

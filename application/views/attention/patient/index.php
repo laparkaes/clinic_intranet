@@ -105,11 +105,8 @@
 			</div>
 			<div class="modal-body">
 				<div class="row g-3">
-				
-				
-				
-					<div class="form-group col-md-3">
-						<label class="form-label"><?= $this->lang->line('w_document') ?></label>
+					<div class="form-group col-md-6">
+						<label class="form-label">Documento de Identidad</label>
 						<select class="form-select" id="pn_doc_type_id" name="doc_type_id">
 							<?php foreach($doc_types as $d){ if ($d->sunat_code){ ?>
 							<option value="<?= $d->id ?>"><?= $d->description ?></option>
@@ -117,45 +114,50 @@
 						</select>
 						<div class="sys_msg" id="pn_doc_type_msg"></div>
 					</div>
-					<div class="form-group col-md-3">
+					<div class="form-group col-md-6">
 						<label class="form-label d-md-block d-none">&nbsp;</label>
-						<div class="input-group">
-							<input type="text" class="form-control" id="pn_doc_number" name="doc_number" placeholder="<?= $this->lang->line('w_number') ?>">
-							<button class="btn btn-primary" type="button" id="btn_search_person_pn">
-								<i class="bi bi-search"></i>
-							</button>
-						</div>
+						<input type="text" class="form-control" id="pn_doc_number" name="doc_number" placeholder="Número">
 						<div class="sys_msg" id="pn_doc_number_msg"></div>
 					</div>
-					<div class="form-group col-md-6">
-						<label class="form-label"><?= $this->lang->line('w_name') ?></label>
+					<div class="form-group col-md-12">
+						<label class="form-label">Nombre</label>
 						<input type="text" class="form-control" id="pn_name" name="name">
 						<div class="sys_msg" id="pn_name_msg"></div>
 					</div>
 					<div class="form-group col-md-4">
-						<label class="form-label"><?= $this->lang->line('w_tel') ?></label>
+						<label class="form-label">Teléfono</label>
 						<input type="text" class="form-control" id="pn_tel" name="tel">
 						<div class="sys_msg" id="pn_tel_msg"></div>
 					</div>
-					<div class="form-group col-md-4">
-						<label class="form-label"><?= $this->lang->line('w_birthday') ?></label>
+					<div class="form-group col-md-8">
+						<label class="form-label">Email</label>
+						<input type="email" class="form-control" name="email" placeholder="email@example.com">
+						<div class="sys_msg" id="pn_email_msg"></div>
+					</div>
+					<div class="form-group col-md-12">
+						<label class="form-label">Dirección</label>
+						<input type="text" class="form-control" name="address">
+						<div class="sys_msg" id="pn_address_msg"></div>
+					</div>
+					<div class="form-group col-md-12">
+						<label class="form-label">Fecha de Nacimiento</label>
 						<input type="hidden" id="p_birthday" name="birthday" readonly="">
 						<div class="input-group">
 							<select class="form-select" id="p_birthday_d">
-								<option value="" selected=""><?= $this->lang->line('date_d') ?></option>
+								<option value="" selected="">Día</option>
 								<?php for($i = 1; $i <= 31; $i++){ ?>
 								<option value="<?= $i ?>"><?= $i ?></option>
 								<?php } ?>
 							</select>
 							<select class="form-select" id="p_birthday_m">
-								<option value="" selected=""><?= $this->lang->line('date_m') ?></option>
+								<option value="" selected="">Mes</option>
 								<?php for($i = 1; $i <= 12; $i++){ ?>
 								<option value="<?= $i ?>"><?= $i ?></option>
 								<?php } ?>
 							</select>
 							<?php $now = date('Y'); ?>
 							<select class="form-select" id="p_birthday_y">
-								<option value="" selected=""><?= $this->lang->line('date_y') ?></option>
+								<option value="" selected="">Año</option>
 								<?php for($i = 0; $i <= 130; $i++){ ?>
 								<option value="<?= $now - $i ?>"><?= $now - $i ?></option>
 								<?php } ?>
@@ -163,38 +165,26 @@
 						</div>
 						<div class="sys_msg" id="pn_birthday_msg"></div>
 					</div>
-					<div class="form-group col-md-2">
-						<label class="form-label"><?= $this->lang->line('w_sex') ?></label>
+					<div class="form-group col-md-6">
+						<label class="form-label">Sexo</label>
 						<select class="form-select" name="sex_id">
 							<option value="" selected="">--</option>
-							<?php foreach($sex_ops as $item){ ?>
+							<?php foreach($sex as $item){ ?>
 							<option value="<?= $item->id ?>"><?= $item->description ?></option>
 							<?php } ?>
 						</select>
 						<div class="sys_msg" id="pn_sex_msg"></div>
 					</div>
-					<div class="form-group col-md-2">
-						<label class="form-label"><?= $this->lang->line('w_blood_type') ?></label>
+					<div class="form-group col-md-6">
+						<label class="form-label">Grupo Sanguíneo</label>
 						<select class="form-select" name="blood_type_id">
 							<option value="" selected="">--</option>
-							<?php foreach($blood_type_ops as $item){ ?>
+							<?php foreach($blood_types as $item){ ?>
 							<option value="<?= $item->id ?>"><?= $item->description ?></option>
 							<?php } ?>
 						</select>
 						<div class="sys_msg" id="pn_blood_type_msg"></div>
 					</div>
-					<div class="form-group col-md-4">
-						<label class="form-label"><?= $this->lang->line('w_email') ?></label>
-						<input type="email" class="form-control" name="email" placeholder="email@example.com">
-						<div class="sys_msg" id="pn_email_msg"></div>
-					</div>
-					<div class="form-group col-md-8">
-						<label class="form-label"><?= $this->lang->line('w_address') ?></label>
-						<input type="text" class="form-control" name="address">
-						<div class="sys_msg" id="pn_address_msg"></div>
-					</div>
-				
-				
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -205,34 +195,8 @@
 	</div>
 </div>
 
-
-<div class="row mt-3">
-	<div class="col">
-		<div class="card bl_content" id="bl_list"></div>
-		<div class="card bl_content" id="bl_add">
-			<div class="card-body">
-				<h5 class="card-title"><?= $this->lang->line('w_patient_info') ?></h5>
-				<form class="row g-3">
-					<div class="form-group col-md-12 pt-3">
-						<button type="submit" class="btn btn-primary"><?= $this->lang->line('btn_register') ?></button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-	function reset_person(){
-		$("#pn_name").val("");
-		$("#pn_tel").val("");
-	}
-	
-	//general
-	$(".control_bl").click(function() {
-		control_bl(this);
-	});
-	
 	//register
 	$("#form_register").submit(function(e) {
 		e.preventDefault();
@@ -244,30 +208,10 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (d != "" && m != "" && y != "") $("#p_birthday").val(y + "-" + m + "-" + d); else $("#p_birthday").val("");
 		
 		$("#form_register .sys_msg").html("");
-		ajax_form_warning(this, "clinic/patient/register", "wm_patient_register").done(function(res) {
+		ajax_form_warning(this, "attention/patient/registration", "¿Desea registrar nuevo paciente?").done(function(res) {
 			set_msg(res.msgs);
 			swal_redirection(res.type, res.msg, res.move_to);
 		});
-	});
-	
-	$("#btn_search_person_pn").click(function() {
-		search_person_pn();
-		var data = {doc_type_id: $("#pn_doc_type_id").val(), doc_number: $("#pn_doc_number").val()};
-		ajax_simple(data, "ajax_f/search_person").done(function(res) {
-			swal(res.type, res.msg);
-			if (res.type == "success"){
-				$("#pn_name").val(res.person.name);
-				$("#pn_tel").val(res.person.tel);
-			}else reset_person();
-		});
-	});
-	
-	$("#pn_doc_type_id").change(function() {
-		reset_person();
-	});
-	
-	$("#pn_doc_number").keyup(function() {
-		reset_person();
 	});
 });
 </script>
