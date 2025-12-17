@@ -177,7 +177,7 @@ class Patient extends CI_Controller {
 			"credit_histories" => [],//$credit_histories,
 			"patient_files" => $this->gm->filter("patient_file", ["patient_id" => $person->id, "active" => true], null, null, "registed_at", "desc"),
 			"title" => $this->lang->line('patient'),
-			"main" => "clinic/patient/detail",
+			"main" => "attention/patient/detail",
 		];
 		
 		$this->load->view('layout', $data);

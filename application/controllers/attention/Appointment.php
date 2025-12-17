@@ -415,45 +415,52 @@ class Appointment extends CI_Controller {
 	}
 	
 	public function register(){
-		$type = "error"; $msgs = []; $msg = null; $move_to = null;
+		$type = "error"; 
+		$msgs = []; 
+		$msg = null; 
+		$move_to = null;
 		 	
-		if ($this->utility_lib->check_access("appointment", "register")){
-			$app = $this->input->post("app");
-			$sch = $this->input->post("sch");
-			$pt = $this->input->post("pt");
+		$is_free = $this->input->post("as_free");
+		$app = $this->input->post("app");
+		$sch = $this->input->post("sch");
+		$pt = $this->input->post("pt");
+		
+		print_r($app);
+		print_r($sch);
+		print_r($pt);
+		
+		return;
+		$this->load->library('my_val');
+		$msgs = $this->my_val->appointment($msgs, "aa_", $app, $sch, $pt);
+		
+		if (!$msgs){
+			$now = date('Y-m-d H:i:s', time());
+			$person = $this->general->filter("person", ["doc_type_id" => $pt["doc_type_id"], "doc_number" => $pt["doc_number"]]);
+			if ($person){
+				$person = $person[0];
+				$app["patient_id"] = $person->id;
+				$this->general->update("person", $person->id, $pt);
+				$this->utility_lib->add_log("person_update", $person->name);
+			}else{
+				$app["patient_id"] = $this->general->insert("person", $pt);
+				$person = $this->general->id("person", $app["patient_id"]);
+				$this->utility_lib->add_log("person_register", $person->name);
+			}
 			
-			$this->load->library('my_val');
-			$msgs = $this->my_val->appointment($msgs, "aa_", $app, $sch, $pt);
+			$app["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
+			$app["schedule_to"] = date("Y-m-d H:i:s", strtotime("+9 minutes", strtotime($app["schedule_from"])));
+			$app["status_id"] = ($is_free == null) ? $this->general->status("reserved")->id : $this->general->status("confirmed")->id;
+			$app["registed_at"] = $now;
 			
-			if (!$msgs){
-				$now = date('Y-m-d H:i:s', time());
-				$person = $this->general->filter("person", ["doc_type_id" => $pt["doc_type_id"], "doc_number" => $pt["doc_number"]]);
-				if ($person){
-					$person = $person[0];
-					$app["patient_id"] = $person->id;
-					$this->general->update("person", $person->id, $pt);
-					$this->utility_lib->add_log("person_update", $person->name);
-				}else{
-					$app["patient_id"] = $this->general->insert("person", $pt);
-					$person = $this->general->id("person", $app["patient_id"]);
-					$this->utility_lib->add_log("person_register", $person->name);
-				}
+			$appointment_id = $this->general->insert("appointment", $app);
+			if ($appointment_id){
+				$this->utility_lib->add_log("appointment_register", $pt["name"]);
 				
-				$app["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
-				$app["schedule_to"] = date("Y-m-d H:i:s", strtotime("+9 minutes", strtotime($app["schedule_from"])));
-				$app["status_id"] = ($this->input->post("as_free") == null) ? $this->general->status("reserved")->id : $this->general->status("confirmed")->id;
-				$app["registed_at"] = $now;
-				
-				$appointment_id = $this->general->insert("appointment", $app);
-				if ($appointment_id){
-					$this->utility_lib->add_log("appointment_register", $pt["name"]);
-					
-					$type = "success";
-					$move_to = base_url()."clinic/appointment/detail/".$appointment_id;
-					$msg = $this->lang->line('s_app_register');
-				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_occurred');
-		}else $msg = $this->lang->line('error_no_permission');
+				$type = "success";
+				$move_to = base_url()."clinic/appointment/detail/".$appointment_id;
+				$msg = $this->lang->line('s_app_register');
+			}else $msg = $this->lang->line('error_internal');
+		}else $msg = $this->lang->line('error_occurred');
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to]);
