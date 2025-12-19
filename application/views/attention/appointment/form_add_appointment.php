@@ -205,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	$("#app_register_form").submit(function(e) {
 		e.preventDefault();
 		$("#app_register_form .sys_msg").html("");
-		ajax_form_warning(this, "clinic/appointment/register", "wm_appointment_register").done(function(res) {
+		ajax_form_warning(this, "attention/appointment/register", "wm_appointment_register").done(function(res) {
 			set_msg(res.msgs);
 			swal_redirection(res.type, res.msg, res.move_to);
 		});

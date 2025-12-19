@@ -7,6 +7,7 @@ class Patient extends CI_Controller {
 		parent::__construct();
 		date_default_timezone_set('America/Lima');
 		
+		//need to be removed
 		$this->lang->load("patient", "spanish");
 		$this->lang->load("system", "spanish");
 		$this->load->model('general_model','general');

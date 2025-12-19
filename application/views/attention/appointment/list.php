@@ -10,13 +10,13 @@
 		</nav>
 	</div>
 	<div class="btn-group mb-3">
-		<a class="btn btn-primary" href="<?= base_url() ?>clinic/appointment">
+		<a class="btn btn-primary" href="<?= base_url() ?>attention/appointment">
 			Lista
 		</a>
-		<button type="button" class="btn btn-outline-primary control_bl" value="bl_add">
+		<!-- button type="button" class="btn btn-outline-primary control_bl" value="bl_add">
 			Búsqueda
-		</button>
-		<a class="btn btn-outline-primary" href="<?= base_url() ?>clinic/appointment/add">
+		</button -->
+		<a class="btn btn-outline-primary" href="<?= base_url() ?>attention/appointment/add">
 			Agregar Consulta
 		</a>
 	</div>
@@ -69,7 +69,7 @@
 								<td><?= $item->doctor ?></td>
 								<td><?= $item->patient ?></td>
 								<td class="text-end">
-									<a href="<?= base_url() ?>clinic/appointment/detail/<?= $item->id ?>" class="btn btn-success">
+									<a href="<?= base_url() ?>attention/appointment/detail/<?= $item->id ?>" class="btn btn-success">
 										<i class="bi bi-arrow-right"></i>
 									</a>
 								</td>
@@ -80,7 +80,7 @@
 					<div class="btn-group" role="group" aria-label="paging">
 						<?php foreach($paging as $p){
 						$f_url["page"] = $p[0]; ?>
-						<a href="<?= base_url() ?>clinic/appointment?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
+						<a href="<?= base_url() ?>attention/appointment?<?= http_build_query($f_url) ?>" class="btn btn-<?= $p[2] ?>">
 							<?= $p[1] ?>
 						</a>
 						<?php } ?>
@@ -92,7 +92,7 @@
 			</div>
 		</div>
 		<div class="card bl_content d-none" id="bl_add">
-			<?php $this->load->view("clinic/appointment/form_add_appointment", ["patient" => null, "doctor" => null]); ?>
+			<?php $this->load->view("attention/appointment/form_add_appointment", ["patient" => null, "doctor" => null]); ?>
 		</div>
 	</div>
 </div>

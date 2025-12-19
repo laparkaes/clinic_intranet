@@ -6,16 +6,19 @@ class Appointment extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		date_default_timezone_set('America/Lima');
+		
+		//need to be removed
 		$this->lang->load("appointment", "spanish");
 		$this->lang->load("system", "spanish");
 		$this->load->model('general_model','general');
-		$this->nav_menu = ["clinic", "appointment"];
-		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
+		
+		$this->load->model('georgio_model','gm');
+		$this->nav_menu = "appointment";
 	}
 	
 	public function index(){//appointment list
 		if (!$this->session->userdata('logged_in')) redirect('/');
-		if (!$this->utility_lib->check_access("appointment", "index")) redirect("/errors/no_permission");
+		//if (!$this->utility_lib->check_access("appointment", "index")) redirect("/errors/no_permission");
 		
 		$f_url = [
 			"page" => $this->input->get("page"),
@@ -51,7 +54,7 @@ class Appointment extends CI_Controller {
 			$f_w_in[] = ["field" => "id", "values" => $aux];
 		}else $f_url["diagnosis"] = null;
 		
-		if ($this->session->userdata('role')->name === "doctor") $f_w["doctor_id"] = $this->session->userdata('pid');
+		//if ($this->session->userdata('role')->name === "doctor") $f_w["doctor_id"] = $this->session->userdata('pid');
 		$appointments = $this->general->filter("appointment", $f_w, null, $f_w_in, "schedule_from", "desc", 25, 25*($f_url["page"]-1));
 		foreach($appointments as $item){
 			$item->patient = $this->general->id("person", $item->patient_id)->name;
@@ -78,7 +81,7 @@ class Appointment extends CI_Controller {
 			"appointments" => $appointments,
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"title" => $this->lang->line('appointments'),
-			"main" => "clinic/appointment/list",
+			"main" => "attention/appointment/list",
 		];
 		
 		$this->load->view('layout', $data);
@@ -121,7 +124,7 @@ class Appointment extends CI_Controller {
 			"mins"			=> ["00", "10", "20", "30", "40", "50"],
 			"doc_types"		=> $this->general->all("doc_type", "id", "asc"),
 			"title" 		=> $this->lang->line('appointments'),
-			"main" 			=> "clinic/appointment/add",
+			"main" 			=> "attention/appointment/add",
 		];
 		
 		$this->load->view('layout', $data);
@@ -250,10 +253,9 @@ class Appointment extends CI_Controller {
 	
 	public function detail($id){
 		if (!$this->session->userdata('logged_in')) redirect('/');
-		if (!$this->utility_lib->check_access("appointment", "detail")) redirect("/errors/no_permission");
 		
 		$appointment = $this->general->id("appointment", $id);
-		if (!$appointment) redirect("/clinic/appointment");
+		if (!$appointment) redirect("/attention/appointment");
 		
 		$appointment->status = $this->general->id("status", $appointment->status_id);
 		
@@ -279,13 +281,15 @@ class Appointment extends CI_Controller {
 		}
 		
 		//define posible operations by role
-		switch($this->session->userdata("role")->name){
+		/* switch($this->session->userdata("role")->name){
 			case "master": $operations = ["information", "triage", "attention"]; break;
 			case "admin": $operations = ["information", "triage", "attention"]; break;
 			case "doctor": $operations = ["attention"]; break;
 			case "nurse": $operations = ["triage"]; break;
 			default: $operations = ["information"]; //reception
-		}
+		}*/
+		
+		$operations = ["information", "triage", "attention"];
 		
 		$appointment->specialty = $this->general->id("specialty", $appointment->specialty_id)->name;
 		$appointment->sale_id = $appointment->sale_prod = null;
@@ -408,13 +412,13 @@ class Appointment extends CI_Controller {
 			"physical_therapies" => $this->general->all("physical_therapy", "name", "asc"),
 			"medicines" => $this->general->all("medicine", "name", "asc"),
 			"title" => "Consulta",
-			"main" => "clinic/appointment/detail",
+			"main" => "attention/appointment/detail",
 		);
 		
 		$this->load->view('layout', $data);
 	}
 	
-	public function register(){
+	public function register(){//checked 20251219
 		$type = "error"; 
 		$msgs = []; 
 		$msg = null; 
@@ -425,42 +429,48 @@ class Appointment extends CI_Controller {
 		$sch = $this->input->post("sch");
 		$pt = $this->input->post("pt");
 		
-		print_r($app);
-		print_r($sch);
-		print_r($pt);
+		//appointment validation
+		if (!$app["specialty_id"]) $msgs[] = ["dom_id" => "aa_specialty_msg", "type" => "error", "msg" => "Campo requerido."];
 		
-		return;
-		$this->load->library('my_val');
-		$msgs = $this->my_val->appointment($msgs, "aa_", $app, $sch, $pt);
+		if ($app["doctor_id"]){
+			if ($app["patient_id"]){
+				if ($app["doctor_id"] == $app["patient_id"]) 
+					$msgs[] = ["dom_id" => "aa_doctor_msg", "type" => "error", "msg" => "Una persona no puede atenderse a sí misma como médico y paciente."];
+			}else $msgs[] = ["dom_id" => "pt_name_msg", "type" => "error", "msg" => "Debe elegir un paciente."];
+		}else $msgs[] = ["dom_id" => "aa_doctor_msg", "type" => "error", "msg" => "Campo requerido."];
+		
+		//schedule validation
+		if (!$sch["date"]) $msgs[] = ["dom_id" => "aa_date_msg", "type" => "error", "msg" => "Campo requerido."];
+		if (!$sch["hour"] or !$sch["min"]) $msgs[] = ["dom_id" => "aa_schedule_msg", "type" => "error", "msg" => "Campo requerido."];
+		
+		//patient validation
+		if (!$pt["doc_number"]) $msgs[] = ["dom_id" => "pt_name_msg", "type" => "error", "msg" => "Campo requerido."];
+		if (!$pt["name"]) $msgs[] = ["dom_id" => "pt_doc_msg", "type" => "error", "msg" => "Campo requerido."];
+		if (!$pt["tel"]) $msgs[] = ["dom_id" => "pt_tel_msg", "type" => "error", "msg" => "Campo requerido."];
 		
 		if (!$msgs){
 			$now = date('Y-m-d H:i:s', time());
-			$person = $this->general->filter("person", ["doc_type_id" => $pt["doc_type_id"], "doc_number" => $pt["doc_number"]]);
+			$person = $this->gm->filter("person", ["doc_type_id" => $pt["doc_type_id"], "doc_number" => $pt["doc_number"]]);
 			if ($person){
 				$person = $person[0];
 				$app["patient_id"] = $person->id;
-				$this->general->update("person", $person->id, $pt);
-				$this->utility_lib->add_log("person_update", $person->name);
+				$this->gm->update("person", $person->id, $pt);
 			}else{
-				$app["patient_id"] = $this->general->insert("person", $pt);
-				$person = $this->general->id("person", $app["patient_id"]);
-				$this->utility_lib->add_log("person_register", $person->name);
+				$app["patient_id"] = $this->gm->insert("person", $pt);
+				$person = $this->gm->id("person", $app["patient_id"]);
 			}
 			
 			$app["schedule_from"] = $sch["date"]." ".$sch["hour"].":".$sch["min"];
 			$app["schedule_to"] = date("Y-m-d H:i:s", strtotime("+9 minutes", strtotime($app["schedule_from"])));
-			$app["status_id"] = ($is_free == null) ? $this->general->status("reserved")->id : $this->general->status("confirmed")->id;
+			$app["status_id"] = ($is_free == null) ? $this->gm->status("reserved")->id : $this->gm->status("confirmed")->id;
 			$app["registed_at"] = $now;
 			
-			$appointment_id = $this->general->insert("appointment", $app);
-			if ($appointment_id){
-				$this->utility_lib->add_log("appointment_register", $pt["name"]);
-				
-				$type = "success";
-				$move_to = base_url()."clinic/appointment/detail/".$appointment_id;
-				$msg = $this->lang->line('s_app_register');
-			}else $msg = $this->lang->line('error_internal');
-		}else $msg = $this->lang->line('error_occurred');
+			$appointment_id = $this->gm->insert("appointment", $app);
+			
+			$type = "success";
+			$move_to = base_url()."attention/appointment/detail/".$appointment_id;
+			$msg = "Consulta ha sido generado.";
+		}else $msg = "Revise nuevamente los datos ingresados.";
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to]);
@@ -1126,7 +1136,7 @@ class Appointment extends CI_Controller {
 		if (!$this->utility_lib->check_access("appointment", "report")) redirect("/errors/no_permission");
 		
 		$appointment = $this->general->id("appointment", $id);
-		if (!$appointment) redirect("/clinic/appointment");
+		if (!$appointment) redirect("/attention/appointment");
 		
 		$doctor = $this->general->id("person", $appointment->doctor_id);
 		if ($doctor){
@@ -1157,7 +1167,7 @@ class Appointment extends CI_Controller {
 			"patient" => $patient
 		];
 		
-		$html = $this->load->view('clinic/appointment/medical_history', $data, true);
+		$html = $this->load->view('attention/appointment/medical_history', $data, true);
 		$filename = str_replace(" ", "_", $patient->name)."_".$patient->doc_number."_".$appointment->id;
 		
 		$this->load->library('dompdf_lib');

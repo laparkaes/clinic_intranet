@@ -10,13 +10,10 @@
 		</nav>
 	</div>
 	<div class="btn-group mb-3">
-		<a class="btn btn-outline-primary" href="<?= base_url() ?>clinic/appointment">
+		<a class="btn btn-outline-primary" href="<?= base_url() ?>attention/appointment">
 			Lista
 		</a>
-		<button type="button" class="btn btn-outline-primary control_bl" value="bl_add">
-			Búsqueda
-		</button>
-		<a class="btn btn-primary" href="<?= base_url() ?>clinic/appointment/add">
+		<a class="btn btn-primary" href="<?= base_url() ?>attention/appointment/add">
 			Agregar Consulta
 		</a>
 	</div>
@@ -175,7 +172,7 @@
 				$("#app_register_form").submit(function(e) {
 					e.preventDefault();
 					$("#app_register_form .sys_msg").html("");
-					ajax_form_warning(this, "clinic/appointment/register", "wm_appointment_register").done(function(res) {
+					ajax_form_warning(this, "attention/appointment/register", "wm_appointment_register").done(function(res) {
 						set_msg(res.msgs);
 						swal_redirection(res.type, res.msg, res.move_to);
 					});

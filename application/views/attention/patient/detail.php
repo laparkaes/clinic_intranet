@@ -18,7 +18,9 @@
 	</div>
 
 
-	<div class="col-md-3">
+	<!-- CHECK TO DEVELOP THEN REMOVE THIS CODE
+	
+	div class="col-md-3"> 
 		<button class="btn btn-primary w-100 mb-3 control_bl_simple" value="bl_ga">
 			<div><i class="bi bi-capsule" style="font-size: 50px;"></i></div>
 			<div class="fs-16 mt-2 pt-2 border-top border-white">Generar Cita</div>
@@ -41,7 +43,10 @@
 			<div><i class="bi bi-credit-card" style="font-size: 50px;"></i></div>
 			<div class="fs-16 mt-2 pt-2 border-top border-white">Agregar Credito</div>
 		</button>
-	</div>
+	</div -->
+	
+	
+	
 </div>
 <div class="row">
 	<div class="col">
@@ -587,6 +592,8 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+	
+	//start - add_appointment_modal
 	set_date_picker("#aa_date", null);
 	
 	$("#aa_specialty").change(function() {
@@ -600,12 +607,12 @@ document.addEventListener("DOMContentLoaded", () => {
 		$("#app_register_form .sys_msg").html("");
 		
 		ajax_form_warning(this, "attention/appointment/register", "¿Desea generar nueva cita?").done(function(res) {
-			//set_msg(res.msgs);
-			//swal_redirection(res.type, res.msg, res.move_to);
-			alert(res);
+			set_msg(res.msgs);
+			swal_redirection(res.type, res.msg, res.move_to);
+			//alert(res);
 		});
 	});
-	
+	/* end - add_appointment_modal */
 	
 	
 	function disable_update_form(){
