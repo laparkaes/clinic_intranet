@@ -162,7 +162,7 @@ class Appointment extends CI_Controller {
 					$app_anam_arr = [
 						"appointment_id" => $appointment->id,
 						"name" => $app_anam_aux->name,
-						"age" => $this->my_func->age_calculator($app_anam_aux->birthday, false),
+						"age" => $this->my_func->age_calculator($app_anam_aux->birthday),
 						"sex_id" => $app_anam_aux->sex_id,
 						"address" => $app_anam_aux->address,
 						"birthplace" => $app_anam_aux->birthplace,
@@ -197,7 +197,7 @@ class Appointment extends CI_Controller {
 					$anamnesis->sex_id = $patient->sex_id;
 					$anamnesis->tel = $patient->tel;
 					$anamnesis->address = $patient->address;
-					if ($patient->birthday){
+					if ($patient->birthday and $patient->birthday !== "0000-00-00"){
 						$anamnesis->birthday = $patient->birthday;
 						$anamnesis->age = $this->my_func->age_calculator($patient->birthday, false);
 					}
@@ -312,7 +312,7 @@ class Appointment extends CI_Controller {
 		$patient = $this->general->id("person", $appointment->patient_id);
 		if ($patient){
 			$patient->doc_type = $this->general->id("doc_type", $patient->doc_type_id)->description;
-			if ($patient->birthday) $patient->age = $this->my_func->age_calculator($patient->birthday, true);
+			if ($patient->birthday) $patient->age = $this->my_func->age_calculator($patient->birthday);
 			else $patient->age = null;
 			if ($patient->sex_id) $patient->sex = $this->general->id("sex", $patient->sex_id)->description;
 			else $patient->sex = null;

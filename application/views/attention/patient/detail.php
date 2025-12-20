@@ -2,7 +2,7 @@
 	<h1><?= $person->name ?></h1>
 </div>
 <div class="row">
-	<div class="col-12">
+	<div class="col-12 pb-3">
 		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_appointment_modal">
 			<i class="bi bi-capsule me-1"></i> Generar Cita
 		</button>
@@ -644,7 +644,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		$("#pu_doc_type_id").prop("disabled", false);
 		
 		$("#form_update_info .sys_msg").html("");
-		ajax_form(this, "clinic/patient/update_info").done(function(res) {
+		ajax_form(this, "attention/patient/update_info").done(function(res) {
 			set_msg(res.msgs);
 			swal(res.type, res.msg);
 			if (res.type == "success") disable_update_form();
@@ -671,14 +671,14 @@ document.addEventListener("DOMContentLoaded", () => {
 	$("#form_add_credit").submit(function(e) {
 		e.preventDefault();
 		$("#form_add_credit .sys_msg").html("");
-		ajax_form_warning(this, "clinic/patient/add_credit", "wm_add_credit").done(function(res) {
+		ajax_form_warning(this, "attention/patient/add_credit", "wm_add_credit").done(function(res) {
 			set_msg(res.msgs);
 			swal_redirection(res.type, res.msg, window.location.href);
 		});
 	});
 	
 	$(".btn_reverse_credit").click(function() {
-		ajax_simple_warning({id: $(this).val()}, "clinic/patient/reverse_credit", "wm_reverse_credit").done(function(res) {
+		ajax_simple_warning({id: $(this).val()}, "attention/patient/reverse_credit", "wm_reverse_credit").done(function(res) {
 			swal_redirection(res.type, res.msg, window.location.href);
 		});
 	});
@@ -687,14 +687,14 @@ document.addEventListener("DOMContentLoaded", () => {
 	$("#form_upload_patient_file").submit(function(e) {
 		e.preventDefault();
 		$("#form_upload_patient_file .sys_msg").html("");
-		ajax_form(this, "clinic/patient/upload_file").done(function(res) {
+		ajax_form(this, "attention/patient/upload_file").done(function(res) {
 			set_msg(res.msgs);
 			swal_redirection(res.type, res.msg, window.location.href);
 		});
 	});
 	
 	$(".btn_delete_file").click(function() {
-		ajax_simple_warning({id: $(this).val()}, "clinic/patient/delete_file", "wm_delete_file").done(function(res) {
+		ajax_simple_warning({id: $(this).val()}, "attention/patient/delete_file", "wm_delete_file").done(function(res) {
 			swal_redirection(res.type, res.msg, window.location.href);
 		});
 	});

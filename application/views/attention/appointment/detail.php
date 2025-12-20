@@ -13,7 +13,7 @@
 		<?php if ($actions){ ?>
 		<div class="btn-group">
 			<?php if (in_array("clinic_history", $actions)){ ?>
-			<a class="btn btn-primary" href="<?= base_url() ?>clinic/appointment/medical_history/<?= $appointment->id ?>" target="_blank">
+			<a class="btn btn-primary" href="<?= base_url() ?>attention/appointment/medical_history/<?= $appointment->id ?>" target="_blank">
 				<?= $this->lang->line('w_clinical_history') ?>
 			</a>
 			<?php } if (in_array("reschedule", $actions)) $d = ""; else $d = "disabled"; ?>
@@ -28,19 +28,19 @@
 		</div>
 		|
 		<?php if ($appointment_datas["examination"]["exams"]){ ?>
-		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment/print_examination/<?= $appointment->id ?>" target="_blank">
+		<a class="btn btn-success" href="<?= base_url() ?>attention/appointment/print_examination/<?= $appointment->id ?>" target="_blank">
 			<i class="bi bi-printer"></i> Exámenes
 		</a>
 		<?php } if ($appointment_datas["images"]){ ?>
-		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment/print_image/<?= $appointment->id ?>" target="_blank">
+		<a class="btn btn-success" href="<?= base_url() ?>attention/appointment/print_image/<?= $appointment->id ?>" target="_blank">
 			<i class="bi bi-printer"></i> Imágenes
 		</a>
 		<?php } if ($appointment_datas["medicine"]){ ?>
-		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment/print_medicine/<?= $appointment->id ?>" target="_blank">
+		<a class="btn btn-success" href="<?= base_url() ?>attention/appointment/print_medicine/<?= $appointment->id ?>" target="_blank">
 			<i class="bi bi-printer"></i> Medicamento
 		</a>
 		<?php } if ($appointment_datas["therapy"]){ ?>
-		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment/print_therapy/<?= $appointment->id ?>" target="_blank">
+		<a class="btn btn-success" href="<?= base_url() ?>attention/appointment/print_therapy/<?= $appointment->id ?>" target="_blank">
 			<i class="bi bi-printer"></i> Terapia
 		</a>
 		<?php } ?>
@@ -186,7 +186,7 @@
 								<td><?= $item->specialty ?></td>
 								<td class="text-end">
 									<?php if ($appointment->id != $item->id){ ?>
-									<a href="<?= base_url()."clinic/".$item->link_to."/medical_history/".$item->id ?>" target="_blank">
+									<a href="<?= base_url()."attention/".$item->link_to."/medical_history/".$item->id ?>" target="_blank">
 										<i class="bi bi-search"></i>
 									</a>
 									<?php }else{ ?>
@@ -358,7 +358,7 @@
 					<input type="hidden" name="appointment_id" value="<?= $appointment->id ?>">
 					<div class="col-md-6">
 						<label class="form-label"><?= $this->lang->line('w_name') ?></label>
-						<input type="text" class="form-control" name="name" value="<?= $an->name ?>" readonly>
+						<input type="text" class="form-control" name="name" value="<?= $an->name ?>">
 						<div class="sys_msg" id="pi_name_msg"></div>
 					</div>
 					<div class="col-md-3">
@@ -389,7 +389,7 @@
 					</div>
 					<div class="col-md-3">
 						<label class="form-label"><?= $this->lang->line('w_birthday') ?></label>
-						<input type="text" class="form-control" name="birthday" value="<?= $an->birthday ?>">
+						<input type="text" class="form-control" name="birthday" value="<?= $an->birthday ?>" readonly>
 						<div class="sys_msg" id="pi_birthday_msg"></div>
 					</div>
 					<div class="col-md-3">
@@ -1372,7 +1372,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 	function save_form(name, dom){
 		$("#form_" + name + " .sys_msg").html("");
-		ajax_form(dom, "clinic/appointment/save_" + name).done(function(res) {
+		ajax_form(dom, "attention/appointment/save_" + name).done(function(res) {
 			set_msg(res.msgs);
 			swal(res.type, res.msg);
 		});
@@ -1388,7 +1388,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	function delete_diag(dom){
 		var data = {appointment_id: $("#appointment_id").val(), diag_id: $(dom).val()};
-		ajax_simple(data, "clinic/appointment/delete_diag").done(function(res) {
+		ajax_simple(data, "attention/appointment/delete_diag").done(function(res) {
 			set_diag(res.diags);
 			swal(res.type, res.msg);
 		});
@@ -1405,7 +1405,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	function delete_therapy(dom){
 		var data = {appointment_id: $("#appointment_id").val(), id: $(dom).val()};
-		ajax_simple(data, "clinic/appointment/delete_therapy").done(function(res) {
+		ajax_simple(data, "attention/appointment/delete_therapy").done(function(res) {
 			set_therapy(res.therapies);
 			swal(res.type, res.msg);
 		});
@@ -1422,7 +1422,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	function delete_medicine(dom){
 		var data = {appointment_id: $("#appointment_id").val(), id: $(dom).val()};
-		ajax_simple(data, "clinic/appointment/delete_medicine").done(function(res) {
+		ajax_simple(data, "attention/appointment/delete_medicine").done(function(res) {
 			set_medicine(res.medicines);
 			swal(res.type, res.msg);
 		});
@@ -1485,7 +1485,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	function remove_exam(exam_id){
 		var data = {appointment_id: $("#appointment_id").val(), examination_id: exam_id};
-		ajax_simple(data, "clinic/appointment/remove_exam").done(function(res) {
+		ajax_simple(data, "attention/appointment/remove_exam").done(function(res) {
 			set_profiles_exams(res.profiles, res.exams);
 			swal(res.type, res.msg); 
 		});
@@ -1503,7 +1503,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	function remove_image(image_id){
 		var data = {appointment_id: $("#appointment_id").val(), image_id: image_id};
-		ajax_simple(data, "clinic/appointment/remove_image").done(function(res) {
+		ajax_simple(data, "attention/appointment/remove_image").done(function(res) {
 			set_image(res.images);
 			swal(res.type, res.msg); 
 		});
@@ -1522,13 +1522,13 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 	
 	$("#btn_cancel").click(function() {
-		ajax_simple_warning({id: $(this).val()}, "clinic/appointment/cancel", "wm_appointment_cancel").done(function(res) {
+		ajax_simple_warning({id: $(this).val()}, "attention/appointment/cancel", "wm_appointment_cancel").done(function(res) {
 			swal_redirection(res.type, res.msg, window.location.href);
 		});
 	});
 	
 	$("#btn_finish").click(function() {
-		ajax_simple_warning({id: $(this).val()}, "clinic/appointment/finish", "wm_appointment_finish").done(function(res) {
+		ajax_simple_warning({id: $(this).val()}, "attention/appointment/finish", "wm_appointment_finish").done(function(res) {
 			swal_redirection(res.type, res.msg, window.location.href);
 		});
 	});
@@ -1551,7 +1551,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	$("#reschedule_form").submit(function(e) {
 		e.preventDefault(); 
 		$("#reschedule_form .sys_msg").html("");
-		ajax_form_warning(this, "clinic/appointment/reschedule", "wm_appointment_reschedule").done(function(res) {
+		ajax_form_warning(this, "attention/appointment/reschedule", "wm_appointment_reschedule").done(function(res) {
 			set_msg(res.msgs);
 			swal_redirection(res.type, res.msg, window.location.href);
 		});
@@ -1609,7 +1609,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	$("#form_search_diag").submit(function(e) {
 		e.preventDefault();
 		$("#form_search_diag .sys_msg").html("");
-		ajax_form(this, "clinic/appointment/search_diag").done(function(res) {
+		ajax_form(this, "attention/appointment/search_diag").done(function(res) {
 			set_msg(res.msgs);
 			if (res.type == "success"){
 				$("#di_diagnosis_msg").html(res.qty);
@@ -1619,7 +1619,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				});
 				$(".btn_add_diag").click(function() {
 					var data = {appointment_id: $("#appointment_id").val(), diag_id: $(this).val()};
-					ajax_simple(data, "clinic/appointment/add_diag").done(function(res) {
+					ajax_simple(data, "attention/appointment/add_diag").done(function(res) {
 						set_diag(res.diags);
 						swal(res.type, res.msg);
 					});
@@ -1649,7 +1649,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	
 	$("#btn_add_exam_profile").click(function() {
 		var data = {appointment_id: $("#appointment_id").val(), profile_id: $("#sl_profile_exam").val()};
-		ajax_simple(data, "clinic/appointment/add_exam_profile").done(function(res) {
+		ajax_simple(data, "attention/appointment/add_exam_profile").done(function(res) {
 			set_profiles_exams(res.profiles, res.exams);
 			swal(res.type, res.msg); 
 		});
@@ -1657,7 +1657,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	
 	$("#btn_add_exam").click(function() {
 		var data = {appointment_id: $("#appointment_id").val(), examination_id: $("#sl_exam").val()};
-		ajax_simple(data, "clinic/appointment/add_exam").done(function(res) {
+		ajax_simple(data, "attention/appointment/add_exam").done(function(res) {
 			set_profiles_exams(res.profiles, res.exams);
 			swal(res.type, res.msg); 
 		});
@@ -1665,7 +1665,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	
 	$(".btn_remove_exam_profile").click(function() {
 		var data = {appointment_id: $("#appointment_id").val(), profile_id: $(this).val()};
-		ajax_simple(data, "clinic/appointment/remove_exam_profile").done(function(res) {
+		ajax_simple(data, "attention/appointment/remove_exam_profile").done(function(res) {
 			set_profiles_exams(res.profiles, res.exams);
 			swal(res.type, res.msg); 
 		});
@@ -1684,7 +1684,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	
 	$("#btn_add_img").click(function() {
 		var data = {appointment_id: $("#appointment_id").val(), image_id: $("#sl_aux_img").val()};
-		ajax_simple(data, "clinic/appointment/add_image").done(function(res) {
+		ajax_simple(data, "attention/appointment/add_image").done(function(res) {
 			set_image(res.images);
 			swal(res.type, res.msg); 
 		});
@@ -1698,7 +1698,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	$("#form_add_medicine").submit(function(e) {
 		e.preventDefault(); 
 		$("#form_add_medicine .sys_msg").html("");
-		ajax_form(this, "clinic/appointment/add_medicine").done(function(res) {
+		ajax_form(this, "attention/appointment/add_medicine").done(function(res) {
 			set_medicine(res.medicines);
 			set_msg(res.msgs);
 			swal(res.type, res.msg);
@@ -1714,7 +1714,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	$("#form_add_therapy").submit(function(e) {
 		e.preventDefault(); 
 		$("#form_add_therapy .sys_msg").html("");
-		ajax_form(this, "clinic/appointment/add_therapy").done(function(res) {
+		ajax_form(this, "attention/appointment/add_therapy").done(function(res) {
 			set_therapy(res.therapies);
 			set_msg(res.msgs);
 			swal(res.type, res.msg);

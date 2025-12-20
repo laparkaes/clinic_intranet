@@ -26,7 +26,7 @@ class Login extends CI_Controller {
 		$data = $this->input->post();
 		
 		//load account record
-		$w = ["username" => $data["username"], "is_valid" => true];
+		$w = ["email" => $data["username"], "is_valid" => true];
 		$account = $this->gm->filter("account", $w);
 		
 		//account data validation

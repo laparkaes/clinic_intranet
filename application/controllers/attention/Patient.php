@@ -16,33 +16,6 @@ class Patient extends CI_Controller {
 		$this->nav_menu = "patient";
 	}
 	
-	function age_calculator(string $birthDate): ?int{//checked 20241213
-		// 입력된 생년월일 포맷 확인
-		if (empty($birthDate)) {
-			return null;
-		}
-
-		try {
-			// 1. 생년월일과 현재 날짜를 DateTime 객체로 생성합니다.
-			// 입력 포맷이 'YYYY-MM-DD'이므로 DateTime::createFromFormat을 사용하지 않아도 안전합니다.
-			$birth = new DateTime($birthDate);
-			$now = new DateTime('now');
-			
-			// 2. 두 날짜 사이의 차이를 DateInterval 객체로 계산합니다.
-			// $interval은 날짜, 월, 년도의 차이를 포함합니다.
-			$interval = $now->diff($birth);
-			
-			// 3. DateInterval 객체의 'y' 속성(차이나는 년도)을 반환합니다.
-			// 이것이 정확한 '만 나이'가 됩니다.
-			return $interval->y;
-
-		} catch (Exception $e) {
-			// 날짜 포맷이 잘못되었을 경우 예외 처리
-			error_log("유효하지 않은 날짜 포맷: " . $e->getMessage());
-			return null;
-		}
-	}
-	
 	public function index(){//checked 20241213
 		if (!$this->session->userdata('logged_in')) redirect('/');
 		
@@ -78,7 +51,7 @@ class Patient extends CI_Controller {
 		foreach($patients as $item){
 			$item->doc_type = $item->doc_type_id ? $doc_types_arr[$item->doc_type_id] : "";
 			$item->sex = $item->sex_id ? $sex_arr[$item->sex_id] :  "";
-			$item->age = $item->birthday ? $this->age_calculator($item->birthday) : "";
+			$item->age = $item->birthday ? $this->my_func->age_calculator($item->birthday) : "";
 		}
 		
 		//set data variable
@@ -224,21 +197,24 @@ class Patient extends CI_Controller {
 	
 	public function update_info(){
 		$type = "error"; $msgs = []; $msg = null;
-		if ($this->utility_lib->check_access("patient", "update")){
-			$data = $this->input->post();
+		
+		$data = $this->input->post();
+		
+		//data validation => optionals: email, birthday, sex, blood_type, address
+		if (!$data["doc_type_id"]) $msgs[] = ["dom_id" => "pu_doc_type_msg", "type" => "error", "msg" => "Campo requerido."];
+		if (!$data["doc_number"]) $msgs[] = ["dom_id" => "pu_doc_number_msg", "type" => "error", "msg" => "Campo requerido."];
+		if (!$data["name"]) $msgs[] = ["dom_id" => "pu_name_msg", "type" => "error", "msg" => "Campo requerido."];
+		if (!$data["tel"]) $msgs[] = ["dom_id" => "pu_tel_msg", "type" => "error", "msg" => "Campo requerido."];
+		if (!$data["birthday"]) $msgs[] = ["dom_id" => "pu_birthday_msg", "type" => "error", "msg" => "Campo requerido."];
+		
+		if (!$msgs){
+			foreach($data as $i => $item) if (!$item) $data[$i] = null;
+			$this->gm->update("person", $data["id"], $data);
+			//$this->utility_lib->add_log("person_update", $data["name"]);
 			
-			$this->load->library('my_val');
-			$msgs = $this->my_val->person($msgs, "pu_", $data);
-			
-			if (!$msgs){
-				foreach($data as $i => $item) if (!$item) $data[$i] = null;
-				$this->gm->update("person", $data["id"], $data);
-				$this->utility_lib->add_log("person_update", $data["name"]);
-				
-				$type = "success"; 
-				$msg = $this->lang->line('s_update_info');
-			}else $msg = $this->lang->line('error_occurred');
-		}else $msg = $this->lang->line('error_no_permission');
+			$type = "success"; 
+			$msg = "Datos de paciente han sido actualizados.";
+		}else $msg = "Ocurrió un error. Revise los datos.";
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "msgs" => $msgs]);
