@@ -65,7 +65,7 @@ Fecha: <?= $from ?> ~ <?= $to ?>
 <table>
 	<?php foreach($rows as $item){ ?>
 	<tr>
-		<?php for($i = 0; $i < 13; $i++){ ?>
+		<?php for($i = 0; $i < 14; $i++){ ?>
 		<td><?= $item[$i] ?></td>
 		<?php } ?>
 	</tr>

@@ -84,6 +84,7 @@ class Report extends CI_Controller {
 			"Total",
 			"Op. gravada",
 			"IGV",
+			"Estado",
 		]; //print_R($headers); echo "<br/><br/>";
 		
 		$rows = [];
@@ -94,7 +95,7 @@ class Report extends CI_Controller {
 			$curr = $currency_arr[$item->currency_id];
 			$client = $item->client_id ? $this->general->id("person", $item->client_id)->name : null;
 			
-			$payment = $this->general->id("payment", $item->id);
+			$payment = $this->general->unique("payment", "sale_id", $item->id);//load first payment as payment method
 			$payment_method = $payment ? $this->general->id("payment_method", $payment->payment_method_id)->description : null;
 		
 			$products = $this->general->filter("sale_product", ["sale_id" => $item->id]);
@@ -122,6 +123,7 @@ class Report extends CI_Controller {
 						$total,
 						$amount,
 						$igv,
+						$status_arr[$item->status_id], 
 					];
 					
 					/*
@@ -140,37 +142,41 @@ class Report extends CI_Controller {
 		
 		$summary = [];
 		foreach($rows as $item){
+			
 			$considered = false;
 			
-			$total_sales += (float)$item[10];
-			$total_op += (float)$item[11];
-			$total_igv += (float)$item[12];
+			if ($item[13] === "Finalizado"){
 			
-			foreach($summary as $i => $item_s){
-				if (($item_s[0] === $item[2]) and ($item_s[2] === $item[6])){
-					
-					$summary[$i][4] += $item[8];
-					$summary[$i][5] += $item[9];
-					$summary[$i][6] += $item[10];
-					$summary[$i][7] += $item[11];
-					$summary[$i][8] += $item[12];
-					
-					$considered = true;
+				$total_sales += (float)$item[10];
+				$total_op += (float)$item[11];
+				$total_igv += (float)$item[12];
+				
+				foreach($summary as $i => $item_s){
+					if (($item_s[0] === $item[2]) and ($item_s[2] === $item[6])){
+						
+						$summary[$i][4] += $item[8];
+						$summary[$i][5] += $item[9];
+						$summary[$i][6] += $item[10];
+						$summary[$i][7] += $item[11];
+						$summary[$i][8] += $item[12];
+						
+						$considered = true;
+					}
 				}
-			}
-			
-			if (!$considered){
-				$summary[] = [
-					$item[2],
-					$item[3],
-					$item[6],
-					$item[7],
-					$item[8],
-					$item[9],
-					$item[10],
-					$item[11],
-					$item[12],
-				];
+				
+				if (!$considered and ($item[2] !== "Codigo")){
+					$summary[] = [
+						$item[2],
+						$item[3],
+						$item[6],
+						$item[7],
+						$item[8],
+						$item[9],
+						$item[10],
+						$item[11],
+						$item[12],
+					];
+				}
 			}
 		}
 		

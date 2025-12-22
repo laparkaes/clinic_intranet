@@ -20,7 +20,12 @@ class Patient extends CI_Controller {
 		$f_url = [
 			"page" => $this->input->get("page"),
 			"keyword" => $this->input->get("keyword"),
+			"doc_type_id" => $this->input->get("doc_type_id"),
+			"doc_number" => $this->input->get("doc_number"),
+			"name" => $this->input->get("name"),
+			"tel" => $this->input->get("tel"),
 		];
+		
 		if (!$f_url["page"]) $f_url["page"] = 1;
 		
 		$f_w = $f_l = $f_w_in = [];
@@ -134,7 +139,7 @@ class Patient extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	public function register(){
+	public function register(){//checked 20251222
 		$type = "error"; $msgs = []; $msg = null; $move_to = null;
 		if ($this->utility_lib->check_access("patient", "register")){
 			$data = $this->input->post();
@@ -142,27 +147,20 @@ class Patient extends CI_Controller {
 			$this->load->library('my_val');
 			$msgs = $this->my_val->person($msgs, "pn_", $data);
 			
+			/* paciente no debe estar registrado */
+			if ($this->general->filter("person", ["doc_type_id" => $data["doc_type_id"], "doc_number" => $data["doc_number"]]))
+				$msgs[] = ["dom_id" => "pn_doc_number_msg", "type" => "error", "msg" => "Paciente registrado."];
+			
 			if (!$msgs){
-				//person data creation if does'nt exist
-				$people = $this->general->filter("person", ["doc_type_id" => $data["doc_type_id"], "doc_number" => $data["doc_number"]], null, null, "registed_at", "desc");
-				if ($people){
-					$person = $people[0];
-					$this->general->update("person", $person->id, $data);
-					$person_id = $person->id;
-					$this->utility_lib->add_log("person_update", $person->name);
-				}else{
-					$data["registed_at"] = date('Y-m-d H:i:s', time());
-					$person_id = $this->general->insert("person", $data);
-					$this->utility_lib->add_log("person_register", $data["name"]);
-				}
+				$data["registed_at"] = date('Y-m-d H:i:s', time());
+				$person_id = $this->general->insert("person", $data);
+				$this->utility_lib->add_log("person_register", $data["name"]);
 				
-				if ($person_id){
-					$type = "success";
-					$move_to = base_url()."clinic/patient/detail/".$person_id;
-					$msg = $this->lang->line('s_register');
-				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_occurred');
-		}else $msg = $this->lang->line('error_no_permission');
+				$msg = "Paciente ha sido registrado.";
+				$type = "success";
+				$move_to = base_url()."clinic/patient/detail/".$person_id;
+			}else $msg = "Revise nuevamente los datos ingresados.";
+		}else $msg = "No cuenta con permiso para realizar esta operación.";
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg, "move_to" => $move_to]);
