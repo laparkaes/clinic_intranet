@@ -40,6 +40,17 @@ Fecha: <?= $from ?> ~ <?= $to ?>
 <strong>Resumen</strong>
 <br/>
 <table>
+	<tr>
+		<td>Codigo</td>
+		<td>Item</td>
+		<td>Moneda</td>
+		<td>P/U</td>
+		<td>Descuento</td>
+		<td>Cantidad</td>
+		<td>Total</td>
+		<td>Op. gravada</td>
+		<td>IGV</td>
+	<tr>
 	<?php foreach($summary as $item){ ?>
 	<tr>
 		<?php for($i = 0; $i < 9; $i++){ ?>
