@@ -208,8 +208,8 @@ class Ajax_f extends CI_Controller {
 			});
 		}
 		
-		//echo $this->load->view('attention/doctor/tb_schedule', ["msg" => $msg, "cells" => $cells, "date" => $date], true);
-		echo $this->load->view('attention/doctor/tb_schedule', ["msg" => $msg, "status_arr" => $status_arr, "schedules" => $schedules, "date" => $date], true);
+		//echo $this->load->view('clinic/doctor/tb_schedule', ["msg" => $msg, "cells" => $cells, "date" => $date], true);
+		echo $this->load->view('clinic/doctor/tb_schedule', ["msg" => $msg, "status_arr" => $status_arr, "schedules" => $schedules, "date" => $date], true);
 	}
 	
 	public function load_doctor_schedule_weekly(){
@@ -238,6 +238,6 @@ class Ajax_f extends CI_Controller {
 		}
 		
 		$data = array("msg" => $msg, "dates" => $dates, "cells" => $cells, "prev" => $prev, "next" => $next);
-		echo $this->load->view('attention/doctor/tb_schedule_weekly', $data, true);
+		echo $this->load->view('clinic/doctor/tb_schedule_weekly', $data, true);
 	}
 }

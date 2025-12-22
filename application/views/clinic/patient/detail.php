@@ -1,57 +1,48 @@
 <div class="pagetitle">
 	<h1><?= $person->name ?></h1>
+	<nav>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="<?= base_url() ?>"><?= $this->lang->line('w_home') ?></a></li>
+			<li class="breadcrumb-item"><a href="<?= base_url() ?>clinic/patient"><?= $this->lang->line('patients') ?></a></li>
+			<li class="breadcrumb-item active"><?= $this->lang->line('txt_detail') ?></li>
+		</ol>
+	</nav>
 </div>
+<?php if ($person->doc_number){ ?>
 <div class="row">
-	<div class="col-12 pb-3">
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_appointment_modal">
-			<i class="bi bi-capsule me-1"></i> Generar Cita
-		</button>
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#search_modal">
-			<i class="bi bi-heart-pulse me-1"></i> Generar Cirugía
-		</button>
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#search_modal">
-			<i class="bi bi-file-earmark me-1"></i> Agregar Archivo
-		</button>
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#search_modal">
-			<i class="bi bi-credit-card me-1"></i> Agregar Credito
-		</button>
-	</div>
-
-
-	<!-- CHECK TO DEVELOP THEN REMOVE THIS CODE
-	
-	div class="col-md-3"> 
+	<div class="col-md-3">
 		<button class="btn btn-primary w-100 mb-3 control_bl_simple" value="bl_ga">
-			<div><i class="bi bi-capsule" style="font-size: 50px;"></i></div>
-			<div class="fs-16 mt-2 pt-2 border-top border-white">Generar Cita</div>
+			<div><i class="bi bi-clipboard2-pulse" style="font-size: 50px;"></i></div>
+			<div class="fs-16 mt-2 pt-2 border-top border-white"><?= $this->lang->line('btn_generate_appointment') ?></div>
 		</button>
 	</div>
 	<div class="col-md-3">
 		<button class="btn btn-primary w-100 mb-3 control_bl_simple" value="bl_gs">
 			<div><i class="bi bi-heart-pulse" style="font-size: 50px;"></i></div>
-			<div class="fs-16 mt-2 pt-2 border-top border-white">Generar Cirugía</div>
+			<div class="fs-16 mt-2 pt-2 border-top border-white"><?= $this->lang->line('btn_generate_surgery') ?></div>
 		</button>
 	</div>
 	<div class="col-md-3">
 		<button class="btn btn-success w-100 mb-3 control_bl_simple" value="bl_af">
 			<div><i class="bi bi-file-earmark" style="font-size: 50px;"></i></div>
-			<div class="fs-16 mt-2 pt-2 border-top border-white">Agregar Archivo</div>
+			<div class="fs-16 mt-2 pt-2 border-top border-white"><?= $this->lang->line('btn_add_file') ?></div>
 		</button>
 	</div>
 	<div class="col-md-3">
 		<button class="btn btn-secondary w-100 mb-3" disabled>
 			<div><i class="bi bi-credit-card" style="font-size: 50px;"></i></div>
-			<div class="fs-16 mt-2 pt-2 border-top border-white">Agregar Credito</div>
+			<div class="fs-16 mt-2 pt-2 border-top border-white"><?= $this->lang->line('btn_add_credit') ?></div>
 		</button>
-	</div -->
-	
-	
-	
+	</div>
 </div>
+<?php } ?>
 <div class="row">
 	<div class="col">
+		<div class="card bl_simple d-none" id="bl_ga">
+			<?php $this->load->view("clinic/appointment/form_add_appointment", ["patient" => $person, "doctor" => null]); ?>
+		</div>
 		<div class="card bl_simple d-none" id="bl_gs">
-			<?php $this->load->view("attention/surgery/form_add_surgery", ["patient" => $person, "doctor" => null]); ?>
+			<?php $this->load->view("clinic/surgery/form_add_surgery", ["patient" => $person, "doctor" => null]); ?>
 		</div>
 		<div class="card bl_simple d-none" id="bl_af">
 			<div class="card-body">
@@ -122,12 +113,12 @@
 							</div>
 							<div class="col-md-6">
 								<label class="form-label"><?= $this->lang->line('w_name') ?></label>
-								<input type="text" class="form-control" id="pu_name" name="name" value="<?= $person->name ?>">
+								<input type="text" class="form-control" id="pu_name" name="name" value="<?= $person->name ?>" readonly>
 								<div class="sys_msg" id="pu_name_msg"></div>
 							</div>
 							<div class="col-md-4">
 								<label class="form-label"><?= $this->lang->line('w_tel') ?></label>
-								<input type="text" class="form-control" id="pu_tel" name="tel" value="<?= $person->tel ?>">
+								<input type="text" class="form-control" id="pu_tel" name="tel" value="<?= $person->tel ?>" readonly>
 								<div class="sys_msg" id="pu_tel_msg"></div>
 							</div>
 							<div class="col-md-4">
@@ -139,7 +130,7 @@
 								}else $b = $d = $m = $y = null;
 								?>
 								<label class="form-label"><?= $this->lang->line('w_birthday') ?></label>
-								<input type="hidden" id="p_birthday" name="birthday" value="<?= $b ?>">
+								<input type="hidden" id="p_birthday" name="birthday" value="<?= $b ?>" readonly>
 								<div class="input-group">
 									<select class="form-select" id="p_birthday_d" disabled>
 										<option value="" selected=""><?= $this->lang->line('date_d') ?></option>
@@ -484,137 +475,8 @@
 		</form>
 	</div>
 </div>
-
-
-
-<div class="modal fade" id="add_appointment_modal" tabindex="-1" style="display: none;" aria-hidden="true">
-	<div class="modal-dialog">
-		<form class="modal-content" id="app_register_form">
-			<div class="modal-header">
-				<h5 class="modal-title">Generar Cita</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<div class="row g-3">
-					<div class="col-md-12">
-						<label class="form-label">Especialidad</label>
-						<select class="form-select" id="aa_specialty" name="app[specialty_id]">
-							<option value="">--</option>
-							<?php foreach($specialties as $item){ if ($item->doctor_qty){ ?>
-							<option value="<?= $item->id ?>"><?= $item->name ?></option>
-							<?php }} ?>
-						</select>
-						<div class="sys_msg" id="aa_specialty_msg"></div>
-					</div>
-					<div class="col-md-12">
-						<label class="form-label">Médico</label>
-						<select class="form-select" id="aa_doctor" name="app[doctor_id]">
-							<option value="">--</option>
-							<?php foreach($doctors as $item){ ?>
-							<option class="spe spe_<?= $item->specialty_id ?> d-none" value="<?= $item->person_id ?>"><?= $item->name ?></option>
-							<?php } ?>
-						</select>
-						<div class="sys_msg" id="aa_doctor_msg"></div>
-					</div>
-					<div class="col-md-4">
-						<label class="form-label">Fecha</label>
-						<input type="text" class="form-control date_picker" id="aa_date" name="sch[date]" value="<?= date('Y-m-d') ?>">
-						<div class="sys_msg" id="aa_date_msg"></div>
-					</div>
-					<div class="col-md-8">
-						<label class="form-label">Hora</label>
-						<div class="input-group">
-							<select class="form-select" id="aa_hour" name="sch[hour]">
-								<option value="" selected>--</option>
-								<?php for($i = 0; $i < 24; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
-								<option value="<?= $i ?>">
-									<?php 
-									switch(true){
-										case $i < 12: echo $i." AM"; break;
-										case $i == 12: echo $i." M"; break;
-										case $i > 12: echo ($i - 12)." PM"; break;
-									}
-									?>
-								</option>
-								<?php } ?>
-							</select>
-							<span class="input-group-text">:</span>
-							<?php $mins = ["00", "10", "20", "30", "40", "50"]; ?>
-							<select class="form-select" id="aa_min" name="sch[min]">
-								<option value="" selected>--</option>
-								<?php foreach($mins as $item){ ?>
-								<option value="<?= $item ?>"><?= $item ?></option>
-								<?php } ?>
-							</select>
-						</div>
-						<div class="sys_msg" id="aa_schedule_msg"></div>
-					</div>
-					<div class="d-none">
-						<input type="hidden" id="aa_pt_id" name="app[patient_id]" value="<?= $person->id ?>">
-						<input type="hidden" name="pt[doc_type_id]" value="<?= $person->doc_type_id ?>">
-						<input type="hidden" name="pt[doc_number]" value="<?= $person->doc_number ?>">
-					</div>
-					<div class="col-md-12">
-						<label class="form-label">Nombre de Paciente</label>
-						<input type="text" class="form-control" name="pt[name]" value="<?= $person->name ?>" readonly>
-						<div class="sys_msg" id="pt_name_msg"></div>
-					</div>
-					<div class="col-md-6">
-						<label class="form-label">Documento de Identidad</label>
-						<input type="text" class="form-control" value="<?= $person->doc_type." ".$person->doc_number ?>" readonly>
-						<div class="sys_msg" id="pt_doc_msg"></div>
-					</div>
-					<div class="col-md-6">
-						<label class="form-label">Teléfono</label>
-						<input type="text" class="form-control" name="pt[tel]" value="<?= $person->tel ?>"readonly>
-						<div class="sys_msg" id="pt_tel_msg"></div>
-					</div>
-					<div class="col-md-12">
-						<label class="form-label">Observación (Opcional)</label>
-						<textarea class="form-control" rows="4" name="app[remark]" placeholder="Síntomas, Notas del paciente, etc."></textarea>
-					</div>
-					<div class="col-md-12 pt-3">
-						<div class="form-check">
-							<input class="form-check-input" type="checkbox" name="as_free" id="as_free">
-							<label class="form-check-label" for="as_free">Consulta Gratuita</label>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-				<button type="submit" class="btn btn-primary">Generar</button>
-			</div>
-		</form>
-	</div>
-</div>
-
-
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-	
-	//start - add_appointment_modal
-	set_date_picker("#aa_date", null);
-	
-	$("#aa_specialty").change(function() {
-		$("#aa_doctor").val("");
-		$("#aa_doctor .spe").addClass("d-none");
-		$("#aa_doctor .spe_" + $(this).val()).removeClass("d-none");
-	});
-	
-	$("#app_register_form").submit(function(e) {
-		e.preventDefault();
-		$("#app_register_form .sys_msg").html("");
-		
-		ajax_form_warning(this, "attention/appointment/register", "¿Desea generar nueva cita?").done(function(res) {
-			set_msg(res.msgs);
-			swal_redirection(res.type, res.msg, res.move_to);
-			//alert(res);
-		});
-	});
-	/* end - add_appointment_modal */
-	
-	
 	function disable_update_form(){
 		$("#form_update_info input").prop("readonly", true);
 		$("#form_update_info select").prop("disabled", true);
@@ -644,7 +506,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		$("#pu_doc_type_id").prop("disabled", false);
 		
 		$("#form_update_info .sys_msg").html("");
-		ajax_form(this, "attention/patient/update_info").done(function(res) {
+		ajax_form(this, "clinic/patient/update_info").done(function(res) {
 			set_msg(res.msgs);
 			swal(res.type, res.msg);
 			if (res.type == "success") disable_update_form();
@@ -671,14 +533,14 @@ document.addEventListener("DOMContentLoaded", () => {
 	$("#form_add_credit").submit(function(e) {
 		e.preventDefault();
 		$("#form_add_credit .sys_msg").html("");
-		ajax_form_warning(this, "attention/patient/add_credit", "wm_add_credit").done(function(res) {
+		ajax_form_warning(this, "clinic/patient/add_credit", "wm_add_credit").done(function(res) {
 			set_msg(res.msgs);
 			swal_redirection(res.type, res.msg, window.location.href);
 		});
 	});
 	
 	$(".btn_reverse_credit").click(function() {
-		ajax_simple_warning({id: $(this).val()}, "attention/patient/reverse_credit", "wm_reverse_credit").done(function(res) {
+		ajax_simple_warning({id: $(this).val()}, "clinic/patient/reverse_credit", "wm_reverse_credit").done(function(res) {
 			swal_redirection(res.type, res.msg, window.location.href);
 		});
 	});
@@ -687,14 +549,14 @@ document.addEventListener("DOMContentLoaded", () => {
 	$("#form_upload_patient_file").submit(function(e) {
 		e.preventDefault();
 		$("#form_upload_patient_file .sys_msg").html("");
-		ajax_form(this, "attention/patient/upload_file").done(function(res) {
+		ajax_form(this, "clinic/patient/upload_file").done(function(res) {
 			set_msg(res.msgs);
 			swal_redirection(res.type, res.msg, window.location.href);
 		});
 	});
 	
 	$(".btn_delete_file").click(function() {
-		ajax_simple_warning({id: $(this).val()}, "attention/patient/delete_file", "wm_delete_file").done(function(res) {
+		ajax_simple_warning({id: $(this).val()}, "clinic/patient/delete_file", "wm_delete_file").done(function(res) {
 			swal_redirection(res.type, res.msg, window.location.href);
 		});
 	});

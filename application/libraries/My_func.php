@@ -57,42 +57,13 @@ class My_func{
 		return $formatter->toInvoice($num, 2, $formatter_currency);
 	}
 	
-	/* return 36A 3M */
-	public function age_calculator_1($birthday, $need_number = false){
+	public function age_calculator($birthday, $need_number = false){
 		$date1 = date_create($birthday);
 		$date2 = date_create(date("Y-m-d"));
 		$diff = date_diff($date1, $date2);
 		
 		if ($need_number) return $diff->y;
 		else return $diff->y."A ".$diff->m."M";
-	}
-	
-	/* return 36 */
-	function age_calculator(string $birthDate): ?int{//checked 20241213
-		// 입력된 생년월일 포맷 확인
-		if (empty($birthDate) or ($birthDate === "0000-00-00")) {
-			return null;
-		}
-
-		try {
-			// 1. 생년월일과 현재 날짜를 DateTime 객체로 생성합니다.
-			// 입력 포맷이 'YYYY-MM-DD'이므로 DateTime::createFromFormat을 사용하지 않아도 안전합니다.
-			$birth = new DateTime($birthDate);
-			$now = new DateTime('now');
-			
-			// 2. 두 날짜 사이의 차이를 DateInterval 객체로 계산합니다.
-			// $interval은 날짜, 월, 년도의 차이를 포함합니다.
-			$interval = $now->diff($birth);
-			
-			// 3. DateInterval 객체의 'y' 속성(차이나는 년도)을 반환합니다.
-			// 이것이 정확한 '만 나이'가 됩니다.
-			return $interval->y;
-
-		} catch (Exception $e) {
-			// 날짜 포맷이 잘못되었을 경우 예외 처리
-			error_log("유효하지 않은 날짜 포맷: " . $e->getMessage());
-			return null;
-		}
 	}
 	
 	function randomString($characters, $length = 20) {
