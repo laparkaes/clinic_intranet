@@ -138,7 +138,17 @@ class Report extends CI_Controller {
 		
 		$total_sales = $total_op = $total_igv = 0;
 		
-		$summary = [];
+		$summary = [
+			"Codigo",
+			"Item",
+			"Moneda",
+			"P/U",
+			"Descuento",
+			"Cantidad",
+			"Total",
+			"Op. gravada",
+			"IGV",
+		];
 		foreach($rows as $item){
 			$considered = false;
 			
