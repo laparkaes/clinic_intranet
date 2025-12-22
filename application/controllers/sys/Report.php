@@ -179,7 +179,7 @@ class Report extends CI_Controller {
 		usort($summary, function($a, $b) {
 			// $b[10]과 $a[10]의 위치를 바꾸면 내림차순(높은 순)이 됩니다.
 			// 만약 낮은 순(오름차순)을 원하면 $a[10] <=> $b[10]으로 쓰면 됩니다.
-			return $b[10] <=> $a[10];
+			return $b[6] <=> $a[6];
 		});
 		
 		$data = [
