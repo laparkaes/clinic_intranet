@@ -50,7 +50,7 @@ Fecha: <?= $from ?> ~ <?= $to ?>
 		<td>Total</td>
 		<td>Op. gravada</td>
 		<td>IGV</td>
-	<tr>
+	</tr>
 	<?php foreach($summary as $item){ ?>
 	<tr>
 		<?php for($i = 0; $i < 9; $i++){ ?>
