@@ -31,7 +31,7 @@ class Report extends CI_Controller {
 	}
 	
 	public function sales_report(){
-		ini_set('memory_limit', '512M');
+		ini_set('memory_limit', '1024M');
 		
 		$from = $this->input->post("f");
 		$to = $this->input->post("t");
@@ -175,6 +175,12 @@ class Report extends CI_Controller {
 		}
 		
 		//foreach($summary as $item){ print_r($item); echo "<br/>"; }
+		
+		usort($summary, function($a, $b) {
+			// $b[10]과 $a[10]의 위치를 바꾸면 내림차순(높은 순)이 됩니다.
+			// 만약 낮은 순(오름차순)을 원하면 $a[10] <=> $b[10]으로 쓰면 됩니다.
+			return $b[10] <=> $a[10];
+		});
 		
 		$data = [
 			"from" => $from,
