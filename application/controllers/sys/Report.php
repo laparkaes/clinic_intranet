@@ -31,6 +31,8 @@ class Report extends CI_Controller {
 	}
 	
 	public function sales_report(){
+		ini_set('memory_limit', '512M');
+		
 		$from = $this->input->post("f");
 		$to = $this->input->post("t");
 		
