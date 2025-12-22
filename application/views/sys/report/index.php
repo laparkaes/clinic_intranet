@@ -8,8 +8,33 @@
 	</nav>
 </div>
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-md-6">
 		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title">Reporte de Venta</h5>
+				<div class="row">
+					<div class="col-md-12">
+						<form class="row g-3" action="<?= base_url() ?>sys/report/sales_report" method="POST" target="_blank">
+							<div class="col-md-6">
+								<label class="form-label">Desde</label>
+								<input type="text" class="form-control" id="gr_from" name="f" value="<?= date("Y-m-01") ?>">
+							</div>
+							<div class="col-md-6">
+								<label class="form-label">Hasta</label>
+								<input type="text" class="form-control" id="gr_to" name="t" value="<?= date("Y-m-t") ?>">
+							</div>
+							<div class="col-md-12 pt-3">
+								<button type="submit" class="btn btn-primary">
+									Generar
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- div class="card">
 			<div class="card-body">
 				<h5 class="card-title"><?= $this->lang->line('w_detailed_report') ?></h5>
 				<div class="row">
@@ -47,7 +72,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div -->
 	</div>
 </div>
 <script>

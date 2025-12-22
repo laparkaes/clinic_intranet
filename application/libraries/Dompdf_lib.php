@@ -9,12 +9,12 @@ class Dompdf_lib{
 		$this->CI = &get_instance();
 	}
 	
-	public function make_pdf_a4($html, $filename){
+	public function make_pdf_a4($html, $filename, $orientation = 'portrait'){
 		// instantiate and use the dompdf class
 		$dompdf = new Dompdf();
 
 		// (Optional) Setup the paper size and orientation
-		$dompdf->setPaper('A4', 'portrait');//vertical [0.0, 0.0, 595.28, 841.89]
+		$dompdf->setPaper('A4', $orientation);//vertical [0.0, 0.0, 595.28, 841.89]
 
 		// Render the HTML as PDF
 		$dompdf->loadHtml($html);

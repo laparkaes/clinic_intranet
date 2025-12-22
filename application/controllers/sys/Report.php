@@ -30,6 +30,166 @@ class Report extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
+	public function sales_report(){
+		$from = $this->input->post("f");
+		$to = $this->input->post("t");
+		
+		if (!$from) $from = date("Y-m-01");
+		if (!$to) $to = date("Y-m-t");
+		
+		$type_arr = [];
+		$type = $this->general->all("sale_type");
+		foreach($type as $item) $type_arr[$item->id] = $item->description;
+		
+		$status_arr = [];
+		$status = $this->general->all("status");
+		foreach($status as $item) $status_arr[$item->id] = $this->lang->line($item->code);
+		
+		$currency_arr = [];
+		$currency = $this->general->all("currency");
+		foreach($currency as $item) $currency_arr[$item->id] = $item->description;
+		
+		$product_arr = [];
+		$product = $this->general->all("product");
+		foreach($product as $item) $product_arr[$item->id] = $item->description;
+		
+		$filter = [
+			"registed_at >=" => $from,
+			"registed_at <=" => date("Y-m-d", strtotime("+1 day", strtotime($to)))
+		];
+		
+		//set people array
+		$person_ids = [];
+		$client_ids = $this->general->only("sale", "client_id", $filter);
+		foreach($client_ids as $item) $person_ids[] = $item->client_id;
+		if (!$person_ids) $person_ids = [-1];
+		
+		$people_arr = [];
+		$people = $this->general->filter("person", null, null, [["field" => "id", "values" => $person_ids]]);
+		foreach($people as $item) $people_arr[$item->id] = $item->name;
+		
+		$headers = [
+			"Fecha",
+			"Cliente",
+			"Codigo",
+			"Item",
+			"Opcion",
+			"Metodo de Pago",
+			"Moneda",
+			"P/U",
+			"Descuento",
+			"Cantidad",
+			"Total",
+			"Op. gravada",
+			"IGV",
+		]; //print_R($headers); echo "<br/><br/>";
+		
+		$rows = [];
+		$rows[] = $headers;
+		
+		$sales = $this->general->filter("sale", $filter, null, null, "registed_at", "desc");
+		foreach($sales as $item){
+			$curr = $currency_arr[$item->currency_id];
+			$client = $item->client_id ? $this->general->id("person", $item->client_id)->name : null;
+			
+			$payment = $this->general->id("payment", $item->id);
+			$payment_method = $payment ? $this->general->id("payment_method", $payment->payment_method_id)->description : null;
+		
+			$products = $this->general->filter("sale_product", ["sale_id" => $item->id]);
+			if ($products){
+				foreach($products as $p){
+					
+					$pr = $this->general->id("product", $p->product_id);
+					$op = $this->general->id("product_option", $p->option_id);
+					
+					$total = ($p->price - $p->discount) * $p->qty;
+					$amount = round($total / 1.18, 2);
+					$igv = $total - $amount;
+					
+					$rows[] = [
+						date("Y-m-d", strtotime($item->registed_at)),
+						$client,
+						$pr->code,
+						$pr->description,
+						$op ? $op->description : "",
+						$payment_method,
+						$curr,
+						$p->price,
+						$p->discount,
+						$p->qty,
+						$total,
+						$amount,
+						$igv,
+					];
+					
+					/*
+					print_r($row); echo "<br/>";echo "<br/>";
+					
+					print_r($item); echo "<br/>";
+					print_r($p); echo "<br/>";
+					print_r($pr); echo "<br/>";
+					print_r($op); echo "<br/>";
+					*/
+				}
+			}
+		}
+		
+		$total_sales = $total_op = $total_igv = 0;
+		
+		$summary = [];
+		foreach($rows as $item){
+			$considered = false;
+			
+			$total_sales += (float)$item[10];
+			$total_op += (float)$item[11];
+			$total_igv += (float)$item[12];
+			
+			foreach($summary as $i => $item_s){
+				if (($item_s[0] === $item[2]) and ($item_s[2] === $item[6])){
+					
+					$summary[$i][4] += $item[8];
+					$summary[$i][5] += $item[9];
+					$summary[$i][6] += $item[10];
+					$summary[$i][7] += $item[11];
+					$summary[$i][8] += $item[12];
+					
+					$considered = true;
+				}
+			}
+			
+			if (!$considered){
+				$summary[] = [
+					$item[2],
+					$item[3],
+					$item[6],
+					$item[7],
+					$item[8],
+					$item[9],
+					$item[10],
+					$item[11],
+					$item[12],
+				];
+			}
+		}
+		
+		//foreach($summary as $item){ print_r($item); echo "<br/>"; }
+		
+		$data = [
+			"from" => $from,
+			"to" => $to,
+			"total" => [$total_sales, $total_op, $total_igv],
+			"summary" => $summary,
+			"rows" => $rows,
+		];
+		
+		$html = $this->load->view('sys/report/sales_report', $data, true);
+		$filename = "Ventas ".$from." ~ ".$to;
+		
+		$this->load->library('dompdf_lib');
+		$this->dompdf_lib->make_pdf_a4($html, $filename, 'landscape');//reporte A4 horizontal
+		//echo $html;
+	}
+	
 	public function generate_report(){
 		$type = "error"; $msgs = []; $msg = null; $move_to = null;
 		$data = $this->input->post();
