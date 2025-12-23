@@ -184,7 +184,7 @@ class Ajax_f extends CI_Controller {
 			$app = $this->general->filter("appointment", $f, null, null, "schedule_from", "asc");
 			foreach($app as $item){
 				$schedules[] = [
-					"type" => "appointment",
+					"type" => "Consulta",
 					"specialty" => $this->general->unique("specialty", "id", $item->specialty_id)->name,
 					"patient" => $this->general->unique("person", "id", $item->patient_id)->name,
 					"status" => $status_arr[$item->status_id],
@@ -195,7 +195,7 @@ class Ajax_f extends CI_Controller {
 			$sur = $this->general->filter("surgery", $f, null, null, "schedule_from", "asc");
 			foreach($sur as $item){
 				$schedules[] = [
-					"type" => "surgery",
+					"type" => "Cirugía",
 					"specialty" => $this->general->unique("specialty", "id", $item->specialty_id)->name,
 					"patient" => $this->general->unique("person", "id", $item->patient_id)->name,
 					"status" => $status_arr[$item->status_id],

@@ -6,7 +6,7 @@
 			<div><?= $item["reserved"] ?> _ <?= $item["patient"] ?></div>
 			<div><span class="badge bg-<?= $item["status"]->color ?>"><?= $this->lang->line($item["status"]->code) ?></span></div>
 		</div>
-		<small><?= $this->lang->line($item["type"]) ?> | <?= $item["specialty"] ?></small>
+		<small><?= $item["type"] ?> | <?= $item["specialty"] ?></small>
 	</div>
 	<?php } ?>
 </div>

@@ -278,7 +278,7 @@ class Patient extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 	
-	public function add_credit(){
+	public function add_credit(){//to develop 20251223
 		$type = "error"; $msgs = []; $msg = null;
 		
 		if ($this->utility_lib->check_access("patient", "admin_credit")){
