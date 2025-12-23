@@ -19,7 +19,6 @@ class Patient extends CI_Controller {
 		
 		$f_url = [
 			"page" => $this->input->get("page"),
-			"keyword" => $this->input->get("keyword"),
 			"doc_type_id" => $this->input->get("doc_type_id"),
 			"doc_number" => $this->input->get("doc_number"),
 			"name" => $this->input->get("name"),
@@ -28,21 +27,40 @@ class Patient extends CI_Controller {
 		
 		if (!$f_url["page"]) $f_url["page"] = 1;
 		
+		//filters
 		$f_w = $f_l = $f_w_in = [];
-		if ($f_url["keyword"]) $f_l["doc_number"] = $f_l["name"] = $f_l["email"] = $f_l["tel"] = $f_url["keyword"];
+		
+		if ($f_url["doc_type_id"]) $f_w["doc_type_id"] = $f_url["doc_type_id"];
+		if ($f_url["doc_number"]) $f_w["doc_number"] = $f_url["doc_number"];
+		if ($f_url["name"]) $f_l[] = ["field" => "name", "values" => explode(" ", trim($f_url["name"]))];
+		if ($f_url["tel"]) $f_l[] = ["field" => "tel", "values" => explode(" ", trim($f_url["tel"]))];
 		
 		$doc_types_arr = [];
 		$doc_types = $this->general->all("doc_type", "id", "asc");
 		foreach($doc_types as $item) $doc_types_arr[$item->id] = $item->short;
 		
+		$sex_arr = [];
+		$sex = $this->general->all("sex", "id", "asc");
+		foreach($sex as $item) $sex_arr[$item->id] = $item->description;
+		
+		$blood_type_arr = [];
+		$blood_types = $this->general->all("blood_type", "id", "asc");
+		foreach($blood_types as $item) $blood_type_arr[$item->id] = $item->description;
+		
+		$patients = $this->general->filter("person", $f_w, $f_l, $f_w_in, "registed_at", "desc", 25, 25*($f_url["page"]-1));
+		foreach($patients as $item){
+			$item->doc_type = $item->doc_type_id ? $doc_types_arr[$item->doc_type_id] : "";
+			$item->sex = $item->sex_id ? $sex_arr[$item->sex_id] : "";
+			$item->blood_type = $item->blood_type_id ? $blood_type_arr[$item->blood_type_id] : "";
+		}
+		
 		$data = [
 			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("person", $f_w, $f_l, $f_w_in)),
 			"f_url" => $f_url,
-			"patients" => $this->general->filter("person", $f_w, $f_l, $f_w_in, "registed_at", "desc", 25, 25*($f_url["page"]-1)),
+			"patients" => $patients,
 			"doc_types" => $doc_types,
-			"doc_types_arr" => $doc_types_arr,
-			"sex_ops" => $this->general->all("sex", "description", "asc"),
-			"blood_type_ops" => $this->general->all("blood_type", "description", "asc"),
+			"sex_ops" => $sex,
+			"blood_type_ops" => $blood_types,
 			"title" => $this->lang->line('patients'),
 			"main" => "clinic/patient/list",
 		];

@@ -78,7 +78,6 @@ $db['default'] = array(
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => '',
-	//'database' => 'clinic',
 	'database' => 'everlyn',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

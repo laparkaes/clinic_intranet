@@ -119,6 +119,7 @@
 								<div class="form-group col-md-6">
 									<label class="form-label">Documento</label>
 									<select class="form-select" name="doc_type_id">
+										<option value="">Todos</option>
 										<?php foreach($doc_types as $d){ if ($d->sunat_code){ ?>
 										<option value="<?= $d->id ?>" <?= $f_url["doc_type_id"] == $d->id ? "selected" : "" ?>><?= $d->description ?></option>
 										<?php }} ?>
@@ -149,32 +150,23 @@
 		</div>
 	</div>
 </div>
-
-<form class="row d-flex justify-content-end g-3">
-	<input type="hidden" value="1" name="page">
-	<div class="col-md-auto col-12">
-		<input type="text" class="form-control" id="inp_search" name="keyword" placeholder="<?= $this->lang->line('w_search') ?>" value="<?= $f_url["keyword"] ?>">
-	</div>
-	<div class="col-md-auto col-12 text-center d-grid gap-2">
-		<button type="submit" class="btn btn-primary btn-block">
-			<i class="bi bi-search"></i>
-		</button>
-  </div>
-</form>
-<div class="row mt-3">
+<div class="row">
 	<div class="col">
-		<div class="card bl_content" id="bl_list">
-			<div class="card-body">
-				<h5 class="card-title"><?= $this->lang->line('w_list') ?></h5>
+		<div class="card">
+			<div class="card-body pt-3">
 				<?php if ($patients){ ?>
 				<div class="table-responsive">
 					<table class="table table-responsive-md">
 						<thead>
 							<tr>
 								<th><strong>#</strong></th>
-								<th><strong><?= $this->lang->line('w_document') ?></strong></th>
-								<th><strong><?= $this->lang->line('w_name') ?></strong></th>
-								<th><strong><?= $this->lang->line('w_tel') ?></strong></th>
+								<th><strong>Documento</strong></th>
+								<th><strong>Nombre</strong></th>
+								<th><strong>Teléfono</strong></th>
+								<th><strong>Email</strong></th>
+								<th><strong>Edad</strong></th>
+								<th><strong>Sexo</strong></th>
+								<th><strong>G.Sangre</strong></th>
 								<th></th>
 							</tr>
 						</thead>
@@ -182,10 +174,14 @@
 							<?php foreach($patients as $i => $item){ ?>
 							<tr>
 								<td><strong><?= number_format(($f_url["page"] - 1) * 25 + 1 + $i) ?></strong></td>
-								<td><?= $doc_types_arr[$item->doc_type_id]." ".$item->doc_number ?></td>
+								<td><?= $item->doc_type." ".$item->doc_number ?></td>
 								<td><?= $item->name ?></td>
 								<td><?= $item->tel ?></td>
-								<td class="text-right">
+								<td><?= $item->email ?></td>
+								<td><?= $item->birthday ?></td>
+								<td><?= $item->sex ?></td>
+								<td><?= $item->blood_type ?></td>
+								<td class="text-end">
 									<a href="<?= base_url() ?>clinic/patient/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
 										<i class="bi bi-arrow-right"></i>
 									</a>
@@ -204,13 +200,8 @@
 					</div>
 				</div>
 				<?php }else{ ?>
-				<h5 class="text-danger mt-3"><?= $this->lang->line('t_no_patients') ?></h5>
+				<span class="text-danger mt-3">No existe pacientes registrados o cumplan con datos de búsqueda.</span>
 				<?php } ?>
-			</div>
-		</div>
-		<div class="card bl_content d-none" id="bl_add">
-			<div class="card-body">
-				<h5 class="card-title"><?= $this->lang->line('w_patient_info') ?></h5>
 			</div>
 		</div>
 	</div>
