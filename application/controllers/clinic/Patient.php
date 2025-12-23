@@ -49,6 +49,8 @@ class Patient extends CI_Controller {
 		
 		$patients = $this->general->filter("person", $f_w, $f_l, $f_w_in, "registed_at", "desc", 25, 25*($f_url["page"]-1));
 		foreach($patients as $item){
+			$item->age = $this->my_func->age_calculator($item->birthday);
+			
 			$item->doc_type = $item->doc_type_id ? $doc_types_arr[$item->doc_type_id] : "";
 			$item->sex = $item->sex_id ? $sex_arr[$item->sex_id] : "";
 			$item->blood_type = $item->blood_type_id ? $blood_type_arr[$item->blood_type_id] : "";

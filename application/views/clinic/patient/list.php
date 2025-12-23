@@ -178,7 +178,7 @@
 								<td><?= $item->name ?></td>
 								<td><?= $item->tel ?></td>
 								<td><?= $item->email ?></td>
-								<td><?= $item->birthday ?></td>
+								<td><?= $item->age ?></td>
 								<td><?= $item->sex ?></td>
 								<td><?= $item->blood_type ?></td>
 								<td class="text-end">

@@ -210,9 +210,7 @@
 										<th><?= $this->lang->line('w_received') ?></th>
 										<th><?= $this->lang->line('w_change') ?></th>
 										<th><?= $this->lang->line('w_balance') ?></th>
-										<?php if (!$voucher->sale_id){ ?>
 										<th></th>
-										<?php } ?>
 									</tr>
 								</thead>
 								<tbody>
@@ -224,15 +222,11 @@
 										<td><?= $sale->currency." ".number_format($p->received, 2) ?></td>
 										<td><?= ($p->change > 0) ? $sale->currency." ".number_format($p->change, 2) : "-" ?></td>
 										<td><?= $sale->currency." ".number_format($p->balance, 2) ?></td>
-										<?php if (!$voucher->sale_id){ ?>
 										<td class="text-end">
-											<?php if ((!$i) and ($p_qty > 1)){ ?>
 											<button type="button" class="btn btn-danger" id="btn_delete_payment" value="<?= $p->id ?>">
 												<i class="bi bi-trash"></i>
 											</button>
-											<?php } ?>
 										</td>
-										<?php } ?>
 									</tr>
 									<?php } ?>
 								</tbody>
@@ -659,7 +653,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	
 	//sale
 	$("#btn_cancel_sale").click(function() {
-		ajax_simple_warning({id: $(this).val()}, "commerce/sale/cancel_sale", "wm_sale_cancel").done(function(res) {
+		ajax_simple_warning({id: $(this).val()}, "commerce/sale/cancel_sale", "¿Desea anular la venta?").done(function(res) {
 			swal_redirection(res.type, res.msg, window.location.href);
 		});
 	});
@@ -667,11 +661,10 @@ document.addEventListener("DOMContentLoaded", () => {
 	//payment
 	$("#form_add_payment").submit(function(e) {
 		e.preventDefault();
-		function add_payment(dom){
-			ajax_form_warning(this, "commerce/sale/add_payment", "wm_payment_add").done(function(res) {
-				swal_redirection(res.type, res.msg, window.location.href);
-			});
-		}
+		
+		ajax_form_warning(this, "commerce/sale/add_payment", "¿Desea agregar el pago?").done(function(res) {
+			swal_redirection(res.type, res.msg, window.location.href);
+		});
 	});
 	
 	$("#btn_add_payment").click(function() {
@@ -679,7 +672,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 	
 	$("#btn_delete_payment").click(function() {
-		ajax_simple_warning({id: $(this).val()}, "commerce/sale/delete_payment", "wm_payment_delete").done(function(res) {
+		ajax_simple_warning({id: $(this).val()}, "commerce/sale/delete_payment", "¿Desea eliminar el pago?").done(function(res) {
 			swal_redirection(res.type, res.msg, window.location.href);
 		});
 	});
