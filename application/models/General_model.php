@@ -27,17 +27,21 @@ class General_model extends CI_Model{
 	
 	function filter($tablename, $w = null, $l = null, $w_in = null, $order_by = "", $order = "", $limit = "", $offset = ""){
 		if ($w){ $this->db->group_start(); $this->db->where($w); $this->db->group_end(); }
+		
 		if ($l){
-			$this->db->or_group_start();
+			$this->db->group_start();
 			
 			foreach($l as $item){
 				foreach($item["values"] as $val){
+					$this->db->or_group_start();
 					if ($val) $this->db->like($item["field"], trim($val));
+					$this->db->group_end();
 				}
 			}
 			
 			$this->db->group_end();
 		}
+		
 		if ($w_in){
 			$this->db->group_start();
 			foreach($w_in as $item) $this->db->where_in($item["field"], $item["values"]);

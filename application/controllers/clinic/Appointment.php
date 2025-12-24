@@ -29,7 +29,8 @@ class Appointment extends CI_Controller {
 		if ($f_url["status"]) $f_w["status_id"] = $f_url["status"];
 		if ($f_url["keyword"]){
 			$aux = [-1];
-			$people = $this->general->filter("person", null, ["name" => $f_url["keyword"]]);
+			//$people = $this->general->filter("person", null, ["name" => $f_url["keyword"]]);
+			$people = $this->general->filter("person", null, [["field" => "name", "values" => explode(" ", trim($f_url["keyword"]))]]);
 			foreach($people as $p) $aux[] = $p->id;
 			
 			$f_w_in[] = ["field" => "patient_id", "values" => $aux];

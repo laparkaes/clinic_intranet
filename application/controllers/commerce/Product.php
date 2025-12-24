@@ -555,9 +555,13 @@ class Product extends CI_Controller {
 		$w["active"] = true;
 		if ($id) $w["id"] = $id;
 		if ($category_id) $w["category_id"] = $category_id;
-		if ($description) $l["description"] = $description;
+		//if ($description) $l["description"] = $description;
+		if ($description) $l[] = ["field" => "description", "values" => explode(" ", trim($description))];
 		
 		$products = $this->general->filter("product", $w, $l, null, "description", "asc");
+		
+		//echo $this->db->last_query();
+		
 		if ($products){
 			$cat_arr = [];
 			$categories = $this->general->all("product_category");
