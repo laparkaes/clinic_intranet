@@ -44,7 +44,7 @@ class Sale extends CI_Controller {
 		if (!$f_url["page"]) $f_url["page"] = 1;
 		if ($f_url["client"]){
 			$aux = [-1];
-			$people = $this->general->filter("person", null, ["name" => $f_url["client"]]);
+			$people = $this->general->filter("person", null, [["field" => "name", "values" => explode(" ", trim($f_url["client"]))]]);
 			foreach($people as $p) $aux[] = $p->id;
 			
 			$f_in[] = ["field" => "client_id", "values" => $aux];
