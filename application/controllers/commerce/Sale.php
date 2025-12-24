@@ -310,7 +310,7 @@ class Sale extends CI_Controller {
 		
 		$reservations = $patient_ids = [];
 		if ($data["doc_number"]){
-			$people = $this->general->filter("person", null, ["doc_number" => $data["doc_number"]]);
+			$people = $this->general->filter("person", null, [["field" => "doc_number", "values" => explode(" ", trim($data["doc_number"]))]]);
 			foreach($people as $item) $patient_ids[] = $item->id;
 		}
 		
