@@ -68,7 +68,7 @@ class My_func{
 	}
 	
 	/* return 36 */
-	function age_calculator(string $birthDate): ?int{//checked 20241213
+	function age_calculator(string $birthDate = null): ?int{//checked 20241213
 		// 입력된 생년월일 포맷 확인
 		if (empty($birthDate) or ($birthDate === "0000-00-00")) {
 			return null;

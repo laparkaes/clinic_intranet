@@ -8,8 +8,9 @@
 	<meta content="" name="keywords">
 	<link href="<?= base_url() ?>assets/img/favicon.png" rel="icon">
 	<link href="<?= base_url() ?>assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-	<link href="https://fonts.gstatic.com" rel="preconnect">
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+	
+	<link href="<?= base_url() ?>assets/vendor/fonts_googleapis/googleapis.css" rel="stylesheet">
+	
 	<link href="<?= base_url() ?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link href="<?= base_url() ?>assets/vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 	<link href="<?= base_url() ?>assets/vendor/simple-datatables/style.css" rel="stylesheet">
@@ -167,7 +168,7 @@
 	</footer>
 	<input type="hidden" id="base_url" value="<?= base_url() ?>">
 	<script src="<?= base_url() ?>assets/vendor/jquery-3.7.0.min.js"></script>
-	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js"></script>
+	<script src="<?= base_url() ?>assets/vendor/moment-with-locales.min.js"></script>
 	<script src="<?= base_url() ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="<?= base_url() ?>assets/vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 	<script src="<?= base_url() ?>assets/vendor/tinymce/tinymce.min.js"></script>
