@@ -285,7 +285,7 @@ class Report extends CI_Controller {
 			"rows" => $rows,
 		];
 		
-		$html = $this->load->view('sys/report/sales_report', $data, true);
+		$html = $this->load->view('sys/report/sales_report_', $data, true);
 		$filename = "Ventas ".$from." ~ ".$to;
 		
 		$this->load->library('dompdf_lib');

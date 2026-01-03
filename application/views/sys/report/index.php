@@ -14,7 +14,7 @@
 				<h5 class="card-title">Reporte de Venta</h5>
 				<div class="row">
 					<div class="col-md-12">
-						<form class="row g-3" action="<?= base_url() ?>sys/report/sales_report" method="POST" target="_blank">
+						<form class="row g-3" action="<?= base_url() ?>sys/report/sales_report_" method="POST" target="_blank">
 							<div class="col-md-6">
 								<label class="form-label">Desde</label>
 								<input type="text" class="form-control" id="gr_from" name="f" value="<?= date("Y-m-01") ?>">
