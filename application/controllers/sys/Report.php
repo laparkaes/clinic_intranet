@@ -9,6 +9,8 @@ class Report extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		date_default_timezone_set('America/Lima');
+		setlocale(LC_TIME, 'spanish.utf8');
+		
 		$this->lang->load("system", "spanish");
 		$this->lang->load("report", "spanish");
 		$this->load->model('general_model','general');
@@ -31,6 +33,93 @@ class Report extends CI_Controller {
 	}
 	
 	public function sales_report(){
+		ini_set('memory_limit', '1024M');
+		
+		$from = $this->input->post("f");
+		$to = $this->input->post("t");
+		
+		if (!$from) $from = date("Y-m-01");
+		if (!$to) $to = date("Y-m-d");
+		
+		//report date
+		$report_date = ucfirst(strftime("%A, %d de %B de %Y", strtotime($from)));
+		if ($from !== $to) $report_date .= " ~ ".ucfirst(strftime("%A, %d de %B de %Y", strtotime($to)));
+		
+		//lines
+		$type_arr = [];
+		$type = $this->general->all("sale_type");
+		foreach($type as $item) $type_arr[$item->id] = $item->description;
+		
+		$status_arr = [];
+		$status = $this->general->all("status");
+		foreach($status as $item) $status_arr[$item->id] = $this->lang->line($item->code);
+		
+		$currency_arr = [];
+		$currency = $this->general->all("currency");
+		foreach($currency as $item) $currency_arr[$item->id] = $item->description;
+		
+		$product_arr = [];
+		$product = $this->general->all("product");
+		foreach($product as $item) $product_arr[$item->id] = $item->description;
+		
+		$product_category_arr = [];
+		$product_category = $this->general->all("product_category");
+		foreach($product_category as $item) $product_category_arr[$item->id] = $item->name;
+		
+		$filter = [
+			"registed_at >=" => $from,
+			"registed_at <=" => date("Y-m-d", strtotime("+1 day", strtotime($to)))
+		];
+		
+		$sales = $this->general->filter("sale", $filter, null, null, "registed_at", "desc");
+		foreach($sales as $item){
+			$item->sale_type = $type_arr[$item->sale_type_id];
+			$item->currency = $currency_arr[$item->currency_id];
+			$item->client = $item->client_id ? $this->general->id("person", $item->client_id)->name : null;
+			
+			$payment = $this->general->unique("payment", "sale_id", $item->id);//load first payment as payment method
+			$item->payment_method = $payment ? $this->general->id("payment_method", $payment->payment_method_id)->description : null;
+			
+			print_r($item); echo "<br/>";
+			
+			$products = $this->general->filter("sale_product", ["sale_id" => $item->id]);
+			if ($products){
+				foreach($products as $p){
+					$p->product = $this->general->id("product", $p->product_id);
+					$p->product->category = $product_category_arr[$p->product->category_id];
+					$p->option = $this->general->id("product_option", $p->option_id);
+					
+					print_r($p); echo "<br/>";
+				}
+				
+			}
+			
+			 echo "<br/>";
+		}
+		
+		//summary
+		
+		
+		
+		
+		$data = [
+			"report_date" => $report_date,
+			"from" => $from,
+			"to" => $to,
+			//"total" => [$total_sales, $total_op, $total_igv],
+			//"summary" => $summary,
+			//"rows" => $rows,
+		];
+		
+		$html = $this->load->view('sys/report/sales_report', $data, true);
+		$filename = "Ventas ".$from." ~ ".$to;
+		
+		$this->load->library('dompdf_lib');
+		//$this->dompdf_lib->make_pdf_a4($html, $filename, 'landscape');//reporte A4 horizontal
+		echo $html;
+	}
+	
+	public function sales_report_(){//to be removed
 		ini_set('memory_limit', '1024M');
 		
 		$from = $this->input->post("f");

@@ -21,7 +21,7 @@
 							</div>
 							<div class="col-md-6">
 								<label class="form-label">Hasta</label>
-								<input type="text" class="form-control" id="gr_to" name="t" value="<?= date("Y-m-t") ?>">
+								<input type="text" class="form-control" id="gr_to" name="t" value="<?= date("Y-m-d") ?>">
 							</div>
 							<div class="col-md-12 pt-3">
 								<button type="submit" class="btn btn-primary">
