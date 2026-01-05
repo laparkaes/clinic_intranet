@@ -52,7 +52,10 @@ class Report extends CI_Controller {
 		
 		$status_arr = [];
 		$status = $this->general->all("status");
-		foreach($status as $item) $status_arr[$item->id] = $this->lang->line($item->code);
+		foreach($status as $item){
+			$item->translated = $this->lang->line($item->code);
+			$status_arr[$item->id] = $item;
+		}
 		
 		$currency_arr = [];
 		$currency = $this->general->all("currency");
@@ -75,12 +78,13 @@ class Report extends CI_Controller {
 		foreach($sales as $item){
 			$item->sale_type = $type_arr[$item->sale_type_id];
 			$item->currency = $currency_arr[$item->currency_id];
+			$item->status = $status_arr[$item->status_id];
 			$item->client = $item->client_id ? $this->general->id("person", $item->client_id)->name : null;
 			
 			$payment = $this->general->unique("payment", "sale_id", $item->id);//load first payment as payment method
 			$item->payment_method = $payment ? $this->general->id("payment_method", $payment->payment_method_id)->description : null;
 			
-			print_r($item); echo "<br/>";
+			//print_r($item); echo "<br/>";
 			
 			$products = $this->general->filter("sale_product", ["sale_id" => $item->id]);
 			if ($products){
@@ -89,12 +93,13 @@ class Report extends CI_Controller {
 					$p->product->category = $product_category_arr[$p->product->category_id];
 					$p->option = $this->general->id("product_option", $p->option_id);
 					
-					print_r($p); echo "<br/>";
+					//print_r($p); echo "<br/>";
 				}
-				
 			}
 			
-			 echo "<br/>";
+			$item->products = $products;
+			
+			 //echo "<br/>";
 		}
 		
 		//summary
@@ -106,6 +111,7 @@ class Report extends CI_Controller {
 			"report_date" => $report_date,
 			"from" => $from,
 			"to" => $to,
+			"sales" => $sales,
 			//"total" => [$total_sales, $total_op, $total_igv],
 			//"summary" => $summary,
 			//"rows" => $rows,
@@ -115,8 +121,8 @@ class Report extends CI_Controller {
 		$filename = "Ventas ".$from." ~ ".$to;
 		
 		$this->load->library('dompdf_lib');
-		//$this->dompdf_lib->make_pdf_a4($html, $filename, 'landscape');//reporte A4 horizontal
-		echo $html;
+		$this->dompdf_lib->make_pdf_a4($html, $filename, 'landscape');//reporte A4 horizontal
+		//echo $html;
 	}
 	
 	public function sales_report_(){//to be removed

@@ -27,6 +27,7 @@
         .header-table td {
             vertical-align: bottom;
             padding-bottom: 10px;
+			font-size: 8px;
         }
         .header-title {
             color: #128959;
@@ -112,9 +113,9 @@
             font-size: 8pt;
             font-weight: bold;
         }
-        .status-completed { background-color: #d4edda; color: #198754; }
-        .status-pending { background-color: #fff3cd; color: #856404; }
-		.status-canceled { background-color: #ffd5d9; color: #dc3545; }
+        .status-success { background-color: #d4edda; color: #198754; }
+        .status-warning { background-color: #fff3cd; color: #856404; }
+		.status-danger { background-color: #ffd5d9; color: #dc3545; }
 		
     </style>
 </head>
@@ -155,55 +156,41 @@
             </td>
         </tr>
     </table>
+	
+	<div class="d-none">
+	<?php
+	//foreach($sales as $item){ print_r($item); echo "<br/><br/>"; }
+	?>
+	</div>
 
     <div class="report-section">
         <h2>Detalle de Transacciones Recientes</h2>
         <table class="main-data">
             <thead>
                 <tr>
-                    <th>Categoría</th>
-                    <th>Modelo</th>
-                    <th>Cant.</th>
+                    <th>Fecha y Hora</th>
+                    <th>Cliente</th>
+					<th>Categoria</th>
+					<th>Producto</th>
+					<th>Cantidad</th>
                     <th>Monto</th>
-                    <th>Cliente / Distribuidor</th>
+                    <th>Forma de Pago</th>
                     <th>Estado</th>
                 </tr>
             </thead>
             <tbody>
-				<?php for($i=0; $i<30; $i++){ ?>
+				<?php foreach($sales as $sale){ foreach($sale->products as $product){ ?>
                 <tr>
-                    <td>Imágenes Médicas</td>
-                    <td>Vatech A9</td>
-                    <td>1</td>
-                    <td>$ 35,000</td>
-                    <td>Clínica Dental San Borja</td>
-                    <td><span class="badge status-completed">Completado</span></td>
+                    <td><div style="width: 70px;"><?= str_replace(" ", "<br/>", $sale->registed_at) ?></div></td>
+                    <td><?= $sale->client ?></td>
+					<td><?= $product->product->category ?></td>
+					<td><?= $product->product->description ?><br/>[<?= $product->product->code ?>]</td>
+					<td><?= $product->qty ?></td>
+                    <td><?= $sale->currency." ".number_format($product->price * $product->qty , 2) ?></td>
+                    <td><?= $sale->payment_method ?></td>
+                    <td><span class="badge status-<?= $sale->status->color ?>"><?= $sale->status->translated ?></span></td>
                 </tr>
-                <tr>
-                    <td>Línea Blanca</td>
-                    <td>InstaView Door-in-Door</td>
-                    <td>5</td>
-                    <td>$ 15,000</td>
-                    <td>Hiraoka - Miraflores</td>
-                    <td><span class="badge status-canceled">Cancelado</span></td>
-                </tr>
-                <tr>
-                    <td>Productos IT</td>
-                    <td>Monitor UltraWide 34"</td>
-                    <td>12</td>
-                    <td>$ 9,600</td>
-                    <td>Saga Falabella</td>
-                    <td><span class="badge status-pending">Pendiente</span></td>
-                </tr>
-                <tr>
-                    <td>Imágenes Médicas</td>
-                    <td>EzSensor Classic</td>
-                    <td>2</td>
-                    <td>$ 8,000</td>
-                    <td>Consultorio Odontológico Paz</td>
-                    <td><span class="badge status-completed">Completado</span></td>
-                </tr>
-				<?php } ?>
+				<?php }} ?>
             </tbody>
         </table>
     </div>
