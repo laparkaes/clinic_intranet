@@ -37,7 +37,7 @@
         }
         .header-date {
             text-align: right;
-            font-size: 9pt;
+            font-size: 15pt;
             color: #444;
         }
 		
@@ -58,7 +58,7 @@
             border-radius: 8px;
             text-align: center;
             border: 1px solid #dee2e6;
-            width: 25%;
+            //width: 25%;
         }
         .card h3 {
             margin: 0;
@@ -79,6 +79,7 @@
             padding: 15px;
             border-radius: 8px;
             border: 1px solid #dee2e6;
+			margin-bottom: 20px;
         }
         .report-section h2 {
             font-size: 12pt;
@@ -117,6 +118,15 @@
         .status-warning { background-color: #fff3cd; color: #856404; }
 		.status-danger { background-color: #ffd5d9; color: #dc3545; }
 		
+		.mb-3 { margin-bottom: 30px; }
+		.mb-1 { margin-bottom: 10px; }
+		.pt-3 { padding-top: 30px; }
+		.w-100 { width: 100%; }
+		.w-80 { width: 80%; }
+		.w-60 { width: 60%; }
+		.w-50 { width: 50%; }
+		.w-40 { width: 40%; }
+		.v-top {vertical-align: top;}
     </style>
 </head>
 <body>
@@ -132,45 +142,84 @@
             </td>
         </tr>
     </table>
-
-    <table class="stats-table">
-        <tr>
-            <td class="card">
-                <h3>Ingresos Totales</h3>
-                <div class="value">$ 124,500</div>
-            </td>
-            <td class="card">
-                <h3>Consultas</h3>
-                <div class="value">$ 124,500</div>
-				<div class="trend neutral">3 Nuevos Prospectos</div>
-            </td>
-            <td class="card">
-                <h3>Terapias</h3>
-                <div class="value">$ 124,500</div>
-                <div class="trend neutral">3 Nuevos Prospectos</div>
-            </td>
-            <td class="card">
-                <h3>Ventas</h3>
-                <div class="value">$ 2,964</div>
-				<div class="trend neutral">3 Nuevos Prospectos</div>
-            </td>
-        </tr>
-    </table>
 	
-	<div class="d-none">
-	<?php
-	//foreach($sales as $item){ print_r($item); echo "<br/><br/>"; }
-	?>
+	<div class="report-section">
+		<table class="w-100">
+			<tr>
+				<td class="w-40 v-top">
+					<h2>Resumen</h2>
+					<?php foreach($summary_total as $item){ if ($item->total){ ?>
+					<div class="card w-80 mb-1">
+						<h3>Total en <?= $item->currency ?></h3>
+						<div class="value"><?= $item->currency ?> <?= number_format($item->total, 2) ?></div>
+						<div class="trend neutral">Venta: <?= $item->currency ?> <?= number_format($item->amount, 2) ?></div>
+						<div class="trend neutral">IGV: <?= $item->currency ?> <?= number_format($item->vat, 2) ?></div>
+					</div>
+					<?php }} ?>
+				</td>
+				<td class="w-60 v-top">
+					<h2>Metodo de Pago</h2>
+					<table class="main-data w-90">
+						<thead>
+							<tr>
+								<th>Metodo</th>
+								<th>Cantidad</th>
+								<th>Venta</th>
+								<th>IGV</th>
+								<th>Total</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach($by_pay as $pay){ ?>
+							<tr>
+								<td><?= $pay->payment_method ?></td>
+								<td><?= number_format($pay->qty) ?></td>
+								<td><?= $pay->currency." ".number_format($pay->amount , 2) ?></td>
+								<td><?= $pay->currency." ".number_format($pay->vat , 2) ?></td>
+								<td><?= $pay->currency." ".number_format($pay->total , 2) ?></td>
+							</tr>
+							<?php } ?>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</table>
+    </div>
+	
+	<div class="report-section">
+		<h2>Categoría de Producto</h2>
+		<table class="main-data w-90">
+			<thead>
+				<tr>
+					<th>Categoría</th>
+					<th>Cantidad</th>
+					<th>Venta</th>
+					<th>IGV</th>
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach($by_cat as $cat){ ?>
+				<tr>
+					<td><?= $cat->category ?></td>
+					<td><?= number_format($cat->qty) ?></td>
+					<td><?= $cat->currency." ".number_format($cat->amount , 2) ?></td>
+					<td><?= $cat->currency." ".number_format($cat->vat , 2) ?></td>
+					<td><?= $cat->currency." ".number_format($cat->total , 2) ?></td>
+				</tr>
+				<?php } ?>
+			</tbody>
+		</table>
 	</div>
-
+	
     <div class="report-section">
-        <h2>Detalle de Transacciones Recientes</h2>
+        <h2>Detalle de Ventas</h2>
         <table class="main-data">
             <thead>
                 <tr>
                     <th>Fecha y Hora</th>
                     <th>Cliente</th>
-					<th>Categoria</th>
+					<th>Categoría</th>
 					<th>Producto</th>
 					<th>Cantidad</th>
                     <th>Monto</th>

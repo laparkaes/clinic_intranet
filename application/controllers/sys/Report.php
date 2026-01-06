@@ -69,6 +69,22 @@ class Report extends CI_Controller {
 		$product_category = $this->general->all("product_category");
 		foreach($product_category as $item) $product_category_arr[$item->id] = $item->name;
 		
+		//summary array
+		$by_cat = [];
+		$by_pay = [];
+		$summary_total = [];
+		foreach($currency as $item){
+			$aux = new stdClass;
+			$aux->currency = $item->description;
+			$aux->amount = 0;
+			$aux->vat = 0;
+			$aux->total = 0;
+			
+			$summary_total[$item->description] = clone $aux;
+		}
+		
+		//print_R($total);
+		
 		$filter = [
 			"registed_at >=" => $from,
 			"registed_at <=" => date("Y-m-d", strtotime("+1 day", strtotime($to)))
@@ -94,27 +110,88 @@ class Report extends CI_Controller {
 					$p->option = $this->general->id("product_option", $p->option_id);
 					
 					//print_r($p); echo "<br/>";
+					
+					//category summary
+					if ($item->status->code === "finished"){
+						$cat_key = $p->product->category.$item->currency;
+						if (!array_key_exists($cat_key, $by_cat)){
+							$aux = new stdClass;
+							$aux->category = $p->product->category;
+							$aux->currency = $item->currency;
+							$aux->qty = 0;
+							$aux->amount = 0;
+							$aux->vat = 0;
+							$aux->total = 0;
+							
+							$by_cat[$cat_key] = clone $aux;
+						}
+						
+						$total = $p->price - $p->discount;
+						$amount = round($total/1.18, 2);
+						
+						$by_cat[$cat_key]->qty += $p->qty;
+						$by_cat[$cat_key]->total += $total;
+						$by_cat[$cat_key]->amount += $amount;
+						$by_cat[$cat_key]->vat += $total - $amount;	
+					}
 				}
 			}
 			
 			$item->products = $products;
 			
-			 //echo "<br/>";
+			//payment method summary
+			if ($item->status->code === "finished"){
+				$pay_key = $item->payment_method.$item->currency;
+				if (!array_key_exists($pay_key, $by_pay)){
+					$aux = new stdClass;
+					$aux->payment_method = $item->payment_method;
+					$aux->currency = $item->currency;
+					$aux->qty = 0;
+					$aux->amount = 0;
+					$aux->vat = 0;
+					$aux->total = 0;
+					
+					$by_pay[$pay_key] = clone $aux;
+				}
+				
+				$by_pay[$pay_key]->qty++;
+				$by_pay[$pay_key]->total += $item->total;
+				$by_pay[$pay_key]->amount += $item->amount;
+				$by_pay[$pay_key]->vat += $item->vat;
+				
+				//sum to total
+				$summary_total[$item->currency]->total += $item->total;
+				$summary_total[$item->currency]->amount += $item->amount;
+				$summary_total[$item->currency]->vat += $item->vat;
+			}
+			
+			//print_r($item); echo "<br/><br/>";
+			//echo "<br/>";
 		}
 		
-		//summary
+		//sort summary
+		usort($by_cat, function ($a, $b) {
+			return $b->total <=> $a->total; // 내림차순
+		});
 		
+		usort($by_pay, function ($a, $b) {
+			return $b->total <=> $a->total; // 내림차순
+		});
 		
+		usort($summary_total, function ($a, $b) {
+			return $b->total <=> $a->total; // 내림차순
+		});
 		
+		//print_r($by_cat); echo "<br/><br/>"; print_r($by_pay);
 		
 		$data = [
 			"report_date" => $report_date,
 			"from" => $from,
 			"to" => $to,
 			"sales" => $sales,
-			//"total" => [$total_sales, $total_op, $total_igv],
-			//"summary" => $summary,
-			//"rows" => $rows,
+			"by_cat" => $by_cat,
+			"by_pay" => $by_pay,
+			"summary_total" => $summary_total,
 		];
 		
 		$html = $this->load->view('sys/report/sales_report', $data, true);
