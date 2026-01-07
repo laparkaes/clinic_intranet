@@ -206,8 +206,8 @@ class Report extends CI_Controller {
 		$filename = "Ventas ".$from." ~ ".$to;
 		
 		$this->load->library('dompdf_lib');
-		//$this->dompdf_lib->make_pdf_a4($html, $filename, 'landscape');//reporte A4 horizontal
-		echo $html;
+		$this->dompdf_lib->make_pdf_a4($html, $filename, 'landscape');//reporte A4 horizontal
+		//echo $html;
 	}
 	
 	public function sales_report_(){//to be removed
