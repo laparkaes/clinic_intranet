@@ -12,73 +12,47 @@
 		<div class="card">
 			<div class="card-body">
 				<h5 class="card-title">Reporte de Venta</h5>
-				<div class="row">
-					<div class="col-md-12">
-						<form class="row g-3" action="<?= base_url() ?>sys/report/sales_report" method="POST" target="_blank">
-							<div class="col-md-6">
-								<label class="form-label">Desde</label>
-								<input type="text" class="form-control" id="gr_from" name="f" value="<?= date("Y-m-01") ?>">
-							</div>
-							<div class="col-md-6">
-								<label class="form-label">Hasta</label>
-								<input type="text" class="form-control" id="gr_to" name="t" value="<?= date("Y-m-d") ?>">
-							</div>
-							<div class="col-md-12 pt-3">
+				<div class="row g-3">
+					<div class="col-md-6">
+						<label class="form-label">Reporte Rapido</label>
+						<div class="d-flex flex-row">
+							<form class="me-3" action="<?= base_url() ?>sys/report/sales_report" method="POST" target="_blank">
+								<input type="text" class="form-control gr_from d-none" name="f" value="<?= date("Y-m-d") ?>" readonly>
+								<input type="text" class="form-control gr_to d-none" name="t" value="<?= date("Y-m-d") ?>" readonly>
 								<button type="submit" class="btn btn-primary">
-									Generar
+									Hoy
 								</button>
-							</div>
-						</form>
+							</form>
+							<form action="<?= base_url() ?>sys/report/sales_report" method="POST" target="_blank">
+								<input type="text" class="form-control gr_from d-none" name="f" value="<?= date("Y-m-01") ?>" readonly>
+								<input type="text" class="form-control gr_to d-none" name="t" value="<?= date("Y-m-t") ?>" readonly>
+								<button type="submit" class="btn btn-primary">
+									Mes
+								</button>
+							</form>
+						</div>
 					</div>
+					<form class="col-md-6" action="<?= base_url() ?>sys/report/sales_report" method="POST" target="_blank">
+						<label class="form-label">Ingresar rango de fechas:</label>
+						<div class="input-group mb-3">
+							<input type="text" class="form-control gr_from" id="" name="f" value="<?= date("Y-m-01") ?>">
+							<span class="input-group-text">~</span>
+							<input type="text" class="form-control gr_to" id="" name="t" value="<?= date("Y-m-d") ?>">
+							<button type="submit" class="btn btn-primary">
+								Generar
+							</button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
-		
-		<!-- div class="card">
-			<div class="card-body">
-				<h5 class="card-title"><?= $this->lang->line('w_detailed_report') ?></h5>
-				<div class="row">
-					<div class="col-md-6">
-						<form class="row g-3" id="form_generate_report">
-							<div class="col-md-12">
-								<label class="form-label"><?= $this->lang->line('w_type') ?></label>
-								<select class="form-select" name="type_id">
-									<?php foreach($report_types as $item){ ?>
-									<option value="<?= $item->id ?>"><?= $item->name ?></option>
-									<?php } ?>
-								</select>
-								<div class="sys_msg" id="gr_type_msg"></div>
-							</div>
-							<div class="col-md-6">
-								<label class="form-label"><?= $this->lang->line('w_from') ?></label>
-								<input type="text" class="form-control" id="gr_from" name="from" value="<?= date("Y-m-d", strtotime("-3 months")) ?>">
-								<div class="sys_msg" id="gr_from_msg"></div>
-							</div>
-							<div class="col-md-6">
-								<label class="form-label"><?= $this->lang->line('w_to') ?></label>
-								<input type="text" class="form-control" id="gr_to" name="to" value="<?= date("Y-m-d") ?>">
-								<div class="sys_msg" id="gr_to_msg"></div>
-							</div>
-							<div class="col-md-12 pt-3">
-								<button type="submit" class="btn btn-primary">
-									<?= $this->lang->line('btn_generate') ?>
-								</button>
-							</div>
-						</form>
-					</div>
-					<div class="col-md-6">
-						<img class="w-100" src="<?= base_url() ?>resources/images/report_example.png">
-						<div class="text-center mt-3"><?= $this->lang->line('w_example') ?></div>
-					</div>
-				</div>
-			</div>
-		</div -->
 	</div>
 </div>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-	set_date_picker("#gr_from", null);
-	set_date_picker("#gr_to", null);
+	set_date_picker(".gr_from", null);
+	set_date_picker(".gr_to", null);
 	
 	$("#form_generate_report").submit(function(e) {
 		e.preventDefault();
