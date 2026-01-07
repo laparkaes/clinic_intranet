@@ -25,7 +25,7 @@
 							</form>
 							<form action="<?= base_url() ?>sys/report/sales_report" method="POST" target="_blank">
 								<input type="text" class="form-control gr_from d-none" name="f" value="<?= date("Y-m-01") ?>" readonly>
-								<input type="text" class="form-control gr_to d-none" name="t" value="<?= date("Y-m-t") ?>" readonly>
+								<input type="text" class="form-control gr_to d-none" name="t" value="<?= date("Y-m-d") ?>" readonly>
 								<button type="submit" class="btn btn-primary">
 									Mes
 								</button>
