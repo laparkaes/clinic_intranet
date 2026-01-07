@@ -113,6 +113,7 @@ class Report extends CI_Controller {
 					
 					//category summary
 					if ($item->status->code === "finished"){
+						
 						$cat_key = $p->product->category.$item->currency;
 						if (!array_key_exists($cat_key, $by_cat)){
 							$aux = new stdClass;
@@ -126,13 +127,20 @@ class Report extends CI_Controller {
 							$by_cat[$cat_key] = clone $aux;
 						}
 						
-						$total = $p->price - $p->discount;
+						$total = ($p->price - $p->discount) * $p->qty;
 						$amount = round($total/1.18, 2);
 						
 						$by_cat[$cat_key]->qty += $p->qty;
 						$by_cat[$cat_key]->total += $total;
 						$by_cat[$cat_key]->amount += $amount;
 						$by_cat[$cat_key]->vat += $total - $amount;	
+						
+						/*
+						if ("Procedimiento" === $p->product->category){
+							print_r($item); echo "<br/>Sumado<br/>";
+							print_r($by_cat[$cat_key]); echo "<br/><br/>";
+						}
+						*/
 					}
 				}
 			}
@@ -198,8 +206,8 @@ class Report extends CI_Controller {
 		$filename = "Ventas ".$from." ~ ".$to;
 		
 		$this->load->library('dompdf_lib');
-		$this->dompdf_lib->make_pdf_a4($html, $filename, 'landscape');//reporte A4 horizontal
-		//echo $html;
+		//$this->dompdf_lib->make_pdf_a4($html, $filename, 'landscape');//reporte A4 horizontal
+		echo $html;
 	}
 	
 	public function sales_report_(){//to be removed
