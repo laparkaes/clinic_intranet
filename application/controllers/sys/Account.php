@@ -77,6 +77,8 @@ class Account extends CI_Controller {
 				
 				if (!$this->general->filter("account", ["email" => $a["email"]])){
 					unset($a["confirm"]);
+					
+					$a["is_valid"] = true;
 					$a["password"] = password_hash($a["password"], PASSWORD_BCRYPT);
 					$a["registed_at"] = date('Y-m-d H:i:s', time());
 					
