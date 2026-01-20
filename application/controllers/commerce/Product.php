@@ -585,7 +585,7 @@ class Product extends CI_Controller {
 		}
 		
 		//send with option information of first product
-		$products[0]->options = $this->general->filter("product_option", ["product_id" => $products[0]->id], null, null, "id", "asc");
+		if ($products) $products[0]->options = $this->general->filter("product_option", ["product_id" => $products[0]->id], null, null, "id", "asc");
 		
 		header('Content-Type: application/json');
 		echo json_encode(["products" => $products]);

@@ -20,6 +20,12 @@ class Appointment extends CI_Controller {
 		$f_url = [
 			"page" => $this->input->get("page"),
 			"status" => $this->input->get("status"),
+			
+			"doc_type_id" => $this->input->get("doc_type_id"),
+			"doc_number" => $this->input->get("doc_number"),
+			"name" => $this->input->get("name"),
+			"tel" => $this->input->get("tel"),
+			
 			"keyword" => $this->input->get("keyword"),
 			"diagnosis" => $this->input->get("diagnosis"),
 		];
@@ -71,12 +77,35 @@ class Appointment extends CI_Controller {
 		$status = $this->general->filter("status", null, null, [["field" => "id", "values" => $status_aux]]);
 		foreach($status as $item) $status_arr[$item->id] = $item;
 		
+		//for add appointment
+		$enabled_id = $this->general->status("enabled")->id;
+		
+		//load specialties
+		$aux_f = ["status_id" => $enabled_id];
+		$specialties = $this->general->all("specialty", "name", "asc");
+		foreach($specialties as $s){
+			$aux_f["specialty_id"] = $s->id;
+			$s->doctor_qty = $this->general->counter("doctor", $aux_f);
+		}
+		
+		//load doctors
+		$aux_f = ["status_id" => $enabled_id];
+		$doctors = $this->general->filter("doctor", $aux_f);
+		foreach($doctors as $d){
+			if (!$this->general->id("person", $d->person_id)) echo $d->person_id."<br/>";
+			$d->name = $this->general->id("person", $d->person_id)->name;
+		}
+		
+		//echo  $this->db->last_query(); return;
+		
 		$data = [
 			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("appointment", $f_w, null, $f_w_in)),
 			"f_url" => $f_url,
 			"status" => $status,
 			"status_arr" => $status_arr,
 			"appointments" => $appointments,
+			"specialties"	=> $specialties,
+			"doctors"	=> $doctors,
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"title" => $this->lang->line('appointments'),
 			"main" => "clinic/appointment/list",
@@ -417,7 +446,7 @@ class Appointment extends CI_Controller {
 	
 	public function register(){
 		$type = "error"; $msgs = []; $msg = null; $move_to = null;
-		 	
+
 		if ($this->utility_lib->check_access("appointment", "register")){
 			$app = $this->input->post("app");
 			$sch = $this->input->post("sch");
