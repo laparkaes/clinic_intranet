@@ -149,6 +149,18 @@
 						<div class="modal-body">
 							<div class="row g-3">
 								<div class="col-md-12 pt-3">
+									<strong>Por estado de consulta</strong>
+								</div>
+								<div class="form-group col-md-12">
+									<label class="form-label">Estado</label>
+									<select class="form-select" name="status_id">
+										<option value="">Todos</option>
+										<?php foreach($status as $item){ if ($item->id == $f_url["status_id"]) $s = "selected"; else $s = ""; ?>
+										<option value="<?= $item->id ?>" <?= $s ?>><?= $this->lang->line($item->code) ?></option>
+										<?php } ?>
+									</select>
+								</div>
+								<div class="col-md-12 pt-3">
 									<strong>Por paciente</strong>
 								</div>
 								<div class="form-group col-md-6">
@@ -191,44 +203,11 @@
 		</div>
 	</div>
 </div>
-
-<div class="d-flex justify-content-between align-items-start">
-	<div class="btn-group mb-3">
-		<a class="btn btn-primary" href="<?= base_url() ?>clinic/appointment">
-			Lista
-		</a>
-		<button type="button" class="btn btn-outline-primary control_bl" value="bl_add">
-			Búsqueda
-		</button>
-		<a class="btn btn-outline-primary" href="<?= base_url() ?>clinic/appointment/add">
-			Agregar Consulta
-		</a>
-	</div>
-</div>
 <div class="row">
 	<div class="col">
-		<div class="card bl_content" id="bl_list">
+		<div class="card">
 			<div class="card-body">
-				<div class="d-flex justify-content-between">
-					<h5 class="card-title">Lista de Consultas</h5>
-					<form class="row d-flex justify-content-end align-items-center">
-						<input type="hidden" value="1" name="page">
-						<div class="input-group mb-3">
-							<select class="form-select" id="sl_status" name="status" style="width: 150px;">
-								<option value="">Estado</option>
-								<?php foreach($status as $item){ if ($item->id == $f_url["status"]) $s = "selected"; else $s = ""; ?>
-								<option value="<?= $item->id ?>" <?= $s ?>><?= $this->lang->line($item->code) ?></option>
-								<?php } ?>
-							</select>
-							<input type="text" class="form-control" name="keyword" placeholder="Paciente" value="<?= $f_url["keyword"] ?>" style="width: 250px;">
-							<input type="text" class="form-control" name="diagnosis" placeholder="Diagnóstico (min 3 letras)" value="<?= $f_url["diagnosis"] ?>" style="width: 250px;">
-							<button type="submit" class="btn btn-primary btn-block">
-								<i class="bi bi-search"></i>
-							</button>
-						</div>
-					</form>
-				</div>
-				
+				<h5 class="card-title">Lista de Consultas</h5>
 				<?php if ($appointments){ ?>
 				<div class="table-responsive">
 					<table class="table align-middle">
@@ -271,25 +250,14 @@
 					</div>
 				</div>
 				<?php }else{ ?>
-				<h5 class="text-danger mt-3"><?= $this->lang->line('t_no_appointments') ?></h5>
+				<h5 class="text-danger mt-3">No existe consultas registradas.</h5>
 				<?php } ?>
 			</div>
-		</div>
-		<div class="card bl_content d-none" id="bl_add">
-			<?php $this->load->view("clinic/appointment/form_add_appointment", ["patient" => null, "doctor" => null]); ?>
 		</div>
 	</div>
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-	
-	/*
-	var params = get_params();
-	if (params.a == "add") $("#btn_add").trigger("click");
-	$(".control_bl").click(function() {
-		control_bl(this);
-	});
-	*/
 	
 	function reset_person_app(){
 		$("#aa_pt_name").val("");

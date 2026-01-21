@@ -19,31 +19,40 @@ class Appointment extends CI_Controller {
 		
 		$f_url = [
 			"page" => $this->input->get("page"),
-			"status" => $this->input->get("status"),
-			
+			"status_id" => $this->input->get("status_id"),
 			"doc_type_id" => $this->input->get("doc_type_id"),
 			"doc_number" => $this->input->get("doc_number"),
 			"name" => $this->input->get("name"),
 			"tel" => $this->input->get("tel"),
-			
-			"keyword" => $this->input->get("keyword"),
 			"diagnosis" => $this->input->get("diagnosis"),
 		];
 		
-		$f_w = $f_w_in = [];
 		if (!$f_url["page"]) $f_url["page"] = 1;
-		if ($f_url["status"]) $f_w["status_id"] = $f_url["status"];
-		if ($f_url["keyword"]){
+		
+		$f_w = $f_l = $f_w_in = [];
+		
+		//by appointment status
+		if ($f_url["status_id"]) $f_w["status_id"] = $f_url["status_id"];
+		
+		//by patient
+		if ($f_url["doc_number"] or $f_url["doc_type_id"] or $f_url["name"] or $f_url["tel"]){
 			$aux = [-1];
-			//$people = $this->general->filter("person", null, ["name" => $f_url["keyword"]]);
-			$people = $this->general->filter("person", null, [["field" => "name", "values" => explode(" ", trim($f_url["keyword"]))]]);
-			foreach($people as $p) $aux[] = $p->id;
 			
+			$f_w_person = $f_l_person = [];
+			if ($f_url["doc_type_id"]) $f_w_person["doc_type_id"] = $f_url["doc_type_id"];
+			if ($f_url["doc_number"]) $f_l_person[] = ["field" => "doc_number", "values" => explode(" ", trim($f_url["doc_number"]))];
+			if ($f_url["name"]) $f_l_person[] = ["field" => "name", "values" => explode(" ", trim($f_url["name"]))];
+			if ($f_url["tel"]) $f_l_person[] = ["field" => "tel", "values" => explode(" ", trim($f_url["tel"]))];
+			
+			$people = $this->general->filter("person", $f_w_person, $f_l_person);
+			foreach($people as $p) $aux[] = $p->id;
+			//echo $this->db->last_query(); return;
 			$f_w_in[] = ["field" => "patient_id", "values" => $aux];
 		}
 		
+		//by diagnosis
 		if (strlen($f_url["diagnosis"]) > 2){
-			$diags = $this->general->filter("diag_impression_detail", null, ["description" => $f_url["diagnosis"]]);
+			$diags = $this->general->filter("diag_impression_detail", null, [["field" => "description", "values" => explode(" ", trim($f_url["diagnosis"]))]]);
 			
 			$aux = [-1];
 			foreach($diags as $item) $aux[] = $item->id;
@@ -59,7 +68,8 @@ class Appointment extends CI_Controller {
 		}else $f_url["diagnosis"] = null;
 		
 		if ($this->session->userdata('role')->name === "doctor") $f_w["doctor_id"] = $this->session->userdata('pid');
-		$appointments = $this->general->filter("appointment", $f_w, null, $f_w_in, "schedule_from", "desc", 25, 25*($f_url["page"]-1));
+		
+		$appointments = $this->general->filter("appointment", $f_w, $f_l, $f_w_in, "schedule_from", "desc", 25, 25*($f_url["page"]-1));
 		foreach($appointments as $item){
 			$item->patient = $this->general->id("person", $item->patient_id)->name;
 			$item->doctor = $this->general->id("person", $item->doctor_id)->name;
