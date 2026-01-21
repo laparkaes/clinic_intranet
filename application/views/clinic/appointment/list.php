@@ -206,8 +206,7 @@
 <div class="row">
 	<div class="col">
 		<div class="card">
-			<div class="card-body">
-				<h5 class="card-title">Lista de Consultas</h5>
+			<div class="card-body pt-3">
 				<?php if ($appointments){ ?>
 				<div class="table-responsive">
 					<table class="table align-middle">
@@ -219,7 +218,7 @@
 								<th>Especialidad</th>
 								<th>Médico</th>
 								<th>Paciente</th>
-								<th class="text-end">Ver</th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -232,7 +231,7 @@
 								<td><?= $item->doctor ?></td>
 								<td><?= $item->patient ?></td>
 								<td class="text-end">
-									<a href="<?= base_url() ?>clinic/appointment/detail/<?= $item->id ?>" class="btn btn-success">
+									<a href="<?= base_url() ?>clinic/appointment/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
 										<i class="bi bi-arrow-right"></i>
 									</a>
 								</td>
