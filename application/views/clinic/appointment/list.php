@@ -15,9 +15,6 @@
 							
 							<div class="row">
 								<div class="col-md-6">
-									<?php 
-									//print_r($doctors);
-									?>
 									<div class="row g-3">
 										<div class="col-md-12">
 											<strong>Atención</strong>

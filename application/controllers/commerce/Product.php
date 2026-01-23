@@ -21,15 +21,18 @@ class Product extends CI_Controller {
 		$f_url = [
 			"page" => $this->input->get("page"),
 			"type" => $this->input->get("type"),
-			"category" => $this->input->get("category"),
-			"keyword" => $this->input->get("keyword"),
+			"category_id" => $this->input->get("category_id"),
+			"type_id" => $this->input->get("type_id"),
+			"description" => trim($this->input->get("description")),
+			"code" => trim($this->input->get("code")),
 		];
 		if (!$f_url["page"]) $f_url["page"] = 1;
 		
 		$f_w = $f_l = $f_w_in = [];
-		if ($f_url["category"]) $f_w["category_id"] = $f_url["category"];
-		if ($f_url["type"]) $f_w["type_id"] = $f_url["type"];
-		if ($f_url["keyword"]) $f_l["description"] = $f_url["keyword"];
+		if ($f_url["category_id"]) $f_w["category_id"] = $f_url["category_id"];
+		if ($f_url["type_id"]) $f_w["type_id"] = $f_url["type_id"];
+		if ($f_url["description"]) $f_l[] = ["field" => "description", "values" => explode(" ", trim($f_url["description"]))];
+		if ($f_url["code"]) $f_l[] = ["field" => "code", "values" => explode(" ", trim($f_url["code"]))];
 		
 		$f_w["active"] = true;
 		$products = $this->general->filter("product", $f_w, $f_l, $f_w_in, "description", "asc", 25, 25*($f_url["page"]-1));
