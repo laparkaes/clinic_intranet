@@ -18,7 +18,7 @@
 								</div>
 								<div class="col-md-12">
 									<form class="input-group" id="form_add_category">
-										<input type="text" class="form-control" name="name" placeholder="<?= $this->lang->line('w_category_name') ?>">
+										<input type="text" class="form-control" name="name" placeholder="Nombre de Categoría">
 										<button class="btn btn-primary" type="submit">
 											<i class="bi bi-plus"></i> Agregar
 										</button>
@@ -259,26 +259,26 @@
 							</tr>
 						</thead>
 						<tbody>
-							<?php 
-							$no_img_path = "uploaded/products/no_img.png";
-							
-							foreach($products as $i => $item){ ?>
+							<?php foreach($products as $i => $item){ ?>
 							<tr>
 								<td><strong><?= number_format(($f_url["page"] - 1) * 25 + 1 + $i) ?></strong></td>
-								<td>
-									<?php if ($item->image){
-										$prod_img_path = "uploaded/products/".$item->id."/".$item->image;
-										if (file_exists($prod_img_path)) $img_path = $prod_img_path;
-										else $img_path = $no_img_path;
-									}else $img_path = $no_img_path; ?>
-									<img src="<?= base_url().$img_path ?>" style="max-width: 60px; max-height: 60px;" />
-								</td>
+								<td><img src="<?= base_url().$item->img_path ?>" style="max-width: 60px; max-height: 60px;" /></td>
 								<td><?= $prod_types_arr[$item->type_id]->description ?></td>
 								<td><?= $categories_arr[$item->category_id] ?></td>
 								<td><?= $item->code ?></td>
 								<td><?= $item->description ?></td>
 								<td><?= $currencies_arr[$item->currency_id]->description." ".number_format($item->price, 2) ?></td>
-								<td><?php if ($item->stock) echo number_format($item->stock); else echo "-"; ?></td>
+								<td>
+									<?php 
+									if ($item->stock){
+										 echo "<div>".number_format($item->stock)." en total</div>";
+										 foreach($item->options as $item_o){
+											//print_r($item_o); echo "<br/>";
+											echo "<div>- ".$item_o->description." (".number_format($item_o->stock).")</div>"; 
+										 }
+									}else echo "-";
+									?>
+								</td>
 								<td class="text-end">
 									<a href="<?= base_url() ?>commerce/product/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
 										<i class="bi bi-arrow-right"></i>

@@ -35,7 +35,20 @@ class Product extends CI_Controller {
 		if ($f_url["code"]) $f_l[] = ["field" => "code", "values" => explode(" ", trim($f_url["code"]))];
 		
 		$f_w["active"] = true;
+		$no_img_path = "uploaded/products/no_img.png";
+		
 		$products = $this->general->filter("product", $f_w, $f_l, $f_w_in, "description", "asc", 25, 25*($f_url["page"]-1));
+		foreach($products as $item){
+			$item->options = $this->general->filter("product_option", ["product_id" => $item->id], null, null, "description", "asc");
+			
+			if ($item->image){
+				$prod_img_path = "uploaded/products/".$item->id."/".$item->image;
+				if (file_exists($prod_img_path)) $img_path = $prod_img_path;
+				else $img_path = $no_img_path;
+			}else $img_path = $no_img_path;
+			
+			$item->img_path = $img_path;
+		}
 		
 		$categories_arr = array();
 		$categories = $this->product->category_all();
