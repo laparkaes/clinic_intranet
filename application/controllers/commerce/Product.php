@@ -6,6 +6,7 @@ class Product extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		date_default_timezone_set('America/Lima');
+		
 		$this->lang->load("product", "spanish");
 		$this->lang->load("system", "spanish");	
 		$this->load->model('product_model','product');
