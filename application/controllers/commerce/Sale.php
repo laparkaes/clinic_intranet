@@ -37,17 +37,42 @@ class Sale extends CI_Controller {
 		
 		$f_url = [
 			"page" => $this->input->get("page"),
+			"from" => $this->input->get("from"),
+			"to" => $this->input->get("to"),
 			"client" => $this->input->get("client"),
+			"product" => $this->input->get("product"),
 		];
 		
 		$f_w = $f_l = $f_in = [];
 		if (!$f_url["page"]) $f_url["page"] = 1;
+		
 		if ($f_url["client"]){
 			$aux = [-1];
+			
+			//by name
 			$people = $this->general->filter("person", null, [["field" => "name", "values" => explode(" ", trim($f_url["client"]))]]);
 			foreach($people as $p) $aux[] = $p->id;
 			
-			$f_in[] = ["field" => "client_id", "values" => $aux];
+			//by doc number
+			$people = $this->general->filter("person", null, [["field" => "doc_number", "values" => explode(" ", trim($f_url["client"]))]]);
+			foreach($people as $p) $aux[] = $p->id;
+			
+			$f_in[] = ["field" => "client_id", "values" => array_unique($aux)];
+		}
+		
+		if ($f_url["product"]){
+			$aux_product = [];
+			
+			$products = $this->general->filter("product", null, [["field" => "description", "values" => explode(" ", trim($f_url["product"]))]]);
+			foreach($products as $p) $aux_product[] = $p->id;
+		
+			$aux_sale = [];
+			foreach($aux_product as $item){
+				$sale_products = $this->general->filter("sale_product", ["product_id" => $item]);
+				foreach($sale_products as $sp) $aux_sale[] = $sp->sale_id;
+			}
+			
+			$f_in[] = ["field" => "id", "values" => array_unique($aux_sale)];
 		}
 		
 		$sales = $this->general->filter("sale", $f_w, $f_l, $f_in, "updated_at", "desc", 25, 25 * ($f_url["page"] - 1));
@@ -81,7 +106,7 @@ class Sale extends CI_Controller {
 		];
 		
 		$data = array(
-			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("sale", $f_w)),
+			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("sale", $f_w, $f_l, $f_in)),
 			"f_url" => $f_url,
 			"status" => $status,
 			"sales" => $sales,
@@ -90,6 +115,10 @@ class Sale extends CI_Controller {
 		);
 		
 		$this->load->view('layout', $data);
+	}
+	
+	public function new_sale(){
+		echo "new_sale";
 	}
 	
 	public function add(){

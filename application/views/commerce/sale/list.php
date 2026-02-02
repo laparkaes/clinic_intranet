@@ -1,13 +1,55 @@
-<div class="d-flex justify-content-between align-items-start">
-	<div class="pagetitle">
-		<h1><?= $title ?></h1>
-		<nav>
-			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="<?= base_url() ?>"><?= $this->lang->line('w_home') ?></a></li>
-				<li class="breadcrumb-item active"><?= $title ?></li>
-			</ol>
-		</nav>
+<div class="row">
+	<div class="col">
+		<div class="mb-3">
+			<a href="<?= base_url() ?>commerce/sale/new_sale" class="btn btn-primary">
+				<i class="bi bi-plus-lg me-1"></i> Nueva Venta
+			</a>
+			
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_search">
+				<i class="bi bi-search me-1"></i> Buscar
+			</button>
+			<div class="modal fade" id="modal_search" tabindex="-1">
+				<div class="modal-dialog">
+					<form class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Buscar Venta</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="row g-3">
+								<div class="col-md-6">
+									<label class="form-label">Desde</label>
+									<input type="text" class="form-control" id="s_from" name="from" value="<?= $f_url["from"] ?>">
+								</div>
+								<div class="col-md-6">
+									<label class="form-label">Hasta</label>
+									<input type="text" class="form-control" id="s_to" name="to" value="<?= $f_url["to"] ?>">
+								</div>
+								<div class="col-md-12">
+									<label class="form-label">Cliente (Número de documento o Nombre)</label>
+									<input type="text" class="form-control" name="client" value="<?= $f_url["client"] ?>">
+								</div>
+								<div class="col-md-12">
+									<label class="form-label">Producto</label>
+									<input type="text" class="form-control" name="product" value="<?= $f_url["product"] ?>">
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+							<button type="reset" class="btn btn-secondary">Limpiar</button>
+							<button type="submit" class="btn btn-primary">Buscar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		
+		</div>
 	</div>
+</div>
+
+
+<div class="d-flex justify-content-between align-items-start">
 	<div class="btn-group mb-3">
 		<button type="button" class="btn btn-primary control_bl" id="btn_list" value="bl_list">
 			<i class="bi bi-card-list"></i>
@@ -17,18 +59,6 @@
 		</button>
 	</div>
 </div>
-<form class="row justify-content-end">
-		<input type="hidden" value="1" name="page">
-		<div class="col-md-auto">
-			<input type="text" class="form-control" name="client" placeholder="<?= $this->lang->line('w_client') ?>" value="<?= $f_url["client"] ?>">
-		</div>
-		<div class="col-md-auto">
-			<button type="submit" class="btn btn-primary">
-				<i class="bi bi-search"></i>
-			</button>
-		</div>
-	</div>
-</form>
 <div class="row mt-3">
 	<div class="col">
 		<div class="card bl_content" id="bl_list">
@@ -95,6 +125,10 @@
 <input type="hidden" id="e_item_option" value="<?= $this->lang->line('e_item_option') ?>">
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+	
+	set_date_picker("#s_from", null);
+	set_date_picker("#s_to", null);
+	
 	var params = get_params();
 	if (params.a == "add") $("#btn_add").trigger("click");
 	$(".control_bl").click(function() {
