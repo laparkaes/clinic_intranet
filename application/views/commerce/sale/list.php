@@ -122,7 +122,6 @@
 		</div>
 	</div>
 </div>
-<input type="hidden" id="e_item_option" value="<?= $this->lang->line('e_item_option') ?>">
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 	

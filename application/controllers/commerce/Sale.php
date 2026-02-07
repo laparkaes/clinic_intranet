@@ -110,7 +110,7 @@ class Sale extends CI_Controller {
 			"f_url" => $f_url,
 			"status" => $status,
 			"sales" => $sales,
-			"title" => $this->lang->line('sales'),
+			"title" => "Ventas",
 			"main" => "commerce/sale/list",
 		);
 		
@@ -118,7 +118,17 @@ class Sale extends CI_Controller {
 	}
 	
 	public function new_sale(){
-		echo "new_sale";
+
+		$data = array(
+			"categories"	=> $this->general->all("product_category", "name", "asc"),
+			"doc_types"		=> $this->general->all("doc_type", "sunat_code", "asc"),
+			"pay_methods"	=> $this->general->all("payment_method", "id", "asc"),
+			"sale_types"	=> $this->general->all("sale_type", "sunat_serie", "asc"),
+			"title"			=> "Generar Venta",
+			"main"			=> "commerce/sale/new_sale",
+		);
+		
+		$this->load->view('layout', $data);
 	}
 	
 	public function add(){
