@@ -1,8 +1,3 @@
-<?php
-$this->lang->load("sale", "spanish");
-?>
-
-
 <div class="row">
 	<div class="col">
 		<div class="mb-3">
@@ -17,7 +12,7 @@ $this->lang->load("sale", "spanish");
 		<div class="card">			
 			<div class="card-body">
 				<div class="d-flex justify-content-between align-items-center">
-					<h5 class="card-title">Buscar Producto</h5>
+					<h5 class="card-title">Agregar Producto</h5>
 					<div>
 						<form class="input-group" id="form_search_products">
 							<select class="form-select" name="category_id" style="width: 250px;">
@@ -34,7 +29,13 @@ $this->lang->load("sale", "spanish");
 						
 					</div>
 				</div>
-				<div class="table-responsive">
+				<div id="search_msg">
+					<h5>Busque producto para agregar a la lista de venta.</h5>
+				</div>
+				<div class="d-none" id="no_result">
+					<h5 class="text-danger">No hay resultado de busqueda.</h5>
+				</div>
+				<div class="table-responsive d-none" id="result_table">
 					<table class="table align-middle">
 						<thead>
 							<tr>
@@ -54,24 +55,30 @@ $this->lang->load("sale", "spanish");
 		</div>
 	</div>
 </div>
-<div class="row">
-	<div class="col">
-		<div class="card">		
-			<div class="card-body">
-				<h5 class="card-title">Detalle</h5>
+
+<div class="modal fade" id="add_product" tabindex="-1" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Detalle de Venta</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+			
+			
 				<form class="row g-3" id="form_set_product_detail">
 					<div class="col-md-12">
 						<label class="form-label">Producto</label>
 						<input type="text" class="form-control" id="product" readonly>
 						<input type="text" class="form-control d-none" id="product_id" name="product_id">
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-6">
 						<label class="form-label">Opción</label>
 						<select class="form-select" id="option_id" name="option_id">
 							<option value="">--</option>
 						</select>
 					</div>
-					<div class="col-md-2">
+					<div class="col-md-6">
 						<label class="form-label">P/U</label>
 						<div class="input-group">
 							<span class="input-group-text currency"></span>
@@ -79,18 +86,18 @@ $this->lang->load("sale", "spanish");
 						</div>
 						<input type="text" class="form-control d-none" id="price" name="price">
 					</div>
-					<div class="col-md-2">
+					<div class="col-md-6">
 						<label class="form-label">Descuento (Unidad)</label>
 						<div class="input-group">
 							<span class="input-group-text currency"></span>
 							<input type="text" class="form-control text-end" id="discount" name="discount">
 						</div>
 					</div>
-					<div class="col-md-2">
+					<div class="col-md-6">
 						<label class="form-label">Cantidad</label>
 						<input type="number" class="form-control" id="quantity" name="qty" value="1">
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-12">
 						<label class="form-label">Subtotal</label>
 						<div class="input-group">
 							<span class="input-group-text currency"></span>
@@ -103,7 +110,24 @@ $this->lang->load("sale", "spanish");
 						</button>
 					</div>
 				</form>
+			
+			
+			
 			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col">
+		<div class="card">		
+			<div class="card-body">
+				<h5 class="card-title"></h5></div>
 			
 			
 		</div>
@@ -219,7 +243,7 @@ $this->lang->load("sale", "spanish");
 					</div>
 					<div class="col-md-12 pt-3">
 						<button disabled="disabled" id="btn_register_sale_in_form_sale" type="submit" class="btn btn-primary">
-							<?= $this->lang->line('btn_register_sale') ?>
+							Generar Venta
 						</button>
 					</div>
 				</form>
@@ -348,39 +372,51 @@ document.addEventListener("DOMContentLoaded", () => {
 		e.preventDefault();
 		ajax_form(this, "commerce/product/search_product").done(function(res) {
 			$("#tb_search_product").html("");
-			$.each(res.products, function(index, value){
-				$("#tb_search_product").append('<tr><th scope="row" style="width: 70px;">' + (index + 1) + '</th><td>' + value.category + '</td><td>' + value.description + '</td><td class="text-nowrap">' + value.price_txt + '</td><td class="text-nowrap">' + value.stock_txt + '</td><td class="text-end"><button class="btn btn-success btn-sm btn_select_product" value="' + value.id + '">Elegir</button></td></tr>');
-			});
 			
-			$(".btn_select_product").click(function() {
+			if (res.products.length > 0){
+				$("#no_result").addClass("d-none");
+				$("#search_msg").addClass("d-none"); 
+				$("#result_table").removeClass("d-none"); 
 				
-				ajax_simple({id: $(this).val()}, "commerce/product/search_product").done(function(res) {
-					if (res.products.length > 0){
-						var prod = res.products[0];
-						$(".currency").html(prod.currency);
-						$("#product_id").val(prod.id);
-						$("#product").val(prod.description);
-						$("#price_txt").val(prod.price_txt);
-						$("#price").val(prod.price);
-						$("#discount").val(0);
-						$("#quantity").val(1);
-						$("#subtotal_txt").val(prod.price_txt);
-						
-						//setting options
-						$("#option_id").html("");
-						$("#option_id").append('<option value="">--</option>');
-						$.each(prod.options, function(index, value){
-							$("#option_id").append('<option value="' + value.id + '">' + value.description + ' (' + value.stock + ')</option>');
-						});
-						
-						if ($("#op_currency").val() == ""){
-							$("#op_currency").val(prod.currency);
-							$(".payment_currency").html(prod.currency);
-						}
-						selected_product = prod;
-					}
+				$.each(res.products, function(index, value){
+					$("#tb_search_product").append('<tr><th scope="row" style="width: 70px;">' + (index + 1) + '</th><td>' + value.category + '</td><td>' + value.description + '</td><td class="text-nowrap">' + value.price_txt + '</td><td class="text-nowrap">' + value.stock_txt + '</td><td class="text-end"><button class="btn btn-primary btn-sm btn_select_product" value="' + value.id + '" data-bs-toggle="modal" data-bs-target="#add_product"><i class="bi bi-plus-lg"></i></button></td></tr>');
 				});
-			});
+				
+				$(".btn_select_product").click(function() {
+					
+					ajax_simple({id: $(this).val()}, "commerce/product/search_product").done(function(res) {
+						if (res.products.length > 0){
+							var prod = res.products[0];
+							$(".currency").html(prod.currency);
+							$("#product_id").val(prod.id);
+							$("#product").val(prod.description);
+							$("#price_txt").val(prod.price_txt);
+							$("#price").val(prod.price);
+							$("#discount").val(0);
+							$("#quantity").val(1);
+							$("#subtotal_txt").val(prod.price_txt);
+							
+							//setting options
+							$("#option_id").html("");
+							$("#option_id").append('<option value="">--</option>');
+							$.each(prod.options, function(index, value){
+								$("#option_id").append('<option value="' + value.id + '">' + value.description + ' (' + value.stock + ')</option>');
+							});
+							
+							if ($("#op_currency").val() == ""){
+								$("#op_currency").val(prod.currency);
+								$(".payment_currency").html(prod.currency);
+							}
+							selected_product = prod;
+						}
+					});
+				});
+			}else{
+				$("#no_result").removeClass("d-none");
+				$("#search_msg").addClass("d-none"); 
+				$("#result_table").addClass("d-none"); 
+			}
+			
 		});
 	});
 	
