@@ -47,34 +47,21 @@
 		</div>
 	</div>
 </div>
-
-
-<div class="d-flex justify-content-between align-items-start">
-	<div class="btn-group mb-3">
-		<button type="button" class="btn btn-primary control_bl" id="btn_list" value="bl_list">
-			<i class="bi bi-card-list"></i>
-		</button>
-		<button type="button" class="btn btn-outline-primary control_bl" value="bl_add">
-			<i class="bi bi-plus-lg"></i>
-		</button>
-	</div>
-</div>
-<div class="row mt-3">
+<div class="row">
 	<div class="col">
-		<div class="card bl_content" id="bl_list">
+		<div class="card">
 			<div class="card-body">
 				<h5 class="card-title"><?= $this->lang->line('w_list') ?></h5>
 				<?php if ($sales){ ?>
 				<div class="table-responsive">
-					<table class="table">
+					<table class="table align-middle">
 						<thead>
 							<tr>
 								<th>#</th>
-								<th><?= $this->lang->line('w_date') ?></th>
-								<th><?= $this->lang->line('w_client') ?></th>
-								<th class="text-nowrap"><?= $this->lang->line('w_total') ?> (<?= $this->lang->line('w_balance') ?>)</th>
-								<th><?= $this->lang->line('w_status') ?></th>
-								<th><?= $this->lang->line('w_sunat') ?></th>
+								<th>Fecha</th>
+								<th>Cliente</th>
+								<th class="text-nowrap">Total (Saldo)</th>
+								<th>Estado</th>
 								<th></th>
 							</tr>
 						</thead>
@@ -91,9 +78,6 @@
 									<?php if ($item->balance) echo "<br/><small>(".$cur." ".number_format($item->balance, 2).")</small>"; ?>
 								</td>
 								<td class="text-nowrap text-<?= $item->status->color ?>"><?= $item->status->lang ?></td>
-								<td>
-									<i class="bi bi-circle-fill text-<?= $item->voucher->color ?>" title="<?= $item->voucher->sunat_msg ?>"></i>
-								</td>
 								<td class="text-end">
 									<a href="<?= base_url() ?>commerce/sale/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
 										<i class="bi bi-arrow-right"></i>
@@ -117,9 +101,6 @@
 				<?php } ?>
 			</div>
 		</div>
-		<div class="card bl_content d-none" id="bl_add">
-			<?php $this->load->view("commerce/sale/form_add_sale"); ?>
-		</div>
 	</div>
 </div>
 <script>
@@ -128,10 +109,5 @@ document.addEventListener("DOMContentLoaded", () => {
 	set_date_picker("#s_from", null);
 	set_date_picker("#s_to", null);
 	
-	var params = get_params();
-	if (params.a == "add") $("#btn_add").trigger("click");
-	$(".control_bl").click(function() {
-		control_bl(this);
-	});
 });
 </script>

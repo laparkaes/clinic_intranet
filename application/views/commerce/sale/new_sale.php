@@ -14,6 +14,103 @@ $this->lang->load("sale", "spanish");
 </div>
 <div class="row">
 	<div class="col">
+		<div class="card">			
+			<div class="card-body">
+				<div class="d-flex justify-content-between align-items-center">
+					<h5 class="card-title">Buscar Producto</h5>
+					<div>
+						<form class="input-group" id="form_search_products">
+							<select class="form-select" name="category_id" style="width: 250px;">
+								<option value="">Categoría</option>
+								<?php foreach($categories as $item){ ?>
+								<option value="<?= $item->id ?>"><?= $item->name ?></option>
+								<?php } ?>
+							</select>
+							<input type="text" class="form-control" name="description" placeholder="Descripción" style="width: 250px;">
+							<button type="submit" class="btn btn-primary">
+								<i class="bi bi-search"></i>
+							</button>
+						</form>
+						
+					</div>
+				</div>
+				<div class="table-responsive">
+					<table class="table align-middle">
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Categoría</th>
+								<th scope="col">Ítem</th>
+								<th scope="col">P/U</th>
+								<th scope="col">Stock</th>
+								<th scope="col"></th>
+							</tr>
+						</thead>
+						<tbody id="tb_search_product">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col">
+		<div class="card">		
+			<div class="card-body">
+				<h5 class="card-title">Detalle</h5>
+				<form class="row g-3" id="form_set_product_detail">
+					<div class="col-md-12">
+						<label class="form-label">Producto</label>
+						<input type="text" class="form-control" id="product" readonly>
+						<input type="text" class="form-control d-none" id="product_id" name="product_id">
+					</div>
+					<div class="col-md-3">
+						<label class="form-label">Opción</label>
+						<select class="form-select" id="option_id" name="option_id">
+							<option value="">--</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<label class="form-label">P/U</label>
+						<div class="input-group">
+							<span class="input-group-text currency"></span>
+							<input type="text" class="form-control text-end" id="price_txt">
+						</div>
+						<input type="text" class="form-control d-none" id="price" name="price">
+					</div>
+					<div class="col-md-2">
+						<label class="form-label">Descuento (Unidad)</label>
+						<div class="input-group">
+							<span class="input-group-text currency"></span>
+							<input type="text" class="form-control text-end" id="discount" name="discount">
+						</div>
+					</div>
+					<div class="col-md-2">
+						<label class="form-label">Cantidad</label>
+						<input type="number" class="form-control" id="quantity" name="qty" value="1">
+					</div>
+					<div class="col-md-3">
+						<label class="form-label">Subtotal</label>
+						<div class="input-group">
+							<span class="input-group-text currency"></span>
+							<input type="text" class="form-control text-end" id="subtotal_txt" value="0.00">
+						</div>
+					</div>
+					<div class="col-md-12 pt-3">
+						<button type="submit" class="btn btn-primary" id="btn_add_product_to_list">
+							Agregar
+						</button>
+					</div>
+				</form>
+			</div>
+			
+			
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col">
 		<div class="card">
 			<div class="card-body">
 				<h5 class="card-title">Lista de Productos</h5>
@@ -130,125 +227,9 @@ $this->lang->load("sale", "spanish");
 		</div>
 	</div>
 </div>
-<div class="row">
-	<div class="col">
-		<div class="card">			
-			<div class="card-body">
-				<div class="d-flex justify-content-between align-items-center">
-					<h5 class="card-title">Buscar Producto</h5>
-					<div>
-						<form class="input-group" id="form_search_products">
-							<select class="form-select" name="category_id" style="width: 250px;">
-								<option value="">Categoría</option>
-								<?php foreach($categories as $item){ ?>
-								<option value="<?= $item->id ?>"><?= $item->name ?></option>
-								<?php } ?>
-							</select>
-							<input type="text" class="form-control" name="description" placeholder="Descripción" style="width: 250px;">
-							<button type="submit" class="btn btn-primary">
-								<i class="bi bi-search"></i>
-							</button>
-						</form>
-						
-					</div>
-				</div>
-				<div class="table-responsive">
-					<table class="table align-middle">
-						<thead>
-							<tr>
-								<th scope="col">#</th>
-								<th scope="col">Categoría</th>
-								<th scope="col">Ítem</th>
-								<th scope="col">P/U</th>
-								<th scope="col">Stock</th>
-								<th scope="col"></th>
-							</tr>
-						</thead>
-						<tbody id="tb_search_product">
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="row">
-	<div class="col">
-		<div class="card">		
-			<div class="card-body">
-				<h5 class="card-title"><?= $this->lang->line('w_product_detail') ?></h5>
-				<form class="row g-3" id="form_set_product_detail">
-					<div class="col-md-12">
-						<label class="form-label"><?= $this->lang->line('w_product') ?></label>
-						<input type="text" class="form-control" id="product" readonly>
-						<input type="text" class="form-control d-none" id="product_id" name="product_id">
-					</div>
-					<div class="col-md-3">
-						<label class="form-label"><?= $this->lang->line('w_option') ?></label>
-						<select class="form-select" id="option_id" name="option_id">
-							<option value="">--</option>
-						</select>
-					</div>
-					<div class="col-md-2">
-						<label class="form-label"><?= $this->lang->line('w_unit_price_short') ?></label>
-						<div class="input-group">
-							<span class="input-group-text currency"></span>
-							<input type="text" class="form-control text-end" id="price_txt">
-						</div>
-						<input type="text" class="form-control d-none" id="price" name="price">
-					</div>
-					<div class="col-md-2">
-						<label class="form-label"><?= $this->lang->line('w_discount_unit') ?></label>
-						<div class="input-group">
-							<span class="input-group-text currency"></span>
-							<input type="text" class="form-control text-end" id="discount" name="discount">
-						</div>
-					</div>
-					<div class="col-md-2">
-						<label class="form-label"><?= $this->lang->line('w_quantity') ?></label>
-						<input type="number" class="form-control" id="quantity" name="qty" value="1">
-					</div>
-					<div class="col-md-3">
-						<label class="form-label"><?= $this->lang->line('w_subtotal') ?></label>
-						<div class="input-group">
-							<span class="input-group-text currency"></span>
-							<input type="text" class="form-control text-end" id="subtotal_txt" value="0.00">
-						</div>
-					</div>
-					<div class="col-md-12 pt-3">
-						<button type="submit" class="btn btn-primary" id="btn_add_product_to_list">
-							<?= $this->lang->line('btn_add') ?>
-						</button>
-						<button type="button" class="btn btn-secondary" id="btn_back_to_search">
-							<?= $this->lang->line('btn_back') ?>
-						</button>
-					</div>
-				</form>
-			</div>
-			
-			
-		</div>
-	</div>
-</div>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-	function set_step(dom_id){
-		$(".add_sale_step").addClass("d-none");
-		$("#" + dom_id).removeClass("d-none");
-	}
-	
-	$("#btn_search_product").click(function() {
-		set_step("step_search_product");
-	});
-	
-	$("#btn_back_to_sale_information").click(function() {
-		set_step("step_set_sale_information");
-	});
-	
-	$("#btn_back_to_search").click(function() {
-		set_step("step_search_product");
-	});
 	
 	//step - set sale information
 	function set_total(){
@@ -372,7 +353,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			});
 			
 			$(".btn_select_product").click(function() {
-				set_step("step_set_product_detail");
+				
 				ajax_simple({id: $(this).val()}, "commerce/product/search_product").done(function(res) {
 					if (res.products.length > 0){
 						var prod = res.products[0];
@@ -445,7 +426,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			});
 			
 			set_total();
-			set_step("step_set_sale_information");
 			row_num++;
 		}else{
 			swal("error", msg_list[default_lang].e_list_currency);
