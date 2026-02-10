@@ -29,13 +29,13 @@
 						
 					</div>
 				</div>
-				<div id="search_msg">
+				<div class="text-center mt-3" id="search_msg">
 					<h5>Busque producto para agregar a la lista de venta.</h5>
 				</div>
-				<div class="d-none" id="no_result">
+				<div class="d-none text-center mt-3" id="no_result">
 					<h5 class="text-danger">No hay resultado de busqueda.</h5>
 				</div>
-				<div class="table-responsive d-none" id="result_table">
+				<div class="table-responsive d-none" id="result_table" style="max-height: 400px;">
 					<table class="table align-middle">
 						<thead>
 							<tr>
@@ -58,15 +58,13 @@
 
 <div class="modal fade" id="add_product" tabindex="-1" style="display: none;" aria-hidden="true">
 	<div class="modal-dialog">
-		<div class="modal-content">
+		<form class="modal-content" id="form_set_product_detail">
 			<div class="modal-header">
 				<h5 class="modal-title">Detalle de Venta</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-			
-			
-				<form class="row g-3" id="form_set_product_detail">
+				<div class="row g-3">
 					<div class="col-md-12">
 						<label class="form-label">Producto</label>
 						<input type="text" class="form-control" id="product" readonly>
@@ -104,33 +102,13 @@
 							<input type="text" class="form-control text-end" id="subtotal_txt" value="0.00">
 						</div>
 					</div>
-					<div class="col-md-12 pt-3">
-						<button type="submit" class="btn btn-primary" id="btn_add_product_to_list">
-							Agregar
-						</button>
-					</div>
-				</form>
-			
-			
-			
+				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
+				<button type="submit" class="btn btn-primary">Agregar</button>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
 			</div>
-		</div>
-	</div>
-</div>
-
-
-<div class="row">
-	<div class="col">
-		<div class="card">		
-			<div class="card-body">
-				<h5 class="card-title"></h5></div>
-			
-			
-		</div>
+		</form>
 	</div>
 </div>
 <div class="row">
@@ -424,8 +402,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	$("#form_set_product_detail").submit(function(e) {
 		e.preventDefault();
 		var data = form_to_object("form_set_product_detail");
-		console.log(data);
-		console.log(selected_product);
+		
+		console.log("here1");
+		
 		//check stock
 		if (selected_product.type == "Producto"){
 			if (data.option_id == ""){
@@ -433,20 +412,43 @@ document.addEventListener("DOMContentLoaded", () => {
 				return;
 			}else{
 				var stock_ok = false;
+				
 				$.each(selected_product.options, function(index, value){
 					if (value.id == data.option_id) 
 						if (parseInt(value.stock) >= parseInt(data.qty)){
 							stock_ok = true;
-							data.option_description = value.description
+							data.option_description = value.description;
+							
+							//modal close
+							$('#add_product').modal('hide');
+							swal("success", 'Producto ha sido agregado a la lista de venta.');
+							
+							//set search msg
+							$("#no_result").addClass("d-none");
+							$("#search_msg").removeClass("d-none"); 
+							$("#result_table").addClass("d-none"); 
 						}
 				});
 				
 				if (!stock_ok){
-					swal("error", msg_list[default_lang].e_item_no_stock);
+					swal("error", 'No hay stock disponible de la opción elegida.');
 					return;
 				}
 			}
+		}else{
+			data.option_description = '-';
+			
+			//modal close
+			$('#add_product').modal('hide');
+			swal("success", 'Producto ha sido agregado a la lista de venta.');
+			
+			//set search msg
+			$("#no_result").addClass("d-none");
+			$("#search_msg").removeClass("d-none"); 
+			$("#result_table").addClass("d-none"); 
 		}
+		
+		console.log(data);
 		
 		if ($("#op_currency").val() == selected_product.currency){
 			$("#tb_product_list").append('<tr id="row_' + row_num + '"><td class="num"></td><td>' + selected_product.description + '</td><td>' + data.option_description + '</td><td>' + data.qty + '</td><td>' + selected_product.currency + ' ' + nf(data.price - data.discount) + '</td><td>' + selected_product.currency + ' ' + nf((data.price - data.discount) * data.qty) + '</td><td class="text-end"><button type="button" class="btn btn-danger btn-sm" id="btn_remove_product_' + row_num + '" value="' + row_num + '"><i class="bi bi-trash"></i></button><textarea class="prod_data d-none" name="sl_pr[' + row_num + ']">' + JSON.stringify(data) + '</textarea></td></tr>');
