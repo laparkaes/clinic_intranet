@@ -245,6 +245,15 @@ class Appointment_print extends CI_Controller {
 	public function prescription($id){
 		$appointment = $this->general->id("appointment", $id);
 		
+		$diags = $this->general->filter("appointment_diag_impression", ["appointment_id" => $id]);
+		$diag = $diags ? $this->general->id("diag_impression_detail", $diags[0]->diag_id) : null;//first diag selected
+		
+		print_r($appointment); echo "<br/><br/>";
+		print_r($diags); echo "<br/><br/>";
+		print_r($diag); echo "<br/><br/>";
+		
+		return;
+		
 		$doctor = $this->general->id("person", $appointment->doctor_id);
 		if ($doctor){
 			$doctor->age = $doctor->birthday ? $this->my_func->age_calculator($doctor->birthday, true) : "-";

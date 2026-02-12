@@ -17,12 +17,13 @@
 	}
 	
 	.border{ border: solid 1px red; }
-	.line1{ position: absolute; top: 21%; }
-	.line2{ position: absolute; top: 25%; }
-	.line3{ position: absolute; top: 30%; }
-	.line4{ position: absolute; top: 37%; }
-	.line5{ position: absolute; top: 45%; }
-	.line6{ position: absolute; top: 90%; }
+	.line1{ position: absolute; top: 20%; }
+	.line1_1{ position: absolute; top: 19%; }
+	.line2{ position: absolute; top: 24%; }
+	.line3{ position: absolute; top: 28%; }
+	.line4{ position: absolute; top: 36%; }
+	.line5{ position: absolute; top: 44%; }
+	.line6{ position: absolute; top: 88%; }
 	
 	/* line1 */
 	#name_1{ left: 19%; width: 30%; }
@@ -65,7 +66,7 @@
 		</div>
 		<div class="border line6" id="date_1"><?= date("d/M/Y") ?></div>
 		
-		<div class="border line1" id="name_2"><?= $patient->name ?></div>
+		<div class="border line1_1" id="name_2"><?= $patient->name ?></div>
 		<div class="border line4" id="medicine_2">
 			<?php foreach($medicine as $i => $item){ ?>
 			<div>
