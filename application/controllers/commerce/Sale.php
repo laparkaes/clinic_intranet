@@ -8,6 +8,7 @@ class Sale extends CI_Controller {
 		date_default_timezone_set('America/Lima');
 		$this->lang->load("system", "spanish");
 		$this->lang->load("sale", "spanish");
+		
 		$this->load->model('general_model','general');
 		$this->nav_menu = ["commerce", "sale"];
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();

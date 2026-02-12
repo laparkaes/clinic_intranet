@@ -8,6 +8,7 @@ class Appointment extends CI_Controller {
 		date_default_timezone_set('America/Lima');
 		$this->lang->load("appointment", "spanish");
 		$this->lang->load("system", "spanish");
+		
 		$this->load->model('general_model','general');
 		$this->nav_menu = ["clinic", "appointment"];
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
@@ -1256,7 +1257,7 @@ class Appointment extends CI_Controller {
 		$this->load->view('print_template/image', $data);
 	}
 	
-	public function print_medicine($id){
+	public function print_medicine($id){//to be removed
 		$appointment = $this->general->id("appointment", $id);
 		
 		$doctor = $this->general->id("person", $appointment->doctor_id);

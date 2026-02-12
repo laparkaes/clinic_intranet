@@ -13,7 +13,7 @@
 		<?php if ($actions){ ?>
 		<div class="btn-group">
 			<?php if (in_array("clinic_history", $actions)){ ?>
-			<a class="btn btn-primary" href="<?= base_url() ?>clinic/appointment/medical_history/<?= $appointment->id ?>" target="_blank">
+			<a class="btn btn-primary" href="<?= base_url() ?>clinic/appointment_print/medical_history/<?= $appointment->id ?>" target="_blank">
 				<?= $this->lang->line('w_clinical_history') ?>
 			</a>
 			<?php } if (in_array("reschedule", $actions)) $d = ""; else $d = "disabled"; ?>
@@ -28,19 +28,22 @@
 		</div>
 		|
 		<?php if ($appointment_datas["examination"]["exams"]){ ?>
-		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment/print_examination/<?= $appointment->id ?>" target="_blank">
+		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment_print/examination/<?= $appointment->id ?>" target="_blank">
 			<i class="bi bi-printer"></i> Exámenes
 		</a>
 		<?php } if ($appointment_datas["images"]){ ?>
-		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment/print_image/<?= $appointment->id ?>" target="_blank">
+		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment_print/image/<?= $appointment->id ?>" target="_blank">
 			<i class="bi bi-printer"></i> Imágenes
 		</a>
 		<?php } if ($appointment_datas["medicine"]){ ?>
-		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment/print_medicine/<?= $appointment->id ?>" target="_blank">
+		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment_print/medicine/<?= $appointment->id ?>" target="_blank">
 			<i class="bi bi-printer"></i> Medicamento
 		</a>
+		<a class="btn btn-primary" href="<?= base_url() ?>clinic/appointment_print/prescription/<?= $appointment->id ?>" target="_blank">
+			<i class="bi bi-printer"></i> Receta Médica
+		</a>
 		<?php } if ($appointment_datas["therapy"]){ ?>
-		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment/print_therapy/<?= $appointment->id ?>" target="_blank">
+		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment_print/therapy/<?= $appointment->id ?>" target="_blank">
 			<i class="bi bi-printer"></i> Terapia
 		</a>
 		<?php } ?>
