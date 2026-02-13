@@ -246,13 +246,7 @@ class Appointment_print extends CI_Controller {
 		$appointment = $this->general->id("appointment", $id);
 		
 		$diags = $this->general->filter("appointment_diag_impression", ["appointment_id" => $id]);
-		$diag = $diags ? $this->general->id("diag_impression_detail", $diags[0]->diag_id) : null;//first diag selected
-		
-		print_r($appointment); echo "<br/><br/>";
-		print_r($diags); echo "<br/><br/>";
-		print_r($diag); echo "<br/><br/>";
-		
-		return;
+		$diag = $diags ? $this->general->id("diag_impression_detail", $diags[0]->diag_id) : $this->general->structure("diag_impression_detail");//take first diagnostic
 		
 		$doctor = $this->general->id("person", $appointment->doctor_id);
 		if ($doctor){
@@ -274,6 +268,7 @@ class Appointment_print extends CI_Controller {
 		$data = [
 			"doctor" => $doctor,
 			"patient" => $patient,
+			"diag" => $diag,
 			"medicine" => $this->set_medicine_list($id),
 		];
 		

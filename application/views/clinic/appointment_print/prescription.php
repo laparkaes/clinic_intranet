@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medicine</title>
     <style>
-	*{margin: 0; pardding: 0; font-size: 11px;}
+	*{margin: 0; pardding: 0; font-size: 10px;}
 
 	#back_img{width: 100%;}
 	
@@ -16,11 +16,11 @@
         position: relative;
 	}
 	
-	.border{ border: solid 1px red; }
+	//.border{ border: solid 1px red; }
 	.line1{ position: absolute; top: 20%; }
 	.line1_1{ position: absolute; top: 19%; }
 	.line2{ position: absolute; top: 24%; }
-	.line3{ position: absolute; top: 28%; }
+	.line3{ position: absolute; top: 28.5%; }
 	.line4{ position: absolute; top: 36%; }
 	.line5{ position: absolute; top: 44%; }
 	.line6{ position: absolute; top: 88%; }
@@ -34,7 +34,7 @@
 	#age_1{ left: 37%; width: 10%; }
 	
 	/* line3 */
-	#diag_1{ left: 14%; width: 10%; }
+	#diag_1{ left: 13.5%; width: 18%; }
 	#cie_1{ left: 37%; width: 10%; }
 	
 	/* line4 */
@@ -53,8 +53,8 @@
 		<div class="border line1" id="name_1"><?= $patient->name ?></div>
 		<div class="border line2" id="document_1"><?= $patient->doc_number ?></div>
 		<div class="border line2" id="age_1"><?= $patient->age !== "-" ? $patient->age." años" : "-" ?></div>
-		<div class="border line3" id="diag_1">Diag aqui</div>
-		<div class="border line3" id="cie_1">CIE aqui</div>
+		<div class="border line3" id="diag_1"><?= $diag->description ?></div>
+		<div class="border line3" id="cie_1"><?= $diag->code ?></div>
 		<div class="border line5" id="medicine_1">
 			<?php foreach($medicine as $i => $item){ ?>
 			<div>
