@@ -36,9 +36,6 @@
 			<i class="bi bi-printer"></i> Imágenes
 		</a>
 		<?php } if ($appointment_datas["medicine"]){ ?>
-		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment_print/medicine/<?= $appointment->id ?>" target="_blank">
-			<i class="bi bi-printer"></i> Medicamento
-		</a>
 		<a class="btn btn-primary" href="<?= base_url() ?>clinic/appointment_print/prescription/<?= $appointment->id ?>" target="_blank">
 			<i class="bi bi-printer"></i> Receta Médica
 		</a>
