@@ -26,7 +26,7 @@ class Appointment_print extends CI_Controller {
 			
 			$sub_txt_arr = [];
 			
-			$sub_txt_arr[] = number_format($item->quantity)." ".$item->unit;
+			$sub_txt_arr[] = number_format($item->quantity);//." ".$item->unit;
 			if ($item->dose->description) $sub_txt_arr[] = $item->dose->description;
 			if ($item->application_way->description) $sub_txt_arr[] = $item->application_way->description;
 			if ($item->frequency->description) $sub_txt_arr[] = $item->frequency->description;

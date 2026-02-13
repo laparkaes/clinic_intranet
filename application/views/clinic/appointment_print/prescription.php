@@ -7,7 +7,7 @@
     <style>
 	*{margin: 0; pardding: 0; font-size: 10px;}
 
-	#back_img{width: 100%;}
+	#back_img{ width: 100%; display: none; }
 	
 	#print_area{
 		width: 210mm;
