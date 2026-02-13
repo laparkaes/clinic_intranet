@@ -88,7 +88,7 @@
 window.onload = function () {
 	window.print();
 	
-	return;
+	//return;
 	setTimeout(function () {
 		window.close(); // 일정 시간 후 창 닫기 (일부 브라우저에서 필요)
 	}, 500); 
