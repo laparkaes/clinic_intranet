@@ -27,7 +27,8 @@ class Account extends CI_Controller {
 		if (!$f_url["page"]) $f_url["page"] = 1;
 		if ($f_url["role_id"]) $f_w["role_id"] = $f_url["role_id"];
 		if ($f_url["person_name"]){
-			$people = $this->general->filter("person", null, ["name" => $f_url["person_name"]]);
+			$people = $this->general->filter("person", null, [["field" => "name", "values" => explode(" ", trim($f_url["person_name"]))]]);
+			
 			$values = [];
 			foreach($people as $item) $values[] = $item->id;
 			if (!$values) $values[] = -1;
@@ -41,10 +42,24 @@ class Account extends CI_Controller {
 			$item->person = $this->general->id("person", $item->person_id)->name;
 		}
 		
+		$rol_sp = [
+			'master' => 'Maestro',
+			'admin' => 'Admin',
+			'doctor' => 'Médico',
+			'nurse' => 'Enfermera',
+			'patient' => 'Paciente',
+			'reception' => 'Recepción',
+		];
+		
+		$roles = $this->general->all("role", "id", "asc");
+		foreach($roles as $item){
+			$item->sp = $rol_sp[$item->name];
+		}
+		
 		$data = array(
 			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("account", $f_w, $f_l, $f_in)),
 			"f_url" => $f_url,
-			"roles" => $this->general->all("role", "id", "asc"),
+			"roles" => $roles,
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"accounts" => $accounts,
 			"title" => $this->lang->line('accounts'),

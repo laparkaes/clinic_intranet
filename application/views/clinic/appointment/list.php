@@ -12,7 +12,6 @@
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
-							
 							<div class="row">
 								<div class="col-md-6">
 									<div class="row g-3">
@@ -153,7 +152,7 @@
 									<select class="form-select" name="status_id">
 										<option value="">Todos</option>
 										<?php foreach($status as $item){ if ($item->id == $f_url["status_id"]) $s = "selected"; else $s = ""; ?>
-										<option value="<?= $item->id ?>" <?= $s ?>><?= $this->lang->line($item->code) ?></option>
+										<option value="<?= $item->id ?>" <?= $s ?>><?= $item->sp ?></option>
 										<?php } ?>
 									</select>
 								</div>
@@ -221,7 +220,7 @@
 						<tbody>
 							<?php foreach($appointments as $i => $item){ ?>
 							<tr>
-								<td><span class="text-<?= $status_arr[$item->status_id]->color ?>"><?= $this->lang->line($status_arr[$item->status_id]->code) ?></span></td>
+								<td><span class="text-<?= $item->status_color ?>"><?= $item->status_sp ?></span></td>
 								<td><?= date("Y-m-d", strtotime($item->schedule_from)); ?></td>
 								<td><?= date("h:i A", strtotime($item->schedule_from)); ?></td>
 								<td><?= $item->specialty ?></td>

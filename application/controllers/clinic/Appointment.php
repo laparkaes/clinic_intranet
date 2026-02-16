@@ -70,12 +70,19 @@ class Appointment extends CI_Controller {
 		
 		if ($this->session->userdata('role')->name === "doctor") $f_w["doctor_id"] = $this->session->userdata('pid');
 		
-		$appointments = $this->general->filter("appointment", $f_w, $f_l, $f_w_in, "schedule_from", "desc", 25, 25*($f_url["page"]-1));
-		foreach($appointments as $item){
-			$item->patient = $this->general->id("person", $item->patient_id)->name;
-			$item->doctor = $this->general->id("person", $item->doctor_id)->name;
-			$item->specialty = $this->general->id("specialty", $item->specialty_id)->name;
-		}
+		//status language & color assign
+		$status_sp = [
+			'reserved'	=> 'Reservado',
+			'confirmed'	=> 'Confirmado',
+			'finished'	=> 'Finalizado',
+			'canceled'	=> 'Cancelado',
+			'in_progress' => 'En Progreso',
+			'enabled'	=> 'Activado',
+			'disabled'	=> 'Desactivado',
+			'accepted'	=> 'Aceptado',
+			'rejected'	=> 'Rechazado',
+			'pending'	=> 'Pendiente',
+		];
 		
 		$status_aux = [];
 		$status_ids = $this->general->only("appointment", "status_id");
@@ -86,7 +93,21 @@ class Appointment extends CI_Controller {
 		
 		$status_arr = [];
 		$status = $this->general->filter("status", null, null, [["field" => "id", "values" => $status_aux]]);
-		foreach($status as $item) $status_arr[$item->id] = $item;
+		foreach($status as $item){
+			$item->sp = $status_sp[$item->code];
+			$status_arr[$item->id] = $item;
+		}
+		
+		$appointments = $this->general->filter("appointment", $f_w, $f_l, $f_w_in, "schedule_from", "desc", 25, 25*($f_url["page"]-1));
+		foreach($appointments as $item){
+			$item->patient = $this->general->id("person", $item->patient_id)->name;
+			$item->doctor = $this->general->id("person", $item->doctor_id)->name;
+			$item->specialty = $this->general->id("specialty", $item->specialty_id)->name;
+			
+			//status
+			$item->status_color = $status_arr[$item->status_id]->color;
+			$item->status_sp = $status_sp[$status_arr[$item->status_id]->code];
+		}
 		
 		//for add appointment
 		$enabled_id = $this->general->status("enabled")->id;
@@ -107,13 +128,10 @@ class Appointment extends CI_Controller {
 			$d->name = $this->general->id("person", $d->person_id)->name;
 		}
 		
-		//echo  $this->db->last_query(); return;
-		
 		$data = [
 			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("appointment", $f_w, null, $f_w_in)),
 			"f_url" => $f_url,
 			"status" => $status,
-			"status_arr" => $status_arr,
 			"appointments" => $appointments,
 			"specialties"	=> $specialties,
 			"doctors"	=> $doctors,
