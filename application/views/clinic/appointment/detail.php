@@ -186,7 +186,7 @@
 								<td><?= $item->specialty ?></td>
 								<td class="text-end">
 									<?php if ($appointment->id != $item->id){ ?>
-									<a href="<?= base_url()."clinic/".$item->link_to."/medical_history/".$item->id ?>" target="_blank">
+									<a href="<?= $item->link_to ?>" target="_blank">
 										<i class="bi bi-search"></i>
 									</a>
 									<?php }else{ ?>
