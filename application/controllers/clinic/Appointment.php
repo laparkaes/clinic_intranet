@@ -20,8 +20,8 @@ class Appointment extends CI_Controller {
 		
 		$f_url = [
 			"page" => $this->input->get("page"),
-			"status_id" => $this->input->get("status_id"),
-			"doc_type_id" => $this->input->get("doc_type_id"),
+			"status" => $this->input->get("status"),
+			"doc_type" => $this->input->get("doc_type"),
 			"doc_number" => $this->input->get("doc_number"),
 			"name" => $this->input->get("name"),
 			"tel" => $this->input->get("tel"),
@@ -33,15 +33,15 @@ class Appointment extends CI_Controller {
 		$f_w = $f_l = $f_w_in = [];
 		
 		//by appointment status
-		if ($f_url["status_id"]) $f_w["status_id"] = $f_url["status_id"];
+		if ($f_url["status"]) $f_w["status"] = $f_url["status"];
 		
 		//by patient
-		if ($f_url["doc_number"] or $f_url["doc_type_id"] or $f_url["name"] or $f_url["tel"]){
+		if ($f_url["doc_number"] or $f_url["doc_type"] or $f_url["name"] or $f_url["tel"]){
 			$aux = [-1];
 			
 			$f_w_person = $f_l_person = [];
-			if ($f_url["doc_type_id"]) $f_w_person["doc_type_id"] = $f_url["doc_type_id"];
-			if ($f_url["doc_number"]) $f_l_person[] = ["field" => "doc_number", "values" => explode(" ", trim($f_url["doc_number"]))];
+			if ($f_url["doc_type"]) $f_w_person["doc_type_id"] = $f_url["doc_type"];
+			if ($f_url["doc_number"]) $f_l_person[] = ["field" => "doc_number_id", "values" => explode(" ", trim($f_url["doc_number"]))];
 			if ($f_url["name"]) $f_l_person[] = ["field" => "name", "values" => explode(" ", trim($f_url["name"]))];
 			if ($f_url["tel"]) $f_l_person[] = ["field" => "tel", "values" => explode(" ", trim($f_url["tel"]))];
 			

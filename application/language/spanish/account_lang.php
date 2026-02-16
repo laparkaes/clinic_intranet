@@ -8,7 +8,7 @@ $lang['e_account_exists']	= 'Persona ya cuenta con usuario de rol elegido.';
 
 //success message
 $lang['s_account_register']	= 'Usuario ha sido registrado.';
-$lang['s_account_delete']	= 'Usuario ha sido eliminado.';
+$lang['s_account_delete']	= 'Usuario ha sido desactivado.';
 $lang['s_password_update']	= 'Contraseña ha sido configurado a "&pw&".';
 
 //word

@@ -22,28 +22,50 @@ class Surgery extends CI_Controller {
 		$f_url = [
 			"page" => $this->input->get("page"),
 			"status" => $this->input->get("status"),
+			"doc_type" => $this->input->get("doc_type"),
+			"doc_number" => $this->input->get("doc_number"),
+			"name" => $this->input->get("name"),
+			"tel" => $this->input->get("tel"),
+			
 			"keyword" => $this->input->get("keyword"),
 		];
 		
-		$f_w = $f_w_in = [];
 		if (!$f_url["page"]) $f_url["page"] = 1;
-		if ($f_url["status"]) $f_w["status_id"] = $f_url["status"];
-		if ($f_url["keyword"]){
+		
+		$f_w = $f_l = $f_w_in = [];
+		
+		//by appointment status
+		if ($f_url["status"]) $f_w["status"] = $f_url["status"];
+		
+		//by patient
+		if ($f_url["doc_number"] or $f_url["doc_type"] or $f_url["name"] or $f_url["tel"]){
 			$aux = [-1];
-			$people = $this->general->filter("person", null, ["name" => $f_url["keyword"]]);
-			foreach($people as $p) $aux[] = $p->id;
 			
+			$f_w_person = $f_l_person = [];
+			if ($f_url["doc_type"]) $f_w_person["doc_type_id"] = $f_url["doc_type"];
+			if ($f_url["doc_number"]) $f_l_person[] = ["field" => "doc_number", "values" => explode(" ", trim($f_url["doc_number"]))];
+			if ($f_url["name"]) $f_l_person[] = ["field" => "name", "values" => explode(" ", trim($f_url["name"]))];
+			if ($f_url["tel"]) $f_l_person[] = ["field" => "tel", "values" => explode(" ", trim($f_url["tel"]))];
+			
+			$people = $this->general->filter("person", $f_w_person, $f_l_person);
+			foreach($people as $p) $aux[] = $p->id;
+			//echo $this->db->last_query(); return;
 			$f_w_in[] = ["field" => "patient_id", "values" => $aux];
 		}
 		
-		if ($this->session->userdata('role')->name === "doctor") $f_w["doctor_id"] = $this->session->userdata('pid');
-		$surgeries = $this->general->filter("surgery", $f_w, null, $f_w_in, "schedule_from", "desc", 25, 25*($f_url["page"]-1));
-		foreach($surgeries as $item){
-			$item->patient = $this->general->id("person", $item->patient_id)->name;
-			$item->doctor = $this->general->id("person", $item->doctor_id)->name;
-			$item->specialty = $this->general->id("specialty", $item->specialty_id)->name;
-			$item->room = $this->general->id("surgery_room", $item->room_id)->name;
-		}
+		//status language & color assign
+		$status_sp = [
+			'reserved'	=> 'Reservado',
+			'confirmed'	=> 'Confirmado',
+			'finished'	=> 'Finalizado',
+			'canceled'	=> 'Cancelado',
+			'in_progress' => 'En Progreso',
+			'enabled'	=> 'Activado',
+			'disabled'	=> 'Desactivado',
+			'accepted'	=> 'Aceptado',
+			'rejected'	=> 'Rechazado',
+			'pending'	=> 'Pendiente',
+		];
 		
 		$status_aux = [];
 		$status_ids = $this->general->only("surgery", "status_id");
@@ -54,7 +76,21 @@ class Surgery extends CI_Controller {
 		
 		$status_arr = [];
 		$status = $this->general->filter("status", null, null, [["field" => "id", "values" => $status_aux]]);
-		foreach($status as $item) $status_arr[$item->id] = $item;
+		foreach($status as $item){
+			$item->sp = $status_sp[$item->code];
+			$status_arr[$item->id] = $item;
+		}
+		
+		if ($this->session->userdata('role')->name === "doctor") $f_w["doctor_id"] = $this->session->userdata('pid');
+		$surgeries = $this->general->filter("surgery", $f_w, null, $f_w_in, "schedule_from", "desc", 25, 25*($f_url["page"]-1));
+		foreach($surgeries as $item){
+			$item->patient = $this->general->id("person", $item->patient_id)->name;
+			$item->doctor = $this->general->id("person", $item->doctor_id)->name;
+			$item->specialty = $this->general->id("specialty", $item->specialty_id)->name;
+			$item->room = $this->general->id("surgery_room", $item->room_id)->name;
+			$item->status_sp = $status_sp[$status_arr[$item->status_id]->code];
+			$item->status_color = $status_arr[$item->status_id]->color;
+		}
 		
 		$rooms_arr = array();
 		$rooms = $this->general->all("surgery_room", "name", "asc");
@@ -75,7 +111,7 @@ class Surgery extends CI_Controller {
 			"rooms_arr" => $rooms_arr,
 			"duration_ops" => $duration_ops,
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
-			"title" => $this->lang->line('surgeries'),
+			"title" => "Cirugías",
 			"main" => "clinic/surgery/list",
 		);
 		

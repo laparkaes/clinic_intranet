@@ -6,8 +6,7 @@ class Account extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		date_default_timezone_set('America/Lima');
-		$this->lang->load("system", "spanish");
-		$this->lang->load("account", "spanish");
+		
 		$this->load->model('general_model','general');
 		$this->nav_menu = ["sys", "account"];
 		$this->nav_menus = $this->utility_lib->get_visible_nav_menus();
@@ -36,11 +35,6 @@ class Account extends CI_Controller {
 		}
 		
 		$f_w["is_valid"] = true;
-		$accounts = $this->general->filter("account", $f_w, $f_l, $f_in, "email", "asc", 25, 25*($f_url["page"]-1));
-		foreach($accounts as $item){
-			$item->role = $this->lang->line($this->general->id("role", $item->role_id)->name);
-			$item->person = $this->general->id("person", $item->person_id)->name;
-		}
 		
 		$rol_sp = [
 			'master' => 'Maestro',
@@ -50,6 +44,13 @@ class Account extends CI_Controller {
 			'patient' => 'Paciente',
 			'reception' => 'Recepción',
 		];
+		
+		$accounts = $this->general->filter("account", $f_w, $f_l, $f_in, "registed_at", "desc", 25, 25*($f_url["page"]-1));
+		foreach($accounts as $item){
+			$item->role = $rol_sp[$this->general->id("role", $item->role_id)->name];
+			$item->person = $this->general->id("person", $item->person_id)->name;
+		}
+		
 		
 		$roles = $this->general->all("role", "id", "asc");
 		foreach($roles as $item){
@@ -62,7 +63,7 @@ class Account extends CI_Controller {
 			"roles" => $roles,
 			"doc_types" => $this->general->all("doc_type", "id", "asc"),
 			"accounts" => $accounts,
-			"title" => $this->lang->line('accounts'),
+			"title" => "Usuarios",
 			"main" => "sys/account/list",
 		);
 		
@@ -101,11 +102,11 @@ class Account extends CI_Controller {
 						$this->utility_lib->add_log("account_register", $a["email"]);
 						
 						$type = "success";
-						$msg = $this->lang->line('s_account_register');
-					}else $msg = $this->lang->line('error_internal');	
-				}else $msg = $this->lang->line('e_account_exists');
-			}else $msg = $this->lang->line('error_occurred');
-		}else $msg = $this->lang->line('error_no_permission');
+						$msg = 'Usuario ha sido registrado.';
+					}else $msg = 'Ocurrió un error interno. Intente de nuevo.';
+				}else $msg = 'Persona ya cuenta con usuario de rol elegido.';
+			}else $msg = 'Ocurrió un error. Revise los datos.';
+		}else $msg = 'Usted no cuenta con permiso suficiente para realizar esta operación.';
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
@@ -123,11 +124,11 @@ class Account extends CI_Controller {
 						$this->utility_lib->add_log("account_delete", $account->email);
 						
 						$type = "success";
-						$msg = $this->lang->line('s_account_delete');
-					}else $msg = $this->lang->line('error_internal');
-				}else $msg = $this->lang->line('e_master_account');
-			}else $msg = $this->lang->line('error_internal_refresh');
-		}else $msg = $this->lang->line('error_no_permission');
+						$msg = 'Usuario ha sido desactivado.';
+					}else $msg = 'Ocurrió un error interno. Intente de nuevo.';
+				}else $msg = 'No puede eliminar un usuario maestro.';
+			}else $msg = 'Ocurrió un error desconocido. Actualice página y vuelva intentar.';
+		}else $msg = 'Usted no cuenta con permiso suficiente para realizar esta operación.';
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);
@@ -139,16 +140,14 @@ class Account extends CI_Controller {
 		if ($this->utility_lib->check_access("account", "reset_password")){
 			$account = $this->general->id("account", $this->input->post("id"));
 			if ($account){
-				$person = $this->general->id("person", $account->person_id);
-				if ($person) $pw = $person->doc_number;
-				else $pw = "1234567890";
+				$pw = substr(password_hash("123456", PASSWORD_BCRYPT), 10, 6);
 				
 				if ($this->general->update("account", $account->id, ["password" => password_hash($pw, PASSWORD_BCRYPT)])){
 					$type = "success";
-					$msg = str_replace("&pw&", $pw, $this->lang->line('s_password_update'));
-				}else $msg = $this->lang->line('error_internal');
-			}else $msg = $this->lang->line('error_internal_refresh');
-		}else $msg = $this->lang->line('error_no_permission');
+					$msg = str_replace("&pw&", $pw, 'Contraseña ha sido configurado a "&pw&".');
+				}else $msg = 'Ocurrió un error interno. Intente de nuevo.';
+			}else $msg = 'Ocurrió un error desconocido. Actualice página y vuelva intentar.';
+		}else $msg = 'Usted no cuenta con permiso suficiente para realizar esta operación.';
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);

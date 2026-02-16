@@ -133,6 +133,8 @@
 								<th>Rol</th>
 								<th>Email</th>
 								<th>Nombre</th>
+								<th>Ultimo Ingreso</th>
+								<th>Registro</th>
 								<th></th>
 							</tr>
 						</thead>
@@ -143,6 +145,8 @@
 								<td><?= $item->role ?></td>
 								<td><?= $item->email ?></td>
 								<td><?= $item->person ?></td>
+								<td><?= $item->logged_at ?></td>
+								<td><?= $item->registed_at ?></td>
 								<td class="text-end">
 									<button type="button" class="btn btn-primary btn-sm btn_reset_password" value="<?= $item->id ?>">
 										<i class="bi bi-key"></i>
@@ -181,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 	
 	$(".btn_remove_account").click(function() {
-		ajax_simple_warning({id: $(this).val()}, "sys/account/remove", "¿Desea inactivar usuario elegido?").done(function(res) {
+		ajax_simple_warning({id: $(this).val()}, "sys/account/remove", "¿Desea desactivar usuario elegido?").done(function(res) {
 			swal_redirection(res.type, res.msg, window.location.href);
 		});
 	});

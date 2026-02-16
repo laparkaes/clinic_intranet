@@ -144,14 +144,14 @@
 						</div>
 						<div class="modal-body">
 							<div class="row g-3">
-								<div class="col-md-12 pt-3">
+								<div class="col-md-12">
 									<strong>Por estado de consulta</strong>
 								</div>
 								<div class="form-group col-md-12">
 									<label class="form-label">Estado</label>
-									<select class="form-select" name="status_id">
+									<select class="form-select" name="status">
 										<option value="">Todos</option>
-										<?php foreach($status as $item){ if ($item->id == $f_url["status_id"]) $s = "selected"; else $s = ""; ?>
+										<?php foreach($status as $item){ if ($item->id == $f_url["status"]) $s = "selected"; else $s = ""; ?>
 										<option value="<?= $item->id ?>" <?= $s ?>><?= $item->sp ?></option>
 										<?php } ?>
 									</select>
@@ -161,10 +161,10 @@
 								</div>
 								<div class="form-group col-md-6">
 									<label class="form-label">Documento</label>
-									<select class="form-select" name="doc_type_id">
+									<select class="form-select" name="doc_type">
 										<option value="">Todos</option>
 										<?php foreach($doc_types as $d){ if ($d->sunat_code){ ?>
-										<option value="<?= $d->id ?>" <?= $f_url["doc_type_id"] == $d->id ? "selected" : "" ?>><?= $d->description ?></option>
+										<option value="<?= $d->id ?>" <?= $f_url["doc_type"] == $d->id ? "selected" : "" ?>><?= $d->description ?></option>
 										<?php }} ?>
 									</select>
 								</div>
