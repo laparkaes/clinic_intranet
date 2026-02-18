@@ -6,12 +6,13 @@
 			</button>
 			<div class="modal fade" id="modal_add" tabindex="-1">
 				<div class="modal-dialog modal-xl">
-					<form class="modal-content" id="form_register">
+					<form class="modal-content" id="sur_register_form">
 						<div class="modal-header">
 							<h5 class="modal-title">Agregar Consulta</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
+							<input type="hidden" id="sur_pt_id" name="sur[patient_id]" value="">
 							<div class="row">
 								<div class="col-md-6">
 									<div class="row g-3">
@@ -20,33 +21,33 @@
 										</div>
 										<div class="col-md-12">
 											<label class="form-label">Especialidad</label>
-											<select class="form-select" id="aa_specialty" name="app[specialty_id]">
+											<select class="form-select" id="sur_specialty" name="sur[specialty_id]">
 												<option value="">--</option>
 												<?php foreach($specialties as $item){ if ($item->doctor_qty){ ?>
 												<option value="<?= $item->id ?>"><?= $item->name ?></option>
 												<?php }} ?>
 											</select>
-											<div class="sys_msg" id="aa_specialty_msg"></div>
+											<div class="sys_msg" id="sur_specialty_msg"></div>
 										</div>
 										<div class="col-md-12">
 											<label class="form-label">Médico</label>
-											<select class="form-select" id="aa_doctor" name="app[doctor_id]">
+											<select class="form-select" id="sur_doctor" name="sur[doctor_id]">
 												<option value="">--</option>
 												<?php foreach($doctors as $item){ ?>
 												<option class="spe spe_<?= $item->specialty_id ?> d-none" value="<?= $item->person_id ?>"><?= $item->name ?></option>
 												<?php } ?>
 											</select>
-											<div class="sys_msg" id="aa_doctor_msg"></div>
+											<div class="sys_msg" id="sur_doctor_msg"></div>
 										</div>
 										<div class="col-md-4">
 											<label class="form-label">Fecha</label>
-											<input type="text" class="form-control date_picker" id="aa_date" name="sch[date]" value="<?= date('Y-m-d') ?>">
-											<div class="sys_msg" id="aa_date_msg"></div>
+											<input type="text" class="form-control date_picker" id="sur_date" name="sch[date]" value="<?= date('Y-m-d') ?>">
+											<div class="sys_msg" id="sur_date_msg"></div>
 										</div>
 										<div class="col-md-8">
 											<label class="form-label">Hora</label>
 											<div class="input-group">
-												<select class="form-select" id="aa_hour" name="sch[hour]">
+												<select class="form-select" id="sur_hour" name="sch[hour]">
 													<option value="" selected>--</option>
 													<?php for($i = 0; $i < 24; $i++){ if ($i < 12) $pre = "AM"; else $pre = "PM"; ?>
 													<option value="<?= $i ?>">
@@ -61,67 +62,81 @@
 													<?php } ?>
 												</select>
 												<span class="input-group-text">:</span>
-												<select class="form-select" id="aa_min" name="sch[min]">
+												<select class="form-select" id="sur_min" name="sch[min]">
 													<option value="" selected>--</option>
 													<?php foreach(["00", "10", "20", "30", "40", "50"] as $item){ ?>
 													<option value="<?= $item ?>"><?= $item ?></option>
 													<?php } ?>
 												</select>
 											</div>
-											<div class="sys_msg" id="aa_schedule_msg"></div>
+											<div class="sys_msg" id="sur_schedule_msg"></div>
+										</div>
+										<div class="col-md-8">
+											<label class="form-label">
+												<span>Sala</span>
+												<i class="bi bi-alarm ms-2" id="ic_room_weekly_sur" data-bs-toggle="modal" data-bs-target="#md_room_weekly_sur"></i>
+											</label>
+											<select class="form-select" id="sur_room_id" name="sur[room_id]">
+												<option value="">--</option>
+												<?php foreach($rooms as $r){ ?>
+												<option value="<?= $r->id ?>"><?= $r->name ?></option>
+												<?php } ?>
+											</select>
+											<div class="sys_msg" id="sur_room_msg"></div>
+										</div>
+										<div class="col-md-4">
+											<label class="form-label">Duración</label>
+											<select class="form-select" name="sch[duration]">
+												<option value="">--</option>
+												<?php foreach($duration_ops as $op){ ?>
+												<option value="<?= $op["value"] ?>"><?= $op["txt"] ?></option>
+												<?php } ?>
+											</select>
+											<div class="sys_msg" id="sur_duration_msg"></div>
 										</div>
 										<div class="col-md-12 pt-3">
 											<strong>Paciente</strong>
 										</div>
 										<div class="col-md-12">
 											<label class="form-label">Documento</label>
-											<select class="form-select" id="aa_pt_doc_type_id" name="pt[doc_type_id]">
+											<select class="form-select" id="sur_pt_doc_type_id" name="pt[doc_type_id]">
 												<?php foreach($doc_types as $item){ if ($item->sunat_code){ ?>
 												<option value="<?= $item->id ?>"><?= $item->description ?></option>
 												<?php }} ?>
 											</select>
-											<div class="sys_msg" id="aa_pt_doc_type_msg"></div>
+											<div class="sys_msg" id="sur_pt_doc_type_msg"></div>
 										</div>
 										<div class="col-md-12">
 											<label class="form-label">Número</label>
 											<div class="input-group">
-												<input type="text" class="form-control" id="aa_pt_doc_number" name="pt[doc_number]">
-												<button class="btn btn-primary" type="button" id="btn_search_pt_aa">
+												<input type="text" class="form-control" id="sur_pt_doc_number" name="pt[doc_number]">
+												<button class="btn btn-primary" type="button" id="btn_search_pt_sur">
 													<i class="bi bi-search"></i>
 												</button>
 											</div>
-											<div class="sys_msg" id="aa_pt_doc_number_msg"></div>
+											<div class="sys_msg" id="sur_pt_doc_number_msg"></div>
 										</div>
 										<div class="col-md-8">
 											<label class="form-label">Nombre</label>
-											<input type="text" class="form-control" id="aa_pt_name" name="pt[name]" readonly>
-											<div class="sys_msg" id="aa_pt_name_msg"></div>
+											<input type="text" class="form-control" id="sur_pt_name" name="pt[name]">
+											<div class="sys_msg" id="sur_pt_name_msg"></div>
 										</div>
 										<div class="col-md-4">
 											<label class="form-label">Teléfono</label>
-											<input type="text" class="form-control" id="aa_pt_tel" name="pt[tel]">
-											<div class="sys_msg" id="aa_pt_tel_msg"></div>
+											<input type="text" class="form-control" id="sur_pt_tel" name="pt[tel]">
+											<div class="sys_msg" id="sur_pt_tel_msg"></div>
 										</div>
 										<div class="col-md-12">
 											<label class="form-label">Observación (Opcional)</label>
-											<textarea class="form-control" rows="4" name="app[remark]" placeholder="Síntomas, Notas del paciente, etc."></textarea>
-										</div>
-										<div class="col-md-12 pt-3">
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="as_free" id="as_free">
-												<label class="form-check-label" for="as_free">
-													Generar como consulta gratuita
-												</label>
-											</div>
+											<textarea class="form-control" rows="4" name="sur[remark]" placeholder="Síntomas, Notas del paciente, etc."></textarea>
 										</div>
 									</div>
 								</div>
 								<div class="col-md-6 mb-3">
 									<div class="mb-3"><strong>Agenda del Médico</strong></div>
-									<div id="aa_schedule"></div>
+									<div id="sur_schedule"></div>
 								</div>
 							</div>
-							
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -193,53 +208,38 @@
 		</div>
 	</div>
 </div>
-
-
-
-<div class="d-flex justify-content-between align-items-start">
-	<div class="btn-group mb-3">
-		<button type="button" class="btn btn-primary control_bl" id="btn_list" value="bl_list">
-			<i class="bi bi-card-list"></i>
-		</button>
-		<button type="button" class="btn btn-outline-primary control_bl" value="bl_add">
-			<i class="bi bi-plus-lg"></i>
-		</button>
-	</div>
-</div>
-<div class="row mt-3">
-	<div class="col-md-12">
-		<div class="card bl_content" id="bl_list">
-			<div class="card-body">
-				<h5 class="card-title"><?= $this->lang->line('w_list') ?></h5>
+<div class="row">
+	<div class="col">
+		<div class="card">
+			<div class="card-body pt-3">
 				<?php if ($surgeries){ ?>
 				<div class="table-responsive">
-					<table class="table">
+					<table class="table align-middle">
 						<thead>
 							<tr>
-								<th>#</th>
-								<th><?= $this->lang->line('w_itinerary') ?></th>
-								<th><?= $this->lang->line('w_room') ?></th>
-								<th><?= $this->lang->line('w_specialty') ?></th>
-								<th><?= $this->lang->line('w_doctor') ?> / <?= $this->lang->line('w_patient') ?></th>
-								<th><?= $this->lang->line('w_status') ?></th>
+								<th>Estado</th>
+								<th>Fecha</th>
+								<th>Hora</th>
+								<th>Sala</th>
+								<th>Especialidad</th>
+								<th>Médico</th>
+								<th>Paciente</th>
 								<th></th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php foreach($surgeries as $i => $item){ ?>
 							<tr>
-								<td><strong><?= number_format(($f_url["page"] - 1) * 25 + 1 + $i) ?></strong></td>
-								<td>
-									<div class="text-nowrap"><?= date("h:i A", strtotime($item->schedule_from)); ?></div>
-									<div><?= date("Y-m-d", strtotime($item->schedule_from)); ?></div>
-								</td>
+								<td><span class="text-<?= $item->status_color ?>"><?= $item->status_sp ?></span></td>
+								<td><?= date("Y-m-d", strtotime($item->schedule_from)); ?></td>
+								<td><?= date("h:i A", strtotime($item->schedule_from)); ?></td>
 								<td class="text-nowrap"><?= $item->room ?></td>
 								<td><?= $item->specialty ?></td>
-								<td><?= $item->doctor ?><br/>/ <?= $item->patient ?></td>
-								<td><span class="text-<?= $item->status_color ?>"><?= $item->status_sp ?></span></td>
+								<td><?= $item->doctor ?></td>
+								<td><?= $item->patient ?></td>
 								<td class="text-end">
 									<a href="<?= base_url() ?>clinic/surgery/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
-										<i class="bi bi-search"></i>
+										<i class="bi bi-arrow-right"></i>
 									</a>
 								</td>
 							</tr>
@@ -256,21 +256,82 @@
 					</div>
 				</div>
 				<?php }else{ ?>
-				<h5 class="text-danger"><?= $this->lang->line('t_no_surgeries') ?></h5>
+				<h5 class="text-danger">'No existe cirugías registradas.'</h5>
 				<?php } ?>
 			</div>
-		</div>
-		<div class="card bl_content d-none" id="bl_add">
-			<?php $this->load->view("clinic/surgery/form_add_surgery", ["patient" => null, "doctor" => null]); ?>
 		</div>
 	</div>
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-	var params = get_params();
-	if (params.a == "add") $("#btn_add").trigger("click");
-	$(".control_bl").click(function() {
-		control_bl(this);
+	
+	function reset_person_sur(){
+		$("#sur_pt_name").val("");
+		$("#sur_pt_tel").val("");
+	}
+	
+	function load_doctor_schedule_sur(){
+		$("#sur_schedule").html('<div class="text-center mt-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+		load_doctor_schedule_n($("#sur_doctor").val(), $("#sur_date").val()).done(function(res) {
+			$("#sur_schedule").html(res);
+			$("#sur_schedule .sch_cell").on('click',(function(e) {set_time_dom("#sur_hour", "#sur_min", this);}));
+			set_time_sl("sur", "#sur_schedule");
+		});
+	}
+
+	set_date_picker("#sur_date", new Date());
+	load_doctor_schedule_sur();
+	
+	$("#sur_register_form").submit(function(e) {
+		e.preventDefault();
+		$("#sur_register_form .sys_msg").html("");
+		ajax_form_warning(this, "clinic/surgery/register", "¿Desea agregar nueva cirugía?").done(function(res) {
+			set_msg(res.msgs);
+			swal_redirection(res.type, res.msg, res.move_to);
+		});
 	});
+
+	$("#sur_specialty").change(function() {
+		load_doctor_schedule_sur();
+		$("#sur_doctor").val("");
+		$("#sur_doctor .spe").addClass("d-none");
+		$("#sur_doctor .spe_" + $(this).val()).removeClass("d-none");
+	});
+	
+	$("#sur_doctor").change(function() {
+		load_doctor_schedule_sur();
+	});
+	
+	$("#sur_date").focusout(function() {
+		load_doctor_schedule_sur();
+	});
+	
+	$("#sur_pt_doc_type_id").change(function() {reset_person_sur();});
+	$("#sur_pt_doc_number").keyup(function() {reset_person_sur();});
+	
+	$("#btn_search_pt_sur").click(function() {
+		var data = {doc_type_id: $("#sur_pt_doc_type_id").val(), doc_number: $("#sur_pt_doc_number").val()};
+		
+		ajax_simple(data, "ajax_f/search_person").done(function(res) {
+			swal(res.type, res.msg);
+			if (res.type == "success"){
+				$("#sur_pt_name").val(res.person.name);
+				$("#sur_pt_tel").val(res.person.tel);
+			}else reset_person_sur();
+		});
+	});
+	
+	$("#ic_doctor_weekly_sur").click(function() {
+		load_doctor_schedule_weekly($("#sur_doctor").val(), null, "bl_weekly_schedule_sur");
+	});
+	
+	$("#ic_room_weekly_sur").click(function() {
+		load_room_availability($("#sur_room_id").val(), null, "bl_room_weekly_sur");
+	});
+	
+	$("#sur_hour, #sur_min").change(function() {
+		set_time_sl("sur", "#sur_schedule");
+	});
+	
 });
 </script>

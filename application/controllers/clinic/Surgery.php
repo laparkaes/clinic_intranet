@@ -101,12 +101,30 @@ class Surgery extends CI_Controller {
 		array_push($duration_ops, ["value" => 60, "txt" => "1 ".$this->lang->line('w_hour')]);
 		for($i = 2; $i <= 12; $i++) array_push($duration_ops, ["value" => 60 * $i, "txt" => $i." ".$this->lang->line('w_hours')]);
 		
+		//doctor list loading
+		$aux_f = ["status_id" => $this->general->status("enabled")->id];
+		$specialties = $this->general->all("specialty", "name", "asc");
+		foreach($specialties as $s){
+			$aux_f["specialty_id"] = $s->id;
+			$s->doctor_qty = $this->general->counter("doctor", $aux_f);
+		}
+		unset($aux_f["specialty_id"]);
+		
+		$doctors = $this->general->filter("doctor", $aux_f);
+		foreach($doctors as $d){
+			if (!$this->general->id("person", $d->person_id)) echo $d->person_id."<br/>";
+			$d->name = $this->general->id("person", $d->person_id)->name;
+		}
+		usort($doctors, function($a, $b) {return strcmp(strtoupper($a->name), strtoupper($b->name));});
+		
 		$data = array(
 			"paging" => $this->my_func->set_page($f_url["page"], $this->general->counter("surgery", $f_w, null, $f_w_in)),
 			"f_url" => $f_url,
 			"status" => $status,
 			"status_arr" => $status_arr,
 			"surgeries" => $surgeries,
+			"specialties" => $specialties,
+			"doctors" => $doctors,
 			"rooms" => $rooms,
 			"rooms_arr" => $rooms_arr,
 			"duration_ops" => $duration_ops,
