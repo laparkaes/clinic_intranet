@@ -139,7 +139,7 @@
 				<div class="modal-dialog">
 					<form class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title">Buscar Consulta</h5>
+							<h5 class="modal-title">Buscar Cirugía</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
@@ -196,16 +196,6 @@
 
 
 
-<div class="d-flex justify-content-between align-items-start">
-	<div class="btn-group mb-3">
-		<button type="button" class="btn btn-primary control_bl" id="btn_list" value="bl_list">
-			<i class="bi bi-card-list"></i>
-		</button>
-		<button type="button" class="btn btn-outline-primary control_bl" value="bl_add">
-			<i class="bi bi-plus-lg"></i>
-		</button>
-	</div>
-</div>
 <div class="row mt-3">
 	<div class="col-md-12">
 		<div class="card bl_content" id="bl_list">
@@ -217,17 +207,18 @@
 						<thead>
 							<tr>
 								<th>#</th>
+								<th>Estado</th>
 								<th><?= $this->lang->line('w_itinerary') ?></th>
 								<th><?= $this->lang->line('w_room') ?></th>
 								<th><?= $this->lang->line('w_specialty') ?></th>
 								<th><?= $this->lang->line('w_doctor') ?> / <?= $this->lang->line('w_patient') ?></th>
-								<th><?= $this->lang->line('w_status') ?></th>
 								<th></th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php foreach($surgeries as $i => $item){ ?>
 							<tr>
+								<td><span class="text-<?= $item->status_color ?>"><?= $item->status_sp ?></span></td>
 								<td><strong><?= number_format(($f_url["page"] - 1) * 25 + 1 + $i) ?></strong></td>
 								<td>
 									<div class="text-nowrap"><?= date("h:i A", strtotime($item->schedule_from)); ?></div>
@@ -236,7 +227,6 @@
 								<td class="text-nowrap"><?= $item->room ?></td>
 								<td><?= $item->specialty ?></td>
 								<td><?= $item->doctor ?><br/>/ <?= $item->patient ?></td>
-								<td><span class="text-<?= $item->status_color ?>"><?= $item->status_sp ?></span></td>
 								<td class="text-end">
 									<a href="<?= base_url() ?>clinic/surgery/detail/<?= $item->id ?>" class="btn btn-primary btn-sm">
 										<i class="bi bi-search"></i>
