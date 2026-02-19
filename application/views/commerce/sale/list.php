@@ -59,7 +59,9 @@
 							<tr>
 								<th>#</th>
 								<th>Fecha</th>
+								<th>Hora</th>
 								<th>Cliente</th>
+								<th>Productos</th>
 								<th class="text-nowrap">Total (Saldo)</th>
 								<th>Estado</th>
 								<th></th>
@@ -69,9 +71,13 @@
 							<?php foreach($sales as $i => $item){ $cur = $item->currency->description; ?>
 							<tr>
 								<th><?= number_format(($f_url["page"] - 1) * 25 + 1 + $i) ?></th>
-								<td><?= str_replace(" ", "<br/>", $item->registed_at) ?></td>
+								<td><?= date("Y-m-d", strtotime($item->registed_at)); ?></td>
+								<td><?= date("h:i A", strtotime($item->registed_at)); ?></td>
+								<td><?= $item->client ? $item->client->name : "-"; ?></td>
 								<td>
-									<?php if ($item->client) echo $item->client->name; else echo "-"; ?>
+									<?php foreach($item->products as $item_p){ ?>
+									<div><?= $item_p->description ?> (<?= $cur." ".$item_p->sale_price ?> * <?= $item_p->sale_qty ?>)</div>
+									<?php } ?>
 								</td>
 								<td class="text-nowrap">
 									<?= $cur." ".number_format($item->total, 2) ?>

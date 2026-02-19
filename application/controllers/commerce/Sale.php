@@ -84,6 +84,23 @@ class Sale extends CI_Controller {
 			$item->status = $this->general->id("status", $item->status_id);
 			$item->status->lang = $this->lang->line($item->status->code);
 			
+			//list up sale products
+			$aux_ids = $prices = [];
+			$products_ids = $this->general->filter("sale_product", ["sale_id" => $item->id], null, null);
+			foreach($products_ids as $item_p){
+				$aux_ids[] = $item_p->product_id;
+				$prices[$item_p->product_id] = $item_p;
+			}
+			
+			$products = $this->general->filter("product", null, null, [["field" => "id", "values" => $aux_ids]], "price", "desc");
+			foreach($products as $item_p){
+				$item_p->sale_price = $prices[$item_p->id]->price;
+				$item_p->sale_qty = $prices[$item_p->id]->qty;
+			}
+			
+			$item->products = $products;
+			
+			/* no used
 			if ($item->voucher_id){
 				$item->voucher = $this->general->id("voucher", $item->voucher_id);
 				if ($item->voucher->sunat_sent) $item->voucher->color = "success";
@@ -98,6 +115,7 @@ class Sale extends CI_Controller {
 					$item->voucher->sunat_msg = $this->lang->line('t_need_send_sunat');
 				}
 			}
+			*/
 		}
 		
 		$status = [

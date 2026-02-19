@@ -17,17 +17,17 @@
 	}
 	
 	//.border{ border: solid 1px red; }
-	.line1{ position: absolute; top: 20%; }
-	.line1_1{ position: absolute; top: 19%; }
-	.line2{ position: absolute; top: 24%; }
-	.line3{ position: absolute; top: 28.5%; }
-	.line4{ position: absolute; top: 36%; }
-	.line5{ position: absolute; top: 44%; }
-	.line6{ position: absolute; top: 88%; }
+	.line1{ position: absolute; top: 10%; }
+	.line1_1{ position: absolute; top: 9%; }
+	.line2{ position: absolute; top: 14%; }
+	.line3{ position: absolute; top: 18.5%; }
+	.line4{ position: absolute; top: 26%; }
+	.line5{ position: absolute; top: 34%; }
+	.line6{ position: absolute; top: 78%; }
 	
 	/* line1 */
 	#name_1{ left: 19%; width: 30%; }
-	#name_2{ left: 66%; width: 30%; }
+	#name_2{ left: 69%; width: 30%; }
 	
 	/* line2 */
 	#document_1{ left: 9%; width: 10%; }
@@ -38,14 +38,14 @@
 	#cie_1{ left: 37%; width: 10%; }
 	
 	/* line4 */
-	#medicine_2{ left: 54%; width: 43%; }
+	#medicine_2{ left: 57%; width: 43%; }
 	
 	/* line5 */
 	#medicine_1{ left: 6%; width: 42%; }
 	
 	/* line6 */
 	#date_1{ left: 7%; width: 10%; }
-	#date_2{ left: 56%; width: 10%; }
+	#date_2{ left: 59%; width: 10%; }
     </style>
 </head>
 <body>
