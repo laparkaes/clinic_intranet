@@ -1,12 +1,21 @@
 <div class="pagetitle">
-	<h1><?= $appointment->specialty ?></h1>
-	<nav>
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="<?= base_url() ?>"><?= $this->lang->line('w_home') ?></a></li>
-			<li class="breadcrumb-item"><a href="<?= base_url() ?>appointment"><?= $this->lang->line('appointments') ?></a></li>
-			<li class="breadcrumb-item active"><?= $this->lang->line('txt_detail') ?></li>
-		</ol>
-	</nav>
+	<h1><?= $patient->name ?></h1>
+</div>
+<div class="row pb-3">
+	<div class="col-md-12">		
+		<?php if (in_array("clinic_history", $actions)){ ?>
+		<a class="btn btn-primary" href="<?= base_url() ?>clinic/appointment_print/medical_history/<?= $appointment->id ?>" target="_blank">
+			<?= $this->lang->line('w_clinical_history') ?>
+		</a>
+		<?php } if (in_array("reschedule", $actions)) $d = ""; else $d = "disabled"; ?>
+		<button type="button" class="btn btn-primary" id="btn_reschedule" <?= $d ?>>
+			<?= $this->lang->line('btn_reschedule') ?>
+		</button>
+		<?php if (in_array("cancel", $actions)) $d = ""; else $d = "disabled"; ?>
+		<button type="button" class="btn btn-danger" id="btn_cancel" <?= $d ?> value="<?= $appointment->id ?>">
+			<?= $this->lang->line('btn_cancel') ?>
+		</button>
+	</div>
 </div>
 <div class="row">
 	<div class="col-md-12">
