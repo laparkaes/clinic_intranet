@@ -19,25 +19,55 @@ class Doctor extends CI_Controller {
 		
 		$f_url = [
 			"page" => $this->input->get("page"),
+			"doc_type" => $this->input->get("doc_type"),
+			"doc_number" => $this->input->get("doc_number"),
 			"specialty" => $this->input->get("specialty"),
+			"tel" => $this->input->get("tel"),
 			"name" => $this->input->get("name"),
 		];
 		if (!$f_url["page"]) $f_url["page"] = 1;
 		
 		$f_w = $f_l = $f_w_in = [];
 		if ($f_url["specialty"]) $f_w["specialty_id"] = $f_url["specialty"];
-		if ($f_url["name"]){
-			$aux = [];
-			$person_ids = $this->general->only("person", "id", null, ["name" => $f_url["name"]], null);
-			if ($person_ids){
-				foreach($person_ids as $item) $aux[] = $item->id;
-				$f_w_in[] = ["field" => "person_id", "values" => $aux];
-			}
+		
+		if ($f_url["doc_type"] or $f_url["doc_number"] or $f_url["name"] or $f_url["tel"]){
+			$aux_p_ids = $aux_w = $aux_l = [];
+		
+			if ($f_url["doc_type"]) $aux_w["doc_type_id"] = $f_url["doc_type"];
+			if ($f_url["doc_number"]) $aux_w["doc_number"] = $f_url["doc_number"];
+			if ($f_url["name"]) $aux_l[] = ["field" => "name", "values" => explode(" ", trim($f_url["name"]))];
+			if ($f_url["tel"]) $aux_l[] = ["field" => "tel", "values" => explode(" ", trim($f_url["tel"]))];
+			
+			$person_ids = $this->general->only("person", "id", $aux_w, $aux_l);
+			if ($person_ids) foreach($person_ids as $item) $aux_p_ids[] = $item->id;
+			else $aux_p_ids[] = -1;
+			
+			$f_w_in[] = ["field" => "person_id", "values" => $aux_p_ids];
 		}
-		if ((!$f_w_in) and $f_url["name"]) $f_w_in[] = ["field" => "person_id", "values" => [-1]];
+		
+		$doc_types_arr = [];
+		$doc_types = $this->general->all("doc_type", "id", "asc");
+		foreach($doc_types as $item) $doc_types_arr[$item->id] = $item->short;
+		
+		$sex_arr = [];
+		$sex = $this->general->all("sex", "id", "asc");
+		foreach($sex as $item) $sex_arr[$item->id] = $item->description;
+		
+		$blood_type_arr = [];
+		$blood_types = $this->general->all("blood_type", "id", "asc");
+		foreach($blood_types as $item) $blood_type_arr[$item->id] = $item->description;
 		
 		$doctors = $this->general->filter("doctor", $f_w, $f_l, $f_w_in, "registed_at", "desc", 25, 25*($f_url["page"]-1));
-		foreach($doctors as $item) $item->person = $this->general->id("person", $item->person_id);
+		foreach($doctors as $item){
+			$person = $this->general->id("person", $item->person_id);
+			
+			$person->age = $this->my_func->age_calculator($person->birthday);
+			$person->doc_type = $person->doc_type_id ? $doc_types_arr[$person->doc_type_id] : "";
+			$person->sex = $person->sex_id ? $sex_arr[$person->sex_id] : "";
+			$person->blood_type = $person->blood_type_id ? $blood_type_arr[$person->blood_type_id] : "";
+			
+			$item->person = $person;
+		}
 		
 		$specialties_arr = [];
 		$specialties = $this->general->all("specialty", "name", "asc");

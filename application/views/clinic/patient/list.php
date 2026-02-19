@@ -156,7 +156,7 @@
 			<div class="card-body pt-3">
 				<?php if ($patients){ ?>
 				<div class="table-responsive">
-					<table class="table">
+					<table class="table align-middle">
 						<thead>
 							<tr>
 								<th><strong>#</strong></th>

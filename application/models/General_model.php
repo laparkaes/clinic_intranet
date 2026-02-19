@@ -89,7 +89,23 @@ class General_model extends CI_Model{
 	function only($tablename, $field, $w = null, $l = null, $w_in = null, $limit = "", $offset = ""){
 		$this->db->select($field);
 		if ($w){ $this->db->group_start(); $this->db->where($w); $this->db->group_end(); }
-		if ($l){ $this->db->group_start(); $this->db->or_like($l); $this->db->group_end(); }
+		
+		if ($l){
+			
+			foreach($l as $item){
+				$this->db->group_start();
+				
+				foreach($item["values"] as $val){
+					$this->db->group_start();
+					if ($val) $this->db->like($item["field"], trim($val));
+					$this->db->group_end();
+				}
+				
+				$this->db->group_end();
+			}
+			
+		}
+		
 		if ($w_in){
 			$this->db->group_start();
 			foreach($w_in as $item) $this->db->where_in($item["field"], $item["values"]);
