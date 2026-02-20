@@ -27,14 +27,16 @@ $me = $appointment_datas["medicine"];
 		<input type="text" class="form-control" value="<?= ($bd->insurance_name) ? $bd->insurance_name : "-" ?>" readonly>
 	</div>
 </div>
-<div class="row g-3 mt-3">
+<div class="row g-3 mt-3" id="title_anamnesis">
 	<div class="col-md-12">
 		<div class="alert alert-primary alert-dismissible fade show py-2" role="alert">
-			<strong>1. Anamnesis</strong>
+			<h4 class="m-0"><strong>1. Anamnesis</strong></h4>
 		</div>
 	</div>
+</div>
+<div class="row g-3" id="content_anamnesis">
 	<div class="col-md-12">
-		<strong>1) Datos Personales</strong>
+		<h5 class="m-0"><strong>1) Datos Personales</strong></h5>
 	</div>
 	<div class="col-md-6">
 		<label class="form-label">Nombre</label>
@@ -92,156 +94,126 @@ $me = $appointment_datas["medicine"];
 		<label class="form-label">Dirección</label>
 		<input type="text" class="form-control" value="<?= ($an->address) ? $an->address: '-' ?>" readonly>
 	</div>
+	<div class="col-md-12 pt-3">
+		<h5 class="m-0"><strong>2) Enfermedad Actual</strong></h5>
+	</div>
+	<div class="col-md-4">
+		<label class="form-label">Tiempo de Enfermedad</label>
+		<input type="text" class="form-control" value="<?= ($an->illness_time) ? $an->illness_time: '-' ?>" readonly>
+	</div>
+	<div class="col-md-4">
+		<label class="form-label">Inicio</label>
+		<input type="text" class="form-control" value="<?= ($an->illness_start) ? $an->illness_start: '-' ?>" readonly>
+	</div>
+	<div class="col-md-4">
+		<label class="form-label">Curso</label>
+		<input type="text" class="form-control" value="<?= ($an->illness_course) ? $an->illness_course: '-' ?>" readonly>
+	</div>
+	<div class="col-md-4">
+		<label class="form-label">Síntomas Principales</label>
+		<input type="text" class="form-control" value="<?= ($an->illness_main_symptoms) ? $an->illness_main_symptoms: '-' ?>" readonly>
+	</div>
+	<div class="col-md-8">
+		<label class="form-label">Relato</label>
+		<input type="text" class="form-control" value="<?= ($an->illness_story) ? $an->illness_story: '-' ?>" readonly>
+	</div>
+	<div class="col-md-12 pt-3">
+		<h5 class="m-0"><strong>3) Funciones Biológicas</strong></h5>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Apetito</label>
+		<input type="text" class="form-control" value="<?= ($an->func_bio_appetite) ? $an->func_bio_appetite : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Orina</label>
+		<input type="text" class="form-control" value="<?= ($an->func_bio_urine) ? $an->func_bio_urine : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Sed</label>
+		<input type="text" class="form-control" value="<?= ($an->func_bio_thirst)? $an->func_bio_thirst : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Deposiciones</label>
+		<input type="text" class="form-control" value="<?= ($an->func_bio_bowel_movements) ? $an->func_bio_bowel_movements : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Sudor</label>
+		<input type="text" class="form-control" value="<?= ($an->func_bio_sweat) ? $an->func_bio_sweat : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Peso</label>
+		<input type="text" class="form-control" value="<?= ($an->func_bio_weight) ? $an->func_bio_weight : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Sueño</label>
+		<input type="text" class="form-control" value="<?= ($an->func_bio_sleep) ? $an->func_bio_sleep : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Ánimo</label>
+		<input type="text" class="form-control" value="<?= ($an->func_bio_encouragement) ? $an->func_bio_encouragement : "-" ?>" readonly>
+	</div>
+	<div class="col-md-12 pt-3">
+		<h5 class="m-0"><strong>4) Antecedentes Personales</strong></h5>
+	</div>
+	<div class="col-md-12">
+		<strong>A. Patológicos</strong>
+	</div>
+	<div class="col-md-4">
+		<label class="form-label">Enfermedades Previas</label>
+		<input type="text" class="form-control" value="<?= ($an->patho_pre_illnesses_txt) ? $an->patho_pre_illnesses_txt : "-" ?>" readonly>
+	</div>
+	<div class="col-md-4">
+		<label class="form-label">Hospitalizaciones Previas</label>
+		<input type="text" class="form-control" value="<?= ($an->patho_pre_hospitalization) ? $an->patho_pre_hospitalization : "-" ?>" readonly>
+	</div>
+	<div class="col-md-4">
+		<label class="form-label">Cirugías Previas</label>
+		<input type="text" class="form-control" value="<?= ($an->patho_pre_surgery)? $an->patho_pre_surgery : "-" ?>" readonly>
+	</div>
+	<div class="col-md-4">
+		<label class="form-label">RAM</label>
+		<input type="text" class="form-control" value="<?= ($an->patho_ram) ? $an->patho_ram : "-" ?>" readonly>
+	</div>
+	<div class="col-md-4">
+		<label class="form-label">Transfusiones</label>
+		<input type="text" class="form-control" value="<?= ($an->patho_transfusion)? $an->patho_transfusion : "-" ?>" readonly>
+	</div>
+	<div class="col-md-4">
+		<label class="form-label">Medicación Previa</label>
+		<input type="text" class="form-control" value="<?= ($an->patho_pre_medication) ? $an->patho_pre_medication : "-" ?>" readonly>
+	</div>
+	<div class="col-md-12">
+		<label class="form-label">Antecedentes Familiares</label>
+		<input type="text" class="form-control" value="<?= ($an->family_history) ? $an->family_history : "-" ?>" readonly>
+	</div>
+	<div class="col-md-12">
+		<strong>B. Ginecológico</strong>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">FUR</label>
+		<input type="text" class="form-control" value="<?= ($an->gyne_fur) ? $an->gyne_fur : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">G</label>
+		<input type="text" class="form-control" value="<?= ($an->gyne_g)? $an->gyne_g : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">P</label>
+		<input type="text" class="form-control" value="<?= ($an->gyne_p) ? $an->gyne_p : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">MAC</label>
+		<input type="text" class="form-control" value="<?= ($an->gyne_mac)? $an->gyne_mac : "-" ?>" readonly>
+	</div>
+</div>
+<div class="row g-3 mt-3" id="title_physical_exam">
+	<div class="col-md-12">
+		<div class="alert alert-primary alert-dismissible fade show py-2" role="alert">
+			<h4 class="m-0"><strong>2. Examen Físico </strong></h4>
+		</div>
+	</div>
 </div>
 
-
-<br/>
-<div style="font-size: 120%;">
-	<strong>2) <?= $this->lang->line('w_current_illness') ?></strong>
-</div>
-<table class="datatable" style="width: 100%;">
-	<tr>
-		<td colspan="2" style="width: 50%;">
-			<div><strong><?= $this->lang->line('w_illness_time') ?></strong></div>
-			<div><?= ($an->illness_time) ? $an->illness_time: '-' ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_start') ?></strong></div>
-			<div><?= ($an->illness_start) ? $an->illness_start: '-' ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_grade') ?></strong></div>
-			<div><?= ($an->illness_course) ? $an->illness_course: '-' ?></div>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2" style="width: 50%;">
-			<div><strong><?= $this->lang->line('w_main_symptoms') ?></strong></div>
-			<div><?= ($an->illness_main_symptoms) ? $an->illness_main_symptoms: '-' ?></div>
-		</td>
-		<td colspan="2" style="width: 50%;">
-			<div><strong><?= $this->lang->line('w_story') ?></strong></div>
-			<div><?= ($an->illness_story) ? $an->illness_story: '-' ?></div>
-		</td>
-	</tr>
-</table>
-<br/>
-<div style="font-size: 120%;">
-	<strong>3) <?= $this->lang->line('w_biological_functions') ?></strong>
-</div>
-<table class="datatable" style="width: 100%;">
-	<tr>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_appetite') ?></strong></div>
-			<div><?= ($an->func_bio_appetite) ? $an->func_bio_appetite : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_urine') ?></strong></div>
-			<div><?= ($an->func_bio_urine) ? $an->func_bio_urine : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_thirst') ?></strong></div>
-			<div><?= ($an->func_bio_thirst)? $an->func_bio_thirst : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_bowel_movements') ?></strong></div>
-			<div><?= ($an->func_bio_bowel_movements) ? $an->func_bio_bowel_movements : "-" ?></div>
-		</td>
-	</tr>
-	<tr>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_sweat') ?></strong></div>
-			<div><?= ($an->func_bio_sweat) ? $an->func_bio_sweat : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_weight_') ?></strong></div>
-			<div><?= ($an->func_bio_weight) ? $an->func_bio_weight : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_sleep') ?></strong></div>
-			<div><?= ($an->func_bio_sleep) ? $an->func_bio_sleep : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_encouragement') ?></strong></div>
-			<div><?= ($an->func_bio_encouragement) ? $an->func_bio_encouragement : "-" ?></div>
-		</td>
-	</tr>
-</table>
-<br/>
-<div style="font-size: 120%;">
-	<strong>4) <?= $this->lang->line('w_personal_background') ?></strong>
-</div>
-<div style="font-size: 100%;">
-	<strong>A. <?= $this->lang->line('w_pathological') ?></strong>
-</div>
-<table class="datatable" style="width: 100%;">
-	<tr>
-		<td colspan="2">
-			<div><strong><?= $this->lang->line('w_previous_illnesses') ?></strong></div>
-			<div><?= ($an->patho_pre_illnesses_txt) ? $an->patho_pre_illnesses_txt : "-" ?></div>
-		</td>
-	</tr>
-	<tr>
-		<td style="width: 50%;">
-			<div><strong><?= $this->lang->line('w_previous_hospitalizations') ?></strong></div>
-			<div class="pre-line"><?= ($an->patho_pre_hospitalization) ? $an->patho_pre_hospitalization : "-" ?></div>
-		</td>
-		<td style="width: 50%;">
-			<div><strong><?= $this->lang->line('w_previous_surgeries') ?></strong></div>
-			<div class="pre-line"><?= ($an->patho_pre_surgery)? $an->patho_pre_surgery : "-" ?></div>
-		</td>
-	</tr>
-	<tr>
-		<td style="width: 50%;">
-			<div><strong><?= $this->lang->line('w_ram') ?></strong></div>
-			<div class="pre-line"><?= ($an->patho_ram) ? $an->patho_ram : "-" ?></div>
-		</td>
-		<td style="width: 50%;">
-			<div><strong><?= $this->lang->line('w_transfusions') ?></strong></div>
-			<div class="pre-line"><?= ($an->patho_transfusion)? $an->patho_transfusion : "-" ?></div>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<div><strong><?= $this->lang->line('w_prior_medication') ?></strong></div>
-			<div class="pre-line"><?= ($an->patho_pre_medication) ? $an->patho_pre_medication : "-" ?></div>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<div><strong><?= $this->lang->line('w_family_background') ?></strong></div>
-			<div class="pre-line"><?= ($an->family_history) ? $an->family_history : "-" ?></div>
-		</td>
-	</tr>
-</table>
-<br/>
-<div style="font-size: 100%;">
-	<strong>B. <?= $this->lang->line('w_gynecological') ?></strong>
-</div>
-<table class="datatable" style="width: 100%;">
-	<tr>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_fur') ?></strong></div>
-			<div><?= ($an->gyne_fur) ? $an->gyne_fur : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_g') ?></strong></div>
-			<div><?= ($an->gyne_g)? $an->gyne_g : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_p') ?></strong></div>
-			<div><?= ($an->gyne_p) ? $an->gyne_p : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_mac') ?></strong></div>
-			<div><?= ($an->gyne_mac)? $an->gyne_mac : "-" ?></div>
-		</td>
-	</tr>
-</table>
-<br/>
-<div style="font-size: 150%; border-top: 1px solid black; border-bottom: 1px solid black;">
-	<strong>2. <?= $this->lang->line('w_physical_exam') ?></strong>
-</div>
 <br/>
 <div style="font-size: 120%;">
 	<strong>1) <?= $this->lang->line('w_vital_functions') ?></strong>
