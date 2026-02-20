@@ -2,18 +2,42 @@
 	<h1><?= $patient->name ?></h1>
 </div>
 <div class="row pb-3">
-	<div class="col-md-12">		
+	<div class="col-md-12">
 		<?php if (in_array("clinic_history", $actions)){ ?>
 		<a class="btn btn-primary" href="<?= base_url() ?>clinic/appointment_print/medical_history/<?= $appointment->id ?>" target="_blank">
-			<?= $this->lang->line('w_clinical_history') ?>
+			Historia Clínica
 		</a>
+		
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#md_clinic_history">
+			Historia Clínica
+		</button>
+		<div class="modal fade" id="md_clinic_history" tabindex="-1" style="display: none;" aria-hidden="true">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Historia Clínica</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<?php $this->load->view('clinic/appointment_print/medical_history') ?>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
 		<?php } if (in_array("reschedule", $actions)) $d = ""; else $d = "disabled"; ?>
 		<button type="button" class="btn btn-primary" id="btn_reschedule" <?= $d ?>>
-			<?= $this->lang->line('btn_reschedule') ?>
+			Reprogramar
 		</button>
 		<?php if (in_array("cancel", $actions)) $d = ""; else $d = "disabled"; ?>
 		<button type="button" class="btn btn-danger" id="btn_cancel" <?= $d ?> value="<?= $appointment->id ?>">
-			<?= $this->lang->line('btn_cancel') ?>
+			Cancelar
 		</button>
 	</div>
 </div>

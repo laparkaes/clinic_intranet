@@ -1,3 +1,20 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<style>
+	html, body{padding: 0; font-size: 12px; font-family: 'poppins', sans-serif; line-height: 1.5; color: black;}
+	
+	.text-center{text-align: center;}
+	.text-left{text-align: left;}
+	
+	.pre-line {white-space: pre-line;}
+	
+	.datatable{width: 100%;}
+	.datatable td{vertical-align: top; padding: 4px;}
+	
+	</style>
+</head>
+<body>
 <?php 
 $bd = $appointment_datas["basic_data"];
 $an = $appointment_datas["anamnesis"];
@@ -9,92 +26,105 @@ $im = $appointment_datas["images"];
 $th = $appointment_datas["therapy"];
 $me = $appointment_datas["medicine"];
 ?>
-<div class="row g-3">
-	<div class="col-md-3">
-		<label class="form-label"># de Historia</label>
-		<input type="text" class="form-control" value="<?= $patient->doc_number ?>" readonly>
-	</div>
-	<div class="col-md-3">
-		<label class="form-label">Fecha y Hora</label>
-		<input type="text" class="form-control" value="<?= $bd->entered_at ?>" readonly>
-	</div>
-	<div class="col-md-3">
-		<label class="form-label">Modo de Ingreso</label>
-		<input type="text" class="form-control" value="<?= $bd->entry_mode ?>" readonly>
-	</div>
-	<div class="col-md-3">
-		<label class="form-label">Seguro</label>
-		<input type="text" class="form-control" value="<?= ($bd->insurance_name) ? $bd->insurance_name : "-" ?>" readonly>
-	</div>
+<table style="width: 100%;">
+	<tr>
+		<td style="width: 60%; font-size: 200%; vertical-align: top;"><strong><?= $this->lang->line('w_clinical_history') ?></strong></td>
+		<td style="width: 40%;">
+			<table style="width: 100%;">
+				<tr>
+					<td><strong><?= $this->lang->line('w_history_number') ?></strong></td>
+					<td style="text-align: right;"><?= $patient->doc_number ?></td>
+				</tr>
+				<tr>
+					<td><strong><?= $this->lang->line('w_date_hour') ?></strong></td>
+					<td style="text-align: right;"><?= $bd->entered_at ?></td>
+				</tr>
+				<tr>
+					<td><strong><?= $this->lang->line('w_entry_mode') ?></strong></td>
+					<td style="text-align: right;"><?= $bd->entry_mode ?></td>
+				</tr>
+				<tr>
+					<td><strong><?= $this->lang->line('w_insurance') ?></strong></td>
+					<td style="text-align: right;"><?= ($bd->insurance_name) ? $bd->insurance_name : "-" ?></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<br/>
+<div style="font-size: 150%; border-top: 1px solid black; border-bottom: 1px solid black;">
+	<strong>1. <?= $this->lang->line('w_anamnesis') ?></strong>
 </div>
-<div class="row g-3 mt-3">
-	<div class="col-md-12">
-		<div class="alert alert-primary alert-dismissible fade show py-2" role="alert">
-			<strong>1. Anamnesis</strong>
-		</div>
-	</div>
-	<div class="col-md-12">
-		<strong>1) Datos Personales</strong>
-	</div>
-	<div class="col-md-6">
-		<label class="form-label">Nombre</label>
-		<input type="text" class="form-control" value="<?= ($an->name) ? $an->name: '-' ?>" readonly>
-	</div>
-	<div class="col-md-6">
-		<label class="form-label">Responsable</label>
-		<input type="text" class="form-control" value="<?= ($an->responsible) ? $an->responsible: '-' ?>" readonly>
-	</div>
-	<div class="col-md-3">
-		<label class="form-label">Edad</label>
-		<input type="text" class="form-control" value="<?= ($an->age) ? $an->age: '-' ?>" readonly>
-	</div>
-	<div class="col-md-3">
-		<label class="form-label">Fecha de Nacimiento</label>
-		<input type="text" class="form-control" value="<?= ($an->birthday) ? $an->birthday: '-' ?>" readonly>
-	</div>
-	<div class="col-md-3">
-		<label class="form-label">Lugar de Nacimiento</label>
-		<input type="text" class="form-control" value="<?= ($an->birthplace) ? $an->birthplace: '-' ?>" readonly>
-	</div>
-	<div class="col-md-3">
-		<label class="form-label">Lugar de Procedencia</label>
-		<input type="text" class="form-control" value="<?= ($an->provenance_place) ? $an->provenance_place: '-' ?>" readonly>
-	</div>
-	<div class="col-md-3">
-		<label class="form-label">Teléfono</label>
-		<input type="text" class="form-control" value="<?= ($an->tel) ? $an->tel: '-' ?>" readonly>
-	</div>
-	<div class="col-md-3">
-		<label class="form-label">Sexo</label>
-		<input type="text" class="form-control" value="<?= ($an->sex) ? $an->sex: '-' ?>" readonly>
-	</div>
-	<div class="col-md-3">
-		<label class="form-label">Estado Civil</label>
-		<input type="text" class="form-control" value="<?= ($an->civil_status) ? $an->civil_status: '-' ?>" readonly>
-	</div>
-	<div class="col-md-3">
-		<label class="form-label">Raza</label>
-		<input type="text" class="form-control" value="<?= ($an->race) ? $an->race: '-' ?>" readonly>
-	</div>
-	<div class="col-md-3">
-		<label class="form-label">Ocupación</label>
-		<input type="text" class="form-control" value="<?= ($an->occupation) ? $an->occupation: '-' ?>" readonly>
-	</div>
-	<div class="col-md-3">
-		<label class="form-label">Religión</label>
-		<input type="text" class="form-control" value="<?= ($an->religion) ? $an->religion: '-' ?>" readonly>
-	</div>
-	<div class="col-md-6">
-		<label class="form-label">Últimos Viajes</label>
-		<input type="text" class="form-control" value="<?= ($an->last_trips) ? $an->last_trips: '-' ?>" readonly>
-	</div>
-	<div class="col-md-12">
-		<label class="form-label">Dirección</label>
-		<input type="text" class="form-control" value="<?= ($an->address) ? $an->address: '-' ?>" readonly>
-	</div>
+<br/>
+<div style="font-size: 120%;">
+	<strong>1) <?= $this->lang->line('w_personal_information') ?></strong>
 </div>
-
-
+<table class="datatable">
+	<tr>
+		<td colspan="2" style="width: 50%;">
+			<div><strong><?= $this->lang->line('w_name') ?></strong></div>
+			<div><?= ($an->name) ? $an->name: '-' ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_age') ?></strong></div>
+			<div><?= ($an->age) ? $an->age: '-' ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_sex') ?></strong></div>
+			<div><?= ($an->sex) ? $an->sex: '-' ?></div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" style="width: 50%;">
+			<div><strong><?= $this->lang->line('w_address') ?></strong></div>
+			<div><?= ($an->address) ? $an->address: '-' ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_birth_place') ?></strong></div>
+			<div><?= ($an->birthplace) ? $an->birthplace: '-' ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_birth_day') ?></strong></div>
+			<div><?= ($an->birthday) ? $an->birthday: '-' ?></div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_tel') ?></strong></div>
+			<div><?= ($an->tel) ? $an->tel: '-' ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_responsible') ?></strong></div>
+			<div><?= ($an->responsible) ? $an->responsible: '-' ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_place_of_origin') ?></strong></div>
+			<div><?= ($an->provenance_place) ? $an->provenance_place: '-' ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_last_trips') ?></strong></div>
+			<div><?= ($an->last_trips) ? $an->last_trips: '-' ?></div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_race') ?></strong></div>
+			<div><?= ($an->race) ? $an->race: '-' ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_marital_status') ?></strong></div>
+			<div><?= ($an->civil_status) ? $an->civil_status: '-' ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_occupation') ?></strong></div>
+			<div><?= ($an->occupation) ? $an->occupation: '-' ?></div>
+		</td>
+		<td style="width: 25%;">
+			<div><strong><?= $this->lang->line('w_religion') ?></strong></div>
+			<div><?= ($an->religion) ? $an->religion: '-' ?></div>
+		</td>
+	</tr>
+</table>
 <br/>
 <div style="font-size: 120%;">
 	<strong>2) <?= $this->lang->line('w_current_illness') ?></strong>
@@ -531,3 +561,27 @@ $me = $appointment_datas["medicine"];
 <?php }else{ ?>
 <div>No se aplica</div>
 <?php } ?>
+<br/>
+<br/>
+<br/>
+<br/>
+<table style="width: 70%; border: 1px solid #000; border-collapse: collapse; margin: 0 auto; text-align: center;">
+	<tr>
+		<td style="width: 50%; border: 1px solid #000;">
+			<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+		</td>
+		<td style="width: 50%; border: 1px solid #000;">
+			<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 50%; border: 1px solid #000;">
+			Int. Medicina
+		</td>
+		<td style="width: 50%; border: 1px solid #000;">
+			Dr. <?= $doctor->name ?> / <?= $doctor->data->license ?>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

@@ -240,8 +240,6 @@ class Appointment_print extends CI_Controller {
 		return $therapies;
 	}
 	
-	
-	
 	public function prescription($id){
 		$appointment = $this->general->id("appointment", $id);
 		
@@ -275,11 +273,6 @@ class Appointment_print extends CI_Controller {
 		$this->load->view('clinic/appointment_print/prescription', $data);
 	}
 	
-
-
-
-
-
 	public function medical_history($id){
 		if (!$this->utility_lib->check_access("appointment", "report")) redirect("/errors/no_permission");
 		
@@ -315,13 +308,18 @@ class Appointment_print extends CI_Controller {
 			"patient" => $patient
 		];
 		
-		$html = $this->load->view('clinic/appointment_print/medical_history', $data, true);
+		$html = $this->load->view('clinic/appointment_print/medical_history_pdf', $data, true);
 		$filename = str_replace(" ", "_", $patient->name)."_".$patient->doc_number."_".$appointment->id;
 		
 		$this->load->library('dompdf_lib');
 		$this->dompdf_lib->make_pdf_a4($html, $filename);
 		//echo $html;
 	}
+
+
+
+
+
 
 	public function examination($id){
 		$appointment = $this->general->id("appointment", $id);
