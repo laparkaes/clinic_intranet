@@ -209,171 +209,171 @@ $me = $appointment_datas["medicine"];
 <div class="row g-3 mt-3" id="title_physical_exam">
 	<div class="col-md-12">
 		<div class="alert alert-primary alert-dismissible fade show py-2" role="alert">
-			<h4 class="m-0"><strong>2. Examen Físico </strong></h4>
+			<h4 class="m-0"><strong>2. Examen Físico</strong></h4>
 		</div>
 	</div>
 </div>
-
-<br/>
-<div style="font-size: 120%;">
-	<strong>1) <?= $this->lang->line('w_vital_functions') ?></strong>
+<div class="row g-3" id="content_physical_exam">
+	<div class="col-md-12">
+		<h5 class="m-0"><strong>1) Funciones Vitales</strong></h5>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">PA</label>
+		<input type="text" class="form-control" value="<?= ($ph->v_pa) ? $ph->v_pa : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">FC</label>
+		<input type="text" class="form-control" value="<?= ($ph->v_fc)? $ph->v_fc : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">FR</label>
+		<input type="text" class="form-control" value="<?= ($ph->v_fr) ? $ph->v_fr : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Temperatura (ºC)</label>
+		<input type="text" class="form-control" value="<?= ($ph->v_temperature)? $ph->v_temperature : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Peso (Kg)</label>
+		<input type="text" class="form-control" value="<?= ($ph->v_weight) ? $ph->v_weight : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Estatura (Cm)</label>
+		<input type="text" class="form-control" value="<?= ($ph->v_height)? $ph->v_height : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">IMC</label>
+		<input type="text" class="form-control" value="<?= ($ph->v_imc) ? $ph->v_imc : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Clasificación</label>
+		<input type="text" class="form-control" value="<?= ($ph->v_imc_class)? $ph->v_imc_class : "-" ?>" readonly>
+	</div>
+	<div class="col-md-12">
+		<h5 class="m-0 pt-3"><strong>2) Examen General</strong></h5>
+	</div>
+	<div class="col-md-12">
+		<label class="form-label">Apariencia</label>
+		<input type="text" class="form-control" value="<?= ($ph->g_appearance) ? $ph->g_appearance : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Piel</label>
+		<input type="text" class="form-control" value="<?= ($ph->g_skin)? $ph->g_skin : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">TCSC</label>
+		<input type="text" class="form-control" value="<?= ($ph->g_tcsc) ? $ph->g_tcsc : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Soma</label>
+		<input type="text" class="form-control" value="<?= ($ph->g_soma)? $ph->g_soma : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Linfático</label>
+		<input type="text" class="form-control" value="<?= ($ph->g_lymphatic)? $ph->g_lymphatic : "-" ?>" readonly>
+	</div>
+	<div class="col-md-12">
+		<h5 class="m-0 pt-3"><strong>3) Examen Regional</strong></h5>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Cabeza</label>
+		<input type="text" class="form-control" value="<?= ($ph->r_head) ? $ph->r_head : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Cuello</label>
+		<input type="text" class="form-control" value="<?= ($ph->r_neck)? $ph->r_neck : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Mamás</label>
+		<input type="text" class="form-control" value="<?= ($ph->r_breasts) ? $ph->r_breasts : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Tórax y Pulmones</label>
+		<input type="text" class="form-control" value="<?= ($ph->r_thorax_lungs)? $ph->r_thorax_lungs : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Cardiovascular</label>
+		<input type="text" class="form-control" value="<?= ($ph->r_cardiovascular) ? $ph->r_cardiovascular : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Abdomen</label>
+		<input type="text" class="form-control" value="<?= ($ph->r_abdomen)? $ph->r_abdomen : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Genitourinario</label>
+		<input type="text" class="form-control" value="<?= ($ph->r_genitourinary) ? $ph->r_genitourinary : "-" ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label">Neurológico</label>
+		<input type="text" class="form-control" value="<?= ($ph->r_neurologic)? $ph->r_neurologic : "-" ?>" readonly>
+	</div>
 </div>
-<table class="datatable" style="width: 100%;">
-	<tr>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_pa') ?></strong></div>
-			<div><?= ($ph->v_pa) ? $ph->v_pa : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_fc') ?></strong></div>
-			<div><?= ($ph->v_fc)? $ph->v_fc : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_fr') ?></strong></div>
-			<div><?= ($ph->v_fr) ? $ph->v_fr : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_temperature') ?></strong></div>
-			<div><?= ($ph->v_temperature)? $ph->v_temperature : "-" ?></div>
-		</td>
-	</tr>
-	<tr>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_weight') ?></strong></div>
-			<div><?= ($ph->v_weight) ? $ph->v_weight : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_height') ?></strong></div>
-			<div><?= ($ph->v_height)? $ph->v_height : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_bmi') ?></strong></div>
-			<div><?= ($ph->v_imc) ? $ph->v_imc : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_class') ?></strong></div>
-			<div><?= ($ph->v_imc_class)? $ph->v_imc_class : "-" ?></div>
-		</td>
-	</tr>
-</table>
-<br/>
-<div style="font-size: 120%;">
-	<strong>2) <?= $this->lang->line('w_general_exam') ?></strong>
+<div class="row g-3 mt-3" id="title_diagnostic_impression">
+	<div class="col-md-12">
+		<div class="alert alert-primary alert-dismissible fade show py-2" role="alert">
+			<h4 class="m-0"><strong>3. Impresión Diagnóstica</strong></h4>
+		</div>
+	</div>
 </div>
-<table class="datatable" style="width: 100%;">
-	<tr>
-		<td colspan="4">
-			<div><strong><?= $this->lang->line('w_appearance') ?></strong></div>
-			<div class="pre-line"><?= ($ph->g_appearance) ? $ph->g_appearance : "-" ?></div>
-		</td>
-	</tr>
-</table>
-<table class="datatable" style="width: 100%;">
-	<tr>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_skin') ?></strong></div>
-			<div class="pre-line"><?= ($ph->g_skin)? $ph->g_skin : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_tcsc') ?></strong></div>
-			<div class="pre-line"><?= ($ph->g_tcsc) ? $ph->g_tcsc : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_soma') ?></strong></div>
-			<div class="pre-line"><?= ($ph->g_soma)? $ph->g_soma : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_lymphatic') ?></strong></div>
-			<div class="pre-line"><?= ($ph->g_lymphatic)? $ph->g_lymphatic : "-" ?></div>
-		</td>
-	</tr>
-</table>
-<br/>
-<div style="font-size: 120%;">
-	<strong>3) <?= $this->lang->line('w_regional_examination') ?></strong>
-</div>
-<table class="datatable" style="width: 100%;">
-	<tr>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_head') ?></strong></div>
-			<div class="pre-line"><?= ($ph->r_head) ? $ph->r_head : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_neck') ?></strong></div>
-			<div class="pre-line"><?= ($ph->r_neck)? $ph->r_neck : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_breasts') ?></strong></div>
-			<div class="pre-line"><?= ($ph->r_breasts) ? $ph->r_breasts : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_chest_and_lungs') ?></strong></div>
-			<div class="pre-line"><?= ($ph->r_thorax_lungs)? $ph->r_thorax_lungs : "-" ?></div>
-		</td>
-	</tr>
-	<tr>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_cardiovascular') ?></strong></div>
-			<div class="pre-line"><?= ($ph->r_cardiovascular) ? $ph->r_cardiovascular : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_abdomen') ?></strong></div>
-			<div class="pre-line"><?= ($ph->r_abdomen)? $ph->r_abdomen : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_genitourinary') ?></strong></div>
-			<div class="pre-line"><?= ($ph->r_genitourinary) ? $ph->r_genitourinary : "-" ?></div>
-		</td>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_neurological') ?></strong></div>
-			<div class="pre-line"><?= ($ph->r_neurologic)? $ph->r_neurologic : "-" ?></div>
-		</td>
-	</tr>
-</table>
-<br/>
-<div style="font-size: 150%; border-top: 1px solid black; border-bottom: 1px solid black;">
-	<strong>3. <?= $this->lang->line('w_diagnostic_impression') ?></strong>
-</div>
-<table class="datatable" style="width: 100%;">
-	<tr>
-		<td style="width: 8%; padding-bottom: 0;">
-			<div><strong>#</strong></div>
-		</td>
-		<td style="width: 17%; padding-bottom: 0;">
-			<div><strong><?= $this->lang->line('w_cie10') ?></strong></div>
-		</td>
-		<td style="width: 75%; padding-bottom: 0;">
-			<div><strong><?= $this->lang->line('w_description') ?></strong></div>
-		</td>
-	</tr>
+<div class="row g-3" id="content_diagnostic_impression">
+	<div class="col-md-2">
+		<label class="form-label m-0">Fecha</label>
+	</div>
+	<div class="col-md-2">
+		<label class="form-label m-0">CIE 10</label>
+	</div>
+	<div class="col-md-8">
+		<label class="form-label m-0">Descripción</label>
+	</div>
 	<?php foreach($di as $i => $d){ ?>
-	<tr>
-		<td style="padding-bottom: 0;"><?= $i + 1 ?></td>
-		<td style="padding-bottom: 0;"><?= $d->code ?></td>
-		<td style="padding-bottom: 0;"><?= $d->description ?></td>
-	</tr>
+	<div class="col-md-2">
+		<input type="text" class="form-control m-0" value="fecha aqui" readonly>
+	</div>
+	<div class="col-md-2">
+		<input type="text" class="form-control m-0" value="<?= $d->code ?>" readonly>
+	</div>
+	<div class="col-md-8">
+		<input type="text" class="form-control m-0" value="<?= $d->description ?>" readonly>
+	</div>
 	<?php } ?>
-</table>
-<br/>
-<div style="font-size: 150%; border-top: 1px solid black; border-bottom: 1px solid black;">
-	<strong>4. <?= $this->lang->line('w_result') ?></strong>
 </div>
-<table class="datatable" style="width: 100%;">
-	<tr>
-		<td style="width: 25%;">
-			<div><strong><?= $this->lang->line('w_diagnosis') ?></strong></div>
-			<div class="pre-line"><?= $re->type ?><br/><?= ($re->diagnosis) ? $re->diagnosis : null ?></div>
-		</td>
-		<td style="width: 37.5%;">
-			<div><strong><?= $this->lang->line('w_workplan') ?></strong></div>
-			<div class="pre-line"><?= ($re->plan) ? $re->plan : "-" ?></div>
-		</td>
-		<td style="width: 37.5%;">
-			<div><strong><?= $this->lang->line('w_treatment') ?></strong></div>
-			<div class="pre-line"><?= ($re->treatment) ? $re->treatment : "-" ?></div>
-		</td>
-	</tr>
-</table>
+<div class="row g-3 mt-3" id="title_result">
+	<div class="col-md-12">
+		<div class="alert alert-primary alert-dismissible fade show py-2" role="alert">
+			<h4 class="m-0"><strong>4. Resultado</strong></h4>
+		</div>
+	</div>
+</div>
+<div class="row g-3" id="content_diagnostic_impression">
+	<div class="col-md-2">
+		<label class="form-label">Fecha</label>
+		<input type="text" class="form-control" value="fecha aqui" readonly>
+	</div>
+	<div class="col-md-2">
+		<label class="form-label">Tipo</label>
+		<input type="text" class="form-control" value="<?= $re->type ?>" readonly>
+	</div>
+	<div class="col-md-8">
+		<label class="form-label">Diagnóstico</label>
+		<input type="text" class="form-control" value="<?= ($re->diagnosis) ? $re->diagnosis : null ?>" readonly>
+	</div>
+	<div class="col-md-2"></div>
+	<div class="col-md-5">
+		<label class="form-label">Plan de Trabajo</label>
+		<textarea class="form-control" rows="4" readonly><?= ($re->plan) ? $re->plan : "-" ?></textarea>
+	</div>
+	<div class="col-md-5">
+		<label class="form-label">Tratamiento</label>
+		<textarea class="form-control" rows="4" readonly><?= ($re->treatment) ? $re->treatment : "-" ?></textarea>
+	</div>
+</div>
+
+	<div class="col-md-3">
+		<label class="form-label"></label>
+		<input type="text" class="form-control" value="" readonly>
+	</div>
+
+
 <br/>
 <div style="font-size: 150%; border-top: 1px solid black; border-bottom: 1px solid black;">
 	<strong>5. <?= $this->lang->line('w_auxiliary_exam') ?></strong>
