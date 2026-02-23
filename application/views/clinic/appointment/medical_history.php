@@ -512,7 +512,7 @@ $me = $appointment_datas["medicine"];
 	</div>
 	<?php }}else{ ?>
 	<div class="col-md-12">
-		<h5 class="m-0 pt-3"><strong>2) Terapia Física</strong></h5>
+		<label class="form-label mb-0">No se aplica</label>
 	</div>
 	<?php } ?>
 </div>
