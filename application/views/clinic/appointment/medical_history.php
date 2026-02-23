@@ -367,139 +367,152 @@ $me = $appointment_datas["medicine"];
 		<textarea class="form-control" rows="4" readonly><?= ($re->treatment) ? $re->treatment : "-" ?></textarea>
 	</div>
 </div>
-
-	<div class="col-md-3">
-		<label class="form-label"></label>
-		<input type="text" class="form-control" value="" readonly>
+<div class="row g-3 mt-3" id="title_auxiliary_exam">
+	<div class="col-md-12">
+		<div class="alert alert-primary alert-dismissible fade show py-2" role="alert">
+			<h4 class="m-0"><strong>5. Examen Auxiliar</strong></h4>
+		</div>
 	</div>
-
-
-<br/>
-<div style="font-size: 150%; border-top: 1px solid black; border-bottom: 1px solid black;">
-	<strong>5. <?= $this->lang->line('w_auxiliary_exam') ?></strong>
 </div>
-<div style="font-size: 120%;">
-	<strong>1) <?= $this->lang->line('w_laboratory') ?></strong>
-</div>
-<?php if ($ex_profiles or $ex_examinations){ ?>
-<table class="datatable" style="width: 100%;">
-	<tr>
-		<td style="width: 8%; padding-bottom: 0;">
-			<div><strong>#</strong></div>
-		</td>
-		<td style="width: 17%; padding-bottom: 0;">
-			<div><strong><?= $this->lang->line('w_type') ?></strong></div>
-		</td>
-		<td style="width: 25%; padding-bottom: 0;">
-			<div><strong><?= $this->lang->line('w_profile') ?></strong></div>
-		</td>
-		<td style="width: 50%; padding-bottom: 0;">
-			<div><strong><?= $this->lang->line('w_exams') ?></strong></div>
-		</td>
-	</tr>
+<div class="row g-3" id="content_auxiliary_exam">
+	<div class="col-md-12">
+		<h5 class="m-0"><strong>1) Laboratorio</strong></h5>
+	</div>
+	<?php if ($ex_profiles or $ex_examinations){ ?>
+	<div class="col-md-2">
+		<label class="form-label mb-0">Fecha</label>
+	</div>
+	<div class="col-md-2">
+		<label class="form-label mb-0">Tipo</label>
+	</div>
+	<div class="col-md-3">
+		<label class="form-label mb-0">Perfil</label>
+	</div>
+	<div class="col-md-5">
+		<label class="form-label mb-0">Exámenes</label>
+	</div>
 	<?php foreach($ex_profiles as $i => $ep){ ?>
-	<tr>
-		<td style="padding-bottom: 0;"><?= $i + 1 ?></td>
-		<td style="padding-bottom: 0;"><?= $ep->type ?></td>
-		<td style="padding-bottom: 0;"><?= $ep->name ?></td>
-		<td style="padding-bottom: 0;"><?= $ep->exams ?></td>
-	</tr>
+	<div class="col-md-2">
+		<input type="text" class="form-control" value="Fecha aqui" readonly>
+	</div>
+	<div class="col-md-2">
+		<input type="text" class="form-control" value="<?= $ep->type ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<input type="text" class="form-control" value="<?= $ep->name ?>" readonly>
+	</div>
+	<div class="col-md-5">
+		<input type="text" class="form-control" value="<?= $ep->exams ?>" readonly>
+	</div>
 	<?php } foreach($ex_examinations as $j => $ee){ ?>
-	<tr>
-		<td style="padding-bottom: 0;"><?= $i + $j + 2 ?></td>
-		<td style="padding-bottom: 0;"><?= $ee->type ?></td>
-		<td style="padding-bottom: 0;">-</td>
-		<td style="padding-bottom: 0;"><?= $ee->name ?></td>
-	</tr>
+	<div class="col-md-2">
+		<input type="text" class="form-control" value="Fecha aqui" readonly>
+	</div>
+	<div class="col-md-2">
+		<input type="text" class="form-control" value="<?= $ee->type ?>" readonly>
+	</div>
+	<div class="col-md-3">
+		<input type="text" class="form-control" value="-" readonly>
+	</div>
+	<div class="col-md-5">
+		<input type="text" class="form-control" value="<?= $ee->name ?>" readonly>
+	</div>
+	<?php }}else{ ?>
+	<div class="col-md-12">
+		<label class="form-label mb-0">No se aplica</label>
+	</div>
 	<?php } ?>
-</table>
-<?php }else{ ?>
-<div>No se aplica</div>
-<?php } ?>
-<br/>
-<div style="font-size: 120%;">
-	<strong>2) <?= $this->lang->line('w_image') ?></strong>
-</div>
-<?php if ($im){ ?>
-<table class="datatable" style="width: 100%;">
-	<tr>
-		<td style="width: 8%; padding-bottom: 0;">
-			<div><strong>#</strong></div>
-		</td>
-		<td style="width: 17%; padding-bottom: 0;">
-			<div><strong><?= $this->lang->line('w_category') ?></strong></div>
-		</td>
-		<td style="width: 75%; padding-bottom: 0;">
-			<div><strong><?= $this->lang->line('w_image') ?></strong></div>
-		</td>
-	</tr>
+	<div class="col-md-12">
+		<h5 class="m-0 pt-3"><strong>2) Imágen</strong></h5>
+	</div>
+	<?php if ($im){ ?>
+	<div class="col-md-2">
+		<label class="form-label mb-0">Fecha</label>
+	</div>
+	<div class="col-md-2">
+		<label class="form-label mb-0">Categoría</label>
+	</div>
+	<div class="col-md-8">
+		<label class="form-label mb-0">Imágen</label>
+	</div>
 	<?php foreach($im as $i => $item){ ?>
-	<tr>
-		<td style="padding-bottom: 0;"><?= $i + 1 ?></td>
-		<td style="padding-bottom: 0;"><?= $item->category ?></td>
-		<td style="padding-bottom: 0;"><?= $item->name ?></td>
-	</tr>
+	<div class="col-md-2">
+		<input type="text" class="form-control" value="Fecha aqui" readonly>
+	</div>
+	<div class="col-md-2">
+		<input type="text" class="form-control" value="<?= $item->category ?>" readonly>
+	</div>
+	<div class="col-md-8">
+		<input type="text" class="form-control" value="<?= $item->name ?>" readonly>
+	</div>
+	<?php }}else{ ?>
+	<div class="col-md-12">
+		<label class="form-label mb-0">No se aplica</label>
+	</div>
 	<?php } ?>
-</table>
-<?php }else{ ?>
-<div>No se aplica</div>
-<?php } ?>
-<br/>
-<div style="font-size: 150%; border-top: 1px solid black; border-bottom: 1px solid black;">
-	<strong>6. <?= $this->lang->line('w_treatment') ?></strong>
 </div>
-<div style="font-size: 120%;">
-	<strong>1) <?= $this->lang->line('w_medicine') ?></strong>
+<div class="row g-3 mt-3" id="title_treatment">
+	<div class="col-md-12">
+		<div class="alert alert-primary alert-dismissible fade show py-2" role="alert">
+			<h4 class="m-0"><strong>6. Tratamiento</strong></h4>
+		</div>
+	</div>
 </div>
-<?php if ($me){ ?>
-<table class="datatable" style="width: 100%;">
-	<tr>
-		<td style="width: 8%; padding-bottom: 0;">
-			<div><strong>#</strong></div>
-		</td>
-		<td style="width: 17%; padding-bottom: 0;">
-			<div><strong><?= $this->lang->line('w_medicine') ?></strong></div>
-		</td>
-		<td style="width: 75%; padding-bottom: 0;">
-			<div><strong><?= $this->lang->line('w_detail') ?></strong></div>
-		</td>
-	</tr>
+<div class="row g-3" id="content_treatment">
+	<div class="col-md-12">
+		<h5 class="m-0"><strong>1) Medicamento</strong></h5>
+	</div>
+	<?php if ($me){ ?>
+	<div class="col-md-2">
+		<label class="form-label mb-0">Fecha</label>
+	</div>
+	<div class="col-md-4">
+		<label class="form-label mb-0">Medicamento</label>
+	</div>
+	<div class="col-md-6">
+		<label class="form-label mb-0">Detalle</label>
+	</div>
 	<?php foreach($me as $i => $m){ ?>
-	<tr>
-		<td style="padding-bottom: 0;"><?= $i + 1 ?></td>
-		<td style="padding-bottom: 0;"><?= $m->medicine ?></td>
-		<td style="padding-bottom: 0;"><?= $m->sub_txt ?></td>
-	</tr>
+	<div class="col-md-2">
+		<input type="text" class="form-control" value="Fecha aqui" readonly>
+	</div>
+	<div class="col-md-4">
+		<input type="text" class="form-control" value="<?= $m->medicine ?>" readonly>
+	</div>
+	<div class="col-md-6">
+		<input type="text" class="form-control" value="<?= $m->sub_txt ?>" readonly>
+	</div>
+	<?php }}else{ ?>
+	<div class="col-md-12">
+		<label class="form-label mb-0">No se aplica</label>
+	</div>
 	<?php } ?>
-</table>
-<?php }else{ ?>
-<div>No se aplica</div>
-<?php } ?>
-<br/>
-<div style="font-size: 120%;">
-	<strong>2) <?= $this->lang->line('w_physical_therapy') ?></strong>
-</div>
-<?php if ($th){ ?>
-<table class="datatable">
-	<tr>
-		<td style="width: 8%; padding-bottom: 0;">
-			<div><strong>#</strong></div>
-		</td>
-		<td style="width: 17%; padding-bottom: 0;">
-			<div><strong><?= $this->lang->line('w_therapy') ?></strong></div>
-		</td>
-		<td style="width: 75%; padding-bottom: 0;">
-			<div><strong><?= $this->lang->line('w_detail') ?></strong></div>
-		</td>
-	</tr>
+	<div class="col-md-12">
+		<h5 class="m-0 pt-3"><strong>2) Terapia Física</strong></h5>
+	</div>
+	<?php if ($th){ ?>
+	<div class="col-md-2">
+		<label class="form-label mb-0">Fecha</label>
+	</div>
+	<div class="col-md-4">
+		<label class="form-label mb-0">Terapia</label>
+	</div>
+	<div class="col-md-6">
+		<label class="form-label mb-0">Detalle</label>
+	</div>
 	<?php foreach($th as $i => $t){ ?>
-	<tr>
-		<td style="padding-bottom: 0;"><?= $i + 1 ?></td>
-		<td style="padding-bottom: 0;"><?= $t->physical_therapy ?></td>
-		<td style="padding-bottom: 0;"><?= $t->sub_txt ?></td>
-	</tr>
+	<div class="col-md-2">
+		<input type="text" class="form-control" value="Fecha aqui" readonly>
+	</div>
+	<div class="col-md-4">
+		<input type="text" class="form-control" value="<?= $t->physical_therapy ?>" readonly>
+	</div>
+	<div class="col-md-6">
+		<input type="text" class="form-control" value="<?= $t->sub_txt ?>" readonly>
+	</div>
+	<?php }}else{ ?>
+	<div class="col-md-12">
+		<h5 class="m-0 pt-3"><strong>2) Terapia Física</strong></h5>
+	</div>
 	<?php } ?>
-</table>
-<?php }else{ ?>
-<div>No se aplica</div>
-<?php } ?>
+</div>
