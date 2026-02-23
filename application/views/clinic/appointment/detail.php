@@ -35,26 +35,6 @@
 		<button type="button" class="btn btn-danger" id="btn_cancel" <?= $d ?> value="<?= $appointment->id ?>">
 			Cancelar
 		</button>
-	</div>
-</div>
-<div class="row">
-	<div class="col-md-12">
-		<?php if ($actions){ ?>
-		<div class="btn-group">
-			<?php if (in_array("clinic_history", $actions)){ ?>
-			<a class="btn btn-primary" href="<?= base_url() ?>clinic/appointment_print/medical_history/<?= $appointment->id ?>" target="_blank">
-				<?= $this->lang->line('w_clinical_history') ?>
-			</a>
-			<?php } if (in_array("reschedule", $actions)) $d = ""; else $d = "disabled"; ?>
-			<button type="button" class="btn btn-success" id="btn_reschedule" <?= $d ?>>
-				<?= $this->lang->line('btn_reschedule') ?>
-			</button>
-			<?php if (in_array("cancel", $actions)) $d = ""; else $d = "disabled"; ?>
-			<button type="button" class="btn btn-danger" id="btn_cancel" <?= $d ?> value="<?= $appointment->id ?>">
-				<?= $this->lang->line('btn_cancel') ?>
-			</button>
-			<?php } ?>
-		</div>
 		|
 		<?php if ($appointment_datas["examination"]["exams"]){ ?>
 		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment_print/examination/<?= $appointment->id ?>" target="_blank">
@@ -74,7 +54,9 @@
 		</a>
 		<?php } ?>
 	</div>
-	<div class="col-md-12 pt-3">
+</div>
+<div class="row">
+	<div class="col-md-12">
 		<div class="card" id="app_info">
 			<div class="card-body">
 				<h5 class="card-title"><?= $this->lang->line('w_general_information') ?></h5>

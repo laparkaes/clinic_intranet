@@ -8,6 +8,8 @@ $ex = $appointment_datas["examination"]; $ex_profiles = $ex["profiles"]; $ex_exa
 $im = $appointment_datas["images"];
 $th = $appointment_datas["therapy"];
 $me = $appointment_datas["medicine"];
+
+$date_this = date("Y-m-d", strtotime($appointment->schedule_from))
 ?>
 <div class="row g-3">
 	<div class="col-md-3">
@@ -327,7 +329,7 @@ $me = $appointment_datas["medicine"];
 	</div>
 	<?php foreach($di as $i => $d){ ?>
 	<div class="col-md-2">
-		<input type="text" class="form-control m-0" value="fecha aqui" readonly>
+		<input type="text" class="form-control m-0" value="<?= $date_this ?>" readonly>
 	</div>
 	<div class="col-md-2">
 		<input type="text" class="form-control m-0" value="<?= $d->code ?>" readonly>
@@ -347,7 +349,7 @@ $me = $appointment_datas["medicine"];
 <div class="row g-3" id="content_diagnostic_impression">
 	<div class="col-md-2">
 		<label class="form-label">Fecha</label>
-		<input type="text" class="form-control" value="fecha aqui" readonly>
+		<input type="text" class="form-control" value="<?= $date_this ?>" readonly>
 	</div>
 	<div class="col-md-2">
 		<label class="form-label">Tipo</label>
@@ -393,7 +395,7 @@ $me = $appointment_datas["medicine"];
 	</div>
 	<?php foreach($ex_profiles as $i => $ep){ ?>
 	<div class="col-md-2">
-		<input type="text" class="form-control" value="Fecha aqui" readonly>
+		<input type="text" class="form-control" value="<?= $date_this ?>" readonly>
 	</div>
 	<div class="col-md-2">
 		<input type="text" class="form-control" value="<?= $ep->type ?>" readonly>
@@ -406,7 +408,7 @@ $me = $appointment_datas["medicine"];
 	</div>
 	<?php } foreach($ex_examinations as $j => $ee){ ?>
 	<div class="col-md-2">
-		<input type="text" class="form-control" value="Fecha aqui" readonly>
+		<input type="text" class="form-control" value="<?= $date_this ?>" readonly>
 	</div>
 	<div class="col-md-2">
 		<input type="text" class="form-control" value="<?= $ee->type ?>" readonly>
@@ -437,7 +439,7 @@ $me = $appointment_datas["medicine"];
 	</div>
 	<?php foreach($im as $i => $item){ ?>
 	<div class="col-md-2">
-		<input type="text" class="form-control" value="Fecha aqui" readonly>
+		<input type="text" class="form-control" value="<?= $date_this ?>" readonly>
 	</div>
 	<div class="col-md-2">
 		<input type="text" class="form-control" value="<?= $item->category ?>" readonly>
@@ -474,7 +476,7 @@ $me = $appointment_datas["medicine"];
 	</div>
 	<?php foreach($me as $i => $m){ ?>
 	<div class="col-md-2">
-		<input type="text" class="form-control" value="Fecha aqui" readonly>
+		<input type="text" class="form-control" value="<?= $date_this ?>" readonly>
 	</div>
 	<div class="col-md-4">
 		<input type="text" class="form-control" value="<?= $m->medicine ?>" readonly>
@@ -502,7 +504,7 @@ $me = $appointment_datas["medicine"];
 	</div>
 	<?php foreach($th as $i => $t){ ?>
 	<div class="col-md-2">
-		<input type="text" class="form-control" value="Fecha aqui" readonly>
+		<input type="text" class="form-control" value="<?= $date_this ?>" readonly>
 	</div>
 	<div class="col-md-4">
 		<input type="text" class="form-control" value="<?= $t->physical_therapy ?>" readonly>
