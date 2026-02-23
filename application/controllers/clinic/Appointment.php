@@ -270,9 +270,13 @@ class Appointment extends CI_Controller {
 		if ($anamnesis->civil_status_id) $anamnesis->civil_status = $this->general->id("civil_status", $anamnesis->civil_status_id)->description;
 		else $anamnesis->civil_status = null;
 		
-		$aux_pre_illnesses = [$anamnesis->patho_pre_illnesses, $anamnesis->patho_pre_illnesses_other];
+		$aux_pre_illnesses = [];
+		if ($anamnesis->patho_pre_illnesses) $aux_pre_illnesses[] = $anamnesis->patho_pre_illnesses;
+		if ($anamnesis->patho_pre_illnesses_other) $aux_pre_illnesses[] = $anamnesis->patho_pre_illnesses_other;
+		
 		foreach($aux_pre_illnesses as $i => $item) if (!trim($item)) unset($aux_pre_illnesses[$i]);
 		$anamnesis->patho_pre_illnesses_txt = $aux_pre_illnesses ? implode(", ", $aux_pre_illnesses) : "-";
+		$anamnesis->patho_pre_illnesses = ($anamnesis->patho_pre_illnesses_txt !== "-") ? explode(", ", $anamnesis->patho_pre_illnesses_txt) : [];
 		
 		$physical = $this->general->filter("appointment_physical", ["appointment_id" => $appointment->id]);
 		if ($physical) $physical = $physical[0];
