@@ -296,16 +296,103 @@ class Appointment extends CI_Controller {
 			$result->type = "";
 		}
 		
+		/* load all history for medical history viewer */
+		$apps = $this->general->filter("appointment", ["patient_id" => $appointment->patient_id], null, null, "schedule_from", "desc");
+		$apps_dates = $apps_ids = [];
+		foreach($apps as $item){
+			$apps_dates[$item->id] = date("Y-m-d", strtotime($item->schedule_from));
+			$apps_ids[] = $item->id;
+			//print_r($item); echo "<br/><br/>";
+		}
+		
+		//diag_impression
+		$diag_multi = $this->general->filter("appointment_diag_impression" , null, null, [["field" => "appointment_id", "values" => $apps_ids]]);
+		foreach($diag_multi as $item){
+			$item->app_date = $apps_dates[$item->appointment_id];
+			$item->detail = $this->general->id("diag_impression_detail", $item->diag_id);
+		}
+		
+		usort($diag_multi, function($a, $b) { return ($a->app_date < $b->app_date); });
+		
+		//result
+		$result_multi = $this->general->filter("appointment_result" , null, null, [["field" => "appointment_id", "values" => $apps_ids]]);
+		foreach($result_multi as $i => $item){
+			if (!$item->diagnosis and !$item->plan and !$item->treatment) unset($result_multi[$i]);
+			else{
+				$item->app_date = $apps_dates[$item->appointment_id];
+				$item->res_type = $this->general->id("diagnosis_type", $result->diagnosis_type_id)->description;
+			}
+		}
+		
+		usort($result_multi, function($a, $b) { return ($a->app_date < $b->app_date); });
+		
+		//examination
+		$exam_multi = [];
+		foreach($apps_ids as $item){
+			$details = $this->set_profiles_exams($item);
+			if ($details["profiles"] or $details["exams"]) $exam_multi[] = ["app_date" => $apps_dates[$item], "details" => $details];
+		}
+		
+		usort($exam_multi, function($a, $b) { return ($a["app_date"] < $b["app_date"]); });
+		
+		//////////////////working
+		//image
+		$image_multi = $this->general->filter("appointment_image" , null, null, [["field" => "appointment_id", "values" => $apps_ids]]);
+		foreach($image_multi as $item){
+			$item->app_date = $apps_dates[$item->appointment_id];
+			$item->images = $this->set_images($item->appointment_id);
+		}
+		
+		usort($image_multi, function($a, $b) { return ($a->app_date < $b->app_date); });
+		
+		//medicine
+		$medicine_multi = $this->general->filter("appointment_medicine" , null, null, [["field" => "appointment_id", "values" => $apps_ids]]);
+		foreach($medicine_multi as $item){
+			$item->app_date = $apps_dates[$item->appointment_id];
+			$item->medicines = $this->set_medicine_list($item->appointment_id);
+		}
+		
+		usort($medicine_multi, function($a, $b) { return ($a->app_date < $b->app_date); });
+		
+		//therapy
+		$therapy_multi = $this->general->filter("appointment_therapy" , null, null, [["field" => "appointment_id", "values" => $apps_ids]]);
+		foreach($therapy_multi as $item){
+			$item->app_date = $apps_dates[$item->appointment_id];
+			$item->therapies = $this->set_therapy_list($item->appointment_id);
+			
+			//print_r($item); echo "<br/><br/>";
+		}
+		
+		usort($therapy_multi, function($a, $b) { return ($a->app_date < $b->app_date); });
+		
+		/*
+		foreach($result_multi as $item){
+			print_r($item); echo "<br/><br/>";
+		}
+		
+		print_r($apps_dates); echo "<br/><br/>";
+		print_r($apps_ids); echo "<br/><br/>";
+		print_r($multi_diags); echo "<br/><br/>";
+		*/
+		
+		
+		//////////////////////////////working
 		$appointment_datas = array(
 			"basic_data" => $basic_data,
 			"anamnesis" => $anamnesis,
 			"physical" => $physical,
 			"diag_impression" => $diag_impression,
+			"diag_multi" => $diag_multi,
 			"result" => $result,
+			"result_multi" => $result_multi,
 			"examination" => $this->set_profiles_exams($appointment->id),
+			"exam_multi" => $exam_multi,
 			"images" => $this->set_images($appointment->id),
+			"image_multi" => $image_multi,
+			"medicine" => $this->set_medicine_list($appointment->id),
+			"medicine_multi" => $medicine_multi,
 			"therapy" => $this->set_therapy_list($appointment->id),
-			"medicine" => $this->set_medicine_list($appointment->id)
+			"therapy_multi" => $therapy_multi,
 		);
 		
 		return $appointment_datas;
@@ -913,7 +1000,10 @@ class Appointment extends CI_Controller {
 		
 		if ($ex_ids){
 			$exams = $this->general->filter("examination", null, null, [["field" => "id", "values" => $ex_ids]], "name", "asc");
-			foreach($exams as $item) $item->type = $this->lang->line('w_exam');	
+			foreach($exams as $item){
+				$item->category = $this->general->id("examination_category", $item->category_id);
+				$item->type = $this->lang->line('w_exam');
+			}
 		}else $exams = [];
 		
 		return ["profiles" => $profiles, "exams" => $exams];

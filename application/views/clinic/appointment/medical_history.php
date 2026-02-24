@@ -3,11 +3,17 @@ $bd = $appointment_datas["basic_data"];
 $an = $appointment_datas["anamnesis"];
 $ph = $appointment_datas["physical"];
 $di = $appointment_datas["diag_impression"];
+$di_multi = $appointment_datas["diag_multi"];
 $re = $appointment_datas["result"];
+$re_multi = $appointment_datas["result_multi"];
 $ex = $appointment_datas["examination"]; $ex_profiles = $ex["profiles"]; $ex_examinations = $ex["exams"];
+$ex_multi = $appointment_datas["exam_multi"];
 $im = $appointment_datas["images"];
-$th = $appointment_datas["therapy"];
+$im_multi = $appointment_datas["image_multi"];
 $me = $appointment_datas["medicine"];
+$me_multi = $appointment_datas["medicine_multi"];
+$th = $appointment_datas["therapy"];
+$th_multi = $appointment_datas["therapy_multi"];
 
 $date_this = date("Y-m-d", strtotime($appointment->schedule_from))
 ?>
@@ -318,26 +324,26 @@ $date_this = date("Y-m-d", strtotime($appointment->schedule_from))
 	</div>
 </div>
 <div class="row g-3" id="content_diagnostic_impression">
-	<div class="col-md-2">
-		<label class="form-label m-0">Fecha</label>
+	<div class="col-md-12">
+		<table class="datatable">
+			<thead>
+				<tr>
+					<th><strong>Fecha</strong></th>
+					<th><strong>CIE 10</strong></th>
+					<th><strong>Descripción</strong></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach($di_multi as $item){ ?>
+				<tr>
+					<td><?= $item->app_date ?></td>
+					<td><?= $item->detail->code ?></td>
+					<td><?= $item->detail->description ?></td>
+				</tr>
+				<?php } ?>
+			</tbody>
+		</table>
 	</div>
-	<div class="col-md-2">
-		<label class="form-label m-0">CIE 10</label>
-	</div>
-	<div class="col-md-8">
-		<label class="form-label m-0">Descripción</label>
-	</div>
-	<?php foreach($di as $i => $d){ ?>
-	<div class="col-md-2">
-		<input type="text" class="form-control m-0" value="<?= $date_this ?>" readonly>
-	</div>
-	<div class="col-md-2">
-		<input type="text" class="form-control m-0" value="<?= $d->code ?>" readonly>
-	</div>
-	<div class="col-md-8">
-		<input type="text" class="form-control m-0" value="<?= $d->description ?>" readonly>
-	</div>
-	<?php } ?>
 </div>
 <div class="row g-3 mt-3" id="title_result">
 	<div class="col-md-12">
@@ -346,27 +352,30 @@ $date_this = date("Y-m-d", strtotime($appointment->schedule_from))
 		</div>
 	</div>
 </div>
-<div class="row g-3" id="content_diagnostic_impression">
-	<div class="col-md-2">
-		<label class="form-label">Fecha</label>
-		<input type="text" class="form-control" value="<?= $date_this ?>" readonly>
-	</div>
-	<div class="col-md-2">
-		<label class="form-label">Tipo</label>
-		<input type="text" class="form-control" value="<?= $re->type ?>" readonly>
-	</div>
-	<div class="col-md-8">
-		<label class="form-label">Diagnóstico</label>
-		<input type="text" class="form-control" value="<?= ($re->diagnosis) ? $re->diagnosis : null ?>" readonly>
-	</div>
-	<div class="col-md-2"></div>
-	<div class="col-md-5">
-		<label class="form-label">Plan de Trabajo</label>
-		<textarea class="form-control" rows="4" readonly><?= ($re->plan) ? $re->plan : "-" ?></textarea>
-	</div>
-	<div class="col-md-5">
-		<label class="form-label">Tratamiento</label>
-		<textarea class="form-control" rows="4" readonly><?= ($re->treatment) ? $re->treatment : "-" ?></textarea>
+<div class="row g-3" id="content_result">
+	<div class="col-md-12">
+		<table class="datatable">
+			<thead>
+				<tr>
+					<th><strong>Fecha</strong></th>
+					<th><strong>Tipo</strong></th>
+					<th><strong>Diagnóstico</strong></th>
+					<th><strong>Plan de Trabajo</strong></th>
+					<th><strong>Tratamiento</strong></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach($re_multi as $item){ ?>
+				<tr>
+					<td><?= $item->app_date ?></td>
+					<td><?= $item->res_type ?></td>
+					<td><?= $item->diagnosis ?></td>
+					<td><?= $item->plan ?></td>
+					<td><?= $item->treatment ?></td>
+				</tr>
+				<?php } ?>
+			</tbody>
+		</table>
 	</div>
 </div>
 <div class="row g-3 mt-3" id="title_auxiliary_exam">
@@ -380,78 +389,62 @@ $date_this = date("Y-m-d", strtotime($appointment->schedule_from))
 	<div class="col-md-12">
 		<h5 class="m-0"><strong>1) Laboratorio</strong></h5>
 	</div>
-	<?php if ($ex_profiles or $ex_examinations){ ?>
-	<div class="col-md-2">
-		<label class="form-label mb-0">Fecha</label>
-	</div>
-	<div class="col-md-2">
-		<label class="form-label mb-0">Tipo</label>
-	</div>
-	<div class="col-md-3">
-		<label class="form-label mb-0">Perfil</label>
-	</div>
-	<div class="col-md-5">
-		<label class="form-label mb-0">Exámenes</label>
-	</div>
-	<?php foreach($ex_profiles as $i => $ep){ ?>
-	<div class="col-md-2">
-		<input type="text" class="form-control" value="<?= $date_this ?>" readonly>
-	</div>
-	<div class="col-md-2">
-		<input type="text" class="form-control" value="<?= $ep->type ?>" readonly>
-	</div>
-	<div class="col-md-3">
-		<input type="text" class="form-control" value="<?= $ep->name ?>" readonly>
-	</div>
-	<div class="col-md-5">
-		<input type="text" class="form-control" value="<?= $ep->exams ?>" readonly>
-	</div>
-	<?php } foreach($ex_examinations as $j => $ee){ ?>
-	<div class="col-md-2">
-		<input type="text" class="form-control" value="<?= $date_this ?>" readonly>
-	</div>
-	<div class="col-md-2">
-		<input type="text" class="form-control" value="<?= $ee->type ?>" readonly>
-	</div>
-	<div class="col-md-3">
-		<input type="text" class="form-control" value="-" readonly>
-	</div>
-	<div class="col-md-5">
-		<input type="text" class="form-control" value="<?= $ee->name ?>" readonly>
-	</div>
-	<?php }}else{ ?>
 	<div class="col-md-12">
-		<label class="form-label mb-0">No se aplica</label>
+		<table class="datatable">
+			<thead>
+				<tr>
+					<th><strong>Fecha</strong></th>
+					<th><strong>Tipo</strong></th>
+					<th><strong>Categoría</strong></th>
+					<th><strong>Perfil</strong></th>
+					<th><strong>Exámenes</strong></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach($ex_multi as $item){ ?>
+				<?php if ($item["details"]["profiles"]) foreach($item["details"]["profiles"] as $item_pr){ ?>
+				<tr>
+					<td><?= $item["app_date"] ?></td>
+					<td><?= $item_pr->type ?></td>
+					<td>-</td>
+					<td><?= $item_pr->name ?></td>
+					<td><?= $item_pr->exams ?></td>
+				</tr>
+				<?php } if ($item["details"]["exams"]) foreach($item["details"]["exams"] as $item_ex){ ?>
+				<tr>
+					<td><?= $item["app_date"] ?></td>
+					<td><?= $item_ex->type ?></td>
+					<td><?= $item_ex->category->name ?></td>
+					<td>-</td>
+					<td><?= $item_ex->name ?></td>
+				</tr>
+				<?php }} ?>
+			</tbody>
+		</table>
 	</div>
-	<?php } ?>
 	<div class="col-md-12">
 		<h5 class="m-0 pt-3"><strong>2) Imágen</strong></h5>
 	</div>
-	<?php if ($im){ ?>
-	<div class="col-md-2">
-		<label class="form-label mb-0">Fecha</label>
-	</div>
-	<div class="col-md-2">
-		<label class="form-label mb-0">Categoría</label>
-	</div>
-	<div class="col-md-8">
-		<label class="form-label mb-0">Imágen</label>
-	</div>
-	<?php foreach($im as $i => $item){ ?>
-	<div class="col-md-2">
-		<input type="text" class="form-control" value="<?= $date_this ?>" readonly>
-	</div>
-	<div class="col-md-2">
-		<input type="text" class="form-control" value="<?= $item->category ?>" readonly>
-	</div>
-	<div class="col-md-8">
-		<input type="text" class="form-control" value="<?= $item->name ?>" readonly>
-	</div>
-	<?php }}else{ ?>
 	<div class="col-md-12">
-		<label class="form-label mb-0">No se aplica</label>
+		<table class="datatable">
+			<thead>
+				<tr>
+					<th><strong>Fecha</strong></th>
+					<th><strong>Categoría</strong></th>
+					<th><strong>Imágen</strong></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach($im_multi as $item) foreach($item->images as $item_im){ ?>
+				<tr>
+					<td><?= $item->app_date ?></td>
+					<td><?= $item_im->category ?></td>
+					<td><?= $item_im->name ?></td>
+				</tr>
+				<?php } ?>
+			</tbody>
+		</table>
 	</div>
-	<?php } ?>
 </div>
 <div class="row g-3 mt-3" id="title_treatment">
 	<div class="col-md-12">
@@ -464,34 +457,51 @@ $date_this = date("Y-m-d", strtotime($appointment->schedule_from))
 	<div class="col-md-12">
 		<h5 class="m-0"><strong>1) Medicamento</strong></h5>
 	</div>
-	<?php if ($me){ ?>
-	<div class="col-md-2">
-		<label class="form-label mb-0">Fecha</label>
-	</div>
-	<div class="col-md-4">
-		<label class="form-label mb-0">Medicamento</label>
-	</div>
-	<div class="col-md-6">
-		<label class="form-label mb-0">Detalle</label>
-	</div>
-	<?php foreach($me as $i => $m){ ?>
-	<div class="col-md-2">
-		<input type="text" class="form-control" value="<?= $date_this ?>" readonly>
-	</div>
-	<div class="col-md-4">
-		<input type="text" class="form-control" value="<?= $m->medicine ?>" readonly>
-	</div>
-	<div class="col-md-6">
-		<input type="text" class="form-control" value="<?= $m->sub_txt ?>" readonly>
-	</div>
-	<?php }}else{ ?>
 	<div class="col-md-12">
-		<label class="form-label mb-0">No se aplica</label>
+		<table class="datatable">
+			<thead>
+				<tr>
+					<th><strong>Fecha</strong></th>
+					<th><strong>Medicamento</strong></th>
+					<th><strong>Detalle</strong></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach($me_multi as $item) foreach($item->medicines as $item_me){ ?>
+				<tr>
+					<td><?= $item->app_date ?></td>
+					<td><?= $item_me->medicine ?></td>
+					<td><?= $item_me->sub_txt ?></td>
+				</tr>
+				<?php } ?>
+			</tbody>
+		</table>
 	</div>
-	<?php } ?>
 	<div class="col-md-12">
 		<h5 class="m-0 pt-3"><strong>2) Terapia Física</strong></h5>
 	</div>
+	<div class="col-md-12">
+		<table class="datatable">
+			<thead>
+				<tr>
+					<th><strong>Fecha</strong></th>
+					<th><strong>Medicamento</strong></th>
+					<th><strong>Detalle</strong></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach($th_multi as $item) foreach($item->therapies as $item_me){ ?>
+				<tr>
+					<td><?= $item->app_date ?></td>
+					<td><?= $item_me->physical_therapy ?></td>
+					<td><?= $item_me->sub_txt ?></td>
+				</tr>
+				<?php } ?>
+			</tbody>
+		</table>
+	</div>
+	
+	
 	<?php if ($th){ ?>
 	<div class="col-md-2">
 		<label class="form-label mb-0">Fecha</label>
