@@ -435,9 +435,9 @@ $date_this = date("Y-m-d", strtotime($appointment->schedule_from))
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach($im_multi as $item) foreach($item->images as $item_im){ ?>
+				<?php foreach($im_multi as $item) foreach($item["details"] as $item_im){ ?>
 				<tr>
-					<td><?= $item->app_date ?></td>
+					<td><?= $item["app_date"] ?></td>
 					<td><?= $item_im->category ?></td>
 					<td><?= $item_im->name ?></td>
 				</tr>
@@ -463,15 +463,23 @@ $date_this = date("Y-m-d", strtotime($appointment->schedule_from))
 				<tr>
 					<th><strong>Fecha</strong></th>
 					<th><strong>Medicamento</strong></th>
-					<th><strong>Detalle</strong></th>
+					<th><strong>Cantidad</strong></th>
+					<th><strong>Dosis</strong></th>
+					<th><strong>Aplicación</strong></th>
+					<th><strong>Frecuencia</strong></th>
+					<th><strong>Duración</strong></th>
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach($me_multi as $item) foreach($item->medicines as $item_me){ ?>
+				<?php foreach($me_multi as $item) foreach($item["details"] as $item_me){ ?>
 				<tr>
-					<td><?= $item->app_date ?></td>
+					<td><?= $item["app_date"] ?></td>
 					<td><?= $item_me->medicine ?></td>
-					<td><?= $item_me->sub_txt ?></td>
+					<td><?= $item_me->quantity ?> <?= $item_me->unit ?></td>
+					<td><?= $item_me->dose->description ?></td>
+					<td><?= $item_me->application_way->description ?></td>
+					<td><?= $item_me->frequency->description ?></td>
+					<td><?= $item_me->duration->description ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -485,46 +493,19 @@ $date_this = date("Y-m-d", strtotime($appointment->schedule_from))
 			<thead>
 				<tr>
 					<th><strong>Fecha</strong></th>
-					<th><strong>Medicamento</strong></th>
+					<th><strong>Terapia Física</strong></th>
 					<th><strong>Detalle</strong></th>
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach($th_multi as $item) foreach($item->therapies as $item_me){ ?>
+				<?php foreach($th_multi as $item) foreach($item["details"] as $item_th){ ?>
 				<tr>
-					<td><?= $item->app_date ?></td>
-					<td><?= $item_me->physical_therapy ?></td>
-					<td><?= $item_me->sub_txt ?></td>
+					<td><?= $item["app_date"] ?></td>
+					<td><?= $item_th->physical_therapy ?></td>
+					<td><?= $item_th->sub_txt ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>
 		</table>
 	</div>
-	
-	
-	<?php if ($th){ ?>
-	<div class="col-md-2">
-		<label class="form-label mb-0">Fecha</label>
-	</div>
-	<div class="col-md-4">
-		<label class="form-label mb-0">Terapia</label>
-	</div>
-	<div class="col-md-6">
-		<label class="form-label mb-0">Detalle</label>
-	</div>
-	<?php foreach($th as $i => $t){ ?>
-	<div class="col-md-2">
-		<input type="text" class="form-control" value="<?= $date_this ?>" readonly>
-	</div>
-	<div class="col-md-4">
-		<input type="text" class="form-control" value="<?= $t->physical_therapy ?>" readonly>
-	</div>
-	<div class="col-md-6">
-		<input type="text" class="form-control" value="<?= $t->sub_txt ?>" readonly>
-	</div>
-	<?php }}else{ ?>
-	<div class="col-md-12">
-		<label class="form-label mb-0">No se aplica</label>
-	</div>
-	<?php } ?>
 </div>

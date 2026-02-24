@@ -320,7 +320,7 @@ class Appointment extends CI_Controller {
 			if (!$item->diagnosis and !$item->plan and !$item->treatment) unset($result_multi[$i]);
 			else{
 				$item->app_date = $apps_dates[$item->appointment_id];
-				$item->res_type = $this->general->id("diagnosis_type", $result->diagnosis_type_id)->description;
+				$item->res_type = $this->general->id("diagnosis_type", $item->diagnosis_type_id)->description;
 			}
 		}
 		
@@ -337,30 +337,28 @@ class Appointment extends CI_Controller {
 		
 		//////////////////working
 		//image
-		$image_multi = $this->general->filter("appointment_image" , null, null, [["field" => "appointment_id", "values" => $apps_ids]]);
-		foreach($image_multi as $item){
-			$item->app_date = $apps_dates[$item->appointment_id];
-			$item->images = $this->set_images($item->appointment_id);
+		$image_multi = [];
+		foreach($apps_ids as $item){
+			$details = $this->set_images($item);
+			if ($details) $image_multi[] = ["app_date" => $apps_dates[$item], "details" => $details];
 		}
 		
-		usort($image_multi, function($a, $b) { return ($a->app_date < $b->app_date); });
+		usort($image_multi, function($a, $b) { return ($a["app_date"] < $b["app_date"]); });
 		
 		//medicine
-		$medicine_multi = $this->general->filter("appointment_medicine" , null, null, [["field" => "appointment_id", "values" => $apps_ids]]);
-		foreach($medicine_multi as $item){
-			$item->app_date = $apps_dates[$item->appointment_id];
-			$item->medicines = $this->set_medicine_list($item->appointment_id);
+		$medicine_multi = [];
+		foreach($apps_ids as $item){
+			$details = $this->set_medicine_list($item);
+			if ($details) $medicine_multi[] = ["app_date" => $apps_dates[$item], "details" => $details];
 		}
 		
-		usort($medicine_multi, function($a, $b) { return ($a->app_date < $b->app_date); });
+		usort($medicine_multi, function($a, $b) { return ($a["app_date"] < $b["app_date"]); });
 		
 		//therapy
-		$therapy_multi = $this->general->filter("appointment_therapy" , null, null, [["field" => "appointment_id", "values" => $apps_ids]]);
-		foreach($therapy_multi as $item){
-			$item->app_date = $apps_dates[$item->appointment_id];
-			$item->therapies = $this->set_therapy_list($item->appointment_id);
-			
-			//print_r($item); echo "<br/><br/>";
+		$therapy_multi = [];
+		foreach($apps_ids as $item){
+			$details = $this->set_therapy_list($item);
+			if ($details) $therapy_multi[] = ["app_date" => $apps_dates[$item], "details" => $details];
 		}
 		
 		usort($therapy_multi, function($a, $b) { return ($a->app_date < $b->app_date); });
