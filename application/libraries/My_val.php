@@ -165,11 +165,7 @@ class My_val{
 	
 	public function appointment_medicine($msgs, $data){
 		if (!$data["medicine_id"]) $msgs = $this->set_msg($msgs, "md_medicine_msg", "error", "e_required_field");
-		if ($data["quantity"]){
-			if (is_numeric($data["quantity"])){
-				if ($data["quantity"] < 1) $msgs = $this->set_msg($msgs, "md_quantity_msg", "error", "e_number_medicine_quantity");
-			}else $msgs = $this->set_msg($msgs, "md_quantity_msg", "error", "e_number_medicine_quantity");
-		}else $msgs = $this->set_msg($msgs, "md_quantity_msg", "error", "e_insert_medicine_quantity");
+		if (!$data["quantity"]) $msgs = $this->set_msg($msgs, "md_quantity_msg", "error", "e_insert_medicine_quantity");
 		
 		$filter = ["appointment_id" => $data["appointment_id"], "medicine_id" => $data["medicine_id"]];
 		if ($this->CI->general->filter("appointment_medicine", $filter))
