@@ -1198,7 +1198,7 @@
 									</div>
 									<div class="col-md-6">
 										<label class="form-label"><?= $this->lang->line('w_quantity') ?></label>
-										<input type="number" class="form-control" name="quantity" value="1">
+										<input type="text" class="form-control" name="quantity" value="1">
 										<div class="sys_msg" id="md_quantity_msg"></div>
 									</div>
 									<div class="col-md-6">
