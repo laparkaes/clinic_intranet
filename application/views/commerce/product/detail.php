@@ -98,6 +98,9 @@
 							</button>
 						</div>
 					</form>
+					<?php 
+					$permission = in_array($this->session->userdata("role")->name, ["master", "admin"]);
+					?>
 					<div class="table-responsive mt-3">
 						<table class="table">
 							<thead>
@@ -115,14 +118,17 @@
 									<td><?= $item->description ?></td>
 									<td><?= number_format($item->stock) ?></td>
 									<td class="text-end">
+										<?php if ($permission){ ?>
 										<button class="btn btn-success btn-sm op_edit" value="<?= $item->id ?>">
 											<i class="bi bi-pencil"></i>
 										</button>
 										<button class="btn btn-danger btn-sm op_delete" value="<?= $item->id ?>">
 											<i class="bi bi-trash"></i>
 										</button>
+										<?php } ?>
 									</td>
 								</tr>
+								<?php if ($permission){ ?>
 								<tr class="d-none row_op_edit" id="row_op_edit_<?= $item->id ?>">
 									<form class="form_edit_option" action="#">
 										<input type="hidden" name="id" value="<?= $item->id ?>">
@@ -140,7 +146,7 @@
 										</td>
 									</form>
 								</tr>
-								<?php } ?>
+								<?php }} ?>
 							</tbody>
 						</table>
 					</div>
