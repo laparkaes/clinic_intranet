@@ -78,6 +78,18 @@ class Config extends CI_Controller {
 		
 		$sys_conf = $this->general->id("system", 1);
 		
+		//load physical therapy package
+		$physical_therapy_packages = $this->general->all("physical_therapy_package", "name", "asc");
+		foreach($physical_therapy_packages as $item){
+			$therapies = [];
+			$ids = explode(",", $item->physical_therapy_ids);
+			foreach($ids as $id){
+				$therapies[] = $this->general->unique("physical_therapy", "id", $id);
+			}
+			
+			$item->therapies = $therapies;
+		}
+		
 		$data = array(
 			"role_access" => $role_access,
 			"roles_arr" => $roles_arr,
@@ -97,6 +109,8 @@ class Config extends CI_Controller {
 			"provinces" => $this->general->all("address_province", "name", "asc"),
 			"districts" => $this->general->all("address_district", "name", "asc"),
 			"company" => $this->general->id("company", $sys_conf->company_id),
+			"physical_therapies" => $this->general->all("physical_therapy", "name", "asc"),
+			"physical_therapy_packages" => $physical_therapy_packages,
 			"title" => $this->lang->line('setting'),
 			"main" => "sys/config/index",
 		);
@@ -439,5 +453,47 @@ class Config extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
+	}
+
+	public function register_physical_therapy_package(){
+		$type = "error"; $msg = null;
+		
+		$name = $this->input->post("name");
+		$physical_therapy_ids = $this->input->post("physical_therapy_ids");
+		
+		if ($name){
+			if ($physical_therapy_ids){
+				//generate data array
+				$data = [
+					"name" => $name,
+					"physical_therapy_ids" => implode(",", $physical_therapy_ids),
+				];
+				
+				//validate if the package exists in data base
+				if (!$this->general->filter("physical_therapy_package", $data)){
+					$data["registed_at"] = date("Y-m-d H:i:s", time());
+					
+					//insert to table
+					$this->general->insert("physical_therapy_package", $data);
+					$type = "success";
+					$msg = "Paquete de terapia física ha sido creado.";
+				}else $msg = "Existe paquete generada.";
+			}else $msg = "Debe elegir al menos una terapia física.";
+		}else $msg = "Ingrese nombre de paquete de terapia física.";
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
+	}
+
+	public function remove_physical_therapy_package(){
+		$type = "error"; $msg = null;
+		
+		if ($this->general->delete("physical_therapy_package", $this->input->post())){
+			$type = "success";
+			$msg = "Paquete ha sido eliminado.";
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 }

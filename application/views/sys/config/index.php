@@ -20,6 +20,9 @@
 						<button class="nav-link" id="bl_laboratory_admin-tab" data-bs-toggle="tab" data-bs-target="#bordered-bl_laboratory_admin" type="button" role="tab" aria-controls="bl_laboratory_admin" aria-selected="false" tabindex="-1"><?= $this->lang->line('w_laboratory') ?></button>
 					</li>
 					<li class="nav-item" role="presentation">
+						<button class="nav-link" id="bl_physical_therapy_admin-tab" data-bs-toggle="tab" data-bs-target="#bordered-bl_physical_therapy_admin" type="button" role="tab" aria-controls="bl_physical_therapy_admin" aria-selected="false" tabindex="-1">Terapia Física</button>
+					</li>
+					<li class="nav-item" role="presentation">
 						<button class="nav-link" id="bl_image_admin-tab" data-bs-toggle="tab" data-bs-target="#bordered-bl_image_admin" type="button" role="tab" aria-controls="bl_image_admin" aria-selected="false" tabindex="-1"><?= $this->lang->line('w_image') ?></button>
 					</li>
 					<li class="nav-item" role="presentation">
@@ -212,6 +215,70 @@
 								</div>
 							</div>
 						</div>
+					</div>
+					<div class="tab-pane fade" id="bordered-bl_physical_therapy_admin" role="tabpanel" aria-labelledby="bl_physical_therapy_admin-tab">
+						<div class="d-flex justify-content-between">
+							<strong>Gestión de Terapia Física</strong>
+							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#md_add_physical_therapy_package">
+								<i class="bi bi-plus-lg"></i> Agregar
+							</button>
+							<div class="modal fade" id="md_add_physical_therapy_package" tabindex="-1" style="display: none;" aria-hidden="true">
+								<div class="modal-dialog modal-xl">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Agregar Paquete de Terapia Física</h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<form class="row g-3" id="form_physical_therapy_package">
+												<div class="col-md-12">
+													<label class="form-label">Nombre de Paquete</label>
+													<input type="text" class="form-control" name="name" required>
+													<div class="sys_msg" id="pt_name_msg"></div>
+												</div>
+												<?php foreach($physical_therapies as $i=>$item){ ?>
+												<div class="col-md-6">
+													<input class="form-check-input" type="checkbox" id="pt_check_<?= $item->id ?>" value="<?= $item->id ?>" name="physical_therapy_ids[]">
+													<label class="form-check-label" for="pt_check_<?= $item->id ?>">
+														<?= $item->name ?>
+													</label>
+												</div>
+												<?php } ?>
+												<div class="col-md-12 pt-3 text-end">
+													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+													<button type="submit" class="btn btn-primary">Agregar</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">#</th>
+									<th scope="col">Nombre de Paquete</th>
+									<th scope="col">Terapias</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php foreach($physical_therapy_packages as $i => $item){ ?>
+								<tr>
+									<th scope="row"><?= $i + 1 ?></th>
+									<td>
+										<?= $item->name ?><br/>
+										<button type="submit" class="btn btn-outline-danger btn-sm btn_delete_package" value="<?= $item->id ?>"><i class="bi bi-trash text-danger"></i> Eliminar</button>
+									</td>
+									<td>
+										<?php foreach($item->therapies as $therapy){ ?>
+										<div><?= $therapy->name ?></div>
+										<?php } ?>
+									</td>
+								</tr>
+								<?php } ?>
+							</tbody>
+						</table>
 					</div>
 					<div class="tab-pane fade" id="bordered-bl_image_admin" role="tabpanel" aria-labelledby="bl_image_admin-tab">
 						<div class="d-flex justify-content-between">
@@ -862,6 +929,30 @@ document.addEventListener("DOMContentLoaded", () => {
 					$("#log_list").append('<tr><td>' + (offset + index + 1) + '</td><td>' + item.account + '</td><td>' + item.log_txt + '<br/>' + item.detail + '</td><td>' + item.registed_at + '</td></tr>');
 				});
 			}else $("#btn_load_more_log").addClass("d-none");
+		});
+	});
+	
+	
+	function load_physical_therapy_package_list(){
+		alert("cargar lista");
+	}
+	
+	$("#form_physical_therapy_package").submit(function(e) {
+		e.preventDefault();
+		ajax_form(this, "sys/config/register_physical_therapy_package").done(function(res) {
+			swal(res.type, res.msg);
+			if (res.type == "success"){
+				$('#form_physical_therapy_package')[0].reset();
+				load_physical_therapy_package_list();
+				$('#md_add_physical_therapy_package').modal('hide');	
+			}
+		});
+	});
+	
+	$(".btn_delete_package").click(function() {
+		ajax_simple_warning({id: $(this).val()}, "sys/config/remove_physical_therapy_package", "Desea eliminar paquete de terapia fisica?").done(function(res) {
+			swal(res.type, res.msg);
+			load_physical_therapy_package_list();
 		});
 	});
 });

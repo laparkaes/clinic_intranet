@@ -1280,6 +1280,26 @@
 					<div class="tab-pane fade" id="bordered-treatments-2" role="tabpanel" aria-labelledby="treatments-2-tab">
 						<div class="row">
 							<div class="col-md-6">
+								<form class="row g-3 mb-3" id="form_add_therapy_by_package">
+									<input type="hidden" name="appointment_id" value="<?= $appointment->id ?>">
+									<div class="col-md-12">
+										<strong>Agregar por Paquete</strong>
+									</div>
+									<div class="col-md-12">
+										<label class="form-label">Elegir Paquete</label>
+										<div class="input-group mb-3">
+											<select class="form-select" name="package_id">
+												<option value="">--</option>
+												<?php foreach($physical_therapy_packages as $item){ ?>
+												<option value="<?= $item->id ?>"><?= $item->name ?></option>
+												<?php } ?>
+											</select>
+											<button type="submit" class="btn btn-primary">
+												Agregar
+											</button>
+										</div>
+									</div>
+								</form>
 								<form class="row g-3" id="form_add_therapy">
 									<input type="hidden" name="appointment_id" value="<?= $appointment->id ?>">
 									<div class="col-md-12">
@@ -1730,6 +1750,15 @@ document.addEventListener("DOMContentLoaded", () => {
 			set_msg(res.msgs);
 			swal(res.type, res.msg);
 			if (res.type == "success") $("#form_add_therapy")[0].reset();
+		});
+	});
+	
+	$("#form_add_therapy_by_package").submit(function(e) {
+		e.preventDefault(); 
+		ajax_form(this, "clinic/appointment/add_therapy_by_package").done(function(res) {
+			set_therapy(res.therapies);
+			swal(res.type, res.msg);
+			if (res.type == "success") $("#form_add_therapy_by_package")[0].reset();
 		});
 	});
 	

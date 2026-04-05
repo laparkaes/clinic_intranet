@@ -536,6 +536,18 @@ class Appointment extends CI_Controller {
 		
 		$patient_files = $this->general->filter("patient_file", ["patient_id" => $appointment->patient_id], null, null, "registed_at", "desc");
 		
+		//load physical therapy package
+		$physical_therapy_packages = $this->general->all("physical_therapy_package", "name", "asc");
+		foreach($physical_therapy_packages as $item){
+			$therapies = [];
+			$ids = explode(",", $item->physical_therapy_ids);
+			foreach($ids as $id){
+				$therapies[] = $this->general->unique("physical_therapy", "id", $id);
+			}
+			
+			$item->therapies = $therapies;
+		}
+		
 		$data = array(
 			"actions" => $actions,
 			"operations" => $operations,
@@ -554,6 +566,7 @@ class Appointment extends CI_Controller {
 			"aux_images" => $this->general->all("image", "name", "asc"),
 			"sex_ops" => $this->general->all("sex", "description", "asc"),
 			"physical_therapies" => $this->general->all("physical_therapy", "name", "asc"),
+			"physical_therapy_packages" => $physical_therapy_packages,
 			"medicines" => $this->general->all("medicine", "name", "asc"),
 			"title" => "Consulta",
 			"main" => "clinic/appointment/detail",
@@ -1113,8 +1126,10 @@ class Appointment extends CI_Controller {
 	private function set_therapy_list($appointment_id){
 		$tb_name = "appointment_therapy";
 		$therapies = $this->general->filter($tb_name, ["appointment_id" => $appointment_id]);
+		
 		foreach($therapies as $item){
-			$item->physical_therapy = $this->general->id("physical_therapy", $item->physical_therapy_id)->name;
+			$therapy = $this->general->id("physical_therapy", $item->physical_therapy_id);
+			$item->physical_therapy = $therapy ? $therapy->name : "";
 			
 			if ($item->session > 1) $session_txt = $this->lang->line('w_sessions');
 			else $session_txt = $this->lang->line('w_session');
@@ -1160,6 +1175,38 @@ class Appointment extends CI_Controller {
 		}else $msg = $this->lang->line('error_no_permission');
 		
 		$therapies = $this->set_therapy_list($data["appointment_id"]);
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg, "therapies" => $therapies]);
+	}
+	
+	public function add_therapy_by_package(){
+		$type = "error"; $msgs = []; $msg = null;
+		
+		$appointment_id = $this->input->post("appointment_id");
+		$package = $this->general->unique("physical_therapy_package", "id", $this->input->post("package_id"));
+		
+		if ($package){
+			$therapy_ids = explode(",", $package->physical_therapy_ids);
+			foreach($therapy_ids as $id){
+				if ($id){
+					$data = [
+						"appointment_id" => $appointment_id,
+						"physical_therapy_id" => $id,
+						"session" => 1,
+						"frequency" => 1,
+						"frequency_unit" => "D",
+					];
+					
+					if (!$this->general->filter("appointment_therapy", $data)) $this->general->insert("appointment_therapy", $data);
+				}
+			}
+			
+			$type = "success";
+			$msg = "Terapias fisicas han sido agregados.";	
+		}else $msg = "Elija un paquete.";
+		
+		$therapies = $this->set_therapy_list($appointment_id);
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg, "therapies" => $therapies]);
