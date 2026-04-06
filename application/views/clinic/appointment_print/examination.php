@@ -86,7 +86,7 @@
         <div><span class="label">PACIENTE:</span> <?= $patient->name ?></div>
         <div><span class="label"><?= $patient->doc_type->short ?>:</span> <?= $patient->doc_number ?></div>
         <div><span class="label">FECHA:</span> <?= date("d/m/Y") ?></div>
-        <div><span class="label">DIAGNÓSTICO:</span> <?= $diag_impression[0]->description ?></div>
+        <div><span class="label">DIAGNÓSTICO:</span> <?= $diag_impression ? $diag_impression[0]->description : "" ?></div>
     </div>
 
     <div class="therapy-section">
