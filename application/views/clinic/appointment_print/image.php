@@ -2,13 +2,13 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Orden de Terapia Física</title>
+    <title>Orden de Imagen</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 12px;
+            font-size: 16px;
             color: #000;
         }
         .container {
@@ -28,7 +28,6 @@
             margin-bottom: 5px;
         }
         .hospital-name {
-            font-size: 16px;
             font-weight: bold;
             display: block;
         }
@@ -47,7 +46,6 @@
         }
         .therapy-title {
             text-align: center;
-            font-size: 14px;
             font-weight: bold;
             margin-bottom: 5px;
             text-decoration: underline;
