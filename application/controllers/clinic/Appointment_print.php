@@ -316,69 +316,6 @@ class Appointment_print extends CI_Controller {
 		$this->dompdf_lib->make_pdf_a4($html, $filename);
 		//echo $html;
 	}
-
-
-
-
-
-
-	public function examination($id){
-		$appointment = $this->general->id("appointment", $id);
-		
-		$doctor = $this->general->id("person", $appointment->doctor_id);
-		if ($doctor){
-			$doctor->age = $doctor->birthday ? $this->my_func->age_calculator($doctor->birthday, true) : "-";
-			
-			$data = $this->general->filter("doctor", ["person_id" => $doctor->id]);
-			if ($data) $doctor->data = $data[0];
-			else $doctor->data = $this->general->structure("doctor");
-			
-			$doctor->data->specialty = $doctor->data->specialty_id ? $this->general->id("specialty", $doctor->data->specialty_id)->name : "";
-		}else{
-			$doctor = $this->general->structure("person");
-			$doctor->data = $this->general->structure("doctor");
-		}
-		
-		$patient = $this->general->id("person", $appointment->patient_id);
-		$patient->age = $patient->birthday ? $this->my_func->age_calculator($patient->birthday, true) : "-";
-		
-		$data = [
-			"doctor" => $doctor,
-			"patient" => $patient,
-			"examination" => $this->set_profiles_exams($id),
-		];
-		
-		$this->load->view('clinic/appointment_print/examination', $data);
-	}
-	
-	public function image($id){
-		$appointment = $this->general->id("appointment", $id);
-		
-		$doctor = $this->general->id("person", $appointment->doctor_id);
-		if ($doctor){
-			$doctor->age = $doctor->birthday ? $this->my_func->age_calculator($doctor->birthday, true) : "-";
-			
-			$data = $this->general->filter("doctor", ["person_id" => $doctor->id]);
-			if ($data) $doctor->data = $data[0];
-			else $doctor->data = $this->general->structure("doctor");
-			
-			$doctor->data->specialty = $doctor->data->specialty_id ? $this->general->id("specialty", $doctor->data->specialty_id)->name : "";
-		}else{
-			$doctor = $this->general->structure("person");
-			$doctor->data = $this->general->structure("doctor");
-		}
-		
-		$patient = $this->general->id("person", $appointment->patient_id);
-		$patient->age = $patient->birthday ? $this->my_func->age_calculator($patient->birthday, true) : "-";
-		
-		$data = [
-			"doctor" => $doctor,
-			"patient" => $patient,
-			"image" => $this->set_images($id),
-		];
-		
-		$this->load->view('clinic/appointment_print/image', $data);
-	}
 	
 	public function therapy($id){
 		$appointment = $this->general->id("appointment", $id);
@@ -399,13 +336,95 @@ class Appointment_print extends CI_Controller {
 		
 		$patient = $this->general->id("person", $appointment->patient_id);
 		$patient->age = $patient->birthday ? $this->my_func->age_calculator($patient->birthday, true) : "-";
+		$patient->doc_type = $this->general->id("doc_type", $patient->doc_type_id);
+		
+		$diag_ids = [];
+		$diags = $this->general->filter("appointment_diag_impression" , ["appointment_id" => $id]);
+		foreach($diags as $diag) array_push($diag_ids, $diag->diag_id);
+		$diag_impression = $this->general->ids("diag_impression_detail", $diag_ids, "code");
 		
 		$data = [
 			"doctor" => $doctor,
 			"patient" => $patient,
+			"diag_impression" => $diag_impression,
 			"therapy" => $this->set_therapy_list($id),
 		];
 		//print_r($data);
 		$this->load->view('clinic/appointment_print/therapy', $data);
 	}
+
+	public function image($id){
+		$appointment = $this->general->id("appointment", $id);
+		
+		$doctor = $this->general->id("person", $appointment->doctor_id);
+		if ($doctor){
+			$doctor->age = $doctor->birthday ? $this->my_func->age_calculator($doctor->birthday, true) : "-";
+			
+			$data = $this->general->filter("doctor", ["person_id" => $doctor->id]);
+			if ($data) $doctor->data = $data[0];
+			else $doctor->data = $this->general->structure("doctor");
+			
+			$doctor->data->specialty = $doctor->data->specialty_id ? $this->general->id("specialty", $doctor->data->specialty_id)->name : "";
+		}else{
+			$doctor = $this->general->structure("person");
+			$doctor->data = $this->general->structure("doctor");
+		}
+		
+		$patient = $this->general->id("person", $appointment->patient_id);
+		$patient->age = $patient->birthday ? $this->my_func->age_calculator($patient->birthday, true) : "-";
+		$patient->doc_type = $this->general->id("doc_type", $patient->doc_type_id);
+		
+		$diag_ids = [];
+		$diags = $this->general->filter("appointment_diag_impression" , ["appointment_id" => $id]);
+		foreach($diags as $diag) array_push($diag_ids, $diag->diag_id);
+		$diag_impression = $this->general->ids("diag_impression_detail", $diag_ids, "code");
+		
+		$data = [
+			"doctor" => $doctor,
+			"patient" => $patient,
+			"diag_impression" => $diag_impression,
+			"image" => $this->set_images($id),
+		];
+		
+		$this->load->view('clinic/appointment_print/image', $data);
+	}
+
+	public function examination($id){
+		$appointment = $this->general->id("appointment", $id);
+		
+		$doctor = $this->general->id("person", $appointment->doctor_id);
+		if ($doctor){
+			$doctor->age = $doctor->birthday ? $this->my_func->age_calculator($doctor->birthday, true) : "-";
+			
+			$data = $this->general->filter("doctor", ["person_id" => $doctor->id]);
+			if ($data) $doctor->data = $data[0];
+			else $doctor->data = $this->general->structure("doctor");
+			
+			$doctor->data->specialty = $doctor->data->specialty_id ? $this->general->id("specialty", $doctor->data->specialty_id)->name : "";
+		}else{
+			$doctor = $this->general->structure("person");
+			$doctor->data = $this->general->structure("doctor");
+		}
+		
+		$patient = $this->general->id("person", $appointment->patient_id);
+		$patient->age = $patient->birthday ? $this->my_func->age_calculator($patient->birthday, true) : "-";
+		$patient->age = $patient->birthday ? $this->my_func->age_calculator($patient->birthday, true) : "-";
+		$patient->doc_type = $this->general->id("doc_type", $patient->doc_type_id);
+		
+		$diag_ids = [];
+		$diags = $this->general->filter("appointment_diag_impression" , ["appointment_id" => $id]);
+		foreach($diags as $diag) array_push($diag_ids, $diag->diag_id);
+		$diag_impression = $this->general->ids("diag_impression_detail", $diag_ids, "code");
+		
+		$data = [
+			"doctor" => $doctor,
+			"patient" => $patient,
+			"diag_impression" => $diag_impression,
+			"examination" => $this->set_profiles_exams($id),
+		];
+		
+		$this->load->view('clinic/appointment_print/examination', $data);
+	}
+	
+
 }

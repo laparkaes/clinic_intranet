@@ -36,21 +36,21 @@
 			Cancelar
 		</button>
 		|
-		<?php if ($appointment_datas["examination"]["exams"]){ ?>
+		<?php if ($appointment_datas["medicine"]){ ?>
+		<a class="btn btn-primary" href="<?= base_url() ?>clinic/appointment_print/prescription/<?= $appointment->id ?>" target="_blank">
+			<i class="bi bi-prescription2"></i> Receta Médica
+		</a>
+		<?php }if ($appointment_datas["examination"]["profiles"] or $appointment_datas["examination"]["exams"]){ ?>
 		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment_print/examination/<?= $appointment->id ?>" target="_blank">
-			<i class="bi bi-printer"></i> Exámenes
+			<i class="bi bi-clipboard2-plus"></i> Exámenes
 		</a>
 		<?php } if ($appointment_datas["images"]){ ?>
 		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment_print/image/<?= $appointment->id ?>" target="_blank">
-			<i class="bi bi-printer"></i> Imágenes
+			<i class="bi bi-disc"></i> Imágenes
 		</a>
-		<?php } if ($appointment_datas["medicine"]){ ?>
-		<a class="btn btn-primary" href="<?= base_url() ?>clinic/appointment_print/prescription/<?= $appointment->id ?>" target="_blank">
-			<i class="bi bi-printer"></i> Receta Médica
-		</a>
-		<?php } if ($appointment_datas["therapy"]){ ?>
+		<?php }  if ($appointment_datas["therapy"]){ ?>
 		<a class="btn btn-success" href="<?= base_url() ?>clinic/appointment_print/therapy/<?= $appointment->id ?>" target="_blank">
-			<i class="bi bi-printer"></i> Terapia
+			<i class="bi bi-person-walking"></i> Terapia
 		</a>
 		<?php } ?>
 	</div>

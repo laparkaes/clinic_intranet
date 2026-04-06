@@ -1,78 +1,132 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Examenes</title>
+    <title>Orden de Examen</title>
     <style>
-	* {
-		margin: 0;
-		padding: 0;
-		box-sizing: border-box;
-	}
-
-	body {
-		display: flex;
-		flex-direction: column;
-		height: 100vh; /* 화면 전체 높이 */
-	}
-
-	.header {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 170px;
-	}
-
-	.content {
-		flex: 1;
-		margin-top: 170px;
-		margin-bottom: 100px;
-		overflow-y: auto;
-		padding-top: 50px;
-		padding-left: 50px;
-		padding-right: 50px;
-	}
-
-	.footer {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		height: 100px;
-		text-align: center;
-	}
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            color: #000;
+        }
+        .container {
+			width: 90%;
+            margin: 0 auto;
+            padding: 10px 0;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 1px dashed #000;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .logo {
+            max-width: 40mm;
+            height: auto;
+            margin-bottom: 5px;
+        }
+        .hospital-name {
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+        }
+        .info-section {
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        .label {
+            font-weight: bold;
+        }
+        .therapy-section {
+            border-top: 1px double #000;
+            border-bottom: 1px double #000;
+            padding: 10px 0;
+            margin: 10px 0;
+        }
+        .therapy-title {
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-decoration: underline;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .signature-area {
+            margin-top: 40px;
+            border-top: 1px solid #000;
+            width: 50mm;
+            margin-left: auto;
+            margin-right: auto;
+            padding-top: 5px;
+        }
+        .stamp-area {
+            height: 60px;
+        }
+        
+        @media print {
+            body { margin: 0; }
+            .no-print { display: none; }
+        }
     </style>
-    <script>
-	window.onload = function () {
-		window.print(); // 인쇄 창 열기
-		setTimeout(function () {
-			window.close(); // 일정 시간 후 창 닫기 (일부 브라우저에서 필요)
-		}, 500); 
-	};
-    </script>
 </head>
 <body>
+
+<div class="container">
     <div class="header">
-		<div style="text-align: center;"><strong>EXÁMENES DE LABORATORIO RUTINARIOS</strong></div>
-		<br/>
-		<div style="text-align: right;">Historia Clínica Nro. <?= $patient->doc_number ?></div>
-		<br/>
-		<div><label style="display: inline-block; width: 100px;">Paciente</label>: <?= $patient->name ?></div>
-		<div><label style="display: inline-block; width: 100px;">Edad</label>: <?= $patient->age !== "-" ? $patient->age." años" : "" ?></div>
-		<div><label style="display: inline-block; width: 100px;">Fecha</label>: <?= date("d/M/Y") ?></div>
-	</div>
-    <div class="content">
-		<?php foreach($examination["exams"] as $i => $item){ ?>
-		<div><?= ($i + 1).". ".$item->name ?></div>
-		<?php } ?>
+		<img src="<?= base_url() ?>resources/images/logo_300.png" style="width:100px;">
+		<br/><br/>
+        <span class="hospital-name">CLÍNICA EVERLYN</span>
+        <small>ORDEN DE EXAMEN</small>
     </div>
+
+    <div class="info-section">
+        <div><span class="label">PACIENTE:</span> <?= $patient->name ?></div>
+        <div><span class="label"><?= $patient->doc_type->short ?>:</span> <?= $patient->doc_number ?></div>
+        <div><span class="label">FECHA:</span> <?= date("d/m/Y") ?></div>
+        <div><span class="label">DIAGNÓSTICO:</span> <?= $diag_impression[0]->description ?></div>
+    </div>
+
+    <div class="therapy-section">
+        <div class="therapy-title">Lista de Examen</div>
+		<?php foreach($examination["profiles"] as $item){ ?>
+		<div><strong><?= $item->name ?></strong></div>
+		<ul style="padding-left: 20px; margin: 5px 10px;">
+			<?php $aux = explode(",", $item->exams); foreach($aux as $item_ex){ ?>
+			<li><?= $item_ex ?></li>
+			<?php } ?>
+		</ul>
+		<br/><br/>
+		<?php } ?>
+		
+		<ul style="padding-left: 20px; margin: 5px 10px;">
+		<?php foreach($examination["exams"] as $item){ ?>
+			<li><?= $item->name ?></li>
+		<?php } ?>
+		</ul>
+    </div>
+
     <div class="footer">
-		<div>..............................................................</div>
-		<div><?= $doctor->name ?></div>
-		<div><?= $doctor->data->specialty ?></div>
-		<div><?= $doctor->data->license ?></div>
-	</div>
+        <div class="stamp-area">
+        </div>
+        <div class="signature-area">
+            <span class="label">FIRMA DEL MÉDICO</span><br>
+        </div>
+    </div>
+</div>
+
+<script>
+window.onload = function () {
+	window.print();
+	setTimeout(function () {
+		window.close();
+	}, 500); 
+};
+</script>
+
 </body>
 </html>
