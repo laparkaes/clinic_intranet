@@ -218,42 +218,106 @@
 					</div>
 					<div class="tab-pane fade" id="bordered-bl_physical_therapy_admin" role="tabpanel" aria-labelledby="bl_physical_therapy_admin-tab">
 						<div class="d-flex justify-content-between">
-							<strong>Gestión de Terapia Física</strong>
-							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#md_add_physical_therapy_package">
-								<i class="bi bi-plus-lg"></i> Agregar
-							</button>
-							<div class="modal fade" id="md_add_physical_therapy_package" tabindex="-1" style="display: none;" aria-hidden="true">
-								<div class="modal-dialog modal-xl">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title">Agregar Paquete de Terapia Física</h5>
-											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-										</div>
-										<div class="modal-body">
-											<form class="row g-3" id="form_physical_therapy_package">
-												<div class="col-md-12">
-													<label class="form-label">Nombre de Paquete</label>
-													<input type="text" class="form-control" name="name" required>
-													<div class="sys_msg" id="pt_name_msg"></div>
-												</div>
-												<?php foreach($physical_therapies as $i=>$item){ ?>
-												<div class="col-md-6">
-													<input class="form-check-input" type="checkbox" id="pt_check_<?= $item->id ?>" value="<?= $item->id ?>" name="physical_therapy_ids[]">
-													<label class="form-check-label" for="pt_check_<?= $item->id ?>">
-														<?= $item->name ?>
-													</label>
-												</div>
-												<?php } ?>
-												<div class="col-md-12 pt-3 text-end">
-													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-													<button type="submit" class="btn btn-primary">Agregar</button>
-												</div>
-											</form>
+							<h5 class="card-title">Gestión de Terapia Física</h5>
+							<strong>ddd</strong>
+							<div>
+								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#md_add_physical_therapy">
+									<i class="bi bi-plus-lg"></i> Terapia
+								</button>
+								<div class="modal fade" id="md_add_physical_therapy" tabindex="-1" style="display: none;" aria-hidden="true">
+									<div class="modal-dialog modal-xl">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title">Gestión de Terapia Física</h5>
+												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+											</div>
+											<div class="modal-body">
+												<form class="row g-3" id="form_physical_therapy_package">
+													<div class="col-md-12">
+														<label class="form-label">Nombre de Paquete</label>
+														<input type="text" class="form-control" name="name" required>
+														<div class="sys_msg" id="pt_name_msg"></div>
+													</div>
+													<?php foreach($physical_therapies as $i=>$item){ ?>
+													<div class="col-md-6">
+														<input class="form-check-input" type="checkbox" id="pt_check_<?= $item->id ?>" value="<?= $item->id ?>" name="physical_therapy_ids[]">
+														<label class="form-check-label" for="pt_check_<?= $item->id ?>">
+															<?= $item->name ?>
+														</label>
+													</div>
+													<?php } ?>
+													<div class="col-md-12 pt-3 text-end">
+														<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+														<button type="submit" class="btn btn-primary">Agregar</button>
+													</div>
+												</form>
+											</div>
 										</div>
 									</div>
 								</div>
+								
+								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#md_add_physical_therapy_package">
+									<i class="bi bi-plus-lg"></i> Paquete
+								</button>
+								<div class="modal fade" id="md_add_physical_therapy_package" tabindex="-1" style="display: none;" aria-hidden="true">
+									<div class="modal-dialog modal-xl">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title">Agregar Paquete de Terapia Física</h5>
+												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+											</div>
+											<div class="modal-body">
+												<form class="row g-3" id="form_physical_therapy_package">
+													<div class="col-md-12">
+														<label class="form-label">Nombre de Paquete</label>
+														<input type="text" class="form-control" name="name" required>
+														<div class="sys_msg" id="pt_name_msg"></div>
+													</div>
+													<?php foreach($physical_therapies as $i=>$item){ ?>
+													<div class="col-md-6">
+														<input class="form-check-input" type="checkbox" id="pt_check_<?= $item->id ?>" value="<?= $item->id ?>" name="physical_therapy_ids[]">
+														<label class="form-check-label" for="pt_check_<?= $item->id ?>">
+															<?= $item->name ?>
+														</label>
+													</div>
+													<?php } ?>
+													<div class="col-md-12 pt-3 text-end">
+														<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+														<button type="submit" class="btn btn-primary">Agregar</button>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+								
 							</div>
 						</div>
+						
+						
+						
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">#</th>
+									<th scope="col">Terapia</th>
+									<th scope="col">Acción</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php foreach($physical_therapies as $i => $item){ ?>
+								<tr>
+									<th scope="row"><?= $i + 1 ?></th>
+									<td><?= $item->name ?></td>
+									<td>
+										<button type="button" class="btn btn-outline-danger btn-sm btn_delete_therapy" value="<?= $item->id ?>"><i class="bi bi-trash text-danger"></i> Eliminar</button>
+									</td>
+								</tr>
+								<?php } ?>
+							</tbody>
+						</table>
+						
+						
 						<table class="table">
 							<thead>
 								<tr>
@@ -268,7 +332,7 @@
 									<th scope="row"><?= $i + 1 ?></th>
 									<td>
 										<?= $item->name ?><br/>
-										<button type="submit" class="btn btn-outline-danger btn-sm btn_delete_package" value="<?= $item->id ?>"><i class="bi bi-trash text-danger"></i> Eliminar</button>
+										<button type="button" class="btn btn-outline-danger btn-sm btn_delete_package" value="<?= $item->id ?>"><i class="bi bi-trash text-danger"></i> Eliminar</button>
 									</td>
 									<td>
 										<?php foreach($item->therapies as $therapy){ ?>

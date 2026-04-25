@@ -1176,6 +1176,9 @@
 					<li class="nav-item" role="presentation">
 						<button class="nav-link" id="treatments-2-tab" data-bs-toggle="tab" data-bs-target="#bordered-treatments-2" type="button" role="tab" aria-controls="treatments-2" aria-selected="false" tabindex="-1"><?= $this->lang->line('w_physical_therapy') ?></button>
 					</li>
+					<li class="nav-item" role="presentation">
+						<button class="nav-link" id="treatments-3-tab" data-bs-toggle="tab" data-bs-target="#bordered-treatments-3" type="button" role="tab" aria-controls="treatments-3" aria-selected="false" tabindex="-1">Procedimiento</button>
+					</li>
 				</ul>
 				<div class="tab-content pt-4" id="auxiliary_exams_tab_content">
 					<div class="tab-pane fade show active" id="bordered-treatments-1" role="tabpanel" aria-labelledby="treatments-1-tab">
@@ -1364,6 +1367,9 @@
 								</table>
 							</div>
 						</div>
+					</div>
+					<div class="tab-pane fade" id="bordered-treatments-2" role="tabpanel" aria-labelledby="treatments-2-tab">
+						En desarrollo
 					</div>
 				</div>
 			</div>
