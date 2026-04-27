@@ -217,132 +217,131 @@
 						</div>
 					</div>
 					<div class="tab-pane fade" id="bordered-bl_physical_therapy_admin" role="tabpanel" aria-labelledby="bl_physical_therapy_admin-tab">
-						<div class="d-flex justify-content-between">
-							<h5 class="card-title">Gestión de Terapia Física</h5>
-							<strong>ddd</strong>
-							<div>
-								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#md_add_physical_therapy">
-									<i class="bi bi-plus-lg"></i> Terapia
-								</button>
-								<div class="modal fade" id="md_add_physical_therapy" tabindex="-1" style="display: none;" aria-hidden="true">
-									<div class="modal-dialog modal-xl">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title">Gestión de Terapia Física</h5>
-												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-											</div>
-											<div class="modal-body">
-												<form class="row g-3" id="form_physical_therapy_package">
-													<div class="col-md-12">
-														<label class="form-label">Nombre de Paquete</label>
-														<input type="text" class="form-control" name="name" required>
-														<div class="sys_msg" id="pt_name_msg"></div>
+						
+						<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+							<li class="nav-item" role="presentation">
+								<button class="nav-link active" id="pills-sub_therapy-tab" data-bs-toggle="pill" data-bs-target="#pills-sub_therapy" type="button" role="tab" aria-controls="pills-sub_therapy" aria-selected="true">Terapia</button>
+							</li>
+							<li class="nav-item" role="presentation">
+								<button class="nav-link" id="pills-sub_therapy_package-tab" data-bs-toggle="pill" data-bs-target="#pills-sub_therapy_package" type="button" role="tab" aria-controls="pills-sub_therapy_package" aria-selected="false" tabindex="-1">Paquete</button>
+							</li>
+						</ul>
+						
+						<div class="tab-content pt-2" id="myTabContent">
+							<div class="tab-pane fade show active" id="pills-sub_therapy" role="tabpanel" aria-labelledby="sub_therapy-tab">
+								<h5 class="card-title">Gestión de Terapia Física</h5>
+								<table class="table">
+									<thead>
+										<tr>
+											<th scope="col" class="fw-normal">
+												<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#md_add_physical_therapy">
+													<i class="bi bi-plus-lg"></i>
+												</button>
+												<div class="modal fade" id="md_add_physical_therapy" tabindex="-1" style="display: none;" aria-hidden="true">
+													<div class="modal-dialog modal-lg">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h5 class="modal-title">Gestión de Terapia Física</h5>
+																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+															</div>
+															<div class="modal-body">
+																<form class="row g-3" id="form_physical_therapy">
+																	<div class="col-md-12">
+																		<label class="form-label">Nombre</label>
+																		<input type="text" class="form-control" name="name" required>
+																		<div class="sys_msg" id="pt_name_msg"></div>
+																	</div>
+																	<div class="col-md-12 pt-3 text-end">
+																		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+																		<button type="submit" class="btn btn-primary">Agregar</button>
+																	</div>
+																</form>
+															</div>
+														</div>
 													</div>
-													<?php foreach($physical_therapies as $i=>$item){ ?>
-													<div class="col-md-6">
-														<input class="form-check-input" type="checkbox" id="pt_check_<?= $item->id ?>" value="<?= $item->id ?>" name="physical_therapy_ids[]">
-														<label class="form-check-label" for="pt_check_<?= $item->id ?>">
-															<?= $item->name ?>
-														</label>
+												</div>
+											</th>
+											<th scope="col">Terapia</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php foreach($physical_therapies as $i => $item){ ?>
+										<tr>
+											<th scope="row"><?= $i + 1 ?></th>
+											<td><?= $item->name ?></td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
+							</div>
+							<div class="tab-pane fade" id="pills-sub_therapy_package" role="tabpanel" aria-labelledby="sub_therapy_package-tab">
+								<h5 class="card-title">Gestión de Paquete de Terapia Física</h5>
+								<table class="table">
+									<thead>
+										<tr>
+											<th scope="col" class="fw-normal">
+												<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#md_add_physical_therapy_package">
+													<i class="bi bi-plus-lg"></i>
+												</button>
+												<div class="modal fade" id="md_add_physical_therapy_package" tabindex="-1" style="display: none;" aria-hidden="true">
+													<div class="modal-dialog modal-xl">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h5 class="modal-title">Agregar Paquete de Terapia Física</h5>
+																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+															</div>
+															<div class="modal-body">
+																<form class="row g-3" id="form_physical_therapy_package">
+																	<div class="col-md-12">
+																		<label class="form-label">Nombre de Paquete</label>
+																		<input type="text" class="form-control" name="name" required>
+																		<div class="sys_msg" id="pt_name_msg"></div>
+																	</div>
+																	<?php foreach($physical_therapies as $i=>$item){ ?>
+																	<div class="col-md-6">
+																		<input class="form-check-input" type="checkbox" id="pt_check_<?= $item->id ?>" value="<?= $item->id ?>" name="physical_therapy_ids[]">
+																		<label class="form-check-label" for="pt_check_<?= $item->id ?>">
+																			<?= $item->name ?>
+																		</label>
+																	</div>
+																	<?php } ?>
+																	<div class="col-md-12 pt-3 text-end">
+																		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+																		<button type="submit" class="btn btn-primary">Agregar</button>
+																	</div>
+																</form>
+															</div>
+														</div>
 													</div>
-													<?php } ?>
-													<div class="col-md-12 pt-3 text-end">
-														<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-														<button type="submit" class="btn btn-primary">Agregar</button>
-													</div>
-												</form>
-											</div>
-										</div>
-									</div>
-								</div>
-								
-								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#md_add_physical_therapy_package">
-									<i class="bi bi-plus-lg"></i> Paquete
-								</button>
-								<div class="modal fade" id="md_add_physical_therapy_package" tabindex="-1" style="display: none;" aria-hidden="true">
-									<div class="modal-dialog modal-xl">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title">Agregar Paquete de Terapia Física</h5>
-												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-											</div>
-											<div class="modal-body">
-												<form class="row g-3" id="form_physical_therapy_package">
-													<div class="col-md-12">
-														<label class="form-label">Nombre de Paquete</label>
-														<input type="text" class="form-control" name="name" required>
-														<div class="sys_msg" id="pt_name_msg"></div>
-													</div>
-													<?php foreach($physical_therapies as $i=>$item){ ?>
-													<div class="col-md-6">
-														<input class="form-check-input" type="checkbox" id="pt_check_<?= $item->id ?>" value="<?= $item->id ?>" name="physical_therapy_ids[]">
-														<label class="form-check-label" for="pt_check_<?= $item->id ?>">
-															<?= $item->name ?>
-														</label>
-													</div>
-													<?php } ?>
-													<div class="col-md-12 pt-3 text-end">
-														<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-														<button type="submit" class="btn btn-primary">Agregar</button>
-													</div>
-												</form>
-											</div>
-										</div>
-									</div>
-								</div>
-								
+												</div>
+											</th>
+											<th scope="col">Nombre de Paquete</th>
+											<th scope="col">Terapias incluidas</th>
+											<th scope="col" class="text-end">Acción</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php foreach($physical_therapy_packages as $i => $item){ ?>
+										<tr>
+											<th scope="row"><?= $i + 1 ?></th>
+											<td>
+												<?= $item->name ?><br/>
+											</td>
+											<td>
+												<?php foreach($item->therapies as $therapy){ ?>
+												<div><?= $therapy->name ?></div>
+												<?php } ?>
+											</td>
+											<td class="text-end">
+												<button type="button" class="btn btn-outline-danger btn-sm btn_delete_package" value="<?= $item->id ?>"><i class="bi bi-trash text-danger"></i></button>
+											</td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
 							</div>
 						</div>
 						
-						
-						
-						<table class="table">
-							<thead>
-								<tr>
-									<th scope="col">#</th>
-									<th scope="col">Terapia</th>
-									<th scope="col">Acción</th>
-								</tr>
-							</thead>
-							<tbody>
-								<?php foreach($physical_therapies as $i => $item){ ?>
-								<tr>
-									<th scope="row"><?= $i + 1 ?></th>
-									<td><?= $item->name ?></td>
-									<td>
-										<button type="button" class="btn btn-outline-danger btn-sm btn_delete_therapy" value="<?= $item->id ?>"><i class="bi bi-trash text-danger"></i> Eliminar</button>
-									</td>
-								</tr>
-								<?php } ?>
-							</tbody>
-						</table>
-						
-						
-						<table class="table">
-							<thead>
-								<tr>
-									<th scope="col">#</th>
-									<th scope="col">Nombre de Paquete</th>
-									<th scope="col">Terapias</th>
-								</tr>
-							</thead>
-							<tbody>
-								<?php foreach($physical_therapy_packages as $i => $item){ ?>
-								<tr>
-									<th scope="row"><?= $i + 1 ?></th>
-									<td>
-										<?= $item->name ?><br/>
-										<button type="button" class="btn btn-outline-danger btn-sm btn_delete_package" value="<?= $item->id ?>"><i class="bi bi-trash text-danger"></i> Eliminar</button>
-									</td>
-									<td>
-										<?php foreach($item->therapies as $therapy){ ?>
-										<div><?= $therapy->name ?></div>
-										<?php } ?>
-									</td>
-								</tr>
-								<?php } ?>
-							</tbody>
-						</table>
 					</div>
 					<div class="tab-pane fade" id="bordered-bl_image_admin" role="tabpanel" aria-labelledby="bl_image_admin-tab">
 						<div class="d-flex justify-content-between">
@@ -996,9 +995,33 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	});
 	
+	/* therapy */
+	function load_physical_therapy_list(){
+		alert("cargar lista de terapias pendiente. Por ahora, actualice la pagina para visualizar lista completa.");
+	}
 	
+	$("#form_physical_therapy").submit(function(e) {
+		e.preventDefault();
+		ajax_form(this, "sys/config/register_physical_therapy").done(function(res) {
+			swal(res.type, res.msg);
+			if (res.type == "success"){
+				$('#form_physical_therapy')[0].reset();
+				load_physical_therapy_list();
+				$('#md_add_physical_therapy').modal('hide');	
+			}
+		});
+	});
+	
+	$(".btn_delete_therapy").click(function() {
+		ajax_simple_warning({id: $(this).val()}, "sys/config/remove_physical_therapy", "Desea eliminar terapia fisica?").done(function(res) {
+			swal(res.type, res.msg);
+			load_physical_therapy_list();
+		});
+	});
+	
+	/* therapy package */
 	function load_physical_therapy_package_list(){
-		alert("cargar lista");
+		alert("cargar lista de paquete pendiente. Por ahora, actualice la pagina para visualizar lista completa.");
 	}
 	
 	$("#form_physical_therapy_package").submit(function(e) {

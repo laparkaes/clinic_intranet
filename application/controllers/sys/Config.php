@@ -455,6 +455,32 @@ class Config extends CI_Controller {
 		echo json_encode(["type" => $type, "msgs" => $msgs, "msg" => $msg]);
 	}
 
+	public function register_physical_therapy(){
+		$type = "error"; $msg = null;
+		
+		$name = $this->input->post("name");
+		
+		if ($name){
+			//generate data array
+			$data = [
+				"name" => $name,
+			];
+			
+			//validate if the therapy exists in data base
+			if (!$this->general->filter("physical_therapy", $data)){
+				//$data["registed_at"] = date("Y-m-d H:i:s", time());
+				
+				//insert to table
+				$this->general->insert("physical_therapy", $data);
+				$type = "success";
+				$msg = "Terapia física ha sido registrada.";
+			}else $msg = "Existe terapia registrada.";
+		}else $msg = "Ingrese nombre de terapia física.";
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
+	}
+
 	public function register_physical_therapy_package(){
 		$type = "error"; $msg = null;
 		
