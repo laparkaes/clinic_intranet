@@ -361,7 +361,9 @@ class Appointment extends CI_Controller {
 			if ($details) $therapy_multi[] = ["app_date" => $apps_dates[$item], "details" => $details];
 		}
 		
-		usort($therapy_multi, function($a, $b) { return ($a->app_date < $b->app_date); });
+		usort($therapy_multi, function($a, $b) {
+			return ($a["app_date"] < $b["app_date"]);
+		});
 		
 		/*
 		foreach($result_multi as $item){
